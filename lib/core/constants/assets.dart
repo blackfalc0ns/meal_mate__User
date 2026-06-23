@@ -25,6 +25,7 @@ class Assets {
   static const String successOrderAnimation =
       '$_images/success_order_animation.gif';
   static const String notFound = '$_images/image_not_found.png';
+  static const String bgRegister = '$_images/bg_register.png';
 
   // Lottie
   static const String emptyCart = '$_lottie/empty_cart.json';

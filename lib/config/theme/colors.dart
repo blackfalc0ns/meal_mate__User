@@ -1,73 +1,88 @@
 import 'package:flutter/material.dart';
 
 /// ─────────────────────────────────────────────────────────────
-/// App colour palette — all colours in ONE place.
-/// Named semantically, not by colour name.
+/// App colour palette — MealMate
+/// Based on the official MealMate Color Palette.
 /// ─────────────────────────────────────────────────────────────
 class AppColors {
   AppColors._();
 
-  // ── Primary ──
-  static const Color primary = Color(0XFF007A92);
-  static const Color primaryLight = Color.fromARGB(255, 1, 139, 167);
-  static const Color primaryDark = Color.fromARGB(255, 0, 101, 121);
-  static const Color primarySurface = Color.fromARGB(255, 1, 139, 167);
+  // ── Primary (Green - Row 1) ──
+  static const Color primary = Color(0xFF04B94E);
+  static const Color primaryLight = Color(0xFF0BF07E);
+  static const Color primaryMedium = Color(0xFF07CA66);
+  static const Color primaryDark = Color(0xFF027038);
+  static const Color primaryDarker = Color(0xFF014A23);
+  static const Color primarySurface = Color(0xFFC2FFD3);
+
+  // ── Primary Extended (Darker Green - Row 2) ──
+  static const Color primaryDeep = Color(0xFF0BFBB8);
+  static const Color primaryDeepMedium = Color(0xFF04A356);
+  static const Color primaryDeepDark = Color(0xFF015329);
+  static const Color primaryDeepDarker = Color(0xFF002F15);
+  static const Color primaryDeepDarkest = Color(0xFF001506);
 
   static const LinearGradient primarygradient = LinearGradient(
-    colors: [primaryLight, primarySurface, primary],
+    colors: [primaryLight, primary, primaryDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  // ── Secondary / Accent ──
-  // static const Color secondary = Color(0xFFFFC107);
-  static const Color secondary = Color(0xffe48215);
-  static const Color secondaryLight = Color(0xFFFFD54F);
-  static const Color secondaryDark = Color(0xFFF9A825);
 
-  // ── Neutral (Light mode) ──
+  // ── Secondary / Accent (Orange - Row 3) ──
+  static const Color secondary = Color(0xFFF67E15);
+  static const Color secondaryLight = Color(0xFFFEB597);
+  static const Color secondarySurface = Color(0xFFFFE9E3);
+  static const Color secondaryDark = Color(0xFF894407);
+  static const Color secondaryDarker = Color(0xFF582903);
+  static const Color secondaryDarkest = Color(0xFF2B1101);
+
+  // ── Neutral (Grey - Row 4) ──
   static const Color background = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color card = Color(0xFFFFFFFF);
-  static const Color divider = Color(0xFFE0E0E0);
-  static const Color disabled = Color(0xFFBDBDBD);
+  static const Color divider = Color(0xFFDDDDDD);
+  static const Color disabled = Color(0xFFB6B6B6);
   static const Color border = Color(0xFFDDDDDD);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
+  static const Color grey = Color(0xFF494949);
+  static const Color greyLight = Color(0xFF909090);
+  static const Color greyDark = Color(0xFF262929);
 
-  // ── Neutral (Dark mode) ──
-  static const Color backgroundDark = Color(0xFF121212);
-  static const Color surfaceDark = Color(0xFF1E1E1E);
-  static const Color cardDark = Color(0xFF2C2C2C);
-  static const Color dividerDark = Color(0xFF424242);
+  // ── Neutral (Dark mode - Row 5) ──
+  static const Color backgroundDark = Color(0xFF1F2120);
+  static const Color surfaceDark = Color(0xFF3D403E);
+  static const Color cardDark = Color(0xFF5E625F);
+  static const Color dividerDark = Color(0xFF494949);
 
   // ── Text ──
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textHint = Color(0xFFBDBDBD);
+  static const Color textPrimary = Color(0xFF111111);
+  static const Color textSecondary = Color(0xFF6B6B6B);
+  static const Color textHint = Color(0xFF909090);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
-  static const Color textPrimaryDark = Color(0xFFE0E0E0);
-  static const Color textSecondaryDark = Color(0xFF9E9E9E);
-  static const Color lightGrey = Color.fromARGB(221, 227, 232, 238);
+  static const Color textPrimaryDark = Color(0xFFEEF1EF);
+  static const Color textSecondaryDark = Color(0xFFABACA7);
+  static const Color lightGrey = Color(0xFFCCD3CD);
 
   // ── Semantic ──
-  static const Color success = Color(0xFF4CAF50);
-  static const Color successLight = Color(0xFFE8F5E9);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color warningLight = Color(0xFFFFF3E0);
+  static const Color success = Color(0xFF027038);
+  static const Color successLight = Color(0xFFC2FFD3);
+  static const Color warning = Color(0xFFBE600D);
+  static const Color warningLight = Color(0xFFFFE9E3);
   static const Color error = Color(0xFFE53935);
   static const Color errorLight = Color(0xFFFFEBEE);
   static const Color info = Color(0xFF2196F3);
   static const Color infoLight = Color(0xFFE3F2FD);
 
   // ── Rating ──
-  static const Color starFilled = Color(0xFFFFC107);
-  static const Color starEmpty = Color(0xFFE0E0E0);
+  static const Color starFilled = Color(0xFFF67E15);
+  static const Color starEmpty = Color(0xFFDDDDDD);
 
   // ── Shimmer ──
-  static const Color shimmerBase = Color(0xFFE0E0E0);
+  static const Color shimmerBase = Color(0xFFDDDDDD);
   static const Color shimmerHighlight = Color(0xFFF5F5F5);
-  static const Color shimmerBaseDark = Color(0xFF424242);
-  static const Color shimmerHighlightDark = Color(0xFF616161);
+  static const Color shimmerBaseDark = Color(0xFF494949);
+  static const Color shimmerHighlightDark = Color(0xFF6B6B6B);
 
   // ── Shadow ──
   static const Color shadow = Color(0x1A000000);

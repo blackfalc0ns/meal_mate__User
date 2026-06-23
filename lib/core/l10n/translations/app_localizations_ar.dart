@@ -329,4 +329,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get start_button => 'ابدأ الحين';
+
+  @override
+  String get welcome_back => 'مرحباً بك في';
+
+  @override
+  String get login_subtitle =>
+      'سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية';
+
+  @override
+  String get login_title => 'تسجيل الدخول';
+
+  @override
+  String get phone_number => 'رقم الجوال';
+
+  @override
+  String get phone_hint => '000 000 00 00';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get password_hint => 'أدخل كلمة المرور';
+
+  @override
+  String get remember_me => 'تذكرني';
+
+  @override
+  String get forgot_password => 'نسيت كلمة المرور؟';
+
+  @override
+  String get login_button => 'تسجيل الدخول';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get login_with_google => 'التسجيل بواسطة جوجل';
+
+  @override
+  String get dont_have_account => 'ليس لديك حساب؟';
+
+  @override
+  String get sign_up => 'اشتراك';
 }

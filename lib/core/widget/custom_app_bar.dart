@@ -248,7 +248,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Text(
           title!,
           style: getBoldStyle(
-            fontFamily: FontConstant.cairo,
+            fontFamily: FontConstant.ibmPlexSansArabic,
             fontSize: titleFontSize ?? FontSize.size18,
             color: titleColor ?? colorScheme.onSurface,
           ),
@@ -275,7 +275,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Text(
                     subtitle!,
                     style: getMediumStyle(
-                      fontFamily: FontConstant.cairo,
+                      fontFamily: FontConstant.ibmPlexSansArabic,
                       color: AppColors.primary,
                     ),
                     textAlign: TextAlign.center,

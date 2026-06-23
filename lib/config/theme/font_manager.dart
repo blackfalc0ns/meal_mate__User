@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FontConstant {
-  static const String cairo = "Cairo";
+  static const String ibmPlexSansArabic = "IBMPlexSansArabic";
 }
 
 class FontWeightManger {
@@ -9,7 +9,7 @@ class FontWeightManger {
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight medium = FontWeight.w500;
   static const FontWeight semiBold = FontWeight.w600;
-  static const FontWeight bold = FontWeight.bold;
+  static const FontWeight bold = FontWeight.w700;
 }
 
 class FontSize {
@@ -29,6 +29,9 @@ class FontSize {
   static const double size20 = 20.0;
   static const double size22 = 22.0;
   static const double size24 = 24.0;
-
+  static const double size26 =26.0;
+ static const double size28 =28.0;
   static const double size30 = 30.0;
+    static const double size40 = 40.0;
+
 }

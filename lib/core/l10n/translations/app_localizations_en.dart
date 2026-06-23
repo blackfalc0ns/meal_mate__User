@@ -338,4 +338,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get start_button => 'start now';
+
+  @override
+  String get welcome_back => 'Welcome to';
+
+  @override
+  String get login_subtitle =>
+      'Log in to access your meal plan and track your health goals';
+
+  @override
+  String get login_title => 'Login';
+
+  @override
+  String get phone_number => 'Phone Number';
+
+  @override
+  String get phone_hint => '000 000 00 00';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get password_hint => 'Enter your password';
+
+  @override
+  String get remember_me => 'Remember me';
+
+  @override
+  String get forgot_password => 'Forgot password?';
+
+  @override
+  String get login_button => 'Login';
+
+  @override
+  String get or => 'Or';
+
+  @override
+  String get login_with_google => 'Sign in with Google';
+
+  @override
+  String get dont_have_account => 'Don\'t have an account?';
+
+  @override
+  String get sign_up => 'Sign up';
 }

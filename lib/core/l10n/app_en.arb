@@ -99,5 +99,19 @@
   "location_permission_denied_forever_message": "Location permission is permanently denied. Please enable it from your device settings",
   "verification_code_required": "Verification code is required",
   "verification_code_invalid": "Verification code is invalid",
-  "start_button":"start now"
+  "start_button":"start now",
+  "welcome_back": "Welcome to",
+  "login_subtitle": "Log in to access your meal plan and track your health goals",
+  "login_title": "Login",
+  "phone_number": "Phone Number",
+  "phone_hint": "000 000 00 00",
+  "password": "Password",
+  "password_hint": "Enter your password",
+  "remember_me": "Remember me",
+  "forgot_password": "Forgot password?",
+  "login_button": "Login",
+  "or": "Or",
+  "login_with_google": "Sign in with Google",
+  "dont_have_account": "Don't have an account?",
+  "sign_up": "Sign up"
 }

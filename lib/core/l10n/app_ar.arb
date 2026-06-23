@@ -100,5 +100,19 @@
   "location_permission_denied_forever_message": "تم رفض إذن الموقع نهائياً. يرجى تفعيله من إعدادات الجهاز",
   "verification_code_required": "كود التحقق مطلوب",
   "verification_code_invalid": "كود التحقق غير صحيح",
-  "start_button": "ابدأ الحين"
+  "start_button": "ابدأ الحين",
+  "welcome_back": "مرحباً بك في",
+  "login_subtitle": "سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية",
+  "login_title": "تسجيل الدخول",
+  "phone_number": "رقم الجوال",
+  "phone_hint": "000 000 00 00",
+  "password": "كلمة المرور",
+  "password_hint": "أدخل كلمة المرور",
+  "remember_me": "تذكرني",
+  "forgot_password": "نسيت كلمة المرور؟",
+  "login_button": "تسجيل الدخول",
+  "or": "أو",
+  "login_with_google": "التسجيل بواسطة جوجل",
+  "dont_have_account": "ليس لديك حساب؟",
+  "sign_up": "اشتراك"
 }

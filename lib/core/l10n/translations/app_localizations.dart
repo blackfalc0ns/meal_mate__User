@@ -697,6 +697,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'start now'**
   String get start_button;
+
+  /// No description provided for @welcome_back.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to'**
+  String get welcome_back;
+
+  /// No description provided for @login_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to access your meal plan and track your health goals'**
+  String get login_subtitle;
+
+  /// No description provided for @login_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login_title;
+
+  /// No description provided for @phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phone_number;
+
+  /// No description provided for @phone_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'000 000 00 00'**
+  String get phone_hint;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @password_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get password_hint;
+
+  /// No description provided for @remember_me.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get remember_me;
+
+  /// No description provided for @forgot_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgot_password;
+
+  /// No description provided for @login_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login_button;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'Or'**
+  String get or;
+
+  /// No description provided for @login_with_google.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get login_with_google;
+
+  /// No description provided for @dont_have_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dont_have_account;
+
+  /// No description provided for @sign_up.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get sign_up;
 }
 
 class _AppLocalizationsDelegate
