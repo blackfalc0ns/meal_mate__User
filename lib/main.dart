@@ -25,7 +25,7 @@ class MealMateApp extends StatelessWidget {
       locale: const Locale('ar'),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.home,
       onGenerateRoute: RouteGenerator.getRoute,
     );
   }
@@ -174,23 +174,6 @@ class MealMateApp extends StatelessWidget {
         unselectedItemColor: AppColors.textSecondaryDark,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
-      ),
-    );
-  }
-}
-
-/// Temporary home screen to showcase the widget library.
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meal Mate'),
-      ),
-      body: const Center(
-        child: Text('Meal Mate User'),
       ),
     );
   }

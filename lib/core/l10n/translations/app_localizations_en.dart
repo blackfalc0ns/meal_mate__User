@@ -381,4 +381,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sign_up => 'Sign up';
+
+  @override
+  String get auth_welcome_title => 'Welcome to';
+
+  @override
+  String get auth_welcome_subtitle =>
+      'Log in to access your meal plan and track your health goals.';
+
+  @override
+  String get auth_sign_in_title => 'Sign in';
+
+  @override
+  String get auth_sign_in_button => 'Sign in';
+
+  @override
+  String get auth_no_account => 'Don\'t have an account?';
+
+  @override
+  String get auth_create_account_link => 'Create account';
+
+  @override
+  String get auth_have_account_prompt => 'Already have an account?';
+
+  @override
+  String get auth_sign_in_link => 'Sign in';
+
+  @override
+  String get auth_create_account_title => 'Create account';
+
+  @override
+  String get auth_create_account_subtitle =>
+      'Join MealMate and start your healthier journey.';
+
+  @override
+  String get auth_name_label => 'Name';
+
+  @override
+  String get auth_name_hint => 'Enter your name';
+
+  @override
+  String get auth_confirm_password_label => 'Confirm password';
+
+  @override
+  String get auth_confirm_password_hint => 'Re-enter your password';
+
+  @override
+  String get auth_terms_label => 'I agree to the terms and conditions';
+
+  @override
+  String get auth_create_account_button => 'Create account';
+
+  @override
+  String get auth_reset_password_title => 'Reset your password';
+
+  @override
+  String get auth_reset_password_subtitle =>
+      'Enter your phone number to receive an OTP code.';
+
+  @override
+  String get auth_reset_password_hint =>
+      'We will send an OTP code to your phone number.';
+
+  @override
+  String get auth_send_otp_button => 'Send OTP';
+
+  @override
+  String get auth_otp_title => 'Verify your code';
+
+  @override
+  String get auth_otp_subtitle =>
+      'Enter the 6-digit OTP code sent to your phone.';
+
+  @override
+  String get auth_otp_hint => 'Enter the 6-digit OTP code to continue.';
+
+  @override
+  String get auth_verify_code_button => 'Verify code';
+
+  @override
+  String get auth_no_code_title => 'Didn\'t receive the code?';
+
+  @override
+  String get auth_resend_code => 'Resend code';
+
+  @override
+  String get auth_resend_code_in => 'Resend code in';
+
+  @override
+  String get auth_seconds_label => 'seconds';
+
+  @override
+  String get auth_new_password_title => 'Set a new password';
+
+  @override
+  String get auth_new_password_subtitle =>
+      'Choose a strong password for your account.';
+
+  @override
+  String get auth_new_password_hint => 'Enter your new password.';
+
+  @override
+  String get auth_new_password_label => 'Password';
+
+  @override
+  String get auth_new_password_hint_field => 'Enter your new password';
+
+  @override
+  String get auth_new_password_button => 'Save password';
+
+  @override
+  String get onboarding_first_subtitle => 'Your healthy companion every day.';
+
+  @override
+  String get onboarding_second_title => 'Healthy and tasty meals';
+
+  @override
+  String get onboarding_second_subtitle => 'Delivered right to your door...';
+
+  @override
+  String get onboarding_third_title => 'Healthy food';
+
+  @override
+  String get onboarding_third_subtitle => 'For a better mood!';
+
+  @override
+  String get skip => 'Skip';
 }

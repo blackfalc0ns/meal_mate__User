@@ -17,9 +17,11 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.isExpanded = true,
     this.icon,
+    this.iconWidget,
     this.height,
     this.borderRadius,
     this.color,
+    this.gradient,
     this.textColor,
     this.fontWeight,
     this.padding,
@@ -33,9 +35,11 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.isExpanded = true,
     this.icon,
+    this.iconWidget,
     this.height,
     this.borderRadius,
     this.color,
+    this.gradient,
     this.textColor,
     this.fontWeight,
     this.padding,
@@ -48,9 +52,11 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.isExpanded = true,
     this.icon,
+    this.iconWidget,
     this.height,
     this.borderRadius,
     this.color,
+    this.gradient,
     this.textColor,
     this.fontWeight,
     this.padding,
@@ -63,9 +69,11 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.isExpanded = false,
     this.icon,
+    this.iconWidget,
     this.height,
     this.borderRadius,
     this.color,
+    this.gradient,
     this.textColor,
     this.fontWeight,
     this.padding,
@@ -76,9 +84,11 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final bool isExpanded;
   final IconData? icon;
+  final Widget? iconWidget;
   final double? height;
   final double? borderRadius;
   final Color? color;
+  final LinearGradient? gradient;
   final Color? textColor;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
@@ -106,20 +116,26 @@ class AppButton extends StatelessWidget {
     Widget button;
     switch (variant) {
       case AppButtonVariant.filled:
-        button = ElevatedButton(
-          onPressed: isLoading ? null : onPressed,
-          style: ElevatedButton.styleFrom(
-            padding:
-                padding ?? const EdgeInsets.symmetric(horizontal: Spacing.sm),
-            backgroundColor: effectiveColor,
-            foregroundColor: textColor ?? colors.onPrimary,
-            minimumSize: Size(isExpanded ? double.infinity : 0, h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(r),
+        button = _GradientButtonShell(
+          gradient: gradient,
+          borderRadius: r,
+          child: ElevatedButton(
+            onPressed: isLoading ? null : onPressed,
+            style: ElevatedButton.styleFrom(
+              padding:
+                  padding ?? const EdgeInsets.symmetric(horizontal: Spacing.sm),
+              backgroundColor:
+                  gradient == null ? effectiveColor : Colors.transparent,
+              foregroundColor: textColor ?? colors.onPrimary,
+              minimumSize: Size(isExpanded ? double.infinity : 0, h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(r),
+              ),
+              elevation: 0,
+              shadowColor: Colors.transparent,
             ),
-            elevation: 0,
+            child: child,
           ),
-          child: child,
         );
         break;
       case AppButtonVariant.outlined:
@@ -164,14 +180,12 @@ class AppButton extends StatelessWidget {
           : (textColor ?? effectiveColor),
     ).copyWith(fontWeight: fontWeight);
 
-    if (icon != null) {
+    if (iconWidget != null || icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         textDirection: textDirection,
         children: [
-          Icon(icon, size: 24),
-          const SizedBox(width: Spacing.sm),
           Text(
             text,
             style: style,
@@ -179,6 +193,8 @@ class AppButton extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
+          const SizedBox(width: Spacing.sm),
+          iconWidget ?? Icon(icon, size: 24),
         ],
       );
     }
@@ -188,6 +204,33 @@ class AppButton extends StatelessWidget {
       textAlign: TextAlign.center,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+class _GradientButtonShell extends StatelessWidget {
+  const _GradientButtonShell({
+    required this.child,
+    required this.borderRadius,
+    this.gradient,
+  });
+
+  final Widget child;
+  final double borderRadius;
+  final LinearGradient? gradient;
+
+  @override
+  Widget build(BuildContext context) {
+    if (gradient == null) {
+      return child;
+    }
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: child,
     );
   }
 }

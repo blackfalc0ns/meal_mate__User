@@ -14,13 +14,12 @@ class CountryCodePrefix extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-         
           const Icon(
             Icons.keyboard_arrow_down,
             size: 18,
             color: AppColors.textPrimary,
           ),
-           Text(
+          Text(
             '965+',
             style: getSemiBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
@@ -29,7 +28,6 @@ class CountryCodePrefix extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.xs),
-        
         ],
       ),
     );

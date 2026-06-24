@@ -43,6 +43,7 @@ class AppColors {
   static const Color divider = Color(0xFFDDDDDD);
   static const Color disabled = Color(0xFFB6B6B6);
   static const Color border = Color(0xFFDDDDDD);
+  static const Color inputBackground = Color(0xFFF2F2F2);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color grey = Color(0xFF494949);

@@ -26,6 +26,16 @@ class Assets {
       '$_images/success_order_animation.gif';
   static const String notFound = '$_images/image_not_found.png';
   static const String bgRegister = '$_images/bg_register.png';
+  static const String onboardingOne = '$_images/on_boarding1.png';
+  static const String onboardingTwo = '$_images/on_boarding2.png';
+  static const String onboardingThree = '$_images/on_boarding3.png';
+  static const String loginIcon = '$_images/login_icon.svg';
+  static const String homeBanner = '$_images/home_oatmeal.png';
+  static const String homeBreakfast = '$_images/home_oatmeal.png';
+  static const String homeLunch = '$_images/home_burger.png';
+  static const String homeDinner = '$_images/home_hotdog.png';
+  static const String homeSnack = '$_images/home_donut.png';
+  static const String homeHook = '$_images/home_hook.png';
 
   // Lottie
   static const String emptyCart = '$_lottie/empty_cart.json';
@@ -33,6 +43,7 @@ class Assets {
   static const String loading = '$_lottie/loading_animation.json';
   static const String successPayment = '$_lottie/success_payment.json';
   static const String errorPayment = '$_lottie/failed_payment.json';
+  static const String fireAnimation = 'assets/animations/fire_animation.json';
 
   // Icons (SVG)
   static const String icHome = '$_icons/ic_home.svg';

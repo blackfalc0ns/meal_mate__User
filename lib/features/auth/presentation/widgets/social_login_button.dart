@@ -20,7 +20,7 @@ class SocialLoginButton extends StatelessWidget {
       text: l10n.login_with_google,
       onPressed: onPressed,
       color: AppColors.grey,
-      icon: Icons.g_mobiledata,
+      icon: Icons.login,
       borderRadius: Spacing.buttonRadius,
     );
   }

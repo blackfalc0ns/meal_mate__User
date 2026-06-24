@@ -781,6 +781,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign up'**
   String get sign_up;
+
+  /// No description provided for @auth_welcome_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to'**
+  String get auth_welcome_title;
+
+  /// No description provided for @auth_welcome_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to access your meal plan and track your health goals.'**
+  String get auth_welcome_subtitle;
+
+  /// No description provided for @auth_sign_in_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get auth_sign_in_title;
+
+  /// No description provided for @auth_sign_in_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get auth_sign_in_button;
+
+  /// No description provided for @auth_no_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get auth_no_account;
+
+  /// No description provided for @auth_create_account_link.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get auth_create_account_link;
+
+  /// No description provided for @auth_have_account_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get auth_have_account_prompt;
+
+  /// No description provided for @auth_sign_in_link.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get auth_sign_in_link;
+
+  /// No description provided for @auth_create_account_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get auth_create_account_title;
+
+  /// No description provided for @auth_create_account_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join MealMate and start your healthier journey.'**
+  String get auth_create_account_subtitle;
+
+  /// No description provided for @auth_name_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get auth_name_label;
+
+  /// No description provided for @auth_name_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get auth_name_hint;
+
+  /// No description provided for @auth_confirm_password_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get auth_confirm_password_label;
+
+  /// No description provided for @auth_confirm_password_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your password'**
+  String get auth_confirm_password_hint;
+
+  /// No description provided for @auth_terms_label.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the terms and conditions'**
+  String get auth_terms_label;
+
+  /// No description provided for @auth_create_account_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get auth_create_account_button;
+
+  /// No description provided for @auth_reset_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get auth_reset_password_title;
+
+  /// No description provided for @auth_reset_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number to receive an OTP code.'**
+  String get auth_reset_password_subtitle;
+
+  /// No description provided for @auth_reset_password_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send an OTP code to your phone number.'**
+  String get auth_reset_password_hint;
+
+  /// No description provided for @auth_send_otp_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Send OTP'**
+  String get auth_send_otp_button;
+
+  /// No description provided for @auth_otp_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your code'**
+  String get auth_otp_title;
+
+  /// No description provided for @auth_otp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit OTP code sent to your phone.'**
+  String get auth_otp_subtitle;
+
+  /// No description provided for @auth_otp_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit OTP code to continue.'**
+  String get auth_otp_hint;
+
+  /// No description provided for @auth_verify_code_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify code'**
+  String get auth_verify_code_button;
+
+  /// No description provided for @auth_no_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get auth_no_code_title;
+
+  /// No description provided for @auth_resend_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get auth_resend_code;
+
+  /// No description provided for @auth_resend_code_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code in'**
+  String get auth_resend_code_in;
+
+  /// No description provided for @auth_seconds_label.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get auth_seconds_label;
+
+  /// No description provided for @auth_new_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a new password'**
+  String get auth_new_password_title;
+
+  /// No description provided for @auth_new_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a strong password for your account.'**
+  String get auth_new_password_subtitle;
+
+  /// No description provided for @auth_new_password_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password.'**
+  String get auth_new_password_hint;
+
+  /// No description provided for @auth_new_password_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get auth_new_password_label;
+
+  /// No description provided for @auth_new_password_hint_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password'**
+  String get auth_new_password_hint_field;
+
+  /// No description provided for @auth_new_password_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save password'**
+  String get auth_new_password_button;
+
+  /// No description provided for @onboarding_first_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your healthy companion every day.'**
+  String get onboarding_first_subtitle;
+
+  /// No description provided for @onboarding_second_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy and tasty meals'**
+  String get onboarding_second_title;
+
+  /// No description provided for @onboarding_second_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered right to your door...'**
+  String get onboarding_second_subtitle;
+
+  /// No description provided for @onboarding_third_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy food'**
+  String get onboarding_third_title;
+
+  /// No description provided for @onboarding_third_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For a better mood!'**
+  String get onboarding_third_subtitle;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
 }
 
 class _AppLocalizationsDelegate

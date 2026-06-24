@@ -372,4 +372,128 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sign_up => 'اشتراك';
+
+  @override
+  String get auth_welcome_title => 'مرحباً بك في';
+
+  @override
+  String get auth_welcome_subtitle =>
+      'سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية.';
+
+  @override
+  String get auth_sign_in_title => 'تسجيل الدخول';
+
+  @override
+  String get auth_sign_in_button => 'تسجيل الدخول';
+
+  @override
+  String get auth_no_account => 'ليس لديك حساب؟';
+
+  @override
+  String get auth_create_account_link => 'إنشاء حساب';
+
+  @override
+  String get auth_have_account_prompt => 'لديك حساب؟';
+
+  @override
+  String get auth_sign_in_link => 'تسجيل الدخول';
+
+  @override
+  String get auth_create_account_title => 'إنشاء حساب';
+
+  @override
+  String get auth_create_account_subtitle =>
+      'انضم إلى MealMate وابدأ رحلتك الصحية.';
+
+  @override
+  String get auth_name_label => 'الاسم';
+
+  @override
+  String get auth_name_hint => 'أدخل الاسم';
+
+  @override
+  String get auth_confirm_password_label => 'تأكيد كلمة المرور';
+
+  @override
+  String get auth_confirm_password_hint => 'أعد إدخال كلمة المرور';
+
+  @override
+  String get auth_terms_label => 'الموافقة على الشروط والأحكام';
+
+  @override
+  String get auth_create_account_button => 'إنشاء حساب';
+
+  @override
+  String get auth_reset_password_title => 'تعيين كلمة مرور';
+
+  @override
+  String get auth_reset_password_subtitle =>
+      'أدخل رقم الجوال لإرسال رمز OTP لإعادة التعيين.';
+
+  @override
+  String get auth_reset_password_hint => 'سنرسل رمز OTP إلى رقم جوالك.';
+
+  @override
+  String get auth_send_otp_button => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get auth_otp_title => 'أعد تعيين كلمة المرور الخاصة بك.';
+
+  @override
+  String get auth_otp_subtitle =>
+      'أدخل رمز OTP المكون من 6 أرقام لإعادة التعيين.';
+
+  @override
+  String get auth_otp_hint => 'أدخل رمز OTP المكون من 6 أرقام للمتابعة.';
+
+  @override
+  String get auth_verify_code_button => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get auth_no_code_title => 'ألم تستلم الرمز؟';
+
+  @override
+  String get auth_resend_code => 'أعد إرسال الرمز';
+
+  @override
+  String get auth_resend_code_in => 'أعد إرسال الرمز خلال';
+
+  @override
+  String get auth_seconds_label => 'ثانية';
+
+  @override
+  String get auth_new_password_title => 'أعد تعيين كلمة المرور الخاصة بك.';
+
+  @override
+  String get auth_new_password_subtitle => 'أدخل كلمة المرور الجديدة.';
+
+  @override
+  String get auth_new_password_hint => 'أدخل كلمة المرور الجديدة';
+
+  @override
+  String get auth_new_password_label => 'كلمة المرور';
+
+  @override
+  String get auth_new_password_hint_field => 'أدخل كلمة المرور الجديدة';
+
+  @override
+  String get auth_new_password_button => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get onboarding_first_subtitle => 'رفيقك الصحي كل يوم.';
+
+  @override
+  String get onboarding_second_title => 'وجباتك الصحية واللذيذة';
+
+  @override
+  String get onboarding_second_subtitle => 'توصلك لباب بيتك...';
+
+  @override
+  String get onboarding_third_title => 'الاكل الصحي';
+
+  @override
+  String get onboarding_third_subtitle => 'يضبط المزاج!';
+
+  @override
+  String get skip => 'تخطي';
 }
