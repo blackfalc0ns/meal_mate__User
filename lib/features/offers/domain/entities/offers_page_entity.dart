@@ -37,10 +37,7 @@ class OffersHeroEntity {
 }
 
 class OfferFilterEntity {
-  const OfferFilterEntity({
-    required this.label,
-    this.isSelected = false,
-  });
+  const OfferFilterEntity({required this.label, this.isSelected = false});
 
   final String label;
   final bool isSelected;
@@ -59,6 +56,12 @@ class OfferDealEntity {
     required this.logoAsset,
     required this.accentColor,
     required this.surfaceColor,
+    this.detailTitle,
+    this.detailSubtitle,
+    this.couponCode,
+    this.expiryText,
+    this.conditionsText,
+    this.noteText,
   });
 
   final String title;
@@ -72,6 +75,12 @@ class OfferDealEntity {
   final String logoAsset;
   final Color accentColor;
   final Color surfaceColor;
+  final String? detailTitle;
+  final String? detailSubtitle;
+  final String? couponCode;
+  final String? expiryText;
+  final String? conditionsText;
+  final String? noteText;
 }
 
 class InviteBannerEntity {

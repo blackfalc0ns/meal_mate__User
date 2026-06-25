@@ -701,4 +701,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offers_restaurant_bowls_reviews => '4.8';
+
+  @override
+  String get offer_details_title => 'استرداد العرض';
+
+  @override
+  String get offer_details_hero_heading => 'خصم 20% على الباقات الشهرية';
+
+  @override
+  String get offer_details_hero_subtitle => 'خطط غذائية متكاملة';
+
+  @override
+  String get offer_details_hero_description => 'تساعدك على تحقيق أهدافك';
+
+  @override
+  String get offer_details_hero_timer_label => 'ينتهي خلال';
+
+  @override
+  String get offer_details_info_title => 'تفاصيل العرض';
+
+  @override
+  String get offer_details_info_summary => 'خصم 20% على جميع الباقات الشهرية';
+
+  @override
+  String get offer_details_info_duration_label => 'مدة العرض';
+
+  @override
+  String get offer_details_info_coupon_label => 'رمز الخصم';
+
+  @override
+  String get offer_details_info_terms_label => 'الشروط والأحكام';
+
+  @override
+  String get offer_details_info_terms_description =>
+      'يسري العرض على الباقات الشهرية فقط ولا يمكن دمجه مع عروض أخرى.';
+
+  @override
+  String get offer_details_info_copy_code => 'نسخ الرمز';
+
+  @override
+  String get offer_details_plan_section_title => 'اختر الباقة المناسبة';
+
+  @override
+  String get offer_details_plan_month_title => 'باقة شهر';
+
+  @override
+  String get offer_details_plan_half_month_title => 'باقة نصف شهر';
+
+  @override
+  String get offer_details_plan_week_title => 'باقة أسبوع';
+
+  @override
+  String get offer_details_plan_duration_month => '26 يوم';
+
+  @override
+  String get offer_details_plan_duration_half_month => '12 يوم';
+
+  @override
+  String get offer_details_plan_duration_week => '6 أيام';
+
+  @override
+  String get offer_details_plan_meals => '4 وجبات يومياً';
+
+  @override
+  String get offer_details_summary_title => 'الإجمالي بعد الخصم';
+
+  @override
+  String get offer_details_summary_button => 'استكمال الشراء';
+
+  @override
+  String get offer_details_summary_secure_payment => 'عملية دفع آمنة';
+
+  @override
+  String get offer_details_open_plans_button => 'اختيار الباقة';
 }

@@ -1417,6 +1417,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'4.8'**
   String get offers_restaurant_bowls_reviews;
+
+  /// No description provided for @offer_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem offer'**
+  String get offer_details_title;
+
+  /// No description provided for @offer_details_hero_heading.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off monthly plans'**
+  String get offer_details_hero_heading;
+
+  /// No description provided for @offer_details_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete nutrition plans'**
+  String get offer_details_hero_subtitle;
+
+  /// No description provided for @offer_details_hero_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps you stay on track with your goals'**
+  String get offer_details_hero_description;
+
+  /// No description provided for @offer_details_hero_timer_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in'**
+  String get offer_details_hero_timer_label;
+
+  /// No description provided for @offer_details_info_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer details'**
+  String get offer_details_info_title;
+
+  /// No description provided for @offer_details_info_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off on all monthly plans'**
+  String get offer_details_info_summary;
+
+  /// No description provided for @offer_details_info_duration_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer duration'**
+  String get offer_details_info_duration_label;
+
+  /// No description provided for @offer_details_info_coupon_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon code'**
+  String get offer_details_info_coupon_label;
+
+  /// No description provided for @offer_details_info_terms_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get offer_details_info_terms_label;
+
+  /// No description provided for @offer_details_info_terms_description.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer applies to monthly plans only and cannot be combined with other offers.'**
+  String get offer_details_info_terms_description;
+
+  /// No description provided for @offer_details_info_copy_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get offer_details_info_copy_code;
+
+  /// No description provided for @offer_details_plan_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the right plan'**
+  String get offer_details_plan_section_title;
+
+  /// No description provided for @offer_details_plan_month_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly plan'**
+  String get offer_details_plan_month_title;
+
+  /// No description provided for @offer_details_plan_half_month_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Half-month plan'**
+  String get offer_details_plan_half_month_title;
+
+  /// No description provided for @offer_details_plan_week_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly plan'**
+  String get offer_details_plan_week_title;
+
+  /// No description provided for @offer_details_plan_duration_month.
+  ///
+  /// In en, this message translates to:
+  /// **'26 days'**
+  String get offer_details_plan_duration_month;
+
+  /// No description provided for @offer_details_plan_duration_half_month.
+  ///
+  /// In en, this message translates to:
+  /// **'12 days'**
+  String get offer_details_plan_duration_half_month;
+
+  /// No description provided for @offer_details_plan_duration_week.
+  ///
+  /// In en, this message translates to:
+  /// **'6 days'**
+  String get offer_details_plan_duration_week;
+
+  /// No description provided for @offer_details_plan_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals per day'**
+  String get offer_details_plan_meals;
+
+  /// No description provided for @offer_details_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Total after discount'**
+  String get offer_details_summary_title;
+
+  /// No description provided for @offer_details_summary_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue purchase'**
+  String get offer_details_summary_button;
+
+  /// No description provided for @offer_details_summary_secure_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure payment'**
+  String get offer_details_summary_secure_payment;
+
+  /// No description provided for @offer_details_open_plans_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose plan'**
+  String get offer_details_open_plans_button;
 }
 
 class _AppLocalizationsDelegate

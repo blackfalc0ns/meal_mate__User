@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/offers/data/offers_fake_data_source.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_deal_card.dart';
+import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_bottom_sheet.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_hero_card.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_section_header.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/restaurant_offer_card.dart';
@@ -14,6 +16,7 @@ class OffersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.localization;
     final offers = _dataSource.getOffers();
 
     return Container(
@@ -29,16 +32,16 @@ class OffersScreen extends StatelessWidget {
           slivers: [
             SliverToBoxAdapter(
               child: CustomAppBar(
-                title: 'العروض',
-               leading:NotificationButton( onTap: () {}),
+                title: l10n.offers_title,
+                leading: NotificationButton(onTap: () {}),
               ),
             ),
+            SliverToBoxAdapter(child: OffersHeroCard(hero: offers.hero)),
             SliverToBoxAdapter(
-              child: OffersHeroCard(hero: offers.hero),
-            ),
-            SliverToBoxAdapter(
-              child: OffersSectionHeader(actionLabel: 'عرض الكل', onActionTap: () {},
-                title: 'عروض مميزة',
+              child: OffersSectionHeader(
+                actionLabel: l10n.offers_view_all,
+                onActionTap: () {},
+                title: l10n.offers_featured_section_title,
                 icon: Icons.star_rounded,
                 iconColor: const Color(0xFF0C7D37),
               ),
@@ -52,15 +55,19 @@ class OffersScreen extends StatelessWidget {
                   itemCount: offers.featuredOffers.length,
                   separatorBuilder: (_, _) => const SizedBox(width: 6),
                   itemBuilder: (context, index) {
-                    return OfferDealCard(offer: offers.featuredOffers[index]);
+                    final offer = offers.featuredOffers[index];
+                    return OfferDealCard(
+                      offer: offer,
+                      onTap: () => OfferDetailsBottomSheet.show(context, offer),
+                    );
                   },
                 ),
               ),
             ),
             SliverToBoxAdapter(
               child: OffersSectionHeader(
-                title: 'عروض المطاعم',
-                actionLabel: 'عرض الكل',
+                title: l10n.offers_restaurants_section_title,
+                actionLabel: l10n.offers_view_all,
                 onActionTap: () {},
                 actionColor: const Color(0xFF0C7D37),
               ),
@@ -74,8 +81,10 @@ class OffersScreen extends StatelessWidget {
                   itemCount: offers.restaurantOffers.length,
                   separatorBuilder: (_, _) => const SizedBox(width: 6),
                   itemBuilder: (context, index) {
+                    final offer = offers.restaurantOffers[index];
                     return RestaurantOfferCard(
-                      offer: offers.restaurantOffers[index],
+                      offer: offer,
+                      onTap: () => OfferDetailsBottomSheet.show(context, offer),
                     );
                   },
                 ),

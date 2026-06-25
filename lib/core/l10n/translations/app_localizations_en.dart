@@ -715,4 +715,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offers_restaurant_bowls_reviews => '4.8';
+
+  @override
+  String get offer_details_title => 'Redeem offer';
+
+  @override
+  String get offer_details_hero_heading => '20% off monthly plans';
+
+  @override
+  String get offer_details_hero_subtitle => 'Complete nutrition plans';
+
+  @override
+  String get offer_details_hero_description =>
+      'Helps you stay on track with your goals';
+
+  @override
+  String get offer_details_hero_timer_label => 'Ends in';
+
+  @override
+  String get offer_details_info_title => 'Offer details';
+
+  @override
+  String get offer_details_info_summary => '20% off on all monthly plans';
+
+  @override
+  String get offer_details_info_duration_label => 'Offer duration';
+
+  @override
+  String get offer_details_info_coupon_label => 'Coupon code';
+
+  @override
+  String get offer_details_info_terms_label => 'Terms and conditions';
+
+  @override
+  String get offer_details_info_terms_description =>
+      'This offer applies to monthly plans only and cannot be combined with other offers.';
+
+  @override
+  String get offer_details_info_copy_code => 'Copy code';
+
+  @override
+  String get offer_details_plan_section_title => 'Choose the right plan';
+
+  @override
+  String get offer_details_plan_month_title => 'Monthly plan';
+
+  @override
+  String get offer_details_plan_half_month_title => 'Half-month plan';
+
+  @override
+  String get offer_details_plan_week_title => 'Weekly plan';
+
+  @override
+  String get offer_details_plan_duration_month => '26 days';
+
+  @override
+  String get offer_details_plan_duration_half_month => '12 days';
+
+  @override
+  String get offer_details_plan_duration_week => '6 days';
+
+  @override
+  String get offer_details_plan_meals => '4 meals per day';
+
+  @override
+  String get offer_details_summary_title => 'Total after discount';
+
+  @override
+  String get offer_details_summary_button => 'Continue purchase';
+
+  @override
+  String get offer_details_summary_secure_payment => 'Secure payment';
+
+  @override
+  String get offer_details_open_plans_button => 'Choose plan';
 }
