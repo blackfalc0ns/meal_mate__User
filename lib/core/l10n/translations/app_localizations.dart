@@ -1021,6 +1021,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip'**
   String get skip;
+
+  /// No description provided for @nav_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get nav_home;
+
+  /// No description provided for @nav_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get nav_meals;
+
+  /// No description provided for @nav_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get nav_offers;
+
+  /// No description provided for @nav_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership'**
+  String get nav_subscription;
+
+  /// No description provided for @nav_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get nav_profile;
+
+  /// No description provided for @coming_soon_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This section is being prepared and will be available soon.'**
+  String get coming_soon_subtitle;
+
+  /// No description provided for @offers_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offers_title;
+
+  /// No description provided for @offers_hero_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited time'**
+  String get offers_hero_badge;
+
+  /// No description provided for @offers_hero_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'20%'**
+  String get offers_hero_discount;
+
+  /// No description provided for @offers_hero_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Off on monthly plans'**
+  String get offers_hero_title;
+
+  /// No description provided for @offers_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh bundles made for your routine'**
+  String get offers_hero_subtitle;
+
+  /// No description provided for @offers_hero_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a plan that fits your day and enjoy healthy meals with better savings.'**
+  String get offers_hero_description;
+
+  /// No description provided for @offers_hero_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem now'**
+  String get offers_hero_button;
+
+  /// No description provided for @offers_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get offers_filter_all;
+
+  /// No description provided for @offers_filter_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offers_filter_offers;
+
+  /// No description provided for @offers_filter_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants'**
+  String get offers_filter_restaurants;
+
+  /// No description provided for @offers_filter_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get offers_filter_meals;
+
+  /// No description provided for @offers_featured_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured offers'**
+  String get offers_featured_section_title;
+
+  /// No description provided for @offers_view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get offers_view_all;
+
+  /// No description provided for @offers_restaurants_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular restaurants'**
+  String get offers_restaurants_section_title;
+
+  /// No description provided for @offers_invite_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends and earn'**
+  String get offers_invite_title;
+
+  /// No description provided for @offers_invite_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a tasty reward with your friends and unlock your own benefit.'**
+  String get offers_invite_subtitle;
+
+  /// No description provided for @offers_invite_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite now'**
+  String get offers_invite_button;
+
+  /// No description provided for @offers_featured_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim offer'**
+  String get offers_featured_button;
+
+  /// No description provided for @offers_featured_burger_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Burger King combo'**
+  String get offers_featured_burger_title;
+
+  /// No description provided for @offers_featured_burger_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Large family meal with fries and drinks.'**
+  String get offers_featured_burger_subtitle;
+
+  /// No description provided for @offers_featured_burger_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Save 15%'**
+  String get offers_featured_burger_discount;
+
+  /// No description provided for @offers_featured_burger_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Best seller'**
+  String get offers_featured_burger_badge;
+
+  /// No description provided for @offers_featured_burger_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 15 min'**
+  String get offers_featured_burger_delivery;
+
+  /// No description provided for @offers_featured_burger_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.9'**
+  String get offers_featured_burger_reviews;
+
+  /// No description provided for @offers_featured_salad_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein bowl'**
+  String get offers_featured_salad_title;
+
+  /// No description provided for @offers_featured_salad_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein-packed meals for a lighter day.'**
+  String get offers_featured_salad_subtitle;
+
+  /// No description provided for @offers_featured_salad_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Save 12%'**
+  String get offers_featured_salad_discount;
+
+  /// No description provided for @offers_featured_salad_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy pick'**
+  String get offers_featured_salad_badge;
+
+  /// No description provided for @offers_featured_salad_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 20 min'**
+  String get offers_featured_salad_delivery;
+
+  /// No description provided for @offers_featured_salad_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.8'**
+  String get offers_featured_salad_reviews;
+
+  /// No description provided for @offers_featured_gift_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift box offer'**
+  String get offers_featured_gift_title;
+
+  /// No description provided for @offers_featured_gift_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect for gifting a full week of meals.'**
+  String get offers_featured_gift_subtitle;
+
+  /// No description provided for @offers_featured_gift_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Save 25%'**
+  String get offers_featured_gift_discount;
+
+  /// No description provided for @offers_featured_gift_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ready'**
+  String get offers_featured_gift_badge;
+
+  /// No description provided for @offers_featured_gift_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 30 min'**
+  String get offers_featured_gift_delivery;
+
+  /// No description provided for @offers_featured_gift_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'5.0'**
+  String get offers_featured_gift_reviews;
+
+  /// No description provided for @offers_restaurant_burger_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Burger King deal'**
+  String get offers_restaurant_burger_title;
+
+  /// No description provided for @offers_restaurant_burger_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special offer on your favorite classic meals.'**
+  String get offers_restaurant_burger_subtitle;
+
+  /// No description provided for @offers_restaurant_burger_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'30% off'**
+  String get offers_restaurant_burger_discount;
+
+  /// No description provided for @offers_restaurant_burger_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot deal'**
+  String get offers_restaurant_burger_badge;
+
+  /// No description provided for @offers_restaurant_burger_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 15 min'**
+  String get offers_restaurant_burger_delivery;
+
+  /// No description provided for @offers_restaurant_burger_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.9'**
+  String get offers_restaurant_burger_reviews;
+
+  /// No description provided for @offers_restaurant_mcdonalds_title.
+  ///
+  /// In en, this message translates to:
+  /// **'McDonald\'s'**
+  String get offers_restaurant_mcdonalds_title;
+
+  /// No description provided for @offers_restaurant_mcdonalds_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount on all menu items.'**
+  String get offers_restaurant_mcdonalds_subtitle;
+
+  /// No description provided for @offers_restaurant_mcdonalds_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'30% off'**
+  String get offers_restaurant_mcdonalds_discount;
+
+  /// No description provided for @offers_restaurant_mcdonalds_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular'**
+  String get offers_restaurant_mcdonalds_badge;
+
+  /// No description provided for @offers_restaurant_mcdonalds_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 20 min'**
+  String get offers_restaurant_mcdonalds_delivery;
+
+  /// No description provided for @offers_restaurant_mcdonalds_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.0'**
+  String get offers_restaurant_mcdonalds_reviews;
+
+  /// No description provided for @offers_restaurant_starbucks_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Starbucks'**
+  String get offers_restaurant_starbucks_title;
+
+  /// No description provided for @offers_restaurant_starbucks_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special deal on drinks and snacks.'**
+  String get offers_restaurant_starbucks_subtitle;
+
+  /// No description provided for @offers_restaurant_starbucks_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'30% off'**
+  String get offers_restaurant_starbucks_discount;
+
+  /// No description provided for @offers_restaurant_starbucks_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh pick'**
+  String get offers_restaurant_starbucks_badge;
+
+  /// No description provided for @offers_restaurant_starbucks_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 25 min'**
+  String get offers_restaurant_starbucks_delivery;
+
+  /// No description provided for @offers_restaurant_starbucks_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.8'**
+  String get offers_restaurant_starbucks_reviews;
+
+  /// No description provided for @offers_restaurant_bowls_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Green bowls'**
+  String get offers_restaurant_bowls_title;
+
+  /// No description provided for @offers_restaurant_bowls_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced bowls with fresh ingredients.'**
+  String get offers_restaurant_bowls_subtitle;
+
+  /// No description provided for @offers_restaurant_bowls_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off'**
+  String get offers_restaurant_bowls_discount;
+
+  /// No description provided for @offers_restaurant_bowls_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Top rated'**
+  String get offers_restaurant_bowls_badge;
+
+  /// No description provided for @offers_restaurant_bowls_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 18 min'**
+  String get offers_restaurant_bowls_delivery;
+
+  /// No description provided for @offers_restaurant_bowls_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'4.8'**
+  String get offers_restaurant_bowls_reviews;
 }
 
 class _AppLocalizationsDelegate

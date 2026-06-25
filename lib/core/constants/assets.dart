@@ -37,6 +37,16 @@ class Assets {
   static const String homeSnack = '$_images/home_donut.png';
   static const String homeHook = '$_images/home_hook.png';
 
+  // Offers / promotions
+  static const String offerGiftBox = '$_images/offers/gift_box.png';
+  static const String offerSaladBowl = '$_images/offers/salad_bowl.png';
+  static const String offerMealBoxes = '$_images/offers/meal_boxes.png';
+  static const String offerGrilledPlate = '$_images/offers/grilled_plate.png';
+  static const String offerBurgerKingLogo = '$_images/offers/burger_king_logo.png';
+  static const String offerMcdonaldsLogo = '$_images/offers/mcdonalds_logo.png';
+  static const String offerStarbucksLogo = '$_images/offers/starbucks_logo.png';
+  static const String offerCalendar = '$_images/offers/calendar.png';
+
   // Lottie
   static const String emptyCart = '$_lottie/empty_cart.json';
 

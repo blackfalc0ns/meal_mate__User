@@ -26,7 +26,7 @@ class HomePromoBanner extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFF9A1A), Color(0xFFF57A10)],
+          colors: [Color(0xFFFF9917), Color(0xFFF57C12)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -37,16 +37,23 @@ class HomePromoBanner extends StatelessWidget {
           Positioned(
             top: -18,
             right: -12,
-            child: _GlowDot(size: 88, color: Colors.white.withValues(alpha: 0.12)),
+            child: _GlowDot(
+              size: 88,
+              color: Colors.white.withValues(alpha: 0.12),
+            ),
           ),
           Positioned(
-            bottom: -24,
+            bottom: -22,
             left: -16,
-            child: _GlowDot(size: 110, color: Colors.white.withValues(alpha: 0.06)),
+            child: _GlowDot(
+              size: 108,
+              color: Colors.white.withValues(alpha: 0.06),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(Spacing.base),
             child: Row(
+              textDirection: TextDirection.rtl,
               children: [
                 Expanded(
                   child: Column(
@@ -69,7 +76,7 @@ class HomePromoBanner extends StatelessWidget {
                         style: getMediumStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
                           fontSize: FontSize.size13,
-                          color: AppColors.white.withValues(alpha: 0.92),
+                          color: AppColors.white.withValues(alpha: 0.94),
                         ),
                       ),
                       const SizedBox(height: Spacing.md),

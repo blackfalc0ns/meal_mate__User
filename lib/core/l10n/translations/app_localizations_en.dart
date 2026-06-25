@@ -507,4 +507,212 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skip => 'Skip';
+
+  @override
+  String get nav_home => 'Home';
+
+  @override
+  String get nav_meals => 'Meals';
+
+  @override
+  String get nav_offers => 'Offers';
+
+  @override
+  String get nav_subscription => 'Membership';
+
+  @override
+  String get nav_profile => 'Profile';
+
+  @override
+  String get coming_soon_subtitle =>
+      'This section is being prepared and will be available soon.';
+
+  @override
+  String get offers_title => 'Offers';
+
+  @override
+  String get offers_hero_badge => 'Limited time';
+
+  @override
+  String get offers_hero_discount => '20%';
+
+  @override
+  String get offers_hero_title => 'Off on monthly plans';
+
+  @override
+  String get offers_hero_subtitle => 'Fresh bundles made for your routine';
+
+  @override
+  String get offers_hero_description =>
+      'Pick a plan that fits your day and enjoy healthy meals with better savings.';
+
+  @override
+  String get offers_hero_button => 'Redeem now';
+
+  @override
+  String get offers_filter_all => 'All';
+
+  @override
+  String get offers_filter_offers => 'Offers';
+
+  @override
+  String get offers_filter_restaurants => 'Restaurants';
+
+  @override
+  String get offers_filter_meals => 'Meals';
+
+  @override
+  String get offers_featured_section_title => 'Featured offers';
+
+  @override
+  String get offers_view_all => 'View all';
+
+  @override
+  String get offers_restaurants_section_title => 'Popular restaurants';
+
+  @override
+  String get offers_invite_title => 'Invite friends and earn';
+
+  @override
+  String get offers_invite_subtitle =>
+      'Share a tasty reward with your friends and unlock your own benefit.';
+
+  @override
+  String get offers_invite_button => 'Invite now';
+
+  @override
+  String get offers_featured_button => 'Claim offer';
+
+  @override
+  String get offers_featured_burger_title => 'Burger King combo';
+
+  @override
+  String get offers_featured_burger_subtitle =>
+      'Large family meal with fries and drinks.';
+
+  @override
+  String get offers_featured_burger_discount => 'Save 15%';
+
+  @override
+  String get offers_featured_burger_badge => 'Best seller';
+
+  @override
+  String get offers_featured_burger_delivery => 'Delivery in 15 min';
+
+  @override
+  String get offers_featured_burger_reviews => '4.9';
+
+  @override
+  String get offers_featured_salad_title => 'Protein bowl';
+
+  @override
+  String get offers_featured_salad_subtitle =>
+      'Protein-packed meals for a lighter day.';
+
+  @override
+  String get offers_featured_salad_discount => 'Save 12%';
+
+  @override
+  String get offers_featured_salad_badge => 'Healthy pick';
+
+  @override
+  String get offers_featured_salad_delivery => 'Delivery in 20 min';
+
+  @override
+  String get offers_featured_salad_reviews => '4.8';
+
+  @override
+  String get offers_featured_gift_title => 'Gift box offer';
+
+  @override
+  String get offers_featured_gift_subtitle =>
+      'Perfect for gifting a full week of meals.';
+
+  @override
+  String get offers_featured_gift_discount => 'Save 25%';
+
+  @override
+  String get offers_featured_gift_badge => 'Gift ready';
+
+  @override
+  String get offers_featured_gift_delivery => 'Delivery in 30 min';
+
+  @override
+  String get offers_featured_gift_reviews => '5.0';
+
+  @override
+  String get offers_restaurant_burger_title => 'Burger King deal';
+
+  @override
+  String get offers_restaurant_burger_subtitle =>
+      'Special offer on your favorite classic meals.';
+
+  @override
+  String get offers_restaurant_burger_discount => '30% off';
+
+  @override
+  String get offers_restaurant_burger_badge => 'Hot deal';
+
+  @override
+  String get offers_restaurant_burger_delivery => 'Delivery in 15 min';
+
+  @override
+  String get offers_restaurant_burger_reviews => '4.9';
+
+  @override
+  String get offers_restaurant_mcdonalds_title => 'McDonald\'s';
+
+  @override
+  String get offers_restaurant_mcdonalds_subtitle =>
+      'Discount on all menu items.';
+
+  @override
+  String get offers_restaurant_mcdonalds_discount => '30% off';
+
+  @override
+  String get offers_restaurant_mcdonalds_badge => 'Popular';
+
+  @override
+  String get offers_restaurant_mcdonalds_delivery => 'Delivery in 20 min';
+
+  @override
+  String get offers_restaurant_mcdonalds_reviews => '4.0';
+
+  @override
+  String get offers_restaurant_starbucks_title => 'Starbucks';
+
+  @override
+  String get offers_restaurant_starbucks_subtitle =>
+      'Special deal on drinks and snacks.';
+
+  @override
+  String get offers_restaurant_starbucks_discount => '30% off';
+
+  @override
+  String get offers_restaurant_starbucks_badge => 'Fresh pick';
+
+  @override
+  String get offers_restaurant_starbucks_delivery => 'Delivery in 25 min';
+
+  @override
+  String get offers_restaurant_starbucks_reviews => '4.8';
+
+  @override
+  String get offers_restaurant_bowls_title => 'Green bowls';
+
+  @override
+  String get offers_restaurant_bowls_subtitle =>
+      'Balanced bowls with fresh ingredients.';
+
+  @override
+  String get offers_restaurant_bowls_discount => '20% off';
+
+  @override
+  String get offers_restaurant_bowls_badge => 'Top rated';
+
+  @override
+  String get offers_restaurant_bowls_delivery => 'Delivery in 18 min';
+
+  @override
+  String get offers_restaurant_bowls_reviews => '4.8';
 }

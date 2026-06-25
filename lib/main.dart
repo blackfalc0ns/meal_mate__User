@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_generator.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
@@ -8,7 +10,12 @@ import 'package:meal_meat_user/config/theme/text_styles.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
 void main() {
-  runApp(const MealMateApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MealMateApp(),
+    ),
+  );
 }
 
 class MealMateApp extends StatelessWidget {
@@ -18,11 +25,14 @@ class MealMateApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: DevicePreview.appBuilder,
+      locale: DevicePreview.locale(context),
       title: 'Meal Mate',
       theme: _buildLightTheme(),
       darkTheme: _buildDarkTheme(),
       themeMode: ThemeMode.light,
-      locale: const Locale('ar'),
+      localeResolutionCallback: (locale, supportedLocales) =>
+          locale ?? const Locale('ar'),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       initialRoute: AppRoutes.home,
@@ -134,9 +144,7 @@ class MealMateApp extends StatelessWidget {
           horizontal: Spacing.sm,
           vertical: 4,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }

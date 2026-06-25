@@ -496,4 +496,209 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get skip => 'تخطي';
+
+  @override
+  String get nav_home => 'الرئيسية';
+
+  @override
+  String get nav_meals => 'الوجبات';
+
+  @override
+  String get nav_offers => 'العروض';
+
+  @override
+  String get nav_subscription => 'الاشتراك';
+
+  @override
+  String get nav_profile => 'الملف الشخصي';
+
+  @override
+  String get coming_soon_subtitle =>
+      'هذا القسم قيد التجهيز وسيكون متاحًا قريبًا.';
+
+  @override
+  String get offers_title => 'العروض';
+
+  @override
+  String get offers_hero_badge => 'لفترة محدودة';
+
+  @override
+  String get offers_hero_discount => '20%';
+
+  @override
+  String get offers_hero_title => 'خصم على الباقات الشهرية';
+
+  @override
+  String get offers_hero_subtitle => 'باقات طازجة تناسب روتينك اليومي';
+
+  @override
+  String get offers_hero_description =>
+      'اختر الباقة المناسبة ليومك واستمتع بوجبات صحية مع توفير أكبر.';
+
+  @override
+  String get offers_hero_button => 'استفد الآن';
+
+  @override
+  String get offers_filter_all => 'الكل';
+
+  @override
+  String get offers_filter_offers => 'العروض';
+
+  @override
+  String get offers_filter_restaurants => 'المطاعم';
+
+  @override
+  String get offers_filter_meals => 'الوجبات';
+
+  @override
+  String get offers_featured_section_title => 'عروض مميزة';
+
+  @override
+  String get offers_view_all => 'عرض الكل';
+
+  @override
+  String get offers_restaurants_section_title => 'مطاعم رائجة';
+
+  @override
+  String get offers_invite_title => 'ادعُ أصدقاءك واربح';
+
+  @override
+  String get offers_invite_subtitle =>
+      'شارك أصدقاءك عرضًا لذيذًا واحصل على مكافأتك الخاصة.';
+
+  @override
+  String get offers_invite_button => 'ادعُ الآن';
+
+  @override
+  String get offers_featured_button => 'احصل على العرض';
+
+  @override
+  String get offers_featured_burger_title => 'باقة برجر كينج';
+
+  @override
+  String get offers_featured_burger_subtitle =>
+      'وجبة عائلية كبيرة مع البطاطس والمشروبات.';
+
+  @override
+  String get offers_featured_burger_discount => 'وفّر 15%';
+
+  @override
+  String get offers_featured_burger_badge => 'الأكثر مبيعًا';
+
+  @override
+  String get offers_featured_burger_delivery => 'التوصيل خلال 15 دقيقة';
+
+  @override
+  String get offers_featured_burger_reviews => '4.9';
+
+  @override
+  String get offers_featured_salad_title => 'وعاء البروتين';
+
+  @override
+  String get offers_featured_salad_subtitle => 'وجبات غنية بالبروتين ليوم أخف.';
+
+  @override
+  String get offers_featured_salad_discount => 'وفّر 12%';
+
+  @override
+  String get offers_featured_salad_badge => 'اختيار صحي';
+
+  @override
+  String get offers_featured_salad_delivery => 'التوصيل خلال 20 دقيقة';
+
+  @override
+  String get offers_featured_salad_reviews => '4.8';
+
+  @override
+  String get offers_featured_gift_title => 'عرض صندوق الهدايا';
+
+  @override
+  String get offers_featured_gift_subtitle =>
+      'مثالي لإهداء أسبوع كامل من الوجبات.';
+
+  @override
+  String get offers_featured_gift_discount => 'وفّر 25%';
+
+  @override
+  String get offers_featured_gift_badge => 'جاهز للإهداء';
+
+  @override
+  String get offers_featured_gift_delivery => 'التوصيل خلال 30 دقيقة';
+
+  @override
+  String get offers_featured_gift_reviews => '5.0';
+
+  @override
+  String get offers_restaurant_burger_title => 'عرض برجر كينج';
+
+  @override
+  String get offers_restaurant_burger_subtitle =>
+      'عرض خاص على الوجبات الكلاسيكية المفضلة.';
+
+  @override
+  String get offers_restaurant_burger_discount => 'خصم 30%';
+
+  @override
+  String get offers_restaurant_burger_badge => 'عرض سريع';
+
+  @override
+  String get offers_restaurant_burger_delivery => 'التوصيل خلال 15 دقيقة';
+
+  @override
+  String get offers_restaurant_burger_reviews => '4.9';
+
+  @override
+  String get offers_restaurant_mcdonalds_title => 'ماكدونالدز';
+
+  @override
+  String get offers_restaurant_mcdonalds_subtitle => 'خصم على جميع الأصناف.';
+
+  @override
+  String get offers_restaurant_mcdonalds_discount => 'خصم 30%';
+
+  @override
+  String get offers_restaurant_mcdonalds_badge => 'شائع';
+
+  @override
+  String get offers_restaurant_mcdonalds_delivery => 'التوصيل خلال 20 دقيقة';
+
+  @override
+  String get offers_restaurant_mcdonalds_reviews => '4.0';
+
+  @override
+  String get offers_restaurant_starbucks_title => 'ستاربكس';
+
+  @override
+  String get offers_restaurant_starbucks_subtitle =>
+      'عرض خاص على المشروبات والوجبات الخفيفة.';
+
+  @override
+  String get offers_restaurant_starbucks_discount => 'خصم 30%';
+
+  @override
+  String get offers_restaurant_starbucks_badge => 'اختيار جديد';
+
+  @override
+  String get offers_restaurant_starbucks_delivery => 'التوصيل خلال 25 دقيقة';
+
+  @override
+  String get offers_restaurant_starbucks_reviews => '4.8';
+
+  @override
+  String get offers_restaurant_bowls_title => 'أوعية خضراء';
+
+  @override
+  String get offers_restaurant_bowls_subtitle => 'أطباق متوازنة بمكونات طازجة.';
+
+  @override
+  String get offers_restaurant_bowls_discount => 'خصم 20%';
+
+  @override
+  String get offers_restaurant_bowls_badge => 'الأعلى تقييمًا';
+
+  @override
+  String get offers_restaurant_bowls_delivery => 'التوصيل خلال 18 دقيقة';
+
+  @override
+  String get offers_restaurant_bowls_reviews => '4.8';
 }

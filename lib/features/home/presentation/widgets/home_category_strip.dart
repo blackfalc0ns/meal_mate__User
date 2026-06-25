@@ -18,24 +18,33 @@ class HomeCategoryStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 132,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (var index = 0; index < categories.length; index++)
-                _CategoryItem(
-                  category: categories[index],
-                  selected: index == selectedIndex,
-                  onTap: () => onCategorySelected(index),
-                ),
-            ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth = ((constraints.maxWidth - 24) / categories.length)
+            .clamp(68.0, 80.0)
+            .toDouble();
+
+        return SizedBox(
+          height: 124,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (var index = 0; index < categories.length; index++)
+                  SizedBox(
+                    width: itemWidth,
+                    child: _CategoryItem(
+                      category: categories[index],
+                      selected: index == selectedIndex,
+                      onTap: () => onCategorySelected(index),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -56,11 +65,11 @@ class _CategoryItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
+        child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutCubic,
-        width: 90,
-        height: 132,
+        width: double.infinity,
+        height: 124,
         child: selected
             ? _SelectedCategoryContent(category: category)
             : _UnselectedCategoryContent(category: category),
@@ -81,13 +90,13 @@ class _SelectedCategoryContent extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: [
         Positioned(
-          top: 26,
+          top: 30,
           child: Container(
-            width: 90,
-            height: 104,
+            width: 76,
+            height: 84,
             decoration: BoxDecoration(
               color: const Color(0xFF4CB86F),
-              borderRadius: BorderRadius.circular(38),
+              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF000000).withValues(alpha: 0.15),
@@ -97,7 +106,12 @@ class _SelectedCategoryContent extends StatelessWidget {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 40, left: 8, right: 8, bottom: 12),
+              padding: const EdgeInsets.only(
+                top: 28,
+                left: 6,
+                right: 6,
+                bottom: 8,
+              ),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
@@ -124,11 +138,11 @@ class _SelectedCategoryContent extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 color: const Color(0xFF4CB86F),
-                width: 4,
+                width: 3,
               ),
             ),
             child: Container(
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(2),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -158,9 +172,9 @@ class _UnselectedCategoryContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 70,
-          height: 70,
-          padding: const EdgeInsets.all(10),
+          width: 68,
+          height: 68,
+          padding: const EdgeInsets.all(6),
           decoration: const BoxDecoration(
             color: Color(0xFFF4F4F4),
             shape: BoxShape.circle,
@@ -172,7 +186,7 @@ class _UnselectedCategoryContent extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 6),
         Text(
           category.title,
           textAlign: TextAlign.center,

@@ -7,7 +7,7 @@ class HomeFakeDataSource {
   HomeDashboardEntity getDashboard() {
     return const HomeDashboardEntity(
       userName: 'أحمد محمد',
-      greeting: 'مرحباً بك ،',
+      greeting: 'مرحبًا بك،',
       dailyCalories: 1350,
       goalCalories: 2000,
       progress: 0.85,
@@ -16,22 +16,10 @@ class HomeFakeDataSource {
       bannerButtonLabel: 'اكتشف الآن',
       bannerImageAsset: Assets.homeBanner,
       categories: [
-        HomeCategoryEntity(
-          title: 'إفطار',
-          imageAsset: Assets.homeBreakfast,
-        ),
-        HomeCategoryEntity(
-          title: 'غداء',
-          imageAsset: Assets.homeLunch,
-        ),
-        HomeCategoryEntity(
-          title: 'عشاء',
-          imageAsset: Assets.homeDinner,
-        ),
-        HomeCategoryEntity(
-          title: 'سناك',
-          imageAsset: Assets.homeSnack,
-        ),
+        HomeCategoryEntity(title: 'إفطار', imageAsset: Assets.homeBreakfast),
+        HomeCategoryEntity(title: 'غداء', imageAsset: Assets.homeLunch),
+        HomeCategoryEntity(title: 'عشاء', imageAsset: Assets.homeDinner),
+        HomeCategoryEntity(title: 'سناك', imageAsset: Assets.homeSnack),
       ],
       meals: [
         HomeMealEntity(

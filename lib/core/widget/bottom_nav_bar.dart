@@ -12,52 +12,46 @@ class AppBottomNavBar extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     required this.onTap,
-    this.backgroundColor = AppColors.white,
   });
 
   final List<AppBottomNavBarItem> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          Spacing.base,
-          0,
-          Spacing.base,
-          Spacing.sm,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        Spacing.base,
+      Spacing.base,
+        Spacing.base,
+        Spacing.sm,
+      ),
+      child: Container(
+        height: 72,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(34),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadow.withValues(alpha: 0.16),
+              blurRadius: 26,
+              offset: const Offset(0, 12),
+            ),
+          ],
         ),
-        child: Container(
-          height: 76,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(34),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow.withValues(alpha: 0.16),
-                blurRadius: 24,
-                offset: const Offset(0, 12),
+        child: Row(
+          textDirection: TextDirection.rtl,
+          children: List.generate(items.length, (index) {
+            final item = items[index];
+            final isSelected = index == currentIndex;
+            return Expanded(
+              child: _BottomNavItemTile(
+                item: item,
+                isSelected: isSelected,
+                onTap: () => onTap(index),
               ),
-            ],
-          ),
-          child: Row(
-            textDirection: TextDirection.rtl,
-            children: List.generate(items.length, (index) {
-              final item = items[index];
-              final isSelected = index == currentIndex;
-              return Expanded(
-                child: _BottomNavItemTile(
-                  item: item,
-                  isSelected: isSelected,
-                  onTap: () => onTap(index),
-                ),
-              );
-            }),
-          ),
+            );
+          }),
         ),
       ),
     );
@@ -94,11 +88,11 @@ class _BottomNavItemTile extends StatelessWidget {
     final content = AnimatedContainer(
       duration: const Duration(milliseconds: 220),
       curve: Curves.easeOut,
-      transform: Matrix4.translationValues(0, isSelected ? -12 : 0, 0),
+      transform: Matrix4.translationValues(0, isSelected ? -8 : 0, 0),
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(
         horizontal: isSelected ? 6 : 0,
-        vertical: isSelected ? 6 : 12,
+        vertical: isSelected ? 4 : 8,
       ),
       decoration: BoxDecoration(
         color: isSelected ? AppColors.primarySurface : Colors.transparent,
@@ -114,7 +108,7 @@ class _BottomNavItemTile extends StatelessWidget {
             : null,
       ),
       child: SizedBox(
-        width: isSelected ? 72 : double.infinity,
+        width: isSelected ? 68 : double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -144,10 +138,7 @@ class _BottomNavItemTile extends StatelessWidget {
 }
 
 class _NavIcon extends StatelessWidget {
-  const _NavIcon({
-    required this.item,
-    required this.isSelected,
-  });
+  const _NavIcon({required this.item, required this.isSelected});
 
   final AppBottomNavBarItem item;
   final bool isSelected;
@@ -168,9 +159,7 @@ class _NavIcon extends StatelessWidget {
     }
 
     return Icon(
-      isSelected
-          ? (item.selectedIcon ?? item.icon)
-          : item.icon,
+      isSelected ? (item.selectedIcon ?? item.icon) : item.icon,
       size: 26,
       color: isSelected ? AppColors.primaryDarker : AppColors.black,
     );

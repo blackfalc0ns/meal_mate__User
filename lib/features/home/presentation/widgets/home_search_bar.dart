@@ -5,10 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({
-    super.key,
-    this.onTap,
-  });
+  const HomeSearchBar({super.key, this.onTap});
 
   final VoidCallback? onTap;
 
@@ -17,23 +14,28 @@ class HomeSearchBar extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 52,
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
               color: AppColors.shadow.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Row(
+          textDirection: TextDirection.rtl,
           children: [
-            const Icon(Icons.search_rounded, color: AppColors.textHint),
+            const Icon(
+              Icons.search_rounded,
+              color: AppColors.textHint,
+              size: 22,
+            ),
             const SizedBox(width: Spacing.sm),
             Expanded(
               child: Text(
