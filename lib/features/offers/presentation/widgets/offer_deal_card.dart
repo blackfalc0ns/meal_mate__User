@@ -93,14 +93,30 @@ class OfferDealCard extends StatelessWidget {
                     color: AppColors.textHint,
                   ),
                   const SizedBox(width: 4),
+                  if (offer.deliveryPrefixLabel != null) ...[
+                    Text(
+                      offer.deliveryPrefixLabel!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize:
+                       FontSize.size9,
+                        color: AppColors.textHint,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                  ],
                   Flexible(
                     child: Text(
                       offer.deliveryLabel,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: getSemiBoldStyle(
+                      style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size10,
+                        fontSize: 
+                       
+                        FontSize.size9,
                         color: AppColors.textPrimary,
                       ),
                     ),

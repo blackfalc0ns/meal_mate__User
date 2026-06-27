@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/core/widget/custom_button.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_info_card.dart';
+import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_monthly_strip.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/section_header_button_sheet.dart';
 
 class OfferDetailsSheetContent extends StatelessWidget {
@@ -53,7 +54,11 @@ class OfferDetailsSheetContent extends StatelessWidget {
                 offer: offer,
                 onClose: showCloseButton ? onClose : null,
               ),
-              const SizedBox(height: 14),
+              if (isMonthlyOffer) ...[
+                const SizedBox(height: 12),
+                const OfferDetailsMonthlyStrip(),
+              ],
+              const SizedBox(height: 16),
               OfferDetailsInfoCard(
                 summaryText: summaryText,
                 durationText: expiryText,

@@ -50,6 +50,7 @@ class OfferDealEntity {
     required this.discountLabel,
     required this.badgeLabel,
     required this.buttonLabel,
+    this.deliveryPrefixLabel,
     required this.deliveryLabel,
     required this.reviewLabel,
     required this.imageAsset,
@@ -69,6 +70,7 @@ class OfferDealEntity {
   final String discountLabel;
   final String badgeLabel;
   final String buttonLabel;
+  final String? deliveryPrefixLabel;
   final String deliveryLabel;
   final String reviewLabel;
   final String imageAsset;
