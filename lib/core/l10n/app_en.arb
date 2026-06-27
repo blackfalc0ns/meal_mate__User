@@ -243,5 +243,7 @@
   "offer_details_summary_title": "Total after discount",
   "offer_details_summary_button": "Continue purchase",
   "offer_details_summary_secure_payment": "Secure payment",
-  "offer_details_open_plans_button": "Choose plan"
+  "offer_details_open_plans_button": "Choose plan",
+     "currency":"KWD"
+
 }

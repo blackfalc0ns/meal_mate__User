@@ -10,6 +10,7 @@ class AppColors {
   // ── Primary (Green - Row 1) ──
   static const Color primary = Color(0xFF04B94E);
   static const Color primaryLight = Color(0xFF0BF07E);
+  static const Color primaryVariant = Color(0xFF1B8E2F);
   static const Color primaryMedium = Color(0xFF07CA66);
   static const Color primaryDark = Color(0xFF027038);
   static const Color primaryDarker = Color(0xFF014A23);

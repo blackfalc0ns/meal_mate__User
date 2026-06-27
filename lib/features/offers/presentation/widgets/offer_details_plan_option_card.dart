@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class OfferDetailsPlanOptionCard extends StatelessWidget {
   const OfferDetailsPlanOptionCard({
@@ -29,6 +30,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale=context.localization;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -36,7 +38,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(18),
@@ -53,127 +55,123 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Stack(
+          child: Row(
+            textDirection: TextDirection.rtl,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.only(end: 38),
-                child: Row(
-                  textDirection: TextDirection.ltr,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              // Selection circle (right in RTL)
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? accentColor : Colors.transparent,
+                  border: Border.all(
+                    color: isSelected ? accentColor : AppColors.textHint,
+                    width: 1.4,
+                  ),
+                ),
+                child: isSelected
+                    ? const Icon(
+                        Icons.check_rounded,
+                        color: AppColors.white,
+                        size: 18,
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 12),
+              // Image
+              SizedBox(
+                width: 70,
+                height: 68,
+                child: Image.asset(imageAsset,fit: BoxFit.cover,),
+              ),
+              const SizedBox(width: 12),
+              // Title + duration + meals (center)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            title,
-                            textAlign: TextAlign.right,
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size14,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            duration,
-                            textAlign: TextAlign.right,
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size12,
-                              color: accentColor,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            meals,
-                            textAlign: TextAlign.right,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size11,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                originalPrice,
-                                style: TextStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size10,
-                                  color: AppColors.textHint,
-                                  fontWeight: FontWeightManger.medium,
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationColor: AppColors.error,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                discountedPrice,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size17,
-                                  color: AppColors.primaryDark,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: accentColor.withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  '20% خصم',
-                                  style: getBoldStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size10,
-                                    color: accentColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    FittedBox(
+                      child: Text(maxLines: 1,
+                        title,
+                        textAlign: TextAlign.right,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size14,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      width: 92,
-                      height: 74,
-                      child: Image.asset(imageAsset, fit: BoxFit.contain),
+                    const SizedBox(height: 4),
+                    Text(
+                      duration,
+                      textAlign: TextAlign.right,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size12,
+                        color: accentColor,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(maxLines: 1,
+                      meals,
+                      textAlign: TextAlign.right,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size11,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
-              PositionedDirectional(
-                top: 4,
-                end: 4,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isSelected ? accentColor : Colors.transparent,
-                    border: Border.all(
-                      color: isSelected ? accentColor : AppColors.textHint,
-                      width: 1.4,
+              const SizedBox(width: 12),
+              // Prices (left in RTL)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "$originalPrice ${locale.currency}",
+                    style: TextStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size12,
+                      color: AppColors.textHint,
+                      fontWeight: FontWeightManger.medium,
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: AppColors.error,
                     ),
                   ),
-                  child: isSelected
-                      ? const Icon(
-                          Icons.check_rounded,
-                          color: AppColors.white,
-                          size: 18,
-                        )
-                      : null,
-                ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "$discountedPrice ${locale.currency} ",
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size16,
+                      color: AppColors.primaryDark,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      'خصم 20%',
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size10,
+                        color: accentColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -244,5 +244,8 @@
   "offer_details_summary_title": "الإجمالي بعد الخصم",
   "offer_details_summary_button": "استكمال الشراء",
   "offer_details_summary_secure_payment": "عملية دفع آمنة",
-  "offer_details_open_plans_button": "اختيار الباقة"
+  "offer_details_open_plans_button": "اختيار الباقة",
+   "currency":"د.ك"
+
+
 }

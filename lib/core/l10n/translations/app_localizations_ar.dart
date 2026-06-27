@@ -774,4 +774,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offer_details_open_plans_button => 'اختيار الباقة';
+
+  @override
+  String get currency => 'د.ك';
 }

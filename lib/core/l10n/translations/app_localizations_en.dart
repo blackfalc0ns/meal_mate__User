@@ -789,4 +789,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offer_details_open_plans_button => 'Choose plan';
+
+  @override
+  String get currency => 'KWD';
 }

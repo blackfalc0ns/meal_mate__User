@@ -66,11 +66,11 @@ class OfferDetailsInfoCard extends StatelessWidget {
                         'رمز الخصم',
                         style: getBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: 13,
-                          color: AppColors.primary,
+                          fontSize: 12,
+                          color: AppColors.primaryVariant,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                     // const SizedBox(height: 4),
                       Row(
                         textDirection: TextDirection.rtl,
                         mainAxisSize: MainAxisSize.min,
@@ -138,11 +138,11 @@ class _InfoSection extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      textAlign: TextAlign.right,
+
                       style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 13,
-                        color: AppColors.primary,
+                        fontSize: FontSize.size12,
+                        color: AppColors.primaryVariant,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -216,7 +216,7 @@ class _CopyButton extends StatelessWidget {
         side: const BorderSide(color: Color(0xFFD7DED4)),
         foregroundColor: AppColors.textPrimary,
         backgroundColor: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         minimumSize: const Size(0, 34),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -232,7 +232,7 @@ class _CopyButton extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 3),
           const Icon(
             Icons.copy_rounded,
             size: 14,

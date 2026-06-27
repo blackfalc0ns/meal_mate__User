@@ -1561,6 +1561,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose plan'**
   String get offer_details_open_plans_button;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'KWD'**
+  String get currency;
 }
 
 class _AppLocalizationsDelegate

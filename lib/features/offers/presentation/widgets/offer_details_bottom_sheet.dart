@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_sheet_content.dart';
 
@@ -27,7 +28,10 @@ class OfferDetailsBottomSheet extends StatelessWidget {
       child: OfferDetailsSheetContent(
         offer: offer,
         onClose: () => Navigator.of(context).pop(),
-        onPrimaryPressed: () => Navigator.of(context).pop(),
+        onPrimaryPressed: () {
+          Navigator.of(context).pop();
+          Navigator.pushNamed(context, AppRoutes.offerDetails);
+        },
       ),
     );
   }

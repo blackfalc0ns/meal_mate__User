@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 
 class OffersHeroCard extends StatelessWidget {
@@ -130,7 +131,12 @@ class OffersHeroCard extends StatelessWidget {
                         width: 132,
                         height: 42,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.offerDetails,
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryDark,
                             shape: RoundedRectangleBorder(
