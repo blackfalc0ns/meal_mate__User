@@ -4,7 +4,7 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/offers/data/offers_fake_data_source.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_deal_card.dart';
-import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_bottom_sheet.dart';
+import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_bottom_sheet.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_filter_strip.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_hero_card.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_section_header.dart';

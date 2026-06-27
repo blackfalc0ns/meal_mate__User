@@ -47,7 +47,10 @@ class OfferDetailsInfoCard extends StatelessWidget {
             showDivider: true,
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.sm,
+              vertical: Spacing.xs,
+            ),
             child: Row(
               textDirection: TextDirection.rtl,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,7 +73,7 @@ class OfferDetailsInfoCard extends StatelessWidget {
                           color: AppColors.primaryVariant,
                         ),
                       ),
-                     // const SizedBox(height: 4),
+                      // const SizedBox(height: 4),
                       Row(
                         textDirection: TextDirection.rtl,
                         mainAxisSize: MainAxisSize.min,
@@ -126,11 +129,14 @@ class _InfoSection extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.sm,
+            vertical: Spacing.xs,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(icon, size: 18, color: AppColors.primary),
+              Icon(icon, size: 18, color: AppColors.primaryVariant),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -151,7 +157,7 @@ class _InfoSection extends StatelessWidget {
                       textAlign: TextAlign.right,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 12,
+                        fontSize: 11,
                         color: AppColors.textHint,
                       ),
                     ),
@@ -216,7 +222,7 @@ class _CopyButton extends StatelessWidget {
         side: const BorderSide(color: Color(0xFFD7DED4)),
         foregroundColor: AppColors.textPrimary,
         backgroundColor: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         minimumSize: const Size(0, 34),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
