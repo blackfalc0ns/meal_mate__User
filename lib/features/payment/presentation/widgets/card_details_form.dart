@@ -55,7 +55,7 @@ class CardDetailsForm extends StatelessWidget {
                 _CardNumberFormatter(),
                 LengthLimitingTextInputFormatter(19),
               ],
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
               fillColor: AppColors.white,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: Spacing.base,
@@ -90,7 +90,7 @@ class CardDetailsForm extends StatelessWidget {
                       _ExpiryFormatter(),
                       LengthLimitingTextInputFormatter(5),
                     ],
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                     fillColor: AppColors.white,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Spacing.base,
@@ -124,7 +124,7 @@ class CardDetailsForm extends StatelessWidget {
                       LengthLimitingTextInputFormatter(3),
                     ],
                     obscureText: true,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                     fillColor: AppColors.white,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Spacing.base,
@@ -146,20 +146,21 @@ class CardDetailsForm extends StatelessWidget {
           _LabeledCardField(
             label: l10n.payment_card_holder_label,
             child: AppTextField(
-              controller: holderNameController,
-              hint: l10n.payment_card_holder_hint,
-              suffixIcon: const Icon(
+              prefixIcon: const Icon(
                 Icons.person_outline_rounded,
                 color: AppColors.textHint,
                 size: 20,
               ),
+              controller: holderNameController,
+              hint: l10n.payment_card_holder_hint,
+
               keyboardType: TextInputType.name,
-              textAlign: TextAlign.end,
+              textAlign: TextAlign.start,
               fillColor: AppColors.white,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: Spacing.base,
-                vertical: 15,
-              ),
+              // contentPadding: const EdgeInsets.symmetric(
+              //   horizontal: Spacing.base,
+              //   vertical: 15,
+              // ),
               borderColor: AppColors.border,
               borderRadius: Spacing.inputRadius,
               textStyle: getMediumStyle(

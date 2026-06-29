@@ -35,155 +35,222 @@ class AppOrderSummaryCard extends StatelessWidget {
     final l10n = context.localization;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE0E7DF)),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE7ECE7)),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x197C7B7B),
-            blurRadius: 4,
-            offset: Offset(0, 4),
+            color: AppColors.shadow.withValues(alpha: 0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Row(
-            textDirection: TextDirection.ltr,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                imageAsset,
-                width: 145,
-                height: 116,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        summaryTitle ?? l10n.payment_order_summary_title,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size13,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              textDirection: TextDirection.ltr,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  imageAsset,
+                  width: 165,
+                  height: 130,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          summaryTitle ?? l10n.payment_order_summary_title,
+                          textAlign: TextAlign.right,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size18,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 13),
-                      RichText(
-                        textDirection: TextDirection.rtl,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '$planTitle - ',
-                              style: _style(15, FontWeightManger.bold),
-                            ),
-                            TextSpan(
-                              text: planDuration,
-                              style: _style(
-                                13,
-                                FontWeightManger.semiBold,
-                                AppColors.primaryVariant,
+                        const SizedBox(height: 10),
+                        RichText(
+                          textAlign: TextAlign.right,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '$planTitle - ',
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size16,
+                                  color: AppColors.textPrimary,
+                                ),
                               ),
-                            ),
-                          ],
+                              TextSpan(
+                                text: planDuration,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size16,
+                                  color: AppColors.primaryVariant,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        mealsPerDay,
-                        style: _style(
-                          13,
-                          FontWeightManger.regular,
-                          const Color(0xFF25242B),
+                        const SizedBox(height: 8),
+                        Text(
+                          mealsPerDay,
+                          textAlign: TextAlign.right,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size13,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          _priceRow(
-            l10n.payment_base_price_label,
-            '$originalPrice ${l10n.currency}',
-          ),
-          const SizedBox(height: 5),
-          _priceRow(
-            discountLabel == null
-                ? l10n.payment_discount_label
-                : '${l10n.payment_discount_label.split('(').first.trim()}($discountLabel)',
-            '-$discountAmount ${l10n.currency}',
-            valueColor: AppColors.primaryVariant,
-          ),
-          const Divider(height: 17, color: Color(0xFFECECEE)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                l10n.payment_total_after_discount,
-                style: _style(14, FontWeightManger.bold),
-              ),
-              Text(
-                '$totalPrice ${l10n.currency}',
-                style: _style(
-                  15,
-                  FontWeightManger.bold,
-                  AppColors.primaryVariant,
-                ),
-              ),
-            ],
-          ),
-          if (couponHint != null) ...[
-            const SizedBox(height: 8),
-            Container(
-              height: 35,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF8F8F8),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFF2F3F2)),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.sell_outlined,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      couponHint!,
-                      style: _style(13, FontWeightManger.medium),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
+            _PriceRow(
+              label: l10n.payment_base_price_label,
+              value: '$originalPrice ${l10n.currency}',
+              valueColor: const Color(0xFF6F737A),
+            ),
+            const SizedBox(height: 6),
+            _PriceRow(
+              label: _discountText(l10n.payment_discount_label),
+              value: '-$discountAmount ${l10n.currency}',
+              valueColor: AppColors.primaryVariant,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+
+  Text(
+                  l10n.payment_total_after_discount,
+                  textAlign: TextAlign.right,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size16,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+
+
+               
+                const SizedBox(width: 10),
+                const Expanded(
+                  child: Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Color(0xFFF0F0F0),
+                  ),
+                ),
+                const SizedBox(width: 10),
+               Text(
+                  '$totalPrice ${l10n.currency}',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size20,
+                    color: AppColors.primaryVariant,
+                  ),
+                ),
+              ],
+            ),
+            if (couponHint != null) ...[
+              const SizedBox(height: 14),
+              Container(
+                height: 42,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8F8F8),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFF0F0F0)),
+                ),
+                child: Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    const Icon(
+                      Icons.sell_outlined,
+                      color: AppColors.primary,
+                      size: 22,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        couponHint!,
+                        textAlign: TextAlign.center,
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size13,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 
-  Widget _priceRow(
-    String label,
-    String value, {
-    Color valueColor = const Color(0xFF777B82),
-  }) {
+  String _discountText(String fallbackLabel) {
+    if (discountLabel == null || discountLabel!.isEmpty) {
+      return fallbackLabel;
+    }
+
+    final baseLabel = fallbackLabel.contains('(')
+        ? fallbackLabel.substring(0, fallbackLabel.indexOf('(')).trim()
+        : fallbackLabel;
+    return '$baseLabel($discountLabel)';
+  }
+}
+
+class _PriceRow extends StatelessWidget {
+  const _PriceRow({
+    required this.label,
+    required this.value,
+    required this.valueColor,
+  });
+
+  final String label;
+  final String value;
+  final Color valueColor;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: _style(13, FontWeightManger.regular, const Color(0xFF777B82)),
+          textAlign: TextAlign.right,
+          style: getRegularStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontSize: FontSize.size13,
+            color: const Color(0xFF8A8F98),
+          ),
         ),
+        const SizedBox(width: 8),
+        const Expanded(
+          child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
+        ),
+        const SizedBox(width: 8),
+        
+
+
+
         Text(
           value,
           style: getSemiBoldStyle(
@@ -194,17 +261,5 @@ class AppOrderSummaryCard extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  TextStyle _style(
-    double size,
-    FontWeight weight, [
-    Color color = AppColors.textPrimary,
-  ]) {
-    return getRegularStyle(
-      fontFamily: FontConstant.ibmPlexSansArabic,
-      fontSize: size,
-      color: color,
-    ).copyWith(fontWeight: weight);
   }
 }
