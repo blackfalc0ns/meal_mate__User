@@ -851,6 +851,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get payment_card_details_title => 'Card Details';
 
   @override
+  String get payment_card_number_label => 'Card number';
+
+  @override
   String get payment_card_number_hint => '•••• •••• •••• ••••';
 
   @override

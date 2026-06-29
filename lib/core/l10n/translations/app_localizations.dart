@@ -1682,6 +1682,12 @@ abstract class AppLocalizations {
   /// **'Card Details'**
   String get payment_card_details_title;
 
+  /// No description provided for @payment_card_number_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get payment_card_number_label;
+
   /// No description provided for @payment_card_number_hint.
   ///
   /// In en, this message translates to:

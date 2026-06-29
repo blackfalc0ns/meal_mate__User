@@ -5,11 +5,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_text_field.dart';
 
-/// ─────────────────────────────────────────────────────────────
-/// Card details form shown when Mada or Visa/Mastercard is
-/// selected. Contains card number, expiry, CVV & holder name.
-/// ─────────────────────────────────────────────────────────────
 class CardDetailsForm extends StatelessWidget {
   const CardDetailsForm({
     super.key,
@@ -30,39 +27,25 @@ class CardDetailsForm extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-      child: Container(
-        padding: const EdgeInsets.all(Spacing.base),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow.withValues(alpha: 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.payment_card_details_title,
+            style: getBoldStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: FontSize.size16,
+              color: AppColors.textPrimary,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // ── Section title ──
-            Text(
-              l10n.payment_card_details_title,
-              style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size16,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: Spacing.base),
-
-            // ── Card number ──
-            _CardTextField(
+          ),
+          const SizedBox(height: Spacing.md),
+          _LabeledCardField(
+            label: l10n.payment_card_number_label,
+            child: AppTextField(
               controller: cardNumberController,
               hint: l10n.payment_card_number_hint,
               suffixIcon: const Icon(
-                Icons.credit_card_rounded,
+                Icons.credit_card_outlined,
                 color: AppColors.textHint,
                 size: 20,
               ),
@@ -70,188 +53,153 @@ class CardDetailsForm extends StatelessWidget {
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 _CardNumberFormatter(),
+                LengthLimitingTextInputFormatter(19),
               ],
-              maxLength: 19,
+              textAlign: TextAlign.center,
+              fillColor: AppColors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: Spacing.base,
+                vertical: 15,
+              ),
+              borderColor: AppColors.border,
+              borderRadius: Spacing.inputRadius,
+              textStyle: getMediumStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size14,
+                color: AppColors.textPrimary,
+              ),
             ),
-            const SizedBox(height: Spacing.md),
-
-            // ── Expiry + CVV row ──
-            Row(
-              children: [
-                // CVV (left in RTL = right visually)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        l10n.payment_cvv_label,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      _CardTextField(
-                        controller: cvvController,
-                        hint: l10n.payment_cvv_hint,
-                        suffixIcon: const Icon(
-                          Icons.info_outline_rounded,
-                          color: AppColors.textHint,
-                          size: 18,
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        maxLength: 3,
-                        obscureText: true,
-                        textAlign: TextAlign.center,
-                      ),
+          ),
+          const SizedBox(height: Spacing.sm),
+          Row(
+            children: [
+              Expanded(
+                child: _LabeledCardField(
+                  label: l10n.payment_expiry_label,
+                  child: AppTextField(
+                    controller: expiryController,
+                    hint: l10n.payment_expiry_hint,
+                    suffixIcon: const Icon(
+                      Icons.calendar_today_outlined,
+                      color: AppColors.textHint,
+                      size: 18,
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      _ExpiryFormatter(),
+                      LengthLimitingTextInputFormatter(5),
                     ],
+                    textAlign: TextAlign.center,
+                    fillColor: AppColors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.base,
+                      vertical: 15,
+                    ),
+                    borderColor: AppColors.border,
+                    borderRadius: Spacing.inputRadius,
+                    textStyle: getMediumStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size14,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
-                const SizedBox(width: Spacing.md),
-                // Expiry
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        l10n.payment_expiry_label,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      _CardTextField(
-                        controller: expiryController,
-                        hint: l10n.payment_expiry_hint,
-                        suffixIcon: const Icon(
-                          Icons.calendar_today_rounded,
-                          color: AppColors.textHint,
-                          size: 18,
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          _ExpiryFormatter(),
-                        ],
-                        maxLength: 5,
-                        textAlign: TextAlign.center,
-                      ),
+              ),
+              const SizedBox(width: Spacing.sm),
+              Expanded(
+                child: _LabeledCardField(
+                  label: l10n.payment_cvv_label,
+                  child: AppTextField(
+                    controller: cvvController,
+                    hint: l10n.payment_cvv_hint,
+                    suffixIcon: const Icon(
+                      Icons.help_outline_rounded,
+                      color: AppColors.textHint,
+                      size: 18,
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
                     ],
+                    obscureText: true,
+                    textAlign: TextAlign.center,
+                    fillColor: AppColors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.base,
+                      vertical: 15,
+                    ),
+                    borderColor: AppColors.border,
+                    borderRadius: Spacing.inputRadius,
+                    textStyle: getMediumStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size14,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.sm),
+          _LabeledCardField(
+            label: l10n.payment_card_holder_label,
+            child: AppTextField(
+              controller: holderNameController,
+              hint: l10n.payment_card_holder_hint,
+              suffixIcon: const Icon(
+                Icons.person_outline_rounded,
+                color: AppColors.textHint,
+                size: 20,
+              ),
+              keyboardType: TextInputType.name,
+              textAlign: TextAlign.end,
+              fillColor: AppColors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: Spacing.base,
+                vertical: 15,
+              ),
+              borderColor: AppColors.border,
+              borderRadius: Spacing.inputRadius,
+              textStyle: getMediumStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size14,
+                color: AppColors.textPrimary,
+              ),
             ),
-            const SizedBox(height: Spacing.md),
-
-            // ── Holder name ──
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  l10n.payment_card_holder_label,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size12,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: Spacing.xs),
-                _CardTextField(
-                  controller: holderNameController,
-                  hint: l10n.payment_card_holder_hint,
-                  suffixIcon: const Icon(
-                    Icons.person_outline_rounded,
-                    color: AppColors.textHint,
-                    size: 20,
-                  ),
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.end,
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ── Internal field widget ─────────────────────────────────────
+class _LabeledCardField extends StatelessWidget {
+  const _LabeledCardField({required this.label, required this.child});
 
-class _CardTextField extends StatelessWidget {
-  const _CardTextField({
-    required this.controller,
-    required this.hint,
-    this.suffixIcon,
-    this.keyboardType,
-    this.inputFormatters,
-    this.maxLength,
-    this.obscureText = false,
-    this.textAlign = TextAlign.end,
-  });
-
-  final TextEditingController controller;
-  final String hint;
-  final Widget? suffixIcon;
-  final TextInputType? keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-  final int? maxLength;
-  final bool obscureText;
-  final TextAlign textAlign;
+  final String label;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      maxLength: maxLength,
-      textAlign: textAlign,
-      style: getMediumStyle(
-        fontFamily: FontConstant.ibmPlexSansArabic,
-        fontSize: FontSize.size14,
-        color: AppColors.textPrimary,
-      ),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: getRegularStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: FontSize.size13,
-          color: AppColors.textHint,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: getBoldStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontSize: FontSize.size12,
+            color: AppColors.textPrimary,
+          ),
         ),
-        suffixIcon: suffixIcon,
-        counterText: '',
-        filled: true,
-        fillColor: AppColors.inputBackground,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.md,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Spacing.inputRadius),
-          borderSide: const BorderSide(color: AppColors.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Spacing.inputRadius),
-          borderSide: const BorderSide(color: AppColors.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Spacing.inputRadius),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-        ),
-      ),
+        const SizedBox(height: Spacing.xs),
+        child,
+      ],
     );
   }
 }
-
-// ── Input formatters ──────────────────────────────────────────
 
 class _CardNumberFormatter extends TextInputFormatter {
   @override
@@ -261,10 +209,14 @@ class _CardNumberFormatter extends TextInputFormatter {
   ) {
     final digits = newValue.text.replaceAll(' ', '');
     final buffer = StringBuffer();
+
     for (int i = 0; i < digits.length; i++) {
-      if (i > 0 && i % 4 == 0) buffer.write(' ');
+      if (i > 0 && i % 4 == 0) {
+        buffer.write(' ');
+      }
       buffer.write(digits[i]);
     }
+
     final formatted = buffer.toString();
     return TextEditingValue(
       text: formatted,
@@ -281,10 +233,14 @@ class _ExpiryFormatter extends TextInputFormatter {
   ) {
     final digits = newValue.text.replaceAll('/', '');
     final buffer = StringBuffer();
+
     for (int i = 0; i < digits.length; i++) {
-      if (i == 2) buffer.write('/');
+      if (i == 2) {
+        buffer.write('/');
+      }
       buffer.write(digits[i]);
     }
+
     final formatted = buffer.toString();
     return TextEditingValue(
       text: formatted,

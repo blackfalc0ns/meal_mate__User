@@ -265,6 +265,7 @@
   "payment_method_wallet": "MealMate Wallet",
   "payment_method_wallet_balance": "Available balance:",
   "payment_card_details_title": "Card Details",
+  "payment_card_number_label": "Card number",
   "payment_card_number_hint": "•••• •••• •••• ••••",
   "payment_expiry_hint": "MM / YY",
   "payment_cvv_hint": "•••",

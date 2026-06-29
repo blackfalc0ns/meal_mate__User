@@ -266,6 +266,7 @@
   "payment_method_wallet": "محفظة MealMate",
   "payment_method_wallet_balance": "الرصيد المتاح :",
   "payment_card_details_title": "تفاصيل البطاقة",
+  "payment_card_number_label": "رقم البطاقة",
   "payment_card_number_hint": "•••• •••• •••• ••••",
   "payment_expiry_hint": "يوم / شهر",
   "payment_cvv_hint": "•••",

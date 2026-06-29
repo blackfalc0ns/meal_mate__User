@@ -30,7 +30,7 @@ class PaymentMethodSelector extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.payment_method_section_title,

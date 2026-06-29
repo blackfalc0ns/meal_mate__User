@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 /// ─────────────────────────────────────────────────────────────
@@ -26,10 +27,8 @@ class PaymentMethodTile extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.md,
-        ),
+        height: 55,
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 9),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
@@ -41,42 +40,62 @@ class PaymentMethodTile extends StatelessWidget {
         child: Row(
           children: [
             // ── Radio indicator ──
-            _RadioDot(isSelected: isSelected),
-            const SizedBox(width: Spacing.md),
+            _PaymentLogo(type: method.type),
 
+            const SizedBox(width: Spacing.base),
             // ── Title + subtitle ──
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    method.title,
-                    style: getSemiBoldStyle(
+                    _title(context),
+                    style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size14,
+                      fontSize: FontSize.size10,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  _buildSubtitle(),
+                  _buildSubtitle(context),
                 ],
               ),
             ),
             const SizedBox(width: Spacing.md),
+            _RadioDot(isSelected: isSelected),
+            const SizedBox(width: Spacing.md),
 
             // ── Payment logo ──
-            _PaymentLogo(type: method.type),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSubtitle() {
+  String _title(BuildContext context) {
+    final l10n = context.localization;
+    return switch (method.type) {
+      PaymentMethodType.mada => l10n.payment_method_mada,
+      PaymentMethodType.visa => l10n.payment_method_visa,
+      PaymentMethodType.applePay => l10n.payment_method_apple,
+      PaymentMethodType.wallet => l10n.payment_method_wallet,
+    };
+  }
+
+  String _subtitle(BuildContext context) {
+    final l10n = context.localization;
+    return switch (method.type) {
+      PaymentMethodType.mada => l10n.payment_method_mada_subtitle,
+      PaymentMethodType.visa => l10n.payment_method_visa_subtitle,
+      PaymentMethodType.applePay => l10n.payment_method_apple_subtitle,
+      PaymentMethodType.wallet => l10n.payment_method_wallet_balance,
+    };
+  }
+
+  Widget _buildSubtitle(BuildContext context) {
     if (method.type == PaymentMethodType.wallet &&
         method.walletBalance != null) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             '${method.walletBalance!.toStringAsFixed(3)} KWD',
@@ -88,10 +107,10 @@ class PaymentMethodTile extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            method.subtitle,
+            _subtitle(context),
             style: getRegularStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size13,
+              fontSize: FontSize.size10,
               color: AppColors.textSecondary,
             ),
           ),
@@ -99,10 +118,10 @@ class PaymentMethodTile extends StatelessWidget {
       );
     }
     return Text(
-      method.subtitle,
+      _subtitle(context),
       style: getRegularStyle(
         fontFamily: FontConstant.ibmPlexSansArabic,
-        fontSize: FontSize.size13,
+        fontSize: FontSize.size10,
         color: AppColors.textSecondary,
       ),
     );
@@ -118,8 +137,8 @@ class _RadioDot extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      width: 22,
-      height: 22,
+      width: 20,
+      height: 20,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
@@ -160,8 +179,8 @@ class _MadaLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 52,
-      height: 32,
+      width: 48,
+      height: 24,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         gradient: const LinearGradient(
@@ -186,8 +205,8 @@ class _VisaLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 52,
-      height: 32,
+      width: 48,
+      height: 24,
       decoration: BoxDecoration(
         color: const Color(0xFF1A1F71),
         borderRadius: BorderRadius.circular(6),
@@ -211,8 +230,8 @@ class _ApplePayLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 52,
-      height: 32,
+      width: 48,
+      height: 24,
       decoration: BoxDecoration(
         color: AppColors.black,
         borderRadius: BorderRadius.circular(6),
@@ -242,7 +261,7 @@ class _WalletLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 36,
-      height: 36,
+      height: 26,
       decoration: BoxDecoration(
         color: AppColors.primarySurface,
         borderRadius: BorderRadius.circular(8),

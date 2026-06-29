@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_order_summary_card.dart';
+import 'package:meal_meat_user/core/widget/app_order_summary_card.dart';
 import 'package:meal_meat_user/features/payment/data/payment_fake_data.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/card_details_form.dart';
@@ -61,34 +61,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final l10n = context.localization;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
       appBar: _PaymentAppBar(title: l10n.payment_title),
       body: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.only(
-              top: Spacing.base,
-              bottom: Spacing.xxl,
-            ),
+            padding: const EdgeInsets.only(top: 8, bottom: 18),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // ── Order summary ──
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.base,
-                  ),
-                  child: OfferActivatedOrderSummaryCard(
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+                  child: AppOrderSummaryCard(
                     planTitle: l10n.payment_plan_month,
                     planDuration: l10n.payment_plan_duration,
                     mealsPerDay: l10n.payment_plan_meals,
                     originalPrice: '52.000',
                     discountAmount: '10.400',
                     totalPrice: '41.600',
-                    discountLabel: '20%',
                     imageAsset: 'assets/images/offers/meal_boxes.png',
+                    couponHint: l10n.payment_coupon_hint,
                   ),
                 ),
-                const SizedBox(height: Spacing.xl),
+                const SizedBox(height: 16),
 
                 // ── Payment methods ──
                 PaymentMethodSelector(

@@ -4,13 +4,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 
-/// ─────────────────────────────────────────────────────────────
-/// Sticky footer at the bottom of the payment screen.
-/// Shows the total, a collapsible breakdown toggle,
-/// the pay button and the "secure payment" label.
-/// ─────────────────────────────────────────────────────────────
 class PaymentFooter extends StatelessWidget {
   const PaymentFooter({
     super.key,
@@ -27,96 +22,87 @@ class PaymentFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.localization;
 
-    return Container(
-      padding: EdgeInsets.only(
-        top: Spacing.base,
-        left: Spacing.base,
-        right: Spacing.base,
-        bottom: MediaQuery.of(context).padding.bottom + Spacing.md,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.10),
-            blurRadius: 16,
-            offset: const Offset(0, -4),
-          ),
-        ],
-      ),
+    return Padding(
+      padding:  EdgeInsets.symmetric(horizontal: Spacing.lg, vertical: Spacing.base),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ── Total row ──
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Collapse toggle
-              Row(
-                children: [
-                  const Icon(
-                    Icons.keyboard_arrow_up_rounded,
-                    color: AppColors.textSecondary,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    l10n.payment_total_includes_tax,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: AppColors.textSecondary,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Row(
+              textDirection: TextDirection.rtl,
+              children: [
+                const Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 18,
+                  color: AppColors.textPrimary,
+                ),
+                const SizedBox(width: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.payment_total_label,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size13,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              // Amount + label
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    l10n.payment_total_label,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: AppColors.textSecondary,
+                    Text(
+                      l10n.payment_total_includes_tax,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size10,
+                        color: AppColors.textHint,
+                      ),
                     ),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  '${totalAmount.toStringAsFixed(3)} ${l10n.currency}',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size20,
+                    color: AppColors.primaryVariant,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${totalAmount.toStringAsFixed(3)} ${l10n.currency}',
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size22,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: Spacing.md),
-
-          // ── Pay button ──
-          AppButton(
-            text: '🔒  ${l10n.payment_pay_now_button}',
+          const SizedBox(height: 18),
+          CustomAppButton(
+            text: l10n.payment_pay_now_button,
+            height: 40,
             isLoading: isLoading,
             onPressed: isLoading ? null : onPayNow,
+            iconWidget: const Icon(
+              Icons.lock_outline_rounded,
+              color: AppColors.white,
+              size: 15,
+            ),
           ),
-          const SizedBox(height: Spacing.sm),
-
-          // ── Secure label ──
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_outline_rounded,
-                  size: 13, color: AppColors.textHint),
-              const SizedBox(width: 4),
+              const Icon(
+                Icons.lock_outline_rounded,
+                size: 11,
+                color: AppColors.textHint,
+              ),
+              const SizedBox(width: 3),
               Text(
                 l10n.payment_secure_label,
                 style: getRegularStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size12,
+                  fontSize: FontSize.size10,
                   color: AppColors.textHint,
                 ),
               ),

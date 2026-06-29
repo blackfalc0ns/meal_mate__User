@@ -6,12 +6,11 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/app_order_summary_card.dart';
 import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_coupon_row.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_hero_banner.dart';
-import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_order_summary_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
 
 /// Screen shown after the user successfully activates an offer.
@@ -64,7 +63,7 @@ class OfferActivatedScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.lg,
                       ),
-                      child: OfferActivatedOrderSummaryCard(
+                      child: AppOrderSummaryCard(
                         planTitle: l10n.offer_details_plan_month_title,
                         planDuration: l10n.offer_details_plan_duration_month,
                         mealsPerDay: l10n.offer_details_plan_meals,
@@ -231,12 +230,7 @@ class _BottomCta extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
       child: SafeArea(
         top: false,
-        child: CustomAppButton(
-          text: label,
-          onPressed: onPressed,
-         height: 40,
-         
-        ),
+        child: CustomAppButton(text: label, onPressed: onPressed, height: 40),
       ),
     );
   }

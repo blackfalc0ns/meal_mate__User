@@ -836,6 +836,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get payment_card_details_title => 'تفاصيل البطاقة';
 
   @override
+  String get payment_card_number_label => 'رقم البطاقة';
+
+  @override
   String get payment_card_number_hint => '•••• •••• •••• ••••';
 
   @override
