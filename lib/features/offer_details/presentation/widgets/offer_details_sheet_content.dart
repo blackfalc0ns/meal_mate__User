@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
-import 'package:meal_meat_user/core/widget/custom_button.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/section_header_bottom_sheet.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
@@ -12,7 +12,7 @@ class OfferDetailsSheetContent extends StatelessWidget {
     required this.offer,
     this.onClose,
     this.onPrimaryPressed,
-    this.padding = const EdgeInsets.fromLTRB(20, 6, 20, 20),
+    this.padding = const EdgeInsets.fromLTRB(20, 6, 20, 12),
     this.showCloseButton = true,
     this.showActionButton = true,
   });
@@ -39,12 +39,13 @@ class OfferDetailsSheetContent extends StatelessWidget {
     return Material(
       color: AppColors.white,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+      clipBehavior: Clip.antiAlias,
       child: SafeArea(
         top: false,
+        bottom: false,
         child: SingleChildScrollView(
           padding: padding,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SectionHeaderBottomSheet(
                 offer: offer,
@@ -57,17 +58,19 @@ class OfferDetailsSheetContent extends StatelessWidget {
                 couponCode: couponCode,
                 termsText: termsText,
                 accentColor: offer.accentColor,
+                showSummaryRow: true,
+                showCouponSection: true,
                 onCopyCode: () async {
                   await Clipboard.setData(ClipboardData(text: couponCode));
                 },
               ),
               if (showActionButton) ...[
                 const SizedBox(height: 18),
-                CustomButton(
+                AppButton(
                   text: 'استفد الآن',
                   onPressed: onPrimaryPressed,
                   height: 48,
-                  borderRadius: 12,
+                 // borderRadius: 12,
                 ),
               ],
             ],

@@ -1,11 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:native_glass_navbar/native_glass_navbar.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 
+/// Bottom navigation bar that uses the native iOS 26 Liquid Glass effect
+/// on supported iOS devices, and falls back to a frosted-glass widget
+/// on Android and older iOS.
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
     super.key,
@@ -20,148 +21,152 @@ class AppBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        Spacing.base,
-      Spacing.base,
-        Spacing.base,
-        Spacing.sm,
+    // NativeGlassNavBar uses SF Symbols (iOS only).
+    // Items are reversed for RTL layout in the fallback;
+    // the native bar handles its own ordering.
+    final nativeTabs = items.map((item) {
+      return NativeGlassNavBarItem(
+        label: item.label,
+        symbol: item.sfSymbol ?? 'circle.fill',
+      );
+    }).toList();
+
+    return NativeGlassNavBar(
+      tabs: nativeTabs,
+      currentIndex: currentIndex,
+      onTap: onTap,
+      tintColor: AppColors.primaryVariant,
+      fallback: _FrostedNavBar(
+        items: items,
+        currentIndex: currentIndex,
+        onTap: onTap,
       ),
-      child: Container(
-        height: 72,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(34),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow.withValues(alpha: 0.16),
-              blurRadius: 26,
-              offset: const Offset(0, 12),
-            ),
-          ],
-        ),
-        child: Row(
-          textDirection: TextDirection.rtl,
-          children: List.generate(items.length, (index) {
-            final item = items[index];
-            final isSelected = index == currentIndex;
-            return Expanded(
-              child: _BottomNavItemTile(
-                item: item,
-                isSelected: isSelected,
-                onTap: () => onTap(index),
+    );
+  }
+}
+
+// ── Frosted-glass fallback (Android + unsupported iOS) ───────────
+
+class _FrostedNavBar extends StatelessWidget {
+  const _FrostedNavBar({
+    required this.items,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final List<AppBottomNavBarItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white.withValues(alpha: 0.55),
+                  Colors.white.withValues(alpha: 0.80),
+                ],
               ),
-            );
-          }),
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.6),
+                  width: 0.8,
+                ),
+              ),
+            ),
+            child: SafeArea(
+              top: false,
+              child: SizedBox(
+                height: 64,
+                child: Row(
+                  children: List.generate(items.length, (i) {
+                    final item = items[i];
+                    final isActive = i == currentIndex;
+                    return Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => onTap(i),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 220),
+                              curve: Curves.easeInOut,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? AppColors.primaryVariant
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Icon(
+                                isActive
+                                    ? (item.selectedIcon ?? item.icon)
+                                    : item.icon,
+                                size: 22,
+                                color: isActive
+                                    ? Colors.white
+                                    : const Color(0xFF555555),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              item.label,
+                              style: TextStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: 10.5,
+                                fontWeight: isActive
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                                color: isActive
+                                    ? AppColors.primaryVariant
+                                    : const Color(0xFF555555),
+                                height: 1.1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
+
+// ── Data model ───────────────────────────────────────────────────
 
 class AppBottomNavBarItem {
   const AppBottomNavBarItem({
     required this.label,
     required this.icon,
     this.selectedIcon,
+    this.sfSymbol,
     this.isAnimated = false,
   });
 
   final String label;
   final IconData icon;
   final IconData? selectedIcon;
+
+  /// SF Symbol name for the native iOS tab bar.
+  /// e.g. 'house.fill', 'fork.knife', 'flame.fill'
+  final String? sfSymbol;
   final bool isAnimated;
-}
-
-class _BottomNavItemTile extends StatelessWidget {
-  const _BottomNavItemTile({
-    required this.item,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final AppBottomNavBarItem item;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final content = AnimatedContainer(
-      duration: const Duration(milliseconds: 220),
-      curve: Curves.easeOut,
-      transform: Matrix4.translationValues(0, isSelected ? -8 : 0, 0),
-      alignment: Alignment.center,
-      margin: EdgeInsets.symmetric(
-        horizontal: isSelected ? 6 : 0,
-        vertical: isSelected ? 4 : 8,
-      ),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.primarySurface : Colors.transparent,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.16),
-                  blurRadius: 14,
-                  offset: const Offset(0, 8),
-                ),
-              ]
-            : null,
-      ),
-      child: SizedBox(
-        width: isSelected ? 68 : double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _NavIcon(item: item, isSelected: isSelected),
-            const SizedBox(height: 2),
-            Text(
-              item.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size10,
-                color: isSelected ? AppColors.primaryDarker : AppColors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: content,
-    );
-  }
-}
-
-class _NavIcon extends StatelessWidget {
-  const _NavIcon({required this.item, required this.isSelected});
-
-  final AppBottomNavBarItem item;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    if (item.isAnimated) {
-      return SizedBox(
-        width: 40,
-        height: 40,
-        child: Lottie.asset(
-          Assets.fireAnimation,
-          fit: BoxFit.contain,
-          repeat: true,
-          animate: true,
-        ),
-      );
-    }
-
-    return Icon(
-      isSelected ? (item.selectedIcon ?? item.icon) : item.icon,
-      size: 26,
-      color: isSelected ? AppColors.primaryDarker : AppColors.black,
-    );
-  }
 }

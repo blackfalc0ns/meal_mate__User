@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
@@ -37,7 +38,12 @@ class OffersScreen extends StatelessWidget {
                 leading: NotificationButton(onTap: () {}),
               ),
             ),
-            SliverToBoxAdapter(child: OffersHeroCard(hero: offers.hero)),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+                child: OffersHeroCard(hero: offers.hero),
+              ),
+            ),
             SliverToBoxAdapter(child: OffersFilterStrip(filters: _dataSource.getOffers().filters)),
             SliverToBoxAdapter(
               child: OffersSectionHeader(

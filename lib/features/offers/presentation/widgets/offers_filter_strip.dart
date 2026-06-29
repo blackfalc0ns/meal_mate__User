@@ -14,7 +14,7 @@ class OffersFilterStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH,vertical: Spacing.base),
       child: SizedBox(
         width: double.infinity,
         height: 46,
@@ -51,7 +51,7 @@ class OffersFilterStrip extends StatelessWidget {
     if (normalized == 'المطاعم' || normalized == 'Restaurants') {
       return Icons.restaurant_rounded;
     }
-    if (normalized == 'الوجبات' || normalized == 'Meals') {
+    if (normalized == 'الاشتراكات' || normalized == 'Meals') {
       return Icons.restaurant_menu_rounded;
     }
 
@@ -74,9 +74,9 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = isSelected
-        ? AppColors.primary
-        : AppColors.primarySurface;
+    final background = isSelected ?Color(0xFF32983C):Color(0xFFC6E3D5);
+        // ? AppColors.primary
+        // : AppColors.primarySurface;
     final foreground = isSelected ? AppColors.white : AppColors.primaryDarker;
 
     return Material(
@@ -84,7 +84,7 @@ class _FilterChip extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
-        child: Container(
+        child: Container(padding: EdgeInsets.all(5),
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(

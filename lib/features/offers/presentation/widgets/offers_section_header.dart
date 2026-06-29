@@ -25,12 +25,7 @@ class OffersSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        Spacing.screenH,
-        Spacing.sm,
-        Spacing.screenH,
-        0,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: Spacing.sm,horizontal: Spacing.screenH),
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
@@ -42,9 +37,9 @@ class OffersSectionHeader extends StatelessWidget {
               if (icon != null) const SizedBox(width: 4),
               Text(
                 title,
-                style: getBoldStyle(
+                style: getSemiBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size18,
+                  fontSize: FontSize.size15,
                   color: AppColors.textPrimary,
                 ),
               ),

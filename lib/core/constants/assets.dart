@@ -7,6 +7,7 @@ class Assets {
   static const String _icons = 'assets/icons';
   static const String _fonts = 'assets/fonts';
   static const String _lottie = 'assets/lottie_animation';
+  static const String _svg = "assets/images/svg";
 
   // Images
   static const String banner = '$_root/banner.png';
@@ -42,7 +43,8 @@ class Assets {
   static const String offerSaladBowl = '$_images/offers/salad_bowl.png';
   static const String offerMealBoxes = '$_images/offers/meal_boxes.png';
   static const String offerGrilledPlate = '$_images/offers/grilled_plate.png';
-  static const String offerBurgerKingLogo = '$_images/offers/burger_king_logo.png';
+  static const String offerBurgerKingLogo =
+      '$_images/offers/burger_king_logo.png';
   static const String offerMcdonaldsLogo = '$_images/offers/mcdonalds_logo.png';
   static const String offerStarbucksLogo = '$_images/offers/starbucks_logo.png';
   static const String offerCalendar = '$_images/offers/calendar.png';
@@ -66,7 +68,8 @@ class Assets {
   static const String icMenu = '$_icons/ic_menu.svg';
   static const String icLocation = '$_icons/ic_location.svg';
   static const String icWallet = '$_icons/ic_wallet.svg';
-
+  static const String buttonSmall = "$_svg/button_small.svg";
+  static const String buttonLarge = "$_svg/button_large.svg";
   // Other assets
   static const String searchNormal = '$_images/search-normal.svg';
 

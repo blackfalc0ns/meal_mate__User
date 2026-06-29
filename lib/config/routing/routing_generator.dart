@@ -5,6 +5,9 @@ import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
+import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_activated_screen.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 
@@ -25,6 +28,21 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const OfferDetailsScreen(),
+        );
+      case AppRoutes.offerActivated:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const OfferActivatedScreen(),
+        );
+      case AppRoutes.payment:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const PaymentScreen(),
+        );
+      case AppRoutes.paymentSuccess:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const PaymentSuccessScreen(),
         );
       case AppRoutes.splash:
         return MaterialPageRoute(

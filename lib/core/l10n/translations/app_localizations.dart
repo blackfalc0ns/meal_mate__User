@@ -1567,6 +1567,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'KWD'**
   String get currency;
+
+  /// No description provided for @payment_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment_title;
+
+  /// No description provided for @payment_order_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get payment_order_summary_title;
+
+  /// No description provided for @payment_plan_month.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get payment_plan_month;
+
+  /// No description provided for @payment_plan_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'26 days'**
+  String get payment_plan_duration;
+
+  /// No description provided for @payment_plan_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals per day'**
+  String get payment_plan_meals;
+
+  /// No description provided for @payment_base_price_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Base price'**
+  String get payment_base_price_label;
+
+  /// No description provided for @payment_discount_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount (20%)'**
+  String get payment_discount_label;
+
+  /// No description provided for @payment_total_after_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total after discount'**
+  String get payment_total_after_discount;
+
+  /// No description provided for @payment_coupon_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'User discount code'**
+  String get payment_coupon_hint;
+
+  /// No description provided for @payment_method_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose payment method'**
+  String get payment_method_section_title;
+
+  /// No description provided for @payment_method_mada.
+  ///
+  /// In en, this message translates to:
+  /// **'Mada Card'**
+  String get payment_method_mada;
+
+  /// No description provided for @payment_method_mada_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay using Mada cards'**
+  String get payment_method_mada_subtitle;
+
+  /// No description provided for @payment_method_visa.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit / Debit Card'**
+  String get payment_method_visa;
+
+  /// No description provided for @payment_method_visa_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa, Mastercard'**
+  String get payment_method_visa_subtitle;
+
+  /// No description provided for @payment_method_apple.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Pay'**
+  String get payment_method_apple;
+
+  /// No description provided for @payment_method_apple_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay using Apple Pay'**
+  String get payment_method_apple_subtitle;
+
+  /// No description provided for @payment_method_wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate Wallet'**
+  String get payment_method_wallet;
+
+  /// No description provided for @payment_method_wallet_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available balance:'**
+  String get payment_method_wallet_balance;
+
+  /// No description provided for @payment_card_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Details'**
+  String get payment_card_details_title;
+
+  /// No description provided for @payment_card_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'•••• •••• •••• ••••'**
+  String get payment_card_number_hint;
+
+  /// No description provided for @payment_expiry_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'MM / YY'**
+  String get payment_expiry_hint;
+
+  /// No description provided for @payment_cvv_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'•••'**
+  String get payment_cvv_hint;
+
+  /// No description provided for @payment_expiry_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get payment_expiry_label;
+
+  /// No description provided for @payment_cvv_label.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get payment_cvv_label;
+
+  /// No description provided for @payment_card_holder_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name as on card'**
+  String get payment_card_holder_hint;
+
+  /// No description provided for @payment_card_holder_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Card holder name'**
+  String get payment_card_holder_label;
+
+  /// No description provided for @payment_total_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount due'**
+  String get payment_total_label;
+
+  /// No description provided for @payment_total_includes_tax.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes tax'**
+  String get payment_total_includes_tax;
+
+  /// No description provided for @payment_pay_now_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get payment_pay_now_button;
+
+  /// No description provided for @payment_secure_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure payment'**
+  String get payment_secure_label;
+
+  /// No description provided for @payment_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful!'**
+  String get payment_success_title;
+
+  /// No description provided for @payment_success_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription is now active. Enjoy your healthy meals.'**
+  String get payment_success_subtitle;
+
+  /// No description provided for @payment_success_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get payment_success_button;
 }
 
 class _AppLocalizationsDelegate

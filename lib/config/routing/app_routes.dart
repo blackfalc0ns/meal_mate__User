@@ -2,6 +2,9 @@ abstract class AppRoutes {
   static const String home = '/home';
   static const String offers = '/offers';
   static const String offerDetails = '/offer-details';
+  static const String offerActivated = '/offer-activated';
+  static const String payment = '/payment';
+  static const String paymentSuccess = '/payment-success';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
   static const String signIn = '/sign-in';

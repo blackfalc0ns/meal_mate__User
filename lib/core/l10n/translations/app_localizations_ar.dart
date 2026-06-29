@@ -727,7 +727,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offer_details_info_duration_label => 'مدة العرض';
 
   @override
-  String get offer_details_info_coupon_label => 'رمز الخصم';
+  String get offer_details_info_coupon_label => 'كود الخصم للمستخدم';
 
   @override
   String get offer_details_info_terms_label => 'الشروط والأحكام';
@@ -777,4 +777,104 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get currency => 'د.ك';
+
+  @override
+  String get payment_title => 'الدفع';
+
+  @override
+  String get payment_order_summary_title => 'ملخص طلبك';
+
+  @override
+  String get payment_plan_month => 'باقة شهر';
+
+  @override
+  String get payment_plan_duration => '26 يوم';
+
+  @override
+  String get payment_plan_meals => '4 وجبات يومياً';
+
+  @override
+  String get payment_base_price_label => 'السعر الأساسي';
+
+  @override
+  String get payment_discount_label => 'الخصم(20%)';
+
+  @override
+  String get payment_total_after_discount => 'الإجمالي بعد الخصم';
+
+  @override
+  String get payment_coupon_hint => 'كود الخصم للمستخدم';
+
+  @override
+  String get payment_method_section_title => 'اختر طريقة الدفع';
+
+  @override
+  String get payment_method_mada => 'بطاقة مدى';
+
+  @override
+  String get payment_method_mada_subtitle => 'ادفع باستخدام بطاقات مدى';
+
+  @override
+  String get payment_method_visa => 'بطاقة ائتمانية / خصم مباشر';
+
+  @override
+  String get payment_method_visa_subtitle => 'Visa, Mastercard';
+
+  @override
+  String get payment_method_apple => 'Apple Pay';
+
+  @override
+  String get payment_method_apple_subtitle => 'ادفع باستخدام Apple pay';
+
+  @override
+  String get payment_method_wallet => 'محفظة MealMate';
+
+  @override
+  String get payment_method_wallet_balance => 'الرصيد المتاح :';
+
+  @override
+  String get payment_card_details_title => 'تفاصيل البطاقة';
+
+  @override
+  String get payment_card_number_hint => '•••• •••• •••• ••••';
+
+  @override
+  String get payment_expiry_hint => 'يوم / شهر';
+
+  @override
+  String get payment_cvv_hint => '•••';
+
+  @override
+  String get payment_expiry_label => 'تاريخ الانتهاء';
+
+  @override
+  String get payment_cvv_label => 'رمز التحقق';
+
+  @override
+  String get payment_card_holder_hint => 'الاسم كما هو على البطاقة';
+
+  @override
+  String get payment_card_holder_label => 'اسم حامل البطاقة';
+
+  @override
+  String get payment_total_label => 'الإجمالي المطلوب دفعه';
+
+  @override
+  String get payment_total_includes_tax => 'شامل الضريبة';
+
+  @override
+  String get payment_pay_now_button => 'ادفع الآن';
+
+  @override
+  String get payment_secure_label => 'عملية دفع آمنة';
+
+  @override
+  String get payment_success_title => 'تم الدفع بنجاح!';
+
+  @override
+  String get payment_success_subtitle =>
+      'تم تفعيل اشتراكك. استمتع بوجباتك الصحية.';
+
+  @override
+  String get payment_success_button => 'العودة للرئيسية';
 }

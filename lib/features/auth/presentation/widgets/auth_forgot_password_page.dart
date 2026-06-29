@@ -78,23 +78,23 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
               validator: (value) => Validations.validatePhoneNumber(context, value),
             ),
             const SizedBox(height: Spacing.xl),
-            AppButton.filled(
-              text: l10n.auth_send_otp_button,
-              iconWidget: SvgPicture.asset(
-                Assets.loginIcon,
-                width: 18,
-                height: 18,
-              ),
-              onPressed: _handleSubmit,
-              color: AppColors.primary,
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF1D8134),
-                  Color(0xFF51C063),
-                ],
-              ),
-              borderRadius: 999,
-            ),
+            // AppButton.filled(
+            //   text: l10n.auth_send_otp_button,
+            //   iconWidget: SvgPicture.asset(
+            //     Assets.loginIcon,
+            //     width: 18,
+            //     height: 18,
+            //   ),
+            //   onPressed: _handleSubmit,
+            //   color: AppColors.primary,
+            //   gradient: LinearGradient(
+            //     colors: [
+            //       Color(0xFF1D8134),
+            //       Color(0xFF51C063),
+            //     ],
+            //   ),
+            //   borderRadius: 999,
+            // ),
           ],
         ),
       ),

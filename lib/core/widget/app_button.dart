@@ -124,8 +124,9 @@ class AppButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding:
                   padding ?? const EdgeInsets.symmetric(horizontal: Spacing.sm),
-              backgroundColor:
-                  gradient == null ? effectiveColor : Colors.transparent,
+              backgroundColor: gradient == null
+                  ? effectiveColor
+                  : Colors.transparent,
               foregroundColor: textColor ?? colors.onPrimary,
               minimumSize: Size(isExpanded ? double.infinity : 0, h),
               shape: RoundedRectangleBorder(

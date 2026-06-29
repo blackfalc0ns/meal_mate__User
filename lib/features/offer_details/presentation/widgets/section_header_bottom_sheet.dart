@@ -16,17 +16,13 @@ class SectionHeaderBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMonthlyOffer = offer.couponCode == 'SAVE20';
-
-    if (!isMonthlyOffer) {
-      return _GenericHeader(offer: offer, onClose: onClose);
-    }
-
     final discountLabel =
         offer.discountLabel.isNotEmpty ? offer.discountLabel : '20%';
     final heroImage = offer.imageAsset.isNotEmpty
         ? offer.imageAsset
         : 'assets/images/offers/grilled_plate.png';
+    final titleLine1 = offer.detailTitle ?? offer.title;
+    final titleLine2 = offer.detailSubtitle ?? offer.subtitle;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -35,6 +31,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Top bar: X + title
             SizedBox(
               height: 34,
               child: Stack(
@@ -59,8 +56,12 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'خصم $discountLabel على الباقات الشهرية',
+                      offer.badgeLabel.isNotEmpty
+                          ? offer.badgeLabel
+                          : '$discountLabel على ${offer.title}',
                       textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: FontSize.size16,
@@ -71,39 +72,46 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 14),
+
+            const SizedBox(height: 8),
+
+            // Hero row: image on left (LTR left = RTL right visually) + text on right
             Row(
-              textDirection: TextDirection.rtl,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              textDirection: TextDirection.ltr,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Image on the left
+                _PlateHero(
+                  imageAsset: heroImage,
+                  accentColor: offer.accentColor,
+                ),
+                const SizedBox(width: 12),
+                // Text on the right
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 22),
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 20),
                         Text(
                           'خصم',
                           style: getBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size18,
+                            fontSize: FontSize.size16,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 2),
                         Text(
                           discountLabel,
-                          textAlign: TextAlign.end,
                           style: getBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: 36,
-                            color: AppColors.primaryDark,
+                            fontSize: 40,
+                            color: offer.accentColor,
                           ),
                         ),
-                        const SizedBox(height: 2),
                         Text(
-                          'على الباقات الشهرية',
-                          textAlign: TextAlign.end,
+                          titleLine1,
                           style: getBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
                             fontSize: FontSize.size18,
@@ -112,10 +120,10 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'خطط غذائية متكاملة\nتساعدك على تحقيق أهدافك',
-                          style: getMediumStyle(
+                          titleLine2,
+                          style: getRegularStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size14,
+                            fontSize: FontSize.size13,
                             color: AppColors.textSecondary,
                           ),
                         ),
@@ -123,8 +131,6 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
-                _PlateHero(imageAsset: heroImage),
               ],
             ),
           ],
@@ -134,117 +140,47 @@ class SectionHeaderBottomSheet extends StatelessWidget {
   }
 }
 
-class _GenericHeader extends StatelessWidget {
-  const _GenericHeader({required this.offer, required this.onClose});
-
-  final OfferDealEntity offer;
-  final VoidCallback? onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    final discountLabel =
-        offer.discountLabel.isNotEmpty ? offer.discountLabel : 'خصم';
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 2, end: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      discountLabel,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size24,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      offer.title,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size18,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (onClose != null)
-              InkResponse(
-                onTap: onClose,
-                radius: 24,
-                child: const SizedBox(
-                  width: 42,
-                  height: 42,
-                  child: Icon(
-                    Icons.close_rounded,
-                    size: 28,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _PlateHero extends StatelessWidget {
-  const _PlateHero({required this.imageAsset});
+  const _PlateHero({required this.imageAsset, required this.accentColor});
 
   final String imageAsset;
+  final Color accentColor;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 156,
-      height: 176,
+      width: 150,
+      height: 150,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
+          // Leaf dots
           Positioned(
-            left: -6,
-            top: 12,
-            child: _LeafDot(
-              size: 18,
-              color: AppColors.primary.withValues(alpha: 0.32),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            bottom: 18,
-            child: _LeafDot(
-              size: 16,
-              color: AppColors.primary.withValues(alpha: 0.24),
-            ),
-          ),
-          Positioned(
-            right: -2,
-            top: 24,
-            child: _LeafDot(
-              size: 14,
-              color: AppColors.primary.withValues(alpha: 0.18),
-            ),
+            right: -6,
+            top: 10,
+            child: _LeafDot(size: 14, color: accentColor.withValues(alpha: 0.35)),
           ),
           Positioned(
             right: 10,
-            bottom: 10,
-            child: _LeafDot(
-              size: 12,
-              color: AppColors.primary.withValues(alpha: 0.16),
-            ),
+            top: -4,
+            child: _LeafDot(size: 10, color: accentColor.withValues(alpha: 0.25)),
           ),
+          Positioned(
+            left: -4,
+            bottom: 20,
+            child: _LeafDot(size: 12, color: accentColor.withValues(alpha: 0.28)),
+          ),
+          Positioned(
+            left: 10,
+            bottom: 6,
+            child: _LeafDot(size: 9, color: accentColor.withValues(alpha: 0.20)),
+          ),
+          Positioned(
+            right: 2,
+            bottom: 8,
+            child: _LeafDot(size: 8, color: accentColor.withValues(alpha: 0.18)),
+          ),
+          // Circle image
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -255,13 +191,13 @@ class _PlateHero extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.shadow.withValues(alpha: 0.18),
+                    color: accentColor.withValues(alpha: 0.18),
                     blurRadius: 18,
-                    offset: const Offset(0, 10),
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(6),
               child: ClipOval(
                 child: Image.asset(imageAsset, fit: BoxFit.cover),
               ),

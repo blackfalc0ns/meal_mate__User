@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
@@ -200,7 +201,9 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
         totalPrice: plans[_selectedPlanIndex].discountedPrice,
         buttonLabel: l10n.offer_details_summary_button,
         securePaymentLabel: l10n.offer_details_summary_secure_payment,
-        onPrimaryPressed: () {},
+        onPrimaryPressed: () {
+          Navigator.of(context).pushNamed(AppRoutes.offerActivated);
+        },
       ),
     );
   }

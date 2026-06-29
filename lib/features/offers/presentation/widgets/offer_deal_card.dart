@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 
 class OfferDealCard extends StatelessWidget {
@@ -45,12 +47,12 @@ class OfferDealCard extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 78,
+                height: 40,
                 child: Center(
                   child: Image.asset(offer.imageAsset, fit: BoxFit.contain),
                 ),
               ),
-              const SizedBox(height: 6),
+            
               if (offer.badgeLabel.isNotEmpty) ...[
                 _Badge(label: offer.badgeLabel, color: offer.accentColor),
                 const SizedBox(height: 6),
@@ -81,7 +83,7 @@ class OfferDealCard extends StatelessWidget {
               const SizedBox(height: 6),
               SizedBox(
                 height: 30,
-                child: AppButton(text: offer.buttonLabel, onPressed: onTap),
+                child: CustomAppButton(size: AppButtonSize.small,text: offer.buttonLabel, onPressed: onTap,smallAsset: Assets.buttonSmall,),
               ),
               const SizedBox(height: 6),
               Row(

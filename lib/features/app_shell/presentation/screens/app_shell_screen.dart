@@ -27,56 +27,54 @@ class _AppShellView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      bottomNavigationBar: Directionality(
-        textDirection: TextDirection.rtl,
-        child: BlocBuilder<HomeCubit, HomeState>(
-          buildWhen: (previous, current) =>
-              previous.selectedTabIndex != current.selectedTabIndex,
-          builder: (context, state) {
-            final l10n = context.localization;
-            return AppBottomNavBar(
-              currentIndex: state.selectedTabIndex,
-              onTap: (index) => context.read<HomeCubit>().selectTab(index),
-              items: [
-                AppBottomNavBarItem(
-                  icon: Icons.home_outlined,
-                  selectedIcon: Icons.home_rounded,
-                  label: l10n.nav_home,
-                ),
-                AppBottomNavBarItem(
-                  icon: Icons.restaurant_menu_outlined,
-                  selectedIcon: Icons.restaurant_menu,
-                  label: l10n.nav_meals,
-                ),
-                AppBottomNavBarItem(
-                  icon: Icons.local_fire_department_outlined,
-                  selectedIcon: Icons.local_fire_department,
-                  label: l10n.nav_offers,
-                  isAnimated: true,
-                ),
-                AppBottomNavBarItem(
-                  icon: Icons.card_membership_outlined,
-                  selectedIcon: Icons.card_membership,
-                  label: l10n.nav_subscription,
-                ),
-                AppBottomNavBarItem(
-                  icon: Icons.person_outline_rounded,
-                  selectedIcon: Icons.person_rounded,
-                  label: l10n.nav_profile,
-                ),
-              ],
-            );
-          },
-        ),
+    final l10n = context.localization;
+
+    final navItems = [
+      AppBottomNavBarItem(
+        icon: Icons.home_outlined,
+        selectedIcon: Icons.home_rounded,
+        label: l10n.nav_home,
+        sfSymbol: 'house.fill',
       ),
-      body: BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.selectedTabIndex != current.selectedTabIndex,
-        builder: (context, state) {
-          final l10n = context.localization;
-          return IndexedStack(
+      AppBottomNavBarItem(
+        icon: Icons.restaurant_menu_outlined,
+        selectedIcon: Icons.restaurant_menu,
+        label: l10n.nav_meals,
+        sfSymbol: 'fork.knife',
+      ),
+      AppBottomNavBarItem(
+        icon: Icons.local_fire_department_outlined,
+        selectedIcon: Icons.local_fire_department,
+        label: l10n.nav_offers,
+        sfSymbol: 'flame.fill',
+      ),
+      AppBottomNavBarItem(
+        icon: Icons.card_membership_outlined,
+        selectedIcon: Icons.card_membership,
+        label: l10n.nav_subscription,
+        sfSymbol: 'star.fill',
+      ),
+      AppBottomNavBarItem(
+        icon: Icons.person_outline_rounded,
+        selectedIcon: Icons.person_rounded,
+        label: l10n.nav_profile,
+        sfSymbol: 'person.fill',
+      ),
+    ];
+
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (prev, cur) => prev.selectedTabIndex != cur.selectedTabIndex,
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          // extendBody lets the page content slide under the glass capsule.
+          extendBody: false,
+          bottomNavigationBar: AppBottomNavBar(
+            currentIndex: state.selectedTabIndex,
+            onTap: (index) => context.read<HomeCubit>().selectTab(index),
+            items: navItems,
+          ),
+          body: IndexedStack(
             index: state.selectedTabIndex,
             children: [
               const HomeScreen(),
@@ -94,18 +92,15 @@ class _AppShellView extends StatelessWidget {
                 subtitle: l10n.coming_soon_subtitle,
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
 class _ShellPlaceholderView extends StatelessWidget {
-  const _ShellPlaceholderView({
-    required this.title,
-    required this.subtitle,
-  });
+  const _ShellPlaceholderView({required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
@@ -128,17 +123,17 @@ class _ShellPlaceholderView extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: Spacing.sm),
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
             ),
           ],
         ),

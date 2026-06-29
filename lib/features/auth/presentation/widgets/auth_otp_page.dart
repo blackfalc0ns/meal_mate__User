@@ -105,7 +105,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
             },
           ),
           const SizedBox(height: Spacing.xl),
-          AppButton.filled(
+          AppButton(variant: AppButtonVariant.filled,
             text: l10n.auth_verify_code_button,
             iconWidget: SvgPicture.asset(
               Assets.loginIcon,
@@ -120,7 +120,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
                 Color(0xFF51C063),
               ],
             ),
-            borderRadius: 999,
+            
           ),
           const SizedBox(height: Spacing.lg),
           Center(

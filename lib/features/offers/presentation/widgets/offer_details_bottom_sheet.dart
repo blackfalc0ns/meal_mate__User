@@ -21,7 +21,7 @@ class OfferDetailsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height * 0.82;
+    final height = MediaQuery.sizeOf(context).height * 0.60;
 
     return SizedBox(
       height: height,

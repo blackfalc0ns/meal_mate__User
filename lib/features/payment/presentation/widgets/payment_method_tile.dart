@@ -1,0 +1,257 @@
+import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
+
+/// ─────────────────────────────────────────────────────────────
+/// Single payment method tile with radio, icon, title & subtitle.
+/// ─────────────────────────────────────────────────────────────
+class PaymentMethodTile extends StatelessWidget {
+  const PaymentMethodTile({
+    super.key,
+    required this.method,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final PaymentMethodEntity method;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.base,
+          vertical: Spacing.md,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(Spacing.cardRadius),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.border,
+            width: isSelected ? 1.5 : 1.0,
+          ),
+        ),
+        child: Row(
+          children: [
+            // ── Radio indicator ──
+            _RadioDot(isSelected: isSelected),
+            const SizedBox(width: Spacing.md),
+
+            // ── Title + subtitle ──
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    method.title,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size14,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  _buildSubtitle(),
+                ],
+              ),
+            ),
+            const SizedBox(width: Spacing.md),
+
+            // ── Payment logo ──
+            _PaymentLogo(type: method.type),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubtitle() {
+    if (method.type == PaymentMethodType.wallet &&
+        method.walletBalance != null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            '${method.walletBalance!.toStringAsFixed(3)} KWD',
+            style: getMediumStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: FontSize.size13,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            method.subtitle,
+            style: getRegularStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: FontSize.size13,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      );
+    }
+    return Text(
+      method.subtitle,
+      style: getRegularStyle(
+        fontFamily: FontConstant.ibmPlexSansArabic,
+        fontSize: FontSize.size13,
+        color: AppColors.textSecondary,
+      ),
+    );
+  }
+}
+
+class _RadioDot extends StatelessWidget {
+  const _RadioDot({required this.isSelected});
+
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isSelected ? AppColors.primary : AppColors.border,
+          width: isSelected ? 0 : 1.5,
+        ),
+        color: isSelected ? AppColors.primary : AppColors.white,
+      ),
+      child: isSelected
+          ? const Icon(Icons.check_rounded, color: AppColors.white, size: 14)
+          : null,
+    );
+  }
+}
+
+/// Renders the brand logo for each payment method type.
+class _PaymentLogo extends StatelessWidget {
+  const _PaymentLogo({required this.type});
+
+  final PaymentMethodType type;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (type) {
+      case PaymentMethodType.mada:
+        return _MadaLogo();
+      case PaymentMethodType.visa:
+        return _VisaLogo();
+      case PaymentMethodType.applePay:
+        return _ApplePayLogo();
+      case PaymentMethodType.wallet:
+        return _WalletLogo();
+    }
+  }
+}
+
+class _MadaLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 52,
+      height: 32,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF004F9E), Color(0xFF0075BE)],
+        ),
+      ),
+      alignment: Alignment.center,
+      child: const Text(
+        'مدى',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 13,
+          fontFamily: 'IBMPlexSansArabic',
+        ),
+      ),
+    );
+  }
+}
+
+class _VisaLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 52,
+      height: 32,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1F71),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      alignment: Alignment.center,
+      child: const Text(
+        'VISA',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 14,
+          letterSpacing: 1.5,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+    );
+  }
+}
+
+class _ApplePayLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 52,
+      height: 32,
+      decoration: BoxDecoration(
+        color: AppColors.black,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      alignment: Alignment.center,
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.apple, color: Colors.white, size: 16),
+          SizedBox(width: 2),
+          Text(
+            'Pay',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WalletLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        color: AppColors.primarySurface,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Icon(
+        Icons.account_balance_wallet_rounded,
+        color: AppColors.primary,
+        size: 20,
+      ),
+    );
+  }
+}

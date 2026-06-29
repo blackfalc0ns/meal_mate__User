@@ -80,7 +80,7 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
               onForgotPassword: () => widget.onNavigate(AuthPageType.forgotPassword),
             ),
             const SizedBox(height: Spacing.xl),
-            AppButton.filled(
+            AppButton(variant: AppButtonVariant.filled,
               text: l10n.auth_sign_in_button,
               iconWidget: SvgPicture.asset(
                 Assets.loginIcon,
@@ -95,7 +95,7 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                   Color(0xFF51C063),
                 ],
               ),
-              borderRadius: 999,
+             
             ),
           ],
         ),

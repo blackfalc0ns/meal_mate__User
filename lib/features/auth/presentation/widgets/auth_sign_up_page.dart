@@ -113,7 +113,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               },
             ),
             const SizedBox(height: Spacing.xl),
-            AppButton.filled(
+            AppButton(variant: AppButtonVariant.filled,
               text: l10n.auth_create_account_button,
               iconWidget: SvgPicture.asset(
                 Assets.loginIcon,
@@ -128,7 +128,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                   Color(0xFF51C063),
                 ],
               ),
-              borderRadius: 999,
+             
             ),
           ],
         ),

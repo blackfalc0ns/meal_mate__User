@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 
+/// Info card with up to four rows — each controlled by a bool flag:
+///
+///  [showSummaryRow]   → tag icon + summaryText (no title label)
+///  always shown       → calendar icon + "مدة العرض" bold green + durationText
+///  [showCouponSection]→ ticket icon + "رمز الخصم" bold green + copy/chip row
+///  always shown       → info icon + "الشروط والأحكام" bold green + termsText
 class OfferDetailsInfoCard extends StatelessWidget {
   const OfferDetailsInfoCard({
     super.key,
@@ -13,6 +21,8 @@ class OfferDetailsInfoCard extends StatelessWidget {
     required this.termsText,
     required this.accentColor,
     this.onCopyCode,
+    this.showSummaryRow = true,
+    this.showCouponSection = true,
   });
 
   final String summaryText;
@@ -20,7 +30,15 @@ class OfferDetailsInfoCard extends StatelessWidget {
   final String couponCode;
   final String termsText;
   final Color accentColor;
+
+  /// No longer used — copy is handled internally with CustomSnackbar.
   final VoidCallback? onCopyCode;
+
+  /// Show the first row (tag icon + summary text)?
+  final bool showSummaryRow;
+
+  /// Show the coupon-code row (ticket icon + copy button + dashed chip)?
+  final bool showCouponSection;
 
   @override
   Widget build(BuildContext context) {
@@ -32,73 +50,35 @@ class OfferDetailsInfoCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _InfoSection(
-            title: 'تفاصيل العرض',
-            subtitle: summaryText,
-            icon: Icons.local_offer_rounded,
-            accentColor: accentColor,
-            showDivider: true,
-          ),
-          _InfoSection(
+          // ── Row 1: summary (optional) ───────────────────
+          if (showSummaryRow) ...[
+            _SummaryRow(text: summaryText, accentColor: accentColor),
+            const Divider(height: 1, thickness: 1, color: Color(0xFFD9E3D7)),
+          ],
+
+          // ── Row 2: duration (always shown) ──────────────
+          _InfoRow(
+            icon: Icons.calendar_month_rounded,
             title: 'مدة العرض',
             subtitle: durationText,
-            icon: Icons.calendar_month_rounded,
             accentColor: accentColor,
             showDivider: true,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.xs,
+
+          // ── Row 3: coupon (optional) ─────────────────────
+          if (showCouponSection) ...[
+            _CouponRow(
+              couponCode: couponCode,
+              accentColor: accentColor,
             ),
-            child: Row(
-              textDirection: TextDirection.rtl,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.confirmation_num_outlined,
-                  size: 18,
-                  color: AppColors.primary,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'رمز الخصم',
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: 12,
-                          color: AppColors.primaryVariant,
-                        ),
-                      ),
-                      Row(
-                        textDirection: TextDirection.rtl,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _CopyButton(
-                            label: 'نسخ الرمز',
-                            onPressed: onCopyCode,
-                          ),
-                          const Spacer(),
-                          _CouponChip(
-                            code: couponCode,
-                            accentColor: accentColor,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1, thickness: 1, color: Color(0xFFD9E3D7)),
-          _InfoSection(
+            const Divider(height: 1, thickness: 1, color: Color(0xFFD9E3D7)),
+          ],
+
+          // ── Row 4: terms (always shown, no divider after) ─
+          _InfoRow(
+            icon: Icons.info_outline_rounded,
             title: 'الشروط والأحكام',
             subtitle: termsText,
-            icon: Icons.info_outline_rounded,
             accentColor: accentColor,
             showDivider: false,
           ),
@@ -108,18 +88,58 @@ class OfferDetailsInfoCard extends StatelessWidget {
   }
 }
 
-class _InfoSection extends StatelessWidget {
-  const _InfoSection({
+// ── Row 1: tag icon + summary text only (no bold title) ──────────
+
+class _SummaryRow extends StatelessWidget {
+  const _SummaryRow({required this.text, required this.accentColor});
+
+  final String text;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.sm,
+        vertical: Spacing.sm,
+      ),
+      child: Row(
+        textDirection: TextDirection.rtl,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.local_offer_rounded, size: 18, color: accentColor),
+          const SizedBox(width: Spacing.sm),
+          Expanded(
+            child: Text(
+              text,
+              textDirection: TextDirection.rtl,
+              style: getMediumStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size13,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Rows 2 & 4: icon + bold green title + grey subtitle ──────────
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.icon,
     required this.title,
     required this.subtitle,
-    required this.icon,
     required this.accentColor,
     required this.showDivider,
   });
 
+  final IconData icon;
   final String title;
   final String subtitle;
-  final IconData icon;
   final Color accentColor;
   final bool showDivider;
 
@@ -130,13 +150,14 @@ class _InfoSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.sm,
-            vertical: Spacing.xs,
+            vertical: Spacing.sm,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            textDirection: TextDirection.rtl,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icon, size: 18, color: AppColors.primaryVariant),
-              const SizedBox(width: 10),
+              Icon(icon, size: 18, color: accentColor),
+              const SizedBox(width: Spacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,17 +166,17 @@ class _InfoSection extends StatelessWidget {
                       title,
                       style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size12,
-                        color: AppColors.primaryVariant,
+                        fontSize: FontSize.size13,
+                        color: accentColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       subtitle,
-                      textAlign: TextAlign.right,
+                      textDirection: TextDirection.rtl,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 11,
+                        fontSize: FontSize.size11,
                         color: AppColors.textHint,
                       ),
                     ),
@@ -172,8 +193,118 @@ class _InfoSection extends StatelessWidget {
   }
 }
 
-class _CouponChip extends StatelessWidget {
-  const _CouponChip({required this.code, required this.accentColor});
+// ── Row 3: coupon code with copy button + dashed chip ────────────
+
+class _CouponRow extends StatelessWidget {
+  const _CouponRow({
+    required this.couponCode,
+    required this.accentColor,
+  });
+
+  final String couponCode;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.sm,
+        vertical: Spacing.sm,
+      ),
+      child: Row(
+        textDirection: TextDirection.rtl,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.confirmation_num_outlined, size: 18, color: accentColor),
+          const SizedBox(width: Spacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'رمز الخصم',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size13,
+                    color: accentColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    _CopyButton(
+                      label: 'نسخ الرمز',
+                      onPressed: () async {
+                        await Clipboard.setData(
+                          ClipboardData(text: couponCode),
+                        );
+                        if (context.mounted) {
+                          CustomSnackbar.showSuccess(
+                            context: context,
+                            message: 'تم نسخ الرمز بنجاح',
+                          );
+                        }
+                      },
+                    ),
+                    const Spacer(),
+                    _DashedChip(code: couponCode, accentColor: accentColor),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Copy button ──────────────────────────────────────────────────
+
+class _CopyButton extends StatelessWidget {
+  const _CopyButton({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: Color(0xFFD7DED4)),
+        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        minimumSize: const Size(0, 34),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        textDirection: TextDirection.rtl,
+        children: [
+          Text(
+            label,
+            style: getBoldStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: FontSize.size11,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(width: 3),
+          const Icon(Icons.copy_rounded, size: 14, color: AppColors.textPrimary),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Dashed border chip ───────────────────────────────────────────
+
+class _DashedChip extends StatelessWidget {
+  const _DashedChip({required this.code, required this.accentColor});
 
   final String code;
   final Color accentColor;
@@ -196,49 +327,11 @@ class _CouponChip extends StatelessWidget {
             textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 12,
+              fontSize: FontSize.size12,
               color: accentColor,
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _CopyButton extends StatelessWidget {
-  const _CopyButton({required this.label, required this.onPressed});
-
-  final String label;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFFD7DED4)),
-        foregroundColor: AppColors.textPrimary,
-        backgroundColor: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        minimumSize: const Size(0, 34),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        textDirection: TextDirection.rtl,
-        children: [
-          Text(
-            label,
-            style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 11,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(width: 3),
-          const Icon(Icons.copy_rounded, size: 14, color: AppColors.textPrimary),
-        ],
       ),
     );
   }
@@ -262,13 +355,12 @@ class _DashedBorderPainter extends CustomPainter {
       Offset.zero & size,
       const Radius.circular(999),
     );
-
     final path = Path()..addRRect(rect);
     for (final metric in path.computeMetrics()) {
       var distance = 0.0;
       while (distance < metric.length) {
-        final length = metric.length - distance < dashWidth
-            ? metric.length - distance
+        final length = (metric.length - distance) < dashWidth
+            ? (metric.length - distance)
             : dashWidth;
         canvas.drawPath(metric.extractPath(distance, distance + length), paint);
         distance += dashWidth + dashGap;
@@ -277,7 +369,5 @@ class _DashedBorderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _DashedBorderPainter oldDelegate) {
-    return oldDelegate.color != color;
-  }
+  bool shouldRepaint(covariant _DashedBorderPainter old) => old.color != color;
 }

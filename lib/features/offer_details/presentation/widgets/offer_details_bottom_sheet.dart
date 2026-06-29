@@ -14,24 +14,43 @@ class OfferDetailsBottomSheet extends StatelessWidget {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.18),
+      barrierColor: Colors.black.withValues(alpha: 0.4),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+      ),
       builder: (_) => OfferDetailsBottomSheet(offer: offer),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height * 0.82;
+    final height = MediaQuery.sizeOf(context).height * 0.60;
 
     return SizedBox(
       height: height,
-      child: OfferDetailsSheetContent(
-        offer: offer,
-        onClose: () => Navigator.of(context).pop(),
-        onPrimaryPressed: () {
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, AppRoutes.offerDetails);
-        },
+      child: Column(
+        children: [
+          // Drag handle
+          Container(
+           // margin: const EdgeInsets.only(top: 10, bottom: 4),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: const Color(0xFFDDE3DB),
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          Expanded(
+            child: OfferDetailsSheetContent(
+              offer: offer,
+              onClose: () => Navigator.of(context).pop(),
+              onPrimaryPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, AppRoutes.offerDetails);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

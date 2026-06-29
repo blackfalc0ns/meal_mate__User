@@ -792,4 +792,104 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get currency => 'KWD';
+
+  @override
+  String get payment_title => 'Payment';
+
+  @override
+  String get payment_order_summary_title => 'Order Summary';
+
+  @override
+  String get payment_plan_month => 'Monthly Plan';
+
+  @override
+  String get payment_plan_duration => '26 days';
+
+  @override
+  String get payment_plan_meals => '4 meals per day';
+
+  @override
+  String get payment_base_price_label => 'Base price';
+
+  @override
+  String get payment_discount_label => 'Discount (20%)';
+
+  @override
+  String get payment_total_after_discount => 'Total after discount';
+
+  @override
+  String get payment_coupon_hint => 'User discount code';
+
+  @override
+  String get payment_method_section_title => 'Choose payment method';
+
+  @override
+  String get payment_method_mada => 'Mada Card';
+
+  @override
+  String get payment_method_mada_subtitle => 'Pay using Mada cards';
+
+  @override
+  String get payment_method_visa => 'Credit / Debit Card';
+
+  @override
+  String get payment_method_visa_subtitle => 'Visa, Mastercard';
+
+  @override
+  String get payment_method_apple => 'Apple Pay';
+
+  @override
+  String get payment_method_apple_subtitle => 'Pay using Apple Pay';
+
+  @override
+  String get payment_method_wallet => 'MealMate Wallet';
+
+  @override
+  String get payment_method_wallet_balance => 'Available balance:';
+
+  @override
+  String get payment_card_details_title => 'Card Details';
+
+  @override
+  String get payment_card_number_hint => '•••• •••• •••• ••••';
+
+  @override
+  String get payment_expiry_hint => 'MM / YY';
+
+  @override
+  String get payment_cvv_hint => '•••';
+
+  @override
+  String get payment_expiry_label => 'Expiry date';
+
+  @override
+  String get payment_cvv_label => 'CVV';
+
+  @override
+  String get payment_card_holder_hint => 'Name as on card';
+
+  @override
+  String get payment_card_holder_label => 'Card holder name';
+
+  @override
+  String get payment_total_label => 'Total amount due';
+
+  @override
+  String get payment_total_includes_tax => 'Includes tax';
+
+  @override
+  String get payment_pay_now_button => 'Pay Now';
+
+  @override
+  String get payment_secure_label => 'Secure payment';
+
+  @override
+  String get payment_success_title => 'Payment Successful!';
+
+  @override
+  String get payment_success_subtitle =>
+      'Your subscription is now active. Enjoy your healthy meals.';
+
+  @override
+  String get payment_success_button => 'Back to Home';
 }
