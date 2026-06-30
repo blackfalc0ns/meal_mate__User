@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_plan_option_card.dart';
@@ -67,33 +68,11 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n) {
-    return AppBar(
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      surfaceTintColor: Colors.transparent,
-      centerTitle: true,
-      leading: IconButton(
-        onPressed: () => Navigator.of(context).pop(),
-        icon: const Icon(Icons.close, color: AppColors.textPrimary),
-      ),
-      title: Text(
-        l10n.offer_details_title,
-        style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: FontSize.size16,
-          color: AppColors.textPrimary,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: AppColors.textPrimary,
-            size: 20,
-          ),
-        ),
-      ],
+    return CustomAppBar(
+      title: l10n.offer_details_title,
+   
+     
+     
     );
   }
 
@@ -159,7 +138,10 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
     );
   }
 
-  Widget _buildPlanSection(AppLocalizations l10n, List<OfferDetailsPlanData> plans) {
+  Widget _buildPlanSection(
+    AppLocalizations l10n,
+    List<OfferDetailsPlanData> plans,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -193,7 +175,10 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
     );
   }
 
-  Widget _buildBottomSummary(AppLocalizations l10n, List<OfferDetailsPlanData> plans) {
+  Widget _buildBottomSummary(
+    AppLocalizations l10n,
+    List<OfferDetailsPlanData> plans,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(Spacing.base),
       child: OfferDetailsSummaryCard(

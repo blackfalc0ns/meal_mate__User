@@ -9,11 +9,14 @@ class OffersHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
-      child: Image.asset(
-        'assets/images/offers/banner_offfer.png',
+      borderRadius: BorderRadius.circular(46),
+      child: SizedBox(
+        height: 225,
         width: double.infinity,
-        fit: BoxFit.cover,
+        child: Image.asset(
+          'assets/images/offers/banner_offfer.png',
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }

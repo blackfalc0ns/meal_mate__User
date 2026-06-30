@@ -5,7 +5,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/custom_button.dart';
 
 class OfferDetailsSummaryCard extends StatelessWidget {
   const OfferDetailsSummaryCard({

@@ -19,12 +19,13 @@ class OfferDealCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
-          width: 152,
-          padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+          width: 111,
+          height: 188,
+          padding: const EdgeInsets.fromLTRB(7, 7, 7, 5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
+            borderRadius: BorderRadius.circular(14),
             gradient: LinearGradient(
               colors: [offer.surfaceColor, AppColors.white],
               begin: Alignment.topCenter,
@@ -34,96 +35,111 @@ class OfferDealCard extends StatelessWidget {
               color: offer.accentColor.withValues(alpha: 0.16),
             ),
           ),
-          child: Column(
+          child: Stack(
             children: [
-              Row(
+              Column(
                 children: [
-                  _RoundIcon(
-                    icon: Icons.card_giftcard_rounded,
-                    backgroundColor: offer.accentColor.withValues(alpha: 0.18),
-                    iconColor: offer.accentColor,
+                  SizedBox(
+                    height: 56,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: 78,
+                        height: 52,
+                        child: Image.asset(
+                          offer.imageAsset,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
                   ),
-                  const Spacer(),
-                ],
-              ),
-              SizedBox(
-                height: 40,
-                child: Center(
-                  child: Image.asset(offer.imageAsset, fit: BoxFit.contain),
-                ),
-              ),
-            
-              if (offer.badgeLabel.isNotEmpty) ...[
-                _Badge(label: offer.badgeLabel, color: offer.accentColor),
-                const SizedBox(height: 6),
-              ],
-              Text(
-                offer.title,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size11,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                offer.subtitle,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size10,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 6),
-              SizedBox(
-                height: 30,
-                child: CustomAppButton(size: AppButtonSize.small,text: offer.buttonLabel, onPressed: onTap,smallAsset: Assets.buttonSmall,),
-              ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.access_time_rounded,
-                    size: 13,
-                    color: AppColors.textHint,
+                  const SizedBox(height: 4),
+
+                  if (offer.badgeLabel.isNotEmpty) ...[
+                    _Badge(label: offer.badgeLabel, color: offer.accentColor),
+                    const SizedBox(height: 2),
+                  ],
+                  Text(
+                    offer.title,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size11,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                  const SizedBox(width: 4),
-                  if (offer.deliveryPrefixLabel != null) ...[
-                    Text(
-                      offer.deliveryPrefixLabel!,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize:
-                       FontSize.size9,
+                  const SizedBox(height: 2),
+                  Text(
+                    offer.subtitle,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size10,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  SizedBox(
+                    height: 23,
+                    child: AppButton(
+                      fontWeight: FontWeight.w700,
+                      fontSize: FontSize.size11,
+                      height: 23,
+                      text: offer.buttonLabel,
+                      onPressed: onTap,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.access_time_rounded,
+                        size: 13,
                         color: AppColors.textHint,
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                  ],
-                  Flexible(
-                    child: Text(
-                      offer.deliveryLabel,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 
-                       
-                        FontSize.size9,
-                        color: AppColors.textPrimary,
+                      const SizedBox(width: 4),
+                      if (offer.deliveryPrefixLabel != null) ...[
+                        Text(
+                          offer.deliveryPrefixLabel!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size9,
+                            color: AppColors.textHint,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                      ],
+                      Flexible(
+                        child: Text(
+                          offer.deliveryLabel,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size9,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
+              ),
+              Positioned(
+                left: 0,
+                top: 0,
+                child: _RoundIcon(
+                  icon: Icons.card_giftcard_rounded,
+                  backgroundColor: offer.accentColor,
+                  iconColor: AppColors.white,
+                ),
               ),
             ],
           ),
@@ -147,8 +163,8 @@ class _RoundIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 26,
-      height: 26,
+      width: 24,
+      height: 24,
       decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
       child: Icon(icon, size: 14, color: iconColor),
     );
@@ -164,7 +180,7 @@ class _Badge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(999),

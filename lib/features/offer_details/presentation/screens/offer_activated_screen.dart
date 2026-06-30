@@ -7,13 +7,13 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_order_summary_card.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_coupon_row.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_activated_hero_banner.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
 
-/// Screen shown after the user successfully activates an offer.
 class OfferActivatedScreen extends StatelessWidget {
   const OfferActivatedScreen({super.key});
 
@@ -31,11 +31,7 @@ class OfferActivatedScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: _OfferActivatedAppBar(
-          title: 'تم تفعيل العرض بنجاح',
-          onClose: () => Navigator.of(context).pop(),
-          onForward: () {},
-        ),
+        appBar: CustomAppBar(title: l10n.offer_activated_title),
         body: Column(
           children: [
             Expanded(
@@ -45,8 +41,6 @@ class OfferActivatedScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: Spacing.base),
-
-                    // 1. Hero banner
                     OfferActivatedHeroBanner(
                       imageAsset: _imageAsset,
                       discountLabel: '20%',
@@ -55,10 +49,7 @@ class OfferActivatedScreen extends StatelessWidget {
                       timerText: '02 يوم : 14 ساعة',
                       accentColor: _accentColor,
                     ),
-
                     const SizedBox(height: Spacing.base),
-
-                    // 2. Order summary card
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.lg,
@@ -74,10 +65,7 @@ class OfferActivatedScreen extends StatelessWidget {
                         imageAsset: _mealBoxAsset,
                       ),
                     ),
-
                     const SizedBox(height: Spacing.base),
-
-                    // 3. Coupon code row
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.lg,
@@ -100,10 +88,7 @@ class OfferActivatedScreen extends StatelessWidget {
                         },
                       ),
                     ),
-
                     const SizedBox(height: Spacing.base),
-
-                    // 4. Info card
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.lg,
@@ -145,14 +130,11 @@ class OfferActivatedScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: Spacing.xxl),
                   ],
                 ),
               ),
             ),
-
-            // Sticky bottom CTA
             _BottomCta(
               label: l10n.offer_details_open_plans_button,
               onPressed: () =>
@@ -165,59 +147,6 @@ class OfferActivatedScreen extends StatelessWidget {
   }
 }
 
-// ── App bar ──────────────────────────────────────────────────────
-
-class _OfferActivatedAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  const _OfferActivatedAppBar({
-    required this.title,
-    required this.onClose,
-    required this.onForward,
-  });
-
-  final String title;
-  final VoidCallback onClose;
-  final VoidCallback onForward;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      surfaceTintColor: Colors.transparent,
-      centerTitle: true,
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        onPressed: onClose,
-        icon: const Icon(Icons.close_rounded, color: AppColors.textPrimary),
-      ),
-      title: Text(
-        title,
-        style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: FontSize.size16,
-          color: AppColors.textPrimary,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: onForward,
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: AppColors.textPrimary,
-            size: 18,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ── Bottom CTA ───────────────────────────────────────────────────
-
 class _BottomCta extends StatelessWidget {
   const _BottomCta({required this.label, required this.onPressed});
 
@@ -226,7 +155,7 @@ class _BottomCta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
       child: SafeArea(
         top: false,

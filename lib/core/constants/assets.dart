@@ -38,6 +38,12 @@ class Assets {
   static const String homeSnack = '$_images/home_donut.png';
   static const String homeHook = '$_images/home_hook.png';
 
+  // Calendar
+  static const String calendarBreakfast = '$_images/home_oatmeal.png';
+  static const String calendarLunch = '$_images/offers/grilled_plate.png';
+  static const String calendarDinner = '$_images/home_hotdog.png';
+  static const String calendarSnack = '$_images/home_donut.png';
+
   // Offers / promotions
   static const String offerGiftBox = '$_images/offers/gift_box.png';
   static const String offerSaladBowl = '$_images/offers/salad_bowl.png';
@@ -70,6 +76,7 @@ class Assets {
   static const String icWallet = '$_icons/ic_wallet.svg';
   static const String buttonSmall = "$_svg/button_small.svg";
   static const String buttonLarge = "$_svg/button_large.svg";
+  static const String notificationBold = '$_svg/notification_bold.svg';
   // Other assets
   static const String searchNormal = '$_images/search-normal.svg';
 

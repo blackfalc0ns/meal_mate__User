@@ -89,4 +89,34 @@ class AppColors {
   // ── Shadow ──
   static const Color shadow = Color(0x1A000000);
   static const Color shadowDark = Color(0x33000000);
+
+  // Calendar
+  static const Color calendarBackground = Color(0xFFF8FCF9);
+  static const Color calendarTextPrimary = Color(0xFF191C1D);
+  static const Color calendarTextMuted = Color(0xFF5D5E68);
+  static const Color calendarAccent = Color(0xFF00864D);
+  static const Color calendarAccentDark = Color(0xFF006D40);
+  static const Color calendarCurrent = Color(0xFFFF6B57);
+  static const Color calendarCurrentDark = Color(0xFFAE3123);
+  static const Color calendarError = Color(0xFFD52A20);
+  static const Color calendarBorder = Color(0xFFE1E3E4);
+  static const Color calendarSoftBorder = Color(0xFFE8E9EA);
+  static const Color calendarCardBorder = Color(0xFFE8E8E8);
+  static const Color calendarIndicatorBorder = Color(0xFFF8F9FA);
+  static const Color calendarSurface = Color(0xFFFDFDFD);
+  static const Color calendarTextSecondary = Color(0xFF777982);
+  static const Color calendarTextBrown = Color(0xFF59413D);
+  static const Color calendarActionBrown = Color(0xFF7A605C);
+  static const Color calendarDayText = Color(0xFF242729);
+  static const Color calendarDateText = Color(0xFF303337);
+  static const Color calendarProgress = Color(0xFF007A49);
+  static const Color calendarProgressTrack = Color(0xFFE1EEE7);
+  static const Color calendarProgressText = Color(0xFF686873);
+  static const Color calendarProgressBadge = Color(0xFFCDEADE);
+  static const Color calendarTimelineInactive = Color(0x4D48AD75);
+  static const Color calendarTimelineDivider = Color(0xFFE7E8E9);
+  static const Color calendarShadow = Color(0x0D000000);
+  static const Color calendarLightShadow = Color(0x08000000);
+  static const Color calendarCardShadow = Color(0x1A000000);
+  static const Color calendarCurrentShadow = Color(0x66FF6B57);
 }

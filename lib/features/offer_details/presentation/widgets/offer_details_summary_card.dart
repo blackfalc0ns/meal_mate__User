@@ -4,8 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/custom_button.dart';
+import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 
 class OfferDetailsSummaryCard extends StatelessWidget {
   const OfferDetailsSummaryCard({
@@ -67,11 +66,11 @@ class OfferDetailsSummaryCard extends StatelessWidget {
               if (showButton) ...[
                 const SizedBox(width: 12),
                 Expanded(
-                  child: AppButton(
+                  child: CustomAppButton(
+                    size: AppButtonSize.small,
                     text: buttonLabel,
                     onPressed: onPrimaryPressed,
-                    height: 48,
-                   // borderRadius: 14,
+                    height: 40,
                   ),
                 ),
               ],

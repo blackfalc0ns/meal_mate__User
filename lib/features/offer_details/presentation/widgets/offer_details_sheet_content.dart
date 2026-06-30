@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/section_header_bottom_sheet.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
@@ -66,7 +66,7 @@ class OfferDetailsSheetContent extends StatelessWidget {
               ),
               if (showActionButton) ...[
                 const SizedBox(height: 18),
-                AppButton(
+                 CustomAppButton(
                   text: 'استفد الآن',
                   onPressed: onPrimaryPressed,
                   height: 48,

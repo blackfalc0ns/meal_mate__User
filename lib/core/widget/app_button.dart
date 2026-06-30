@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -23,6 +24,7 @@ class AppButton extends StatelessWidget {
     this.color,
     this.gradient,
     this.textColor,
+    this.fontSize,
     this.fontWeight,
     this.padding,
   });
@@ -41,6 +43,7 @@ class AppButton extends StatelessWidget {
     this.color,
     this.gradient,
     this.textColor,
+    this.fontSize,
     this.fontWeight,
     this.padding,
   }) : variant = AppButtonVariant.filled;
@@ -58,6 +61,7 @@ class AppButton extends StatelessWidget {
     this.color,
     this.gradient,
     this.textColor,
+    this.fontSize,
     this.fontWeight,
     this.padding,
   }) : variant = AppButtonVariant.outlined;
@@ -75,6 +79,7 @@ class AppButton extends StatelessWidget {
     this.color,
     this.gradient,
     this.textColor,
+    this.fontSize,
     this.fontWeight,
     this.padding,
   }) : variant = AppButtonVariant.text;
@@ -90,13 +95,14 @@ class AppButton extends StatelessWidget {
   final Color? color;
   final LinearGradient? gradient;
   final Color? textColor;
+  final double? fontSize;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final effectiveColor = color ?? colors.primary;
+    final effectiveColor = color ?? AppColors.primaryDark;
     final h = height ?? Spacing.buttonHeight;
     final r = borderRadius ?? Spacing.buttonRadius;
 
@@ -174,7 +180,7 @@ class AppButton extends StatelessWidget {
     final textDirection = Directionality.of(context);
 
     final style = getBoldStyle(
-      fontSize: FontSize.size16,
+      fontSize: fontSize ?? FontSize.size16,
       fontFamily: FontConstant.ibmPlexSansArabic,
       color: variant == AppButtonVariant.filled
           ? (textColor ?? colors.onPrimary)

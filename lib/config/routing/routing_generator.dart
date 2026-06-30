@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/offer_details/presentation/screens/offer
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
+import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 
 class RouteGenerator {
@@ -23,6 +24,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const OffersScreen(),
+        );
+      case AppRoutes.calendar:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const CalendarScreen(),
         );
       case AppRoutes.offerDetails:
         return MaterialPageRoute(

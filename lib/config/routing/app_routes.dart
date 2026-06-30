@@ -1,6 +1,7 @@
 abstract class AppRoutes {
   static const String home = '/home';
   static const String offers = '/offers';
+  static const String calendar = '/calendar';
   static const String offerDetails = '/offer-details';
   static const String offerActivated = '/offer-activated';
   static const String payment = '/payment';

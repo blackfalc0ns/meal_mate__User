@@ -36,88 +36,47 @@ class CustomAppButton extends StatelessWidget {
   final Color textColor;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
+
+  // Kept for backward compatibility with existing callers.
   final String largeAsset;
   final String smallAsset;
 
   @override
   Widget build(BuildContext context) {
-    return size == AppButtonSize.small
-        ? _buildSmall(context)
-        : _buildLarge(context);
-  }
-
-  // ── Small: SVG + نص متمركز بتعويض الـ drop-shadow (4px أسفل) ──
-  Widget _buildSmall(BuildContext context) {
-    final h = height ?? 32.0;
+    final isSmall = size == AppButtonSize.small;
+    final buttonHeight = height ?? (isSmall ? 40.0 : 35.0);
+    final asset = isSmall ? smallAsset : largeAsset;
 
     return SizedBox(
       width: isExpanded ? double.infinity : width,
-      height: h,
+      height: buttonHeight,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: isLoading ? null : onPressed,
-          child: Stack(
-            children: [
-              // الـ SVG يملأ كل المساحة
-              Positioned.fill(
-                child: SvgPicture.asset(smallAsset, fit: BoxFit.fill),
-              ),
-              // النص يتمركز في الـ shape الفعلية (بدون 4px shadow في الأسفل)
-              Positioned.fill(
-                bottom: 4,
-                child: Center(
-                  child: isLoading
-                      ? SizedBox(
-                          width: 14,
-                          height: 14,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: textColor,
-                          ),
-                        )
-                      : _buildLabel(FontSize.size12),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ── Large: SVG background ─────────────────────────────────
-  Widget _buildLarge(BuildContext context) {
-    final h = height ?? 56.0;
-
-    return SizedBox(
-      width: isExpanded ? double.infinity : width,
-      height: h,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
           onTap: isLoading ? null : onPressed,
           child: Stack(
             alignment: Alignment.center,
             children: [
               Positioned.fill(
-                child: SvgPicture.asset(largeAsset, fit: BoxFit.fill),
+                child: SvgPicture.asset(
+                  asset,
+                  fit: BoxFit.fill,
+                  clipBehavior: Clip.antiAlias,
+                ),
               ),
               Padding(
-                padding: padding ??
-                    const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    padding ??
+                    EdgeInsets.symmetric(horizontal: isSmall ? 12 : 20),
                 child: isLoading
-                    ? SizedBox(
-                        width: 22,
-                        height: 22,
+                    ? SizedBox.square(
+                        dimension: isSmall ? 14 : 22,
                         child: CircularProgressIndicator(
-                          strokeWidth: 2.4,
+                          strokeWidth: isSmall ? 2 : 2.4,
                           color: textColor,
                         ),
                       )
-                    : _buildLabel(FontSize.size16),
+                    : _buildLabel(isSmall ? FontSize.size12 : FontSize.size16),
               ),
             ],
           ),
@@ -126,7 +85,6 @@ class CustomAppButton extends StatelessWidget {
     );
   }
 
-  // ── Shared label ──────────────────────────────────────────
   Widget _buildLabel(double fontSize) {
     final style = getBoldStyle(
       fontSize: fontSize,

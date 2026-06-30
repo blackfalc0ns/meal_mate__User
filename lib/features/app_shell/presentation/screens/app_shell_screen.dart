@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart'
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
+import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
   const AppShellScreen({super.key});
@@ -67,8 +68,9 @@ class _AppShellView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.transparent,
-          // extendBody lets the page content slide under the glass capsule.
-          extendBody: false,
+          // Keep the area around the floating glass pill transparent and let
+          // the current page remain visible through it, as in the Figma design.
+          extendBody: true,
           bottomNavigationBar: AppBottomNavBar(
             currentIndex: state.selectedTabIndex,
             onTap: (index) => context.read<HomeCubit>().selectTab(index),
@@ -78,10 +80,7 @@ class _AppShellView extends StatelessWidget {
             index: state.selectedTabIndex,
             children: [
               const HomeScreen(),
-              _ShellPlaceholderView(
-                title: l10n.nav_meals,
-                subtitle: l10n.coming_soon_subtitle,
-              ),
+              const CalendarScreen(),
               const OffersScreen(),
               _ShellPlaceholderView(
                 title: l10n.nav_subscription,

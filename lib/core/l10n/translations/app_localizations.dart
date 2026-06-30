@@ -1562,6 +1562,12 @@ abstract class AppLocalizations {
   /// **'Choose plan'**
   String get offer_details_open_plans_button;
 
+  /// No description provided for @offer_activated_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer activated successfully'**
+  String get offer_activated_title;
+
   /// No description provided for @currency.
   ///
   /// In en, this message translates to:
@@ -1771,6 +1777,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Home'**
   String get payment_success_button;
+
+  /// No description provided for @calendar_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal calendar'**
+  String get calendar_title;
+
+  /// No description provided for @calendar_month_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly progress'**
+  String get calendar_month_progress;
+
+  /// No description provided for @calendar_month_progress_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed 30 meals out of 30'**
+  String get calendar_month_progress_value;
+
+  /// No description provided for @calendar_commitment.
+  ///
+  /// In en, this message translates to:
+  /// **'Great commitment 👏'**
+  String get calendar_commitment;
+
+  /// No description provided for @calendar_change_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Change meal'**
+  String get calendar_change_meal;
+
+  /// No description provided for @calendar_pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause temporarily'**
+  String get calendar_pause;
+
+  /// No description provided for @calendar_add_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Add meal'**
+  String get calendar_add_meal;
+
+  /// No description provided for @calendar_reschedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Reschedule meal'**
+  String get calendar_reschedule;
+
+  /// No description provided for @calendar_full_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Full plan'**
+  String get calendar_full_plan;
+
+  /// No description provided for @calendar_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get calendar_week;
+
+  /// No description provided for @calendar_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get calendar_today;
+
+  /// No description provided for @calendar_day_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan for September 25'**
+  String get calendar_day_plan;
+
+  /// No description provided for @calendar_day_plan_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan for {date}'**
+  String calendar_day_plan_date(String date);
+
+  /// No description provided for @calendar_scheduled_count.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals scheduled for today'**
+  String get calendar_scheduled_count;
+
+  /// No description provided for @calendar_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get calendar_completed;
+
+  /// No description provided for @calendar_current.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get calendar_current;
+
+  /// No description provided for @calendar_upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get calendar_upcoming;
+
+  /// No description provided for @calendar_breakfast_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast • 07:30 AM'**
+  String get calendar_breakfast_time;
+
+  /// No description provided for @calendar_breakfast_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Oatmeal with fruit and honey'**
+  String get calendar_breakfast_meal;
+
+  /// No description provided for @calendar_breakfast_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'450 calories'**
+  String get calendar_breakfast_calories;
+
+  /// No description provided for @calendar_lunch_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch • 01:00 PM'**
+  String get calendar_lunch_time;
+
+  /// No description provided for @calendar_lunch_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled chicken with brown rice'**
+  String get calendar_lunch_meal;
+
+  /// No description provided for @calendar_lunch_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'550 calories'**
+  String get calendar_lunch_calories;
+
+  /// No description provided for @calendar_lunch_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'32g protein'**
+  String get calendar_lunch_protein;
+
+  /// No description provided for @calendar_dinner_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner • 07:00 PM'**
+  String get calendar_dinner_time;
+
+  /// No description provided for @calendar_dinner_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy chicken sandwich'**
+  String get calendar_dinner_meal;
+
+  /// No description provided for @calendar_dinner_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'420 calories'**
+  String get calendar_dinner_calories;
+
+  /// No description provided for @calendar_snack_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack • 09:00 PM'**
+  String get calendar_snack_time;
+
+  /// No description provided for @calendar_snack_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh fruit snack'**
+  String get calendar_snack_meal;
+
+  /// No description provided for @calendar_snack_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'180 calories'**
+  String get calendar_snack_calories;
+
+  /// No description provided for @calendar_friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get calendar_friday;
+
+  /// No description provided for @calendar_saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get calendar_saturday;
+
+  /// No description provided for @calendar_sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get calendar_sunday;
+
+  /// No description provided for @calendar_monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get calendar_monday;
+
+  /// No description provided for @calendar_tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get calendar_tuesday;
 }
 
 class _AppLocalizationsDelegate

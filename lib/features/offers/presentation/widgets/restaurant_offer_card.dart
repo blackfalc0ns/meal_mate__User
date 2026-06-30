@@ -16,20 +16,21 @@ class RestaurantOfferCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(12),
         child: Container(
-          width: 154,
+          width: 113,
+          height: 142,
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.border),
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  height: 92,
+                  height: 63,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -62,8 +63,8 @@ class RestaurantOfferCard extends StatelessWidget {
                       Center(
                         child: Image.asset(
                           offer.logoAsset,
-                          width: 72,
-                          height: 72,
+                          width: 47,
+                          height: 48,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -80,7 +81,7 @@ class RestaurantOfferCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
+                  padding: const EdgeInsets.fromLTRB(6, 3, 6, 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -104,7 +105,7 @@ class RestaurantOfferCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 1),
                       Text(
                         offer.subtitle,
                         textAlign: TextAlign.center,
@@ -116,7 +117,7 @@ class RestaurantOfferCard extends StatelessWidget {
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 1),
                       Wrap(
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
@@ -144,10 +145,10 @@ class RestaurantOfferCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 2),
                       SizedBox(
                         width: double.infinity,
-                        height: 34,
+                        height: 14,
                         child: ElevatedButton(
                           onPressed: onTap,
                           style: ElevatedButton.styleFrom(
@@ -156,7 +157,7 @@ class RestaurantOfferCard extends StatelessWidget {
                             elevation: 0,
                             padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Text(

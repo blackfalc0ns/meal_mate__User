@@ -107,7 +107,7 @@ class _SummaryRow extends StatelessWidget {
         textDirection: TextDirection.rtl,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.local_offer_rounded, size: 18, color: accentColor),
+          Icon(Icons.local_offer_rounded, size: 20, color: accentColor),
           const SizedBox(width: Spacing.sm),
           Expanded(
             child: Text(
@@ -154,9 +154,9 @@ class _InfoRow extends StatelessWidget {
           ),
           child: Row(
             textDirection: TextDirection.rtl,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(icon, size: 18, color: accentColor),
+              Icon(icon, size: 20, color: accentColor),
               const SizedBox(width: Spacing.sm),
               Expanded(
                 child: Column(

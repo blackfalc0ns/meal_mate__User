@@ -776,6 +776,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offer_details_open_plans_button => 'اختيار الباقة';
 
   @override
+  String get offer_activated_title => 'تم تفعيل العرض بنجاح';
+
+  @override
   String get currency => 'د.ك';
 
   @override
@@ -880,4 +883,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get payment_success_button => 'العودة للرئيسية';
+
+  @override
+  String get calendar_title => 'تقويم الوجبات';
+
+  @override
+  String get calendar_month_progress => 'تقدم الشهر';
+
+  @override
+  String get calendar_month_progress_value => 'أكملت 30 يوماً من أصل 30';
+
+  @override
+  String get calendar_commitment => 'التزام ممتاز 👏';
+
+  @override
+  String get calendar_change_meal => 'تغيير وجبة';
+
+  @override
+  String get calendar_pause => 'إيقاف مؤقت';
+
+  @override
+  String get calendar_add_meal => 'إضافة وجبة';
+
+  @override
+  String get calendar_reschedule => 'تأجيل الوجبة';
+
+  @override
+  String get calendar_full_plan => 'الخطة الكاملة';
+
+  @override
+  String get calendar_week => 'الأسبوع';
+
+  @override
+  String get calendar_today => 'اليوم';
+
+  @override
+  String get calendar_day_plan => 'خطة يوم 25 سبتمبر';
+
+  @override
+  String calendar_day_plan_date(String date) {
+    return 'خطة يوم $date';
+  }
+
+  @override
+  String get calendar_scheduled_count => '4 وجبات مجدولة لهذا اليوم';
+
+  @override
+  String get calendar_completed => 'مكتملة';
+
+  @override
+  String get calendar_current => 'الحالية';
+
+  @override
+  String get calendar_upcoming => 'قادمة';
+
+  @override
+  String get calendar_breakfast_time => 'الإفطار • 07:30 ص';
+
+  @override
+  String get calendar_breakfast_meal => 'شوفان بالفواكه والعسل';
+
+  @override
+  String get calendar_breakfast_calories => '450 سعرة حرارية';
+
+  @override
+  String get calendar_lunch_time => 'الغداء • 01:00 م';
+
+  @override
+  String get calendar_lunch_meal => 'دجاج مشوي مع أرز بني';
+
+  @override
+  String get calendar_lunch_calories => '550 سعرة';
+
+  @override
+  String get calendar_lunch_protein => '32g بروتين';
+
+  @override
+  String get calendar_dinner_time => 'العشاء • 07:00 م';
+
+  @override
+  String get calendar_dinner_meal => 'ساندويتش دجاج صحي';
+
+  @override
+  String get calendar_dinner_calories => '420 سعرة';
+
+  @override
+  String get calendar_snack_time => 'وجبة خفيفة • 09:00 م';
+
+  @override
+  String get calendar_snack_meal => 'وجبة فواكه طازجة';
+
+  @override
+  String get calendar_snack_calories => '180 سعرة';
+
+  @override
+  String get calendar_friday => 'الجمعة';
+
+  @override
+  String get calendar_saturday => 'السبت';
+
+  @override
+  String get calendar_sunday => 'الأحد';
+
+  @override
+  String get calendar_monday => 'الإثنين';
+
+  @override
+  String get calendar_tuesday => 'الثلاثاء';
 }

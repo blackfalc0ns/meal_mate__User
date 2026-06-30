@@ -791,6 +791,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offer_details_open_plans_button => 'Choose plan';
 
   @override
+  String get offer_activated_title => 'Offer activated successfully';
+
+  @override
   String get currency => 'KWD';
 
   @override
@@ -895,4 +898,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get payment_success_button => 'Back to Home';
+
+  @override
+  String get calendar_title => 'Meal calendar';
+
+  @override
+  String get calendar_month_progress => 'Monthly progress';
+
+  @override
+  String get calendar_month_progress_value => 'Completed 30 meals out of 30';
+
+  @override
+  String get calendar_commitment => 'Great commitment 👏';
+
+  @override
+  String get calendar_change_meal => 'Change meal';
+
+  @override
+  String get calendar_pause => 'Pause temporarily';
+
+  @override
+  String get calendar_add_meal => 'Add meal';
+
+  @override
+  String get calendar_reschedule => 'Reschedule meal';
+
+  @override
+  String get calendar_full_plan => 'Full plan';
+
+  @override
+  String get calendar_week => 'Week';
+
+  @override
+  String get calendar_today => 'Today';
+
+  @override
+  String get calendar_day_plan => 'Plan for September 25';
+
+  @override
+  String calendar_day_plan_date(String date) {
+    return 'Plan for $date';
+  }
+
+  @override
+  String get calendar_scheduled_count => '4 meals scheduled for today';
+
+  @override
+  String get calendar_completed => 'Completed';
+
+  @override
+  String get calendar_current => 'Current';
+
+  @override
+  String get calendar_upcoming => 'Upcoming';
+
+  @override
+  String get calendar_breakfast_time => 'Breakfast • 07:30 AM';
+
+  @override
+  String get calendar_breakfast_meal => 'Oatmeal with fruit and honey';
+
+  @override
+  String get calendar_breakfast_calories => '450 calories';
+
+  @override
+  String get calendar_lunch_time => 'Lunch • 01:00 PM';
+
+  @override
+  String get calendar_lunch_meal => 'Grilled chicken with brown rice';
+
+  @override
+  String get calendar_lunch_calories => '550 calories';
+
+  @override
+  String get calendar_lunch_protein => '32g protein';
+
+  @override
+  String get calendar_dinner_time => 'Dinner • 07:00 PM';
+
+  @override
+  String get calendar_dinner_meal => 'Healthy chicken sandwich';
+
+  @override
+  String get calendar_dinner_calories => '420 calories';
+
+  @override
+  String get calendar_snack_time => 'Snack • 09:00 PM';
+
+  @override
+  String get calendar_snack_meal => 'Fresh fruit snack';
+
+  @override
+  String get calendar_snack_calories => '180 calories';
+
+  @override
+  String get calendar_friday => 'Friday';
+
+  @override
+  String get calendar_saturday => 'Saturday';
+
+  @override
+  String get calendar_sunday => 'Sunday';
+
+  @override
+  String get calendar_monday => 'Monday';
+
+  @override
+  String get calendar_tuesday => 'Tuesday';
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/custom_button.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_info_card.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_details_monthly_strip.dart';
