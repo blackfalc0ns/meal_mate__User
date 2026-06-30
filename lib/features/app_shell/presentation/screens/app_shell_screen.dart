@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
 import 'package:meal_meat_user/features/home/data/home_fake_data_source.dart';
@@ -32,32 +33,36 @@ class _AppShellView extends StatelessWidget {
 
     final navItems = [
       AppBottomNavBarItem(
-        icon: Icons.home_outlined,
+        icon: Icons.home_rounded,
         selectedIcon: Icons.home_rounded,
         label: l10n.nav_home,
         sfSymbol: 'house.fill',
       ),
       AppBottomNavBarItem(
-        icon: Icons.restaurant_menu_outlined,
-        selectedIcon: Icons.restaurant_menu,
+        icon: Icons.calendar_month,
+        selectedIcon: Icons.calendar_month,
         label: l10n.nav_meals,
         sfSymbol: 'fork.knife',
       ),
       AppBottomNavBarItem(
         icon: Icons.local_fire_department_outlined,
         selectedIcon: Icons.local_fire_department,
+        animationAsset: Assets.fireAnimation,
+        iconSize: 40,
         label: l10n.nav_offers,
         sfSymbol: 'flame.fill',
       ),
       AppBottomNavBarItem(
-        icon: Icons.card_membership_outlined,
-        selectedIcon: Icons.card_membership,
+        icon: Icons.inventory_2,
+        selectedIcon: Icons.inventory_2,
+        iconSize: 22,
         label: l10n.nav_subscription,
         sfSymbol: 'star.fill',
       ),
       AppBottomNavBarItem(
-        icon: Icons.person_outline_rounded,
+        icon: Icons.person_rounded,
         selectedIcon: Icons.person_rounded,
+        iconSize: 23,
         label: l10n.nav_profile,
         sfSymbol: 'person.fill',
       ),

@@ -510,7 +510,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nav_subscription => 'الاشتراك';
 
   @override
-  String get nav_profile => 'الملف الشخصي';
+  String get nav_profile => 'البروفايل';
 
   @override
   String get coming_soon_subtitle =>

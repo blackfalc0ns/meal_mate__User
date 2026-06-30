@@ -31,6 +31,9 @@ class Assets {
   static const String onboardingTwo = '$_images/on_boarding2.png';
   static const String onboardingThree = '$_images/on_boarding3.png';
   static const String loginIcon = '$_images/login_icon.svg';
+  static const String fireIcon = '$_images/fire_icon.svg';
+  static const String foodIcon = '$_images/food_icon.svg';
+  static const String offerIcon = '$_images/offer_icon.svg';
   static const String homeBanner = '$_images/home_oatmeal.png';
   static const String homeBreakfast = '$_images/home_oatmeal.png';
   static const String homeLunch = '$_images/home_burger.png';

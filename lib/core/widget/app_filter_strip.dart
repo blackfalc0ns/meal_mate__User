@@ -95,12 +95,13 @@ class _FilterChip extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (item.icon != null) ...[
                 Icon(item.icon!, size: 16, color: foreground),
-                const SizedBox(width: 6),
+                const SizedBox(width: 4),
               ],
-              Expanded(
+              Flexible(
                 child: Text(
                   item.label,
                   textAlign: TextAlign.center,

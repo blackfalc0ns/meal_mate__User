@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 
 /// Floating bottom navigation used by the main app shell.
 ///
-/// Its dimensions, colours and spacing mirror the `mainContainer` tab bar in
-/// the MealMate Figma file (node 28:4416).
+/// Its dimensions, colours and spacing mirror the `tabPills` bottom bar in
+/// the MealMate Figma file (node 25:3590).
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
     super.key,
@@ -21,7 +23,7 @@ class AppBottomNavBar extends StatelessWidget {
 
   static const _activeColor = Color(0xFF0C6C3F);
   static const _inactiveColor = Color(0xFF191C1D);
-  static const _activeBackground = Color(0xFFE6E6E6);
+  static const _activeBackground = Color(0xB3E6E6E6);
 
   @override
   Widget build(BuildContext context) {
@@ -41,36 +43,69 @@ class AppBottomNavBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(9999),
                   boxShadow: const [
                     BoxShadow(
-                      color: Color(0x1A000000),
+                      color: Color(0x24000000),
                       offset: Offset(0, 2),
                       blurRadius: 20,
+                    ),
+                    BoxShadow(
+                      color: Color(0x33FFFFFF),
+                      offset: Offset(0, -1),
+                      blurRadius: 8,
                     ),
                   ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(9999),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                    child: ColoredBox(
-                      // The Figma bar is a translucent glass layer, not an
-                      // opaque white navigation surface.
-                      color: Colors.white.withValues(alpha: 0.45),
+                    filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.28),
+                        borderRadius: BorderRadius.circular(9999),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.38),
+                          width: 1,
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.white.withValues(alpha: 0.42),
+                            Colors.white.withValues(alpha: 0.14),
+                          ],
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Row(
-                          textDirection: TextDirection.rtl,
-                          children: List.generate(items.length, (index) {
-                            return Expanded(
-                              child: _NavItem(
-                                item: items[index],
-                                selected: index == currentIndex,
-                                activeColor: _activeColor,
-                                inactiveColor: _inactiveColor,
-                                activeBackground: _activeBackground,
-                                onTap: () => onTap(index),
-                              ),
-                            );
-                          }),
+                        child: SizedBox(
+                          height: 66,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              const overlap = 10.0;
+                              final itemWidth =
+                                  (constraints.maxWidth + overlap * 4) / 5;
+                              final step = itemWidth - overlap;
+
+                              return Stack(
+                                children: List.generate(items.length, (index) {
+                                  return PositionedDirectional(
+                                    top: 0,
+                                    bottom: 0,
+                                    start: index * step,
+                                    width: itemWidth,
+                                    child: _NavItem(
+                                      item: items[index],
+                                      selected: index == currentIndex,
+                                      activeColor: _activeColor,
+                                      inactiveColor: _inactiveColor,
+                                      activeBackground: _activeBackground,
+                                      onTap: () => onTap(index),
+                                    ),
+                                  );
+                                }).reversed.toList(),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -118,20 +153,57 @@ class _NavItem extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: item.iconSize > 34 ? 0 : (item.iconSize > 24 ? 3 : 8),
+            ),
             decoration: BoxDecoration(
               color: selected ? activeBackground : Colors.transparent,
               borderRadius: BorderRadius.circular(100),
+              border: selected
+                  ? Border.all(
+                      color: Colors.white.withValues(alpha: 0.45),
+                      width: 1,
+                    )
+                  : null,
+              boxShadow: selected
+                  ? [
+                      BoxShadow(
+                        color: Colors.white.withValues(alpha: 0.24),
+                        offset: const Offset(0, -1),
+                        blurRadius: 6,
+                      ),
+                    ]
+                  : null,
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  selected ? (item.selectedIcon ?? item.icon) : item.icon,
-                  size: 24,
-                  color: foreground,
+                SizedBox.square(
+                  dimension: item.iconSize,
+                  child: item.animationAsset != null
+                      ? Lottie.asset(
+                          item.animationAsset!,
+                          fit: BoxFit.contain,
+                          repeat: true,
+                        )
+                      : item.svgAsset != null
+                      ? SvgPicture.asset(
+                          item.svgAsset!,
+                          fit: BoxFit.contain,
+                          colorFilter: item.tintSvg
+                              ? ColorFilter.mode(foreground, BlendMode.srcIn)
+                              : null,
+                        )
+                      : Icon(
+                          selected
+                              ? (item.selectedIcon ?? item.icon)
+                              : item.icon,
+                          size: item.iconSize,
+                          color: foreground,
+                        ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: item.iconSize > 34 ? 0 : 2),
                 Text(
                   item.label,
                   maxLines: 1,
@@ -142,7 +214,7 @@ class _NavItem extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: foreground,
-                    height: 1.2,
+                    height: 1.25,
                   ),
                 ),
               ],
@@ -159,6 +231,10 @@ class AppBottomNavBarItem {
     required this.label,
     required this.icon,
     this.selectedIcon,
+    this.svgAsset,
+    this.animationAsset,
+    this.tintSvg = true,
+    this.iconSize = 24,
     this.sfSymbol,
     this.isAnimated = false,
   });
@@ -166,6 +242,10 @@ class AppBottomNavBarItem {
   final String label;
   final IconData icon;
   final IconData? selectedIcon;
+  final String? svgAsset;
+  final String? animationAsset;
+  final bool tintSvg;
+  final double iconSize;
 
   /// Kept for compatibility with existing navigation item declarations.
   final String? sfSymbol;
