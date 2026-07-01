@@ -60,12 +60,12 @@ class OfferDealCard extends StatelessWidget {
                     _Badge(label: offer.badgeLabel, color: offer.accentColor),
                     const SizedBox(height: 2),
                   ],
-                  SizedBox(
-                    height: 28,
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
                     child: Text(
                       offer.title,
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 1,
                       softWrap: true,
                       overflow: TextOverflow.visible,
                       style: getBoldStyle(
@@ -75,7 +75,7 @@ class OfferDealCard extends StatelessWidget {
                       ).copyWith(height: 1.2),
                     ),
                   ),
-                  const SizedBox(height: 1),
+                 
                   SizedBox(
                     height: 25,
                     child: Text(
@@ -189,12 +189,12 @@ class _Badge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 7),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Text(
+      child: Text(textAlign: TextAlign.center,
         label,
         style: getSemiBoldStyle(
           fontFamily: FontConstant.ibmPlexSansArabic,

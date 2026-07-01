@@ -11,12 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(status: HomeStatus.loading, errorMessage: null));
 
     final dashboard = _fakeDataSource.getDashboard();
-    emit(
-      state.copyWith(
-        status: HomeStatus.success,
-        dashboard: dashboard,
-      ),
-    );
+    emit(state.copyWith(status: HomeStatus.success, dashboard: dashboard));
   }
 
   void selectCategory(int index) {

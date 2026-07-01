@@ -6,19 +6,19 @@ class HomeFakeDataSource {
 
   HomeDashboardEntity getDashboard() {
     return const HomeDashboardEntity(
-      userName: 'أحمد محمد',
-      greeting: 'مرحبًا بك،',
+      userName: 'أحمد محمد 👋',
+      greeting: 'مرحباً بك ,',
       dailyCalories: 1350,
       goalCalories: 2000,
       progress: 0.85,
       bannerTitle: 'وجبات صحية تناسب أهدافك',
       bannerSubtitle: 'اكتشف باقات جديدة مصممة لأهدافك الغذائية!',
-      bannerButtonLabel: 'اكتشف الآن',
-      bannerImageAsset: Assets.homeBanner,
+      bannerButtonLabel: 'اكتشف الان',
+      bannerImageAsset: Assets.homeFigmaSpecialsMeal,
       categories: [
         HomeCategoryEntity(title: 'إفطار', imageAsset: Assets.homeBreakfast),
-        HomeCategoryEntity(title: 'غداء', imageAsset: Assets.homeLunch),
         HomeCategoryEntity(title: 'عشاء', imageAsset: Assets.homeDinner),
+        HomeCategoryEntity(title: 'غداء', imageAsset: Assets.homeLunch),
         HomeCategoryEntity(title: 'سناك', imageAsset: Assets.homeSnack),
       ],
       meals: [
@@ -36,24 +36,13 @@ class HomeFakeDataSource {
         HomeMealEntity(
           categoryTitle: 'غداء',
           timeLabel: '01:00 م',
-          title: 'برجر دجاج مع البطاطس',
-          subtitle: '610 سعرة حرارية',
-          caloriesLabel: '610',
+          title: 'دجاج مشوي مع أرز بني',
+          subtitle: '32g بروتين',
+          caloriesLabel: '550',
           statusLabel: 'الحالية',
           imageAsset: Assets.homeLunch,
           accentColor: 0xFF0A7A35,
           statusColor: 0xFFDFF4E6,
-        ),
-        HomeMealEntity(
-          categoryTitle: 'سناك',
-          timeLabel: '04:30 م',
-          title: 'دونات فواكه طازجة',
-          subtitle: '290 سعرة حرارية',
-          caloriesLabel: '290',
-          statusLabel: 'مقترحة',
-          imageAsset: Assets.homeSnack,
-          accentColor: 0xFFF67E15,
-          statusColor: 0xFFFFE7CF,
         ),
       ],
     );

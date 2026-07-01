@@ -10,9 +10,12 @@ class FamilyAddMemberDialog extends StatefulWidget {
   static Future<void> show(BuildContext context) {
     final color = context.colorScheme;
 
-    return showDialog<void>(
+    return showModalBottomSheet<void>(
       context: context,
       barrierColor: color.scrim,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
       builder: (_) => const FamilyAddMemberDialog(),
     );
   }
@@ -30,150 +33,164 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final l10n = context.localization;
     final color = context.colorScheme;
 
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
-      backgroundColor: color.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Spacing.radiusXl),
-      ),
-      child: SizedBox(
-        height: 593,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            Spacing.md,
-            Spacing.base,
-            Spacing.md,
-            Spacing.md,
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: MediaQuery.sizeOf(context).height * 0.86,
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(Spacing.radiusXl),
+            ),
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Spacing.md,
+              Spacing.base,
+              Spacing.md,
+              Spacing.md,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 42,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: color.outlineVariant,
                     borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    child: CircleAvatar(
-                      radius: 12,
-                      backgroundColor: color.surfaceContainerHighest,
-                      child: Icon(
-                        Icons.close_rounded,
-                        size: 14,
-                        color: color.onSurface,
+                  ),
+                ),
+                const SizedBox(height: Spacing.sm),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      child: CircleAvatar(
+                        radius: 12,
+                        backgroundColor: color.surfaceContainerHighest,
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: color.onSurface,
+                        ),
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              Icon(
-                Icons.person_add_alt_1_rounded,
-                color: color.primary,
-                size: 54,
-              ),
-              const SizedBox(height: Spacing.xss),
-              Text(
-                l10n.family_add_member,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  color: color.onSurface,
-                  fontSize: FontSize.size17,
+                    const Spacer(),
+                  ],
                 ),
-              ),
-              const SizedBox(height: Spacing.xs),
-              Text(
-                l10n.family_add_member_dialog_subtitle,
-                textAlign: TextAlign.center,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  color: color.onSurfaceVariant,
-                  fontSize: FontSize.size10,
+                Icon(
+                  Icons.person_add_alt_1_rounded,
+                  color: color.primary,
+                  size: 54,
                 ),
-              ),
-              const SizedBox(height: Spacing.base),
-              _LabeledField(
-                icon: Icons.person_outline_rounded,
-                label: l10n.family_full_name,
-                hint: l10n.family_full_name_hint,
-              ),
-              const SizedBox(height: Spacing.sm),
-              Row(
-                textDirection: TextDirection.rtl,
-                children: [
-                  Expanded(
-                    child: _LabeledField(
-                      icon: Icons.groups_2_outlined,
-                      label: l10n.family_relation,
-                      hint: l10n.family_relation_hint,
-                      compact: true,
-                      trailing: Icons.keyboard_arrow_down_rounded,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.lg),
-                  Expanded(
-                    child: _LabeledField(
-                      icon: Icons.calendar_month_outlined,
-                      label: l10n.family_age,
-                      hint: l10n.family_age_hint,
-                      compact: true,
-                      suffix: l10n.family_year,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: Spacing.sm),
-              _LabeledField(
-                icon: Icons.track_changes_rounded,
-                label: l10n.family_nutrition_goal,
-                hint: l10n.family_nutrition_goal_hint,
-                trailing: Icons.keyboard_arrow_down_rounded,
-              ),
-              const SizedBox(height: Spacing.sm),
-              _ChoiceSection(
-                label: l10n.family_activity_level,
-                icon: Icons.directions_walk_rounded,
-                choices: [
-                  l10n.family_activity_low,
-                  l10n.family_activity_medium,
-                  l10n.family_activity_high,
-                ],
-                selectedIndex: _activityIndex,
-                onChanged: (index) => setState(() => _activityIndex = index),
-              ),
-              const SizedBox(height: Spacing.sm),
-              _ChoiceSection(
-                label: l10n.family_daily_meals_count,
-                icon: Icons.restaurant_rounded,
-                choices: [
-                  l10n.family_meals_3,
-                  l10n.family_meals_4,
-                  l10n.family_meals_5,
-                ],
-                selectedIndex: _mealsIndex,
-                onChanged: (index) => setState(() => _mealsIndex = index),
-              ),
-              const SizedBox(height: Spacing.md),
-              _InfoHint(),
-              const Spacer(),
-              SizedBox(
-                height: Spacing.compactButtonHeight,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(l10n.family_add_member_button),
-                ),
-              ),
-              const SizedBox(height: Spacing.xss),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  l10n.family_cancel,
-                  style: getRegularStyle(
+                const SizedBox(height: Spacing.xss),
+                Text(
+                  l10n.family_add_member,
+                  style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     color: color.onSurface,
+                    fontSize: FontSize.size17,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  l10n.family_add_member_dialog_subtitle,
+                  textAlign: TextAlign.center,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.onSurfaceVariant,
+                    fontSize: FontSize.size10,
+                  ),
+                ),
+                const SizedBox(height: Spacing.base),
+                _LabeledField(
+                  icon: Icons.person_outline_rounded,
+                  label: l10n.family_full_name,
+                  hint: l10n.family_full_name_hint,
+                ),
+                const SizedBox(height: Spacing.sm),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Expanded(
+                      child: _LabeledField(
+                        icon: Icons.groups_2_outlined,
+                        label: l10n.family_relation,
+                        hint: l10n.family_relation_hint,
+                        compact: true,
+                        trailing: Icons.keyboard_arrow_down_rounded,
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.lg),
+                    Expanded(
+                      child: _LabeledField(
+                        icon: Icons.calendar_month_outlined,
+                        label: l10n.family_age,
+                        hint: l10n.family_age_hint,
+                        compact: true,
+                        suffix: l10n.family_year,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: Spacing.sm),
+                _LabeledField(
+                  icon: Icons.track_changes_rounded,
+                  label: l10n.family_nutrition_goal,
+                  hint: l10n.family_nutrition_goal_hint,
+                  trailing: Icons.keyboard_arrow_down_rounded,
+                ),
+                const SizedBox(height: Spacing.sm),
+                _ChoiceSection(
+                  label: l10n.family_activity_level,
+                  icon: Icons.directions_walk_rounded,
+                  choices: [
+                    l10n.family_activity_low,
+                    l10n.family_activity_medium,
+                    l10n.family_activity_high,
+                  ],
+                  selectedIndex: _activityIndex,
+                  onChanged: (index) => setState(() => _activityIndex = index),
+                ),
+                const SizedBox(height: Spacing.sm),
+                _ChoiceSection(
+                  label: l10n.family_daily_meals_count,
+                  icon: Icons.restaurant_rounded,
+                  choices: [
+                    l10n.family_meals_3,
+                    l10n.family_meals_4,
+                    l10n.family_meals_5,
+                  ],
+                  selectedIndex: _mealsIndex,
+                  onChanged: (index) => setState(() => _mealsIndex = index),
+                ),
+                const SizedBox(height: Spacing.md),
+                _InfoHint(),
+                const Spacer(),
+                SizedBox(
+                  height: Spacing.compactButtonHeight,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(l10n.family_add_member_button),
+                  ),
+                ),
+                const SizedBox(height: Spacing.xss),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    l10n.family_cancel,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      color: color.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

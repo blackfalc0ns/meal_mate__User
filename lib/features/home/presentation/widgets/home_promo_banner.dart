@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 
 class HomePromoBanner extends StatelessWidget {
@@ -23,135 +22,109 @@ class HomePromoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 150,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFF9917), Color(0xFFF57C12)],
+          colors: [Color(0xFFFF9917), Color(0xFFF67E15)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Stack(
         children: [
+          Positioned.fill(child: CustomPaint(painter: _PromoPatternPainter())),
           Positioned(
-            top: -18,
-            right: -12,
-            child: _GlowDot(
-              size: 88,
-              color: Colors.white.withValues(alpha: 0.12),
-            ),
-          ),
-          Positioned(
-            bottom: -22,
-            left: -16,
-            child: _GlowDot(
-              size: 108,
-              color: Colors.white.withValues(alpha: 0.06),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(Spacing.base),
-            child: Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        textAlign: TextAlign.right,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size18,
-                          color: AppColors.white,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        subtitle,
-                        textAlign: TextAlign.right,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size13,
-                          color: AppColors.white.withValues(alpha: 0.94),
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.md),
-                      GestureDetector(
-                        onTap: onTap,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.lg,
-                            vertical: Spacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.black,
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Text(
-                            buttonLabel,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size13,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            left: -87,
+            top: -23,
+            child: Container(
+              width: 205,
+              height: 205,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(68.5),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFED474A).withValues(alpha: 0.3),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                const SizedBox(width: Spacing.base),
-                _BannerImage(imageAsset: imageAsset),
-              ],
+                ],
+              ),
+              child: Image.asset(imageAsset, fit: BoxFit.cover),
             ),
           ),
           Positioned(
-            bottom: 14,
-            right: 16,
+            top: 30,
+            right: 7,
+            width: 245,
+            child: Text(
+              title,
+              textAlign: TextAlign.right,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size20,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 59,
+            right: 7,
+            width: 248,
+            child: Text(
+              subtitle,
+              textAlign: TextAlign.right,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size13,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 112,
+            top: 84,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                width: 160,
+                height: 29,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColors.black,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Text(
+                  buttonLabel,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size13,
+                    color: AppColors.white,
+                  ).copyWith(height: 1.2),
+                ),
+              ),
+            ),
+          ),
+          const Positioned(
+            bottom: 15,
+            right: 24,
             child: Row(
               children: [
-                _IndicatorDot(color: AppColors.white.withValues(alpha: 0.7)),
-                const SizedBox(width: 4),
-                _IndicatorDot(color: AppColors.white.withValues(alpha: 0.35)),
-                const SizedBox(width: 4),
-                _IndicatorDot(color: AppColors.primaryDeep),
+                _IndicatorDot(color: Color(0xFF04994E)),
+                SizedBox(width: 4),
+                _IndicatorDot(color: Color(0x66FFFFFF)),
+                SizedBox(width: 4),
+                _IndicatorDot(color: Color(0xB3FFFFFF)),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _BannerImage extends StatelessWidget {
-  const _BannerImage({required this.imageAsset});
-
-  final String imageAsset;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 104,
-      height: 104,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.18),
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.white.withValues(alpha: 0.4)),
-      ),
-      child: ClipOval(
-        child: Container(
-          color: AppColors.white.withValues(alpha: 0.12),
-          child: Image.asset(
-            imageAsset,
-            fit: BoxFit.cover,
-          ),
-        ),
       ),
     );
   }
@@ -165,34 +138,32 @@ class _IndicatorDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16,
-      height: 6,
+      width: 12,
+      height: 4,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
 }
 
-class _GlowDot extends StatelessWidget {
-  const _GlowDot({
-    required this.size,
-    required this.color,
-  });
-
-  final double size;
-  final Color color;
+class _PromoPatternPainter extends CustomPainter {
+  const _PromoPatternPainter();
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
-    );
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round
+      ..color = AppColors.white.withValues(alpha: 0.5);
+
+    canvas.drawArc(Rect.fromLTWH(59, 21, 22, 17), -0.2, 2.2, false, paint);
+    canvas.drawArc(Rect.fromLTWH(71, 76, 22, 8), 0.3, 2.7, false, paint);
+    canvas.drawArc(Rect.fromLTWH(41, 120, 37, 27), -0.8, 2.6, false, paint);
   }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

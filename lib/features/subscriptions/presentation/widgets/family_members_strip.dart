@@ -21,7 +21,6 @@ class FamilyMembersStrip extends StatelessWidget {
       height: Spacing.familyMembersStripHeight,
       child: ListView.separated(
         padding: EdgeInsets.zero,
-        reverse: true,
         scrollDirection: Axis.horizontal,
         itemCount: members.length + 1,
         separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
@@ -230,7 +229,7 @@ class _MemberDetails extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: getRegularStyle(
+                    style: getSemiBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
                       fontSize: FontSize.size6,
                       color: color.onSurfaceVariant,

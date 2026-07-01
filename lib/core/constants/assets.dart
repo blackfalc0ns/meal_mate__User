@@ -40,6 +40,13 @@ class Assets {
   static const String homeDinner = '$_images/home_hotdog.png';
   static const String homeSnack = '$_images/home_donut.png';
   static const String homeHook = '$_images/home_hook.png';
+  static const String homeFigmaAvatar = '$_images/home/figma/home_avatar.png';
+  static const String homeFigmaSpecialsMeal =
+      '$_images/home/figma/home_specials_meal.png';
+  static const String homeFigmaBackgroundDoodle =
+      '$_images/home/figma/home_background_doodle.svg';
+  static const String homeFigmaHeaderDoodle =
+      '$_images/home/figma/home_header_doodle.svg';
 
   // Calendar
   static const String calendarBreakfast = '$_images/home_oatmeal.png';

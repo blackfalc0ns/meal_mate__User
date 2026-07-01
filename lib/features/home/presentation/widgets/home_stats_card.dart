@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
@@ -19,62 +22,62 @@ class HomeStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      height: 93,
+      padding: const EdgeInsets.fromLTRB(34, 8, 26, 8),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFD6D6D6)),
       ),
       child: Row(
+        textDirection: ui.TextDirection.ltr,
         children: [
-          Expanded(
+          SizedBox(
+            width: 92,
             child: Align(
               alignment: Alignment.centerLeft,
               child: _ProgressRing(progress: progress),
             ),
           ),
-          Container(width: 1, height: 52, color: AppColors.divider),
-     
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'السعرات اليومية',
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size13,
-                      color: AppColors.textSecondary,
-                    ),
+          Container(width: 1, height: 46, color: const Color(0xFFA0A0A0)),
+          const Spacer(),
+          SizedBox(
+            width: 88,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'السعرات اليومية',
+                  textAlign: TextAlign.right,
+                  style: getMediumStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size10,
+                    color: AppColors.black,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    NumberFormat.decimalPattern('en').format(dailyCalories),
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size30,
-                      color: AppColors.textPrimary,
-                    ),
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  NumberFormat.decimalPattern('en').format(dailyCalories),
+                  textAlign: TextAlign.right,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size26,
+                    color: AppColors.black,
+                  ).copyWith(height: 1),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'من ${NumberFormat.decimalPattern('en').format(goalCalories)} سعرة',
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  style: getMediumStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size11,
+                    color: AppColors.black,
                   ),
-                  Text(
-                    'من ${NumberFormat.decimalPattern('en').format(goalCalories)} سعرة',
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -91,34 +94,58 @@ class _ProgressRing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 78,
-      height: 78,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          CircularProgressIndicator(
-            value: 1,
-            strokeWidth: 7.5,
-            color: AppColors.secondary.withValues(alpha: 0.18),
-            backgroundColor: AppColors.secondary.withValues(alpha: 0.18),
-          ),
-          CircularProgressIndicator(
-            value: progress,
-            strokeWidth: 7.5,
-            strokeCap: StrokeCap.round,
-            color: AppColors.secondary,
-            backgroundColor: Colors.transparent,
-          ),
-          Text(
+      width: 76,
+      height: 76,
+      child: CustomPaint(
+        painter: _ProgressRingPainter(progress: progress),
+        child: Center(
+          child: Text(
             '${(progress * 100).round()}%',
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size24,
-              color: AppColors.textPrimary,
+              fontSize: FontSize.size18,
+              color: AppColors.black,
             ),
           ),
-        ],
+        ),
       ),
     );
+  }
+}
+
+class _ProgressRingPainter extends CustomPainter {
+  const _ProgressRingPainter({required this.progress});
+
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = (size.shortestSide - 8) / 2;
+    final rect = Rect.fromCircle(center: center, radius: radius);
+    final trackPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8
+      ..strokeCap = StrokeCap.round
+      ..color = const Color(0xFFCECECE);
+    final progressPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8
+      ..strokeCap = StrokeCap.round
+      ..color = const Color(0xFFF67E15);
+
+    canvas.drawCircle(center, radius, trackPaint);
+    canvas.drawArc(
+      rect,
+      -math.pi / 2,
+      math.pi * 2 * progress.clamp(0, 1),
+      false,
+      progressPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _ProgressRingPainter oldDelegate) {
+    return oldDelegate.progress != progress;
   }
 }

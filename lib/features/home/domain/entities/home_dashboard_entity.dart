@@ -27,10 +27,7 @@ class HomeDashboardEntity {
 }
 
 class HomeCategoryEntity {
-  const HomeCategoryEntity({
-    required this.title,
-    required this.imageAsset,
-  });
+  const HomeCategoryEntity({required this.title, required this.imageAsset});
 
   final String title;
   final String imageAsset;

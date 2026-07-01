@@ -1,9 +1,10 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/features/home/domain/entities/home_dashboard_entity.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_stats_card.dart';
@@ -21,80 +22,68 @@ class HomeHeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: 285,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           const _HeaderBackground(),
-          SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Directionality(
-                        textDirection: ui.TextDirection.rtl,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const _AvatarCircle(),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  dashboard.greeting,
-                                  style: getRegularStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size15,
-                                    color: AppColors.white.withValues(
-                                      alpha: 0.95,
-                                    ),
-                                  ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 34, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const _AvatarCircle(),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                dashboard.greeting,
+                                style: getSemiBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size12,
+                                  color: AppColors.white,
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  dashboard.userName,
-                                  style: getBoldStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size22,
-                                    color: AppColors.white,
-                                  ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                dashboard.userName,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size18,
+                                  color: AppColors.white,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                      _NotificationButton(onTap: onNotificationTap),
-                    ],
-                  ),
-                 // const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 2,
-                      vertical: Spacing.xxl,
                     ),
-                    child: HomeStatsCard(
-                      progress: dashboard.progress,
-                      dailyCalories: dashboard.dailyCalories,
-                      goalCalories: dashboard.goalCalories,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-              ),
+                    const Spacer(),
+                    _NotificationButton(onTap: onNotificationTap),
+                  ],
+                ),
+                const SizedBox(height: 17),
+                HomeStatsCard(
+                  progress: dashboard.progress,
+                  dailyCalories: dashboard.dailyCalories,
+                  goalCalories: dashboard.goalCalories,
+                ),
+              ],
             ),
           ),
           Positioned(
-            top: 220,
-            left: Spacing.base,
-            right: Spacing.base,
+            top: 235,
+            left: 20,
+            right: 20,
             child: HomeSearchBar(onTap: () {}),
           ),
         ],
@@ -108,40 +97,45 @@ class _HeaderBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF2FAA45), Color(0xFF20A33E)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+    return SizedBox(
+      height: 262,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(11),
         ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(28),
-          bottomRight: Radius.circular(28),
+        child: Container(
+          color: const Color(0xFF32983C),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  Assets.homeFigmaHeaderDoodle,
+                  fit: BoxFit.cover,
+                  opacity: const AlwaysStoppedAnimation(0.3),
+                  errorBuilder: (_, _, _) =>
+                      const CustomPaint(painter: _LeafPatternPainter()),
+                ),
+              ),
+              Positioned(
+                top: 88,
+                right: -74,
+                child: _GlowDot(
+                  size: 152,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
+              Positioned(
+                bottom: -44,
+                left: -35,
+                child: _GlowDot(
+                  size: 126,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      child: Stack(
-        children: [
-          const Positioned.fill(
-            child: CustomPaint(painter: _LeafPatternPainter()),
-          ),
-          Positioned(
-            top: 52,
-            left: -8,
-            child: _GlowDot(
-              size: 90,
-              color: Colors.white.withValues(alpha: 0.06),
-            ),
-          ),
-          Positioned(
-            top: 120,
-            right: -24,
-            child: _GlowDot(
-              size: 118,
-              color: Colors.white.withValues(alpha: 0.04),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -202,35 +196,27 @@ class _NotificationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow.withValues(alpha: 0.12),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+      child: SizedBox(
+        width: 29,
+        height: 28,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            const Center(
+            const Positioned(
+              left: 0,
+              bottom: 0,
               child: Icon(
-                Icons.notifications_none_rounded,
+                Icons.notifications_rounded,
                 color: AppColors.textPrimary,
-                size: 24,
+                size: 29,
               ),
             ),
             Positioned(
-              top: 10,
-              right: 10,
+              top: 0,
+              right: 0,
               child: Container(
-                width: 9,
-                height: 9,
+                width: 8,
+                height: 8,
                 decoration: const BoxDecoration(
                   color: AppColors.secondary,
                   shape: BoxShape.circle,
@@ -250,16 +236,19 @@ class _AvatarCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 54,
-      height: 54,
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.22),
-        shape: BoxShape.circle,
-      ),
-      child: const CircleAvatar(
-        backgroundColor: Color(0xFFD7DDDB),
-        child: Icon(Icons.person, color: Color(0xFF8E9794), size: 31),
+      width: 50,
+      height: 50,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      clipBehavior: Clip.antiAlias,
+      child: Image.asset(
+        Assets.homeFigmaAvatar,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return const CircleAvatar(
+            backgroundColor: Color(0xFFD7DDDB),
+            child: Icon(Icons.person, color: Color(0xFF8E9794), size: 31),
+          );
+        },
       ),
     );
   }

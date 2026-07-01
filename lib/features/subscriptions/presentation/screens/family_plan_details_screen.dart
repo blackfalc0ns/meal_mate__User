@@ -29,63 +29,28 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: CustomAppBar(title: l10n.family_details_title),
           ),
-          SliverToBoxAdapter(child: FamilyPlanHeroCard(plan: plan)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Spacing.lg,
-                Spacing.md,
-                Spacing.lg,
-                0,
-              ),
-              child: FamilyMembersStrip(
-                members: plan.members,
-                onAddTap: () => FamilyAddMemberDialog.show(context),
-              ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Spacing.screenH,
+              vertical: showBottomSpace ? Spacing.screenV : 0,
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Spacing.lg,
-                Spacing.md,
-                Spacing.lg,
-                0,
-              ),
-              child: FamilyPlanSummaryCard(stats: plan.summaryStats),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Spacing.lg,
-                Spacing.sm,
-                Spacing.lg,
-                0,
-              ),
-              child: FamilyMealsTable(members: plan.members),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Spacing.lg,
-                Spacing.md,
-                Spacing.lg,
-                0,
-              ),
-              child: FamilyPlanPriceCard(plan: plan),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                Spacing.lg,
-                Spacing.lg,
-                Spacing.lg,
-                showBottomSpace ? 112 : Spacing.xl,
-              ),
-              child: _ConfirmButton(label: l10n.family_confirm_plan),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate.fixed([
+                FamilyPlanHeroCard(plan: plan),
+                const SizedBox(height: Spacing.md),
+                FamilyMembersStrip(
+                  members: plan.members,
+                  onAddTap: () => FamilyAddMemberDialog.show(context),
+                ),
+                const SizedBox(height: Spacing.md),
+                FamilyPlanSummaryCard(stats: plan.summaryStats),
+                const SizedBox(height: Spacing.sm),
+                FamilyMealsTable(members: plan.members),
+                const SizedBox(height: Spacing.md),
+                FamilyPlanPriceCard(plan: plan),
+                const SizedBox(height: Spacing.lg),
+                _ConfirmButton(label: l10n.family_confirm_plan),
+              ]),
             ),
           ),
         ],

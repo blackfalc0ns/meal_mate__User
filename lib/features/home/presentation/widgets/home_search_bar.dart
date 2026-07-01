@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 
 class HomeSearchBar extends StatelessWidget {
@@ -14,19 +13,12 @@ class HomeSearchBar extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 50,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        height: 46,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow.withValues(alpha: 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xFFD6D6D6)),
         ),
         child: Row(
           textDirection: TextDirection.rtl,
@@ -34,18 +26,18 @@ class HomeSearchBar extends StatelessWidget {
             const Icon(
               Icons.search_rounded,
               color: AppColors.textHint,
-              size: 22,
+              size: 18,
             ),
-            const SizedBox(width: Spacing.sm),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'ابحث عن وجبات أو مطاعم',
                 textAlign: TextAlign.right,
                 style: getRegularStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size14,
+                  fontSize: FontSize.size12,
                   color: AppColors.textHint,
-                ),
+                ).copyWith(height: 1.5),
               ),
             ),
           ],

@@ -1,11 +1,6 @@
 import 'package:meal_meat_user/features/home/domain/entities/home_dashboard_entity.dart';
 
-enum HomeStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
+enum HomeStatus { initial, loading, success, failure }
 
 class HomeState {
   const HomeState({
@@ -17,11 +12,11 @@ class HomeState {
   });
 
   const HomeState.initial()
-      : status = HomeStatus.initial,
-        dashboard = null,
-        selectedCategoryIndex = 0,
-        selectedTabIndex = 0,
-        errorMessage = null;
+    : status = HomeStatus.initial,
+      dashboard = null,
+      selectedCategoryIndex = 3,
+      selectedTabIndex = 0,
+      errorMessage = null;
 
   final HomeStatus status;
   final HomeDashboardEntity? dashboard;
