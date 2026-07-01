@@ -79,32 +79,19 @@ class AppBottomNavBar extends StatelessWidget {
                         padding: const EdgeInsets.all(4),
                         child: SizedBox(
                           height: 66,
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              const overlap = 10.0;
-                              final itemWidth =
-                                  (constraints.maxWidth + overlap * 4) / 5;
-                              final step = itemWidth - overlap;
-
-                              return Stack(
-                                children: List.generate(items.length, (index) {
-                                  return PositionedDirectional(
-                                    top: 0,
-                                    bottom: 0,
-                                    start: index * step,
-                                    width: itemWidth,
-                                    child: _NavItem(
-                                      item: items[index],
-                                      selected: index == currentIndex,
-                                      activeColor: _activeColor,
-                                      inactiveColor: _inactiveColor,
-                                      activeBackground: _activeBackground,
-                                      onTap: () => onTap(index),
-                                    ),
-                                  );
-                                }).reversed.toList(),
+                          child: Row(
+                            children: List.generate(items.length, (index) {
+                              return Expanded(
+                                child: _NavItem(
+                                  item: items[index],
+                                  selected: index == currentIndex,
+                                  activeColor: _activeColor,
+                                  inactiveColor: _inactiveColor,
+                                  activeBackground: _activeBackground,
+                                  onTap: () => onTap(index),
+                                ),
                               );
-                            },
+                            }),
                           ),
                         ),
                       ),
@@ -140,6 +127,7 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final foreground = selected ? activeColor : inactiveColor;
+    final visualIconSize = item.iconSize.clamp(0, 34).toDouble();
 
     return Semantics(
       button: true,
@@ -150,74 +138,82 @@ class _NavItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           customBorder: const StadiumBorder(),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
-            padding: EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: item.iconSize > 34 ? 0 : (item.iconSize > 24 ? 3 : 8),
-            ),
-            decoration: BoxDecoration(
-              color: selected ? activeBackground : Colors.transparent,
-              borderRadius: BorderRadius.circular(100),
-              border: selected
-                  ? Border.all(
-                      color: Colors.white.withValues(alpha: 0.45),
-                      width: 1,
-                    )
-                  : null,
-              boxShadow: selected
-                  ? [
-                      BoxShadow(
-                        color: Colors.white.withValues(alpha: 0.24),
-                        offset: const Offset(0, -1),
-                        blurRadius: 6,
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox.square(
-                  dimension: item.iconSize,
-                  child: item.animationAsset != null
-                      ? Lottie.asset(
-                          item.animationAsset!,
-                          fit: BoxFit.contain,
-                          repeat: true,
-                        )
-                      : item.svgAsset != null
-                      ? SvgPicture.asset(
-                          item.svgAsset!,
-                          fit: BoxFit.contain,
-                          colorFilter: item.tintSvg
-                              ? ColorFilter.mode(foreground, BlendMode.srcIn)
-                              : null,
-                        )
-                      : Icon(
-                          selected
-                              ? (item.selectedIcon ?? item.icon)
-                              : item.icon,
-                          size: item.iconSize,
-                          color: foreground,
+          child: Center(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOutCubic,
+              height: 58,
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              decoration: BoxDecoration(
+                color: selected ? activeBackground : Colors.transparent,
+                borderRadius: BorderRadius.circular(100),
+                border: selected
+                    ? Border.all(
+                        color: Colors.white.withValues(alpha: 0.45),
+                        width: 1,
+                      )
+                    : null,
+                boxShadow: selected
+                    ? [
+                        BoxShadow(
+                          color: Colors.white.withValues(alpha: 0.24),
+                          offset: const Offset(0, -1),
+                          blurRadius: 6,
                         ),
-                ),
-                SizedBox(height: item.iconSize > 34 ? 0 : 2),
-                Text(
-                  item.label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: foreground,
-                    height: 1.25,
+                      ]
+                    : null,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 34,
+                    child: Center(
+                      child: SizedBox.square(
+                        dimension: visualIconSize,
+                        child: item.animationAsset != null
+                            ? Lottie.asset(
+                                item.animationAsset!,
+                                fit: BoxFit.contain,
+                                repeat: true,
+                              )
+                            : item.svgAsset != null
+                            ? SvgPicture.asset(
+                                item.svgAsset!,
+                                fit: BoxFit.contain,
+                                colorFilter: item.tintSvg
+                                    ? ColorFilter.mode(
+                                        foreground,
+                                        BlendMode.srcIn,
+                                      )
+                                    : null,
+                              )
+                            : Icon(
+                                selected
+                                    ? (item.selectedIcon ?? item.icon)
+                                    : item.icon,
+                                size: visualIconSize,
+                                color: foreground,
+                              ),
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    item.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: foreground,
+                      height: 1.25,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

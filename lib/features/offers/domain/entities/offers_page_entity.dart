@@ -45,6 +45,7 @@ class OfferFilterEntity {
 
 class OfferDealEntity {
   const OfferDealEntity({
+    required this.category,
     required this.title,
     required this.subtitle,
     required this.discountLabel,
@@ -65,6 +66,7 @@ class OfferDealEntity {
     this.noteText,
   });
 
+  final OfferCategory category;
   final String title;
   final String subtitle;
   final String discountLabel;
@@ -84,6 +86,8 @@ class OfferDealEntity {
   final String? conditionsText;
   final String? noteText;
 }
+
+enum OfferCategory { offer, restaurant, meal }
 
 class InviteBannerEntity {
   const InviteBannerEntity({
