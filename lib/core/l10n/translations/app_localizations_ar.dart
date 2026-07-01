@@ -885,6 +885,238 @@ class AppLocalizationsAr extends AppLocalizations {
   String get payment_success_button => 'العودة للرئيسية';
 
   @override
+  String get subscription_screen_title => 'الباقات والاشتراكات';
+
+  @override
+  String get subscription_hero_title => 'وفر أكثر مع الباقات';
+
+  @override
+  String get subscription_hero_subtitle =>
+      'اختر الباقة المناسبة لأسلوب حياتك واستمتع بوجبات صحية كل يوم';
+
+  @override
+  String get subscription_choose_plan_title => 'اختر الباقة المناسبة لك';
+
+  @override
+  String get subscription_choose_plan_button => 'اختر الباقة';
+
+  @override
+  String get subscription_month_plan_title => 'باقة شهر';
+
+  @override
+  String get subscription_half_month_plan_title => 'باقة نصف شهر';
+
+  @override
+  String get subscription_week_plan_title => 'باقة أسبوع';
+
+  @override
+  String get subscription_month_duration => '26 أيام';
+
+  @override
+  String get subscription_half_month_duration => '12 أيام';
+
+  @override
+  String get subscription_week_duration => '7 أيام';
+
+  @override
+  String get subscription_meals_per_day => '4 وجبات يومياً';
+
+  @override
+  String get subscription_healthy_balanced => 'وجبات صحية ومتوازنة';
+
+  @override
+  String get subscription_free_delivery => 'توصيل مجاني';
+
+  @override
+  String get subscription_month_period => 'شهرياً';
+
+  @override
+  String get subscription_half_month_period => 'نصف شهر';
+
+  @override
+  String get subscription_week_period => 'أسبوعياً';
+
+  @override
+  String get subscription_discount_20 => 'خصم 20%';
+
+  @override
+  String get subscription_note =>
+      'كل الباقات تشمل خصم 20% على جميع الطلبات يمكنك الإيقاف المؤقت أو تعديل الباقة في أي وقت';
+
+  @override
+  String get family_details_title => 'تفاصيل الباقة العائلية';
+
+  @override
+  String get family_plan_title => 'الباقة العائلية';
+
+  @override
+  String get family_plan_subtitle => 'خطة متكاملة حتى 6 أفراد';
+
+  @override
+  String get family_plan_new => 'جديد';
+
+  @override
+  String get family_plan_feature_group_delivery => 'توصيل مجمع';
+
+  @override
+  String get family_plan_feature_one_invoice => 'فاتورة واحدة';
+
+  @override
+  String get family_plan_feature_group_discount => 'خصم جماعي مميز';
+
+  @override
+  String get family_plan_feature_all_meals => 'وجبات تناسب الجميع';
+
+  @override
+  String get family_plan_feature_individual_plan => 'خطة لكل فرد';
+
+  @override
+  String get family_add_member => 'إضافة فرد جديد';
+
+  @override
+  String get family_add_member_subtitle => 'خصص خطة غذائية لكل فرد من عائلتك';
+
+  @override
+  String get family_owner => 'المالك';
+
+  @override
+  String get family_member_ahmed => 'أحمد';
+
+  @override
+  String get family_member_sarah => 'سارة';
+
+  @override
+  String get family_member_yousef => 'يوسف';
+
+  @override
+  String get family_member_mariam => 'مريم';
+
+  @override
+  String get family_summary_title => 'ملخص الباقة العائلية';
+
+  @override
+  String get family_current_members => 'عدد الأفراد الحالي';
+
+  @override
+  String get family_max_members => 'الحد الأقصى لأفراد الباقة';
+
+  @override
+  String get family_total_daily_meals => 'إجمالي الوجبات اليومية';
+
+  @override
+  String get family_total_daily_calories => 'إجمالي السعرات اليومية';
+
+  @override
+  String get family_one_delivery => 'توصيل واحد لكل أفراد العائلة';
+
+  @override
+  String get family_group_delivery => 'توصيل مجمع';
+
+  @override
+  String get family_meals_each_member => 'وجبات كل فرد';
+
+  @override
+  String get family_table_member => 'الفرد';
+
+  @override
+  String get family_table_breakfast => 'الإفطار';
+
+  @override
+  String get family_table_lunch => 'الغداء';
+
+  @override
+  String get family_table_snack => 'سناك';
+
+  @override
+  String get family_table_dinner => 'العشاء';
+
+  @override
+  String get family_table_meals_count => 'عدد الوجبات';
+
+  @override
+  String get family_meals_3 => '3 وجبات';
+
+  @override
+  String get family_meals_4 => '4 وجبات';
+
+  @override
+  String get family_meals_5 => '5 وجبات';
+
+  @override
+  String get family_price_details => 'تفاصيل السعر';
+
+  @override
+  String get family_base_price_two_members => 'السعر الأساسي (لـ 2 أفراد)';
+
+  @override
+  String get family_extra_members_price => 'أفراد إضافيون (2 x 7.500 KWD)';
+
+  @override
+  String get family_total => 'الإجمالي:';
+
+  @override
+  String get family_confirm_plan => 'تأكيد الباقة';
+
+  @override
+  String get family_add_member_dialog_subtitle =>
+      'أدخل بيانات الفرد لإضافته إلى الباقة العائلية';
+
+  @override
+  String get family_full_name => 'الاسم الكامل';
+
+  @override
+  String get family_full_name_hint => 'اكتب الاسم هنا';
+
+  @override
+  String get family_relation => 'صلة القرابة';
+
+  @override
+  String get family_relation_hint => 'اختر صلة القرابة';
+
+  @override
+  String get family_age => 'العمر';
+
+  @override
+  String get family_age_hint => 'ادخل العمر';
+
+  @override
+  String get family_year => 'سنة';
+
+  @override
+  String get family_nutrition_goal => 'الهدف الغذائي';
+
+  @override
+  String get family_nutrition_goal_hint => 'اختر الهدف';
+
+  @override
+  String get family_activity_level => 'مستوى النشاط';
+
+  @override
+  String get family_activity_low => 'قليل النشاط';
+
+  @override
+  String get family_activity_medium => 'متوسط';
+
+  @override
+  String get family_activity_high => 'نشط';
+
+  @override
+  String get family_daily_meals_count => 'عدد الوجبات يومياً';
+
+  @override
+  String get family_info => 'معلومة';
+
+  @override
+  String get family_info_message =>
+      'يمكنك تعديل البيانات في أي وقت من إعدادات الفرد';
+
+  @override
+  String get family_add_member_button => 'إضافة فرد';
+
+  @override
+  String get family_cancel => 'إلغاء';
+
+  @override
   String get calendar_title => 'تقويم الوجبات';
 
   @override

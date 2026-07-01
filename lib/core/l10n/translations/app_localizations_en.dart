@@ -900,6 +900,239 @@ class AppLocalizationsEn extends AppLocalizations {
   String get payment_success_button => 'Back to Home';
 
   @override
+  String get subscription_screen_title => 'Plans and subscriptions';
+
+  @override
+  String get subscription_hero_title => 'Save more with plans';
+
+  @override
+  String get subscription_hero_subtitle =>
+      'Choose the plan that fits your lifestyle and enjoy healthy meals every day';
+
+  @override
+  String get subscription_choose_plan_title => 'Choose the right plan for you';
+
+  @override
+  String get subscription_choose_plan_button => 'Choose plan';
+
+  @override
+  String get subscription_month_plan_title => 'Monthly plan';
+
+  @override
+  String get subscription_half_month_plan_title => 'Half-month plan';
+
+  @override
+  String get subscription_week_plan_title => 'Weekly plan';
+
+  @override
+  String get subscription_month_duration => '26 days';
+
+  @override
+  String get subscription_half_month_duration => '12 days';
+
+  @override
+  String get subscription_week_duration => '7 days';
+
+  @override
+  String get subscription_meals_per_day => '4 meals daily';
+
+  @override
+  String get subscription_healthy_balanced => 'Healthy balanced meals';
+
+  @override
+  String get subscription_free_delivery => 'Free delivery';
+
+  @override
+  String get subscription_month_period => 'Monthly';
+
+  @override
+  String get subscription_half_month_period => 'Half month';
+
+  @override
+  String get subscription_week_period => 'Weekly';
+
+  @override
+  String get subscription_discount_20 => '20% off';
+
+  @override
+  String get subscription_note =>
+      'All plans include 20% off all orders. You can pause or edit the plan anytime';
+
+  @override
+  String get family_details_title => 'Family plan details';
+
+  @override
+  String get family_plan_title => 'Family plan';
+
+  @override
+  String get family_plan_subtitle => 'Complete plan for up to 6 members';
+
+  @override
+  String get family_plan_new => 'New';
+
+  @override
+  String get family_plan_feature_group_delivery => 'Group delivery';
+
+  @override
+  String get family_plan_feature_one_invoice => 'One invoice';
+
+  @override
+  String get family_plan_feature_group_discount => 'Group discount';
+
+  @override
+  String get family_plan_feature_all_meals => 'Meals for everyone';
+
+  @override
+  String get family_plan_feature_individual_plan => 'Plan for each member';
+
+  @override
+  String get family_add_member => 'Add new member';
+
+  @override
+  String get family_add_member_subtitle =>
+      'Customize a nutrition plan for each family member';
+
+  @override
+  String get family_owner => 'Owner';
+
+  @override
+  String get family_member_ahmed => 'Ahmed';
+
+  @override
+  String get family_member_sarah => 'Sarah';
+
+  @override
+  String get family_member_yousef => 'Yousef';
+
+  @override
+  String get family_member_mariam => 'Mariam';
+
+  @override
+  String get family_summary_title => 'Family plan summary';
+
+  @override
+  String get family_current_members => 'Current members';
+
+  @override
+  String get family_max_members => 'Plan member limit';
+
+  @override
+  String get family_total_daily_meals => 'Total daily meals';
+
+  @override
+  String get family_total_daily_calories => 'Total daily calories';
+
+  @override
+  String get family_one_delivery => 'One delivery for the family';
+
+  @override
+  String get family_group_delivery => 'Group delivery';
+
+  @override
+  String get family_meals_each_member => 'Meals for each member';
+
+  @override
+  String get family_table_member => 'Member';
+
+  @override
+  String get family_table_breakfast => 'Breakfast';
+
+  @override
+  String get family_table_lunch => 'Lunch';
+
+  @override
+  String get family_table_snack => 'Snack';
+
+  @override
+  String get family_table_dinner => 'Dinner';
+
+  @override
+  String get family_table_meals_count => 'Meals';
+
+  @override
+  String get family_meals_3 => '3 meals';
+
+  @override
+  String get family_meals_4 => '4 meals';
+
+  @override
+  String get family_meals_5 => '5 meals';
+
+  @override
+  String get family_price_details => 'Price details';
+
+  @override
+  String get family_base_price_two_members => 'Base price (for 2 members)';
+
+  @override
+  String get family_extra_members_price => 'Extra members (2 x 7.500 KWD)';
+
+  @override
+  String get family_total => 'Total:';
+
+  @override
+  String get family_confirm_plan => 'Confirm plan';
+
+  @override
+  String get family_add_member_dialog_subtitle =>
+      'Enter member details to add them to the family plan';
+
+  @override
+  String get family_full_name => 'Full name';
+
+  @override
+  String get family_full_name_hint => 'Write the name here';
+
+  @override
+  String get family_relation => 'Relationship';
+
+  @override
+  String get family_relation_hint => 'Choose relationship';
+
+  @override
+  String get family_age => 'Age';
+
+  @override
+  String get family_age_hint => 'Enter age';
+
+  @override
+  String get family_year => 'Year';
+
+  @override
+  String get family_nutrition_goal => 'Nutrition goal';
+
+  @override
+  String get family_nutrition_goal_hint => 'Choose goal';
+
+  @override
+  String get family_activity_level => 'Activity level';
+
+  @override
+  String get family_activity_low => 'Low activity';
+
+  @override
+  String get family_activity_medium => 'Medium';
+
+  @override
+  String get family_activity_high => 'Active';
+
+  @override
+  String get family_daily_meals_count => 'Daily meals count';
+
+  @override
+  String get family_info => 'Info';
+
+  @override
+  String get family_info_message =>
+      'You can edit the data anytime from member settings';
+
+  @override
+  String get family_add_member_button => 'Add member';
+
+  @override
+  String get family_cancel => 'Cancel';
+
+  @override
   String get calendar_title => 'Meal calendar';
 
   @override

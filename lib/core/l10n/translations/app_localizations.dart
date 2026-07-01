@@ -1778,6 +1778,462 @@ abstract class AppLocalizations {
   /// **'Back to Home'**
   String get payment_success_button;
 
+  /// No description provided for @subscription_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans and subscriptions'**
+  String get subscription_screen_title;
+
+  /// No description provided for @subscription_hero_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Save more with plans'**
+  String get subscription_hero_title;
+
+  /// No description provided for @subscription_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the plan that fits your lifestyle and enjoy healthy meals every day'**
+  String get subscription_hero_subtitle;
+
+  /// No description provided for @subscription_choose_plan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the right plan for you'**
+  String get subscription_choose_plan_title;
+
+  /// No description provided for @subscription_choose_plan_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose plan'**
+  String get subscription_choose_plan_button;
+
+  /// No description provided for @subscription_month_plan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly plan'**
+  String get subscription_month_plan_title;
+
+  /// No description provided for @subscription_half_month_plan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Half-month plan'**
+  String get subscription_half_month_plan_title;
+
+  /// No description provided for @subscription_week_plan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly plan'**
+  String get subscription_week_plan_title;
+
+  /// No description provided for @subscription_month_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'26 days'**
+  String get subscription_month_duration;
+
+  /// No description provided for @subscription_half_month_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'12 days'**
+  String get subscription_half_month_duration;
+
+  /// No description provided for @subscription_week_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get subscription_week_duration;
+
+  /// No description provided for @subscription_meals_per_day.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals daily'**
+  String get subscription_meals_per_day;
+
+  /// No description provided for @subscription_healthy_balanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy balanced meals'**
+  String get subscription_healthy_balanced;
+
+  /// No description provided for @subscription_free_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Free delivery'**
+  String get subscription_free_delivery;
+
+  /// No description provided for @subscription_month_period.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get subscription_month_period;
+
+  /// No description provided for @subscription_half_month_period.
+  ///
+  /// In en, this message translates to:
+  /// **'Half month'**
+  String get subscription_half_month_period;
+
+  /// No description provided for @subscription_week_period.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get subscription_week_period;
+
+  /// No description provided for @subscription_discount_20.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off'**
+  String get subscription_discount_20;
+
+  /// No description provided for @subscription_note.
+  ///
+  /// In en, this message translates to:
+  /// **'All plans include 20% off all orders. You can pause or edit the plan anytime'**
+  String get subscription_note;
+
+  /// No description provided for @family_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family plan details'**
+  String get family_details_title;
+
+  /// No description provided for @family_plan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family plan'**
+  String get family_plan_title;
+
+  /// No description provided for @family_plan_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete plan for up to 6 members'**
+  String get family_plan_subtitle;
+
+  /// No description provided for @family_plan_new.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get family_plan_new;
+
+  /// No description provided for @family_plan_feature_group_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Group delivery'**
+  String get family_plan_feature_group_delivery;
+
+  /// No description provided for @family_plan_feature_one_invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'One invoice'**
+  String get family_plan_feature_one_invoice;
+
+  /// No description provided for @family_plan_feature_group_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Group discount'**
+  String get family_plan_feature_group_discount;
+
+  /// No description provided for @family_plan_feature_all_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals for everyone'**
+  String get family_plan_feature_all_meals;
+
+  /// No description provided for @family_plan_feature_individual_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan for each member'**
+  String get family_plan_feature_individual_plan;
+
+  /// No description provided for @family_add_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new member'**
+  String get family_add_member;
+
+  /// No description provided for @family_add_member_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize a nutrition plan for each family member'**
+  String get family_add_member_subtitle;
+
+  /// No description provided for @family_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get family_owner;
+
+  /// No description provided for @family_member_ahmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed'**
+  String get family_member_ahmed;
+
+  /// No description provided for @family_member_sarah.
+  ///
+  /// In en, this message translates to:
+  /// **'Sarah'**
+  String get family_member_sarah;
+
+  /// No description provided for @family_member_yousef.
+  ///
+  /// In en, this message translates to:
+  /// **'Yousef'**
+  String get family_member_yousef;
+
+  /// No description provided for @family_member_mariam.
+  ///
+  /// In en, this message translates to:
+  /// **'Mariam'**
+  String get family_member_mariam;
+
+  /// No description provided for @family_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family plan summary'**
+  String get family_summary_title;
+
+  /// No description provided for @family_current_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Current members'**
+  String get family_current_members;
+
+  /// No description provided for @family_max_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan member limit'**
+  String get family_max_members;
+
+  /// No description provided for @family_total_daily_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Total daily meals'**
+  String get family_total_daily_meals;
+
+  /// No description provided for @family_total_daily_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Total daily calories'**
+  String get family_total_daily_calories;
+
+  /// No description provided for @family_one_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'One delivery for the family'**
+  String get family_one_delivery;
+
+  /// No description provided for @family_group_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Group delivery'**
+  String get family_group_delivery;
+
+  /// No description provided for @family_meals_each_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals for each member'**
+  String get family_meals_each_member;
+
+  /// No description provided for @family_table_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get family_table_member;
+
+  /// No description provided for @family_table_breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get family_table_breakfast;
+
+  /// No description provided for @family_table_lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get family_table_lunch;
+
+  /// No description provided for @family_table_snack.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack'**
+  String get family_table_snack;
+
+  /// No description provided for @family_table_dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get family_table_dinner;
+
+  /// No description provided for @family_table_meals_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get family_table_meals_count;
+
+  /// No description provided for @family_meals_3.
+  ///
+  /// In en, this message translates to:
+  /// **'3 meals'**
+  String get family_meals_3;
+
+  /// No description provided for @family_meals_4.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals'**
+  String get family_meals_4;
+
+  /// No description provided for @family_meals_5.
+  ///
+  /// In en, this message translates to:
+  /// **'5 meals'**
+  String get family_meals_5;
+
+  /// No description provided for @family_price_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Price details'**
+  String get family_price_details;
+
+  /// No description provided for @family_base_price_two_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Base price (for 2 members)'**
+  String get family_base_price_two_members;
+
+  /// No description provided for @family_extra_members_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra members (2 x 7.500 KWD)'**
+  String get family_extra_members_price;
+
+  /// No description provided for @family_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total:'**
+  String get family_total;
+
+  /// No description provided for @family_confirm_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm plan'**
+  String get family_confirm_plan;
+
+  /// No description provided for @family_add_member_dialog_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter member details to add them to the family plan'**
+  String get family_add_member_dialog_subtitle;
+
+  /// No description provided for @family_full_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get family_full_name;
+
+  /// No description provided for @family_full_name_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the name here'**
+  String get family_full_name_hint;
+
+  /// No description provided for @family_relation.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get family_relation;
+
+  /// No description provided for @family_relation_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose relationship'**
+  String get family_relation_hint;
+
+  /// No description provided for @family_age.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get family_age;
+
+  /// No description provided for @family_age_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter age'**
+  String get family_age_hint;
+
+  /// No description provided for @family_year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get family_year;
+
+  /// No description provided for @family_nutrition_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition goal'**
+  String get family_nutrition_goal;
+
+  /// No description provided for @family_nutrition_goal_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose goal'**
+  String get family_nutrition_goal_hint;
+
+  /// No description provided for @family_activity_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity level'**
+  String get family_activity_level;
+
+  /// No description provided for @family_activity_low.
+  ///
+  /// In en, this message translates to:
+  /// **'Low activity'**
+  String get family_activity_low;
+
+  /// No description provided for @family_activity_medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get family_activity_medium;
+
+  /// No description provided for @family_activity_high.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get family_activity_high;
+
+  /// No description provided for @family_daily_meals_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily meals count'**
+  String get family_daily_meals_count;
+
+  /// No description provided for @family_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get family_info;
+
+  /// No description provided for @family_info_message.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit the data anytime from member settings'**
+  String get family_info_message;
+
+  /// No description provided for @family_add_member_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get family_add_member_button;
+
+  /// No description provided for @family_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get family_cancel;
+
   /// No description provided for @calendar_title.
   ///
   /// In en, this message translates to:

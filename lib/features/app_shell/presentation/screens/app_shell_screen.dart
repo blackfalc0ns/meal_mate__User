@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart'
 import 'package:meal_meat_user/features/home/presentation/screens/home_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
   const AppShellScreen({super.key});
@@ -87,10 +88,7 @@ class _AppShellView extends StatelessWidget {
               const HomeScreen(),
               const CalendarScreen(),
               const OffersScreen(),
-              _ShellPlaceholderView(
-                title: l10n.nav_subscription,
-                subtitle: l10n.coming_soon_subtitle,
-              ),
+              const SubscriptionsScreen(showBottomSpace: true),
               _ShellPlaceholderView(
                 title: l10n.nav_profile,
                 subtitle: l10n.coming_soon_subtitle,

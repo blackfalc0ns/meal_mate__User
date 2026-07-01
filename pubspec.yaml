@@ -53,6 +53,7 @@ flutter:
     - assets/images/
     - assets/animations/
     - assets/images/offers/
+    - assets/images/subscriptions/
     - assets/images/svg/
 
   fonts:

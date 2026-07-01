@@ -58,6 +58,28 @@ class Assets {
   static const String offerStarbucksLogo = '$_images/offers/starbucks_logo.png';
   static const String offerCalendar = '$_images/offers/calendar.png';
 
+  // Subscriptions
+  static const String subscriptionHeroMeal =
+      '$_images/subscriptions/subscription_hero_meal.png';
+  static const String subscriptionWeekPlan =
+      '$_images/subscriptions/subscription_week_plan.png';
+  static const String subscriptionHalfMonthPlan =
+      '$_images/subscriptions/subscription_hero_meal.png';
+  static const String subscriptionMonthPlan =
+      '$_images/subscriptions/subscription_month_plan.png';
+  static const String subscriptionNoteMeal =
+      '$_images/subscriptions/subscription_note_meal.png';
+  static const String familyPlanHero =
+      '$_images/subscriptions/family_plan_hero.png';
+  static const String familyMemberSarah =
+      '$_images/subscriptions/family_member_sarah-40a2f0.png';
+  static const String familyMemberYousef =
+      '$_images/subscriptions/family_member_yousef-42a7a0.png';
+  static const String familyMemberMariam =
+      '$_images/subscriptions/family_member_mariam-40a2f0.png';
+  static const String familyMemberAhmed =
+      '$_images/subscriptions/family_member_ahmed-42a7a0.png';
+
   // Lottie
   static const String emptyCart = '$_lottie/empty_cart.json';
 
