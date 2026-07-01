@@ -56,4 +56,31 @@ class Spacing {
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
   static const double iconXl = 48.0;
+
+  // Borders
+  static const double hairline = 0.5;
+  static const double border = 1.0;
+
+  // Radius
+  static const double radiusXs = 4.0;
+  static const double radiusSm = 8.0;
+  static const double radiusMd = 12.0;
+  static const double radiusLg = 16.0;
+  static const double radiusXl = 24.0;
+  static const double radiusPill = 99.0;
+
+  // Subscriptions feature sizing
+  static const double subscriptionHeroHeight = 130.0;
+  static const double subscriptionPlansHeight = 292.0;
+  static const double subscriptionPlanCardWidth = 111.0;
+  static const double subscriptionPlanImageHeight = 78.0;
+  static const double subscriptionChooseButtonWidth = 96.0;
+  static const double subscriptionChooseButtonHeight = 29.0;
+  static const double subscriptionInfoHeight = 48.0;
+  static const double familyMembersStripHeight = 142.0;
+  static const double familyMemberCardWidth = 65.0;
+  static const double familySummaryHeight = 96.0;
+  static const double familyMealsMinHeight = 129.0;
+  static const double familyPriceMinHeight = 138.0;
+  static const double compactButtonHeight = 39.0;
 }

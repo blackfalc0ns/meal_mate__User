@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionsHeroCard extends StatelessWidget {
   const SubscriptionsHeroCard({
@@ -16,12 +17,14 @@ class SubscriptionsHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
-      height: 130,
+      height: Spacing.subscriptionHeroHeight,
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F5F0),
-        borderRadius: BorderRadius.circular(33),
-        border: Border.all(color: const Color(0xFFECF1EC)),
+        color: color.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(Spacing.xxl),
+        border: Border.all(color: color.outlineVariant),
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -53,11 +56,11 @@ class SubscriptionsHeroCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 23,
-                    color: const Color(0xFF418B46),
+                    fontSize: FontSize.size24,
+                    color: color.tertiary,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: Spacing.sm),
                 Text(
                   subtitle,
                   maxLines: 3,
@@ -65,8 +68,8 @@ class SubscriptionsHeroCard extends StatelessWidget {
                   //textAlign: TextAlign.left,
                   style: getRegularStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 16,
-                    color: AppColors.black,
+                    fontSize: FontSize.size16,
+                    color: color.onSurface,
                   ),
                 ),
               ],
@@ -80,11 +83,11 @@ class SubscriptionsHeroCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _Dot(isActive: true),
-                const SizedBox(width: 8),
+                const SizedBox(width: Spacing.sm),
                 _Dot(),
-                const SizedBox(width: 8),
+                const SizedBox(width: Spacing.sm),
                 _Dot(),
-                const SizedBox(width: 8),
+                const SizedBox(width: Spacing.sm),
                 _Dot(),
               ],
             ),
@@ -102,13 +105,17 @@ class _Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       width: isActive ? 24 : 6,
       height: 6,
       decoration: BoxDecoration(
-        color: isActive ? const Color(0xFF0C6C3F) : const Color(0x330C6C3F),
-        borderRadius: BorderRadius.circular(3),
+        color: isActive
+            ? color.tertiaryContainer
+            : color.tertiaryContainer.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(Spacing.xs),
       ),
     );
   }

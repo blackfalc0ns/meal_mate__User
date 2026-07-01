@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyAddMemberDialog extends StatefulWidget {
   const FamilyAddMemberDialog({super.key});
 
   static Future<void> show(BuildContext context) {
+    final color = context.colorScheme;
+
     return showDialog<void>(
       context: context,
-      barrierColor: const Color(0x916E6868),
+      barrierColor: color.scrim,
       builder: (_) => const FamilyAddMemberDialog(),
     );
   }
@@ -23,56 +28,74 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
+    final color = context.colorScheme;
+
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
+      backgroundColor: color.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Spacing.radiusXl),
+      ),
       child: SizedBox(
         height: 593,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 15, 14, 12),
+          padding: const EdgeInsets.fromLTRB(
+            Spacing.md,
+            Spacing.base,
+            Spacing.md,
+            Spacing.md,
+          ),
           child: Column(
             children: [
               Row(
                 children: [
                   InkWell(
                     onTap: () => Navigator.pop(context),
-                    borderRadius: BorderRadius.circular(99),
-                    child: const CircleAvatar(
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    child: CircleAvatar(
                       radius: 12,
-                      backgroundColor: Color(0xFFE6E6E6),
-                      child: Icon(Icons.close_rounded, size: 14),
+                      backgroundColor: color.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 14,
+                        color: color.onSurface,
+                      ),
                     ),
                   ),
                   const Spacer(),
                 ],
               ),
-              const Icon(
+              Icon(
                 Icons.person_add_alt_1_rounded,
-                color: Color(0xFF0C6C3F),
+                color: color.primary,
                 size: 54,
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: Spacing.xss),
               Text(
                 l10n.family_add_member,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.onSurface,
+                  fontSize: FontSize.size17,
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: Spacing.xs),
               Text(
                 l10n.family_add_member_dialog_subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Color(0xFF5A5C62), fontSize: 10),
+                style: getRegularStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.onSurfaceVariant,
+                  fontSize: FontSize.size10,
+                ),
               ),
-              const SizedBox(height: 17),
+              const SizedBox(height: Spacing.base),
               _LabeledField(
                 icon: Icons.person_outline_rounded,
                 label: l10n.family_full_name,
                 hint: l10n.family_full_name_hint,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.sm),
               Row(
                 textDirection: TextDirection.rtl,
                 children: [
@@ -85,7 +108,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                       trailing: Icons.keyboard_arrow_down_rounded,
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: Spacing.lg),
                   Expanded(
                     child: _LabeledField(
                       icon: Icons.calendar_month_outlined,
@@ -97,14 +120,14 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.sm),
               _LabeledField(
                 icon: Icons.track_changes_rounded,
                 label: l10n.family_nutrition_goal,
                 hint: l10n.family_nutrition_goal_hint,
                 trailing: Icons.keyboard_arrow_down_rounded,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.sm),
               _ChoiceSection(
                 label: l10n.family_activity_level,
                 icon: Icons.directions_walk_rounded,
@@ -116,7 +139,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                 selectedIndex: _activityIndex,
                 onChanged: (index) => setState(() => _activityIndex = index),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.sm),
               _ChoiceSection(
                 label: l10n.family_daily_meals_count,
                 icon: Icons.restaurant_rounded,
@@ -128,23 +151,26 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                 selectedIndex: _mealsIndex,
                 onChanged: (index) => setState(() => _mealsIndex = index),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: Spacing.md),
               _InfoHint(),
               const Spacer(),
               SizedBox(
-                height: 39,
+                height: Spacing.compactButtonHeight,
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(l10n.family_add_member_button),
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: Spacing.xss),
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
                   l10n.family_cancel,
-                  style: const TextStyle(color: Colors.black),
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.onSurface,
+                  ),
                 ),
               ),
             ],
@@ -174,21 +200,27 @@ class _LabeledField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Row(
           textDirection: TextDirection.rtl,
           children: [
-            Icon(icon, size: 12),
-            const SizedBox(width: 4),
+            Icon(icon, size: 12, color: color.onSurface),
+            const SizedBox(width: Spacing.xs),
             Text(
               label,
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                color: color.onSurface,
+                fontSize: FontSize.size10,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: Spacing.xss),
         SizedBox(
           height: 32,
           child: TextField(
@@ -201,19 +233,25 @@ class _LabeledField extends StatelessWidget {
                   : Container(
                       width: 37,
                       alignment: Alignment.center,
-                      margin: const EdgeInsets.all(1),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFE1E1E0),
-                        borderRadius: BorderRadiusDirectional.horizontal(
+                      margin: const EdgeInsets.all(Spacing.border),
+                      decoration: BoxDecoration(
+                        color: color.outlineVariant,
+                        borderRadius: const BorderRadiusDirectional.horizontal(
                           start: Radius.circular(8),
                         ),
                       ),
                       child: Text(
                         suffix!,
-                        style: const TextStyle(fontSize: 10),
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          color: color.onSurface,
+                          fontSize: FontSize.size10,
+                        ),
                       ),
                     ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: Spacing.md,
+              ),
             ),
           ),
         ),
@@ -239,47 +277,57 @@ class _ChoiceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Row(
           textDirection: TextDirection.rtl,
           children: [
-            Icon(icon, size: 12),
-            const SizedBox(width: 4),
+            Icon(icon, size: 12, color: color.onSurface),
+            const SizedBox(width: Spacing.xs),
             Text(
               label,
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                color: color.onSurface,
+                fontSize: FontSize.size10,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: Spacing.xss),
         Row(
           textDirection: TextDirection.rtl,
           children: List.generate(choices.length, (index) {
             final selected = index == selectedIndex;
             return Expanded(
               child: Padding(
-                padding: EdgeInsetsDirectional.only(start: index == 0 ? 0 : 10),
+                padding: EdgeInsetsDirectional.only(
+                  start: index == 0 ? 0 : Spacing.sm,
+                ),
                 child: OutlinedButton(
                   onPressed: () => onChanged(index),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 32),
                     side: BorderSide(
-                      color: selected
-                          ? const Color(0xFF0C6C3F)
-                          : const Color(0xFFE1E1E0),
+                      color: selected ? color.primary : color.outlineVariant,
                     ),
                     backgroundColor: selected
-                        ? const Color(0xFFF6F8F7)
-                        : Colors.white,
+                        ? color.surfaceContainerHighest
+                        : color.surface,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
                     ),
                   ),
                   child: Text(
                     choices[index],
-                    style: const TextStyle(color: Colors.black, fontSize: 10),
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      color: color.onSurface,
+                      fontSize: FontSize.size10,
+                    ),
                   ),
                 ),
               ),
@@ -295,18 +343,24 @@ class _InfoHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
+    final color = context.colorScheme;
+
     return Container(
       height: 43,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F8F7),
-        borderRadius: BorderRadius.circular(10),
+        color: color.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
       ),
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
-          const Icon(Icons.lightbulb_outline_rounded, size: 24),
-          const SizedBox(width: 10),
+          Icon(
+            Icons.lightbulb_outline_rounded,
+            size: 24,
+            color: color.onSurface,
+          ),
+          const SizedBox(width: Spacing.md),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -314,18 +368,20 @@ class _InfoHint extends StatelessWidget {
               children: [
                 Text(
                   l10n.family_info,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.onSurface,
+                    fontSize: FontSize.size10,
                   ),
                 ),
                 Text(
                   l10n.family_info_message,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Color(0xFF5A5C62),
-                    fontSize: 10,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.onSurfaceVariant,
+                    fontSize: FontSize.size10,
                   ),
                 ),
               ],

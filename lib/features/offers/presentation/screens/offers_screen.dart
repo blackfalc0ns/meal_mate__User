@@ -22,87 +22,91 @@ class OffersScreen extends StatelessWidget {
     final offers = _dataSource.getOffers();
 
     return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: CustomAppBar(
-              title: l10n.offers_title,
-              actions: [
-                NotificationButton(onTap: () {}),
+      child: Column(
+        children: [CustomAppBar(showBackButton: false,
+                  title: l10n.offers_title,
+                  actions: [
+                    NotificationButton(onTap: () {}),
+                  ],
+                ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+               
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: OffersHeroCard(hero: offers.hero),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: OffersFilterStrip(
+                    filters: _dataSource.getOffers().filters,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: OffersSectionHeader(
+                    actionLabel: l10n.offers_view_all,
+                    onActionTap: () {},
+                    title: l10n.offers_featured_section_title,
+                    icon: Icons.star_rounded,
+                    iconColor: const Color(0xFF0C7D37),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 188,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: offers.featuredOffers.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 15),
+                      itemBuilder: (context, index) {
+                        final offer = offers.featuredOffers[index];
+                        return OfferDealCard(
+                          offer: offer,
+                          onTap: () => OfferDetailsBottomSheet.show(context, offer),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: OffersSectionHeader(
+                    title: l10n.offers_restaurants_section_title,
+                    actionLabel: l10n.offers_view_all,
+                    onActionTap: () {},
+                    actionColor: const Color(0xFF0C7D37),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 175,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 9),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: offers.restaurantOffers.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 13),
+                      itemBuilder: (context, index) {
+                        final offer = offers.restaurantOffers[index];
+                        return RestaurantOfferCard(
+                          offer: offer,
+                          onTap: () => OfferDetailsBottomSheet.show(context, offer),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 9),
+                    child: OffersInviteBanner(banner: offers.inviteBanner),
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 108)),
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: OffersHeroCard(hero: offers.hero),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: OffersFilterStrip(
-              filters: _dataSource.getOffers().filters,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: OffersSectionHeader(
-              actionLabel: l10n.offers_view_all,
-              onActionTap: () {},
-              title: l10n.offers_featured_section_title,
-              icon: Icons.star_rounded,
-              iconColor: const Color(0xFF0C7D37),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 188,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                scrollDirection: Axis.horizontal,
-                itemCount: offers.featuredOffers.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 15),
-                itemBuilder: (context, index) {
-                  final offer = offers.featuredOffers[index];
-                  return OfferDealCard(
-                    offer: offer,
-                    onTap: () => OfferDetailsBottomSheet.show(context, offer),
-                  );
-                },
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: OffersSectionHeader(
-              title: l10n.offers_restaurants_section_title,
-              actionLabel: l10n.offers_view_all,
-              onActionTap: () {},
-              actionColor: const Color(0xFF0C7D37),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 142,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 9),
-                scrollDirection: Axis.horizontal,
-                itemCount: offers.restaurantOffers.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 13),
-                itemBuilder: (context, index) {
-                  final offer = offers.restaurantOffers[index];
-                  return RestaurantOfferCard(
-                    offer: offer,
-                    onTap: () => OfferDetailsBottomSheet.show(context, offer),
-                  );
-                },
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 9),
-              child: OffersInviteBanner(banner: offers.inviteBanner),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 108)),
         ],
       ),
     );

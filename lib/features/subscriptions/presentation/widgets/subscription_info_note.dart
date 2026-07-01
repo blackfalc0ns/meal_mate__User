@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionInfoNote extends StatelessWidget {
   const SubscriptionInfoNote({
@@ -15,43 +17,44 @@ class SubscriptionInfoNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
       child: Container(
-        height: 48,
+        height: Spacing.subscriptionInfoHeight,
         decoration: BoxDecoration(
-          color: const Color(0xFFF2F4EF),
-          borderRadius: BorderRadius.circular(11),
+          color: color.tertiaryContainer,
+          borderRadius: BorderRadius.circular(Spacing.cardRadius),
         ),
         child: Row(
           textDirection: TextDirection.rtl,
           children: [
-            const SizedBox(width: 12),
-            const Icon(
+            const SizedBox(width: Spacing.md),
+            Icon(
               Icons.info_outline_rounded,
-              color: Color(0xFF0C6C3F),
+              color: color.onTertiaryContainer,
               size: 20,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: Spacing.md),
             Expanded(
               child: RichText(
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.right,
                 text: TextSpan(
-                  style: const TextStyle(
+                  style: getRegularStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 10,
-                    height: 1.55,
-                    color: AppColors.black,
-                  ),
+                    fontSize: FontSize.size10,
+                    color: color.onSurface,
+                  ).copyWith(height: 1.55),
                   children: [
                     TextSpan(text: text.split(highlightedText).first),
                     TextSpan(
                       text: highlightedText,
-                      style: const TextStyle(
-                        color: Color(0xFF07773C),
-                        fontWeight: FontWeight.w700,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        color: color.primary,
                       ),
                     ),
                     TextSpan(
@@ -65,7 +68,7 @@ class SubscriptionInfoNote extends StatelessWidget {
             ),
             SizedBox(
               width: 76,
-              height: 48,
+              height: Spacing.subscriptionInfoHeight,
               child: Image.asset(
                 Assets.subscriptionNoteMeal,
                 fit: BoxFit.cover,

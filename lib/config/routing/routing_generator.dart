@@ -18,97 +18,105 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.home:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const AppShellScreen(),
-        );
+        return _buildRoute(settings: settings, page: const AppShellScreen());
       case AppRoutes.offers:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const OffersScreen(),
-        );
+        return _buildRoute(settings: settings, page: const OffersScreen());
       case AppRoutes.subscriptions:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const SubscriptionsScreen(),
+          page: const SubscriptionsScreen(),
         );
       case AppRoutes.familyPlanDetails:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const FamilyPlanDetailsScreen(),
+          page: const FamilyPlanDetailsScreen(),
         );
       case AppRoutes.calendar:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const CalendarScreen(),
-        );
+        return _buildRoute(settings: settings, page: const CalendarScreen());
       case AppRoutes.offerDetails:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const OfferDetailsScreen(),
+          page: const OfferDetailsScreen(),
         );
       case AppRoutes.offerActivated:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const OfferActivatedScreen(),
+          page: const OfferActivatedScreen(),
         );
       case AppRoutes.payment:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const PaymentScreen(),
-        );
+        return _buildRoute(settings: settings, page: const PaymentScreen());
       case AppRoutes.paymentSuccess:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const PaymentSuccessScreen(),
+          page: const PaymentSuccessScreen(),
         );
       case AppRoutes.splash:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const SplashScreen(),
-        );
+        return _buildRoute(settings: settings, page: const SplashScreen());
       case AppRoutes.onboarding:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const OnboardingScreen(),
-        );
+        return _buildRoute(settings: settings, page: const OnboardingScreen());
       case AppRoutes.signIn:
       case AppRoutes.login:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) =>
-              const AuthFlowScreen(initialPage: AuthPageType.signIn),
+          page: const AuthFlowScreen(initialPage: AuthPageType.signIn),
         );
       case AppRoutes.signUp:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) =>
-              const AuthFlowScreen(initialPage: AuthPageType.signUp),
+          page: const AuthFlowScreen(initialPage: AuthPageType.signUp),
         );
       case AppRoutes.forgotPassword:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) =>
-              const AuthFlowScreen(initialPage: AuthPageType.forgotPassword),
+          page: const AuthFlowScreen(initialPage: AuthPageType.forgotPassword),
         );
       case AppRoutes.otp:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => const AuthFlowScreen(initialPage: AuthPageType.otp),
+          page: const AuthFlowScreen(initialPage: AuthPageType.otp),
         );
       case AppRoutes.newPassword:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) =>
-              const AuthFlowScreen(initialPage: AuthPageType.newPassword),
+          page: const AuthFlowScreen(initialPage: AuthPageType.newPassword),
         );
       default:
-        return MaterialPageRoute(
+        return _buildRoute(
           settings: settings,
-          builder: (_) => Scaffold(
+          page: Scaffold(
             body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
+  }
+
+  static PageRouteBuilder<dynamic> _buildRoute({
+    required RouteSettings settings,
+    required Widget page,
+  }) {
+    return PageRouteBuilder(
+      settings: settings,
+      transitionDuration: const Duration(milliseconds: 360),
+      reverseTransitionDuration: const Duration(milliseconds: 260),
+      pageBuilder: (_, _, _) => page,
+      transitionsBuilder: (_, animation, _, child) {
+        final curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+          reverseCurve: Curves.easeInCubic,
+        );
+
+        return FadeTransition(
+          opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.08, 0),
+              end: Offset.zero,
+            ).animate(curvedAnimation),
+            child: child,
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class FamilyPlanEntity {
   const FamilyPlanEntity({
     required this.title,
@@ -34,20 +36,24 @@ class FamilyMemberEntity {
   const FamilyMemberEntity({
     required this.name,
     required this.imageAsset,
+    required this.detailLines,
+    required this.actionLabel,
     required this.mealsCount,
     required this.mealChecks,
     this.isOwner = false,
-    this.badgeColorHex = 0xFFEAF1EB,
-    this.badgeTextColorHex = 0xFF0C6C3F,
+    this.badgeColor = const Color(0xFFEAF1EB),
+    this.badgeTextColor = const Color(0xFF0C6C3F),
   });
 
   final String name;
   final String imageAsset;
+  final List<String> detailLines;
+  final String actionLabel;
   final String mealsCount;
   final List<bool> mealChecks;
   final bool isOwner;
-  final int badgeColorHex;
-  final int badgeTextColorHex;
+  final Color badgeColor;
+  final Color badgeTextColor;
 }
 
 class FamilySummaryStatEntity {

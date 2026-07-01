@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/family_plan_entity.dart';
 
@@ -9,32 +12,36 @@ class FamilyPlanSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
-      height: 78,
-      padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+      height: Spacing.familySummaryHeight,
+      padding: const EdgeInsets.fromLTRB(Spacing.md, 9, Spacing.md, 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: const Color(0xFFECEEED)),
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
             textDirection: TextDirection.rtl,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Icon(Icons.groups_rounded, size: 12),
-              const SizedBox(width: 5),
+              Icon(Icons.groups_rounded, size: 14, color: color.primary),
+              const SizedBox(width: Spacing.xss),
               Text(
                 context.localization.family_summary_title,
-                style: const TextStyle(
-                  fontSize: 9.2,
-                  fontWeight: FontWeight.w600,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.onSurface,
+                  fontSize: FontSize.size10,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 10),
           Expanded(
             child: Row(
               textDirection: TextDirection.rtl,
@@ -42,7 +49,11 @@ class FamilyPlanSummaryCard extends StatelessWidget {
                 for (int index = 0; index < stats.length; index++) ...[
                   Expanded(child: _SummaryStat(stat: stats[index])),
                   if (index != stats.length - 1)
-                    Container(width: 1, color: const Color(0xFFF7F8F7)),
+                    Container(
+                      width: Spacing.hairline,
+                      margin: const EdgeInsets.symmetric(vertical: Spacing.xs),
+                      color: color.surfaceContainerHighest,
+                    ),
                 ],
               ],
             ),
@@ -60,41 +71,45 @@ class _SummaryStat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          textDirection: TextDirection.rtl,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(_icon, size: 10, color: const Color(0xFF09763B)),
-            const SizedBox(width: 2),
+            Icon(_icon, size: 13, color: color.primary),
+            const SizedBox(width: Spacing.xs),
             Flexible(
               child: Text(
                 stat.value,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xFF09763B),
-                  fontSize: 8.4,
-                  fontWeight: FontWeight.w600,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.primary,
+                  fontSize: stat.iconName == 'delivery'
+                      ? FontSize.size7
+                      : FontSize.size10,
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 3),
+        const SizedBox(height: Spacing.xss),
         Text(
           stat.label,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Color(0xFF5A5C62),
-            fontSize: 7.4,
-            fontWeight: FontWeight.w600,
-            height: 1.1,
-          ),
+          style: getSemiBoldStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            color: color.onSurfaceVariant,
+            fontSize: FontSize.size8,
+          ).copyWith(height: 1.25),
         ),
       ],
     );

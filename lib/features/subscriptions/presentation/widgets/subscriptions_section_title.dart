@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionsSectionTitle extends StatelessWidget {
   const SubscriptionsSectionTitle({super.key, required this.title});
@@ -11,8 +11,14 @@ class SubscriptionsSectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: Spacing.screenH, top: Spacing.screenV, bottom: Spacing.base),
+      padding: const EdgeInsetsDirectional.only(
+        start: Spacing.screenH,
+        top: Spacing.screenV,
+        bottom: Spacing.base,
+      ),
       child: Align(
         alignment: AlignmentDirectional.centerStart,
         child: Text(
@@ -20,8 +26,8 @@ class SubscriptionsSectionTitle extends StatelessWidget {
           textAlign: TextAlign.right,
           style: getBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: 20,
-            color: AppColors.black,
+            fontSize: FontSize.size20,
+            color: color.onSurface,
           ),
         ),
       ),

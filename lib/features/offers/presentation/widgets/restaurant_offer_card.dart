@@ -19,7 +19,7 @@ class RestaurantOfferCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Container(
           width: 113,
-          height: 142,
+          height: 175,
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.border),
             borderRadius: BorderRadius.circular(12),
@@ -61,11 +61,14 @@ class RestaurantOfferCard extends StatelessWidget {
                         ),
                       ),
                       Center(
-                        child: Image.asset(
-                          offer.logoAsset,
-                          width: 47,
-                          height: 48,
-                          fit: BoxFit.contain,
+                        child: Hero(
+                          tag: offer,
+                          child: Image.asset(
+                            offer.logoAsset,
+                            width: 47,
+                            height: 48,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -87,7 +90,7 @@ class RestaurantOfferCard extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           Icon(
                             Icons.verified_rounded,
@@ -95,26 +98,36 @@ class RestaurantOfferCard extends StatelessWidget {
                             color: offer.accentColor,
                           ),
                           const SizedBox(width: 4),
-                          Text(
-                            offer.title,
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size13,
-                              color: AppColors.textPrimary,
+                          Flexible(
+                            child: Text(
+                              offer.title,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size13,
+                                color: AppColors.textPrimary,
+                              ).copyWith(height: 1.15),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 1),
-                      Text(
-                        offer.subtitle,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size10,
-                          color: AppColors.textSecondary,
+                      SizedBox(
+                        height: 25,
+                        child: Text(
+                          offer.subtitle,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size10,
+                            color: AppColors.textSecondary,
+                          ).copyWith(height: 1.2),
                         ),
                       ),
                       const SizedBox(height: 1),

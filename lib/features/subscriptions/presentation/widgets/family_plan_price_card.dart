@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/family_plan_entity.dart';
 
@@ -9,16 +12,25 @@ class FamilyPlanPriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
-      height: 138,
-      padding: const EdgeInsets.fromLTRB(17, 10, 17, 12),
+      constraints: const BoxConstraints(
+        minHeight: Spacing.familyPriceMinHeight,
+      ),
+      padding: const EdgeInsets.fromLTRB(
+        Spacing.base,
+        Spacing.sm,
+        Spacing.base,
+        Spacing.md,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(9),
-        border: Border.all(color: const Color(0xFF1B8E2F)),
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(color: color.primary),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.12),
+            color: color.shadow.withValues(alpha: 0.12),
             blurRadius: 4,
             offset: const Offset(0, 4),
           ),
@@ -29,27 +41,23 @@ class FamilyPlanPriceCard extends StatelessWidget {
           Row(
             textDirection: TextDirection.rtl,
             children: [
-              const Icon(
-                Icons.savings_rounded,
-                color: Color(0xFF0C6C3F),
-                size: 13,
-              ),
-              const SizedBox(width: 5),
+              Icon(Icons.savings_rounded, color: color.primary, size: 13),
+              const SizedBox(width: Spacing.xss),
               Text(
                 context.localization.family_price_details,
-                style: const TextStyle(
-                  fontSize: 8.9,
-                  fontWeight: FontWeight.w600,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontSize: FontSize.size9,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: Spacing.md),
           for (final row in plan.priceRows) ...[
             _PriceRow(label: row.label, value: row.value),
-            const SizedBox(height: 9),
+            const SizedBox(height: Spacing.sm),
           ],
-          const Divider(color: Color(0xFFEAEBEC)),
+          Divider(color: color.outlineVariant),
           _PriceRow(
             label: plan.totalLabel,
             value: plan.totalPrice,
@@ -74,6 +82,8 @@ class _PriceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Row(
       textDirection: TextDirection.rtl,
       children: [
@@ -81,19 +91,30 @@ class _PriceRow extends StatelessWidget {
           child: Text(
             label,
             textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: isTotal ? 19 : 9.9,
-              fontWeight: isTotal ? FontWeight.w700 : FontWeight.w600,
-            ),
+            style: isTotal
+                ? getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size19,
+                  )
+                : getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size10,
+                  ),
           ),
         ),
         Text(
           value,
-          style: TextStyle(
-            color: isTotal ? const Color(0xFF0C6C3F) : Colors.black,
-            fontSize: isTotal ? 19 : 10.9,
-            fontWeight: isTotal ? FontWeight.w700 : FontWeight.w600,
-          ),
+          style: isTotal
+              ? getBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.primary,
+                  fontSize: FontSize.size19,
+                )
+              : getSemiBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.onSurface,
+                  fontSize: FontSize.size11,
+                ),
         ),
       ],
     );

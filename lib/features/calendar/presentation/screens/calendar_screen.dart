@@ -29,40 +29,49 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final meals = _buildMeals(context);
 
     return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: CustomAppBar(
-              showBackButton: false,
-              title: l10n.calendar_title,
+      child: Column(
+        children: [CustomAppBar(
+                  showBackButton: false,
+                  title: l10n.calendar_title,
+                ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                // SliverToBoxAdapter(
+                //   child: CustomAppBar(
+                //     showBackButton: false,
+                //     title: l10n.calendar_title,
+                //   ),
+                // ),
+                SliverToBoxAdapter(
+                  child: CalendarDaysStrip(
+                    selectedDate: _selectedDate,
+                    onDateSelected: (date) => setState(() => _selectedDate = date),
+                  ),
+                ),
+                const SliverToBoxAdapter(child: CalendarProgressCard()),
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                const SliverToBoxAdapter(child: CalendarQuickActions()),
+                SliverToBoxAdapter(child: _buildPeriodFilter(context)),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverToBoxAdapter(
+                    child: _CalendarPlanHeader(selectedDate: _selectedDate),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsetsDirectional.only(start: 36, end: 20),
+                  sliver: SliverList.separated(
+                    itemCount: meals.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 18),
+                    itemBuilder: (_, index) =>
+                        CalendarMealTimelineCard(meal: meals[index]),
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 110)),
+              ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: CalendarDaysStrip(
-              selectedDate: _selectedDate,
-              onDateSelected: (date) => setState(() => _selectedDate = date),
-            ),
-          ),
-          const SliverToBoxAdapter(child: CalendarProgressCard()),
-          const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          const SliverToBoxAdapter(child: CalendarQuickActions()),
-          SliverToBoxAdapter(child: _buildPeriodFilter(context)),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverToBoxAdapter(
-              child: _CalendarPlanHeader(selectedDate: _selectedDate),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsetsDirectional.only(start: 36, end: 20),
-            sliver: SliverList.separated(
-              itemCount: meals.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 18),
-              itemBuilder: (_, index) =>
-                  CalendarMealTimelineCard(meal: meals[index]),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 110)),
         ],
       ),
     );

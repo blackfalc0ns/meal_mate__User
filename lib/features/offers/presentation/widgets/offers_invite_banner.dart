@@ -47,12 +47,13 @@ class OffersInviteBanner extends StatelessWidget {
                   banner.title,
                   textAlign: TextAlign.end,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     fontSize: FontSize.size13,
                     color: AppColors.textPrimary,
-                  ),
+                  ).copyWith(height: 1.2),
                 ),
                 const SizedBox(height: 5),
                 SizedBox(

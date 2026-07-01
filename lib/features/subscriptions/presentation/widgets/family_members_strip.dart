@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/family_plan_entity.dart';
 
@@ -15,12 +18,13 @@ class FamilyMembersStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 129,
+      height: Spacing.familyMembersStripHeight,
       child: ListView.separated(
+        padding: EdgeInsets.zero,
         reverse: true,
         scrollDirection: Axis.horizontal,
         itemCount: members.length + 1,
-        separatorBuilder: (_, _) => const SizedBox(width: 7),
+        separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
         itemBuilder: (context, index) {
           if (index == 0) {
             return _AddMemberCard(onTap: onAddTap);
@@ -40,46 +44,49 @@ class _AddMemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(9),
-      child: Container(
-        width: 65,
-        decoration: BoxDecoration(
-          color: const Color(0xFFF6F8F7),
-          borderRadius: BorderRadius.circular(9),
-          border: Border.all(color: const Color(0xFF0C6C3F)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.add_circle_rounded,
-              color: Color(0xFF0C6C3F),
-              size: 28,
+    final color = context.colorScheme;
+
+    return Material(
+      color: color.surfaceContainerHighest,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        side: BorderSide(color: color.primary),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        child: SizedBox(
+          width: Spacing.familyMemberCardWidth,
+          height: Spacing.familyMembersStripHeight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.add_circle_rounded, color: color.primary, size: 34),
+                const SizedBox(height: Spacing.md),
+                Text(
+                  l10n.family_add_member,
+                  textAlign: TextAlign.center,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.primary,
+                    fontSize: FontSize.size9,
+                  ).copyWith(height: 1.1),
+                ),
+                const SizedBox(height: Spacing.xss),
+                Text(
+                  l10n.family_add_member_subtitle,
+                  textAlign: TextAlign.center,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: color.onSurfaceVariant,
+                    fontSize: FontSize.size6,
+                  ).copyWith(height: 1.25),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.family_add_member,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF066A2E),
-                fontSize: 8.2,
-                fontWeight: FontWeight.w600,
-                height: 1.1,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              l10n.family_add_member_subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF5A5C62),
-                fontSize: 5.8,
-                height: 1.2,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -93,20 +100,26 @@ class _MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
-      width: 65,
+      width: Spacing.familyMemberCardWidth,
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.xs,
+        vertical: Spacing.sm,
+      ),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F7F6),
-        borderRadius: BorderRadius.circular(9),
+        color: color.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
           Stack(
             clipBehavior: Clip.none,
             children: [
               CircleAvatar(
-                radius: 22,
+                radius: 21,
                 backgroundImage: AssetImage(member.imageAsset),
               ),
               if (member.isOwner)
@@ -116,56 +129,118 @@ class _MemberCard extends StatelessWidget {
                   right: 8,
                   child: Container(
                     alignment: Alignment.center,
-                    height: 9,
+                    height: 10,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDEEDDE),
-                      borderRadius: BorderRadius.circular(3),
+                      color: color.primary,
+                      borderRadius: BorderRadius.circular(Spacing.xs),
                     ),
                     child: Text(
                       context.localization.family_owner,
-                      style: const TextStyle(
-                        color: Color(0xFF217B4E),
-                        fontSize: 4.2,
-                        fontWeight: FontWeight.w600,
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        color: color.onPrimary,
+                        fontSize: FontSize.size6,
                       ),
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: Spacing.sm),
           Text(
             member.name,
-            style: const TextStyle(fontSize: 8.2, fontWeight: FontWeight.w600),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: getBoldStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              color: color.onSurface,
+              fontSize: FontSize.size9,
+            ),
           ),
-          const SizedBox(height: 6),
-          _MiniChecks(checks: member.mealChecks),
+          const SizedBox(height: Spacing.xs),
+          _MemberDetails(lines: member.detailLines),
+          const Spacer(),
+          SizedBox(
+            height: 17,
+            width: double.infinity,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: color.primaryContainer,
+                borderRadius: BorderRadius.circular(Spacing.radiusXs),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    member.actionLabel,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      color: color.onPrimaryContainer,
+                      fontSize: FontSize.size6,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Icon(
+                    Icons.edit_outlined,
+                    size: FontSize.size7,
+                    color: color.onPrimaryContainer,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class _MiniChecks extends StatelessWidget {
-  const _MiniChecks({required this.checks});
+class _MemberDetails extends StatelessWidget {
+  const _MemberDetails({required this.lines});
 
-  final List<bool> checks;
+  final List<String> lines;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 3,
-      runSpacing: 3,
-      children: checks
-          .map(
-            (checked) => Icon(
-              checked ? Icons.check_rounded : Icons.remove_rounded,
-              size: 9,
-              color: const Color(0xFF0C6C3F),
+    final color = context.colorScheme;
+    final icons = [
+      Icons.track_changes_rounded,
+      Icons.local_fire_department_rounded,
+      Icons.restaurant_rounded,
+    ];
+
+    return Column(
+      children: [
+        for (int index = 0; index < lines.length; index++)
+          Padding(
+            padding: EdgeInsets.only(top: index == 0 ? 0 : Spacing.xs),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              textDirection: TextDirection.rtl,
+              children: [
+                Icon(
+                  icons[index % icons.length],
+                  size: FontSize.size7,
+                  color: color.onSurfaceVariant,
+                ),
+                const SizedBox(width: Spacing.xs),
+                Flexible(
+                  child: Text(
+                    lines[index],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size6,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          )
-          .toList(),
+          ),
+      ],
     );
   }
 }

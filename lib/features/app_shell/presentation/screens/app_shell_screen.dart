@@ -82,8 +82,8 @@ class _AppShellView extends StatelessWidget {
             onTap: (index) => context.read<HomeCubit>().selectTab(index),
             items: navItems,
           ),
-          body: IndexedStack(
-            index: state.selectedTabIndex,
+          body: _AnimatedShellBody(
+            selectedIndex: state.selectedTabIndex,
             children: [
               const HomeScreen(),
               const CalendarScreen(),
@@ -94,6 +94,78 @@ class _AppShellView extends StatelessWidget {
                 subtitle: l10n.coming_soon_subtitle,
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AnimatedShellBody extends StatefulWidget {
+  const _AnimatedShellBody({
+    required this.selectedIndex,
+    required this.children,
+  });
+
+  final int selectedIndex;
+  final List<Widget> children;
+
+  @override
+  State<_AnimatedShellBody> createState() => _AnimatedShellBodyState();
+}
+
+class _AnimatedShellBodyState extends State<_AnimatedShellBody>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+  int _previousIndex = 0;
+  double _slideDirection = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _previousIndex = widget.selectedIndex;
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 280),
+    )..value = 1;
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant _AnimatedShellBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedIndex == widget.selectedIndex) return;
+
+    _slideDirection = widget.selectedIndex > _previousIndex ? 1 : -1;
+    _previousIndex = widget.selectedIndex;
+    _controller.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      child: IndexedStack(
+        index: widget.selectedIndex,
+        children: widget.children,
+      ),
+      builder: (context, child) {
+        final value = _animation.value;
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset((1 - value) * 18 * _slideDirection, 0),
+            child: child,
           ),
         );
       },

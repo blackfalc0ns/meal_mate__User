@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/family_plan_entity.dart';
 
@@ -10,6 +13,7 @@ class FamilyMealsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
+    final color = context.colorScheme;
     final columns = [
       l10n.family_table_member,
       l10n.family_table_breakfast,
@@ -20,12 +24,19 @@ class FamilyMealsTable extends StatelessWidget {
     ];
 
     return Container(
-      height: 129,
-      padding: const EdgeInsets.fromLTRB(10, 6, 10, 9),
+      constraints: const BoxConstraints(
+        minHeight: Spacing.familyMealsMinHeight,
+      ),
+      padding: const EdgeInsets.fromLTRB(
+        Spacing.md,
+        Spacing.xss,
+        Spacing.md,
+        Spacing.sm,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFECEEED)),
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
         children: [
@@ -33,17 +44,17 @@ class FamilyMealsTable extends StatelessWidget {
             textDirection: TextDirection.rtl,
             children: [
               const Icon(Icons.restaurant_rounded, size: 12),
-              const SizedBox(width: 5),
+              const SizedBox(width: Spacing.xss),
               Text(
                 l10n.family_meals_each_member,
-                style: const TextStyle(
-                  fontSize: 8.6,
-                  fontWeight: FontWeight.w600,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontSize: FontSize.size9,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: Spacing.xss),
           _TableRow(cells: columns, isHeader: true),
           for (final member in members) _MemberTableRow(member: member),
         ],
@@ -59,38 +70,48 @@ class _MemberTableRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
       height: 20,
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Color(0xFFF4F6F5), width: 0.5)),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: color.outlineVariant.withValues(alpha: 0.5),
+            width: Spacing.hairline,
+          ),
+        ),
       ),
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
-          _TableCell(text: member.name),
+          _MemberNameCell(member: member),
           for (final checked in member.mealChecks)
             Expanded(
               child: Icon(
                 checked ? Icons.check_rounded : Icons.remove_rounded,
-                color: const Color(0xFF0C6C3F),
+                color: color.primary,
                 size: 11,
               ),
             ),
           Expanded(
             child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.xss,
+                  vertical: Spacing.xs,
+                ),
                 decoration: BoxDecoration(
-                  color: Color(member.badgeColorHex),
-                  borderRadius: BorderRadius.circular(4),
+                  color: member.badgeColor,
+                  borderRadius: BorderRadius.circular(Spacing.radiusXs),
                 ),
                 child: Text(
                   member.mealsCount,
                   maxLines: 1,
-                  style: TextStyle(
-                    color: Color(member.badgeTextColorHex),
-                    fontSize: 6.1,
-                    fontWeight: FontWeight.w600,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    color: member.badgeTextColor,
+                    fontSize: FontSize.size6,
                   ),
                 ),
               ),
@@ -136,10 +157,50 @@ class _TableCell extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: isHeader ? 6.9 : 7.8,
-          fontWeight: isHeader ? FontWeight.w600 : FontWeight.w500,
-        ),
+        style: isHeader
+            ? getSemiBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size7,
+              )
+            : getMediumStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size8,
+              ),
+      ),
+    );
+  }
+}
+
+class _MemberNameCell extends StatelessWidget {
+  const _MemberNameCell({required this.member});
+
+  final FamilyMemberEntity member;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        textDirection: TextDirection.rtl,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 6,
+            backgroundImage: AssetImage(member.imageAsset),
+          ),
+          const SizedBox(width: Spacing.xs),
+          Flexible(
+            child: Text(
+              member.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getMediumStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size8,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

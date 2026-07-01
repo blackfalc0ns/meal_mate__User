@@ -16,8 +16,9 @@ class SectionHeaderBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final discountLabel =
-        offer.discountLabel.isNotEmpty ? offer.discountLabel : '20%';
+    final discountLabel = offer.discountLabel.isNotEmpty
+        ? offer.discountLabel
+        : '20%';
     final heroImage = offer.imageAsset.isNotEmpty
         ? offer.imageAsset
         : 'assets/images/offers/grilled_plate.png';
@@ -84,6 +85,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                 _PlateHero(
                   imageAsset: heroImage,
                   accentColor: offer.accentColor,
+                  heroTag: offer,
                 ),
                 const SizedBox(width: 12),
                 // Text on the right
@@ -141,10 +143,15 @@ class SectionHeaderBottomSheet extends StatelessWidget {
 }
 
 class _PlateHero extends StatelessWidget {
-  const _PlateHero({required this.imageAsset, required this.accentColor});
+  const _PlateHero({
+    required this.imageAsset,
+    required this.accentColor,
+    required this.heroTag,
+  });
 
   final String imageAsset;
   final Color accentColor;
+  final Object heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -158,27 +165,42 @@ class _PlateHero extends StatelessWidget {
           Positioned(
             right: -6,
             top: 10,
-            child: _LeafDot(size: 14, color: accentColor.withValues(alpha: 0.35)),
+            child: _LeafDot(
+              size: 14,
+              color: accentColor.withValues(alpha: 0.35),
+            ),
           ),
           Positioned(
             right: 10,
             top: -4,
-            child: _LeafDot(size: 10, color: accentColor.withValues(alpha: 0.25)),
+            child: _LeafDot(
+              size: 10,
+              color: accentColor.withValues(alpha: 0.25),
+            ),
           ),
           Positioned(
             left: -4,
             bottom: 20,
-            child: _LeafDot(size: 12, color: accentColor.withValues(alpha: 0.28)),
+            child: _LeafDot(
+              size: 12,
+              color: accentColor.withValues(alpha: 0.28),
+            ),
           ),
           Positioned(
             left: 10,
             bottom: 6,
-            child: _LeafDot(size: 9, color: accentColor.withValues(alpha: 0.20)),
+            child: _LeafDot(
+              size: 9,
+              color: accentColor.withValues(alpha: 0.20),
+            ),
           ),
           Positioned(
             right: 2,
             bottom: 8,
-            child: _LeafDot(size: 8, color: accentColor.withValues(alpha: 0.18)),
+            child: _LeafDot(
+              size: 8,
+              color: accentColor.withValues(alpha: 0.18),
+            ),
           ),
           // Circle image
           Align(
@@ -199,7 +221,10 @@ class _PlateHero extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(6),
               child: ClipOval(
-                child: Image.asset(imageAsset, fit: BoxFit.cover),
+                child: Hero(
+                  tag: heroTag,
+                  child: Image.asset(imageAsset, fit: BoxFit.cover),
+                ),
               ),
             ),
           ),

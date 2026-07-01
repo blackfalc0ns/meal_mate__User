@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 
 class OfferDealCard extends StatelessWidget {
@@ -46,9 +44,12 @@ class OfferDealCard extends StatelessWidget {
                       child: SizedBox(
                         width: 78,
                         height: 52,
-                        child: Image.asset(
-                          offer.imageAsset,
-                          fit: BoxFit.contain,
+                        child: Hero(
+                          tag: offer,
+                          child: Image.asset(
+                            offer.imageAsset,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
@@ -59,27 +60,35 @@ class OfferDealCard extends StatelessWidget {
                     _Badge(label: offer.badgeLabel, color: offer.accentColor),
                     const SizedBox(height: 2),
                   ],
-                  Text(
-                    offer.title,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size11,
-                      color: AppColors.textPrimary,
+                  SizedBox(
+                    height: 28,
+                    child: Text(
+                      offer.title,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size11,
+                        color: AppColors.textPrimary,
+                      ).copyWith(height: 1.2),
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    offer.subtitle,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size10,
-                      color: AppColors.textSecondary,
+                  const SizedBox(height: 1),
+                  SizedBox(
+                    height: 25,
+                    child: Text(
+                      offer.subtitle,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size10,
+                        color: AppColors.textSecondary,
+                      ).copyWith(height: 1.2),
                     ),
                   ),
                   const SizedBox(height: 3),

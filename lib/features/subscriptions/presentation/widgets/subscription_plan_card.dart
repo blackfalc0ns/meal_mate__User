@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/subscription_plan_entity.dart';
@@ -20,16 +20,17 @@ class SubscriptionPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
+    final color = context.colorScheme;
 
     return Material(
-      color: Colors.transparent,
+      color: color.surface.withValues(alpha: 0),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(17),
+        borderRadius: BorderRadius.circular(Spacing.radiusLg),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          width: 111,
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+          width: Spacing.subscriptionPlanCardWidth,
+          padding: const EdgeInsets.all(Spacing.sm),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -37,14 +38,16 @@ class SubscriptionPlanCard extends StatelessWidget {
               colors: plan.gradientColors,
               stops: const [0, 0.85, 1],
             ),
-            borderRadius: BorderRadius.circular(17),
+            borderRadius: BorderRadius.circular(Spacing.radiusLg),
             border: Border.all(
-              color: isSelected ? plan.accentColor : const Color(0x08000000),
+              color: isSelected
+                  ? plan.accentColor
+                  : color.shadow.withValues(alpha: 0.03),
               width: isSelected ? 1.4 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.10 : 0.04),
+                color: color.shadow.withValues(alpha: isSelected ? 0.10 : 0.04),
                 offset: const Offset(0, 8),
                 blurRadius: isSelected ? 18 : 12,
               ),
@@ -53,14 +56,14 @@ class SubscriptionPlanCard extends StatelessWidget {
           child: Column(
             children: [
               Align(
-                alignment: AlignmentDirectional.centerStart,
+                alignment: AlignmentDirectional.topEnd,
                 child: _DiscountBadge(plan: plan),
               ),
               SizedBox(
-                height: 78,
+                height: Spacing.subscriptionPlanImageHeight,
                 child: Image.asset(plan.imageAsset, fit: BoxFit.contain),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: Spacing.xs),
               Text(
                 plan.title,
                 maxLines: 1,
@@ -68,11 +71,11 @@ class SubscriptionPlanCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 15,
+                  fontSize: FontSize.size15,
                   color: plan.accentColor,
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: Spacing.xss),
               _FeatureLine(
                 icon: Icons.calendar_month_outlined,
                 text: plan.duration,
@@ -86,39 +89,40 @@ class SubscriptionPlanCard extends StatelessWidget {
                 icon: Icons.local_shipping_outlined,
                 text: plan.delivery,
               ),
-              const Spacer(),
-              const Divider(height: 13, color: Color(0x36C0B8B8)),
+              // const Spacer(),
+              Divider(height: 7, color: color.outlineVariant),
               Text(
                 '${plan.originalPrice} ${l10n.currency}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 8,
-                  color: const Color(0xFF818583),
-                  fontWeight: FontWeight.w400,
-                  decoration: TextDecoration.lineThrough,
-                  decorationColor: AppColors.error,
-                ),
+                style:
+                    getRegularStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size8,
+                      color: color.onSurfaceVariant,
+                    ).copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: color.error,
+                    ),
               ),
               Text(
                 '${plan.discountedPrice} ${l10n.currency}',
                 textAlign: TextAlign.center,
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 12.2,
-                  color: const Color(0xFF1B8E2F),
+                  fontSize: FontSize.size12,
+                  color: color.primary,
                 ),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: Spacing.xs),
               Text(
                 plan.periodLabel,
                 style: getRegularStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 9,
-                  color: const Color(0xFF555558),
+                  fontSize: FontSize.size9,
+                  color: color.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: Spacing.xss),
               _ChooseButton(color: plan.accentColor),
             ],
           ),
@@ -136,16 +140,19 @@ class _DiscountBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.sm,
+        vertical: Spacing.xs,
+      ),
       decoration: BoxDecoration(
         color: plan.badgeBackgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
       ),
       child: Text(
         plan.discountLabel,
         style: getBoldStyle(
           fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: 6,
+          fontSize: FontSize.size6,
           color: plan.accentColor,
         ),
       ),
@@ -161,14 +168,19 @@ class _FeatureLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: 2, start: 12),
+      padding: const EdgeInsetsDirectional.only(
+        bottom: Spacing.xs,
+        start: Spacing.md,
+      ),
       child: Row(
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(icon, size: 10, color: const Color(0xFF555558)),
-          const SizedBox(width: 3),
+          Icon(icon, size: 10, color: color.onSurfaceVariant),
+          const SizedBox(width: Spacing.xs),
           Flexible(
             child: Text(
               text,
@@ -178,7 +190,7 @@ class _FeatureLine extends StatelessWidget {
               style: getRegularStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
                 fontSize: FontSize.size7,
-                color: const Color(0xFF555558),
+                color: color.onSurfaceVariant,
               ),
             ),
           ),
@@ -195,9 +207,11 @@ class _ChooseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return Container(
-      width: 96,
-      height: 29,
+      width: Spacing.subscriptionChooseButtonWidth,
+      height: Spacing.subscriptionChooseButtonHeight,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -206,7 +220,7 @@ class _ChooseButton extends StatelessWidget {
           colors: [color.withValues(alpha: 0.20), color],
         ),
         border: Border.all(color: color.withValues(alpha: 0.78), width: 0.8),
-        borderRadius: BorderRadius.circular(9),
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.25),
@@ -219,8 +233,8 @@ class _ChooseButton extends StatelessWidget {
         context.localization.subscription_choose_plan_button,
         style: getBoldStyle(
           fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: 10,
-          color: AppColors.white,
+          fontSize: FontSize.size10,
+          color: colorScheme.onPrimary,
         ),
       ),
     );
