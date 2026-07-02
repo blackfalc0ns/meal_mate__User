@@ -5,7 +5,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/subscriptions/data/subscriptions_fake_data_source.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/family_plan_details_screen.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_info_note.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_plan_card.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscriptions_hero_card.dart';
@@ -117,7 +117,7 @@ class _AnimatedPlanDetailsOpener extends StatelessWidget {
             transitionDuration: const Duration(milliseconds: 700),
             transitionType: ContainerTransitionType.fade,
             tappable: false,
-            openBuilder: (context, _) => const FamilyPlanDetailsScreen(),
+            openBuilder: (context, _) => const SubscriptionPlanDetailsScreen(),
             closedBuilder: (context, openContainer) {
               return Material(
                 color: Colors.transparent,

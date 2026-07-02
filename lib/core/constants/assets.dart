@@ -76,6 +76,8 @@ class Assets {
       '$_images/subscriptions/subscription_month_plan.png';
   static const String subscriptionNoteMeal =
       '$_images/subscriptions/subscription_note_meal.png';
+  static const String monthlyPlanHero =
+      '$_images/subscriptions/figma/monthly_plan_hero.png';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
   static const String familyPlanHero =
       '$_images/subscriptions/family_plan_hero.png';

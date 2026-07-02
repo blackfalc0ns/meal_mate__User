@@ -56,6 +56,7 @@ flutter:
     - assets/images/home/figma/
     - assets/images/offers/
     - assets/images/subscriptions/
+    - assets/images/subscriptions/figma/
     - assets/images/svg/
 
   fonts:
