@@ -62,18 +62,18 @@ class _AddMemberCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add_circle_rounded, color: color.primary, size: 34),
-                const SizedBox(height: Spacing.md),
+                Icon(Icons.add_circle_rounded, color: color.primary, size: 28),
+                const SizedBox(height: Spacing.sm),
                 Text(
                   l10n.family_add_member,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     color: color.primary,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size8,
                   ).copyWith(height: 1.1),
                 ),
-                const SizedBox(height: Spacing.xss),
+                const SizedBox(height: Spacing.xs),
                 Text(
                   l10n.family_add_member_subtitle,
                   textAlign: TextAlign.center,
@@ -105,7 +105,7 @@ class _MemberCard extends StatelessWidget {
       width: Spacing.familyMemberCardWidth,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.xs,
-        vertical: Spacing.xss,
+        vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
@@ -118,7 +118,7 @@ class _MemberCard extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               CircleAvatar(
-                radius: 20,
+                radius: 18,
                 backgroundImage: AssetImage(member.imageAsset),
               ),
               if (member.isOwner)
@@ -153,7 +153,7 @@ class _MemberCard extends StatelessWidget {
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               color: color.onSurface,
-              fontSize: FontSize.size9,
+              fontSize: FontSize.size8,
             ),
           ),
           const SizedBox(height: 2),
@@ -175,7 +175,7 @@ class _MemberCard extends StatelessWidget {
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
                       color: color.onPrimaryContainer,
-                      fontSize: FontSize.size6,
+                      fontSize: FontSize.size9,
                     ),
                   ),
                   const SizedBox(width: Spacing.xs),

@@ -82,8 +82,6 @@ class _PriceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
-
     return Row(
       textDirection: TextDirection.rtl,
       children: [
@@ -102,21 +100,46 @@ class _PriceRow extends StatelessWidget {
                   ),
           ),
         ),
-        Text(
-          value,
-          style: isTotal
-              ? getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  color: color.primary,
-                  fontSize: FontSize.size19,
-                )
-              : getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  color: color.onSurface,
-                  fontSize: FontSize.size11,
-                ),
-        ),
+        _PriceAmount(value: value, isTotal: isTotal),
       ],
+    );
+  }
+}
+
+class _PriceAmount extends StatelessWidget {
+  const _PriceAmount({required this.value, required this.isTotal});
+
+  final String value;
+  final bool isTotal;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final valueStyle = isTotal
+        ? getBoldStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            color: color.primary,
+            fontSize: FontSize.size19,
+          )
+        : getSemiBoldStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            color: color.onSurface,
+            fontSize: FontSize.size11,
+          );
+    final currencyStyle = valueStyle.copyWith(
+      fontSize: isTotal ? FontSize.size16 : FontSize.size8,
+    );
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: value.trim()),
+          const TextSpan(text: ' '),
+          TextSpan(text: context.localization.currency, style: currencyStyle),
+        ],
+      ),
+      textDirection: TextDirection.ltr,
+      style: valueStyle,
     );
   }
 }

@@ -10,12 +10,15 @@ class FamilyPlanHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(Spacing.cardRadius),
-      child: Image.asset(
-        Assets.familyBanner,
-        // fit: BoxFit.cover,
-        alignment: Alignment.center,
+    return AspectRatio(
+      aspectRatio: 350 / 189,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        child: Image.asset(
+          Assets.familyBanner,
+          fit: BoxFit.cover,
+          alignment: Alignment.center,
+        ),
       ),
     );
   }

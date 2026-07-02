@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -26,26 +27,31 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          CustomAppBar(title: l10n.family_details_title),
+          CustomAppBar(
+            title: l10n.family_details_title,
+            titleFontSize: FontSize.size18,
+          ),
           Expanded(
             child: CustomScrollView(
               slivers: [
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Spacing.screenH,
-                    vertical: Spacing.screenV,
+                  padding: EdgeInsets.fromLTRB(
+                    Spacing.lg,
+                    Spacing.xss,
+                    Spacing.lg,
+                    showBottomSpace ? 104 : Spacing.lg,
                   ),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate.fixed([
                       FamilyPlanHeroCard(plan: plan),
-                      const SizedBox(height: Spacing.md),
+                      const SizedBox(height: Spacing.xs),
                       FamilyMembersStrip(
                         members: plan.members,
                         onAddTap: () => FamilyAddMemberDialog.show(context),
                       ),
                       const SizedBox(height: Spacing.md),
                       FamilyPlanSummaryCard(stats: plan.summaryStats),
-                      const SizedBox(height: Spacing.sm),
+                      const SizedBox(height: Spacing.md),
                       FamilyMealsTable(members: plan.members),
                       const SizedBox(height: Spacing.md),
                       FamilyPlanPriceCard(plan: plan),
@@ -55,6 +61,7 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
                         onPressed: () {},
                         height: Spacing.compactButtonHeight,
                         borderRadius: Spacing.buttonSmallRadius,
+                        gradient: AppColors.primaryGradient,
                         fontSize: FontSize.size17,
                         fontWeight: FontWeight.w600,
                       ),

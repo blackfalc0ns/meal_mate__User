@@ -5,7 +5,6 @@ import 'package:meal_meat_user/features/subscriptions/domain/entities/family_pla
 class FamilyPlanFakeDataSource {
   const FamilyPlanFakeDataSource();
 
-  static const String _currency = 'د.ك';
   static const String _mealsCount = '4 وجبات';
   static const String _editLabel = 'تعديل';
   static const List<String> _memberDetailLines = [
@@ -22,7 +21,7 @@ class FamilyPlanFakeDataSource {
       statusLabel: 'جديد',
       originalPrice: '72.000',
       discountedPrice: '57.600',
-      currency: _currency,
+      currency: '',
       features: [
         'توصيل مجمع',
         'فاتورة واحدة',
@@ -68,45 +67,25 @@ class FamilyPlanFakeDataSource {
           mealChecks: const [true, true, true, true],
           isOwner: true,
         ),
-        FamilyMemberEntity(
-          name: '\u0644\u064a\u0646',
-          imageAsset: Assets.familyMemberSarah,
-          detailLines: _memberDetailLines,
-          actionLabel: _editLabel,
-          mealsCount: _mealsCount,
-          mealChecks: const [true, true, false, true],
-          badgeColor: const Color(0xFFE8F3FF),
-          badgeTextColor: const Color(0xFF2365A8),
-        ),
-        FamilyMemberEntity(
-          name: '\u0639\u0645\u0631',
-          imageAsset: Assets.familyMemberYousef,
-          detailLines: _memberDetailLines,
-          actionLabel: _editLabel,
-          mealsCount: _mealsCount,
-          mealChecks: const [true, false, true, true],
-          badgeColor: const Color(0xFFFFF2D8),
-          badgeTextColor: const Color(0xFFB36A00),
-        ),
       ],
       summaryStats: [
         FamilySummaryStatEntity(
-          value: '6',
+          value: '4',
           label: 'عدد الأفراد الحالي',
           iconName: 'users',
         ),
         FamilySummaryStatEntity(
-          value: '6',
+          value: '4',
           label: 'الحد الأقصى لأفراد الباقة',
           iconName: 'users',
         ),
         FamilySummaryStatEntity(
-          value: '24',
+          value: '16',
           label: 'إجمالي الوجبات اليومية',
           iconName: 'meals',
         ),
         FamilySummaryStatEntity(
-          value: '9.000',
+          value: '7.500',
           label: 'إجمالي السعرات اليومية',
           iconName: 'fire',
         ),
@@ -116,18 +95,18 @@ class FamilyPlanFakeDataSource {
           iconName: 'delivery',
         ),
       ],
-      priceRows: [
+      priceRows: const [
         FamilyPriceRowEntity(
           label: 'السعر الأساسي (لـ 2 أفراد)',
-          value: '42.600 $_currency',
+          value: '42.600',
         ),
         FamilyPriceRowEntity(
-          label: 'أفراد إضافيون (2 x 7.500 KWD)',
-          value: '15.000 $_currency',
+          label: 'أفراد إضافيون (2 x 7.500)',
+          value: '15.000',
         ),
       ],
       totalLabel: 'الإجمالي:',
-      totalPrice: '57.600 $_currency',
+      totalPrice: '57.600',
     );
   }
 }

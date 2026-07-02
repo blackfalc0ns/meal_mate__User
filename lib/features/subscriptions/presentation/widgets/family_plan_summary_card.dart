@@ -16,7 +16,7 @@ class FamilyPlanSummaryCard extends StatelessWidget {
 
     return Container(
       height: Spacing.familySummaryHeight,
-      padding: const EdgeInsets.fromLTRB(Spacing.md, 9, Spacing.md, 10),
+      padding: const EdgeInsets.fromLTRB(Spacing.md, 6, Spacing.md, 6),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusSm),
@@ -36,12 +36,12 @@ class FamilyPlanSummaryCard extends StatelessWidget {
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   color: color.onSurface,
-                  fontSize: FontSize.size10,
+                  fontSize: FontSize.size9,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: Spacing.xs),
           Expanded(
             child: Row(
               textDirection: TextDirection.rtl,
@@ -92,14 +92,14 @@ class _SummaryStat extends StatelessWidget {
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   color: color.primary,
                   fontSize: stat.iconName == 'delivery'
-                      ? FontSize.size7
-                      : FontSize.size10,
+                      ? FontSize.size6
+                      : FontSize.size8,
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: Spacing.xss),
+        const SizedBox(height: 2),
         Text(
           stat.label,
           maxLines: 2,
@@ -108,8 +108,8 @@ class _SummaryStat extends StatelessWidget {
           style: getSemiBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
             color: color.onSurfaceVariant,
-            fontSize: FontSize.size8,
-          ).copyWith(height: 1.25),
+            fontSize: FontSize.size7,
+          ).copyWith(height: 1.15),
         ),
       ],
     );

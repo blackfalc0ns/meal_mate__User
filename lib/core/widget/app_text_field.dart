@@ -94,7 +94,8 @@ class AppTextField extends StatelessWidget {
       autofocus: autofocus,
       textAlign: textAlign,
       autovalidateMode: autovalidateMode,
-      style: textStyle ??
+      style:
+          textStyle ??
           getRegularStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
             fontSize: FontSize.size14,
@@ -107,19 +108,22 @@ class AppTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         filled: true,
-       fillColor: AppColors.white,
-        contentPadding: contentPadding ??
+        fillColor: fillColor ?? AppColors.white,
+        contentPadding:
+            contentPadding ??
             const EdgeInsets.symmetric(
               horizontal: Spacing.base,
               vertical: Spacing.sm,
             ),
-        labelStyle: labelStyle ??
+        labelStyle:
+            labelStyle ??
             getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               fontSize: FontSize.size13,
               color: AppColors.textSecondary,
             ),
-        hintStyle: hintStyle ??
+        hintStyle:
+            hintStyle ??
             getRegularStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               fontSize: FontSize.size13,
@@ -146,31 +150,19 @@ class AppTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(effectiveRadius),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(effectiveRadius),
-          borderSide: const BorderSide(
-            color: AppColors.error,
-            width: 1.0,
-          ),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(effectiveRadius),
-          borderSide: const BorderSide(
-            color: AppColors.error,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(effectiveRadius),
-          borderSide: BorderSide(
-            color: AppColors.disabled,
-            width: 1.0,
-          ),
+          borderSide: BorderSide(color: AppColors.disabled, width: 1.0),
         ),
       ),
     );

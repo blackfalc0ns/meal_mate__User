@@ -77,9 +77,9 @@ class Spacing {
   static const double subscriptionChooseButtonWidth = 96.0;
   static const double subscriptionChooseButtonHeight = 29.0;
   static const double subscriptionInfoHeight = 48.0;
-  static const double familyMembersStripHeight = 142.0;
+  static const double familyMembersStripHeight = 129.0;
   static const double familyMemberCardWidth = 65.0;
-  static const double familySummaryHeight = 96.0;
+  static const double familySummaryHeight = 78.0;
   static const double familyMealsMinHeight = 129.0;
   static const double familyPriceMinHeight = 138.0;
   static const double compactButtonHeight = 39.0;
