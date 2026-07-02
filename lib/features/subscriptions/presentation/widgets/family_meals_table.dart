@@ -47,16 +47,19 @@ class FamilyMealsTable extends StatelessWidget {
               const SizedBox(width: Spacing.xss),
               Text(
                 l10n.family_meals_each_member,
-                style: getSemiBoldStyle(
+                style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size11,
                 ),
               ),
             ],
           ),
           const SizedBox(height: Spacing.xss),
           _TableRow(cells: columns, isHeader: true),
-          for (final member in members) _MemberTableRow(member: member),
+          for (final member in members) ...[
+            const _TableDivider(),
+            _MemberTableRow(member: member),
+          ],
         ],
       ),
     );
@@ -72,16 +75,8 @@ class _MemberTableRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Container(
-      height: 20,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: color.outlineVariant.withValues(alpha: 0.5),
-            width: Spacing.hairline,
-          ),
-        ),
-      ),
+    return SizedBox(
+      height: 26,
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
@@ -91,7 +86,7 @@ class _MemberTableRow extends StatelessWidget {
               child: Icon(
                 checked ? Icons.check_rounded : Icons.remove_rounded,
                 color: color.primary,
-                size: 11,
+                size: 15,
               ),
             ),
           Expanded(
@@ -111,7 +106,7 @@ class _MemberTableRow extends StatelessWidget {
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     color: member.badgeTextColor,
-                    fontSize: FontSize.size6,
+                    fontSize: FontSize.size8,
                   ),
                 ),
               ),
@@ -119,6 +114,19 @@ class _MemberTableRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _TableDivider extends StatelessWidget {
+  const _TableDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      color: context.colorScheme.outlineVariant,
     );
   }
 }
@@ -160,7 +168,7 @@ class _TableCell extends StatelessWidget {
         style: isHeader
             ? getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size7,
+                fontSize: FontSize.size9,
               )
             : getMediumStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
@@ -181,22 +189,22 @@ class _MemberNameCell extends StatelessWidget {
     return Expanded(
       child: Row(
         textDirection: TextDirection.rtl,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 6,
             backgroundImage: AssetImage(member.imageAsset),
           ),
-          const SizedBox(width: Spacing.xs),
+          const SizedBox(width: Spacing.xss),
           Flexible(
             child: Text(
               member.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: getMediumStyle(
+              style: getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size8,
+                fontSize: FontSize.size9,
               ),
             ),
           ),

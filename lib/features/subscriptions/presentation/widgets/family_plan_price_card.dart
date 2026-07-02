@@ -45,9 +45,9 @@ class FamilyPlanPriceCard extends StatelessWidget {
               const SizedBox(width: Spacing.xss),
               Text(
                 context.localization.family_price_details,
-                style: getSemiBoldStyle(
+                style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size11,
                 ),
               ),
             ],

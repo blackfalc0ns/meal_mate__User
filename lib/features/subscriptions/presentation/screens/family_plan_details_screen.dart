@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/subscriptions/data/family_plan_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/family_add_member_dialog.dart';
@@ -24,71 +24,47 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
     final plan = _dataSource.getPlan();
 
     return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: CustomAppBar(title: l10n.family_details_title),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Spacing.screenH,
-              vertical: showBottomSpace ? Spacing.screenV : 0,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate.fixed([
-                FamilyPlanHeroCard(plan: plan),
-                const SizedBox(height: Spacing.md),
-                FamilyMembersStrip(
-                  members: plan.members,
-                  onAddTap: () => FamilyAddMemberDialog.show(context),
+      child: Column(
+        children: [
+          CustomAppBar(title: l10n.family_details_title),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Spacing.screenH,
+                    vertical: Spacing.screenV,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate.fixed([
+                      FamilyPlanHeroCard(plan: plan),
+                      const SizedBox(height: Spacing.md),
+                      FamilyMembersStrip(
+                        members: plan.members,
+                        onAddTap: () => FamilyAddMemberDialog.show(context),
+                      ),
+                      const SizedBox(height: Spacing.md),
+                      FamilyPlanSummaryCard(stats: plan.summaryStats),
+                      const SizedBox(height: Spacing.sm),
+                      FamilyMealsTable(members: plan.members),
+                      const SizedBox(height: Spacing.md),
+                      FamilyPlanPriceCard(plan: plan),
+                      const SizedBox(height: Spacing.lg),
+                      AppButton(
+                        text: l10n.family_confirm_plan,
+                        onPressed: () {},
+                        height: Spacing.compactButtonHeight,
+                        borderRadius: Spacing.buttonSmallRadius,
+                        fontSize: FontSize.size17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ]),
+                  ),
                 ),
-                const SizedBox(height: Spacing.md),
-                FamilyPlanSummaryCard(stats: plan.summaryStats),
-                const SizedBox(height: Spacing.sm),
-                FamilyMealsTable(members: plan.members),
-                const SizedBox(height: Spacing.md),
-                FamilyPlanPriceCard(plan: plan),
-                const SizedBox(height: Spacing.lg),
-                _ConfirmButton(label: l10n.family_confirm_plan),
-              ]),
+              ],
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ConfirmButton extends StatelessWidget {
-  const _ConfirmButton({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = context.colorScheme;
-
-    return SizedBox(
-      height: Spacing.compactButtonHeight,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [color.primary, color.primary.withValues(alpha: 0.86)],
-          ),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
-              color: color.onPrimary,
-              fontSize: FontSize.size17,
-            ),
-          ),
-        ),
       ),
     );
   }

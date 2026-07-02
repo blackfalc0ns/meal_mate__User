@@ -105,7 +105,7 @@ class _MemberCard extends StatelessWidget {
       width: Spacing.familyMemberCardWidth,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.xs,
-        vertical: Spacing.sm,
+        vertical: Spacing.xss,
       ),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
@@ -118,7 +118,7 @@ class _MemberCard extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               CircleAvatar(
-                radius: 21,
+                radius: 20,
                 backgroundImage: AssetImage(member.imageAsset),
               ),
               if (member.isOwner)
@@ -145,7 +145,7 @@ class _MemberCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.xss),
           Text(
             member.name,
             maxLines: 1,
@@ -156,11 +156,11 @@ class _MemberCard extends StatelessWidget {
               fontSize: FontSize.size9,
             ),
           ),
-          const SizedBox(height: Spacing.xs),
+          const SizedBox(height: 2),
           _MemberDetails(lines: member.detailLines),
           const Spacer(),
           SizedBox(
-            height: 17,
+            height: 16,
             width: double.infinity,
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -212,7 +212,7 @@ class _MemberDetails extends StatelessWidget {
       children: [
         for (int index = 0; index < lines.length; index++)
           Padding(
-            padding: EdgeInsets.only(top: index == 0 ? 0 : Spacing.xs),
+            padding: EdgeInsets.only(bottom: index == lines.length - 1 ? 0 : 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               textDirection: TextDirection.rtl,
@@ -231,7 +231,7 @@ class _MemberDetails extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size6,
+                      fontSize: FontSize.size7,
                       color: color.onSurfaceVariant,
                     ),
                   ),
