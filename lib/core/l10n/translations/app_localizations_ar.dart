@@ -1019,6 +1019,34 @@ class AppLocalizationsAr extends AppLocalizations {
       'كل الباقات تشمل خصم 20% على جميع الطلبات يمكنك الإيقاف المؤقت أو تعديل الباقة في أي وقت';
 
   @override
+  String get subscription_details_view_mode => 'طريقة العرض';
+
+  @override
+  String get subscription_details_explore_meals => 'استكشف وجبات الباقة';
+
+  @override
+  String get subscription_details_meals_count =>
+      'أكثر من 120 وجبة متنوعة وصحية';
+
+  @override
+  String get subscription_details_popular_meals => 'أشهر الوجبات';
+
+  @override
+  String get subscription_details_features_title => 'مميزات الباقة';
+
+  @override
+  String get subscription_details_meal_suffix => 'وجبة';
+
+  @override
+  String get subscription_details_meals_in_plan => 'وجبة في الباقة';
+
+  @override
+  String get subscription_details_most_selected => 'الأكثر اختياراً';
+
+  @override
+  String get subscription_details_subscribe_now => 'اشترك الآن';
+
+  @override
   String get family_details_title => 'تفاصيل الباقة العائلية';
 
   @override

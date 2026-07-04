@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_restaurant_logo.dart';
 
@@ -18,6 +19,9 @@ class MonthlyRestaurantListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.localization;
+    final color = context.colorScheme;
+
     return TweenAnimationBuilder<double>(
       key: ValueKey('list-${restaurant.name}'),
       tween: Tween(begin: 0, end: 1),
@@ -33,16 +37,16 @@ class MonthlyRestaurantListTile extends StatelessWidget {
         );
       },
       child: Container(
-        height: 74,
+        height: 87,
         padding: const EdgeInsets.all(Spacing.sm),
         decoration: BoxDecoration(
-          color: AppColors.appSurface,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: AppColors.appBorder, width: 1.2),
+          color: const Color(0xFFF3F7F3),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: AppColors.appBorder),
         ),
         child: Row(
           children: [
-            MonthlyRestaurantLogo(restaurant: restaurant, size: 48),
+            MonthlyRestaurantLogo(restaurant: restaurant, size: 52),
             const SizedBox(width: Spacing.sm),
             Expanded(
               child: Column(
@@ -55,8 +59,8 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: AppColors.black,
+                      fontSize: FontSize.size13,
+                      color: color.onSurface,
                     ),
                   ),
                   Text(
@@ -65,11 +69,11 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size9,
+                      fontSize: FontSize.size10,
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 3),
                   Row(
                     children: [
                       const Icon(
@@ -87,7 +91,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                       ),
                       const SizedBox(width: Spacing.md),
                       Text(
-                        '${restaurant.meals} وجبة',
+                        '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
                           fontSize: FontSize.size9,
@@ -104,7 +108,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                 vertical: Spacing.xs,
               ),
               decoration: BoxDecoration(
-                color: const Color(0xFFF2F7F1),
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
               ),
               child: Row(
@@ -117,7 +121,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.xs),
                   Text(
-                    '${restaurant.meals} وجبة',
+                    '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
                       fontSize: FontSize.size9,

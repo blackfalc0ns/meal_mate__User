@@ -54,20 +54,6 @@ class MealMateDrawerProfileHeader extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // if (greeting.isNotEmpty) ...[
-                      //   Text(
-                      //     greeting,
-                      //     maxLines: 1,
-                      //     overflow: TextOverflow.ellipsis,
-                      //     textAlign: TextAlign.right,
-                      //     style: getBoldStyle(
-                      //       fontFamily: FontConstant.ibmPlexSansArabic,
-                      //       fontSize: FontSize.size13,
-                      //       color: color.onPrimary.withValues(alpha: 0.96),
-                      //     ),
-                      //   ),
-                      //   const SizedBox(height: 1),
-                      // ],
                       Text(
                         userName,
                         maxLines: 1,

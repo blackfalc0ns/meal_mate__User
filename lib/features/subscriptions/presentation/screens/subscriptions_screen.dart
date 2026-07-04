@@ -26,7 +26,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final locale = context.localization;
     final plans = _dataSource.getPlans();
 
     return SafeArea(
@@ -35,7 +35,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           SliverToBoxAdapter(
             child: CustomAppBar(
               showBackButton: false,
-              title: l10n.subscription_screen_title,
+              title: locale.subscription_screen_title,
               actions: [NotificationButton(onTap: () {})],
             ),
           ),
@@ -43,14 +43,14 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
               child: SubscriptionsHeroCard(
-                title: l10n.subscription_hero_title,
-                subtitle: l10n.subscription_hero_subtitle,
+                title: locale.subscription_hero_title,
+                subtitle: locale.subscription_hero_subtitle,
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: SubscriptionsSectionTitle(
-              title: l10n.subscription_choose_plan_title,
+              title: locale.subscription_choose_plan_title,
             ),
           ),
           SliverToBoxAdapter(
@@ -67,6 +67,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                     final plan = plans[index];
                     return _AnimatedPlanDetailsOpener(
                       onOpen: () => setState(() => _selectedPlanIndex = index),
+                      initialPage: index,
                       child: SubscriptionPlanCard(
                         plan: plan,
                         isSelected: index == _selectedPlanIndex,
@@ -80,8 +81,8 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           const SliverToBoxAdapter(child: SizedBox(height: Spacing.base)),
           SliverToBoxAdapter(
             child: SubscriptionInfoNote(
-              text: l10n.subscription_note,
-              highlightedText: l10n.subscription_discount_20,
+              text: locale.subscription_note,
+              highlightedText: locale.subscription_discount_20,
             ),
           ),
           SliverToBoxAdapter(
@@ -94,13 +95,20 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 }
 
 class _AnimatedPlanDetailsOpener extends StatelessWidget {
-  const _AnimatedPlanDetailsOpener({required this.child, required this.onOpen});
+  const _AnimatedPlanDetailsOpener({
+    required this.child,
+    required this.initialPage,
+    required this.onOpen,
+  });
 
   final Widget child;
+  final int initialPage;
   final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Stack(
       children: [
         child,
@@ -110,14 +118,15 @@ class _AnimatedPlanDetailsOpener extends StatelessWidget {
             openElevation: 0,
             closedColor: Colors.transparent,
             middleColor: Colors.transparent,
-            openColor: context.colorScheme.surface,
+            openColor: color.surface,
             closedShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(Spacing.radiusLg),
             ),
             transitionDuration: const Duration(milliseconds: 700),
             transitionType: ContainerTransitionType.fade,
             tappable: false,
-            openBuilder: (context, _) => const SubscriptionPlanDetailsScreen(),
+            openBuilder: (context, _) =>
+                SubscriptionPlanDetailsScreen(initialPage: initialPage),
             closedBuilder: (context, openContainer) {
               return Material(
                 color: Colors.transparent,

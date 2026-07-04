@@ -2042,6 +2042,60 @@ abstract class AppLocalizations {
   /// **'All plans include 20% off all orders. You can pause or edit the plan anytime'**
   String get subscription_note;
 
+  /// No description provided for @subscription_details_view_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'View mode'**
+  String get subscription_details_view_mode;
+
+  /// No description provided for @subscription_details_explore_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore plan meals'**
+  String get subscription_details_explore_meals;
+
+  /// No description provided for @subscription_details_meals_count.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 120 varied healthy meals'**
+  String get subscription_details_meals_count;
+
+  /// No description provided for @subscription_details_popular_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular meals'**
+  String get subscription_details_popular_meals;
+
+  /// No description provided for @subscription_details_features_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan features'**
+  String get subscription_details_features_title;
+
+  /// No description provided for @subscription_details_meal_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'meals'**
+  String get subscription_details_meal_suffix;
+
+  /// No description provided for @subscription_details_meals_in_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'meals in the plan'**
+  String get subscription_details_meals_in_plan;
+
+  /// No description provided for @subscription_details_most_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Most selected'**
+  String get subscription_details_most_selected;
+
+  /// No description provided for @subscription_details_subscribe_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe now'**
+  String get subscription_details_subscribe_now;
+
   /// No description provided for @family_details_title.
   ///
   /// In en, this message translates to:

@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_restaurant_logo.dart';
 
@@ -13,12 +14,27 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.localization;
+    final color = context.colorScheme;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(Spacing.sm, Spacing.md, Spacing.sm, 7),
       decoration: BoxDecoration(
-        color: AppColors.appSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.appBorder, width: 1.2),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFEFEFEF), Color(0xFFFFFFFF), Color(0xBFFFFFFF)],
+          stops: [0, 0.38, 1],
+        ),
+        borderRadius: BorderRadius.circular(15.7),
+        border: Border.all(color: const Color(0xFFD9D9D9), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -31,8 +47,8 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size10,
-              color: AppColors.black,
+              fontSize: FontSize.size11,
+              color: color.onSurface,
             ),
           ),
           Text(
@@ -51,7 +67,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${restaurant.meals} وجبة',
+                '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                 style: getRegularStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   fontSize: FontSize.size8,
@@ -82,11 +98,11 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(Spacing.radiusPill),
             ),
             child: Text(
-              '${restaurant.meals} وجبة في الباقة',
+              '${restaurant.meals} ${locale.subscription_details_meals_in_plan}',
               style: getRegularStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
                 fontSize: FontSize.size8,
-                color: AppColors.textSecondary,
+                color: color.onSurfaceVariant,
               ),
             ),
           ),

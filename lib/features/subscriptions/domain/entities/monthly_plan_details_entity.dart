@@ -12,8 +12,13 @@ class MonthlyPlanDetailsEntity {
     required this.subscribeLabel,
     required this.price,
     required this.currency,
+    required this.heroImageAsset,
+    required this.description,
+    required this.features,
+    required this.packageTiers,
     required this.filters,
     required this.restaurants,
+    required this.meals,
   });
 
   final String titlePrefix;
@@ -24,8 +29,13 @@ class MonthlyPlanDetailsEntity {
   final String subscribeLabel;
   final String price;
   final String currency;
+  final String heroImageAsset;
+  final String description;
+  final List<MonthlyPlanFeatureEntity> features;
+  final List<MonthlyPackageTierEntity> packageTiers;
   final List<MonthlyPlanFilterEntity> filters;
   final List<MonthlyRestaurantPlanEntity> restaurants;
+  final List<MonthlyMealEntity> meals;
 }
 
 class MonthlyPlanFilterEntity {
@@ -53,4 +63,49 @@ class MonthlyRestaurantPlanEntity {
   final Color brandColor;
   final String? logoAsset;
   final String? initials;
+}
+
+class MonthlyPlanFeatureEntity {
+  const MonthlyPlanFeatureEntity({required this.title, required this.iconName});
+
+  final String title;
+  final String iconName;
+}
+
+class MonthlyPackageTierEntity {
+  const MonthlyPackageTierEntity({
+    required this.title,
+    required this.subtitle,
+    required this.price,
+    required this.currency,
+    required this.period,
+    required this.bullets,
+    required this.iconName,
+    this.isPopular = false,
+  });
+
+  final String title;
+  final String subtitle;
+  final String price;
+  final String currency;
+  final String period;
+  final List<String> bullets;
+  final String iconName;
+  final bool isPopular;
+}
+
+class MonthlyMealEntity {
+  const MonthlyMealEntity({
+    required this.name,
+    required this.subtitle,
+    required this.calories,
+    required this.protein,
+    required this.imageAsset,
+  });
+
+  final String name;
+  final String subtitle;
+  final String calories;
+  final String protein;
+  final String imageAsset;
 }

@@ -57,15 +57,15 @@ class _PlanFilterChip extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOutCubic,
-        height: 28,
+        height: 31,
         decoration: BoxDecoration(
-          color: selected ? AppColors.primary : AppColors.quaternary100,
+          color: selected ? AppColors.primary : const Color(0xFFECECED),
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(_iconFor(filter.iconName), size: 14, color: foreground),
+            Icon(_iconFor(filter.iconName), size: 16, color: foreground),
             const SizedBox(width: Spacing.xs),
             Flexible(
               child: Text(
@@ -74,7 +74,7 @@ class _PlanFilterChip extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size10,
+                  fontSize: FontSize.size12,
                   color: foreground,
                 ),
               ),

@@ -1034,6 +1034,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'All plans include 20% off all orders. You can pause or edit the plan anytime';
 
   @override
+  String get subscription_details_view_mode => 'View mode';
+
+  @override
+  String get subscription_details_explore_meals => 'Explore plan meals';
+
+  @override
+  String get subscription_details_meals_count =>
+      'More than 120 varied healthy meals';
+
+  @override
+  String get subscription_details_popular_meals => 'Popular meals';
+
+  @override
+  String get subscription_details_features_title => 'Plan features';
+
+  @override
+  String get subscription_details_meal_suffix => 'meals';
+
+  @override
+  String get subscription_details_meals_in_plan => 'meals in the plan';
+
+  @override
+  String get subscription_details_most_selected => 'Most selected';
+
+  @override
+  String get subscription_details_subscribe_now => 'Subscribe now';
+
+  @override
   String get family_details_title => 'Family plan details';
 
   @override

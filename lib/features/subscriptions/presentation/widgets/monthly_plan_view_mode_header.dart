@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 
 class MonthlyPlanViewModeHeader extends StatelessWidget {
@@ -17,14 +18,17 @@ class MonthlyPlanViewModeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.localization;
+    final color = context.colorScheme;
+
     return Row(
       children: [
         Text(
-          'طريقة العرض',
+          locale.subscription_details_view_mode,
           style: getSemiBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
             fontSize: FontSize.size11,
-            color: AppColors.appTextMuted,
+            color: color.onSurfaceVariant,
           ),
         ),
         const Spacer(),
