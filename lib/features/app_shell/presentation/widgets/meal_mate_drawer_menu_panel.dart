@@ -13,25 +13,37 @@ class MealMateDrawerMenuPanel extends StatelessWidget {
     required this.l10n,
     required this.unitX,
     required this.unitY,
+    required this.animationValue,
   });
 
   final AppLocalizations l10n;
   final double unitX;
   final double unitY;
+  final double animationValue;
 
   @override
   Widget build(BuildContext context) {
+    final curved = Curves.easeOutCubic.transform(
+      animationValue.clamp(0.0, 1.0),
+    );
+
     return Align(
       alignment: Alignment.topRight,
       child: Padding(
         padding: EdgeInsets.only(top: 180 * unitY, right: 30 * unitX),
-        child: SizedBox(
-          width: 134.0 * unitX,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 28),
-            child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: MealMateDrawerSectionsList(l10n: l10n),
+        child: Transform.translate(
+          offset: Offset((1 - curved) * 42 * unitX, 0),
+          child: Opacity(
+            opacity: (animationValue * 1.6).clamp(0.0, 1.0),
+            child: SizedBox(
+              width: 134.0 * unitX,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 28),
+                child: Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: MealMateDrawerSectionsList(l10n: l10n),
+                ),
+              ),
             ),
           ),
         ),

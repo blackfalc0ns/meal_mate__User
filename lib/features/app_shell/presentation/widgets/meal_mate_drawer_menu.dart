@@ -67,7 +67,12 @@ class MealMateDrawerMenu extends StatelessWidget {
               packageLabel: l10n.drawer_month_package,
             ),
           ),
-          MealMateDrawerMenuPanel(l10n: l10n, unitX: unitX, unitY: unitY),
+          MealMateDrawerMenuPanel(
+            l10n: l10n,
+            unitX: unitX,
+            unitY: unitY,
+            animationValue: animationValue,
+          ),
         ],
       ),
     );

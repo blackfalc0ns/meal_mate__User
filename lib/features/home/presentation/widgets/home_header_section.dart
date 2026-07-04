@@ -26,6 +26,7 @@ class HomeHeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerAnimationValue = DrawerAnimationScope.maybeOf(context);
     final profileOpacity = (1 - (drawerAnimationValue * 1.8)).clamp(0.0, 1.0);
+    final headerTopPadding = MediaQuery.paddingOf(context).top + 18;
 
     return SizedBox(
       height: 285,
@@ -33,39 +34,37 @@ class HomeHeaderSection extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           const _HeaderBackground(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 34, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  textDirection: ui.TextDirection.rtl,
-                  children: [
-                    _DrawerMenuButton(onTap: onMenuTap),
-                    const SizedBox(width: 18),
-                    IgnorePointer(
-                      ignoring: profileOpacity == 0,
-                      child: Opacity(
-                        opacity: profileOpacity,
-                        child: _HomeProfileHeader(
-                          greeting: dashboard.greeting,
-                          userName: dashboard.userName,
-                          avatarAsset: Assets.homeFigmaAvatar,
-                        ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: headerTopPadding),
+              Row(
+                textDirection: ui.TextDirection.rtl,
+                children: [
+                  _DrawerMenuButton(onTap: onMenuTap),
+                  const SizedBox(width: 18),
+                  IgnorePointer(
+                    ignoring: profileOpacity == 0,
+                    child: Opacity(
+                      opacity: profileOpacity,
+                      child: _HomeProfileHeader(
+                        greeting: dashboard.greeting,
+                        userName: dashboard.userName,
+                        avatarAsset: Assets.homeFigmaAvatar,
                       ),
                     ),
-                    const Spacer(),
-                    _NotificationButton(onTap: onNotificationTap),
-                  ],
-                ),
-                const SizedBox(height: 17),
-                HomeStatsCard(
-                  progress: dashboard.progress,
-                  dailyCalories: dashboard.dailyCalories,
-                  goalCalories: dashboard.goalCalories,
-                ),
-              ],
-            ),
+                  ),
+                  const Spacer(),
+                  _NotificationButton(onTap: onNotificationTap),
+                ],
+              ),
+              const SizedBox(height: 17),
+              HomeStatsCard(
+                progress: dashboard.progress,
+                dailyCalories: dashboard.dailyCalories,
+                goalCalories: dashboard.goalCalories,
+              ),
+            ],
           ),
           Positioned(
             top: 235,
