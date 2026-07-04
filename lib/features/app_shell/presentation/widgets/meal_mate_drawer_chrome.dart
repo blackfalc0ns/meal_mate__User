@@ -41,7 +41,7 @@ class MealMateDrawerLogoPosition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 40 * unitY,
+      top: 58 * unitY,
       left: 0,
       right: 0,
       child: const Center(child: MealMateDrawerLogo()),
@@ -79,7 +79,7 @@ class MealMateDrawerCloseButton extends StatelessWidget {
     final color = context.colorScheme;
 
     return Positioned(
-      top: 24 * unitY,
+      top: 62 * unitY,
       right: 30 * unitX,
       child: IconButton(
         onPressed: () => controller.close?.call(),

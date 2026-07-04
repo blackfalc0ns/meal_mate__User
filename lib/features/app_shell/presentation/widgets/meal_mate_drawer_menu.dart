@@ -34,8 +34,8 @@ class MealMateDrawerMenu extends StatelessWidget {
       animationValue.clamp(0.0, 1.0),
     );
     final profileTop = ui.lerpDouble(
-      34 * unitY,
-      102 * unitY,
+      52 * unitY,
+      120 * unitY,
       profileMoveValue,
     )!;
     final profileRight = ui.lerpDouble(
