@@ -39,7 +39,7 @@ class _AppZoomDrawerShellState extends State<AppZoomDrawerShell> {
       borderRadius: 38,
       angle: 0,
       mainScreenScale: 1,
-      menuBackgroundColor: const Color(0xFF0C7946),
+      menuBackgroundColor: AppColors.drawerBackground,
       drawerShadowsBackgroundColor: AppColors.white.withValues(alpha: 0.25),
       showShadow: true,
       mainScreenTapClose: true,
@@ -97,7 +97,10 @@ class _AppZoomDrawerShellState extends State<AppZoomDrawerShell> {
                         ),
                       ],
                     ),
-                    child: main,
+                    child: DrawerAnimationScope(
+                      animationValue: animationValue,
+                      child: main,
+                    ),
                   ),
                 ),
               ),
@@ -106,6 +109,28 @@ class _AppZoomDrawerShellState extends State<AppZoomDrawerShell> {
         );
       },
     );
+  }
+}
+
+class DrawerAnimationScope extends InheritedWidget {
+  const DrawerAnimationScope({
+    super.key,
+    required this.animationValue,
+    required super.child,
+  });
+
+  final double animationValue;
+
+  static double maybeOf(BuildContext context) {
+    return context
+            .dependOnInheritedWidgetOfExactType<DrawerAnimationScope>()
+            ?.animationValue ??
+        0;
+  }
+
+  @override
+  bool updateShouldNotify(DrawerAnimationScope oldWidget) {
+    return oldWidget.animationValue != animationValue;
   }
 }
 

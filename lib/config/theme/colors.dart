@@ -150,6 +150,7 @@ class AppColors {
   static const Color subscriptionDivider = Color(0x36C0B8B8);
   static const Color subscriptionSelectedOverlay = Color(0x08000000);
   static const Color subscriptionDotInactive = Color(0x330C6C3F);
+  static const Color drawerBackground = Color(0xFF0C7946);
 
   // Calendar.
   static const Color calendarBackground = Color(0xFFF8FCF9);

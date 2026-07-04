@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/features/app_shell/presentation/widgets/app_zoom_drawer_shell.dart';
 import 'package:meal_meat_user/features/home/domain/entities/home_dashboard_entity.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_stats_card.dart';
@@ -23,6 +24,9 @@ class HomeHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final drawerAnimationValue = DrawerAnimationScope.maybeOf(context);
+    final profileOpacity = (1 - (drawerAnimationValue * 1.8)).clamp(0.0, 1.0);
+
     return SizedBox(
       height: 285,
       child: Stack(
@@ -32,47 +36,25 @@ class HomeHeaderSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 34, 20, 0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   textDirection: ui.TextDirection.rtl,
                   children: [
                     _DrawerMenuButton(onTap: onMenuTap),
-                    const Spacer(),
-                    Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const _AvatarCircle(),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                dashboard.greeting,
-                                style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size12,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                dashboard.userName,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size18,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    const SizedBox(width: 18),
+                    IgnorePointer(
+                      ignoring: profileOpacity == 0,
+                      child: Opacity(
+                        opacity: profileOpacity,
+                        child: _HomeProfileHeader(
+                          greeting: dashboard.greeting,
+                          userName: dashboard.userName,
+                          avatarAsset: Assets.homeFigmaAvatar,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 18),
+                    const Spacer(),
                     _NotificationButton(onTap: onNotificationTap),
                   ],
                 ),
@@ -97,6 +79,69 @@ class HomeHeaderSection extends StatelessWidget {
   }
 }
 
+class _HomeProfileHeader extends StatelessWidget {
+  const _HomeProfileHeader({
+    required this.greeting,
+    required this.userName,
+    required this.avatarAsset,
+  });
+
+  final String greeting;
+  final String userName;
+  final String avatarAsset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _AvatarCircle(asset: avatarAsset),
+            const SizedBox(width: 10),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 160),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (greeting.isNotEmpty) ...[
+                    Text(
+                      greeting,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size12,
+                        color: AppColors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                  ],
+                  Text(
+                    userName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.right,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size18,
+                      color: AppColors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _DrawerMenuButton extends StatelessWidget {
   const _DrawerMenuButton({this.onTap});
 
@@ -111,14 +156,10 @@ class _DrawerMenuButton extends StatelessWidget {
         width: 38,
         height: 38,
         decoration: BoxDecoration(
-          color: AppColors.white.withValues(alpha: 0.14),
+          //  color: AppColors.white.withValues(alpha: 0.14),
           shape: BoxShape.circle,
         ),
-        child: const Icon(
-          Icons.menu_rounded,
-          color: AppColors.white,
-          size: 26,
-        ),
+        child: const Icon(Icons.menu_rounded, color: AppColors.white, size: 26),
       ),
     );
   }
@@ -263,7 +304,9 @@ class _NotificationButton extends StatelessWidget {
 }
 
 class _AvatarCircle extends StatelessWidget {
-  const _AvatarCircle();
+  const _AvatarCircle({required this.asset});
+
+  final String asset;
 
   @override
   Widget build(BuildContext context) {
@@ -273,7 +316,7 @@ class _AvatarCircle extends StatelessWidget {
       decoration: const BoxDecoration(shape: BoxShape.circle),
       clipBehavior: Clip.antiAlias,
       child: Image.asset(
-        Assets.homeFigmaAvatar,
+        asset,
         fit: BoxFit.cover,
         errorBuilder: (_, _, _) {
           return const CircleAvatar(
