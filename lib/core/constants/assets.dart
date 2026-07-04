@@ -111,6 +111,7 @@ class Assets {
   static const String icWallet = '$_icons/ic_wallet.svg';
   static const String buttonSmall = "$_svg/button_small.svg";
   static const String buttonLarge = "$_svg/button_large.svg";
+  static const String logoWhite = '$_svg/logo_white.svg';
   static const String notificationBold = '$_svg/notification_bold.svg';
   // Other assets
   static const String searchNormal = '$_images/search-normal.svg';

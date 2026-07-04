@@ -14,10 +14,12 @@ class HomeHeaderSection extends StatelessWidget {
     super.key,
     required this.dashboard,
     this.onNotificationTap,
+    this.onMenuTap,
   });
 
   final HomeDashboardEntity dashboard;
   final VoidCallback? onNotificationTap;
+  final VoidCallback? onMenuTap;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,10 @@ class HomeHeaderSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
+                  textDirection: ui.TextDirection.rtl,
                   children: [
+                    _DrawerMenuButton(onTap: onMenuTap),
+                    const Spacer(),
                     Directionality(
                       textDirection: ui.TextDirection.rtl,
                       child: Row(
@@ -67,7 +72,7 @@ class HomeHeaderSection extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 18),
                     _NotificationButton(onTap: onNotificationTap),
                   ],
                 ),
@@ -87,6 +92,33 @@ class HomeHeaderSection extends StatelessWidget {
             child: HomeSearchBar(onTap: () {}),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DrawerMenuButton extends StatelessWidget {
+  const _DrawerMenuButton({this.onTap});
+
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      onTap: onTap,
+      radius: 24,
+      child: Container(
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: AppColors.white.withValues(alpha: 0.14),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.menu_rounded,
+          color: AppColors.white,
+          size: 26,
+        ),
       ),
     );
   }

@@ -517,6 +517,81 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذا القسم قيد التجهيز وسيكون متاحًا قريبًا.';
 
   @override
+  String get drawer_guest_name => 'أحمد محمد';
+
+  @override
+  String get drawer_welcome => 'مرحباً بك ,';
+
+  @override
+  String get drawer_weight_loss_program => 'برنامج خسارة الوزن';
+
+  @override
+  String get drawer_month_package => 'باقة الشهر';
+
+  @override
+  String get drawer_account => 'الحساب';
+
+  @override
+  String get drawer_my_account => 'حسابي';
+
+  @override
+  String get drawer_payment_methods => 'وسائل الدفع';
+
+  @override
+  String get drawer_notifications => 'الإشعارات';
+
+  @override
+  String get drawer_subscription => 'الاشتراك';
+
+  @override
+  String get drawer_current_subscription => 'اشتراكي الحالي';
+
+  @override
+  String get drawer_family_members => 'أفراد العائلة';
+
+  @override
+  String get drawer_orders => 'الطلبات';
+
+  @override
+  String get drawer_previous_orders => 'الطلبات السابقة';
+
+  @override
+  String get drawer_track_current_order => 'تتبع الطلب الحالي';
+
+  @override
+  String get drawer_rewards_offers => 'المكافآت والعروض';
+
+  @override
+  String get drawer_points_rewards => 'النقاط والمكافآت';
+
+  @override
+  String get drawer_invite_friends => 'دعوة الأصدقاء';
+
+  @override
+  String get drawer_special_offers => 'العروض الخاصة';
+
+  @override
+  String get drawer_support_help => 'الدعم و المساعدة';
+
+  @override
+  String get drawer_technical_support => 'الدعم الفني';
+
+  @override
+  String get drawer_faq => 'الأسئلة الشائعة';
+
+  @override
+  String get drawer_contact_us => 'تواصل معنا';
+
+  @override
+  String get drawer_settings => 'الإعدادات';
+
+  @override
+  String get drawer_language => 'اللغة';
+
+  @override
+  String get drawer_logout => 'تسجيل الخروج';
+
+  @override
   String get offers_title => 'العروض';
 
   @override

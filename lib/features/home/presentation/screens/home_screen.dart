@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/features/app_shell/presentation/widgets/app_zoom_drawer_shell.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_category_strip.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
         if (state.status == HomeStatus.loading || state.dashboard == null) {
           return const Center(child: CircularProgressIndicator());
         }
-    
+
         final dashboard = state.dashboard!;
         return Stack(
           children: [
@@ -38,6 +39,7 @@ class HomeScreen extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: HomeHeaderSection(
                     dashboard: dashboard,
+                    onMenuTap: () => DrawerControllerScope.openDrawer(context),
                     onNotificationTap: () {},
                   ),
                 ),

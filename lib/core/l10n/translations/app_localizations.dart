@@ -1058,6 +1058,156 @@ abstract class AppLocalizations {
   /// **'This section is being prepared and will be available soon.'**
   String get coming_soon_subtitle;
 
+  /// No description provided for @drawer_guest_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed Mohamed'**
+  String get drawer_guest_name;
+
+  /// No description provided for @drawer_welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome,'**
+  String get drawer_welcome;
+
+  /// No description provided for @drawer_weight_loss_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss program'**
+  String get drawer_weight_loss_program;
+
+  /// No description provided for @drawer_month_package.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly package'**
+  String get drawer_month_package;
+
+  /// No description provided for @drawer_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get drawer_account;
+
+  /// No description provided for @drawer_my_account.
+  ///
+  /// In en, this message translates to:
+  /// **'My account'**
+  String get drawer_my_account;
+
+  /// No description provided for @drawer_payment_methods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment methods'**
+  String get drawer_payment_methods;
+
+  /// No description provided for @drawer_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get drawer_notifications;
+
+  /// No description provided for @drawer_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get drawer_subscription;
+
+  /// No description provided for @drawer_current_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Current subscription'**
+  String get drawer_current_subscription;
+
+  /// No description provided for @drawer_family_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Family members'**
+  String get drawer_family_members;
+
+  /// No description provided for @drawer_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get drawer_orders;
+
+  /// No description provided for @drawer_previous_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous orders'**
+  String get drawer_previous_orders;
+
+  /// No description provided for @drawer_track_current_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Track current order'**
+  String get drawer_track_current_order;
+
+  /// No description provided for @drawer_rewards_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards and offers'**
+  String get drawer_rewards_offers;
+
+  /// No description provided for @drawer_points_rewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Points and rewards'**
+  String get drawer_points_rewards;
+
+  /// No description provided for @drawer_invite_friends.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get drawer_invite_friends;
+
+  /// No description provided for @drawer_special_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Special offers'**
+  String get drawer_special_offers;
+
+  /// No description provided for @drawer_support_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Support and help'**
+  String get drawer_support_help;
+
+  /// No description provided for @drawer_technical_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical support'**
+  String get drawer_technical_support;
+
+  /// No description provided for @drawer_faq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get drawer_faq;
+
+  /// No description provided for @drawer_contact_us.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get drawer_contact_us;
+
+  /// No description provided for @drawer_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get drawer_settings;
+
+  /// No description provided for @drawer_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get drawer_language;
+
+  /// No description provided for @drawer_logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get drawer_logout;
+
   /// No description provided for @offers_title.
   ///
   /// In en, this message translates to:

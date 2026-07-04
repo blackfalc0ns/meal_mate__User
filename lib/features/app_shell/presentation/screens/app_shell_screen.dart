@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
+import 'package:meal_meat_user/features/app_shell/presentation/widgets/app_zoom_drawer_shell.dart';
 import 'package:meal_meat_user/features/home/data/home_fake_data_source.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
@@ -72,28 +73,35 @@ class _AppShellView extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (prev, cur) => prev.selectedTabIndex != cur.selectedTabIndex,
       builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          // Keep the area around the floating glass pill transparent and let
-          // the current page remain visible through it, as in the Figma design.
-          extendBody: true,
-          bottomNavigationBar: AppBottomNavBar(
-            currentIndex: state.selectedTabIndex,
-            onTap: (index) => context.read<HomeCubit>().selectTab(index),
-            items: navItems,
-          ),
-          body: _AnimatedShellBody(
-            selectedIndex: state.selectedTabIndex,
-            children: [
-              const HomeScreen(),
-              const CalendarScreen(),
-              const OffersScreen(),
-              const SubscriptionsScreen(showBottomSpace: true),
-              _ShellPlaceholderView(
-                title: l10n.nav_profile,
-                subtitle: l10n.coming_soon_subtitle,
-              ),
-            ],
+        final dashboard = state.dashboard;
+
+        return AppZoomDrawerShell(
+          userName: dashboard?.userName ?? l10n.drawer_guest_name,
+          greeting: dashboard?.greeting ?? l10n.drawer_welcome,
+          avatarAsset: Assets.homeFigmaAvatar,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            // Keep the area around the floating glass pill transparent and let
+            // the current page remain visible through it, as in the Figma design.
+            extendBody: true,
+            bottomNavigationBar: AppBottomNavBar(
+              currentIndex: state.selectedTabIndex,
+              onTap: (index) => context.read<HomeCubit>().selectTab(index),
+              items: navItems,
+            ),
+            body: _AnimatedShellBody(
+              selectedIndex: state.selectedTabIndex,
+              children: [
+                const HomeScreen(),
+                const CalendarScreen(),
+                const OffersScreen(),
+                const SubscriptionsScreen(showBottomSpace: true),
+                _ShellPlaceholderView(
+                  title: l10n.nav_profile,
+                  subtitle: l10n.coming_soon_subtitle,
+                ),
+              ],
+            ),
           ),
         );
       },

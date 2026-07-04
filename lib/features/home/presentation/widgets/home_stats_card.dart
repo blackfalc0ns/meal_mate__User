@@ -43,41 +43,45 @@ class HomeStatsCard extends StatelessWidget {
           const Spacer(),
           SizedBox(
             width: 88,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'السعرات اليومية',
-                  textAlign: TextAlign.right,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
-                    color: AppColors.black,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'السعرات اليومية',
+                    textAlign: TextAlign.right,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size10,
+                      color: AppColors.black,
+                    ).copyWith(height: 1),
                   ),
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  NumberFormat.decimalPattern('en').format(dailyCalories),
-                  textAlign: TextAlign.right,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size26,
-                    color: AppColors.black,
-                  ).copyWith(height: 1),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'من ${NumberFormat.decimalPattern('en').format(goalCalories)} سعرة',
-                  textAlign: TextAlign.right,
-                  maxLines: 1,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size11,
-                    color: AppColors.black,
+                  const SizedBox(height: 1),
+                  Text(
+                    NumberFormat.decimalPattern('en').format(dailyCalories),
+                    textAlign: TextAlign.right,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size26,
+                      color: AppColors.black,
+                    ).copyWith(height: 1),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    'من ${NumberFormat.decimalPattern('en').format(goalCalories)} سعرة',
+                    textAlign: TextAlign.right,
+                    maxLines: 1,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size11,
+                      color: AppColors.black,
+                    ).copyWith(height: 1),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

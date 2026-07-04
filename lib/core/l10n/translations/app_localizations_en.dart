@@ -528,6 +528,81 @@ class AppLocalizationsEn extends AppLocalizations {
       'This section is being prepared and will be available soon.';
 
   @override
+  String get drawer_guest_name => 'Ahmed Mohamed';
+
+  @override
+  String get drawer_welcome => 'Welcome,';
+
+  @override
+  String get drawer_weight_loss_program => 'Weight loss program';
+
+  @override
+  String get drawer_month_package => 'Monthly package';
+
+  @override
+  String get drawer_account => 'Account';
+
+  @override
+  String get drawer_my_account => 'My account';
+
+  @override
+  String get drawer_payment_methods => 'Payment methods';
+
+  @override
+  String get drawer_notifications => 'Notifications';
+
+  @override
+  String get drawer_subscription => 'Subscription';
+
+  @override
+  String get drawer_current_subscription => 'Current subscription';
+
+  @override
+  String get drawer_family_members => 'Family members';
+
+  @override
+  String get drawer_orders => 'Orders';
+
+  @override
+  String get drawer_previous_orders => 'Previous orders';
+
+  @override
+  String get drawer_track_current_order => 'Track current order';
+
+  @override
+  String get drawer_rewards_offers => 'Rewards and offers';
+
+  @override
+  String get drawer_points_rewards => 'Points and rewards';
+
+  @override
+  String get drawer_invite_friends => 'Invite friends';
+
+  @override
+  String get drawer_special_offers => 'Special offers';
+
+  @override
+  String get drawer_support_help => 'Support and help';
+
+  @override
+  String get drawer_technical_support => 'Technical support';
+
+  @override
+  String get drawer_faq => 'FAQ';
+
+  @override
+  String get drawer_contact_us => 'Contact us';
+
+  @override
+  String get drawer_settings => 'Settings';
+
+  @override
+  String get drawer_language => 'Language';
+
+  @override
+  String get drawer_logout => 'Log out';
+
+  @override
   String get offers_title => 'Offers';
 
   @override
