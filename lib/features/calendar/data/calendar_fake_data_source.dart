@@ -2,6 +2,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 
 class CalendarFakeDataSource {
   const CalendarFakeDataSource();
@@ -15,6 +16,58 @@ class CalendarFakeDataSource {
     deliveryDuration: 'بيزك',
     deliveryWindow: 'وقت التوصيل المعتاد: 6:00 م - 7:00 م',
   );
+
+  List<CalendarRestaurantOptionEntity> getRestaurantOptions() => const [
+    CalendarRestaurantOptionEntity(
+      name: 'هيلثي بول',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.healthyBowl,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'دايت هاوس',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.dietHouse,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'بروتين كيتشن',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.proteinKitchen,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'ستاربكس',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.starbucks,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'برجر كينج',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.burgerKing,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'دايت هاوس',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.dietHouse,
+    ),
+    CalendarRestaurantOptionEntity(
+      name: 'بروتين كيتشن',
+      description: 'وجبات صحية متوازنة بمكونات طبيعية',
+      mealCount: 28,
+      rating: '4.8',
+      logoType: CalendarRestaurantLogoType.proteinKitchen,
+    ),
+  ];
 
   List<CalendarDayEntity> getWeekDays({required int selectedDay}) {
     const days = [
