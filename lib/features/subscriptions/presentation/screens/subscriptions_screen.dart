@@ -5,6 +5,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/subscriptions/data/subscriptions_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/screens/family_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_info_note.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_plan_card.dart';
@@ -68,6 +69,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                     return _AnimatedPlanDetailsOpener(
                       onOpen: () => setState(() => _selectedPlanIndex = index),
                       initialPage: index,
+                      opensFamilyPlan: index == 0,
                       child: SubscriptionPlanCard(
                         plan: plan,
                         isSelected: index == _selectedPlanIndex,
@@ -99,11 +101,13 @@ class _AnimatedPlanDetailsOpener extends StatelessWidget {
     required this.child,
     required this.initialPage,
     required this.onOpen,
+    required this.opensFamilyPlan,
   });
 
   final Widget child;
   final int initialPage;
   final VoidCallback onOpen;
+  final bool opensFamilyPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +129,9 @@ class _AnimatedPlanDetailsOpener extends StatelessWidget {
             transitionDuration: const Duration(milliseconds: 700),
             transitionType: ContainerTransitionType.fade,
             tappable: false,
-            openBuilder: (context, _) =>
-                SubscriptionPlanDetailsScreen(initialPage: initialPage),
+            openBuilder: (context, _) => opensFamilyPlan
+                ? const FamilyPlanDetailsScreen()
+                : SubscriptionPlanDetailsScreen(initialPage: initialPage),
             closedBuilder: (context, openContainer) {
               return Material(
                 color: Colors.transparent,

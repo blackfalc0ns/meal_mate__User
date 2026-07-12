@@ -11,7 +11,6 @@ import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart'
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
-import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
@@ -93,7 +92,7 @@ class _AppShellView extends StatelessWidget {
               selectedIndex: state.selectedTabIndex,
               children: [
                 const HomeScreen(),
-                const CalendarScreen(),
+              //  const CalendarScreen(),
                 const OffersScreen(),
                 const SubscriptionsScreen(showBottomSpace: true),
                 _ShellPlaceholderView(

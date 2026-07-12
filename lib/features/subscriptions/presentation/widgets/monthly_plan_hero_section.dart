@@ -55,10 +55,12 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
     super.key,
     required this.imageAsset,
     required this.onBack,
+    this.showBackButton = true,
   });
 
   final String imageAsset;
   final VoidCallback onBack;
+  final bool showBackButton;
 
   static const designWidth = 390.0;
   static const designHeroHeight = 520.0;
@@ -85,7 +87,8 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
                   imageAsset: imageAsset,
                 ),
                 const _HeroWhiteFade(),
-                _HeroBackButton(scale: scale, onBack: onBack),
+                if (showBackButton)
+                  MonthlyPlanHeroBackButton(scale: scale, onBack: onBack),
                 Positioned(
                   top: MediaQuery.paddingOf(context).top + (27.95 * scale),
                   left: 0,
@@ -125,8 +128,12 @@ class _HeroWhiteFade extends StatelessWidget {
   }
 }
 
-class _HeroBackButton extends StatelessWidget {
-  const _HeroBackButton({required this.scale, required this.onBack});
+class MonthlyPlanHeroBackButton extends StatelessWidget {
+  const MonthlyPlanHeroBackButton({
+    super.key,
+    required this.scale,
+    required this.onBack,
+  });
 
   final double scale;
   final VoidCallback onBack;

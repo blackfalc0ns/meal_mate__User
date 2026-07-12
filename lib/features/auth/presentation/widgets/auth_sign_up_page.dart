@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -17,10 +18,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_phone_fie
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_terms_section.dart';
 
 class AuthSignUpPage extends StatefulWidget {
-  const AuthSignUpPage({
-    super.key,
-    required this.onNavigate,
-  });
+  const AuthSignUpPage({super.key, required this.onNavigate});
 
   final ValueChanged<AuthPageType> onNavigate;
 
@@ -96,9 +94,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               validator: (value) => Validations.validateName(context, value),
             ),
             const SizedBox(height: Spacing.base),
-            AuthPhoneField(
-              controller: _phoneController,
-            ),
+            AuthPhoneField(controller: _phoneController),
             const SizedBox(height: Spacing.base),
             AuthPasswordField(
               controller: _passwordController,
@@ -113,7 +109,8 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               },
             ),
             const SizedBox(height: Spacing.xl),
-            AppButton(variant: AppButtonVariant.filled,
+            AppButton(
+              variant: AppButtonVariant.filled,
               text: l10n.auth_create_account_button,
               iconWidget: SvgPicture.asset(
                 Assets.loginIcon,
@@ -123,12 +120,8 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               onPressed: _handleSubmit,
               color: AppColors.primary,
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFF1D8134),
-                  Color(0xFF51C063),
-                ],
+                colors: [Color(0xFF1D8134), Color(0xFF51C063)],
               ),
-             
             ),
           ],
         ),
@@ -143,5 +136,8 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
     if (!_acceptedTerms) {
       return;
     }
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
   }
 }

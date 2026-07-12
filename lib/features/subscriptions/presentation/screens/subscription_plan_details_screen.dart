@@ -66,6 +66,7 @@ class _SubscriptionPlanDetailsScreenState
                 key: ValueKey(currentPlan.heroImageAsset),
                 imageAsset: currentPlan.heroImageAsset,
                 onBack: _pop,
+                showBackButton: false,
               ),
             ),
             PageView.builder(
@@ -93,6 +94,7 @@ class _SubscriptionPlanDetailsScreenState
                 ),
               ),
             ),
+            MonthlyPlanHeroBackButton(scale: _heroScale(context), onBack: _pop),
           ],
         ),
       ),
@@ -115,9 +117,12 @@ class _SubscriptionPlanDetailsScreenState
   void _subscribe() {}
 
   void _pop() {
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
+    Navigator.maybePop(context);
+  }
+
+  double _heroScale(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return (width / MonthlyPlanHeroBackground.designWidth).clamp(0.88, 1.0);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -16,10 +17,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_password_
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_phone_field.dart';
 
 class AuthSignInPage extends StatefulWidget {
-  const AuthSignInPage({
-    super.key,
-    required this.onNavigate,
-  });
+  const AuthSignInPage({super.key, required this.onNavigate});
 
   final ValueChanged<AuthPageType> onNavigate;
 
@@ -67,20 +65,21 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
               ),
             ),
             const SizedBox(height: Spacing.xl),
-            AuthPhoneField(
-              controller: _phoneController,
-            ),
+            AuthPhoneField(controller: _phoneController),
             const SizedBox(height: Spacing.base),
             AuthPasswordField(
               controller: _passwordController,
-              validator: (value) => Validations.validateRequired(context, value),
+              validator: (value) =>
+                  Validations.validateRequired(context, value),
             ),
             const SizedBox(height: Spacing.sm),
             AuthLoginOptionsRow(
-              onForgotPassword: () => widget.onNavigate(AuthPageType.forgotPassword),
+              onForgotPassword: () =>
+                  widget.onNavigate(AuthPageType.forgotPassword),
             ),
             const SizedBox(height: Spacing.xl),
-            AppButton(variant: AppButtonVariant.filled,
+            AppButton(
+              variant: AppButtonVariant.filled,
               text: l10n.auth_sign_in_button,
               iconWidget: SvgPicture.asset(
                 Assets.loginIcon,
@@ -90,12 +89,8 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
               onPressed: _handleSubmit,
               color: AppColors.primary,
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFF1D8134),
-                  Color(0xFF51C063),
-                ],
+                colors: [Color(0xFF1D8134), Color(0xFF51C063)],
               ),
-             
             ),
           ],
         ),
@@ -107,5 +102,8 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
   }
 }
