@@ -53,6 +53,8 @@ class Assets {
   static const String calendarLunch = '$_images/offers/grilled_plate.png';
   static const String calendarDinner = '$_images/home_hotdog.png';
   static const String calendarSnack = '$_images/home_donut.png';
+  static const String calendarFigmaMealBowl =
+      '$_images/calendar/figma/calendar_meal_bowl.png';
 
   // Offers / promotions
   static const String offerGiftBox = '$_images/offers/gift_box.png';

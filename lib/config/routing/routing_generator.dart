@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
+import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
@@ -30,7 +31,9 @@ class RouteGenerator {
           settings: settings,
           page: const FamilyPlanDetailsScreen(),
         );
-     
+      case AppRoutes.calendar:
+        return _buildRoute(settings: settings, page: const CalendarScreen());
+
       case AppRoutes.offerDetails:
         return _buildRoute(
           settings: settings,

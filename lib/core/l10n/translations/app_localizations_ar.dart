@@ -501,7 +501,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nav_home => 'الرئيسية';
 
   @override
-  String get nav_meals => 'الوجبات';
+  String get nav_meals => 'وجباتي';
 
   @override
   String get nav_offers => 'العروض';

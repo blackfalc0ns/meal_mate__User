@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/widgets/app_zoom_drawer_shell.dart';
+import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/home/data/home_fake_data_source.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
@@ -92,7 +93,7 @@ class _AppShellView extends StatelessWidget {
               selectedIndex: state.selectedTabIndex,
               children: [
                 const HomeScreen(),
-              //  const CalendarScreen(),
+                const CalendarScreen(showBottomSpace: true),
                 const OffersScreen(),
                 const SubscriptionsScreen(showBottomSpace: true),
                 _ShellPlaceholderView(
