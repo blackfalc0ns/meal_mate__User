@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 
 class CalendarMealCard extends StatelessWidget {
   const CalendarMealCard({super.key, required this.meal});
@@ -62,7 +63,7 @@ class CalendarMealCard extends StatelessWidget {
             height: 25,
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: () {},
+              onPressed: () => _openMealPicker(context),
               icon: const Icon(Icons.edit_rounded, size: 13),
               label: Text(meal.actionLabel),
               style: FilledButton.styleFrom(
@@ -82,6 +83,16 @@ class CalendarMealCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _openMealPicker(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black,
+      builder: (_) => const CalendarMealPickerSheet(),
     );
   }
 }

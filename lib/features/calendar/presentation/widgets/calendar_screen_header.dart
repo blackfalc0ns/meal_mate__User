@@ -90,7 +90,7 @@ class _HeaderIconButton extends StatelessWidget {
           if (showDot)
             PositionedDirectional(
               top: -1,
-              end: 0,
+              start: 0,
               child: Container(
                 width: 8,
                 height: 8,
