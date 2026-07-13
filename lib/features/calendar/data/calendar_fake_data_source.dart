@@ -7,7 +7,34 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 class CalendarFakeDataSource {
   const CalendarFakeDataSource();
 
-  String get monthTitle => 'سبتمبر 2026';
+  static const _monthNames = [
+    'يناير',
+    'فبراير',
+    'مارس',
+    'أبريل',
+    'مايو',
+    'يونيو',
+    'يوليو',
+    'أغسطس',
+    'سبتمبر',
+    'أكتوبر',
+    'نوفمبر',
+    'ديسمبر',
+  ];
+
+  static const _weekdayNames = [
+    'الإثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة',
+    'السبت',
+    'الأحد',
+  ];
+
+  String getMonthTitle(DateTime month) {
+    return '${_monthNames[month.month - 1]} ${month.year}';
+  }
 
   CalendarRestaurantEntity getRestaurant() => const CalendarRestaurantEntity(
     name: 'هيليثي بايتس',
@@ -69,78 +96,53 @@ class CalendarFakeDataSource {
     ),
   ];
 
-  List<CalendarDayEntity> getWeekDays({required int selectedDay}) {
-    const days = [
-      CalendarDayEntity(dayNumber: 25, weekday: 'الأحد', isMuted: true),
-      CalendarDayEntity(dayNumber: 26, weekday: 'الأثنين'),
-      CalendarDayEntity(dayNumber: 27, weekday: 'الثلاثاء'),
-      CalendarDayEntity(dayNumber: 28, weekday: 'الأربعاء'),
-      CalendarDayEntity(dayNumber: 29, weekday: 'الخميس'),
-      CalendarDayEntity(dayNumber: 30, weekday: 'الجمعة'),
-      CalendarDayEntity(dayNumber: 1, weekday: 'السبت', isMuted: true),
-    ];
+  List<CalendarDayEntity> getWeekDays({
+    required DateTime selectedDate,
+    required DateTime focusedMonth,
+  }) {
+    final startOfWeek = selectedDate.subtract(
+      Duration(days: _daysFromSaturday(selectedDate)),
+    );
 
-    return [
-      for (final day in days)
-        CalendarDayEntity(
-          dayNumber: day.dayNumber,
-          weekday: day.weekday,
-          isSelected: day.dayNumber == selectedDay,
-          isMuted: day.isMuted,
-          hasMeals: day.hasMeals,
-        ),
-    ];
-  }
-
-  List<CalendarDayEntity> getMonthDays({required int selectedDay}) {
-    const visibleDays = [
-      28,
-      29,
-      30,
-      31,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      1,
-    ];
-
-    return List.generate(visibleDays.length, (index) {
-      final day = visibleDays[index];
-      final inCurrentMonth = index >= 4 && index <= 33;
+    return List.generate(7, (index) {
+      final date = _dateOnly(startOfWeek.add(Duration(days: index)));
+      final inFocusedMonth = _isSameMonth(date, focusedMonth);
 
       return CalendarDayEntity(
-        dayNumber: day,
+        dayNumber: date.day,
+        weekday: _weekdayNames[date.weekday - 1],
+        date: date,
+        isSelected: _isSameDay(date, selectedDate),
+        isMuted: !inFocusedMonth,
+        hasMeals: inFocusedMonth,
+      );
+    });
+  }
+
+  List<CalendarDayEntity> getMonthDays({
+    required DateTime focusedMonth,
+    required DateTime selectedDate,
+  }) {
+    final firstDay = DateTime(focusedMonth.year, focusedMonth.month);
+    final leadingDays = (firstDay.weekday + 1) % 7;
+    final gridStart = firstDay.subtract(Duration(days: leadingDays));
+    final daysInMonth = DateTime(
+      focusedMonth.year,
+      focusedMonth.month + 1,
+      0,
+    ).day;
+    final totalCells = ((leadingDays + daysInMonth + 6) ~/ 7) * 7;
+
+    return List.generate(totalCells, (index) {
+      final date = _dateOnly(gridStart.add(Duration(days: index)));
+      final inFocusedMonth = _isSameMonth(date, focusedMonth);
+      return CalendarDayEntity(
+        dayNumber: date.day,
         weekday: '',
-        isSelected: day == selectedDay && inCurrentMonth,
-        isMuted: !inCurrentMonth,
-        hasMeals: inCurrentMonth,
+        date: date,
+        isSelected: _isSameDay(date, selectedDate),
+        isMuted: !inFocusedMonth,
+        hasMeals: inFocusedMonth,
       );
     });
   }
@@ -184,5 +186,21 @@ class CalendarFakeDataSource {
         actionLabel: 'تغيير الوجبة',
       ),
     ];
+  }
+
+  int _daysFromSaturday(DateTime date) {
+    return (date.weekday + 1) % 7;
+  }
+
+  DateTime _dateOnly(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  bool _isSameMonth(DateTime date, DateTime month) {
+    return date.year == month.year && date.month == month.month;
   }
 }

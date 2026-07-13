@@ -5,8 +5,17 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class CalendarMealPickerSheet extends StatelessWidget {
+class CalendarMealPickerSheet extends StatefulWidget {
   const CalendarMealPickerSheet({super.key});
+
+  @override
+  State<CalendarMealPickerSheet> createState() =>
+      _CalendarMealPickerSheetState();
+}
+
+class _CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
+  static const _mealTabs = ['الإفطار', 'الغداء', 'العشاء'];
+  int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -53,26 +62,26 @@ class CalendarMealPickerSheet extends StatelessWidget {
                   color: color.surface,
                   child: ListView(
                     padding: EdgeInsets.zero,
-                    children: const [
-                      SizedBox(height: 18),
-                      _SheetHandle(),
-                      SizedBox(height: 24),
-                      _RestaurantHeader(),
-                      SizedBox(height: 18),
-                      _RestaurantDescription(),
-                      SizedBox(height: 21),
-                      _SourceSection(),
-                      SizedBox(height: 16),
-                      _MealTabs(),
-                      SizedBox(height: 25),
-                      _SectionTitle(),
-                      SizedBox(height: 20),
-                      _MealOptionCard(selected: false),
-                      _DividerLine(),
-                      _MealOptionCard(selected: true),
-                      _DividerLine(),
-                      _MealOptionCard(selected: false),
-                      SizedBox(height: 28),
+                    children: [
+                      const SizedBox(height: 18),
+                      const _SheetHandle(),
+                      const SizedBox(height: 24),
+                      const _RestaurantHeader(),
+                      const SizedBox(height: 18),
+                      const _RestaurantDescription(),
+                      const SizedBox(height: 21),
+                      const _SourceSection(),
+                      const SizedBox(height: 16),
+                      _MealTabs(
+                        labels: _mealTabs,
+                        selectedIndex: _selectedTab,
+                        onChanged: (index) {
+                          setState(() => _selectedTab = index);
+                        },
+                      ),
+                      const SizedBox(height: 25),
+                      _MealOptionsSection(mealType: _mealTabs[_selectedTab]),
+                      const SizedBox(height: 28),
                     ],
                   ),
                 ),
@@ -163,7 +172,7 @@ class _SourceSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 39, end: 39),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
           Text(
             'بلد المنشأ للمكونات الأساسية',
@@ -285,12 +294,20 @@ class _SourceCard extends StatelessWidget {
 }
 
 class _MealTabs extends StatelessWidget {
-  const _MealTabs();
+  const _MealTabs({
+    required this.labels,
+    required this.selectedIndex,
+    required this.onChanged,
+  });
+
+  final List<String> labels;
+  final int selectedIndex;
+  final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 26.3,
+      height: 32,
       child: Stack(
         children: [
           const Positioned(
@@ -307,24 +324,36 @@ class _MealTabs extends StatelessWidget {
             right: 36,
             left: 36,
             top: 0,
+            bottom: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                _TabLabel(text: 'الافطار', active: true),
-                _TabLabel(text: 'الغداء'),
-                _TabLabel(text: 'العشاء'),
+              children: [
+                for (var index = 0; index < labels.length; index++)
+                  _TabLabel(
+                    text: labels[index],
+                    active: selectedIndex == index,
+                    onTap: () => onChanged(index),
+                  ),
               ],
             ),
           ),
           Positioned(
             right: 36,
+            left: 36,
             bottom: 0,
-            child: Container(
-              width: 100,
-              height: 2,
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.6)),
+            child: AnimatedAlign(
+              duration: const Duration(milliseconds: 260),
+              curve: Curves.easeOutCubic,
+              alignment: Alignment(1 - selectedIndex.toDouble(), 0),
+              child: Container(
+                width: 100,
+                height: 2,
+                decoration: const BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(16.6),
+                  ),
+                ),
               ),
             ),
           ),
@@ -335,44 +364,86 @@ class _MealTabs extends StatelessWidget {
 }
 
 class _TabLabel extends StatelessWidget {
-  const _TabLabel({required this.text, this.active = false});
+  const _TabLabel({
+    required this.text,
+    required this.active,
+    required this.onTap,
+  });
 
   final String text;
   final bool active;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: getMediumStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: 13.52,
-          color: active ? AppColors.primary : const Color(0xFF172B4D),
-        ).copyWith(height: 12.48 / 13.52, letterSpacing: 0),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: SizedBox(
+        width: 100,
+        height: 32,
+        child: Center(
+          child: AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOutCubic,
+            textAlign: TextAlign.center,
+            style: getMediumStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: 13.52,
+              color: active ? AppColors.primary : const Color(0xFF172B4D),
+            ).copyWith(height: 12.48 / 13.52, letterSpacing: 0),
+            child: Text(text),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MealOptionsSection extends StatelessWidget {
+  const _MealOptionsSection({required this.mealType});
+
+  final String mealType;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 240),
+      switchInCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      child: Column(
+        key: ValueKey(mealType),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _SectionTitle(mealType: mealType),
+          const SizedBox(height: 20),
+          const _MealOptionCard(selected: false),
+          const _DividerLine(),
+          const _MealOptionCard(selected: true),
+          const _DividerLine(),
+          const _MealOptionCard(selected: false),
+        ],
       ),
     );
   }
 }
 
 class _SectionTitle extends StatelessWidget {
-  const _SectionTitle();
+  const _SectionTitle({required this.mealType});
+
+  final String mealType;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsetsDirectional.only(end: 36),
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: 36),
       child: Text(
-        'وجبات الافطار',
+        'وجبات $mealType',
         textAlign: TextAlign.right,
-        style: TextStyle(
+        style: getBoldStyle(
           fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: 16.64,
-          height: 24.96 / 16.64,
-          fontWeight: FontWeight.w700,
-          color: Color(0xFF172B4D),
+          fontSize: 18,
+          color: const Color(0xFF172B4D),
         ),
       ),
     );
@@ -457,7 +528,7 @@ class _SelectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 22,
-      height: 22,
+      height: 20,
       decoration: BoxDecoration(
         color: selected ? AppColors.brandDeepGreen : Colors.transparent,
         borderRadius: BorderRadius.circular(6),
@@ -511,7 +582,7 @@ class _MealNutritionRow extends StatelessWidget {
             if (index != items.length - 1)
               Container(
                 width: 0.45,
-                height: 20.7,
+                height: 18,
                 color: const Color(0xFFCDCDCD),
               ),
           ],
@@ -537,6 +608,7 @@ class _MealNutrition extends StatelessWidget {
     return SizedBox(
       width: label == 'سعرة حرارية' ? 38 : 31,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -548,28 +620,24 @@ class _MealNutrition extends StatelessWidget {
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 6.7,
-                    height: 1,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 7,
                     color: Colors.black,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: getSemiBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               fontSize: 5.8,
-              height: 1,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF5A5C62),
+              color: const Color(0xFF5A5C62),
             ),
           ),
         ],
@@ -611,9 +679,10 @@ class _IngredientChip extends StatelessWidget {
     final isMore = label.contains('المزيد');
 
     return Container(
-      height: 14.25,
+      margin: const EdgeInsetsDirectional.only(start: 1.5),
+      height: 18,
       constraints: BoxConstraints(minWidth: isMore ? 27.7 : 31),
-      padding: const EdgeInsets.symmetric(horizontal: 4.5),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(7.13),
@@ -624,17 +693,15 @@ class _IngredientChip extends StatelessWidget {
         children: [
           if (!isMore) ...[
             Icon(_iconFor(label), color: AppColors.brandDeepGreen, size: 8.5),
-            const SizedBox(width: 2),
+            const SizedBox(width: 3),
           ],
           Text(
             label,
-            style: TextStyle(
+            style: getSemiBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 5.2,
-              height: 1,
-              fontWeight: FontWeight.w600,
+              fontSize: FontSize.size10,
               color: isMore ? const Color(0xFF191C1D) : const Color(0xFF5A5C62),
-            ),
+            ).copyWith(height: 1),
           ),
         ],
       ),

@@ -34,7 +34,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late CalendarFigmaState _state;
   late bool _isCalendarExpanded;
   late CalendarRestaurantEntity _selectedRestaurant;
-  int _selectedDay = 20;
+  DateTime _focusedMonth = DateTime(2026, 9);
+  DateTime _selectedDate = DateTime(2026, 9, 20);
 
   bool get _hasRestaurant => _state != CalendarFigmaState.pickRestaurant;
 
@@ -51,7 +52,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final meals = _dataSource.getMeals(_selectedDay);
+    final meals = _dataSource.getMeals(_selectedDate.day);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -68,12 +69,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 slivers: [
                   SliverToBoxAdapter(
                     child: CalendarPickerPanel(
-                      monthTitle: _dataSource.monthTitle,
+                      monthTitle: _dataSource.getMonthTitle(_focusedMonth),
                       days: _isCalendarExpanded
-                          ? _dataSource.getMonthDays(selectedDay: _selectedDay)
-                          : _dataSource.getWeekDays(selectedDay: _selectedDay),
+                          ? _dataSource.getMonthDays(
+                              focusedMonth: _focusedMonth,
+                              selectedDate: _selectedDate,
+                            )
+                          : _dataSource.getWeekDays(
+                              focusedMonth: _focusedMonth,
+                              selectedDate: _selectedDate,
+                            ),
                       isExpanded: _isCalendarExpanded,
                       onToggleExpanded: _toggleCalendarMode,
+                      onMonthChanged: _changeFocusedMonth,
                       onDaySelected: _selectDay,
                     ),
                   ),
@@ -160,14 +168,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void _toggleCalendarMode() {
     setState(() {
       _isCalendarExpanded = !_isCalendarExpanded;
-      _selectedDay = _isCalendarExpanded ? 20 : 25;
+      if (_isCalendarExpanded) {
+        _focusedMonth = DateTime(_selectedDate.year, _selectedDate.month);
+      }
+    });
+  }
+
+  void _changeFocusedMonth(int direction) {
+    setState(() {
+      final nextMonth = DateTime(
+        _focusedMonth.year,
+        _focusedMonth.month + direction,
+      );
+      final lastDayInMonth = DateTime(
+        nextMonth.year,
+        nextMonth.month + 1,
+        0,
+      ).day;
+
+      _focusedMonth = nextMonth;
+      _selectedDate = DateTime(
+        nextMonth.year,
+        nextMonth.month,
+        _selectedDate.day.clamp(1, lastDayInMonth),
+      );
     });
   }
 
   void _selectDay(CalendarDayEntity day) {
     if (!day.hasMeals && _hasRestaurant) return;
+    final date =
+        day.date ??
+        DateTime(_focusedMonth.year, _focusedMonth.month, day.dayNumber);
     setState(() {
-      _selectedDay = day.dayNumber;
+      _selectedDate = date;
+      _focusedMonth = DateTime(date.year, date.month);
       if (_hasRestaurant) {
         _state = CalendarFigmaState.mealsList;
       }

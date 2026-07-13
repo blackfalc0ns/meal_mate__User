@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -62,37 +63,47 @@ class CalendarMealCard extends StatelessWidget {
           SizedBox(
             height: 25,
             width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: () => _openMealPicker(context),
-              icon: const Icon(Icons.edit_rounded, size: 13),
-              label: Text(meal.actionLabel),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.brandDeepGreen,
-                foregroundColor: color.onPrimary,
-                padding: EdgeInsets.zero,
-                textStyle: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 9.3,
-                  color: color.onPrimary,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            child: OpenContainer<void>(
+              closedElevation: 0,
+              openElevation: 0,
+              closedColor: Colors.transparent,
+              middleColor: color.surface,
+              openColor: color.surface,
+              closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
+              openShape: const RoundedRectangleBorder(),
+              transitionDuration: const Duration(milliseconds: 560),
+              transitionType: ContainerTransitionType.fadeThrough,
+              tappable: false,
+              openBuilder: (context, _) => const CalendarMealPickerSheet(),
+              closedBuilder: (context, openContainer) {
+                return FilledButton.icon(
+                  onPressed: openContainer,
+                  icon: const Icon(Icons.edit_rounded, size: 13),
+                  label: Text(meal.actionLabel),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.brandDeepGreen,
+                    foregroundColor: color.onPrimary,
+                    padding: EdgeInsets.zero,
+                    textStyle: getSemiBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: 9.3,
+                      color: color.onPrimary,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    minimumSize: Size.zero,
+                    fixedSize: const Size.fromHeight(25),
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _openMealPicker(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black,
-      builder: (_) => const CalendarMealPickerSheet(),
     );
   }
 }

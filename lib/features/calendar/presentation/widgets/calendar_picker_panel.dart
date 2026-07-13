@@ -12,6 +12,7 @@ class CalendarPickerPanel extends StatefulWidget {
     required this.days,
     required this.isExpanded,
     required this.onToggleExpanded,
+    required this.onMonthChanged,
     required this.onDaySelected,
   });
 
@@ -19,6 +20,7 @@ class CalendarPickerPanel extends StatefulWidget {
   final List<CalendarDayEntity> days;
   final bool isExpanded;
   final VoidCallback onToggleExpanded;
+  final ValueChanged<int> onMonthChanged;
   final ValueChanged<CalendarDayEntity> onDaySelected;
 
   @override
@@ -79,14 +81,14 @@ class _CalendarPickerPanelState extends State<CalendarPickerPanel> {
                           children: [
                             _MonthArrowButton(
                               icon: Icons.chevron_left_rounded,
-                              onPressed: () => _scrollWeek(-1),
+                              onPressed: () => _handleMonthArrow(-1),
                             ),
                             const Spacer(),
                             _MonthTitle(monthTitle: widget.monthTitle),
                             const Spacer(),
                             _MonthArrowButton(
                               icon: Icons.chevron_right_rounded,
-                              onPressed: () => _scrollWeek(1),
+                              onPressed: () => _handleMonthArrow(1),
                             ),
                           ],
                         ),
@@ -239,6 +241,15 @@ class _CalendarPickerPanelState extends State<CalendarPickerPanel> {
       duration: const Duration(milliseconds: 260),
       curve: Curves.easeOutCubic,
     );
+  }
+
+  void _handleMonthArrow(int direction) {
+    if (widget.isExpanded) {
+      widget.onMonthChanged(direction);
+      return;
+    }
+
+    _scrollWeek(direction);
   }
 
   void _handleCalendarGripDragUpdate(DragUpdateDetails details) {
