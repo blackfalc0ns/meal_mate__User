@@ -83,8 +83,8 @@
   "password_and_confirm_password_must_be_same": "Password and confirm password must be same!",
   "phone_number_is_required": "Phone number is required!",
   "phone_number_is_not_valid": "This phone number is not valid",
-  "this_field_is_required" : "This field is required",
-  "error" : "Error",
+  "this_field_is_required": "This field is required",
+  "error": "Error",
   "error_bad_certificate": "Security certificate error",
   "error_request_cancelled": "Request was cancelled",
   "error_no_internet": "No internet connection",
@@ -99,7 +99,7 @@
   "location_permission_denied_forever_message": "Location permission is permanently denied. Please enable it from your device settings",
   "verification_code_required": "Verification code is required",
   "verification_code_invalid": "Verification code is invalid",
-  "start_button":"start now",
+  "start_button": "start now",
   "welcome_back": "Welcome to",
   "login_subtitle": "Log in to access your meal plan and track your health goals",
   "login_title": "Login",
@@ -270,8 +270,7 @@
   "offer_details_summary_secure_payment": "Secure payment",
   "offer_details_open_plans_button": "Choose plan",
   "offer_activated_title": "Offer activated successfully",
-     "currency":"KWD",
-
+  "currency": "KWD",
   "payment_title": "Payment",
   "payment_order_summary_title": "Order Summary",
   "payment_plan_month": "Monthly Plan",
@@ -405,7 +404,11 @@
   "calendar_day_plan": "Plan for September 25",
   "calendar_day_plan_date": "Plan for {date}",
   "@calendar_day_plan_date": {
-    "placeholders": {"date": {"type": "String"}}
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "calendar_scheduled_count": "4 meals scheduled for today",
   "calendar_completed": "Completed",
@@ -428,5 +431,57 @@
   "calendar_saturday": "Saturday",
   "calendar_sunday": "Sunday",
   "calendar_monday": "Monday",
-  "calendar_tuesday": "Tuesday"
+  "calendar_tuesday": "Tuesday",
+  "calendar_wednesday": "Wednesday",
+  "calendar_thursday": "Thursday",
+  "calendar_weekday_sat_short": "Sat",
+  "calendar_weekday_sun_short": "Sun",
+  "calendar_weekday_mon_short": "Mon",
+  "calendar_weekday_tue_short": "Tue",
+  "calendar_weekday_wed_short": "Wed",
+  "calendar_weekday_thu_short": "Thu",
+  "calendar_weekday_fri_short": "Fri",
+  "calendar_ingredients": "Ingredients",
+  "calendar_calories": "Calories",
+  "calendar_protein": "Protein",
+  "calendar_carbs": "Carbs",
+  "calendar_fat": "Fat",
+  "calendar_breakfast": "Breakfast",
+  "calendar_lunch": "Lunch",
+  "calendar_dinner": "Dinner",
+  "calendar_meals_for": "{mealType} meals",
+  "@calendar_meals_for": {
+    "placeholders": {
+      "mealType": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_restaurant_name": "Restaurant name",
+  "calendar_restaurant_description": "We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.",
+  "calendar_ingredient_origin_title": "Origin country for main ingredients",
+  "calendar_meat": "Meat",
+  "calendar_poultry": "Poultry",
+  "calendar_fish": "Fish",
+  "calendar_oils": "Oils",
+  "calendar_imported": "Imported",
+  "calendar_fresh_local": "Fresh local",
+  "calendar_australia": "Australia",
+  "calendar_local": "Local",
+  "calendar_norway": "Norway",
+  "calendar_spain": "Spain",
+  "calendar_meal_name": "Meal name",
+  "calendar_grilled_chicken": "Grilled chicken",
+  "calendar_brown_rice": "Brown rice",
+  "calendar_broccoli": "Broccoli",
+  "calendar_carrot": "Carrot",
+  "calendar_more": "More ..",
+  "calendar_browse_restaurants": "Browse restaurants",
+  "calendar_choose_restaurant_for_day": "Choose your preferred restaurant for ",
+  "calendar_restaurant_picker_date": "Saturday, September 20",
+  "calendar_search_restaurant_hint": "Search for a restaurant or cuisine...",
+  "calendar_meal_suffix": " meal",
+  "calendar_change_restaurant": "Change restaurant",
+  "calendar_pick_restaurant_first": "Choose ",
+  "calendar_pick_restaurant_second": "restaurant"
 }

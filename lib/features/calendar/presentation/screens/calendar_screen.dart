@@ -86,12 +86,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                   SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      30,
-                      _hasRestaurant ? 18 : 32,
-                      30,
-                      widget.showBottomSpace ? 110 : Spacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: Spacing.xxl)
+                        .copyWith(
+                          top: _hasRestaurant ? Spacing.lg : Spacing.xxl,
+                          bottom: widget.showBottomSpace
+                              ? Spacing.bottomNavHeight + Spacing.xxxl
+                              : Spacing.lg,
+                        ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
                         AnimatedSwitcher(
@@ -110,13 +111,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 ),
                         ),
                         if (_hasRestaurant) ...[
-                          const SizedBox(height: 25),
+                          const SizedBox(height: Spacing.xl),
                           Column(
                             key: const ValueKey('meals-list'),
                             children: [
                               for (final meal in meals) ...[
                                 CalendarMealCard(meal: meal),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: Spacing.sm),
                               ],
                             ],
                           ),
@@ -135,13 +136,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _selectRestaurant(CalendarRestaurantOptionEntity option) {
     setState(() {
-      _selectedRestaurant = CalendarRestaurantEntity(
-        name: option.name,
-        category: 'أكل صحي',
-        rating: option.rating,
-        deliveryDuration: 'بيزك',
-        deliveryWindow: 'وقت التوصيل المعتاد: 6:00 م - 7:00 م',
-      );
+      _selectedRestaurant = _dataSource.getRestaurantFromOption(option);
       _state = CalendarFigmaState.mealsList;
       _isCalendarExpanded = true;
     });
@@ -151,8 +146,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black,
+      backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
+      barrierColor: context.colorScheme.scrim,
       builder: (sheetContext) {
         return CalendarRestaurantPickerSheet(
           restaurants: _dataSource.getRestaurantOptions(),

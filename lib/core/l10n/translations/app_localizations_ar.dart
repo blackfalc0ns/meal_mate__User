@@ -1325,4 +1325,143 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get calendar_tuesday => 'الثلاثاء';
+
+  @override
+  String get calendar_wednesday => 'الأربعاء';
+
+  @override
+  String get calendar_thursday => 'الخميس';
+
+  @override
+  String get calendar_weekday_sat_short => 'سبت';
+
+  @override
+  String get calendar_weekday_sun_short => 'احد';
+
+  @override
+  String get calendar_weekday_mon_short => 'اثنين';
+
+  @override
+  String get calendar_weekday_tue_short => 'ثلاثاء';
+
+  @override
+  String get calendar_weekday_wed_short => 'اربعاء';
+
+  @override
+  String get calendar_weekday_thu_short => 'خميس';
+
+  @override
+  String get calendar_weekday_fri_short => 'جمعة';
+
+  @override
+  String get calendar_ingredients => 'المكونات';
+
+  @override
+  String get calendar_calories => 'سعرة حرارية';
+
+  @override
+  String get calendar_protein => 'بروتين';
+
+  @override
+  String get calendar_carbs => 'كربوهيدرات';
+
+  @override
+  String get calendar_fat => 'دهون';
+
+  @override
+  String get calendar_breakfast => 'الإفطار';
+
+  @override
+  String get calendar_lunch => 'الغداء';
+
+  @override
+  String get calendar_dinner => 'العشاء';
+
+  @override
+  String calendar_meals_for(String mealType) {
+    return 'وجبات $mealType';
+  }
+
+  @override
+  String get calendar_restaurant_name => 'اسم المطعم';
+
+  @override
+  String get calendar_restaurant_description =>
+      'نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة\nوطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.';
+
+  @override
+  String get calendar_ingredient_origin_title => 'بلد المنشأ للمكونات الأساسية';
+
+  @override
+  String get calendar_meat => 'اللحوم';
+
+  @override
+  String get calendar_poultry => 'الدواجن';
+
+  @override
+  String get calendar_fish => 'الأسماك';
+
+  @override
+  String get calendar_oils => 'الزيوت';
+
+  @override
+  String get calendar_imported => 'مستوردة';
+
+  @override
+  String get calendar_fresh_local => 'طازجة محلية';
+
+  @override
+  String get calendar_australia => 'أستراليا';
+
+  @override
+  String get calendar_local => 'محلي';
+
+  @override
+  String get calendar_norway => 'النرويج';
+
+  @override
+  String get calendar_spain => 'إسبانيا';
+
+  @override
+  String get calendar_meal_name => 'اسم الوجبة';
+
+  @override
+  String get calendar_grilled_chicken => 'دجاج مشوي';
+
+  @override
+  String get calendar_brown_rice => 'أرز بني';
+
+  @override
+  String get calendar_broccoli => 'بروكلي';
+
+  @override
+  String get calendar_carrot => 'جزر';
+
+  @override
+  String get calendar_more => 'المزيد ..';
+
+  @override
+  String get calendar_browse_restaurants => 'استعراض المطاعم';
+
+  @override
+  String get calendar_choose_restaurant_for_day =>
+      'اختر المطعم الذي تفضله ليوم ';
+
+  @override
+  String get calendar_restaurant_picker_date => 'السبت 20 سبتمبر';
+
+  @override
+  String get calendar_search_restaurant_hint => 'ابحث عن مطعم أو نوع مطبخ...';
+
+  @override
+  String get calendar_meal_suffix => ' وجبة';
+
+  @override
+  String get calendar_change_restaurant => 'تغيير المطعم';
+
+  @override
+  String get calendar_pick_restaurant_first => 'اختيار ';
+
+  @override
+  String get calendar_pick_restaurant_second => 'مطعم';
 }

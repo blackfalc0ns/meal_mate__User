@@ -49,7 +49,7 @@ class AppColors {
   static const Color grey700 = Color(0xFF1F2120);
 
   // Core aliases used across the app.
-  static const Color primary = primary400;
+  static const Color primary = Color(0xFF137A43);
   static const Color primaryLight = primary200;
   static const Color primaryMedium = primary300;
   static const Color primaryDark = primary500;

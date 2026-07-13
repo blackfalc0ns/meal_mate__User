@@ -1,0 +1,30 @@
+part of 'calendar_meal_card.dart';
+
+class _MealTypeBadge extends StatelessWidget {
+  const _MealTypeBadge({required this.mealType});
+
+  final String mealType;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      textDirection: TextDirection.rtl,
+
+      children: [
+        Text(
+          mealType,
+          style: getBoldStyle(
+            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontSize: 7.55,
+            color: color.primary,
+          ),
+        ),
+        const SizedBox(width: 2),
+        Icon(Icons.wb_sunny_rounded, color: color.primary, size: 13),
+      ],
+    );
+  }
+}

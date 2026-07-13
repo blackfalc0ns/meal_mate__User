@@ -1341,4 +1341,145 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendar_tuesday => 'Tuesday';
+
+  @override
+  String get calendar_wednesday => 'Wednesday';
+
+  @override
+  String get calendar_thursday => 'Thursday';
+
+  @override
+  String get calendar_weekday_sat_short => 'Sat';
+
+  @override
+  String get calendar_weekday_sun_short => 'Sun';
+
+  @override
+  String get calendar_weekday_mon_short => 'Mon';
+
+  @override
+  String get calendar_weekday_tue_short => 'Tue';
+
+  @override
+  String get calendar_weekday_wed_short => 'Wed';
+
+  @override
+  String get calendar_weekday_thu_short => 'Thu';
+
+  @override
+  String get calendar_weekday_fri_short => 'Fri';
+
+  @override
+  String get calendar_ingredients => 'Ingredients';
+
+  @override
+  String get calendar_calories => 'Calories';
+
+  @override
+  String get calendar_protein => 'Protein';
+
+  @override
+  String get calendar_carbs => 'Carbs';
+
+  @override
+  String get calendar_fat => 'Fat';
+
+  @override
+  String get calendar_breakfast => 'Breakfast';
+
+  @override
+  String get calendar_lunch => 'Lunch';
+
+  @override
+  String get calendar_dinner => 'Dinner';
+
+  @override
+  String calendar_meals_for(String mealType) {
+    return '$mealType meals';
+  }
+
+  @override
+  String get calendar_restaurant_name => 'Restaurant name';
+
+  @override
+  String get calendar_restaurant_description =>
+      'We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.';
+
+  @override
+  String get calendar_ingredient_origin_title =>
+      'Origin country for main ingredients';
+
+  @override
+  String get calendar_meat => 'Meat';
+
+  @override
+  String get calendar_poultry => 'Poultry';
+
+  @override
+  String get calendar_fish => 'Fish';
+
+  @override
+  String get calendar_oils => 'Oils';
+
+  @override
+  String get calendar_imported => 'Imported';
+
+  @override
+  String get calendar_fresh_local => 'Fresh local';
+
+  @override
+  String get calendar_australia => 'Australia';
+
+  @override
+  String get calendar_local => 'Local';
+
+  @override
+  String get calendar_norway => 'Norway';
+
+  @override
+  String get calendar_spain => 'Spain';
+
+  @override
+  String get calendar_meal_name => 'Meal name';
+
+  @override
+  String get calendar_grilled_chicken => 'Grilled chicken';
+
+  @override
+  String get calendar_brown_rice => 'Brown rice';
+
+  @override
+  String get calendar_broccoli => 'Broccoli';
+
+  @override
+  String get calendar_carrot => 'Carrot';
+
+  @override
+  String get calendar_more => 'More ..';
+
+  @override
+  String get calendar_browse_restaurants => 'Browse restaurants';
+
+  @override
+  String get calendar_choose_restaurant_for_day =>
+      'Choose your preferred restaurant for ';
+
+  @override
+  String get calendar_restaurant_picker_date => 'Saturday, September 20';
+
+  @override
+  String get calendar_search_restaurant_hint =>
+      'Search for a restaurant or cuisine...';
+
+  @override
+  String get calendar_meal_suffix => ' meal';
+
+  @override
+  String get calendar_change_restaurant => 'Change restaurant';
+
+  @override
+  String get calendar_pick_restaurant_first => 'Choose ';
+
+  @override
+  String get calendar_pick_restaurant_second => 'restaurant';
 }

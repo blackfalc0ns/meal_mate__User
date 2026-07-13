@@ -1,0 +1,154 @@
+# Flutter UI Rules
+
+## General
+
+* Follow the existing project architecture.
+* Modify only the requested files.
+* Do not create unnecessary files or folders.
+* Reuse existing widgets before creating new ones.
+* Do not change the project structure unless explicitly requested.
+* Do not add new packages unless explicitly requested.
+
+## Context
+
+At the beginning of every `build` method, always declare:
+
+```dart
+final color = context.colorScheme;
+final locale = context.localization;
+```
+
+Use these variables throughout the widget.
+
+## Colors
+
+* Always use `color`.
+* Never use `Colors.*` or `Color(...)`.
+* Never hardcode colors.
+
+## Localization
+
+* Always use `locale`.
+* Never hardcode user-facing text.
+* If a localization key is missing, mention that a new key is required instead of hardcoding text.
+
+## Text Styles
+
+Always use the existing styles from:
+
+```text
+lib/config/theme/styles_manager.dart
+```
+
+* Never create a new `TextStyle`.
+* Use `copyWith()` only when needed.
+* If a required style is missing, add it to `styles_manager.dart`.
+
+## Spacing
+
+Always use spacing values from:
+
+```text
+lib/config/theme/spacing.dart
+```
+## EdgeInsets
+
+* Prefer `EdgeInsets.symmetric()` whenever possible.
+* Use `EdgeInsets.only()` when only specific sides require padding.
+* Use `EdgeInsets.all()` when all sides have the same value.
+* Avoid `EdgeInsets.fromLTRB()` unless it is the only correct option for the design.
+* Keep padding values consistent by using the spacing constants from:
+
+```text
+lib/config/theme/spacing.dart
+```
+
+Examples:
+
+✅ Preferred
+
+```dart
+EdgeInsets.symmetric(
+  horizontal: Spacing.md,
+  vertical: Spacing.sm,
+)
+
+EdgeInsets.only(
+  top: Spacing.md,
+  bottom: Spacing.lg,
+)
+
+EdgeInsets.all(Spacing.md)
+```
+
+❌ Avoid
+
+```dart
+EdgeInsets.fromLTRB(
+  Spacing.md,
+  Spacing.sm,
+  Spacing.md,
+  Spacing.sm,
+)
+```
+
+
+* Never hardcode spacing values.
+* Use the existing spacing constants for `Padding`, `SizedBox`, `Gap`, and `EdgeInsets`.
+
+## Widget Files
+
+* Every custom widget must be placed in its own separate file.
+* Keep exactly one widget class per file.
+* This rule applies to both public and private widgets.
+* Never create private widgets inside another widget file.
+* Never create widgets such as `_Header`, `_Card`, `_Item`, `_Tile`, `_Button`, `_Logo`, or `_MetaChip` inside another widget file.
+* Even if a widget is used only once, it must still be placed in its own file.
+* Place widgets inside the appropriate `widgets/` folder for the current feature.
+* The parent screen or parent widget file should only compose and organize child widgets.
+* Reuse existing widgets before creating new ones.
+* Do not duplicate existing widgets.
+
+## Responsive UI
+
+* Build responsive layouts.
+* Avoid fixed widths and heights unless required.
+* Use `Expanded`, `Flexible`, `Spacer`, `Wrap`, `LayoutBuilder`, and `MediaQuery` when appropriate.
+
+## Code Quality
+
+* Use `const` whenever possible.
+* Keep widgets small and readable.
+* Remove unused imports.
+* Remove unused variables.
+* Remove unused methods.
+* Do not add unnecessary comments.
+* Do not add placeholder or dummy code.
+* Do not create helper methods that have no functional purpose.
+* Do not add new packages unless requested.
+
+## Before Creating Anything
+
+Always check whether the project already contains:
+
+* A reusable widget
+* A text style
+* A spacing constant
+* A localization key
+* An asset
+* A helper or extension
+
+Reuse existing code whenever possible.
+
+## Never
+
+* Hardcode colors.
+* Hardcode user-facing text.
+* Hardcode spacing.
+* Create duplicate widgets.
+* Change the project architecture.
+* Add business logic when only UI is requested.
+* Modify unrelated files.
+* Create fake or placeholder code just to satisfy these rules.
+* Leave unused imports, variables, methods, or classes in the final code.
+- Never create a widget inside another widget file, even if it is used only once.

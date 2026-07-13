@@ -45,7 +45,6 @@
   "error_payload_too_large_desc": "حمولة الطلب كبيرة جداً",
   "error_uri_too_long": "الرابط طويل جداً",
   "error_uri_too_long_desc": "رابط الطلب طويل جداً",
-  
   "@_comment_lead": "رسائل إدارة العملاء المحتملين",
   "lead_send_error": "حدث خطأ أثناء إرسال طلب التواصل",
   "lead_info_collected": "تم جمع معلومات العميل المحتمل بنجاح",
@@ -271,8 +270,7 @@
   "offer_details_summary_secure_payment": "عملية دفع آمنة",
   "offer_details_open_plans_button": "اختيار الباقة",
   "offer_activated_title": "تم تفعيل العرض بنجاح",
-   "currency":"د.ك",
-
+  "currency": "د.ك",
   "payment_title": "الدفع",
   "payment_order_summary_title": "ملخص طلبك",
   "payment_plan_month": "باقة شهر",
@@ -406,7 +404,11 @@
   "calendar_day_plan": "خطة يوم 25 سبتمبر",
   "calendar_day_plan_date": "خطة يوم {date}",
   "@calendar_day_plan_date": {
-    "placeholders": {"date": {"type": "String"}}
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "calendar_scheduled_count": "4 وجبات مجدولة لهذا اليوم",
   "calendar_completed": "مكتملة",
@@ -429,5 +431,57 @@
   "calendar_saturday": "السبت",
   "calendar_sunday": "الأحد",
   "calendar_monday": "الإثنين",
-  "calendar_tuesday": "الثلاثاء"
+  "calendar_tuesday": "الثلاثاء",
+  "calendar_wednesday": "الأربعاء",
+  "calendar_thursday": "الخميس",
+  "calendar_weekday_sat_short": "سبت",
+  "calendar_weekday_sun_short": "احد",
+  "calendar_weekday_mon_short": "اثنين",
+  "calendar_weekday_tue_short": "ثلاثاء",
+  "calendar_weekday_wed_short": "اربعاء",
+  "calendar_weekday_thu_short": "خميس",
+  "calendar_weekday_fri_short": "جمعة",
+  "calendar_ingredients": "المكونات",
+  "calendar_calories": "سعرة حرارية",
+  "calendar_protein": "بروتين",
+  "calendar_carbs": "كربوهيدرات",
+  "calendar_fat": "دهون",
+  "calendar_breakfast": "الإفطار",
+  "calendar_lunch": "الغداء",
+  "calendar_dinner": "العشاء",
+  "calendar_meals_for": "وجبات {mealType}",
+  "@calendar_meals_for": {
+    "placeholders": {
+      "mealType": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_restaurant_name": "اسم المطعم",
+  "calendar_restaurant_description": "نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة\nوطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.",
+  "calendar_ingredient_origin_title": "بلد المنشأ للمكونات الأساسية",
+  "calendar_meat": "اللحوم",
+  "calendar_poultry": "الدواجن",
+  "calendar_fish": "الأسماك",
+  "calendar_oils": "الزيوت",
+  "calendar_imported": "مستوردة",
+  "calendar_fresh_local": "طازجة محلية",
+  "calendar_australia": "أستراليا",
+  "calendar_local": "محلي",
+  "calendar_norway": "النرويج",
+  "calendar_spain": "إسبانيا",
+  "calendar_meal_name": "اسم الوجبة",
+  "calendar_grilled_chicken": "دجاج مشوي",
+  "calendar_brown_rice": "أرز بني",
+  "calendar_broccoli": "بروكلي",
+  "calendar_carrot": "جزر",
+  "calendar_more": "المزيد ..",
+  "calendar_browse_restaurants": "استعراض المطاعم",
+  "calendar_choose_restaurant_for_day": "اختر المطعم الذي تفضله ليوم ",
+  "calendar_restaurant_picker_date": "السبت 20 سبتمبر",
+  "calendar_search_restaurant_hint": "ابحث عن مطعم أو نوع مطبخ...",
+  "calendar_meal_suffix": " وجبة",
+  "calendar_change_restaurant": "تغيير المطعم",
+  "calendar_pick_restaurant_first": "اختيار ",
+  "calendar_pick_restaurant_second": "مطعم"
 }

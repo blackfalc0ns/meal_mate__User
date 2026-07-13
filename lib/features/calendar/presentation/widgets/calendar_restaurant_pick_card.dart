@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -12,12 +11,13 @@ class CalendarRestaurantPickCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
     return SizedBox(
       width: double.infinity,
       height: 100,
       child: Material(
-        color: AppColors.brandDeepGreen.withValues(alpha: 0.1),
+        color: color.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
           onTap: onTap,
@@ -25,7 +25,7 @@ class CalendarRestaurantPickCard extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.secondary500),
+              border: Border.all(color: color.primary),
             ),
             child: Stack(
               alignment: Alignment.center,
@@ -44,9 +44,9 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.restaurant_rounded,
-                          color: AppColors.brandDeepGreen,
+                          color: color.primary,
                           size: 12,
                         ),
                         const SizedBox(width: 3),
@@ -57,16 +57,24 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
                               fontSize: FontSize.size11,
-                              color: AppColors.brandDeepGreen,
+                              color: color.primary,
                             ),
-                            children: const [
+                            children: [
                               TextSpan(
-                                text: '\u0627\u062e\u062a\u064a\u0627\u0631 ',
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                text: locale.calendar_pick_restaurant_first,
+                                style: getSemiBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size11,
+                                  color: color.primary,
+                                ),
                               ),
                               TextSpan(
-                                text: '\u0645\u0637\u0639\u0645',
-                                style: TextStyle(fontWeight: FontWeight.w700),
+                                text: locale.calendar_pick_restaurant_second,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size11,
+                                  color: color.primary,
+                                ),
                               ),
                             ],
                           ),
@@ -78,7 +86,7 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                 Icon(
                   Icons.add_rounded,
                   size: 50,
-                  color: AppColors.brandDeepGreen.withValues(alpha: 0.95),
+                  color: color.primary.withValues(alpha: 0.95),
                 ),
               ],
             ),

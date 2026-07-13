@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+part 'calendar_header_icon_button.dart';
 
 class CalendarScreenHeader extends StatelessWidget {
   const CalendarScreenHeader({
@@ -22,9 +23,11 @@ class CalendarScreenHeader extends StatelessWidget {
     return SizedBox(
       height: 116,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Color(0xFF137A43),
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(35)),
+        decoration: BoxDecoration(
+          color: color.primary,
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(35),
+          ),
         ),
         child: Stack(
           children: [
@@ -33,7 +36,7 @@ class CalendarScreenHeader extends StatelessWidget {
               left: 22,
               right: 22,
               child: SizedBox(
-                height: 48,
+                height: Spacing.iconXl,
                 child: Row(
                   children: [
                     _HeaderIconButton(
@@ -61,46 +64,6 @@ class CalendarScreenHeader extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _HeaderIconButton extends StatelessWidget {
-  const _HeaderIconButton({
-    required this.icon,
-    required this.onPressed,
-    this.showDot = false,
-  });
-
-  final IconData icon;
-  final VoidCallback onPressed;
-  final bool showDot;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints.tightFor(width: 38, height: 38),
-      icon: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Icon(icon, color: AppColors.white, size: 24),
-          if (showDot)
-            PositionedDirectional(
-              top: -1,
-              start: 0,
-              child: Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: AppColors.secondary,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-        ],
       ),
     );
   }

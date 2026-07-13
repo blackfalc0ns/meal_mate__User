@@ -44,6 +44,18 @@ class CalendarFakeDataSource {
     deliveryWindow: 'وقت التوصيل المعتاد: 6:00 م - 7:00 م',
   );
 
+  CalendarRestaurantEntity getRestaurantFromOption(
+    CalendarRestaurantOptionEntity option,
+  ) {
+    return CalendarRestaurantEntity(
+      name: option.name,
+      category: 'أكل صحي',
+      rating: option.rating,
+      deliveryDuration: 'بيزك',
+      deliveryWindow: 'وقت التوصيل المعتاد: 6:00 م - 7:00 م',
+    );
+  }
+
   List<CalendarRestaurantOptionEntity> getRestaurantOptions() => const [
     CalendarRestaurantOptionEntity(
       name: 'هيلثي بول',

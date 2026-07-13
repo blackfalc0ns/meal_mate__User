@@ -2647,6 +2647,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tuesday'**
   String get calendar_tuesday;
+
+  /// No description provided for @calendar_wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get calendar_wednesday;
+
+  /// No description provided for @calendar_thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get calendar_thursday;
+
+  /// No description provided for @calendar_weekday_sat_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get calendar_weekday_sat_short;
+
+  /// No description provided for @calendar_weekday_sun_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get calendar_weekday_sun_short;
+
+  /// No description provided for @calendar_weekday_mon_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get calendar_weekday_mon_short;
+
+  /// No description provided for @calendar_weekday_tue_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get calendar_weekday_tue_short;
+
+  /// No description provided for @calendar_weekday_wed_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get calendar_weekday_wed_short;
+
+  /// No description provided for @calendar_weekday_thu_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get calendar_weekday_thu_short;
+
+  /// No description provided for @calendar_weekday_fri_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get calendar_weekday_fri_short;
+
+  /// No description provided for @calendar_ingredients.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingredients'**
+  String get calendar_ingredients;
+
+  /// No description provided for @calendar_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories'**
+  String get calendar_calories;
+
+  /// No description provided for @calendar_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get calendar_protein;
+
+  /// No description provided for @calendar_carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get calendar_carbs;
+
+  /// No description provided for @calendar_fat.
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get calendar_fat;
+
+  /// No description provided for @calendar_breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get calendar_breakfast;
+
+  /// No description provided for @calendar_lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get calendar_lunch;
+
+  /// No description provided for @calendar_dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get calendar_dinner;
+
+  /// No description provided for @calendar_meals_for.
+  ///
+  /// In en, this message translates to:
+  /// **'{mealType} meals'**
+  String calendar_meals_for(String mealType);
+
+  /// No description provided for @calendar_restaurant_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant name'**
+  String get calendar_restaurant_name;
+
+  /// No description provided for @calendar_restaurant_description.
+  ///
+  /// In en, this message translates to:
+  /// **'We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.'**
+  String get calendar_restaurant_description;
+
+  /// No description provided for @calendar_ingredient_origin_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Origin country for main ingredients'**
+  String get calendar_ingredient_origin_title;
+
+  /// No description provided for @calendar_meat.
+  ///
+  /// In en, this message translates to:
+  /// **'Meat'**
+  String get calendar_meat;
+
+  /// No description provided for @calendar_poultry.
+  ///
+  /// In en, this message translates to:
+  /// **'Poultry'**
+  String get calendar_poultry;
+
+  /// No description provided for @calendar_fish.
+  ///
+  /// In en, this message translates to:
+  /// **'Fish'**
+  String get calendar_fish;
+
+  /// No description provided for @calendar_oils.
+  ///
+  /// In en, this message translates to:
+  /// **'Oils'**
+  String get calendar_oils;
+
+  /// No description provided for @calendar_imported.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported'**
+  String get calendar_imported;
+
+  /// No description provided for @calendar_fresh_local.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh local'**
+  String get calendar_fresh_local;
+
+  /// No description provided for @calendar_australia.
+  ///
+  /// In en, this message translates to:
+  /// **'Australia'**
+  String get calendar_australia;
+
+  /// No description provided for @calendar_local.
+  ///
+  /// In en, this message translates to:
+  /// **'Local'**
+  String get calendar_local;
+
+  /// No description provided for @calendar_norway.
+  ///
+  /// In en, this message translates to:
+  /// **'Norway'**
+  String get calendar_norway;
+
+  /// No description provided for @calendar_spain.
+  ///
+  /// In en, this message translates to:
+  /// **'Spain'**
+  String get calendar_spain;
+
+  /// No description provided for @calendar_meal_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal name'**
+  String get calendar_meal_name;
+
+  /// No description provided for @calendar_grilled_chicken.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled chicken'**
+  String get calendar_grilled_chicken;
+
+  /// No description provided for @calendar_brown_rice.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown rice'**
+  String get calendar_brown_rice;
+
+  /// No description provided for @calendar_broccoli.
+  ///
+  /// In en, this message translates to:
+  /// **'Broccoli'**
+  String get calendar_broccoli;
+
+  /// No description provided for @calendar_carrot.
+  ///
+  /// In en, this message translates to:
+  /// **'Carrot'**
+  String get calendar_carrot;
+
+  /// No description provided for @calendar_more.
+  ///
+  /// In en, this message translates to:
+  /// **'More ..'**
+  String get calendar_more;
+
+  /// No description provided for @calendar_browse_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse restaurants'**
+  String get calendar_browse_restaurants;
+
+  /// No description provided for @calendar_choose_restaurant_for_day.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred restaurant for '**
+  String get calendar_choose_restaurant_for_day;
+
+  /// No description provided for @calendar_restaurant_picker_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday, September 20'**
+  String get calendar_restaurant_picker_date;
+
+  /// No description provided for @calendar_search_restaurant_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a restaurant or cuisine...'**
+  String get calendar_search_restaurant_hint;
+
+  /// No description provided for @calendar_meal_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **' meal'**
+  String get calendar_meal_suffix;
+
+  /// No description provided for @calendar_change_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Change restaurant'**
+  String get calendar_change_restaurant;
+
+  /// No description provided for @calendar_pick_restaurant_first.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose '**
+  String get calendar_pick_restaurant_first;
+
+  /// No description provided for @calendar_pick_restaurant_second.
+  ///
+  /// In en, this message translates to:
+  /// **'restaurant'**
+  String get calendar_pick_restaurant_second;
 }
 
 class _AppLocalizationsDelegate
