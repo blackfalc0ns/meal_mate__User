@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _RestaurantLogo extends StatelessWidget {
-  const _RestaurantLogo({required this.type});
+class CalendarRestaurantPickerLogo extends StatelessWidget {
+  const CalendarRestaurantPickerLogo({required this.type});
 
   final CalendarRestaurantLogoType type;
 
@@ -11,7 +11,7 @@ class _RestaurantLogo extends StatelessWidget {
 
     switch (type) {
       case CalendarRestaurantLogoType.healthyBowl:
-        return _CircleTextLogo(
+        return CalendarCircleTextLogo(
           top: 'HEALTHY',
           bottom: 'BOWL',
           icon: Icons.ramen_dining_rounded,
@@ -20,7 +20,7 @@ class _RestaurantLogo extends StatelessWidget {
           outlined: true,
         );
       case CalendarRestaurantLogoType.dietHouse:
-        return _CircleTextLogo(
+        return CalendarCircleTextLogo(
           top: 'DIET',
           bottom: 'HOUSE',
           icon: Icons.eco_rounded,
@@ -29,7 +29,7 @@ class _RestaurantLogo extends StatelessWidget {
           outlined: true,
         );
       case CalendarRestaurantLogoType.proteinKitchen:
-        return _CircleTextLogo(
+        return CalendarCircleTextLogo(
           eyebrow: 'THE',
           top: 'PROTEIN',
           bottom: 'KITCHEN',
@@ -37,9 +37,9 @@ class _RestaurantLogo extends StatelessWidget {
           background: color.inverseSurface,
         );
       case CalendarRestaurantLogoType.starbucks:
-        return const _ImageCircleLogo(asset: Assets.offerStarbucksLogo);
+        return const CalendarImageCircleLogo(asset: Assets.offerStarbucksLogo);
       case CalendarRestaurantLogoType.burgerKing:
-        return const _ImageCircleLogo(asset: Assets.offerBurgerKingLogo);
+        return const CalendarImageCircleLogo(asset: Assets.offerBurgerKingLogo);
     }
   }
 }

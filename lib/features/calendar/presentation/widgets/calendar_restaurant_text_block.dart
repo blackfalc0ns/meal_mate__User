@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_summary_card.dart';
 
-class _RestaurantTextBlock extends StatelessWidget {
-  const _RestaurantTextBlock({required this.restaurant});
+class CalendarRestaurantTextBlock extends StatelessWidget {
+  const CalendarRestaurantTextBlock({required this.restaurant});
 
   final CalendarRestaurantEntity restaurant;
 
@@ -42,9 +42,12 @@ class _RestaurantTextBlock extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _MetaChip(icon: Icons.star_rounded, label: restaurant.rating),
+              CalendarMetaChip(
+                icon: Icons.star_rounded,
+                label: restaurant.rating,
+              ),
               const SizedBox(width: 10),
-              _MetaChip(
+              CalendarMetaChip(
                 icon: Icons.access_time_rounded,
                 label: restaurant.deliveryDuration,
               ),

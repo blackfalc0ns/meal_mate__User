@@ -1,7 +1,10 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _RestaurantOptionCard extends StatelessWidget {
-  const _RestaurantOptionCard({required this.restaurant, required this.onTap});
+class CalendarRestaurantOptionCard extends StatelessWidget {
+  const CalendarRestaurantOptionCard({
+    required this.restaurant,
+    required this.onTap,
+  });
 
   final CalendarRestaurantOptionEntity restaurant;
   final VoidCallback onTap;
@@ -27,13 +30,13 @@ class _RestaurantOptionCard extends StatelessWidget {
             child: Row(
               textDirection: TextDirection.ltr,
               children: [
-                const _ArrowBubble(),
+                const CalendarArrowBubble(),
                 const SizedBox(width: 27.6),
-                _Rating(value: restaurant.rating),
+                CalendarRating(value: restaurant.rating),
                 const SizedBox(width: 27.6),
-                Expanded(child: _RestaurantCopy(restaurant: restaurant)),
+                Expanded(child: CalendarRestaurantCopy(restaurant: restaurant)),
                 const SizedBox(width: 10.5),
-                _RestaurantLogo(type: restaurant.logoType),
+                CalendarRestaurantPickerLogo(type: restaurant.logoType),
               ],
             ),
           ),

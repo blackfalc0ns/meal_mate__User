@@ -1,7 +1,7 @@
 part of 'calendar_picker_panel.dart';
 
-class _MonthTitle extends StatelessWidget {
-  const _MonthTitle({required this.monthTitle});
+class CalendarMonthTitle extends StatelessWidget {
+  const CalendarMonthTitle({required this.monthTitle});
 
   final String monthTitle;
 

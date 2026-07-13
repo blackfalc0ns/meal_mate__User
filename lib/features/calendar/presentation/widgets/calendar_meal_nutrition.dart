@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _MealNutrition extends StatelessWidget {
-  const _MealNutrition({
+class CalendarMealPickerNutrition extends StatelessWidget {
+  const CalendarMealPickerNutrition({
     required this.icon,
     required this.value,
     required this.label,

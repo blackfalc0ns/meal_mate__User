@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _SelectButton extends StatelessWidget {
-  const _SelectButton({required this.selected});
+class CalendarSelectButton extends StatelessWidget {
+  const CalendarSelectButton({required this.selected});
 
   final bool selected;
 

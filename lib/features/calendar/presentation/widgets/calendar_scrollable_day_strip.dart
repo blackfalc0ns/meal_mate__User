@@ -1,7 +1,7 @@
 part of 'calendar_picker_panel.dart';
 
-class _ScrollableDayStrip extends StatefulWidget {
-  const _ScrollableDayStrip({
+class CalendarScrollableDayStrip extends StatefulWidget {
+  const CalendarScrollableDayStrip({
     required this.controller,
     required this.days,
     required this.onDaySelected,
@@ -12,10 +12,12 @@ class _ScrollableDayStrip extends StatefulWidget {
   final ValueChanged<CalendarDayEntity> onDaySelected;
 
   @override
-  State<_ScrollableDayStrip> createState() => _ScrollableDayStripState();
+  State<CalendarScrollableDayStrip> createState() =>
+      CalendarScrollableDayStripState();
 }
 
-class _ScrollableDayStripState extends State<_ScrollableDayStrip> {
+class CalendarScrollableDayStripState
+    extends State<CalendarScrollableDayStrip> {
   static const _tileWidth = 54.5;
   static const _tileGap = 10.25;
 
@@ -26,7 +28,7 @@ class _ScrollableDayStripState extends State<_ScrollableDayStrip> {
   }
 
   @override
-  void didUpdateWidget(covariant _ScrollableDayStrip oldWidget) {
+  void didUpdateWidget(covariant CalendarScrollableDayStrip oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.days != widget.days) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());

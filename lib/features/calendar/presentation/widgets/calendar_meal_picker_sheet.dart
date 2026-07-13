@@ -5,6 +5,8 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
+
 part 'calendar_sheet_handle.dart';
 part 'calendar_meal_picker_restaurant_header.dart';
 part 'calendar_meal_picker_restaurant_description.dart';
@@ -28,10 +30,12 @@ class CalendarMealPickerSheet extends StatefulWidget {
 
   @override
   State<CalendarMealPickerSheet> createState() =>
-      _CalendarMealPickerSheetState();
+      CalendarMealPickerSheetState();
 }
 
-class _CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
+class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
+  static const _dataSource = CalendarFakeDataSource();
+
   int _selectedTab = 0;
 
   @override
@@ -83,28 +87,40 @@ class _CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                 ),
                 child: ColoredBox(
                   color: color.surface,
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      const SizedBox(height: Spacing.lg),
-                      const _SheetHandle(),
-                      const SizedBox(height: Spacing.xl),
-                      const _RestaurantHeader(),
-                      const SizedBox(height: Spacing.lg),
-                      const _RestaurantDescription(),
-                      const SizedBox(height: 21),
-                      const _SourceSection(),
-                      const SizedBox(height: Spacing.base),
-                      _MealTabs(
-                        labels: mealTabs,
-                        selectedIndex: _selectedTab,
-                        onChanged: (index) {
-                          setState(() => _selectedTab = index);
-                        },
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: Spacing.lg),
+                            const CalendarSheetHandle(),
+                            const SizedBox(height: Spacing.xl),
+                            const CalendarMealPickerRestaurantHeader(),
+                            const SizedBox(height: Spacing.lg),
+                            const CalendarMealPickerRestaurantDescription(),
+                            const SizedBox(height: 21),
+                            const CalendarSourceSection(),
+                            const SizedBox(height: Spacing.base),
+                            CalendarMealTabs(
+                              labels: mealTabs,
+                              selectedIndex: _selectedTab,
+                              onChanged: (index) {
+                                setState(() => _selectedTab = index);
+                              },
+                            ),
+                            const SizedBox(height: Spacing.xl),
+                            CalendarMealOptionsSection(
+                              mealType: mealTabs[_selectedTab],
+                              tabIndex: _selectedTab,
+                              options: _dataSource.getMealPickerOptions(
+                                locale: locale,
+                                selectedTab: _selectedTab,
+                              ),
+                            ),
+                            const SizedBox(height: Spacing.xxl),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: Spacing.xl),
-                      _MealOptionsSection(mealType: mealTabs[_selectedTab]),
-                      const SizedBox(height: Spacing.xxl),
                     ],
                   ),
                 ),

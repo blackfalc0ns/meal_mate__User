@@ -31,10 +31,10 @@ class CalendarPickerPanel extends StatefulWidget {
   final ValueChanged<CalendarDayEntity> onDaySelected;
 
   @override
-  State<CalendarPickerPanel> createState() => _CalendarPickerPanelState();
+  State<CalendarPickerPanel> createState() => CalendarPickerPanelState();
 }
 
-class _CalendarPickerPanelState extends State<CalendarPickerPanel> {
+class CalendarPickerPanelState extends State<CalendarPickerPanel> {
   static const _weekScrollStep = 64.75;
 
   late final ScrollController _weekController;
@@ -84,14 +84,14 @@ class _CalendarPickerPanelState extends State<CalendarPickerPanel> {
                         height: 50,
                         child: Row(
                           children: [
-                            _MonthArrowButton(
+                            CalendarMonthArrowButton(
                               icon: Icons.chevron_left_rounded,
                               onPressed: () => _handleMonthArrow(-1),
                             ),
                             const Spacer(),
-                            _MonthTitle(monthTitle: widget.monthTitle),
+                            CalendarMonthTitle(monthTitle: widget.monthTitle),
                             const Spacer(),
-                            _MonthArrowButton(
+                            CalendarMonthArrowButton(
                               icon: Icons.chevron_right_rounded,
                               onPressed: () => _handleMonthArrow(1),
                             ),
@@ -150,11 +150,11 @@ class _CalendarPickerPanelState extends State<CalendarPickerPanel> {
                         horizontal: widget.isExpanded ? 18 : 31,
                       ),
                       child: widget.isExpanded
-                          ? _MonthGrid(
+                          ? CalendarMonthGrid(
                               days: widget.days,
                               onDaySelected: widget.onDaySelected,
                             )
-                          : _WeekStrip(
+                          : CalendarWeekStrip(
                               controller: _weekController,
                               days: widget.days,
                               onDaySelected: widget.onDaySelected,

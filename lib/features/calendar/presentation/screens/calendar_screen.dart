@@ -6,6 +6,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_pick_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
@@ -25,10 +26,10 @@ class CalendarScreen extends StatefulWidget {
   final bool showBottomSpace;
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
+  State<CalendarScreen> createState() => CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class CalendarScreenState extends State<CalendarScreen> {
   static const _dataSource = CalendarFakeDataSource();
 
   late CalendarFigmaState _state;
@@ -154,9 +155,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onRestaurantSelected: (restaurant) {
             Navigator.pop(sheetContext);
             _selectRestaurant(restaurant);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) {
+                return;
+              }
+              _openMealPicker();
+            });
           },
         );
       },
+    );
+  }
+
+  void _openMealPicker() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
+      barrierColor: context.colorScheme.scrim,
+      builder: (_) => const CalendarMealPickerSheet(),
     );
   }
 

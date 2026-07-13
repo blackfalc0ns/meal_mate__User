@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _IngredientChip extends StatelessWidget {
-  const _IngredientChip({required this.label});
+class CalendarMealPickerIngredientChip extends StatelessWidget {
+  const CalendarMealPickerIngredientChip({super.key, required this.label});
 
   final String label;
 

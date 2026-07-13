@@ -1,9 +1,9 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _MealOptionCard extends StatelessWidget {
-  const _MealOptionCard({required this.selected});
+class CalendarMealOptionCard extends StatelessWidget {
+  const CalendarMealOptionCard({required this.option});
 
-  final bool selected;
+  final CalendarMealPickerOption option;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class _MealOptionCard extends StatelessWidget {
         child: Row(
           textDirection: TextDirection.ltr,
           children: [
-            _SelectButton(selected: selected),
+            CalendarSelectButton(selected: option.selected),
             const SizedBox(width: Spacing.lg),
             Expanded(
               child: Directionality(
@@ -28,7 +28,9 @@ class _MealOptionCard extends StatelessWidget {
                   children: [
                     const SizedBox(height: 3),
                     Text(
-                      locale.calendar_meal_name,
+                      option.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: 16.64,
@@ -36,7 +38,7 @@ class _MealOptionCard extends StatelessWidget {
                       ).copyWith(height: 24.96 / 16.64),
                     ),
                     const SizedBox(height: 7),
-                    const _MealNutritionRow(),
+                    CalendarMealPickerNutritionRow(option: option),
                     const Spacer(),
                     Text(
                       locale.calendar_ingredients,
@@ -47,7 +49,7 @@ class _MealOptionCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: Spacing.xs),
-                    const _MealIngredientRow(),
+                    CalendarMealIngredientRow(ingredients: option.ingredients),
                   ],
                 ),
               ),
@@ -56,7 +58,7 @@ class _MealOptionCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(15.6),
               child: Image.asset(
-                Assets.calendarMealPickerBreakfast,
+                option.imageAsset,
                 width: 88,
                 height: 92,
                 fit: BoxFit.cover,

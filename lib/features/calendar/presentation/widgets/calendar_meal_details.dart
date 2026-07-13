@@ -1,7 +1,7 @@
 part of 'calendar_meal_card.dart';
 
-class _MealDetails extends StatelessWidget {
-  const _MealDetails({required this.meal});
+class CalendarMealDetails extends StatelessWidget {
+  const CalendarMealDetails({super.key, required this.meal});
 
   final CalendarMealEntity meal;
 
@@ -15,7 +15,7 @@ class _MealDetails extends StatelessWidget {
       children: [
         Align(
           alignment: AlignmentDirectional.centerStart,
-          child: _MealTypeBadge(mealType: meal.mealType),
+          child: CalendarMealTypeBadge(mealType: meal.mealType),
         ),
         const SizedBox(height: 1),
         Text(
@@ -30,7 +30,7 @@ class _MealDetails extends StatelessWidget {
           ).copyWith(height: 1.15),
         ),
         const SizedBox(height: Spacing.xss),
-        _NutritionRow(meal: meal),
+        CalendarMealCardNutritionRow(meal: meal),
         const Spacer(),
         Text(
           locale.calendar_ingredients,
@@ -45,7 +45,7 @@ class _MealDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (final ingredient in meal.ingredients) ...[
-              _IngredientChip(label: ingredient),
+              CalendarMealCardIngredientChip(label: ingredient),
               const SizedBox(width: 4.3),
             ],
           ],

@@ -1,7 +1,7 @@
 part of 'calendar_screen_header.dart';
 
-class _HeaderIconButton extends StatelessWidget {
-  const _HeaderIconButton({
+class CalendarHeaderIconButton extends StatelessWidget {
+  const CalendarHeaderIconButton({
     required this.icon,
     required this.onPressed,
     this.showDot = false,

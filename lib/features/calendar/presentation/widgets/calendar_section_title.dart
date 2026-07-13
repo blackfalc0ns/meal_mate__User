@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.mealType});
+class CalendarMealPickerSectionTitle extends StatelessWidget {
+  const CalendarMealPickerSectionTitle({required this.mealType});
 
   final String mealType;
 

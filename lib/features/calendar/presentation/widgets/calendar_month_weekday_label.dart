@@ -1,7 +1,7 @@
 part of 'calendar_picker_panel.dart';
 
-class _MonthWeekdayLabel extends StatelessWidget {
-  const _MonthWeekdayLabel({required this.label});
+class CalendarMonthWeekdayLabel extends StatelessWidget {
+  const CalendarMonthWeekdayLabel({required this.label});
 
   final String label;
 

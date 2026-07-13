@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _DividerLine extends StatelessWidget {
-  const _DividerLine();
+class CalendarDividerLine extends StatelessWidget {
+  const CalendarDividerLine();
 
   @override
   Widget build(BuildContext context) {

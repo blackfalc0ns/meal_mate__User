@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_summary_card.dart';
 
-class _RestaurantLogo extends StatelessWidget {
-  const _RestaurantLogo();
+class CalendarRestaurantSummaryLogo extends StatelessWidget {
+  const CalendarRestaurantSummaryLogo();
 
   @override
   Widget build(BuildContext context) {

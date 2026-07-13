@@ -1,7 +1,7 @@
 part of 'calendar_meal_card.dart';
 
-class _NutritionRow extends StatelessWidget {
-  const _NutritionRow({required this.meal});
+class CalendarMealCardNutritionRow extends StatelessWidget {
+  const CalendarMealCardNutritionRow({required this.meal});
 
   final CalendarMealEntity meal;
 
@@ -10,22 +10,22 @@ class _NutritionRow extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final items = [
-      _NutritionItem(
+      CalendarMealCardNutritionItem(
         icon: Icons.local_fire_department_rounded,
         value: meal.calories,
         label: locale.calendar_calories,
       ),
-      _NutritionItem(
+      CalendarMealCardNutritionItem(
         icon: Icons.fitness_center_rounded,
         value: meal.protein,
         label: locale.calendar_protein,
       ),
-      _NutritionItem(
+      CalendarMealCardNutritionItem(
         icon: Icons.rice_bowl_rounded,
         value: meal.carbs,
         label: locale.calendar_carbs,
       ),
-      _NutritionItem(
+      CalendarMealCardNutritionItem(
         icon: Icons.water_drop_rounded,
         value: meal.fat,
         label: locale.calendar_fat,

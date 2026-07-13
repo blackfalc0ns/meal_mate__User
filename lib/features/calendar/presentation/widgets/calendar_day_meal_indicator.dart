@@ -1,7 +1,7 @@
 part of 'calendar_picker_panel.dart';
 
-class _DayMealIndicator extends StatelessWidget {
-  const _DayMealIndicator({
+class CalendarDayMealIndicator extends StatelessWidget {
+  const CalendarDayMealIndicator({
     required this.selected,
     required this.muted,
     required this.compact,

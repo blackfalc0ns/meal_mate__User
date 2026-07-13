@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _TabLabel extends StatelessWidget {
-  const _TabLabel({
+class CalendarTabLabel extends StatelessWidget {
+  const CalendarTabLabel({
     required this.text,
     required this.active,
     required this.onTap,

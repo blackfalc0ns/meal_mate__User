@@ -1,7 +1,7 @@
 part of 'calendar_meal_card.dart';
 
-class _NutritionItem extends StatelessWidget {
-  const _NutritionItem({
+class CalendarMealCardNutritionItem extends StatelessWidget {
+  const CalendarMealCardNutritionItem({
     required this.icon,
     required this.value,
     required this.label,

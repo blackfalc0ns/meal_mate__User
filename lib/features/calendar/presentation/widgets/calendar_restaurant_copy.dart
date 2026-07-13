@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _RestaurantCopy extends StatelessWidget {
-  const _RestaurantCopy({required this.restaurant});
+class CalendarRestaurantCopy extends StatelessWidget {
+  const CalendarRestaurantCopy({required this.restaurant});
 
   final CalendarRestaurantOptionEntity restaurant;
 

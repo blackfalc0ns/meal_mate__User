@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _SourceCard extends StatelessWidget {
-  const _SourceCard({
+class CalendarSourceCard extends StatelessWidget {
+  const CalendarSourceCard({
     required this.icon,
     required this.title,
     required this.subtitle,

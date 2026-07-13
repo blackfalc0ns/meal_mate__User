@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _CircleTextLogo extends StatelessWidget {
-  const _CircleTextLogo({
+class CalendarCircleTextLogo extends StatelessWidget {
+  const CalendarCircleTextLogo({super.key, 
     required this.top,
     required this.bottom,
     required this.foreground,

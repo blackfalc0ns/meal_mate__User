@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_summary_card.dart';
 
-class _MetaChip extends StatelessWidget {
-  const _MetaChip({required this.icon, required this.label});
+class CalendarMetaChip extends StatelessWidget {
+  const CalendarMetaChip({required this.icon, required this.label});
 
   final IconData icon;
   final String label;

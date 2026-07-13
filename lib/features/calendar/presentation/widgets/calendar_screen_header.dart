@@ -39,7 +39,7 @@ class CalendarScreenHeader extends StatelessWidget {
                 height: Spacing.iconXl,
                 child: Row(
                   children: [
-                    _HeaderIconButton(
+                    CalendarHeaderIconButton(
                       icon: Icons.notifications_rounded,
                       onPressed: () {},
                       showDot: true,
@@ -54,7 +54,7 @@ class CalendarScreenHeader extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    _HeaderIconButton(
+                    CalendarHeaderIconButton(
                       icon: Icons.arrow_forward_ios_rounded,
                       onPressed: onBack,
                     ),

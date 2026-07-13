@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _RestaurantHeader extends StatelessWidget {
-  const _RestaurantHeader();
+class CalendarMealPickerRestaurantHeader extends StatelessWidget {
+  const CalendarMealPickerRestaurantHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class _RestaurantHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const _ProteinLogo(size: 59.9),
+          const CalendarProteinLogo(size: 59.9),
           const SizedBox(width: 18),
           Text(
             locale.calendar_restaurant_name,

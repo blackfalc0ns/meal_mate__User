@@ -1426,6 +1426,60 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_meal_name => 'اسم الوجبة';
 
   @override
+  String get calendar_meal_overnight_oats => 'شوفان بالتوت والمكسرات';
+
+  @override
+  String get calendar_meal_egg_avocado_toast => 'توست البيض والأفوكادو';
+
+  @override
+  String get calendar_meal_greek_yogurt_parfait => 'زبادي يوناني بالفواكه';
+
+  @override
+  String get calendar_meal_turkey_cheese_wrap => 'راب تركي بالجبن';
+
+  @override
+  String get calendar_meal_banana_protein_pancakes => 'بان كيك بروتين بالموز';
+
+  @override
+  String get calendar_meal_smoked_salmon_bagel => 'بيجل السلمون المدخن';
+
+  @override
+  String get calendar_meal_grilled_chicken_bowl => 'بول دجاج مشوي بالكينوا';
+
+  @override
+  String get calendar_meal_salmon_rice_plate => 'طبق سلمون مع أرز';
+
+  @override
+  String get calendar_meal_beef_vegetable_box => 'بوكس لحم وخضار';
+
+  @override
+  String get calendar_meal_shrimp_noodle_bowl => 'بول نودلز بالجمبري';
+
+  @override
+  String get calendar_meal_chicken_caesar_wrap => 'راب سيزر بالدجاج';
+
+  @override
+  String get calendar_meal_veggie_pasta_box => 'بوكس باستا بالخضار';
+
+  @override
+  String get calendar_meal_lemon_chicken_salad => 'سلطة دجاج بالليمون';
+
+  @override
+  String get calendar_meal_tuna_potato_plate => 'طبق تونة وبطاطس';
+
+  @override
+  String get calendar_meal_steak_mushroom_plate => 'ستيك بالمشروم';
+
+  @override
+  String get calendar_meal_chicken_soup_box => 'بوكس شوربة الدجاج';
+
+  @override
+  String get calendar_meal_halloumi_salad => 'سلطة حلومي';
+
+  @override
+  String get calendar_meal_light_fajita_bowl => 'بول فاهيتا لايت';
+
+  @override
   String get calendar_grilled_chicken => 'دجاج مشوي';
 
   @override

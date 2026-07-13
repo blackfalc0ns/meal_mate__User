@@ -1,7 +1,7 @@
 part of 'calendar_picker_panel.dart';
 
-class _MonthGrid extends StatelessWidget {
-  const _MonthGrid({required this.days, required this.onDaySelected});
+class CalendarMonthGrid extends StatelessWidget {
+  const CalendarMonthGrid({required this.days, required this.onDaySelected});
 
   final List<CalendarDayEntity> days;
   final ValueChanged<CalendarDayEntity> onDaySelected;
@@ -36,7 +36,7 @@ class _MonthGrid extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             if (index < weekdays.length) {
-              return _MonthWeekdayLabel(label: weekdays[index]);
+              return CalendarMonthWeekdayLabel(label: weekdays[index]);
             }
 
             final day = days[index - weekdays.length];

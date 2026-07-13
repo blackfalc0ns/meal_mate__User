@@ -118,7 +118,7 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
               top: 87,
               left: 42,
               right: 42,
-              child: _RestaurantSearchField(),
+              child: CalendarRestaurantSearchField(),
             ),
             Positioned(
               top: 149,
@@ -131,7 +131,7 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
                 separatorBuilder: (_, _) => const SizedBox(height: 9.2),
                 itemBuilder: (context, index) {
                   final restaurant = restaurants[index];
-                  return _RestaurantOptionCard(
+                  return CalendarRestaurantOptionCard(
                     restaurant: restaurant,
                     onTap: () => onRestaurantSelected(restaurant),
                   );

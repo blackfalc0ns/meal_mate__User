@@ -1443,6 +1443,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_meal_name => 'Meal name';
 
   @override
+  String get calendar_meal_overnight_oats => 'Overnight oats with berries';
+
+  @override
+  String get calendar_meal_egg_avocado_toast => 'Egg and avocado toast';
+
+  @override
+  String get calendar_meal_greek_yogurt_parfait => 'Greek yogurt parfait';
+
+  @override
+  String get calendar_meal_turkey_cheese_wrap => 'Turkey cheese breakfast wrap';
+
+  @override
+  String get calendar_meal_banana_protein_pancakes => 'Banana protein pancakes';
+
+  @override
+  String get calendar_meal_smoked_salmon_bagel => 'Smoked salmon bagel';
+
+  @override
+  String get calendar_meal_grilled_chicken_bowl =>
+      'Grilled chicken quinoa bowl';
+
+  @override
+  String get calendar_meal_salmon_rice_plate => 'Salmon rice plate';
+
+  @override
+  String get calendar_meal_beef_vegetable_box => 'Beef and vegetable box';
+
+  @override
+  String get calendar_meal_shrimp_noodle_bowl => 'Shrimp noodle bowl';
+
+  @override
+  String get calendar_meal_chicken_caesar_wrap => 'Chicken Caesar wrap';
+
+  @override
+  String get calendar_meal_veggie_pasta_box => 'Vegetable pasta box';
+
+  @override
+  String get calendar_meal_lemon_chicken_salad => 'Lemon chicken salad';
+
+  @override
+  String get calendar_meal_tuna_potato_plate => 'Tuna potato plate';
+
+  @override
+  String get calendar_meal_steak_mushroom_plate => 'Steak mushroom plate';
+
+  @override
+  String get calendar_meal_chicken_soup_box => 'Chicken soup box';
+
+  @override
+  String get calendar_meal_halloumi_salad => 'Halloumi salad';
+
+  @override
+  String get calendar_meal_light_fajita_bowl => 'Light fajita bowl';
+
+  @override
   String get calendar_grilled_chicken => 'Grilled chicken';
 
   @override

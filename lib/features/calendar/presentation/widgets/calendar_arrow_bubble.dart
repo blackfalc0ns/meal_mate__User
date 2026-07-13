@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _ArrowBubble extends StatelessWidget {
-  const _ArrowBubble();
+class CalendarArrowBubble extends StatelessWidget {
+  const CalendarArrowBubble();
 
   @override
   Widget build(BuildContext context) {

@@ -86,7 +86,7 @@ class CalendarDayTile extends StatelessWidget {
                 ],
                 SizedBox(height: compact ? 4 : (selected ? 7 : 6)),
                 if (!compact)
-                  _DayMealIndicator(
+                  CalendarDayMealIndicator(
                     selected: selected,
                     muted: day.isMuted,
                     compact: compact,

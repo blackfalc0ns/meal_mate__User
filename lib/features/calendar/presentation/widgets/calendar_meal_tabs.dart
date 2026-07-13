@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _MealTabs extends StatelessWidget {
-  const _MealTabs({
+class CalendarMealTabs extends StatelessWidget {
+  const CalendarMealTabs({
     required this.labels,
     required this.selectedIndex,
     required this.onChanged,
@@ -38,7 +38,7 @@ class _MealTabs extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (var index = 0; index < labels.length; index++)
-                  _TabLabel(
+                  CalendarTabLabel(
                     text: labels[index],
                     active: selectedIndex == index,
                     onTap: () => onChanged(index),

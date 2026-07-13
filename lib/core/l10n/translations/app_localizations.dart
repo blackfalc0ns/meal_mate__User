@@ -2840,6 +2840,114 @@ abstract class AppLocalizations {
   /// **'Meal name'**
   String get calendar_meal_name;
 
+  /// No description provided for @calendar_meal_overnight_oats.
+  ///
+  /// In en, this message translates to:
+  /// **'Overnight oats with berries'**
+  String get calendar_meal_overnight_oats;
+
+  /// No description provided for @calendar_meal_egg_avocado_toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg and avocado toast'**
+  String get calendar_meal_egg_avocado_toast;
+
+  /// No description provided for @calendar_meal_greek_yogurt_parfait.
+  ///
+  /// In en, this message translates to:
+  /// **'Greek yogurt parfait'**
+  String get calendar_meal_greek_yogurt_parfait;
+
+  /// No description provided for @calendar_meal_turkey_cheese_wrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Turkey cheese breakfast wrap'**
+  String get calendar_meal_turkey_cheese_wrap;
+
+  /// No description provided for @calendar_meal_banana_protein_pancakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Banana protein pancakes'**
+  String get calendar_meal_banana_protein_pancakes;
+
+  /// No description provided for @calendar_meal_smoked_salmon_bagel.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoked salmon bagel'**
+  String get calendar_meal_smoked_salmon_bagel;
+
+  /// No description provided for @calendar_meal_grilled_chicken_bowl.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled chicken quinoa bowl'**
+  String get calendar_meal_grilled_chicken_bowl;
+
+  /// No description provided for @calendar_meal_salmon_rice_plate.
+  ///
+  /// In en, this message translates to:
+  /// **'Salmon rice plate'**
+  String get calendar_meal_salmon_rice_plate;
+
+  /// No description provided for @calendar_meal_beef_vegetable_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Beef and vegetable box'**
+  String get calendar_meal_beef_vegetable_box;
+
+  /// No description provided for @calendar_meal_shrimp_noodle_bowl.
+  ///
+  /// In en, this message translates to:
+  /// **'Shrimp noodle bowl'**
+  String get calendar_meal_shrimp_noodle_bowl;
+
+  /// No description provided for @calendar_meal_chicken_caesar_wrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken Caesar wrap'**
+  String get calendar_meal_chicken_caesar_wrap;
+
+  /// No description provided for @calendar_meal_veggie_pasta_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetable pasta box'**
+  String get calendar_meal_veggie_pasta_box;
+
+  /// No description provided for @calendar_meal_lemon_chicken_salad.
+  ///
+  /// In en, this message translates to:
+  /// **'Lemon chicken salad'**
+  String get calendar_meal_lemon_chicken_salad;
+
+  /// No description provided for @calendar_meal_tuna_potato_plate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuna potato plate'**
+  String get calendar_meal_tuna_potato_plate;
+
+  /// No description provided for @calendar_meal_steak_mushroom_plate.
+  ///
+  /// In en, this message translates to:
+  /// **'Steak mushroom plate'**
+  String get calendar_meal_steak_mushroom_plate;
+
+  /// No description provided for @calendar_meal_chicken_soup_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken soup box'**
+  String get calendar_meal_chicken_soup_box;
+
+  /// No description provided for @calendar_meal_halloumi_salad.
+  ///
+  /// In en, this message translates to:
+  /// **'Halloumi salad'**
+  String get calendar_meal_halloumi_salad;
+
+  /// No description provided for @calendar_meal_light_fajita_bowl.
+  ///
+  /// In en, this message translates to:
+  /// **'Light fajita bowl'**
+  String get calendar_meal_light_fajita_bowl;
+
   /// No description provided for @calendar_grilled_chicken.
   ///
   /// In en, this message translates to:

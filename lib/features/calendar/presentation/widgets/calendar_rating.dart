@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _Rating extends StatelessWidget {
-  const _Rating({required this.value});
+class CalendarRating extends StatelessWidget {
+  const CalendarRating({required this.value});
 
   final String value;
 

@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _RestaurantDescription extends StatelessWidget {
-  const _RestaurantDescription();
+class CalendarMealPickerRestaurantDescription extends StatelessWidget {
+  const CalendarMealPickerRestaurantDescription();
 
   @override
   Widget build(BuildContext context) {

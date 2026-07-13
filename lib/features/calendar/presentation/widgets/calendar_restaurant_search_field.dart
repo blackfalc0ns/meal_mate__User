@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
-class _RestaurantSearchField extends StatelessWidget {
-  const _RestaurantSearchField();
+class CalendarRestaurantSearchField extends StatelessWidget {
+  const CalendarRestaurantSearchField();
 
   @override
   Widget build(BuildContext context) {

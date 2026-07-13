@@ -58,7 +58,7 @@ class CalendarMealCard extends StatelessWidget {
                   Expanded(
                     child: Directionality(
                       textDirection: TextDirection.rtl,
-                      child: _MealDetails(meal: meal),
+                      child: CalendarMealDetails(meal: meal),
                     ),
                   ),
                 ],

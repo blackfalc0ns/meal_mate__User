@@ -1,27 +1,53 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _MealOptionsSection extends StatelessWidget {
-  const _MealOptionsSection({required this.mealType});
+class CalendarMealOptionsSection extends StatelessWidget {
+  const CalendarMealOptionsSection({
+    required this.mealType,
+    required this.tabIndex,
+    required this.options,
+  });
 
   final String mealType;
+  final int tabIndex;
+  final List<CalendarMealPickerOption> options;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 240),
+      duration: const Duration(milliseconds: 420),
+      reverseDuration: const Duration(milliseconds: 260),
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
+      transitionBuilder: (child, animation) {
+        final curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+          reverseCurve: Curves.easeInCubic,
+        );
+        final offset = Tween<Offset>(
+          begin: const Offset(0.22, 0),
+          end: Offset.zero,
+        ).animate(curvedAnimation);
+
+        return FadeTransition(
+          opacity: curvedAnimation,
+          child: SizeTransition(
+            sizeFactor: curvedAnimation,
+            alignment: Alignment.topCenter,
+            child: SlideTransition(position: offset, child: child),
+          ),
+        );
+      },
       child: Column(
-        key: ValueKey(mealType),
+        key: ValueKey(tabIndex),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _SectionTitle(mealType: mealType),
+          CalendarMealPickerSectionTitle(mealType: mealType),
           const SizedBox(height: Spacing.lg),
-          const _MealOptionCard(selected: false),
-          const _DividerLine(),
-          const _MealOptionCard(selected: true),
-          const _DividerLine(),
-          const _MealOptionCard(selected: false),
+          for (var index = 0; index < options.length; index++) ...[
+            CalendarMealOptionCard(option: options[index]),
+            if (index != options.length - 1) const CalendarDividerLine(),
+          ],
         ],
       ),
     );

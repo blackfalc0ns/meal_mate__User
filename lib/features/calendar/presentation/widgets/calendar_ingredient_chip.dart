@@ -1,7 +1,7 @@
 part of 'calendar_meal_card.dart';
 
-class _IngredientChip extends StatelessWidget {
-  const _IngredientChip({required this.label});
+class CalendarMealCardIngredientChip extends StatelessWidget {
+  const CalendarMealCardIngredientChip({required this.label});
 
   final String label;
 

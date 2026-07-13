@@ -1,31 +1,33 @@
 part of 'calendar_meal_picker_sheet.dart';
 
-class _MealNutritionRow extends StatelessWidget {
-  const _MealNutritionRow();
+class CalendarMealPickerNutritionRow extends StatelessWidget {
+  const CalendarMealPickerNutritionRow({required this.option});
+
+  final CalendarMealPickerOption option;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
     final items = [
-      _MealNutrition(
+      CalendarMealPickerNutrition(
         icon: Icons.local_fire_department_rounded,
-        value: '550',
+        value: option.calories,
         label: locale.calendar_calories,
       ),
-      _MealNutrition(
+      CalendarMealPickerNutrition(
         icon: Icons.water_drop_outlined,
-        value: '35 جم',
+        value: option.protein,
         label: locale.calendar_protein,
       ),
-      _MealNutrition(
+      CalendarMealPickerNutrition(
         icon: Icons.grass_rounded,
-        value: '55 جم',
+        value: option.carbs,
         label: locale.calendar_carbs,
       ),
-      _MealNutrition(
+      CalendarMealPickerNutrition(
         icon: Icons.water_drop_rounded,
-        value: '18 جم',
+        value: option.fat,
         label: locale.calendar_fat,
       ),
     ];
