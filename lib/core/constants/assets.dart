@@ -60,6 +60,24 @@ class Assets {
   static const String calendarMealPickerBreakfast =
       '$_images/calendar/figma/meal_picker_breakfast.png';
 
+  // Meal details
+  static const String mealDetailsHero =
+      '$_images/meal_details/figma/meal_details_hero.png';
+  static const String mealDetailsPlateCrop =
+      '$_images/meal_details/figma/meal_details_plate_crop-49e47e.png';
+  static const String mealDetailsIngredientChicken =
+      '$_images/meal_details/figma/ingredient_chicken.png';
+  static const String mealDetailsIngredientRice =
+      '$_images/meal_details/figma/ingredient_rice.png';
+  static const String mealDetailsIngredientCarrot =
+      '$_images/meal_details/figma/ingredient_carrot.png';
+  static const String mealDetailsIngredientBroccoli =
+      '$_images/meal_details/figma/ingredient_broccoli.png';
+  static const String mealDetailsIngredientLettuce =
+      '$_images/meal_details/figma/ingredient_lettuce.png';
+  static const String mealDetailsIngredientLemon =
+      '$_images/meal_details/figma/ingredient_lemon.png';
+
   // Offers / promotions
   static const String offerGiftBox = '$_images/offers/gift_box.png';
   static const String offerSaladBowl = '$_images/offers/salad_bowl.png';

@@ -57,6 +57,7 @@ flutter:
     - assets/images/home/figma/
     - assets/images/offers/
     - assets/images/calendar/figma/
+    - assets/images/meal_details/figma/
     - assets/images/subscriptions/
     - assets/images/subscriptions/figma/
     - assets/images/svg/

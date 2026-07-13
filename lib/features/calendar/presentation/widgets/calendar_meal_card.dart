@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -28,40 +29,46 @@ class CalendarMealCard extends StatelessWidget {
         children: [
           SizedBox(
             height: 114,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: color.primary),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.10),
-                    blurRadius: 4,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                textDirection: TextDirection.ltr,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      meal.imageAsset,
-                      width: 83,
-                      height: 96,
-                      fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () => Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.mealDetails, arguments: meal),
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                decoration: BoxDecoration(
+                  color: color.surface,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: color.primary),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.shadow.withValues(alpha: 0.10),
+                      blurRadius: 4,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
-                  const SizedBox(width: Spacing.lg),
-                  Expanded(
-                    child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: CalendarMealDetails(meal: meal),
+                  ],
+                ),
+                child: Row(
+                  textDirection: TextDirection.ltr,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        meal.imageAsset,
+                        width: 83,
+                        height: 96,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: Spacing.lg),
+                    Expanded(
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: CalendarMealDetails(meal: meal),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

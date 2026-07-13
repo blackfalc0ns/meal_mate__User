@@ -43,7 +43,7 @@ class CalendarMealOptionsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           CalendarMealPickerSectionTitle(mealType: mealType),
-          const SizedBox(height: Spacing.lg),
+          const SizedBox(height: Spacing.base),
           for (var index = 0; index < options.length; index++) ...[
             CalendarMealOptionCard(option: options[index]),
             if (index != options.length - 1) const CalendarDividerLine(),

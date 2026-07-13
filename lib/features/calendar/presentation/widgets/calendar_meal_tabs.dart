@@ -16,7 +16,7 @@ class CalendarMealTabs extends StatelessWidget {
     final color = context.colorScheme;
 
     return SizedBox(
-      height: 32,
+      height: 26.3,
       child: Stack(
         children: [
           Positioned(
@@ -33,7 +33,6 @@ class CalendarMealTabs extends StatelessWidget {
             right: 36,
             left: 36,
             top: 0,
-            bottom: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

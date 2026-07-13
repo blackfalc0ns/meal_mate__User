@@ -20,7 +20,7 @@ class CalendarTabLabel extends StatelessWidget {
       borderRadius: BorderRadius.circular(Spacing.radiusSm),
       child: SizedBox(
         width: 100,
-        height: 32,
+        height: 26.3,
         child: Center(
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 180),

@@ -59,7 +59,7 @@ class CalendarMealOptionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.6),
               child: Image.asset(
                 option.imageAsset,
-                width: 88,
+                width: 92,
                 height: 92,
                 fit: BoxFit.cover,
               ),

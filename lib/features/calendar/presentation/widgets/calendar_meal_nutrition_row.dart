@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealPickerNutritionRow extends StatelessWidget {
-  const CalendarMealPickerNutritionRow({required this.option});
+  const CalendarMealPickerNutritionRow({super.key, required this.option});
 
   final CalendarMealPickerOption option;
 
@@ -33,7 +33,7 @@ class CalendarMealPickerNutritionRow extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 22,
+      height: 23,
       child: Row(
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

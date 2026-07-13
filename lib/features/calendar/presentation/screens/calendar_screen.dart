@@ -45,7 +45,7 @@ class CalendarScreenState extends State<CalendarScreen> {
     super.initState();
     _state = widget.initialState;
     _isCalendarExpanded =
-        widget.initialState != CalendarFigmaState.pickRestaurant;
+        widget.initialState == CalendarFigmaState.expandedMonth;
     _selectedRestaurant = _dataSource.getRestaurant();
   }
 
@@ -139,7 +139,7 @@ class CalendarScreenState extends State<CalendarScreen> {
     setState(() {
       _selectedRestaurant = _dataSource.getRestaurantFromOption(option);
       _state = CalendarFigmaState.mealsList;
-      _isCalendarExpanded = true;
+      _isCalendarExpanded = false;
     });
   }
 
@@ -149,11 +149,10 @@ class CalendarScreenState extends State<CalendarScreen> {
       isScrollControlled: true,
       backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
       barrierColor: context.colorScheme.scrim,
-      builder: (sheetContext) {
+      builder: (_) {
         return CalendarRestaurantPickerSheet(
           restaurants: _dataSource.getRestaurantOptions(),
           onRestaurantSelected: (restaurant) {
-            Navigator.pop(sheetContext);
             _selectRestaurant(restaurant);
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) {
@@ -168,12 +167,32 @@ class CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _openMealPicker() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
-      barrierColor: context.colorScheme.scrim,
-      builder: (_) => const CalendarMealPickerSheet(),
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
+    Navigator.of(context).push(
+      PageRouteBuilder<void>(
+        opaque: false,
+        transitionDuration: const Duration(milliseconds: 420),
+        reverseTransitionDuration: const Duration(milliseconds: 320),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return const CalendarMealPickerSheet();
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final offsetAnimation =
+              Tween<Offset>(
+                begin: Offset(isRtl ? -1 : 1, 0),
+                end: Offset.zero,
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOutCubic,
+                  reverseCurve: Curves.easeInCubic,
+                ),
+              );
+
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+      ),
     );
   }
 

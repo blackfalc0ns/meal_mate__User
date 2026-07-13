@@ -49,84 +49,86 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
       locale.calendar_lunch,
       locale.calendar_dinner,
     ];
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        height: height,
-        color: color.surface,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 221,
-              child: Image.asset(
-                Assets.calendarMealPickerHero,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Positioned(
-              top: 63,
-              right: 24,
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_forward_ios_rounded),
-                color: color.onSurface,
-                iconSize: 24,
-              ),
-            ),
-            Positioned(
-              top: 189,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(31.2),
+    return Material(
+      color: color.surface,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          height: height,
+          color: color.surface,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 221,
+                child: Image.asset(
+                  Assets.calendarMealPickerHero,
+                  fit: BoxFit.cover,
                 ),
-                child: ColoredBox(
-                  color: color.surface,
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: Spacing.lg),
-                            const CalendarSheetHandle(),
-                            const SizedBox(height: Spacing.xl),
-                            const CalendarMealPickerRestaurantHeader(),
-                            const SizedBox(height: Spacing.lg),
-                            const CalendarMealPickerRestaurantDescription(),
-                            const SizedBox(height: 21),
-                            const CalendarSourceSection(),
-                            const SizedBox(height: Spacing.base),
-                            CalendarMealTabs(
-                              labels: mealTabs,
-                              selectedIndex: _selectedTab,
-                              onChanged: (index) {
-                                setState(() => _selectedTab = index);
-                              },
-                            ),
-                            const SizedBox(height: Spacing.xl),
-                            CalendarMealOptionsSection(
-                              mealType: mealTabs[_selectedTab],
-                              tabIndex: _selectedTab,
-                              options: _dataSource.getMealPickerOptions(
-                                locale: locale,
-                                selectedTab: _selectedTab,
+              ),
+              Positioned(
+                top: 63,
+                right: 24,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
+                  color: color.onSurface,
+                  iconSize: 24,
+                ),
+              ),
+              Positioned(
+                top: 189,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(31.2),
+                  ),
+                  child: ColoredBox(
+                    color: color.surface,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: Spacing.lg),
+                              const CalendarSheetHandle(),
+                              const SizedBox(height: Spacing.md),
+                              const CalendarMealPickerRestaurantHeader(),
+                              const CalendarMealPickerRestaurantDescription(),
+                              const CalendarDividerLine(),
+                              const CalendarSourceSection(),
+                              const SizedBox(height: Spacing.base),
+                              CalendarMealTabs(
+                                labels: mealTabs,
+                                selectedIndex: _selectedTab,
+                                onChanged: (index) {
+                                  setState(() => _selectedTab = index);
+                                },
                               ),
-                            ),
-                            const SizedBox(height: Spacing.xxl),
-                          ],
+                              const SizedBox(height: Spacing.sm),
+                              CalendarMealOptionsSection(
+                                mealType: mealTabs[_selectedTab],
+                                tabIndex: _selectedTab,
+                                options: _dataSource.getMealPickerOptions(
+                                  locale: locale,
+                                  selectedTab: _selectedTab,
+                                ),
+                              ),
+                              const SizedBox(height: Spacing.xxl),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

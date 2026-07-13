@@ -23,6 +23,7 @@ class CalendarSourceSection extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Row(
+            textDirection: TextDirection.ltr,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CalendarSourceCard(
