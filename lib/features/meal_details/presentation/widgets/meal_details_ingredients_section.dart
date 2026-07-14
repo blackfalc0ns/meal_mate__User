@@ -16,7 +16,7 @@ class MealDetailsIngredientsSection extends StatelessWidget {
     final locale = context.localization;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MealDetailsSectionTitle(title: meal.ingredientsTitle),
         const SizedBox(height: Spacing.xs),

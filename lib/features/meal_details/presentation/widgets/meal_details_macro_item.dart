@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/durations.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -14,26 +15,44 @@ class MealDetailsMacroItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final progressColor = item.type == MealDetailsNutritionType.protein
+        ? color.secondary
+        : color.primary;
 
     return Expanded(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: Spacing.avatarMd,
             height: Spacing.avatarMd,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: color.surface,
-              border: Border.all(color: color.outlineVariant),
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-            ),
-            child: Text(
-              item.percent,
-              style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size12,
-                color: color.onSurface,
-              ).copyWith(height: 1),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: _progress),
+              duration: AppDurations.slower,
+              curve: Curves.easeOutCubic,
+              builder: (context, value, child) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox.expand(
+                      child: CircularProgressIndicator(
+                        value: value,
+                        strokeWidth: Spacing.xs,
+                        backgroundColor: color.outlineVariant,
+                        color: progressColor,
+                        strokeCap: StrokeCap.round,
+                      ),
+                    ),
+                    Text(
+                      '%${(value * 100).round()}',
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
+                      ).copyWith(height: 1),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           const SizedBox(height: Spacing.xs),
@@ -60,5 +79,10 @@ class MealDetailsMacroItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double get _progress {
+    final value = item.percent.replaceAll(RegExp('[^0-9]'), '');
+    return (double.tryParse(value) ?? 0) / 100;
   }
 }

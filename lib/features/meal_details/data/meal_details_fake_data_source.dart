@@ -7,15 +7,16 @@ class MealDetailsFakeDataSource {
   MealDetailsEntity getMeal() {
     return const MealDetailsEntity(
       title: 'دجاج مشوي مع الأرز البني',
+      restaurantName: 'Kitchen Protein The',
       description:
           'وجبة متكاملة عالية البروتين ومصنوعة من مكونات طبيعية\nطازجة، مناسبة لبرنامج خسارة الوزن وبناء العضلات.',
       restaurantLogo: 'THE\nPROTEIN\nKITCHEN',
       ratingTitle: 'تقييم المطعم',
-      ratingValue: '4.9',
+      ratingValue: '4.8 (520)',
       programLabel: 'مناسبة لبرنامج',
       programValue: 'خسارة الوزن',
       deliveryLabel: 'وقت التوصيل',
-      deliveryValue: '1:00 م -12:00م',
+      deliveryValue: '1:00م -12:00م',
       ingredientsTitle: 'المكونات',
       ingredients: [
         MealDetailsIngredientEntity(
@@ -47,12 +48,12 @@ class MealDetailsFakeDataSource {
       nutritionItems: [
         MealDetailsNutritionEntity(
           value: '7 جم',
-          label: 'أليــــاف',
+          label: 'ألياف',
           type: MealDetailsNutritionType.fiber,
         ),
         MealDetailsNutritionEntity(
           value: '65 جم',
-          label: 'بروتيـن',
+          label: 'بروتين',
           type: MealDetailsNutritionType.protein,
         ),
         MealDetailsNutritionEntity(

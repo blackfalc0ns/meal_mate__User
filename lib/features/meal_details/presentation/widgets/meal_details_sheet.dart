@@ -7,7 +7,6 @@ import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_d
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_info_row.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_macro_distribution_card.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_nutrition_section.dart';
-import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_rating_badge.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_title_section.dart';
 
 class MealDetailsSheet extends StatelessWidget {
@@ -29,7 +28,7 @@ class MealDetailsSheet extends StatelessWidget {
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.only(
-            top: Spacing.lg,
+            top: Spacing.md,
             left: Spacing.xl,
             right: Spacing.xl,
             bottom: MediaQuery.paddingOf(context).bottom + Spacing.xl,
@@ -37,19 +36,8 @@ class MealDetailsSheet extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MealDetailsRatingBadge(
-                    title: meal.ratingTitle,
-                    value: meal.ratingValue,
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              const SizedBox(height: Spacing.md),
               MealDetailsTitleSection(meal: meal),
-              const SizedBox(height: Spacing.xl),
+              const SizedBox(height: Spacing.md),
               MealDetailsInfoRow(meal: meal),
               const SizedBox(height: Spacing.md),
               MealDetailsIngredientsSection(meal: meal),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class MealDetailsBackButton extends StatelessWidget {
-  const MealDetailsBackButton({super.key, required this.onPressed});
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({super.key, required this.onPressed});
 
   final VoidCallback onPressed;
 
@@ -15,7 +15,7 @@ class MealDetailsBackButton extends StatelessWidget {
 
     return Positioned(
       top: topInset + Spacing.lg,
-      right: Spacing.xl,
+      left: Spacing.xl,
       child: Semantics(
         label: locale.go_back,
         button: true,

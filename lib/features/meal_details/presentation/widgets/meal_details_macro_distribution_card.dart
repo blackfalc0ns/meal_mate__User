@@ -25,7 +25,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Spacing.radiusSm),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             meal.macroDistributionTitle,
@@ -40,18 +40,6 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (final item in meal.macroItems) ...[
-                MealDetailsMacroItem(item: item),
-                if (item != meal.macroItems.last)
-                  SizedBox(
-                    height: Spacing.avatarLg,
-                    child: VerticalDivider(color: color.outlineVariant),
-                  ),
-              ],
-              SizedBox(
-                height: Spacing.avatarLg,
-                child: VerticalDivider(color: color.outlineVariant),
-              ),
               Expanded(
                 child: Column(
                   children: [
@@ -79,9 +67,31 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                         color: color.onSurface,
                       ).copyWith(height: 1),
                     ),
+                    Text(
+                      calories.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size8,
+                        color: color.onSurfaceVariant,
+                      ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),
+                    ),
                   ],
                 ),
               ),
+              SizedBox(
+                height: Spacing.avatarLg,
+                child: VerticalDivider(color: color.outlineVariant),
+              ),
+              for (final item in meal.macroItems) ...[
+                MealDetailsMacroItem(item: item),
+                if (item != meal.macroItems.last)
+                  SizedBox(
+                    height: Spacing.avatarLg,
+                    child: VerticalDivider(color: color.outlineVariant),
+                  ),
+              ],
             ],
           ),
         ],

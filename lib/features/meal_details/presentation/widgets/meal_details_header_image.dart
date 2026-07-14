@@ -22,7 +22,7 @@ class MealDetailsHeaderImage extends StatelessWidget {
       child: Directionality(
         textDirection: textDirection,
         child: SizedBox(
-          height: Spacing.xxxl * 5,
+          height: Spacing.xxxl * 4 + Spacing.xxl,
           width: double.infinity,
           child: ColoredBox(
             color: color.surfaceContainerHighest,

@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarProteinLogo extends StatelessWidget {
-  const CalendarProteinLogo({required this.size});
+  const CalendarProteinLogo({super.key, required this.size});
 
   final double size;
 

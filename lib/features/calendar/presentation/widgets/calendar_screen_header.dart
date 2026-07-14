@@ -53,11 +53,11 @@ class CalendarScreenHeader extends StatelessWidget {
                         color: color.onPrimary,
                       ),
                     ),
-                    const Spacer(),
-                    CalendarHeaderIconButton(
-                      icon: Icons.arrow_forward_ios_rounded,
-                      onPressed: onBack,
-                    ),
+                    // const Spacer(),
+                    // CalendarHeaderIconButton(
+                    //   icon: Icons.arrow_forward_ios_rounded,
+                    //   onPressed: onBack,
+                    // ),
                   ],
                 ),
               ),

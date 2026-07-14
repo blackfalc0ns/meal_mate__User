@@ -37,7 +37,7 @@ class MealDetailsInfoItem extends StatelessWidget {
           const SizedBox(width: Spacing.sm),
           Flexible(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   label,

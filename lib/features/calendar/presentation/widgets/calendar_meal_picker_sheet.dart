@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
 
 part 'calendar_sheet_handle.dart';
@@ -70,13 +71,8 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
               ),
               Positioned(
                 top: 63,
-                right: 24,
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_forward_ios_rounded),
-                  color: color.onSurface,
-                  iconSize: 24,
-                ),
+                left: Spacing.xl,
+                child: CustomBackButton(onPressed: () => Navigator.pop(context))
               ),
               Positioned(
                 top: 189,

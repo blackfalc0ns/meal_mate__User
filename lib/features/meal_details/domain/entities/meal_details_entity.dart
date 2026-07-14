@@ -2,6 +2,7 @@ class MealDetailsEntity {
   const MealDetailsEntity({
     required this.title,
     required this.description,
+    required this.restaurantName,
     required this.restaurantLogo,
     required this.ratingTitle,
     required this.ratingValue,
@@ -21,6 +22,7 @@ class MealDetailsEntity {
 
   final String title;
   final String description;
+  final String restaurantName;
   final String restaurantLogo;
   final String ratingTitle;
   final String ratingValue;

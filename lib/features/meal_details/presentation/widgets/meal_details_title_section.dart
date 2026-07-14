@@ -21,12 +21,12 @@ class MealDetailsTitleSection extends StatelessWidget {
       children: [
         MealDetailsRestaurantLogo(
           label: meal.restaurantLogo,
-          size: Spacing.avatarLg,
+          size: Spacing.xxxl + Spacing.base,
         ),
         const SizedBox(width: Spacing.base),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 meal.title,
@@ -37,7 +37,28 @@ class MealDetailsTitleSection extends StatelessWidget {
                   color: color.onSurface,
                 ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.15),
               ),
-              const SizedBox(height: Spacing.sm),
+              const SizedBox(height: Spacing.xs),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    meal.restaurantName,
+                    textAlign: TextAlign.right,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size13,
+                      color: color.primary,
+                    ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.1),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Icon(
+                    Icons.verified_rounded,
+                    color: color.primary,
+                    size: Spacing.iconSm,
+                  ),
+                ],
+              ),
+              const SizedBox(height: Spacing.xs),
               Text(
                 meal.description,
                 textAlign: TextAlign.right,

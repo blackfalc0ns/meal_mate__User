@@ -13,16 +13,16 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          const PositionedDirectional(
+          const Positioned(
             top: 2,
-            end: Spacing.lg,
-            child: CalendarProteinLogo(size: 59.9),
+            right: Spacing.lg,
+            child: CalendarProteinLogo(size: Spacing.xxxl + Spacing.md),
           ),
-          PositionedDirectional(
+          Positioned(
             top: 0,
-            end: Spacing.xxxl + Spacing.xxl + Spacing.sm,
+            right: Spacing.xxxl + Spacing.xxl + Spacing.sm,
             child: Directionality(
-              textDirection: TextDirection.ltr,
+              textDirection: TextDirection.rtl,
               child: Row(
                 children: [
                   Icon(
