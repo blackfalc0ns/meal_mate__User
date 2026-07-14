@@ -324,6 +324,8 @@
   "subscription_week_period": "أسبوعياً",
   "subscription_discount_20": "خصم 20%",
   "subscription_note": "كل الباقات تشمل خصم 20% على جميع الطلبات يمكنك الإيقاف المؤقت أو تعديل الباقة في أي وقت",
+  "subscription_program_title": "اختر برنامجك",
+  "subscription_program_subtitle": "اختر الهدف الذي يناسبك لنقدم لك الباقات المناسبة",
   "subscription_details_view_mode": "طريقة العرض",
   "subscription_details_explore_meals": "استكشف وجبات الباقة",
   "subscription_details_meals_count": "أكثر من 120 وجبة متنوعة وصحية",

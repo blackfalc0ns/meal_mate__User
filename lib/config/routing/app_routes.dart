@@ -2,6 +2,7 @@ abstract class AppRoutes {
   static const String home = '/home';
   static const String offers = '/offers';
   static const String subscriptions = '/subscriptions';
+  static const String subscriptionPlanDetails = '/subscription-plan-details';
   static const String familyPlanDetails = '/family-plan-details';
   static const String calendar = '/calendar';
   static const String mealDetails = '/meal-details';

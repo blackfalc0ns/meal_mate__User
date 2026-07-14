@@ -102,6 +102,18 @@ class Assets {
       '$_images/subscriptions/subscription_note_meal.png';
   static const String monthlyPlanHero =
       '$_images/subscriptions/figma/monthly_plan_hero.png';
+  static const String subscriptionProgramsHero =
+      '$_images/subscriptions/figma/programs_hero.png';
+  static const String subscriptionProgramsLogo =
+      '$_images/subscriptions/figma/programs_logo.svg';
+  static const String subscriptionProgramWeightLoss =
+      '$_images/subscriptions/figma/program_weight_loss-793ed0.png';
+  static const String subscriptionProgramMuscleGain =
+      '$_images/subscriptions/figma/program_muscle_gain-239c9f.png';
+  static const String subscriptionProgramBalanced =
+      '$_images/subscriptions/figma/program_balanced.png';
+  static const String subscriptionProgramCutting =
+      '$_images/subscriptions/figma/program_cutting-567695.png';
   static const String monthlyPackageBox =
       '$_images/subscriptions/monthly_package_box.png';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';

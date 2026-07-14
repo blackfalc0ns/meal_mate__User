@@ -1019,6 +1019,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'كل الباقات تشمل خصم 20% على جميع الطلبات يمكنك الإيقاف المؤقت أو تعديل الباقة في أي وقت';
 
   @override
+  String get subscription_program_title => 'اختر برنامجك';
+
+  @override
+  String get subscription_program_subtitle =>
+      'اختر الهدف الذي يناسبك لنقدم لك الباقات المناسبة';
+
+  @override
   String get subscription_details_view_mode => 'طريقة العرض';
 
   @override

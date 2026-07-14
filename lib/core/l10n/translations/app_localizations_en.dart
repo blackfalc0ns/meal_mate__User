@@ -1034,6 +1034,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'All plans include 20% off all orders. You can pause or edit the plan anytime';
 
   @override
+  String get subscription_program_title => 'Choose your program';
+
+  @override
+  String get subscription_program_subtitle =>
+      'Choose the goal that suits you so we can show the right plans';
+
+  @override
   String get subscription_details_view_mode => 'View mode';
 
   @override

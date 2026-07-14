@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/onboarding/presentation/screens/onboardi
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/family_plan_details_screen.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_activated_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
@@ -26,6 +27,14 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const SubscriptionsScreen(),
+        );
+      case AppRoutes.subscriptionPlanDetails:
+        final initialPage = settings.arguments is int
+            ? settings.arguments! as int
+            : 0;
+        return _buildRoute(
+          settings: settings,
+          page: SubscriptionPlanDetailsScreen(initialPage: initialPage),
         );
       case AppRoutes.familyPlanDetails:
         return _buildRoute(

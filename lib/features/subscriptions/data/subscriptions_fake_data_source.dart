@@ -10,6 +10,53 @@ class SubscriptionsFakeDataSource {
   static const String _delivery = 'توصيل مجاني';
   static const String _discount = 'خصم 20%';
 
+  List<SubscriptionProgramEntity> getPrograms() => const [
+    SubscriptionProgramEntity(
+      title: 'خسارة الوزن',
+      description:
+          'برنامج منخفض السعرات لمساعدتك على خسارة الوزن بطريقة صحية و آمنة',
+      imageAsset: Assets.subscriptionProgramWeightLoss,
+      primaryFeature: 'نتائج فعالة',
+      secondaryFeature: 'سعرات أقل',
+      badgeIcon: Icons.monitor_weight_outlined,
+      primaryFeatureIcon: Icons.bar_chart_rounded,
+      secondaryFeatureIcon: Icons.bolt_rounded,
+    ),
+    SubscriptionProgramEntity(
+      title: 'بناء العضلات',
+      description:
+          'برنامج عالي البروتين لدعم نمو العضلات وزيادة الكتلة العضلية',
+      imageAsset: Assets.subscriptionProgramMuscleGain,
+      primaryFeature: 'بروتين عالي',
+      secondaryFeature: 'تعافي أسرع',
+      badgeIcon: Icons.fitness_center_rounded,
+      primaryFeatureIcon: Icons.bolt_rounded,
+      secondaryFeatureIcon: Icons.sync_rounded,
+    ),
+    SubscriptionProgramEntity(
+      title: 'نظام صحي متوازن',
+      description:
+          'نظام متوازن غني بالعناصر الغذائية للحفاظ على صحتك ونشاطك اليومي',
+      imageAsset: Assets.subscriptionProgramBalanced,
+      primaryFeature: 'تغذية متوازنة',
+      secondaryFeature: 'طاقة يومية',
+      badgeIcon: Icons.favorite_border_rounded,
+      primaryFeatureIcon: Icons.eco_rounded,
+      secondaryFeatureIcon: Icons.bolt_rounded,
+    ),
+    SubscriptionProgramEntity(
+      title: 'تنشيف الجسم',
+      description:
+          'برنامج يساعدك على حرق الدهون وإبراز عضلاتك مع الحفاظ على الكتلة العضلية',
+      imageAsset: Assets.subscriptionProgramCutting,
+      primaryFeature: 'حرق الدهون',
+      secondaryFeature: 'تعريف الجسم',
+      badgeIcon: Icons.local_fire_department_outlined,
+      primaryFeatureIcon: Icons.bolt_rounded,
+      secondaryFeatureIcon: Icons.my_location_rounded,
+    ),
+  ];
+
   List<SubscriptionPlanEntity> getPlans() => [
     SubscriptionPlanEntity(
       title: 'باقة شهر',
@@ -69,4 +116,26 @@ class SubscriptionsFakeDataSource {
       ],
     ),
   ];
+}
+
+class SubscriptionProgramEntity {
+  const SubscriptionProgramEntity({
+    required this.title,
+    required this.description,
+    required this.imageAsset,
+    required this.primaryFeature,
+    required this.secondaryFeature,
+    required this.badgeIcon,
+    required this.primaryFeatureIcon,
+    required this.secondaryFeatureIcon,
+  });
+
+  final String title;
+  final String description;
+  final String imageAsset;
+  final String primaryFeature;
+  final String secondaryFeature;
+  final IconData badgeIcon;
+  final IconData primaryFeatureIcon;
+  final IconData secondaryFeatureIcon;
 }

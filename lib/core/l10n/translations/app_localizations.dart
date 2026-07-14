@@ -2042,6 +2042,18 @@ abstract class AppLocalizations {
   /// **'All plans include 20% off all orders. You can pause or edit the plan anytime'**
   String get subscription_note;
 
+  /// No description provided for @subscription_program_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your program'**
+  String get subscription_program_title;
+
+  /// No description provided for @subscription_program_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the goal that suits you so we can show the right plans'**
+  String get subscription_program_subtitle;
+
   /// No description provided for @subscription_details_view_mode.
   ///
   /// In en, this message translates to:
