@@ -43,6 +43,22 @@ class MealDetailsFakeDataSource {
           label: 'ليمون',
           asset: Assets.mealDetailsIngredientLemon,
         ),
+        MealDetailsIngredientEntity(
+          label: 'دجاج',
+          asset: Assets.mealDetailsIngredientChicken,
+        ),
+        MealDetailsIngredientEntity(
+          label: 'أرز',
+          asset: Assets.mealDetailsIngredientRice,
+        ),
+        MealDetailsIngredientEntity(
+          label: 'خضار',
+          asset: Assets.mealDetailsIngredientBroccoli,
+        ),
+        MealDetailsIngredientEntity(
+          label: 'سلطة',
+          asset: Assets.mealDetailsIngredientLettuce,
+        ),
       ],
       nutritionTitle: 'القيم الغذائية',
       nutritionItems: [

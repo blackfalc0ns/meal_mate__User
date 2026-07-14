@@ -69,11 +69,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
-                top: 63,
-                left: Spacing.xl,
-                child: CustomBackButton(onPressed: () => Navigator.pop(context))
-              ),
+              CustomBackButton(onPressed: () => Navigator.pop(context)),
               Positioned(
                 top: 189,
                 left: 0,

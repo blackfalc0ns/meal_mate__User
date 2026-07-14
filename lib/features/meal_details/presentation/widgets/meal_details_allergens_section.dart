@@ -23,7 +23,7 @@ class MealDetailsAllergensSection extends StatelessWidget {
         Wrap(
           spacing: Spacing.sm,
           runSpacing: Spacing.sm,
-          alignment: WrapAlignment.end,
+          alignment: WrapAlignment.start,
           children: [
             for (final allergen in meal.allergens)
               IconTheme(

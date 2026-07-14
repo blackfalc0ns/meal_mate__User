@@ -1518,4 +1518,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get calendar_pick_restaurant_second => 'مطعم';
+
+  @override
+  String get meal_details_optional_notes_title => 'ملاحظات اختيارية';
+
+  @override
+  String get meal_details_optional_notes_hint =>
+      'مثال: بدون بصل، بدون ثوم، زيادة خضار...';
+
+  @override
+  String get meal_details_select_meal_button => 'اختيار هذه الوجبة';
+
+  @override
+  String get meal_details_select_meal_hint =>
+      'سيتم تثبيت هذه الوجبة لليوم المختار';
 }

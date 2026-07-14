@@ -3,10 +3,12 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_allergens_section.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_bottom_action_button.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_ingredients_section.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_info_row.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_macro_distribution_card.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_nutrition_section.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_optional_notes_field.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_title_section.dart';
 
 class MealDetailsSheet extends StatelessWidget {
@@ -25,34 +27,50 @@ class MealDetailsSheet extends StatelessWidget {
       ),
       child: ColoredBox(
         color: color.surface,
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
-          padding: EdgeInsets.only(
-            top: Spacing.md,
-            left: Spacing.xl,
-            right: Spacing.xl,
-            bottom: MediaQuery.paddingOf(context).bottom + Spacing.xl,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              MealDetailsTitleSection(meal: meal),
-              const SizedBox(height: Spacing.md),
-              MealDetailsInfoRow(meal: meal),
-              const SizedBox(height: Spacing.md),
-              MealDetailsIngredientsSection(meal: meal),
-              const SizedBox(height: Spacing.base),
-              MealDetailsNutritionSection(
-                title: meal.nutritionTitle,
-                items: meal.nutritionItems,
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.only(
+                top: Spacing.md,
+                left: Spacing.xl,
+                right: Spacing.xl,
+                bottom: MediaQuery.paddingOf(context).bottom + Spacing.xl,
               ),
-              const SizedBox(height: Spacing.base),
-              MealDetailsMacroDistributionCard(meal: meal),
-              const SizedBox(height: Spacing.lg),
-              MealDetailsAllergensSection(meal: meal),
-              SizedBox(height: locale.localeName == 'ar' ? Spacing.sm : 0),
-            ],
-          ),
+              sliver: SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    MealDetailsTitleSection(meal: meal),
+                    const SizedBox(height: Spacing.md),
+                    MealDetailsInfoRow(meal: meal),
+                    const SizedBox(height: Spacing.md),
+                    MealDetailsIngredientsSection(meal: meal),
+                    const SizedBox(height: Spacing.base),
+                    MealDetailsNutritionSection(
+                      title: meal.nutritionTitle,
+                      items: meal.nutritionItems,
+                    ),
+                    const SizedBox(height: Spacing.base),
+                    MealDetailsMacroDistributionCard(meal: meal),
+                    const Spacer(),
+                    const SizedBox(height: Spacing.lg),
+                    MealDetailsAllergensSection(meal: meal),
+                    const SizedBox(height: Spacing.lg),
+                    const MealDetailsOptionalNotesField(),
+                    const SizedBox(height: Spacing.md),
+                    MealDetailsBottomActionButton(
+                      onPressed: () => Navigator.maybePop(context),
+                    ),
+                    SizedBox(
+                      height: locale.localeName == 'ar' ? Spacing.sm : 0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -26,13 +26,49 @@ class MealDetailsIngredientsSection extends StatelessWidget {
               horizontal: BorderSide(color: color.outlineVariant),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: SizedBox(
+            height: Spacing.avatarLg + Spacing.md,
+            child: Stack(
+              alignment: Alignment.centerLeft,
               children: [
-                for (final ingredient in meal.ingredients)
-                  MealDetailsIngredientItem(ingredient: ingredient),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsetsDirectional.only(
+                    end: Spacing.xl,
+                    top: Spacing.xs,
+                    bottom: Spacing.xs,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (final ingredient in meal.ingredients) ...[
+                        MealDetailsIngredientItem(ingredient: ingredient),
+                        if (ingredient != meal.ingredients.last)
+                          const SizedBox(width: Spacing.md),
+                      ],
+                    ],
+                  ),
+                ),
+                PositionedDirectional(
+                  end: 0,
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: color.surface.withValues(alpha: 0.92),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: color.outlineVariant),
+                      ),
+                      child: Icon(
+                        locale.localeName == 'ar'
+                            ? Icons.chevron_left_rounded
+                            : Icons.chevron_right_rounded,
+                        size: Spacing.iconMd,
+                        color: color.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

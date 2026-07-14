@@ -1537,4 +1537,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendar_pick_restaurant_second => 'restaurant';
+
+  @override
+  String get meal_details_optional_notes_title => 'Optional notes';
+
+  @override
+  String get meal_details_optional_notes_hint =>
+      'Example: no onion, no garlic, extra vegetables...';
+
+  @override
+  String get meal_details_select_meal_button => 'Select this meal';
+
+  @override
+  String get meal_details_select_meal_hint =>
+      'This meal will be fixed for the selected day';
 }

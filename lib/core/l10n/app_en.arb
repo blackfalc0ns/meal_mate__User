@@ -501,5 +501,9 @@
   "calendar_meal_suffix": " meal",
   "calendar_change_restaurant": "Change restaurant",
   "calendar_pick_restaurant_first": "Choose ",
-  "calendar_pick_restaurant_second": "restaurant"
+  "calendar_pick_restaurant_second": "restaurant",
+  "meal_details_optional_notes_title": "Optional notes",
+  "meal_details_optional_notes_hint": "Example: no onion, no garlic, extra vegetables...",
+  "meal_details_select_meal_button": "Select this meal",
+  "meal_details_select_meal_hint": "This meal will be fixed for the selected day"
 }

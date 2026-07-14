@@ -3025,6 +3025,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'restaurant'**
   String get calendar_pick_restaurant_second;
+
+  /// No description provided for @meal_details_optional_notes_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional notes'**
+  String get meal_details_optional_notes_title;
+
+  /// No description provided for @meal_details_optional_notes_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: no onion, no garlic, extra vegetables...'**
+  String get meal_details_optional_notes_hint;
+
+  /// No description provided for @meal_details_select_meal_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Select this meal'**
+  String get meal_details_select_meal_button;
+
+  /// No description provided for @meal_details_select_meal_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'This meal will be fixed for the selected day'**
+  String get meal_details_select_meal_hint;
 }
 
 class _AppLocalizationsDelegate
