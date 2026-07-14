@@ -13,7 +13,7 @@ class SubscriptionProgramHeader extends StatelessWidget {
     final locale = context.localization;
 
     return Align(
-      alignment: AlignmentDirectional.centerEnd,
+      alignment: AlignmentDirectional.centerStart,
       child: SizedBox(
         width: Spacing.subscriptionProgramsHeaderWidth,
         child: Column(

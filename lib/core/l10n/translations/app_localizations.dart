@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @app_brand_name.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate'**
+  String get app_brand_name;
+
+  /// No description provided for @app_brand_tagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Daily Meal Mate'**
+  String get app_brand_tagline;
+
   /// No description provided for @error_no_internet_connection.
   ///
   /// In en, this message translates to:
@@ -1949,7 +1961,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscription_choose_plan_title.
   ///
   /// In en, this message translates to:
-  /// **'Choose the right plan for you'**
+  /// **'Choose the package that suits you'**
   String get subscription_choose_plan_title;
 
   /// No description provided for @subscription_choose_plan_button.
@@ -1957,6 +1969,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose plan'**
   String get subscription_choose_plan_button;
+
+  /// No description provided for @subscription_selected_program_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected program:'**
+  String get subscription_selected_program_label;
+
+  /// No description provided for @subscription_weight_loss_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss'**
+  String get subscription_weight_loss_title;
+
+  /// No description provided for @subscription_weight_loss_description.
+  ///
+  /// In en, this message translates to:
+  /// **'A low-calorie program to help you lose weight in a healthy and safe way'**
+  String get subscription_weight_loss_description;
+
+  /// No description provided for @subscription_less_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Less calories'**
+  String get subscription_less_calories;
+
+  /// No description provided for @subscription_effective_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective results'**
+  String get subscription_effective_results;
+
+  /// No description provided for @subscription_four_meals_package.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals package'**
+  String get subscription_four_meals_package;
+
+  /// No description provided for @subscription_four_meals_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast - Lunch - Dinner - Snack'**
+  String get subscription_four_meals_details;
+
+  /// No description provided for @subscription_three_meals_package.
+  ///
+  /// In en, this message translates to:
+  /// **'3 meals package'**
+  String get subscription_three_meals_package;
+
+  /// No description provided for @subscription_three_meals_details.
+  ///
+  /// In en, this message translates to:
+  /// **'14 days - 3 meals daily'**
+  String get subscription_three_meals_details;
+
+  /// No description provided for @subscription_two_meals_package.
+  ///
+  /// In en, this message translates to:
+  /// **'2 meals package'**
+  String get subscription_two_meals_package;
+
+  /// No description provided for @subscription_two_meals_details.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days - 2 meals daily'**
+  String get subscription_two_meals_details;
 
   /// No description provided for @subscription_month_plan_title.
   ///
@@ -1973,7 +2051,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscription_week_plan_title.
   ///
   /// In en, this message translates to:
-  /// **'Weekly plan'**
+  /// **'Week'**
   String get subscription_week_plan_title;
 
   /// No description provided for @subscription_month_duration.

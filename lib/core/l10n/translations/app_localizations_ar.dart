@@ -9,6 +9,12 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get app_brand_name => 'MealMate';
+
+  @override
+  String get app_brand_tagline => 'Your Daily Meal Mate';
+
+  @override
   String get error_no_internet_connection => 'لا يوجد اتصال بالإنترنت';
 
   @override
@@ -970,10 +976,44 @@ class AppLocalizationsAr extends AppLocalizations {
       'اختر الباقة المناسبة لأسلوب حياتك واستمتع بوجبات صحية كل يوم';
 
   @override
-  String get subscription_choose_plan_title => 'اختر الباقة المناسبة لك';
+  String get subscription_choose_plan_title => 'اختر الباقة التي تناسبك';
 
   @override
   String get subscription_choose_plan_button => 'اختر الباقة';
+
+  @override
+  String get subscription_selected_program_label => 'البرنامج المختار :';
+
+  @override
+  String get subscription_weight_loss_title => 'خسارة الوزن';
+
+  @override
+  String get subscription_weight_loss_description =>
+      'برنامج منخفض السعرات لمساعدتك على خسارة الوزن بطريقة صحية و آمنة';
+
+  @override
+  String get subscription_less_calories => 'سعرات أقل';
+
+  @override
+  String get subscription_effective_results => 'نتائج فعالة';
+
+  @override
+  String get subscription_four_meals_package => 'باقة 4 وجبات';
+
+  @override
+  String get subscription_four_meals_details => 'افطار - غداء - عشاء - سناك';
+
+  @override
+  String get subscription_three_meals_package => 'باقة 3 وجبات';
+
+  @override
+  String get subscription_three_meals_details => '14 يوم - 3 وجبات يومياً';
+
+  @override
+  String get subscription_two_meals_package => 'باقة وجبتين';
+
+  @override
+  String get subscription_two_meals_details => '7 يوم - وجبتين يومياً';
 
   @override
   String get subscription_month_plan_title => 'باقة شهر';
@@ -982,7 +1022,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_half_month_plan_title => 'باقة نصف شهر';
 
   @override
-  String get subscription_week_plan_title => 'باقة أسبوع';
+  String get subscription_week_plan_title => 'الأسبوع';
 
   @override
   String get subscription_month_duration => '26 أيام';

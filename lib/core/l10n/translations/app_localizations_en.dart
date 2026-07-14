@@ -9,6 +9,12 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get app_brand_name => 'MealMate';
+
+  @override
+  String get app_brand_tagline => 'Your Daily Meal Mate';
+
+  @override
   String get error_no_internet_connection => 'No internet connection';
 
   @override
@@ -985,10 +991,46 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose the plan that fits your lifestyle and enjoy healthy meals every day';
 
   @override
-  String get subscription_choose_plan_title => 'Choose the right plan for you';
+  String get subscription_choose_plan_title =>
+      'Choose the package that suits you';
 
   @override
   String get subscription_choose_plan_button => 'Choose plan';
+
+  @override
+  String get subscription_selected_program_label => 'Selected program:';
+
+  @override
+  String get subscription_weight_loss_title => 'Weight loss';
+
+  @override
+  String get subscription_weight_loss_description =>
+      'A low-calorie program to help you lose weight in a healthy and safe way';
+
+  @override
+  String get subscription_less_calories => 'Less calories';
+
+  @override
+  String get subscription_effective_results => 'Effective results';
+
+  @override
+  String get subscription_four_meals_package => '4 meals package';
+
+  @override
+  String get subscription_four_meals_details =>
+      'Breakfast - Lunch - Dinner - Snack';
+
+  @override
+  String get subscription_three_meals_package => '3 meals package';
+
+  @override
+  String get subscription_three_meals_details => '14 days - 3 meals daily';
+
+  @override
+  String get subscription_two_meals_package => '2 meals package';
+
+  @override
+  String get subscription_two_meals_details => '7 days - 2 meals daily';
 
   @override
   String get subscription_month_plan_title => 'Monthly plan';
@@ -997,7 +1039,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_half_month_plan_title => 'Half-month plan';
 
   @override
-  String get subscription_week_plan_title => 'Weekly plan';
+  String get subscription_week_plan_title => 'Week';
 
   @override
   String get subscription_month_duration => '26 days';
