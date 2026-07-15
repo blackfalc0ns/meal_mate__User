@@ -27,7 +27,13 @@ class Assets {
   static const String subscriptionNoteMeal =
       '$_images/subscriptions/subscription_note_meal.png';
   static const String monthlyPlanHero =
-      '$_images/subscriptions/figma/monthly_plan_hero.png';
+      '$_images/subscriptions/figma/monthly_product_hero.png';
+  static const String monthlyProductLogo =
+      '$_images/subscriptions/figma/monthly_product_logo.svg';
+  static const String monthlyDurationSelector =
+      '$_images/subscriptions/figma/monthly_duration_selector.svg';
+  static const String monthlyPackageTiers =
+      '$_images/subscriptions/figma/monthly_package_tiers.svg';
   static const String subscriptionProgramsHero =
       '$_images/subscriptions/figma/programs_hero.png';
   static const String subscriptionProgramsLogo =

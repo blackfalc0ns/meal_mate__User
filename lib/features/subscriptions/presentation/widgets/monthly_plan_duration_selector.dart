@@ -3,9 +3,9 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_duration_option_card.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_duration_option.dart';
 
-class MonthlyPlanDurationSelector extends StatelessWidget {
+class MonthlyPlanDurationSelector extends StatefulWidget {
   const MonthlyPlanDurationSelector({
     super.key,
     required this.selectedIndex,
@@ -14,117 +14,260 @@ class MonthlyPlanDurationSelector extends StatelessWidget {
     required this.onFridayChanged,
   });
 
-  final int selectedIndex;
+  final int? selectedIndex;
   final ValueChanged<int> onSelected;
   final bool includesFriday;
   final ValueChanged<bool> onFridayChanged;
 
   @override
+  State<MonthlyPlanDurationSelector> createState() =>
+      _MonthlyPlanDurationSelectorState();
+}
+
+class _MonthlyPlanDurationSelectorState
+    extends State<MonthlyPlanDurationSelector> {
+  int _customDays = 30;
+
+  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final options = [
-      _DurationOption(
-        label: locale.subscription_month_period,
-        duration: locale.subscription_month_duration,
-      ),
-      _DurationOption(
-        label: locale.subscription_half_month_period,
-        duration: locale.subscription_half_month_duration,
-      ),
-      _DurationOption(
-        label: locale.subscription_week_period,
-        duration: locale.subscription_week_duration,
-      ),
-    ];
 
-    return Container(
-      padding: const EdgeInsets.all(Spacing.md),
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withValues(alpha: 0.08),
-            blurRadius: Spacing.sm,
-            offset: const Offset(0, Spacing.xs),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                locale.subscription_choose_plan_title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size14,
-                  color: color.onSurface,
-                ),
+    return AspectRatio(
+      aspectRatio:
+          Spacing.monthlyPlanDurationCardWidth /
+          Spacing.monthlyPlanDurationHeight,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        alignment: Alignment.topRight,
+        child: SizedBox(
+          width: Spacing.monthlyPlanDurationCardWidth,
+          height: Spacing.monthlyPlanDurationHeight,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: color.surface,
+              border: Border.all(color: color.outlineVariant),
+              borderRadius: BorderRadius.circular(
+                Spacing.monthlyPlanDurationCardRadius,
               ),
-              const SizedBox(width: Spacing.xs),
-              Icon(
-                Icons.calendar_month_outlined,
-                size: Spacing.iconMd,
-                color: color.primary,
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.sm),
-          Row(
-            children: [
-              for (var index = 0; index < options.length; index++) ...[
-                Expanded(
-                  child: MonthlyPlanDurationOptionCard(
-                    label: options[index].label,
-                    duration: options[index].duration,
-                    isSelected: index == selectedIndex,
-                    onTap: () => onSelected(index),
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: color.shadow.withValues(alpha: 0.15),
+                  blurRadius: Spacing.xs,
+                  offset: const Offset(0, Spacing.xs),
                 ),
-                if (index != options.length - 1)
-                  const SizedBox(width: Spacing.sm),
               ],
-            ],
-          ),
-          const SizedBox(height: Spacing.sm),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+            ),
+            child: Stack(
               children: [
-                Text(
-                  locale.calendar_friday,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size11,
-                    color: color.onSurfaceVariant,
+                Positioned(
+                  top: Spacing.monthlyPlanDurationHeaderTop,
+                  right: Spacing.monthlyPlanDurationHeaderEnd,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.calendar_month_outlined,
+                        color: color.primary,
+                        size: Spacing.lg,
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Text(
+                        locale.subscription_duration_title,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size11,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: Spacing.xs),
-                Checkbox(
-                  value: includesFriday,
-                  onChanged: (value) => onFridayChanged(value ?? false),
-                  activeColor: color.primary,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
+                _option(
+                  left: Spacing.monthlyPlanDurationMonthOptionLeft,
+                  label: locale.subscription_month_period,
+                  days: 26,
+                  fridayDays: 4,
+                  index: 0,
+                ),
+                _option(
+                  left: Spacing.monthlyPlanDurationHalfMonthOptionLeft,
+                  label: locale.subscription_half_month_period,
+                  days: 12,
+                  fridayDays: 2,
+                  index: 1,
+                ),
+                _option(
+                  left: Spacing.monthlyPlanDurationWeekOptionLeft,
+                  label: locale.subscription_week_period,
+                  days: 6,
+                  fridayDays: 1,
+                  index: 2,
+                ),
+                Positioned(
+                  left: Spacing.monthlyPlanDurationCustomInputLeft,
+                  top: Spacing.monthlyPlanDurationOptionTop,
+                  width: Spacing.monthlyPlanCustomDurationWidth,
+                  child: Text(
+                    locale.subscription_custom_duration,
+                    textAlign: TextAlign.center,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size8,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: Spacing.monthlyPlanDurationCustomInputLeft,
+                  top: Spacing.monthlyPlanDurationControlTop,
+                  width: Spacing.monthlyPlanCustomDurationWidth,
+                  height: Spacing.monthlyPlanDurationCustomInputHeight,
+                  child: OutlinedButton(
+                    onPressed: () => widget.onSelected(3),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      side: BorderSide(color: color.outlineVariant),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          Spacing.monthlyPlanDurationOptionRadius,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      '$_customDays',
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size15,
+                        color: color.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
+                _customControl(
+                  left: Spacing.monthlyPlanDurationMinusLeft,
+                  icon: Icons.remove_rounded,
+                  onPressed: _customDays > 1
+                      ? () => setState(() => _customDays--)
+                      : null,
+                ),
+                _customControl(
+                  left: Spacing.monthlyPlanDurationPlusLeft,
+                  icon: Icons.add_rounded,
+                  onPressed: _customDays < 30
+                      ? () => setState(() => _customDays++)
+                      : null,
+                ),
+                Positioned(
+                  top: Spacing.monthlyPlanDurationHintTop,
+                  left: Spacing.monthlyPlanDurationMinusLeft,
+                  width: Spacing.monthlyPlanDurationCustomGroupWidth,
+                  child: Center(
+                    child: Text(
+                      locale.subscription_days_range_hint,
+                      textAlign: TextAlign.center,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size7,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: Spacing.monthlyPlanDurationFridayTop,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: InkWell(
+                      onTap: () =>
+                          widget.onFridayChanged(!widget.includesFriday),
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 220),
+                            switchInCurve: Curves.easeOutBack,
+                            switchOutCurve: Curves.easeIn,
+                            transitionBuilder: (child, animation) =>
+                                ScaleTransition(scale: animation, child: child),
+                            child: Icon(
+                              widget.includesFriday
+                                  ? Icons.check_circle_rounded
+                                  : Icons.radio_button_unchecked_rounded,
+                              key: ValueKey(widget.includesFriday),
+                              color: widget.includesFriday
+                                  ? color.primary
+                                  : color.outline,
+                              size: Spacing.monthlyPlanDurationControlSize,
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Text(
+                            locale.subscription_add_friday,
+                            style: getMediumStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size11,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class _DurationOption {
-  const _DurationOption({required this.label, required this.duration});
+  Widget _option({
+    required double left,
+    required String label,
+    required int days,
+    required int fridayDays,
+    required int index,
+  }) {
+    return Positioned(
+      left: left,
+      top: Spacing.monthlyPlanDurationOptionTop,
+      width: Spacing.monthlyPlanDurationOptionWidth,
+      child: MonthlyPlanDurationOption(
+        label: label,
+        days: days,
+        fridayDays: fridayDays,
+        isSelected: widget.selectedIndex == index,
+        includesFriday: widget.includesFriday,
+        onTap: () => widget.onSelected(index),
+      ),
+    );
+  }
 
-  final String label;
-  final String duration;
+  Widget _customControl({
+    required double left,
+    required IconData icon,
+    required VoidCallback? onPressed,
+  }) {
+    return Positioned(
+      left: left,
+      top: Spacing.monthlyPlanDurationControlTop,
+      width: Spacing.monthlyPlanDurationControlWidth,
+      height: Spacing.monthlyPlanDurationControlWidth,
+      child: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints.tightFor(
+          width: Spacing.monthlyPlanDurationControlWidth,
+          height: Spacing.monthlyPlanDurationControlWidth,
+        ),
+        icon: Icon(icon, size: Spacing.monthlyPlanDurationControlSize),
+      ),
+    );
+  }
 }

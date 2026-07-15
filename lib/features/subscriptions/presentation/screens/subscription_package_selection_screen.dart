@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -112,6 +114,8 @@ class _SubscriptionPackageSelectionScreenState
     );
   }
 
-  void _selectPackage(int index) =>
-      setState(() => _selectedPackageIndex = index);
+  void _selectPackage(int index) {
+    setState(() => _selectedPackageIndex = index);
+    context.pushNamed(AppRoutes.subscriptionPlanDetails, arguments: index);
+  }
 }

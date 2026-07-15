@@ -1048,6 +1048,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_month_duration => '26 days';
 
   @override
+  String get subscription_duration_title => 'Subscription duration';
+
+  @override
+  String get subscription_custom_duration => 'Custom';
+
+  @override
+  String get subscription_add_friday => 'Add Friday';
+
+  @override
+  String get subscription_days_range_hint =>
+      'You can enter any number of days (1-30 days)';
+
+  @override
+  String get subscription_day => 'Day';
+
+  @override
   String get subscription_half_month_duration => '12 days';
 
   @override

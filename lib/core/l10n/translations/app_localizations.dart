@@ -2066,6 +2066,36 @@ abstract class AppLocalizations {
   /// **'26 days'**
   String get subscription_month_duration;
 
+  /// No description provided for @subscription_duration_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription duration'**
+  String get subscription_duration_title;
+
+  /// No description provided for @subscription_custom_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get subscription_custom_duration;
+
+  /// No description provided for @subscription_add_friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Friday'**
+  String get subscription_add_friday;
+
+  /// No description provided for @subscription_days_range_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can enter any number of days (1-30 days)'**
+  String get subscription_days_range_hint;
+
+  /// No description provided for @subscription_day.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get subscription_day;
+
   /// No description provided for @subscription_half_month_duration.
   ///
   /// In en, this message translates to:

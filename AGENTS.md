@@ -152,3 +152,22 @@ Reuse existing code whenever possible.
 * Create fake or placeholder code just to satisfy these rules.
 * Leave unused imports, variables, methods, or classes in the final code.
 - Never create a widget inside another widget file, even if it is used only once.
+
+
+# Figma Rules
+
+- Figma is the single source of truth.
+- Implement the design exactly as it appears in Figma.
+- Never redesign, improve, or reinterpret the UI.
+- Always inspect the Figma node before implementing.
+- Never guess measurements, colors, typography, spacing, or sizes.
+- Use the exact values from Figma for spacing, padding, margins, dimensions, border radius, colors, typography, shadows, and icon sizes.
+- Never adjust spacing or alignment manually to "look better".
+- Never change the widget hierarchy unless explicitly requested.
+- If any detail is unclear, inspect the Figma properties instead of making assumptions.
+- The final Flutter UI must match the Figma design as closely as possible, pixel by pixel.
+- If the implementation differs from Figma, Figma is always correct.
+
+- Do not use screenshots as the source of truth.
+- Always inspect the Figma file and its nodes before implementing.
+- Never estimate values from images when they are available in Figma.
