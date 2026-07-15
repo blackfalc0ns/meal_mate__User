@@ -27,7 +27,16 @@ part 'calendar_divider_line.dart';
 part 'calendar_protein_logo.dart';
 
 class CalendarMealPickerSheet extends StatefulWidget {
-  const CalendarMealPickerSheet({super.key});
+  const CalendarMealPickerSheet({
+    super.key,
+    this.restaurantName,
+    this.restaurantLogoAsset,
+    this.restaurantInitials,
+  });
+
+  final String? restaurantName;
+  final String? restaurantLogoAsset;
+  final String? restaurantInitials;
 
   @override
   State<CalendarMealPickerSheet> createState() =>
@@ -44,6 +53,8 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     final color = context.colorScheme;
     final locale = context.localization;
     final height = MediaQuery.sizeOf(context).height;
+    final restaurantName =
+        widget.restaurantName ?? locale.calendar_restaurant_name;
 
     final mealTabs = [
       locale.calendar_breakfast,
@@ -89,7 +100,11 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                               const SizedBox(height: Spacing.lg),
                               const CalendarSheetHandle(),
                               const SizedBox(height: Spacing.md),
-                              const CalendarMealPickerRestaurantHeader(),
+                              CalendarMealPickerRestaurantHeader(
+                                restaurantName: restaurantName,
+                                restaurantLogoAsset: widget.restaurantLogoAsset,
+                                restaurantInitials: widget.restaurantInitials,
+                              ),
                               const CalendarMealPickerRestaurantDescription(),
                               const CalendarDividerLine(),
                               const CalendarSourceSection(),

@@ -182,4 +182,11 @@ class Spacing {
   static const double monthlyPlanPackageButtonTop = 197.104;
   static const double monthlyPlanPackageButtonWidth = 85.76;
   static const double monthlyPlanPackageButtonHeight = 18.9;
+  static const double monthlyRestaurantCardBottomPadding = 7.0;
+  static const double monthlyRestaurantCardRadius = 15.7;
+  static const double monthlyRestaurantCardBorderWidth = 1.2;
+  static const double monthlyRestaurantCardShadowBlur = 10.0;
+  static const double monthlyRestaurantCardLogoSize = 47.0;
+  static const double monthlyRestaurantCardMetaHeight = 18.0;
+  static const double monthlyRestaurantCardTinyGap = 2.0;
 }

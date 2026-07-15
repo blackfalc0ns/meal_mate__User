@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
@@ -10,6 +11,7 @@ import 'package:meal_meat_user/features/subscriptions/presentation/screens/subsc
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/family_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_package_selection_screen.dart';
+import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_activated_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
@@ -54,6 +56,16 @@ class RouteGenerator {
         return _buildRoute(settings: settings, page: const CalendarScreen());
       case AppRoutes.mealDetails:
         return _buildRoute(settings: settings, page: const MealDetailsScreen());
+      case AppRoutes.restaurantDetails:
+        final restaurant = settings.arguments! as MonthlyRestaurantPlanEntity;
+        return _buildRoute(
+          settings: settings,
+          page: CalendarMealPickerSheet(
+            restaurantName: restaurant.name,
+            restaurantLogoAsset: restaurant.logoAsset,
+            restaurantInitials: restaurant.initials,
+          ),
+        );
 
       case AppRoutes.offerDetails:
         return _buildRoute(

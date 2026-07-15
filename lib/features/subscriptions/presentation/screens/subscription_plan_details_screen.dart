@@ -61,57 +61,78 @@ class _SubscriptionPlanDetailsScreenState
                       onBack: _pop,
                     ),
                   ),
-                  if (_isRestaurantsView)
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.monthlyPlanContentHorizontalPadding,
-                      ),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate.fixed([
-                          Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: IconButton(
-                              onPressed: () =>
-                                  setState(() => _isRestaurantsView = false),
-                              icon: Icon(
-                                Icons.close_rounded,
-                                color: color.onSurface,
-                                size: Spacing.iconLg,
-                                semanticLabel: locale.go_back,
-                              ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.monthlyPlanContentHorizontalPadding,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 360),
+                        reverseDuration: const Duration(milliseconds: 220),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeInCubic,
+                        transitionBuilder: (child, animation) {
+                          final slideAnimation = Tween<Offset>(
+                            begin: const Offset(0, 0.08),
+                            end: Offset.zero,
+                          ).animate(animation);
+
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: slideAnimation,
+                              child: RepaintBoundary(child: child),
                             ),
-                          ),
-                          MonthlyPlanRestaurantsSection(
-                            mode: SubscriptionPlanViewMode.grid,
-                            restaurants: plan.restaurants,
-                          ),
-                        ]),
-                      ),
-                    )
-                  else
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.monthlyPlanContentHorizontalPadding,
-                      ),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate.fixed([
-                          MonthlyPlanDurationSelector(
-                            selectedIndex: _selectedDurationIndex,
-                            onSelected: (index) =>
-                                setState(() => _selectedDurationIndex = index),
-                            includesFriday: _includesFriday,
-                            onFridayChanged: (value) =>
-                                setState(() => _includesFriday = value),
-                          ),
-                          const SizedBox(height: Spacing.md),
-                          MonthlyPlanPackagesSection(
-                            packages: plan.packageTiers,
-                            onBrowseRestaurants: () =>
-                                setState(() => _isRestaurantsView = true),
-                          ),
-                        ]),
+                          );
+                        },
+                        child: _isRestaurantsView
+                            ? Column(
+                                key: const ValueKey('restaurants-view'),
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: IconButton(
+                                      onPressed: () => setState(
+                                        () => _isRestaurantsView = false,
+                                      ),
+                                      icon: Icon(
+                                        Icons.close_rounded,
+                                        color: color.onSurface,
+                                        size: Spacing.iconLg,
+                                        semanticLabel: locale.go_back,
+                                      ),
+                                    ),
+                                  ),
+                                  MonthlyPlanRestaurantsSection(
+                                    mode: SubscriptionPlanViewMode.grid,
+                                    restaurants: plan.restaurants,
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                key: const ValueKey('packages-view'),
+                                children: [
+                                  MonthlyPlanDurationSelector(
+                                    selectedIndex: _selectedDurationIndex,
+                                    onSelected: (index) => setState(
+                                      () => _selectedDurationIndex = index,
+                                    ),
+                                    includesFriday: _includesFriday,
+                                    onFridayChanged: (value) =>
+                                        setState(() => _includesFriday = value),
+                                  ),
+                                  const SizedBox(height: Spacing.md),
+                                  MonthlyPlanPackagesSection(
+                                    packages: plan.packageTiers,
+                                    onBrowseRestaurants: () => setState(
+                                      () => _isRestaurantsView = true,
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ),
                     ),
+                  ),
                   const SliverToBoxAdapter(
                     child: SizedBox(height: Spacing.xxxl * 2),
                   ),
