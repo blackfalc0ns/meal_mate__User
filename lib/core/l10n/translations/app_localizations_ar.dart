@@ -1113,6 +1113,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_details_subscribe_now => 'اشترك الآن';
 
   @override
+  String get subscription_summary_title => 'ملخص الاشتراك';
+
+  @override
+  String get subscription_summary_duration_label => 'المدة';
+
+  @override
+  String get subscription_summary_duration_value => 'شهر واحد';
+
+  @override
+  String get subscription_summary_package_label => 'الباقة';
+
+  @override
+  String get subscription_summary_restaurant_tier_label => 'تصنيف المطاعم';
+
+  @override
+  String get subscription_summary_restaurant_tier_value => 'بلاتينيوم';
+
+  @override
+  String get subscription_summary_includes_label => 'يشمل اشتراكك';
+
+  @override
+  String get subscription_summary_daily_meals =>
+      '4 وجبات يومياً (إفطار - غداء - عشاء - سناك)';
+
+  @override
+  String get subscription_summary_restaurants => 'أكثر من 100 مطعم';
+
+  @override
+  String get subscription_summary_quality => 'مكونات عالية الجودة';
+
+  @override
+  String get subscription_summary_variety => 'تنوع يومي في الوجبات';
+
+  @override
+  String get subscription_summary_total_price_label => 'السعر الإجمالي';
+
+  @override
   String get family_details_title => 'تفاصيل الباقة العائلية';
 
   @override

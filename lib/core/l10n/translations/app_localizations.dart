@@ -2222,6 +2222,78 @@ abstract class AppLocalizations {
   /// **'Subscribe now'**
   String get subscription_details_subscribe_now;
 
+  /// No description provided for @subscription_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription summary'**
+  String get subscription_summary_title;
+
+  /// No description provided for @subscription_summary_duration_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get subscription_summary_duration_label;
+
+  /// No description provided for @subscription_summary_duration_value.
+  ///
+  /// In en, this message translates to:
+  /// **'One month'**
+  String get subscription_summary_duration_value;
+
+  /// No description provided for @subscription_summary_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get subscription_summary_package_label;
+
+  /// No description provided for @subscription_summary_restaurant_tier_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant tier'**
+  String get subscription_summary_restaurant_tier_label;
+
+  /// No description provided for @subscription_summary_restaurant_tier_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum'**
+  String get subscription_summary_restaurant_tier_value;
+
+  /// No description provided for @subscription_summary_includes_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription includes'**
+  String get subscription_summary_includes_label;
+
+  /// No description provided for @subscription_summary_daily_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals daily (breakfast - lunch - dinner - snack)'**
+  String get subscription_summary_daily_meals;
+
+  /// No description provided for @subscription_summary_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 100 restaurants'**
+  String get subscription_summary_restaurants;
+
+  /// No description provided for @subscription_summary_quality.
+  ///
+  /// In en, this message translates to:
+  /// **'High-quality ingredients'**
+  String get subscription_summary_quality;
+
+  /// No description provided for @subscription_summary_variety.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily meal variety'**
+  String get subscription_summary_variety;
+
+  /// No description provided for @subscription_summary_total_price_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total price'**
+  String get subscription_summary_total_price_label;
+
   /// No description provided for @family_details_title.
   ///
   /// In en, this message translates to:

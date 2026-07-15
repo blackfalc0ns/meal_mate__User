@@ -5,6 +5,7 @@ abstract class AppRoutes {
   static const String subscriptionPackageSelection =
       '/subscription-package-selection';
   static const String subscriptionPlanDetails = '/subscription-plan-details';
+  static const String subscriptionSummary = '/subscription-summary';
   static const String familyPlanDetails = '/family-plan-details';
   static const String calendar = '/calendar';
   static const String mealDetails = '/meal-details';

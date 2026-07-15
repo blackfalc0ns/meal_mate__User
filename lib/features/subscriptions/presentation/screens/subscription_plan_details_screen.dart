@@ -4,13 +4,13 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/features/subscriptions/data/monthly_plan_details_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_duration_selector.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_hero_section.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_packages_section.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_restaurants_section.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_subscribe_bar.dart';
 
 class SubscriptionPlanDetailsScreen extends StatefulWidget {
   const SubscriptionPlanDetailsScreen({super.key, this.initialPage = 0});
@@ -142,9 +142,13 @@ class _SubscriptionPlanDetailsScreenState
                 start: Spacing.monthlyPlanContentHorizontalPadding,
                 end: Spacing.monthlyPlanContentHorizontalPadding,
                 bottom: Spacing.monthlyPlanContentHorizontalPadding,
-                child: MonthlyPlanSubscribeBar(
-                  plan: plan,
-                  onPressed: () => context.pushNamed(AppRoutes.payment),
+                child: AppSubscriptionButton(
+                  price: plan.price,
+                  currency: plan.currency,
+                  onPressed: () => context.pushNamed(
+                    AppRoutes.subscriptionSummary,
+                    arguments: plan,
+                  ),
                 ),
               ),
             ],

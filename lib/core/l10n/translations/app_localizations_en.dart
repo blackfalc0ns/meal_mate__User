@@ -1130,6 +1130,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_details_subscribe_now => 'Subscribe now';
 
   @override
+  String get subscription_summary_title => 'Subscription summary';
+
+  @override
+  String get subscription_summary_duration_label => 'Duration';
+
+  @override
+  String get subscription_summary_duration_value => 'One month';
+
+  @override
+  String get subscription_summary_package_label => 'Package';
+
+  @override
+  String get subscription_summary_restaurant_tier_label => 'Restaurant tier';
+
+  @override
+  String get subscription_summary_restaurant_tier_value => 'Platinum';
+
+  @override
+  String get subscription_summary_includes_label =>
+      'Your subscription includes';
+
+  @override
+  String get subscription_summary_daily_meals =>
+      '4 meals daily (breakfast - lunch - dinner - snack)';
+
+  @override
+  String get subscription_summary_restaurants => 'More than 100 restaurants';
+
+  @override
+  String get subscription_summary_quality => 'High-quality ingredients';
+
+  @override
+  String get subscription_summary_variety => 'Daily meal variety';
+
+  @override
+  String get subscription_summary_total_price_label => 'Total price';
+
+  @override
   String get family_details_title => 'Family plan details';
 
   @override

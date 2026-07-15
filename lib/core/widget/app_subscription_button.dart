@@ -3,16 +3,17 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 
-class MonthlyPlanSubscribeBar extends StatelessWidget {
-  const MonthlyPlanSubscribeBar({
+class AppSubscriptionButton extends StatelessWidget {
+  const AppSubscriptionButton({
     super.key,
-    required this.plan,
+    required this.price,
+    required this.currency,
     required this.onPressed,
   });
 
-  final MonthlyPlanDetailsEntity plan;
+  final String price;
+  final String currency;
   final VoidCallback onPressed;
 
   @override
@@ -70,7 +71,7 @@ class MonthlyPlanSubscribeBar extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.sm),
                 Text(
-                  plan.price,
+                  price,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     fontSize: Spacing.monthlyPlanSubscribePriceSize,
@@ -79,7 +80,7 @@ class MonthlyPlanSubscribeBar extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xs),
                 Text(
-                  plan.currency,
+                  currency,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
