@@ -105,7 +105,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   void _openProgram(int index) {
     setState(() => _selectedProgramIndex = index);
     context.pushNamed(
-      AppRoutes.subscriptionPlanDetails,
+      AppRoutes.subscriptionPackageSelection,
       arguments: index.clamp(0, 2),
     );
   }

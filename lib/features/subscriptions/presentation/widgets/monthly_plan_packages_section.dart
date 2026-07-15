@@ -7,9 +7,14 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 
 class MonthlyPlanPackagesSection extends StatelessWidget {
-  const MonthlyPlanPackagesSection({super.key, required this.packages});
+  const MonthlyPlanPackagesSection({
+    super.key,
+    required this.packages,
+    required this.onBrowseRestaurants,
+  });
 
   final List<MonthlyPackageTierEntity> packages;
+  final VoidCallback onBrowseRestaurants;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,11 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               for (final package in packages)
-                _PackageTierCard(package: package, scale: scale),
+                _PackageTierCard(
+                  package: package,
+                  scale: scale,
+                  onBrowseRestaurants: onBrowseRestaurants,
+                ),
             ],
           ),
         );
@@ -34,10 +43,15 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
 }
 
 class _PackageTierCard extends StatelessWidget {
-  const _PackageTierCard({required this.package, required this.scale});
+  const _PackageTierCard({
+    required this.package,
+    required this.scale,
+    required this.onBrowseRestaurants,
+  });
 
   final MonthlyPackageTierEntity package;
   final double scale;
+  final VoidCallback onBrowseRestaurants;
 
   @override
   Widget build(BuildContext context) {
@@ -176,19 +190,23 @@ class _PackageTierCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 6 * scale),
-                  Container(
-                    height: (isPopular ? 29 : 26) * scale,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Text(
-                      locale.subscription_choose_plan_button,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 9.8 * scale,
-                        color: AppColors.white,
+                  InkWell(
+                    onTap: onBrowseRestaurants,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    child: Container(
+                      height: (isPopular ? 29 : 26) * scale,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: AppColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Text(
+                        locale.calendar_browse_restaurants,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: 9.8 * scale,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
                   ),
