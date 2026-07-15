@@ -1178,6 +1178,132 @@ abstract class AppLocalizations {
   /// **'Change your password and privacy settings'**
   String get profile_security_subtitle;
 
+  /// No description provided for @profile_privacy_security_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get profile_privacy_security_section;
+
+  /// No description provided for @profile_privacy_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get profile_privacy_section;
+
+  /// No description provided for @profile_privacy_change_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get profile_privacy_change_password;
+
+  /// No description provided for @profile_privacy_change_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the password for your account'**
+  String get profile_privacy_change_password_subtitle;
+
+  /// No description provided for @profile_privacy_phone_verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify phone number'**
+  String get profile_privacy_phone_verification;
+
+  /// No description provided for @profile_privacy_phone_verification_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your phone number to keep your account secure'**
+  String get profile_privacy_phone_verification_subtitle;
+
+  /// No description provided for @profile_privacy_email_verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify email address'**
+  String get profile_privacy_email_verification;
+
+  /// No description provided for @profile_privacy_email_verification_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email address to secure your account'**
+  String get profile_privacy_email_verification_subtitle;
+
+  /// No description provided for @profile_privacy_location_permission.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission'**
+  String get profile_privacy_location_permission;
+
+  /// No description provided for @profile_privacy_location_permission_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow access to your location for better services'**
+  String get profile_privacy_location_permission_subtitle;
+
+  /// No description provided for @profile_privacy_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get profile_privacy_notifications;
+
+  /// No description provided for @profile_privacy_notifications_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize alerts and updates'**
+  String get profile_privacy_notifications_subtitle;
+
+  /// No description provided for @profile_privacy_policy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get profile_privacy_policy;
+
+  /// No description provided for @profile_privacy_policy_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn how we collect and use your data'**
+  String get profile_privacy_policy_subtitle;
+
+  /// No description provided for @profile_privacy_terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get profile_privacy_terms;
+
+  /// No description provided for @profile_privacy_terms_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the terms and conditions of the service'**
+  String get profile_privacy_terms_subtitle;
+
+  /// No description provided for @profile_privacy_permissions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable permissions for a better experience'**
+  String get profile_privacy_permissions_title;
+
+  /// No description provided for @profile_privacy_permissions_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions help us provide more accurate services and recommendations.'**
+  String get profile_privacy_permissions_message;
+
+  /// No description provided for @profile_privacy_password_reminder_title.
+  ///
+  /// In en, this message translates to:
+  /// **'We recommend updating your password regularly'**
+  String get profile_privacy_password_reminder_title;
+
+  /// No description provided for @profile_privacy_password_reminder_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular updates increase account security and protect your personal data.'**
+  String get profile_privacy_password_reminder_message;
+
+  /// No description provided for @profile_privacy_manage_security.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage security'**
+  String get profile_privacy_manage_security;
+
   /// No description provided for @coming_soon_subtitle.
   ///
   /// In en, this message translates to:

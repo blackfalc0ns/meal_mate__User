@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_tile.dart';
@@ -65,6 +66,10 @@ class ProfileSettingsCard extends StatelessWidget {
             title: item.$2,
             subtitle: item.$3,
             showDivider: index != items.length - 1,
+            onTap: index == items.length - 1
+                ? () =>
+                      Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
+                : null,
           );
         }),
       ),

@@ -11,12 +11,16 @@ class ProfileSettingsTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.showDivider,
+    this.onTap,
+    this.height = Spacing.profileSettingsTileHeight,
   });
 
   final IconData icon;
   final String title;
   final String subtitle;
   final bool showDivider;
+  final VoidCallback? onTap;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +28,12 @@ class ProfileSettingsTile extends StatelessWidget {
     final locale = context.localization;
 
     return SizedBox(
-      height: Spacing.profileSettingsTileHeight,
+      height: height,
       child: Column(
         children: [
           Expanded(
             child: InkWell(
-              onTap: () {},
+              onTap: onTap,
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -82,7 +86,9 @@ class ProfileSettingsTile extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                      Icons.chevron_right_rounded,
+                      locale.localeName == 'ar'
+                          ? Icons.chevron_left_rounded
+                          : Icons.chevron_right_rounded,
                       color: color.onSurfaceVariant,
                       size: Spacing.iconSm,
                     ),

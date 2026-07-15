@@ -276,4 +276,21 @@ class Spacing {
   static const double profileTitleFontSize = 15.59;
   static const double profileBodyFontSize = 9.9;
   static const double profileSettingsTitleFontSize = 12.09;
+
+  // Security and privacy Figma measurements.
+  static const double profilePrivacyScreenHorizontalPadding = 26.09;
+  static const double profilePrivacyContentTopPadding = 24.38;
+  static const double profilePrivacyCardRadius = 14.125;
+  static const double profilePrivacySectionHeaderHeight = 46.72;
+  static const double profilePrivacyPrimaryTileHeight = 52.07;
+  static const double profilePrivacySecondaryTileHeight = 48.89;
+  static const double profilePrivacySectionGap = 6.52;
+  static const double profilePrivacyIconContainerSize = 27.16;
+  static const double profilePrivacyIconSize = 17.91;
+  static const double profilePrivacyNoticeHeight = 61.93;
+  static const double profilePrivacyReminderHeight = 51.0;
+  static const double profilePrivacyNoticeGap = 10.0;
+  static const double profilePrivacyButtonHeight = 31.51;
+  static const double profilePrivacyButtonRadius = 17.75;
+  static const double profilePrivacyAppBarTitleSize = 15.14;
 }

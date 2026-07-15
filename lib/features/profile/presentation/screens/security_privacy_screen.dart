@@ -1,0 +1,162 @@
+import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_notice.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_section_card.dart';
+
+class SecurityPrivacyScreen extends StatelessWidget {
+  const SecurityPrivacyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Scaffold(
+      backgroundColor: color.surface,
+      appBar: CustomAppBar(
+        title: locale.profile_security,
+        titleFontSize: Spacing.profilePrivacyAppBarTitleSize,
+        backgroundColor: color.surface,
+        showShadow: false,
+      ),
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.profilePrivacyScreenHorizontalPadding,
+          ).copyWith(top: Spacing.profilePrivacyContentTopPadding),
+          child: Column(
+            children: [
+              SecurityPrivacySectionCard(
+                title: locale.profile_privacy_security_section,
+                icon: Icons.verified_user_rounded,
+                tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
+                items: [
+                  (
+                    Icons.lock_rounded,
+                    locale.profile_privacy_change_password,
+                    locale.profile_privacy_change_password_subtitle,
+                    () =>
+                        Navigator.of(context).pushNamed(AppRoutes.newPassword),
+                  ),
+                  (
+                    Icons.phone_rounded,
+                    locale.profile_privacy_phone_verification,
+                    locale.profile_privacy_phone_verification_subtitle,
+                    () => Navigator.of(context).pushNamed(AppRoutes.otp),
+                  ),
+                  (
+                    Icons.email_rounded,
+                    locale.profile_privacy_email_verification,
+                    locale.profile_privacy_email_verification_subtitle,
+                    () => Navigator.of(context).pushNamed(AppRoutes.otp),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Spacing.profilePrivacySectionGap),
+              SecurityPrivacySectionCard(
+                title: locale.profile_privacy_section,
+                icon: Icons.shield_rounded,
+                tileHeight: Spacing.profilePrivacySecondaryTileHeight,
+                items: [
+                  (
+                    Icons.location_on_rounded,
+                    locale.profile_privacy_location_permission,
+                    locale.profile_privacy_location_permission_subtitle,
+                    () => _showComingSoon(context),
+                  ),
+                  (
+                    Icons.notifications_rounded,
+                    locale.profile_privacy_notifications,
+                    locale.profile_privacy_notifications_subtitle,
+                    () => _showComingSoon(context),
+                  ),
+                  (
+                    Icons.description_rounded,
+                    locale.profile_privacy_policy,
+                    locale.profile_privacy_policy_subtitle,
+                    () => _showComingSoon(context),
+                  ),
+                  (
+                    Icons.fact_check_rounded,
+                    locale.profile_privacy_terms,
+                    locale.profile_privacy_terms_subtitle,
+                    () => _showComingSoon(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Spacing.profilePrivacySectionGap),
+              SecurityPrivacyNotice(
+                icon: Icons.gpp_good_rounded,
+                title: locale.profile_privacy_permissions_title,
+                message: locale.profile_privacy_permissions_message,
+              ),
+              const SizedBox(height: Spacing.profilePrivacyNoticeGap),
+              SecurityPrivacyNotice(
+                icon: Icons.lock_rounded,
+                title: locale.profile_privacy_password_reminder_title,
+                message: locale.profile_privacy_password_reminder_message,
+                isWarning: true,
+              ),
+              const SizedBox(height: Spacing.lg),
+              SizedBox(
+                width: double.infinity,
+                height: Spacing.profilePrivacyButtonHeight,
+                child: FilledButton.icon(
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.newPassword),
+                  icon: Icon(Icons.lock_rounded, size: Spacing.md),
+                  label: Text(
+                    locale.profile_privacy_manage_security,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size12,
+                      color: color.onPrimary,
+                    ),
+                  ),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: color.primary,
+                    foregroundColor: color.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        Spacing.profilePrivacyButtonRadius,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Spacing.xxxl),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showComingSoon(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          backgroundColor: color.primary,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            locale.coming_soon_subtitle,
+            style: getRegularStyle(
+              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontSize: FontSize.size12,
+              color: color.onPrimary,
+            ),
+          ),
+        ),
+      );
+  }
+}

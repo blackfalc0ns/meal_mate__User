@@ -576,6 +576,81 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_security_subtitle => 'تغيير كلمة المرور وإعدادات الخصوصية';
 
   @override
+  String get profile_privacy_security_section => 'الأمان';
+
+  @override
+  String get profile_privacy_section => 'الخصوصية';
+
+  @override
+  String get profile_privacy_change_password => 'تغيير كلمة المرور';
+
+  @override
+  String get profile_privacy_change_password_subtitle =>
+      'قم بتحديث كلمة المرور الخاصة بحسابك';
+
+  @override
+  String get profile_privacy_phone_verification => 'التحقق من رقم الجوال';
+
+  @override
+  String get profile_privacy_phone_verification_subtitle =>
+      'تحقق من رقم جوالك لضمان أمان حسابك';
+
+  @override
+  String get profile_privacy_email_verification =>
+      'التحقق من البريد الإلكتروني';
+
+  @override
+  String get profile_privacy_email_verification_subtitle =>
+      'تحقق من بريدك الإلكتروني لتأمين حسابك';
+
+  @override
+  String get profile_privacy_location_permission => 'صلاحية الموقع';
+
+  @override
+  String get profile_privacy_location_permission_subtitle =>
+      'إدارة الوصول إلى موقعك لتحسين الخدمات';
+
+  @override
+  String get profile_privacy_notifications => 'الإشعارات';
+
+  @override
+  String get profile_privacy_notifications_subtitle =>
+      'تخصيص الإشعارات والتنبيهات';
+
+  @override
+  String get profile_privacy_policy => 'سياسة الخصوصية';
+
+  @override
+  String get profile_privacy_policy_subtitle =>
+      'تعرّف على كيفية جمع واستخدام بياناتك';
+
+  @override
+  String get profile_privacy_terms => 'الشروط والأحكام';
+
+  @override
+  String get profile_privacy_terms_subtitle =>
+      'اطلع على الشروط والأحكام الخاصة بالخدمة';
+
+  @override
+  String get profile_privacy_permissions_title =>
+      'فعّل الأذونات لتحصل على تجربة أفضل';
+
+  @override
+  String get profile_privacy_permissions_message =>
+      'تساعدنا الأذونات على تقديم خدمات أدق وتوصيات أكثر ملاءمة لك';
+
+  @override
+  String get profile_privacy_password_reminder_title =>
+      'نوصي بتحديث كلمة المرور بانتظام';
+
+  @override
+  String get profile_privacy_password_reminder_message =>
+      'تحديث كلمة المرور بشكل منتظم يزيد من أمان حسابك ويحمي بياناتك الشخصية';
+
+  @override
+  String get profile_privacy_manage_security => 'إدارة الأمان';
+
+  @override
   String get coming_soon_subtitle =>
       'هذا القسم قيد التجهيز وسيكون متاحًا قريبًا.';
 

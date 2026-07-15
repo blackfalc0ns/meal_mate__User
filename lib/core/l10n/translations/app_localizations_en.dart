@@ -590,6 +590,80 @@ class AppLocalizationsEn extends AppLocalizations {
       'Change your password and privacy settings';
 
   @override
+  String get profile_privacy_security_section => 'Security';
+
+  @override
+  String get profile_privacy_section => 'Privacy';
+
+  @override
+  String get profile_privacy_change_password => 'Change password';
+
+  @override
+  String get profile_privacy_change_password_subtitle =>
+      'Update the password for your account';
+
+  @override
+  String get profile_privacy_phone_verification => 'Verify phone number';
+
+  @override
+  String get profile_privacy_phone_verification_subtitle =>
+      'Verify your phone number to keep your account secure';
+
+  @override
+  String get profile_privacy_email_verification => 'Verify email address';
+
+  @override
+  String get profile_privacy_email_verification_subtitle =>
+      'Verify your email address to secure your account';
+
+  @override
+  String get profile_privacy_location_permission => 'Location permission';
+
+  @override
+  String get profile_privacy_location_permission_subtitle =>
+      'Allow access to your location for better services';
+
+  @override
+  String get profile_privacy_notifications => 'Notifications';
+
+  @override
+  String get profile_privacy_notifications_subtitle =>
+      'Customize alerts and updates';
+
+  @override
+  String get profile_privacy_policy => 'Privacy policy';
+
+  @override
+  String get profile_privacy_policy_subtitle =>
+      'Learn how we collect and use your data';
+
+  @override
+  String get profile_privacy_terms => 'Terms and conditions';
+
+  @override
+  String get profile_privacy_terms_subtitle =>
+      'Review the terms and conditions of the service';
+
+  @override
+  String get profile_privacy_permissions_title =>
+      'Enable permissions for a better experience';
+
+  @override
+  String get profile_privacy_permissions_message =>
+      'Permissions help us provide more accurate services and recommendations.';
+
+  @override
+  String get profile_privacy_password_reminder_title =>
+      'We recommend updating your password regularly';
+
+  @override
+  String get profile_privacy_password_reminder_message =>
+      'Regular updates increase account security and protect your personal data.';
+
+  @override
+  String get profile_privacy_manage_security => 'Manage security';
+
+  @override
   String get coming_soon_subtitle =>
       'This section is being prepared and will be available soon.';
 
