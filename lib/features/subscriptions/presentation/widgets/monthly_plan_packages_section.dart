@@ -21,7 +21,7 @@ class MonthlyPlanPackagesSection extends StatefulWidget {
 
 class _MonthlyPlanPackagesSectionState
     extends State<MonthlyPlanPackagesSection> {
-  int _selectedIndex = 1;
+  int? _selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -34,32 +34,45 @@ class _MonthlyPlanPackagesSectionState
         color: color.surface,
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final cardWidth =
-                (constraints.maxWidth - (Spacing.sm * 2)) /
-                widget.packages.length;
+            final contentWidth =
+                constraints.maxWidth - Spacing.monthlyPlanPackageGap * 2;
+            final designContentWidth =
+                Spacing.monthlyPlanPackageSideWidth * 2 +
+                Spacing.monthlyPlanPackageFeaturedWidth +
+                Spacing.monthlyPlanPackageGap * 2;
+            final scale = (contentWidth / designContentWidth)
+                .clamp(0.0, 1.0)
+                .toDouble();
 
-            return Row(
-              textDirection: TextDirection.ltr,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                for (
-                  var index = 0;
-                  index < widget.packages.length;
-                  index++
-                ) ...[
-                  Expanded(
-                    child: MonthlyPlanPackageCard(
-                      package: widget.packages[index],
-                      width: cardWidth,
-                      isSelected: _selectedIndex == index,
-                      onTap: () => setState(() => _selectedIndex = index),
-                      onBrowseRestaurants: widget.onBrowseRestaurants,
-                    ),
-                  ),
-                  if (index != widget.packages.length - 1)
-                    const SizedBox(width: Spacing.sm),
-                ],
-              ],
+            return Center(
+              child: SizedBox(
+                width: designContentWidth * scale,
+                child: Row(
+                  textDirection: TextDirection.ltr,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    for (
+                      var index = 0;
+                      index < widget.packages.length;
+                      index++
+                    ) ...[
+                      MonthlyPlanPackageCard(
+                        package: widget.packages[index],
+                        width:
+                            (widget.packages[index].isPopular
+                                ? Spacing.monthlyPlanPackageFeaturedWidth
+                                : Spacing.monthlyPlanPackageSideWidth) *
+                            scale,
+                        isSelected: _selectedIndex == index,
+                        onTap: () => setState(() => _selectedIndex = index),
+                        onBrowseRestaurants: widget.onBrowseRestaurants,
+                      ),
+                      if (index != widget.packages.length - 1)
+                        SizedBox(width: Spacing.monthlyPlanPackageGap * scale),
+                    ],
+                  ],
+                ),
+              ),
             );
           },
         ),
