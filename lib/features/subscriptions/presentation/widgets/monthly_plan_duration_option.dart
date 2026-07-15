@@ -44,7 +44,8 @@ class MonthlyPlanDurationOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             Spacing.monthlyPlanDurationOptionRadius,
           ),
-          child: AnimatedContainer(width: Spacing.monthlyPlanDurationOptionWidth,
+          child: AnimatedContainer(
+            width: Spacing.monthlyPlanDurationOptionWidth,
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOutCubic,
             height: Spacing.monthlyPlanDurationOptionHeight,
@@ -62,23 +63,44 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 220),
-                      switchInCurve: Curves.easeOutBack,
-                      switchOutCurve: Curves.easeIn,
-                      transitionBuilder: (child, animation) => FadeTransition(
-                        opacity: animation,
-                        child: ScaleTransition(scale: animation, child: child),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsetsGeometry.directional(start: Spacing.xs),
-                        child: Text(
-                          displayedDays.toString(),
-                          key: ValueKey(displayedDays),
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size15,
-                            color: isSelected ? color.primary : color.onSurface,
+                    SizedBox(
+                      height: Spacing.lg,
+                      child: ClipRect(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          switchInCurve: Curves.easeOutCubic,
+                          switchOutCurve: Curves.easeInCubic,
+                          layoutBuilder: (currentChild, previousChildren) =>
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  ...previousChildren,
+                                  ?currentChild,
+                                ],
+                              ),
+                          transitionBuilder: (child, animation) =>
+                              SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0, -1),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                              start: Spacing.xs,
+                            ),
+                            child: Text(
+                              displayedDays.toString(),
+                              key: ValueKey(displayedDays),
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size15,
+                                color: isSelected
+                                    ? color.primary
+                                    : color.onSurface,
+                              ),
+                            ),
                           ),
                         ),
                       ),
