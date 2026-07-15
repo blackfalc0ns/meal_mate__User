@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
@@ -12,6 +10,7 @@ import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart'
 import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/screens/profile_screen.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
@@ -96,10 +95,7 @@ class _AppShellView extends StatelessWidget {
                 const CalendarScreen(showBottomSpace: true),
                 const OffersScreen(),
                 const SubscriptionsScreen(showBottomSpace: true),
-                _ShellPlaceholderView(
-                  title: l10n.nav_profile,
-                  subtitle: l10n.coming_soon_subtitle,
-                ),
+                const ProfileScreen(),
               ],
             ),
           ),
@@ -177,49 +173,6 @@ class _AnimatedShellBodyState extends State<_AnimatedShellBody>
           ),
         );
       },
-    );
-  }
-}
-
-class _ShellPlaceholderView extends StatelessWidget {
-  const _ShellPlaceholderView({required this.title, required this.subtitle});
-
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(Spacing.xxl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.construction_rounded,
-              size: 72,
-              color: AppColors.primary,
-            ),
-            const SizedBox(height: Spacing.base),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: Spacing.sm),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -530,6 +530,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nav_profile => 'Profile';
 
   @override
+  String get profile_user_name => 'Ahmed Mohamed';
+
+  @override
+  String get profile_user_email => 'ahmed.mohamed@gemil.com';
+
+  @override
+  String get profile_premium_member => 'Premium member';
+
+  @override
+  String get profile_completed_plans => 'Completed plans';
+
+  @override
+  String get profile_streak_days => 'Consecutive days';
+
+  @override
+  String get profile_points => 'Your points';
+
+  @override
+  String get profile_weight_lost => 'kg lost';
+
+  @override
+  String get profile_personal_info => 'Personal information';
+
+  @override
+  String get profile_personal_info_subtitle => 'Edit your personal details';
+
+  @override
+  String get profile_goals => 'My goals';
+
+  @override
+  String get profile_goals_subtitle => 'Manage your health goals';
+
+  @override
+  String get profile_dietary_preferences => 'Dietary preferences';
+
+  @override
+  String get profile_dietary_preferences_subtitle =>
+      'Manage your preferences and allergies';
+
+  @override
+  String get profile_billing => 'Subscriptions and billing';
+
+  @override
+  String get profile_billing_subtitle =>
+      'Manage your subscription and payment details';
+
+  @override
+  String get profile_addresses => 'Addresses';
+
+  @override
+  String get profile_addresses_subtitle => 'Manage delivery addresses';
+
+  @override
+  String get profile_security => 'Security and privacy';
+
+  @override
+  String get profile_security_subtitle =>
+      'Change your password and privacy settings';
+
+  @override
   String get coming_soon_subtitle =>
       'This section is being prepared and will be available soon.';
 

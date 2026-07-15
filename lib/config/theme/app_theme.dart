@@ -15,7 +15,7 @@ class AppTheme {
     onPrimaryContainer: AppColors.primaryDarker,
     secondary: AppColors.secondary,
     onSecondary: AppColors.textOnPrimary,
-    secondaryContainer: AppColors.secondarySurface,
+    secondaryContainer: AppColors.profileIconBackground,
     onSecondaryContainer: AppColors.secondaryDarkest,
     tertiary: AppColors.primaryVariant,
     onTertiary: AppColors.textOnPrimary,

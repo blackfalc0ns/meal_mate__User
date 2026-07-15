@@ -1064,6 +1064,120 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get nav_profile;
 
+  /// No description provided for @profile_user_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed Mohamed'**
+  String get profile_user_name;
+
+  /// No description provided for @profile_user_email.
+  ///
+  /// In en, this message translates to:
+  /// **'ahmed.mohamed@gemil.com'**
+  String get profile_user_email;
+
+  /// No description provided for @profile_premium_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium member'**
+  String get profile_premium_member;
+
+  /// No description provided for @profile_completed_plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed plans'**
+  String get profile_completed_plans;
+
+  /// No description provided for @profile_streak_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Consecutive days'**
+  String get profile_streak_days;
+
+  /// No description provided for @profile_points.
+  ///
+  /// In en, this message translates to:
+  /// **'Your points'**
+  String get profile_points;
+
+  /// No description provided for @profile_weight_lost.
+  ///
+  /// In en, this message translates to:
+  /// **'kg lost'**
+  String get profile_weight_lost;
+
+  /// No description provided for @profile_personal_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get profile_personal_info;
+
+  /// No description provided for @profile_personal_info_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit your personal details'**
+  String get profile_personal_info_subtitle;
+
+  /// No description provided for @profile_goals.
+  ///
+  /// In en, this message translates to:
+  /// **'My goals'**
+  String get profile_goals;
+
+  /// No description provided for @profile_goals_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your health goals'**
+  String get profile_goals_subtitle;
+
+  /// No description provided for @profile_dietary_preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietary preferences'**
+  String get profile_dietary_preferences;
+
+  /// No description provided for @profile_dietary_preferences_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your preferences and allergies'**
+  String get profile_dietary_preferences_subtitle;
+
+  /// No description provided for @profile_billing.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions and billing'**
+  String get profile_billing;
+
+  /// No description provided for @profile_billing_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your subscription and payment details'**
+  String get profile_billing_subtitle;
+
+  /// No description provided for @profile_addresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Addresses'**
+  String get profile_addresses;
+
+  /// No description provided for @profile_addresses_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage delivery addresses'**
+  String get profile_addresses_subtitle;
+
+  /// No description provided for @profile_security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security and privacy'**
+  String get profile_security;
+
+  /// No description provided for @profile_security_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change your password and privacy settings'**
+  String get profile_security_subtitle;
+
   /// No description provided for @coming_soon_subtitle.
   ///
   /// In en, this message translates to:

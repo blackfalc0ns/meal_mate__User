@@ -519,6 +519,63 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nav_profile => 'البروفايل';
 
   @override
+  String get profile_user_name => 'أحمد محمد';
+
+  @override
+  String get profile_user_email => 'ahmed.mohamed@gemil.com';
+
+  @override
+  String get profile_premium_member => 'عضو مميز';
+
+  @override
+  String get profile_completed_plans => 'الخطط المكتملة';
+
+  @override
+  String get profile_streak_days => 'أيام متتالية';
+
+  @override
+  String get profile_points => 'نقاطك';
+
+  @override
+  String get profile_weight_lost => 'كجم فقدت';
+
+  @override
+  String get profile_personal_info => 'معلوماتي الشخصية';
+
+  @override
+  String get profile_personal_info_subtitle => 'تعديل بياناتك الشخصية';
+
+  @override
+  String get profile_goals => 'أهدافي';
+
+  @override
+  String get profile_goals_subtitle => 'إدارة أهدافك الصحية';
+
+  @override
+  String get profile_dietary_preferences => 'تفضيلاتي الغذائية';
+
+  @override
+  String get profile_dietary_preferences_subtitle => 'إدارة تفضيلاتك وحساسيتك';
+
+  @override
+  String get profile_billing => 'الاشتراكات والفواتير';
+
+  @override
+  String get profile_billing_subtitle => 'إدارة اشتراكك وتفاصيل الدفع';
+
+  @override
+  String get profile_addresses => 'العناوين';
+
+  @override
+  String get profile_addresses_subtitle => 'إدارة عناوين التوصيل';
+
+  @override
+  String get profile_security => 'الأمان والخصوصية';
+
+  @override
+  String get profile_security_subtitle => 'تغيير كلمة المرور وإعدادات الخصوصية';
+
+  @override
   String get coming_soon_subtitle =>
       'هذا القسم قيد التجهيز وسيكون متاحًا قريبًا.';
 

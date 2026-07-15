@@ -53,6 +53,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/profile/
     - assets/images/fake/
     - assets/images/fake/calendar/
     - assets/images/fake/home/

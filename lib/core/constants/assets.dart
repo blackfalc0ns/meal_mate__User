@@ -11,6 +11,7 @@ class Assets {
   static const String onboardingThree = '$_images/on_boarding3.png';
   static const String loginIcon = '$_images/login_icon.svg';
   static const String homeFigmaAvatar = '$_images/home/figma/home_avatar.png';
+  static const String profileAvatar = '$_images/profile/profile_avatar.png';
   static const String homeFigmaBackgroundDoodle =
       '$_images/home/figma/home_background_doodle.svg';
   static const String homeFigmaHeaderDoodle =
@@ -38,8 +39,7 @@ class Assets {
       '$_images/subscriptions/figma/programs_hero.png';
   static const String subscriptionProgramsLogo =
       '$_images/subscriptions/figma/programs_logo.svg';
-  static const String mealMateLogo =
-      '$_images/subscriptions/figma/meal_mate_logo.svg';
+  static const String mealMateLogo = '$_svg/meal_mate_logo.svg';
   static const String subscriptionWeightLossProgram =
       '$_images/subscriptions/figma/weight_loss_program.png';
   static const String subscriptionPackageMealBox =

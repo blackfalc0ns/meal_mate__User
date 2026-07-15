@@ -248,4 +248,32 @@ class Spacing {
   static const double subscriptionSummaryValueLineHeight = 37.24;
   static const double subscriptionSummaryPriceFontSize = 28.851757049560547;
   static const double subscriptionSummaryPriceLineHeight = 77.46;
+
+  // Profile Figma measurements.
+  static const double profileScreenHorizontalPadding = 18.63;
+  static const double profileHeaderHeight = 148.6;
+  static const double profileHeaderActionSize = 40.5;
+  static const double profileHeaderIconSize = 28.93;
+  static const double profileAppBarLogoWidth = 117.0;
+  static const double profileAppBarLogoHeight = 26.69;
+  static const double profileAvatarSize = 96.03;
+  static const double profileAvatarTop = 54.38;
+  static const double profileAvatarEditSize = 30.08;
+  static const double profileIdentityTop = 74.05;
+  static const double profileStatsTopGap = 18.38;
+  static const double profileStatsHeight = 96.03;
+  static const double profileSettingsTopGap = 11.57;
+  static const double profileSettingsHeight = 319.34;
+  static const double profileCardRadius = 15.04;
+  static const double profileSettingsTileHeight = 52.07;
+  static const double profileSettingsIconContainer = 30.08;
+  static const double profileSettingsIconSize = 19.83;
+  static const double profileSettingsInset = 15.04;
+  static const double profileLogoutTopGap = 14.47;
+  static const double profileLogoutHeight = 32.4;
+  static const double profileLogoutRadius = 11.57;
+  static const double profileStatIconSize = 21.98;
+  static const double profileTitleFontSize = 15.59;
+  static const double profileBodyFontSize = 9.9;
+  static const double profileSettingsTitleFontSize = 12.09;
 }
