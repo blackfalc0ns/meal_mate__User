@@ -1,5 +1,5 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/family_plan_entity.dart';
 
 class FamilyPlanFakeDataSource {
@@ -32,7 +32,7 @@ class FamilyPlanFakeDataSource {
       members: [
         FamilyMemberEntity(
           name: 'مريم',
-          imageAsset: Assets.familyMemberMariam,
+          imageAsset: AssetsFake.familyMemberMariam,
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
@@ -42,7 +42,7 @@ class FamilyPlanFakeDataSource {
         ),
         FamilyMemberEntity(
           name: 'يوسف',
-          imageAsset: Assets.familyMemberYousef,
+          imageAsset: AssetsFake.familyMemberYousef,
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
@@ -50,7 +50,7 @@ class FamilyPlanFakeDataSource {
         ),
         FamilyMemberEntity(
           name: 'سارة',
-          imageAsset: Assets.familyMemberSarah,
+          imageAsset: AssetsFake.familyMemberSarah,
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
@@ -60,7 +60,7 @@ class FamilyPlanFakeDataSource {
         ),
         FamilyMemberEntity(
           name: 'أحمد',
-          imageAsset: Assets.familyMemberAhmed,
+          imageAsset: AssetsFake.familyMemberAhmed,
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,

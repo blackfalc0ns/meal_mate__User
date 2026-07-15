@@ -1,8 +1,8 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionSelectedProgramCard extends StatelessWidget {
@@ -187,7 +187,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      Assets.subscriptionProgramWeightLoss,
+                      AssetsFake.subscriptionProgramWeightLoss,
                       fit: BoxFit.cover,
                       alignment: const Alignment(0.1, 0.32),
                       semanticLabel: locale.subscription_weight_loss_title,

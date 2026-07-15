@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/home/domain/entities/home_dashboard_entity.dart';
 
 class HomeFakeDataSource {
@@ -14,12 +14,12 @@ class HomeFakeDataSource {
       bannerTitle: 'وجبات صحية تناسب أهدافك',
       bannerSubtitle: 'اكتشف باقات جديدة مصممة لأهدافك الغذائية!',
       bannerButtonLabel: 'اكتشف الان',
-      bannerImageAsset: Assets.homeFigmaSpecialsMeal,
+      bannerImageAsset: AssetsFake.homeSpecialsMeal,
       categories: [
-        HomeCategoryEntity(title: 'إفطار', imageAsset: Assets.homeBreakfast),
-        HomeCategoryEntity(title: 'عشاء', imageAsset: Assets.homeDinner),
-        HomeCategoryEntity(title: 'غداء', imageAsset: Assets.homeLunch),
-        HomeCategoryEntity(title: 'سناك', imageAsset: Assets.homeSnack),
+        HomeCategoryEntity(title: 'إفطار', imageAsset: AssetsFake.homeOatmeal),
+        HomeCategoryEntity(title: 'عشاء', imageAsset: AssetsFake.homeHotdog),
+        HomeCategoryEntity(title: 'غداء', imageAsset: AssetsFake.homeBurger),
+        HomeCategoryEntity(title: 'سناك', imageAsset: AssetsFake.homeDonut),
       ],
       meals: [
         HomeMealEntity(
@@ -29,7 +29,7 @@ class HomeFakeDataSource {
           subtitle: '450 سعرة حرارية',
           caloriesLabel: '450',
           statusLabel: 'مكتملة',
-          imageAsset: Assets.homeBreakfast,
+          imageAsset: AssetsFake.homeOatmeal,
           accentColor: 0xFF2DA55D,
           statusColor: 0xFFB9ECCA,
         ),
@@ -40,7 +40,7 @@ class HomeFakeDataSource {
           subtitle: '32g بروتين',
           caloriesLabel: '550',
           statusLabel: 'الحالية',
-          imageAsset: Assets.homeLunch,
+          imageAsset: AssetsFake.homeBurger,
           accentColor: 0xFF0A7A35,
           statusColor: 0xFFDFF4E6,
         ),

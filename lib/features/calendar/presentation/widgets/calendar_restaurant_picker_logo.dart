@@ -37,9 +37,9 @@ class CalendarRestaurantPickerLogo extends StatelessWidget {
           background: color.inverseSurface,
         );
       case CalendarRestaurantLogoType.starbucks:
-        return const CalendarImageCircleLogo(asset: Assets.offerStarbucksLogo);
+        return const CalendarImageCircleLogo(asset: AssetsFake.starbucksLogo);
       case CalendarRestaurantLogoType.burgerKing:
-        return const CalendarImageCircleLogo(asset: Assets.offerBurgerKingLogo);
+        return const CalendarImageCircleLogo(asset: AssetsFake.burgerKingLogo);
     }
   }
 }

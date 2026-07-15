@@ -1,8 +1,8 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_restaurant_logo_stack.dart';
 
@@ -73,7 +73,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   child: Image.asset(
-                    Assets.monthlyPackageBox,
+                    AssetsFake.monthlyPackageBox,
                     fit: BoxFit.contain,
                     alignment: const Alignment(0.05, 0.42),
                     semanticLabel: title,

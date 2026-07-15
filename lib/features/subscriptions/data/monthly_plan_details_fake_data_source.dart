@@ -1,5 +1,5 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 
 class MonthlyPlanDetailsFakeDataSource {
@@ -18,7 +18,7 @@ class MonthlyPlanDetailsFakeDataSource {
         subscribeLabel: 'اشترك الآن',
         price: '930',
         currency: 'KWD',
-        heroImageAsset: Assets.monthlyPackageBox,
+        heroImageAsset: AssetsFake.monthlyPackageBox,
         description:
             'باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية',
         features: _features,
@@ -36,7 +36,7 @@ class MonthlyPlanDetailsFakeDataSource {
         subscribeLabel: 'اشترك الآن',
         price: '930',
         currency: 'KWD',
-        heroImageAsset: Assets.monthlyPackageBox,
+        heroImageAsset: AssetsFake.monthlyPackageBox,
         description:
             'باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية',
         features: _features,
@@ -54,7 +54,7 @@ class MonthlyPlanDetailsFakeDataSource {
         subscribeLabel: 'اشترك الآن',
         price: '930',
         currency: 'KWD',
-        heroImageAsset: Assets.monthlyPackageBox,
+        heroImageAsset: AssetsFake.monthlyPackageBox,
         description:
             'باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية',
         features: _features,
@@ -72,7 +72,7 @@ class MonthlyPlanDetailsFakeDataSource {
         subscribeLabel: 'اشترك الآن',
         price: '930',
         currency: 'KWD',
-        heroImageAsset: Assets.monthlyPackageBox,
+        heroImageAsset: AssetsFake.monthlyPackageBox,
         description:
             'باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية',
         features: _features,
@@ -144,7 +144,7 @@ class MonthlyPlanDetailsFakeDataSource {
       subtitle: 'وجبات صحية متوازنة',
       meals: '22',
       rating: '4.6',
-      logoAsset: Assets.offerMcdonaldsLogo,
+      logoAsset: AssetsFake.mcdonaldsLogo,
       brandColor: Color(0xFFFFCC00),
     ),
     MonthlyRestaurantPlanEntity(
@@ -152,7 +152,7 @@ class MonthlyPlanDetailsFakeDataSource {
       subtitle: 'وجبات صحية متوازنة',
       meals: '18',
       rating: '4.7',
-      logoAsset: Assets.offerStarbucksLogo,
+      logoAsset: AssetsFake.starbucksLogo,
       brandColor: Color(0xFF00623D),
     ),
     MonthlyRestaurantPlanEntity(
@@ -168,7 +168,7 @@ class MonthlyPlanDetailsFakeDataSource {
       subtitle: 'وجبات صحية متوازنة',
       meals: '16',
       rating: '4.5',
-      logoAsset: Assets.offerBurgerKingLogo,
+      logoAsset: AssetsFake.burgerKingLogo,
       brandColor: Color(0xFFCC2417),
     ),
     MonthlyRestaurantPlanEntity(
@@ -203,28 +203,28 @@ class MonthlyPlanDetailsFakeDataSource {
       subtitle: 'مع بطاطا حارة',
       calories: '560 سعرة',
       protein: '35g بروتين',
-      imageAsset: Assets.offerGrilledPlate,
+      imageAsset: AssetsFake.grilledPlate,
     ),
     MonthlyMealEntity(
       name: 'مكرونة بالصلصة',
       subtitle: 'مع بطاطا حارة',
       calories: '560 سعرة',
       protein: '35g بروتين',
-      imageAsset: Assets.offerMealBoxes,
+      imageAsset: AssetsFake.mealBoxes,
     ),
     MonthlyMealEntity(
       name: 'سالمون مشوي',
       subtitle: 'مع بطاطا حارة',
       calories: '560 سعرة',
       protein: '35g بروتين',
-      imageAsset: Assets.offerSaladBowl,
+      imageAsset: AssetsFake.saladBowl,
     ),
     MonthlyMealEntity(
       name: 'دجاج مشوي',
       subtitle: 'مع بطاطا حارة',
       calories: '560 سعرة',
       protein: '35g بروتين',
-      imageAsset: Assets.offerGrilledPlate,
+      imageAsset: AssetsFake.grilledPlate,
     ),
   ];
 }

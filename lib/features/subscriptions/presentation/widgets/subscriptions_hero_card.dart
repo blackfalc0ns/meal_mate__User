@@ -1,8 +1,8 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionsHeroCard extends StatelessWidget {
@@ -36,7 +36,7 @@ class SubscriptionsHeroCard extends StatelessWidget {
               width: 134,
               height: 103,
               child: Image.asset(
-                Assets.subscriptionHeroMeal,
+                AssetsFake.subscriptionHeroMeal,
                 fit: BoxFit.contain,
               ),
             ),

@@ -1,5 +1,5 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/subscription_plan_entity.dart';
 
 class SubscriptionsFakeDataSource {
@@ -15,7 +15,7 @@ class SubscriptionsFakeDataSource {
       title: 'خسارة الوزن',
       description:
           'برنامج منخفض السعرات لمساعدتك على خسارة الوزن بطريقة صحية و آمنة',
-      imageAsset: Assets.subscriptionProgramWeightLoss,
+      imageAsset: AssetsFake.subscriptionProgramWeightLoss,
       primaryFeature: 'نتائج فعالة',
       secondaryFeature: 'سعرات أقل',
       badgeIcon: Icons.monitor_weight_outlined,
@@ -26,7 +26,7 @@ class SubscriptionsFakeDataSource {
       title: 'بناء العضلات',
       description:
           'برنامج عالي البروتين لدعم نمو العضلات وزيادة الكتلة العضلية',
-      imageAsset: Assets.subscriptionProgramMuscleGain,
+      imageAsset: AssetsFake.subscriptionProgramMuscleGain,
       primaryFeature: 'بروتين عالي',
       secondaryFeature: 'تعافي أسرع',
       badgeIcon: Icons.fitness_center_rounded,
@@ -37,7 +37,7 @@ class SubscriptionsFakeDataSource {
       title: 'نظام صحي متوازن',
       description:
           'نظام متوازن غني بالعناصر الغذائية للحفاظ على صحتك ونشاطك اليومي',
-      imageAsset: Assets.subscriptionProgramBalanced,
+      imageAsset: AssetsFake.subscriptionProgramBalanced,
       primaryFeature: 'تغذية متوازنة',
       secondaryFeature: 'طاقة يومية',
       badgeIcon: Icons.favorite_border_rounded,
@@ -48,7 +48,7 @@ class SubscriptionsFakeDataSource {
       title: 'تنشيف الجسم',
       description:
           'برنامج يساعدك على حرق الدهون وإبراز عضلاتك مع الحفاظ على الكتلة العضلية',
-      imageAsset: Assets.subscriptionProgramCutting,
+      imageAsset: AssetsFake.subscriptionProgramCutting,
       primaryFeature: 'حرق الدهون',
       secondaryFeature: 'تعريف الجسم',
       badgeIcon: Icons.local_fire_department_outlined,
@@ -68,7 +68,7 @@ class SubscriptionsFakeDataSource {
       originalPrice: '52.000',
       discountedPrice: '41.600',
       discountLabel: _discount,
-      imageAsset: Assets.subscriptionMonthPlan,
+      imageAsset: AssetsFake.subscriptionMonthPlan,
       accentColor: const Color(0xFF418B46),
       badgeBackgroundColor: const Color(0xFFDFE9DA),
       gradientColors: const [
@@ -87,7 +87,7 @@ class SubscriptionsFakeDataSource {
       originalPrice: '26.000',
       discountedPrice: '20.600',
       discountLabel: _discount,
-      imageAsset: Assets.subscriptionHalfMonthPlan,
+      imageAsset: AssetsFake.subscriptionHeroMeal,
       accentColor: const Color(0xFFEABC67),
       badgeBackgroundColor: const Color(0xFFFEF2E2),
       gradientColors: const [
@@ -106,7 +106,7 @@ class SubscriptionsFakeDataSource {
       originalPrice: '14.000',
       discountedPrice: '11.600',
       discountLabel: _discount,
-      imageAsset: Assets.subscriptionWeekPlan,
+      imageAsset: AssetsFake.subscriptionWeekPlan,
       accentColor: const Color(0xFFA373C0),
       badgeBackgroundColor: const Color(0xFFECE6F2),
       gradientColors: const [

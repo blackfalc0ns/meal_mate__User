@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -21,7 +22,7 @@ class OfferActivatedScreen extends StatelessWidget {
 
   static const _accentColor = AppColors.primary;
   static const _imageAsset = 'assets/images/offers/grilled_plate.png';
-  static const _mealBoxAsset = 'assets/images/offers/meal_boxes.png';
+  static const _mealBoxAsset = AssetsFake.mealBoxes;
   static const _couponCode = 'SAVE20';
 
   @override

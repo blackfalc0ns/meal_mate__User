@@ -1,6 +1,6 @@
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_order_summary_card.dart';
@@ -53,10 +53,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final l10n = context.localization;
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: l10n.payment_title,
-       
-      ),
+      appBar: CustomAppBar(title: l10n.payment_title),
       body: CustomScrollView(
         slivers: [
           SliverPadding(
@@ -72,7 +69,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     originalPrice: '52.000',
                     discountAmount: '10.400',
                     totalPrice: '41.600',
-                    imageAsset: 'assets/images/offers/meal_boxes.png',
+                    imageAsset: AssetsFake.mealBoxes,
                     couponHint: l10n.payment_coupon_hint,
                   ),
                 ),

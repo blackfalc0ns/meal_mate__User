@@ -53,6 +53,12 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/fake/
+    - assets/images/fake/calendar/
+    - assets/images/fake/home/
+    - assets/images/fake/meal_details/
+    - assets/images/fake/offers/
+    - assets/images/fake/subscriptions/
     - assets/animations/
     - assets/images/home/figma/
     - assets/images/offers/

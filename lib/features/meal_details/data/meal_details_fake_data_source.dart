@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 
 class MealDetailsFakeDataSource {
@@ -21,43 +21,43 @@ class MealDetailsFakeDataSource {
       ingredients: [
         MealDetailsIngredientEntity(
           label: 'دجاج مشوي',
-          asset: Assets.mealDetailsIngredientChicken,
+          asset: AssetsFake.ingredientChicken,
         ),
         MealDetailsIngredientEntity(
           label: 'أرز بني',
-          asset: Assets.mealDetailsIngredientRice,
+          asset: AssetsFake.ingredientRice,
         ),
         MealDetailsIngredientEntity(
           label: 'جزر',
-          asset: Assets.mealDetailsIngredientCarrot,
+          asset: AssetsFake.ingredientCarrot,
         ),
         MealDetailsIngredientEntity(
           label: 'بروكلي',
-          asset: Assets.mealDetailsIngredientBroccoli,
+          asset: AssetsFake.ingredientBroccoli,
         ),
         MealDetailsIngredientEntity(
           label: 'خس',
-          asset: Assets.mealDetailsIngredientLettuce,
+          asset: AssetsFake.ingredientLettuce,
         ),
         MealDetailsIngredientEntity(
           label: 'ليمون',
-          asset: Assets.mealDetailsIngredientLemon,
+          asset: AssetsFake.ingredientLemon,
         ),
         MealDetailsIngredientEntity(
           label: 'دجاج',
-          asset: Assets.mealDetailsIngredientChicken,
+          asset: AssetsFake.ingredientChicken,
         ),
         MealDetailsIngredientEntity(
           label: 'أرز',
-          asset: Assets.mealDetailsIngredientRice,
+          asset: AssetsFake.ingredientRice,
         ),
         MealDetailsIngredientEntity(
           label: 'خضار',
-          asset: Assets.mealDetailsIngredientBroccoli,
+          asset: AssetsFake.ingredientBroccoli,
         ),
         MealDetailsIngredientEntity(
           label: 'سلطة',
-          asset: Assets.mealDetailsIngredientLettuce,
+          asset: AssetsFake.ingredientLettuce,
         ),
       ],
       nutritionTitle: 'القيم الغذائية',
