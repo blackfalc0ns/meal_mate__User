@@ -1,8 +1,7 @@
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionRestaurantLogoStack extends StatelessWidget {
@@ -14,91 +13,14 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
     final locale = context.localization;
 
     return SizedBox(
-      width: Spacing.xxxl * 2.45,
+      width: Spacing.xxxl * 2.15,
       height: Spacing.xxl,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          PositionedDirectional(
-            end: 0,
-            child: Container(
-              width: Spacing.xxl,
-              height: Spacing.xxl,
-              decoration: BoxDecoration(
-                color: color.surface,
-                shape: BoxShape.circle,
-                border: Border.all(color: color.primary),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  AssetsFake.burgerKingLogo,
-                  fit: BoxFit.cover,
-                  semanticLabel: locale.nav_subscription,
-                ),
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            end: Spacing.lg,
-            child: Container(
-              width: Spacing.xxl,
-              height: Spacing.xxl,
-              decoration: BoxDecoration(
-                color: color.surface,
-                shape: BoxShape.circle,
-                border: Border.all(color: color.primary),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  AssetsFake.mcdonaldsLogo,
-                  fit: BoxFit.cover,
-                  semanticLabel: locale.nav_subscription,
-                ),
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            end: Spacing.lg * 2,
-            child: Container(
-              width: Spacing.xxl,
-              height: Spacing.xxl,
-              decoration: BoxDecoration(
-                color: color.surface,
-                shape: BoxShape.circle,
-                border: Border.all(color: color.primary),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  AssetsFake.starbucksLogo,
-                  fit: BoxFit.cover,
-                  semanticLabel: locale.nav_subscription,
-                ),
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            end: Spacing.lg * 3,
-            child: Container(
-              width: Spacing.xxl,
-              height: Spacing.xxl,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: color.surface,
-                shape: BoxShape.circle,
-                border: Border.all(color: color.primary),
-              ),
-              child: Text(
-                '+25',
-                textDirection: TextDirection.ltr,
-                style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size8,
-                  color: color.primary,
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: color.surface.withValues(alpha: 0)),
+        child: SvgPicture.asset(
+          Assets.subscriptionRestaurantStack,
+          semanticsLabel: locale.nav_subscription,
+        ),
       ),
     );
   }

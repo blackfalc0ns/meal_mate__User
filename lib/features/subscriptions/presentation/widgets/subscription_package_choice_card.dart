@@ -1,8 +1,8 @@
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_restaurant_logo_stack.dart';
 
@@ -73,7 +73,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   child: Image.asset(
-                    AssetsFake.monthlyPackageBox,
+                    Assets.subscriptionPackageMealBox,
                     fit: BoxFit.contain,
                     alignment: const Alignment(0.05, 0.42),
                     semanticLabel: title,
@@ -89,6 +89,12 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                     Row(
                       textDirection: TextDirection.rtl,
                       children: [
+                        Icon(
+                          Icons.calendar_month_outlined,
+                          size: Spacing.iconSm,
+                          color: color.primary,
+                        ),
+                        const SizedBox(width: Spacing.xs),
                         Expanded(
                           child: Text(
                             title,
@@ -101,23 +107,22 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: Spacing.xs),
-                        Icon(
-                          Icons.calendar_month_outlined,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
                       ],
                     ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        top: Spacing.xs,
+                        start: Spacing.iconSm + Spacing.xs,
+                      ),
+                      child: Text(
+                        subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size8,
+                          color: color.onSurfaceVariant,
+                        ),
                       ),
                     ),
                     const Spacer(),
@@ -163,26 +168,8 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                    const Spacer(),
-                    if (price != null && currency != null) ...[
-                      Text(
-                        price!,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size17,
-                          color: color.primary,
-                        ),
-                      ),
-                      Text(
-                        currency!,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size7,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                    ],
+                   const Spacer(),
+                   
                     Container(
                       height: Spacing.xxl - Spacing.xs,
                       padding: const EdgeInsets.symmetric(

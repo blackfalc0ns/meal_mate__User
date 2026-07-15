@@ -326,6 +326,7 @@
   "subscription_month_plan_title": "باقة شهر",
   "subscription_half_month_plan_title": "باقة نصف شهر",
   "subscription_week_plan_title": "الأسبوع",
+  "subscription_week_plan_price": "930",
   "subscription_month_duration": "26 أيام",
   "subscription_half_month_duration": "12 أيام",
   "subscription_week_duration": "7 أيام",

@@ -1,8 +1,8 @@
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionSelectedProgramCard extends StatelessWidget {
@@ -30,10 +30,10 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.sm),
         Container(
-          height: Spacing.subscriptionProgramCardHeight + Spacing.sm,
+          height: Spacing.subscriptionProgramCardHeight + Spacing.xs,
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.md,
-            vertical: Spacing.xs,
+            vertical: Spacing.md,
           ),
           decoration: BoxDecoration(
             color: color.surface,
@@ -105,20 +105,24 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: Spacing.xs),
-                    Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: SizedBox(
-                        width: Spacing.xxxl * 3,
-                        child: Text(
-                          locale.subscription_weight_loss_description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size9,
-                            color: color.onSurfaceVariant,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        start: Spacing.iconSm + Spacing.sm,
+                      ),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: SizedBox(
+                          width: Spacing.xxxl * 2.75,
+                          child: Text(
+                            locale.subscription_weight_loss_description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.right,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size9,
+                              color: color.onSurfaceVariant,
+                            ),
                           ),
                         ),
                       ),
@@ -171,8 +175,8 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.md),
               SizedBox(
-                width: Spacing.xxxl * 1.85,
-                height: Spacing.xxxl * 1.85,
+                width: Spacing.xxxl * 2,
+                height: Spacing.xxxl * 1.72,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: color.surface,
@@ -187,7 +191,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      AssetsFake.subscriptionProgramWeightLoss,
+                      Assets.subscriptionWeightLossProgram,
                       fit: BoxFit.cover,
                       alignment: const Alignment(0.1, 0.32),
                       semanticLabel: locale.subscription_weight_loss_title,

@@ -32,6 +32,14 @@ class Assets {
       '$_images/subscriptions/figma/programs_hero.png';
   static const String subscriptionProgramsLogo =
       '$_images/subscriptions/figma/programs_logo.svg';
+  static const String mealMateLogo =
+      '$_images/subscriptions/figma/meal_mate_logo.svg';
+  static const String subscriptionWeightLossProgram =
+      '$_images/subscriptions/figma/weight_loss_program.png';
+  static const String subscriptionPackageMealBox =
+      '$_images/subscriptions/figma/package_meal_box.png';
+  static const String subscriptionRestaurantStack =
+      '$_images/subscriptions/figma/restaurant_stack.svg';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
   static const String fireAnimation = 'assets/animations/fire_animation.json';
 

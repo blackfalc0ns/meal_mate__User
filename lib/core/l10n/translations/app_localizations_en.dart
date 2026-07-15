@@ -1042,6 +1042,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_week_plan_title => 'Week';
 
   @override
+  String get subscription_week_plan_price => '930';
+
+  @override
   String get subscription_month_duration => '26 days';
 
   @override

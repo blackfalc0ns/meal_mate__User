@@ -2054,6 +2054,12 @@ abstract class AppLocalizations {
   /// **'Week'**
   String get subscription_week_plan_title;
 
+  /// No description provided for @subscription_week_plan_price.
+  ///
+  /// In en, this message translates to:
+  /// **'930'**
+  String get subscription_week_plan_price;
+
   /// No description provided for @subscription_month_duration.
   ///
   /// In en, this message translates to:

@@ -326,6 +326,7 @@
   "subscription_month_plan_title": "Monthly plan",
   "subscription_half_month_plan_title": "Half-month plan",
   "subscription_week_plan_title": "Week",
+  "subscription_week_plan_price": "930",
   "subscription_month_duration": "26 days",
   "subscription_half_month_duration": "12 days",
   "subscription_week_duration": "7 days",
