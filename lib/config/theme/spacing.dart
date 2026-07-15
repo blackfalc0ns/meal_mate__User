@@ -193,7 +193,7 @@ class Spacing {
   // Subscription summary Figma measurements.
   static const double subscriptionSummaryDesignHeight = 1019.0;
   static const double subscriptionSummaryDetailsLeft = 46.0;
-  static const double subscriptionSummaryDetailsTop = 486.0;
+  static const double subscriptionSummaryDetailsTop = 420.0;
   static const double subscriptionSummaryDetailsWidth = 368.0;
   static const double subscriptionSummaryDetailsHeight = 328.0;
   static const double subscriptionSummaryTitleLeft = 118.0;

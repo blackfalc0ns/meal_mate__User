@@ -24,44 +24,59 @@ class SubscriptionSummaryScreen extends StatelessWidget {
       child: Scaffold(
         body: Semantics(
           label: locale.subscription_summary_title,
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Center(
-              child: SizedBox(
-                width: Spacing.monthlyPlanDesignWidth,
-                height: Spacing.subscriptionSummaryDesignHeight,
-                child: Stack(
-                  children: [
-                    Positioned.fill(child: ColoredBox(color: color.surface)),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: MonthlyPlanHeroSection(
-                        plan: plan,
-                        imageAsset: Assets.monthlyPlanHero,
-                        onBack: () => Navigator.maybePop(context),
+          child: Stack(
+            children: [
+              CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: SizedBox(
+                        width: Spacing.monthlyPlanDesignWidth,
+                        height: Spacing.subscriptionSummaryDesignHeight,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: ColoredBox(color: color.surface),
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: MonthlyPlanHeroSection(
+                                plan: plan,
+                                imageAsset: Assets.monthlyPlanHero,
+                                onBack: () => Navigator.maybePop(context),
+                              ),
+                            ),
+                            Positioned(
+                              top: Spacing.subscriptionSummaryDetailsTop,
+                              left: 0,
+                              right: 0,
+                              child: Center(
+                                child: SubscriptionSummaryDetailsCard(
+                                  plan: plan,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Positioned(
-                      left: Spacing.subscriptionSummaryDetailsLeft,
-                      top: Spacing.subscriptionSummaryDetailsTop,
-                      child: SubscriptionSummaryDetailsCard(plan: plan),
-                    ),
-                    Positioned(
-                      left: Spacing.subscriptionSummarySubscribeLeft,
-                      top: Spacing.subscriptionSummarySubscribeTop,
-                      width: Spacing.subscriptionSummarySubscribeWidth,
-                      child: AppSubscriptionButton(
-                        price: plan.price,
-                        currency: plan.currency,
-                        onPressed: () => context.pushNamed(AppRoutes.payment),
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+              PositionedDirectional(
+                start: Spacing.monthlyPlanContentHorizontalPadding,
+                end: Spacing.monthlyPlanContentHorizontalPadding,
+                bottom: Spacing.monthlyPlanContentHorizontalPadding,
+                child: AppSubscriptionButton(
+                  price: plan.price,
+                  currency: plan.currency,
+                  onPressed: () => context.pushNamed(AppRoutes.payment),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
