@@ -82,7 +82,7 @@ class ProfileSettingsTile extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                      Icons.chevron_left_rounded,
+                      Icons.chevron_right_rounded,
                       color: color.onSurfaceVariant,
                       size: Spacing.iconSm,
                     ),

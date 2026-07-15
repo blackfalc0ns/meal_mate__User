@@ -251,15 +251,15 @@ class Spacing {
 
   // Profile Figma measurements.
   static const double profileScreenHorizontalPadding = 18.63;
-  static const double profileHeaderHeight = 148.6;
+  static const double profileHeaderHeight = 132.0;
   static const double profileHeaderActionSize = 40.5;
   static const double profileHeaderIconSize = 28.93;
   static const double profileAppBarLogoWidth = 117.0;
-  static const double profileAppBarLogoHeight = 26.69;
+  static const double profileAppBarLogoHeight = 29.0;
   static const double profileAvatarSize = 96.03;
-  static const double profileAvatarTop = 54.38;
+  static const double profileAvatarTop = 36.0;
   static const double profileAvatarEditSize = 30.08;
-  static const double profileIdentityTop = 74.05;
+  static const double profileIdentityTop = 56.0;
   static const double profileStatsTopGap = 18.38;
   static const double profileStatsHeight = 96.03;
   static const double profileSettingsTopGap = 11.57;

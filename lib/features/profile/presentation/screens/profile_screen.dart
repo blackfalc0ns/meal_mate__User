@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
         titleWidget: SizedBox(
           width: Spacing.profileAppBarLogoWidth,
           height:
-         //pacing.profileAppBarLogoHeight,
+      Spacing.profileAppBarLogoHeight,
           child: SvgPicture.asset(Assets.mealMateLogo),
         ),
         leading: IconButton(
