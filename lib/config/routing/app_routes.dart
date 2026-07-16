@@ -24,4 +24,5 @@ abstract class AppRoutes {
   static const String newPassword = '/new-password';
   static const String profileSettings = '/profile-settings';
   static const String securityPrivacy = '/security-privacy';
+  static const String addresses = '/addresses';
 }

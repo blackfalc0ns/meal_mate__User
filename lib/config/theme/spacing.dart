@@ -293,4 +293,26 @@ class Spacing {
   static const double profilePrivacyButtonHeight = 31.51;
   static const double profilePrivacyButtonRadius = 17.75;
   static const double profilePrivacyAppBarTitleSize = 15.14;
+
+  // Addresses Figma measurements.
+  static const double addressesScreenHorizontalPadding = 25.0;
+  static const double addressesContentTopPadding = 22.0;
+  static const double addressesCardRadius = 15.35;
+  static const double addressesCurrentCardHeight = 145.65;
+  static const double addressesMapSize = 133.0;
+  static const double addressesSavedTileHeight = 54.35;
+  static const double addressesSectionTitleSize = 11.23;
+  static const double addressesIconContainerSize = 32.61;
+  static const double addressesPreferenceIconContainerSize = 28.26;
+  static const double addressesOverflowButtonSize = 27.17;
+  static const double addressesPreferenceCardHeight = 89.0;
+  static const double addressesAddButtonHeight = 47.0;
+  static const double addressesAvailabilityNoticeHeight = 36.0;
+  static const double addressesSaveButtonHeight = 31.51;
+  static const double addressesSaveButtonRadius = 17.75;
+  static const double addressesCardGap = 4.35;
+  static const double addressesSectionGap = 14.35;
+  static const double addressesCardContentPadding = 17.39;
+  static const double addressesIconRadius = 6.11;
+  static const double addressesMapRadius = 9.24;
 }

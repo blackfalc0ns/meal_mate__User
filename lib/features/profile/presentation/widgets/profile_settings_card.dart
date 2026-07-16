@@ -69,6 +69,8 @@ class ProfileSettingsCard extends StatelessWidget {
             onTap: index == items.length - 1
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
+                : index == 4
+                ? () => Navigator.of(context).pushNamed(AppRoutes.addresses)
                 : null,
           );
         }),

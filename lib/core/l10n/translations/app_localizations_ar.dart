@@ -570,6 +570,66 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_addresses_subtitle => 'إدارة عناوين التوصيل';
 
   @override
+  String get addresses_default => 'افتراضي';
+
+  @override
+  String get addresses_access_instructions => 'تعليمات الوصول';
+
+  @override
+  String get addresses_current_home => 'المنزل';
+
+  @override
+  String get addresses_current_home_details =>
+      'شقة رقم 525\nشارع أحمد محمد\nالفيوم - مصر';
+
+  @override
+  String get addresses_saved_section => 'العناوين المحفوظة';
+
+  @override
+  String get addresses_home_address => '1174 طريق روي ألي، كولورادو 80205';
+
+  @override
+  String get addresses_work => 'العمل';
+
+  @override
+  String get addresses_work_address =>
+      '1801 شارع كاليفورنيا، دنفر، كولورادو 80202';
+
+  @override
+  String get addresses_other => 'عنوان آخر';
+
+  @override
+  String get addresses_other_address =>
+      '3200 شارع تشيري كريك الجنوبي، دنفر 80209';
+
+  @override
+  String get addresses_delivery_preferences => 'تفضيلات التوصيل';
+
+  @override
+  String get addresses_contact_on_arrival => 'التواصل عند الوصول';
+
+  @override
+  String get addresses_contact_on_arrival_description =>
+      'سنرسل لك إشعاراً عند وصول المندوب';
+
+  @override
+  String get addresses_leave_at_door => 'اترك الطلب عند الباب';
+
+  @override
+  String get addresses_leave_at_door_description =>
+      'ضع الطلب في مكان آمن عند الباب';
+
+  @override
+  String get addresses_add_new => 'إضافة عنوان جديد';
+
+  @override
+  String get addresses_availability_notice =>
+      'قد تختلف الوجبات والمطاعم المتاحة بناءً على منطقة التوصيل';
+
+  @override
+  String get addresses_save => 'حفظ العنوان';
+
+  @override
   String get profile_security => 'الأمان والخصوصية';
 
   @override

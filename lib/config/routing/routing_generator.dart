@@ -19,6 +19,7 @@ import 'package:meal_meat_user/features/payment/presentation/screens/payment_scr
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/screens/addresses_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 
@@ -133,6 +134,8 @@ class RouteGenerator {
           settings: settings,
           page: const ProfileSettingsScreen(),
         );
+      case AppRoutes.addresses:
+        return _buildRoute(settings: settings, page: const AddressesScreen());
       default:
         return _buildRoute(
           settings: settings,

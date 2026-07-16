@@ -12,6 +12,8 @@ class Assets {
   static const String loginIcon = '$_images/login_icon.svg';
   static const String homeFigmaAvatar = '$_images/home/figma/home_avatar.png';
   static const String profileAvatar = '$_images/profile/profile_avatar.png';
+  static const String profileDefaultAddressMap =
+      '$_images/profile/profile_default_address_map.png';
   static const String homeFigmaBackgroundDoodle =
       '$_images/home/figma/home_background_doodle.svg';
   static const String homeFigmaHeaderDoodle =

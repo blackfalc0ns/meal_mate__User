@@ -1166,6 +1166,114 @@ abstract class AppLocalizations {
   /// **'Manage delivery addresses'**
   String get profile_addresses_subtitle;
 
+  /// No description provided for @addresses_default.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get addresses_default;
+
+  /// No description provided for @addresses_access_instructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Access instructions'**
+  String get addresses_access_instructions;
+
+  /// No description provided for @addresses_current_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get addresses_current_home;
+
+  /// No description provided for @addresses_current_home_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment 525\nAhmed Mohamed Street\nFaiyum, Egypt'**
+  String get addresses_current_home_details;
+
+  /// No description provided for @addresses_saved_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved addresses'**
+  String get addresses_saved_section;
+
+  /// No description provided for @addresses_home_address.
+  ///
+  /// In en, this message translates to:
+  /// **'1174 Roy Alley, Colorado 80205'**
+  String get addresses_home_address;
+
+  /// No description provided for @addresses_work.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get addresses_work;
+
+  /// No description provided for @addresses_work_address.
+  ///
+  /// In en, this message translates to:
+  /// **'1801 California Street, Denver, Colorado 80202'**
+  String get addresses_work_address;
+
+  /// No description provided for @addresses_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other address'**
+  String get addresses_other;
+
+  /// No description provided for @addresses_other_address.
+  ///
+  /// In en, this message translates to:
+  /// **'3200 South Cherry Creek Street, Denver 80209'**
+  String get addresses_other_address;
+
+  /// No description provided for @addresses_delivery_preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery preferences'**
+  String get addresses_delivery_preferences;
+
+  /// No description provided for @addresses_contact_on_arrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact on arrival'**
+  String get addresses_contact_on_arrival;
+
+  /// No description provided for @addresses_contact_on_arrival_description.
+  ///
+  /// In en, this message translates to:
+  /// **'We will notify you when the courier arrives'**
+  String get addresses_contact_on_arrival_description;
+
+  /// No description provided for @addresses_leave_at_door.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the order at the door'**
+  String get addresses_leave_at_door;
+
+  /// No description provided for @addresses_leave_at_door_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the order in a safe place at the door'**
+  String get addresses_leave_at_door_description;
+
+  /// No description provided for @addresses_add_new.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new address'**
+  String get addresses_add_new;
+
+  /// No description provided for @addresses_availability_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Available meals and restaurants may vary by delivery area'**
+  String get addresses_availability_notice;
+
+  /// No description provided for @addresses_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save address'**
+  String get addresses_save;
+
   /// No description provided for @profile_security.
   ///
   /// In en, this message translates to:

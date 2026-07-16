@@ -583,6 +583,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_addresses_subtitle => 'Manage delivery addresses';
 
   @override
+  String get addresses_default => 'Default';
+
+  @override
+  String get addresses_access_instructions => 'Access instructions';
+
+  @override
+  String get addresses_current_home => 'Home';
+
+  @override
+  String get addresses_current_home_details =>
+      'Apartment 525\nAhmed Mohamed Street\nFaiyum, Egypt';
+
+  @override
+  String get addresses_saved_section => 'Saved addresses';
+
+  @override
+  String get addresses_home_address => '1174 Roy Alley, Colorado 80205';
+
+  @override
+  String get addresses_work => 'Work';
+
+  @override
+  String get addresses_work_address =>
+      '1801 California Street, Denver, Colorado 80202';
+
+  @override
+  String get addresses_other => 'Other address';
+
+  @override
+  String get addresses_other_address =>
+      '3200 South Cherry Creek Street, Denver 80209';
+
+  @override
+  String get addresses_delivery_preferences => 'Delivery preferences';
+
+  @override
+  String get addresses_contact_on_arrival => 'Contact on arrival';
+
+  @override
+  String get addresses_contact_on_arrival_description =>
+      'We will notify you when the courier arrives';
+
+  @override
+  String get addresses_leave_at_door => 'Leave the order at the door';
+
+  @override
+  String get addresses_leave_at_door_description =>
+      'Leave the order in a safe place at the door';
+
+  @override
+  String get addresses_add_new => 'Add new address';
+
+  @override
+  String get addresses_availability_notice =>
+      'Available meals and restaurants may vary by delivery area';
+
+  @override
+  String get addresses_save => 'Save address';
+
+  @override
   String get profile_security => 'Security and privacy';
 
   @override
