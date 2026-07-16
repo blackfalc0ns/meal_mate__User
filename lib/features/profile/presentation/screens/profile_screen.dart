@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -22,15 +23,15 @@ class ProfileScreen extends StatelessWidget {
       appBar: CustomAppBar(
         showBackButton: false,
         automaticallyImplyLeading: false,
-       
+
         titleWidget: SizedBox(
           width: Spacing.profileAppBarLogoWidth,
-          height:
-      Spacing.profileAppBarLogoHeight,
+          height: Spacing.profileAppBarLogoHeight,
           child: SvgPicture.asset(Assets.mealMateLogo),
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () =>
+              Navigator.of(context).pushNamed(AppRoutes.profileSettings),
           constraints: const BoxConstraints.tightFor(
             width: Spacing.profileHeaderActionSize,
             height: Spacing.profileHeaderActionSize,

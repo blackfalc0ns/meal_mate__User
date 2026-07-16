@@ -12,12 +12,14 @@ class SecurityPrivacySectionCard extends StatelessWidget {
     required this.icon,
     required this.items,
     required this.tileHeight,
+    this.trailingIcon,
   });
 
   final String title;
   final IconData icon;
   final List<(IconData, String, String, VoidCallback?)> items;
   final double tileHeight;
+  final IconData? trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,7 @@ class SecurityPrivacySectionCard extends StatelessWidget {
               onTap: item.$4,
               height: tileHeight,
               showDivider: index != items.length - 1,
+              trailingIcon: trailingIcon,
             );
           }),
         ],

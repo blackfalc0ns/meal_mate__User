@@ -12,10 +12,30 @@ class ProfileStatsCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final stats = [
-      (Icons.assignment_outlined, '12', locale.profile_completed_plans),
-      (Icons.local_fire_department_outlined, '45', locale.profile_streak_days),
-      (Icons.star_border_rounded, '850', locale.profile_points),
-      (Icons.monitor_weight_outlined, '-4.2', locale.profile_weight_lost),
+      (
+        Icons.assignment_outlined,
+        '12',
+        locale.profile_completed_plans,
+        color.primary,
+      ),
+      (
+        Icons.local_fire_department_outlined,
+        '45',
+        locale.profile_streak_days,
+        color.error,
+      ),
+      (
+        Icons.star_border_rounded,
+        '850',
+        locale.profile_points,
+        color.secondary,
+      ),
+      (
+        Icons.monitor_weight_outlined,
+        '-4.2',
+        locale.profile_weight_lost,
+        color.primary,
+      ),
     ];
 
     return Container(
@@ -50,9 +70,7 @@ class ProfileStatsCard extends StatelessWidget {
                 children: [
                   Icon(
                     stat.$1,
-                    color: index == stats.length - 1
-                        ? color.primary
-                        : color.primary,
+                    color: stat.$4,
                     size: Spacing.profileStatIconSize,
                   ),
                   const SizedBox(height: Spacing.xs),
@@ -61,7 +79,7 @@ class ProfileStatsCard extends StatelessWidget {
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
                       fontSize: Spacing.profileTitleFontSize,
-                      color: index == stats.length - 1
+                      color: stat.$4 == color.primary
                           ? color.primary
                           : color.onSurface,
                     ),

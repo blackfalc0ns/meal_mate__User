@@ -12,6 +12,7 @@ class ProfileSettingsTile extends StatelessWidget {
     required this.subtitle,
     required this.showDivider,
     this.onTap,
+    this.trailingIcon,
     this.height = Spacing.profileSettingsTileHeight,
   });
 
@@ -20,6 +21,7 @@ class ProfileSettingsTile extends StatelessWidget {
   final String subtitle;
   final bool showDivider;
   final VoidCallback? onTap;
+  final IconData? trailingIcon;
   final double height;
 
   @override
@@ -86,9 +88,7 @@ class ProfileSettingsTile extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                      locale.localeName == 'ar'
-                          ? Icons.chevron_left_rounded
-                          : Icons.chevron_right_rounded,
+                      trailingIcon ?? Icons.chevron_left_rounded,
                       color: color.onSurfaceVariant,
                       size: Spacing.iconSm,
                     ),

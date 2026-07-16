@@ -22,9 +22,9 @@ class SecurityPrivacyNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final accent = isWarning ? color.tertiary : color.primary;
+    final accent = isWarning ? color.secondary : color.primary;
     final background = isWarning
-        ? color.tertiaryContainer
+        ? color.secondary.withValues(alpha: 0.08)
         : color.primaryContainer;
     final height = isWarning
         ? Spacing.profilePrivacyReminderHeight
@@ -39,7 +39,11 @@ class SecurityPrivacyNotice extends StatelessWidget {
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(Spacing.profilePrivacyCardRadius),
-        border: Border.all(color: color.outlineVariant),
+        border: Border.all(
+          color: isWarning
+              ? color.secondary.withValues(alpha: 0.2)
+              : color.outlineVariant,
+        ),
       ),
       child: Row(
         textDirection: locale.localeName == 'ar'

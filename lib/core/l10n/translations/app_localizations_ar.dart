@@ -1767,4 +1767,85 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get meal_details_select_meal_hint =>
       'سيتم تثبيت هذه الوجبة لليوم المختار';
+
+  @override
+  String get profile_settings_title => 'إعدادات التطبيق';
+
+  @override
+  String get profile_settings_application_section => 'التطبيق';
+
+  @override
+  String get profile_settings_notifications => 'الإشعارات';
+
+  @override
+  String get profile_settings_notifications_subtitle =>
+      'إدارة تفضيلات الإشعارات والتنبيهات';
+
+  @override
+  String get profile_settings_language => 'اللغة';
+
+  @override
+  String get profile_settings_language_subtitle => 'اختر لغة التطبيق المفضلة';
+
+  @override
+  String get profile_settings_appearance => 'المظهر';
+
+  @override
+  String get profile_settings_appearance_subtitle =>
+      'اختر نمط العرض الذي يناسبك';
+
+  @override
+  String get profile_settings_support_section => 'الدعم';
+
+  @override
+  String get profile_settings_help_center => 'مركز المساعدة';
+
+  @override
+  String get profile_settings_help_center_subtitle =>
+      'ابحث عن إجابات الأسئلة الشائعة';
+
+  @override
+  String get profile_settings_contact_us => 'تواصل معنا';
+
+  @override
+  String get profile_settings_contact_us_subtitle => 'راسل فريق دعم MealMate';
+
+  @override
+  String get profile_settings_complaints => 'الشكاوى';
+
+  @override
+  String get profile_settings_complaints_subtitle =>
+      'قدّم شكواك وسنراجعها في أقرب وقت';
+
+  @override
+  String get profile_settings_information_section => 'معلومات';
+
+  @override
+  String get profile_settings_about => 'عن MealMate';
+
+  @override
+  String get profile_settings_about_subtitle => 'تعرّف على رؤيتنا ومهمتنا';
+
+  @override
+  String get profile_settings_privacy_policy => 'سياسة الخصوصية';
+
+  @override
+  String get profile_settings_privacy_policy_subtitle =>
+      'تعرّف على كيفية حماية بياناتك';
+
+  @override
+  String get profile_settings_terms => 'الشروط والأحكام';
+
+  @override
+  String get profile_settings_terms_subtitle =>
+      'الشروط والأحكام الخاصة باستخدام التطبيق';
+
+  @override
+  String get profile_settings_version => 'إصدار التطبيق';
+
+  @override
+  String get profile_settings_version_subtitle => 'أنت تستخدم أحدث إصدار';
+
+  @override
+  String get profile_settings_version_label => 'الإصدار 2.4.0';
 }

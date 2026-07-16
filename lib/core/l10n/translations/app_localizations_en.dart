@@ -1791,4 +1791,89 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get meal_details_select_meal_hint =>
       'This meal will be fixed for the selected day';
+
+  @override
+  String get profile_settings_title => 'App settings';
+
+  @override
+  String get profile_settings_application_section => 'Application';
+
+  @override
+  String get profile_settings_notifications => 'Notifications';
+
+  @override
+  String get profile_settings_notifications_subtitle =>
+      'Manage notification preferences and alerts';
+
+  @override
+  String get profile_settings_language => 'Language';
+
+  @override
+  String get profile_settings_language_subtitle =>
+      'Choose your preferred app language';
+
+  @override
+  String get profile_settings_appearance => 'Appearance';
+
+  @override
+  String get profile_settings_appearance_subtitle =>
+      'Choose the display mode that suits you';
+
+  @override
+  String get profile_settings_support_section => 'Support';
+
+  @override
+  String get profile_settings_help_center => 'Help center';
+
+  @override
+  String get profile_settings_help_center_subtitle =>
+      'Find answers to frequently asked questions';
+
+  @override
+  String get profile_settings_contact_us => 'Contact us';
+
+  @override
+  String get profile_settings_contact_us_subtitle =>
+      'Message the MealMate support team';
+
+  @override
+  String get profile_settings_complaints => 'Complaints';
+
+  @override
+  String get profile_settings_complaints_subtitle =>
+      'Submit a complaint and we will review it soon';
+
+  @override
+  String get profile_settings_information_section => 'Information';
+
+  @override
+  String get profile_settings_about => 'About MealMate';
+
+  @override
+  String get profile_settings_about_subtitle =>
+      'Learn about our vision and mission';
+
+  @override
+  String get profile_settings_privacy_policy => 'Privacy policy';
+
+  @override
+  String get profile_settings_privacy_policy_subtitle =>
+      'Learn how we protect your data';
+
+  @override
+  String get profile_settings_terms => 'Terms and conditions';
+
+  @override
+  String get profile_settings_terms_subtitle =>
+      'Terms and conditions for using the app';
+
+  @override
+  String get profile_settings_version => 'App version';
+
+  @override
+  String get profile_settings_version_subtitle =>
+      'You are using the latest version';
+
+  @override
+  String get profile_settings_version_label => 'Version 2.4.0';
 }

@@ -3487,6 +3487,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This meal will be fixed for the selected day'**
   String get meal_details_select_meal_hint;
+
+  /// No description provided for @profile_settings_title.
+  ///
+  /// In en, this message translates to:
+  /// **'App settings'**
+  String get profile_settings_title;
+
+  /// No description provided for @profile_settings_application_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Application'**
+  String get profile_settings_application_section;
+
+  /// No description provided for @profile_settings_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get profile_settings_notifications;
+
+  /// No description provided for @profile_settings_notifications_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage notification preferences and alerts'**
+  String get profile_settings_notifications_subtitle;
+
+  /// No description provided for @profile_settings_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get profile_settings_language;
+
+  /// No description provided for @profile_settings_language_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred app language'**
+  String get profile_settings_language_subtitle;
+
+  /// No description provided for @profile_settings_appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get profile_settings_appearance;
+
+  /// No description provided for @profile_settings_appearance_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the display mode that suits you'**
+  String get profile_settings_appearance_subtitle;
+
+  /// No description provided for @profile_settings_support_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get profile_settings_support_section;
+
+  /// No description provided for @profile_settings_help_center.
+  ///
+  /// In en, this message translates to:
+  /// **'Help center'**
+  String get profile_settings_help_center;
+
+  /// No description provided for @profile_settings_help_center_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find answers to frequently asked questions'**
+  String get profile_settings_help_center_subtitle;
+
+  /// No description provided for @profile_settings_contact_us.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get profile_settings_contact_us;
+
+  /// No description provided for @profile_settings_contact_us_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message the MealMate support team'**
+  String get profile_settings_contact_us_subtitle;
+
+  /// No description provided for @profile_settings_complaints.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaints'**
+  String get profile_settings_complaints;
+
+  /// No description provided for @profile_settings_complaints_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit a complaint and we will review it soon'**
+  String get profile_settings_complaints_subtitle;
+
+  /// No description provided for @profile_settings_information_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get profile_settings_information_section;
+
+  /// No description provided for @profile_settings_about.
+  ///
+  /// In en, this message translates to:
+  /// **'About MealMate'**
+  String get profile_settings_about;
+
+  /// No description provided for @profile_settings_about_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about our vision and mission'**
+  String get profile_settings_about_subtitle;
+
+  /// No description provided for @profile_settings_privacy_policy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get profile_settings_privacy_policy;
+
+  /// No description provided for @profile_settings_privacy_policy_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn how we protect your data'**
+  String get profile_settings_privacy_policy_subtitle;
+
+  /// No description provided for @profile_settings_terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get profile_settings_terms;
+
+  /// No description provided for @profile_settings_terms_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions for using the app'**
+  String get profile_settings_terms_subtitle;
+
+  /// No description provided for @profile_settings_version.
+  ///
+  /// In en, this message translates to:
+  /// **'App version'**
+  String get profile_settings_version;
+
+  /// No description provided for @profile_settings_version_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are using the latest version'**
+  String get profile_settings_version_subtitle;
+
+  /// No description provided for @profile_settings_version_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 2.4.0'**
+  String get profile_settings_version_label;
 }
 
 class _AppLocalizationsDelegate
