@@ -88,7 +88,7 @@ class ProfileSettingsTile extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                      trailingIcon ?? Icons.chevron_left_rounded,
+                   Icons.chevron_right_rounded,
                       color: color.onSurfaceVariant,
                       size: Spacing.iconSm,
                     ),
