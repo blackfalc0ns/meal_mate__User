@@ -44,9 +44,9 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CalendarRestaurantTextBlock(restaurant: restaurant),
-                const SizedBox(width: 14),
                 const CalendarRestaurantSummaryLogo(),
+                const SizedBox(width: 14),
+                CalendarRestaurantTextBlock(restaurant: restaurant),
               ],
             ),
           ),

@@ -1,7 +1,8 @@
 part of 'calendar_screen_header.dart';
 
 class CalendarHeaderIconButton extends StatelessWidget {
-  const CalendarHeaderIconButton({super.key, 
+  const CalendarHeaderIconButton({
+    super.key,
     required this.icon,
     required this.onPressed,
     this.showDot = false,
@@ -14,29 +15,36 @@ class CalendarHeaderIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
-    return IconButton(
-      onPressed: onPressed,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints.tightFor(width: 38, height: 38),
-      icon: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Icon(icon, color: color.onPrimary, size: 24),
-          if (showDot)
-            PositionedDirectional(
-              top: -1,
-              start: 0,
-              child: Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: color.secondary,
-                  shape: BoxShape.circle,
+    return Semantics(
+      label: locale.calendar_title,
+      child: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints.tightFor(
+          width: Spacing.iconMd,
+          height: Spacing.iconMd,
+        ),
+        icon: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Icon(icon, color: color.onPrimary, size: Spacing.iconMd),
+            if (showDot)
+              Positioned(
+                top: -Spacing.hairline,
+                left: Spacing.calendarHeaderNotificationDotStart,
+                child: Container(
+                  width: Spacing.sm,
+                  height: Spacing.sm,
+                  decoration: BoxDecoration(
+                    color: color.secondary,
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_summary_card.dart';
 
 class CalendarRestaurantTextBlock extends StatelessWidget {
-  const CalendarRestaurantTextBlock({required this.restaurant});
+  const CalendarRestaurantTextBlock({super.key, required this.restaurant});
 
   final CalendarRestaurantEntity restaurant;
 
@@ -12,10 +12,10 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
     return SizedBox(
       width: 150,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(Icons.verified_rounded, color: color.onPrimary, size: 13),
               const SizedBox(width: Spacing.xs),
@@ -40,7 +40,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CalendarMetaChip(
                 icon: Icons.star_rounded,

@@ -61,10 +61,7 @@ class CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: color.surface,
         body: Column(
           children: [
-            CalendarScreenHeader(
-              title: locale.calendar_title,
-              onBack: () => Navigator.maybePop(context),
-            ),
+            CalendarScreenHeader(title: locale.calendar_title),
             Expanded(
               child: CustomScrollView(
                 slivers: [

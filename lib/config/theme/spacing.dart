@@ -315,4 +315,12 @@ class Spacing {
   static const double addressesCardContentPadding = 17.39;
   static const double addressesIconRadius = 6.11;
   static const double addressesMapRadius = 9.24;
+
+  // Calendar header Figma measurements.
+  static const double calendarHeaderHeight = 116.0;
+  static const double calendarHeaderRadius = 40.0;
+  static const double calendarHeaderTitleTop = 55.0;
+  static const double calendarHeaderIconTop = 62.0;
+  static const double calendarHeaderHorizontalInset = 22.0;
+  static const double calendarHeaderNotificationDotStart = 13.0;
 }
