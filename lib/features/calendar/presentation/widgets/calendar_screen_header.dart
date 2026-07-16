@@ -25,9 +25,9 @@ class CalendarScreenHeader extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color.primary,
-          borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(35),
-          ),
+          // borderRadius: const BorderRadius.vertical(
+          //   bottom: Radius.circular(35),
+        //  ),
         ),
         child: Stack(
           children: [

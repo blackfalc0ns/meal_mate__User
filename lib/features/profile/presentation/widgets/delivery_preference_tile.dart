@@ -40,7 +40,7 @@ class DeliveryPreferenceTile extends StatelessWidget {
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,

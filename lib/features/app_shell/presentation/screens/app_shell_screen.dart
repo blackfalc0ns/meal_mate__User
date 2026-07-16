@@ -36,6 +36,8 @@ class _AppShellView extends StatelessWidget {
       AppBottomNavBarItem(
         icon: Icons.home_rounded,
         selectedIcon: Icons.home_rounded,
+        svgAsset: Assets.logo,
+        tintSvg: false,
         label: l10n.nav_home,
         sfSymbol: 'house.fill',
       ),

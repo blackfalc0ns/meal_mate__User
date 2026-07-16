@@ -30,22 +30,23 @@ class CurrentAddressCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Spacing.addressesCardRadius),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(
-                Spacing.addressesCardContentPadding,
+              padding: const EdgeInsets.only(
+                top: Spacing.xss,
+                bottom: Spacing.xss,
+                right: Spacing.addressesCardContentPadding,
               ),
-              child: Container(
-                width: Spacing.profileSettingsIconContainer,
-                height: Spacing.profileSettingsIconContainer,
-                decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Icon(
-                  Icons.home_rounded,
-                  color: color.primary,
-                  size: Spacing.iconMd,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(Spacing.addressesMapRadius),
+                child: SizedBox(
+                  width: Spacing.addressesMapSize,
+                  height: Spacing.addressesMapSize,
+                  child: Image.asset(
+                    Assets.profileDefaultAddressMap,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -56,7 +57,7 @@ class CurrentAddressCard extends StatelessWidget {
                   bottom: Spacing.md,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -147,12 +148,22 @@ class CurrentAddressCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: Spacing.addressesMapSize,
-              height: Spacing.addressesMapSize,
-              child: Image.asset(
-                Assets.profileDefaultAddressMap,
-                fit: BoxFit.cover,
+            Padding(
+              padding: const EdgeInsets.all(
+                Spacing.addressesCardContentPadding,
+              ),
+              child: Container(
+                width: Spacing.profileSettingsIconContainer,
+                height: Spacing.profileSettingsIconContainer,
+                decoration: BoxDecoration(
+                  color: color.secondaryContainer,
+                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                ),
+                child: Icon(
+                  Icons.home_rounded,
+                  color: color.primary,
+                  size: Spacing.iconMd,
+                ),
               ),
             ),
           ],

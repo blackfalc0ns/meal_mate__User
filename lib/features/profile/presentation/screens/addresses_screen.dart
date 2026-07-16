@@ -41,7 +41,7 @@ class AddressesScreen extends StatelessWidget {
               const SizedBox(height: Spacing.addressesSectionGap),
               Text(
                 locale.addresses_saved_section,
-                textAlign: TextAlign.end,
+             
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   fontSize: Spacing.addressesSectionTitleSize,
@@ -69,7 +69,7 @@ class AddressesScreen extends StatelessWidget {
               const SizedBox(height: Spacing.addressesSectionGap),
               Text(
                 locale.addresses_delivery_preferences,
-                textAlign: TextAlign.end,
+               
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   fontSize: Spacing.addressesSectionTitleSize,

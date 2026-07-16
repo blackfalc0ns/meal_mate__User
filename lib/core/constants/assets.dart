@@ -53,6 +53,7 @@ class Assets {
 
   static const String buttonSmall = "$_svg/button_small.svg";
   static const String buttonLarge = "$_svg/button_large.svg";
+  static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';
   static const String notificationBold = '$_svg/notification_bold.svg';
 }
