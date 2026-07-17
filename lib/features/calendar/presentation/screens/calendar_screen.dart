@@ -83,7 +83,7 @@ class CalendarScreenState extends State<CalendarScreen> {
                     ),
                   ),
                   SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: Spacing.xxl)
+                    padding: EdgeInsets.symmetric(horizontal: Spacing.screenH)
                         .copyWith(
                           top: _hasRestaurant ? Spacing.lg : Spacing.xxl,
                           bottom: widget.showBottomSpace

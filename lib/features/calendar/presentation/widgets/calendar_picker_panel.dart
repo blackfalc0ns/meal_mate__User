@@ -36,7 +36,7 @@ class CalendarPickerPanel extends StatefulWidget {
 }
 
 class CalendarPickerPanelState extends State<CalendarPickerPanel> {
-  static const _weekScrollStep = 64.75;
+  static const _weekScrollStep = 54.0;
 
   late final ScrollController _weekController;
   bool _calendarGripDragHandled = false;
@@ -78,11 +78,14 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: Spacing.sm,horizontal: Spacing.screenH),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: Spacing.sm,
+                      horizontal: Spacing.screenH,
+                    ),
                     child: Directionality(
                       textDirection: TextDirection.ltr,
                       child: SizedBox(
-                        height: 50,
+                        height: 42,
                         child: Row(
                           children: [
                             CalendarMonthArrowButton(
@@ -104,7 +107,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 520),
                     curve: Curves.easeInOutCubic,
-                    height: widget.isExpanded ? 8 : 1,
+                    height: widget.isExpanded ? 6 : 1,
                   ),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 520),
@@ -125,12 +128,10 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                             animation: animation,
                             child: child,
                             builder: (context, child) {
-                              return ClipRect(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  heightFactor: animation.value,
-                                  child: child,
-                                ),
+                              return Align(
+                                alignment: Alignment.topCenter,
+                                heightFactor: animation.value,
+                                child: child,
                               );
                             },
                           ),
@@ -165,13 +166,13 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 520),
                     curve: Curves.easeInOutCubic,
-                    height: widget.isExpanded ? 28 : 30,
+                    height: widget.isExpanded ? 22 : 24,
                   ),
                 ],
               ),
             ),
             Positioned(
-              bottom: -22,
+              bottom: -18,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: widget.onToggleExpanded,
@@ -189,12 +190,12 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                   _calendarGripDragDistance = 0;
                 },
                 child: SizedBox(
-                  width: 64,
-                  height: 44,
+                  width: 52,
+                  height: 36,
                   child: Center(
                     child: Container(
-                      width: 26,
-                      height: 26,
+                      width: 22,
+                      height: 22,
                       decoration: BoxDecoration(
                         color: color.primary,
                         shape: BoxShape.circle,
@@ -221,7 +222,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                               : Icons.keyboard_arrow_down_rounded,
                           key: ValueKey(widget.isExpanded),
                           color: color.onPrimary,
-                          size: 22,
+                          size: 18,
                         ),
                       ),
                     ),

@@ -43,7 +43,7 @@ class CalendarDayTile extends StatelessWidget {
           onTap: onPressed,
           child: Padding(
             padding: EdgeInsets.symmetric(
-              vertical: compact ? 4 : 7,
+              vertical: compact ? 4 : 5,
               horizontal: 4,
             ),
             child: Column(
@@ -54,7 +54,7 @@ class CalendarDayTile extends StatelessWidget {
                   style:
                       getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: compact ? 16 : (selected ? 20.4 : 16.2),
+                        fontSize: compact ? 16 : (selected ? 17 : 14),
                         color: textColor,
                       ).copyWith(
                         height: 1,
@@ -64,7 +64,7 @@ class CalendarDayTile extends StatelessWidget {
                       ),
                 ),
                 if (!compact) ...[
-                  SizedBox(height: selected ? 8 : 9),
+                  SizedBox(height: selected ? 5 : 6),
                   Text(
                     day.weekday,
                     maxLines: 1,
@@ -73,7 +73,7 @@ class CalendarDayTile extends StatelessWidget {
                         (selected
                                 ? getMediumStyle(
                                     fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size12,
+                                    fontSize: FontSize.size10,
                                     color: textColor,
                                   )
                                 : getRegularStyle(
@@ -84,7 +84,7 @@ class CalendarDayTile extends StatelessWidget {
                             .copyWith(height: 1),
                   ),
                 ],
-                SizedBox(height: compact ? 4 : (selected ? 7 : 6)),
+                SizedBox(height: compact ? 4 : (selected ? 5 : 4)),
                 if (!compact)
                   CalendarDayMealIndicator(
                     selected: selected,

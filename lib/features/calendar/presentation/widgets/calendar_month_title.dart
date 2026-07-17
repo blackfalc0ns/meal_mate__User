@@ -18,7 +18,7 @@ class CalendarMonthTitle extends StatelessWidget {
       text: TextSpan(
         style: getBoldStyle(
           fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: 33,
+          fontSize: 26,
           color: color.onSurface,
         ).copyWith(height: 1),
         children: [
@@ -26,7 +26,7 @@ class CalendarMonthTitle extends StatelessWidget {
             text: month,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 33,
+              fontSize: 26,
               color: color.primary,
             ).copyWith(height: 1),
           ),

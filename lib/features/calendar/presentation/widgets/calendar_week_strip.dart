@@ -14,7 +14,7 @@ class CalendarWeekStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 81,
+      height: 67,
       child: CalendarScrollableDayStrip(
         controller: controller,
         days: days,

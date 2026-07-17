@@ -13,10 +13,10 @@ class CalendarMonthArrowButton extends StatelessWidget {
     return IconButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      constraints: const BoxConstraints.tightFor(width: 18, height: 18),
+      constraints: const BoxConstraints.tightFor(width: 16, height: 16),
       icon: DecoratedBox(
         decoration: BoxDecoration(color: color.primary, shape: BoxShape.circle),
-        child: Icon(icon, color: color.onPrimary, size: 17),
+        child: Icon(icon, color: color.onPrimary, size: 15),
       ),
     );
   }

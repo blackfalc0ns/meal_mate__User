@@ -18,8 +18,8 @@ class CalendarScrollableDayStrip extends StatefulWidget {
 
 class CalendarScrollableDayStripState
     extends State<CalendarScrollableDayStrip> {
-  static const _tileWidth = 54.5;
-  static const _tileGap = 10.25;
+  static const _tileWidth = 46.0;
+  static const _tileGap = 8.0;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class CalendarScrollableDayStripState
       controller: widget.controller,
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       itemCount: widget.days.length,
       separatorBuilder: (_, _) => const SizedBox(width: _tileGap),
       itemBuilder: (context, index) {
@@ -49,7 +49,7 @@ class CalendarScrollableDayStripState
         return CalendarDayTile(
           day: day,
           width: _tileWidth,
-          height: 71.5,
+          height: 59.0,
           onPressed: () {
             widget.onDaySelected(day);
             _centerDay(index);
