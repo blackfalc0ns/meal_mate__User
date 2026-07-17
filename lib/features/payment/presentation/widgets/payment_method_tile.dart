@@ -52,7 +52,7 @@ class PaymentMethodTile extends StatelessWidget {
                     _title(context),
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size10,
+                      fontSize: FontSize.size11,
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -119,7 +119,7 @@ class PaymentMethodTile extends StatelessWidget {
     }
     return Text(
       _subtitle(context),
-      style: getRegularStyle(
+      style: getMediumStyle(
         fontFamily: FontConstant.ibmPlexSansArabic,
         fontSize: FontSize.size10,
         color: AppColors.textSecondary,

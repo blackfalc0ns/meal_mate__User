@@ -104,9 +104,9 @@ class CalendarMealCard extends StatelessWidget {
                     backgroundColor: color.primary,
                     foregroundColor: color.onPrimary,
                     padding: EdgeInsets.zero,
-                    textStyle: getSemiBoldStyle(
+                    textStyle: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: 9.3,
+                      fontSize: FontSize.size12,
                       color: color.onPrimary,
                     ),
                     shape: RoundedRectangleBorder(

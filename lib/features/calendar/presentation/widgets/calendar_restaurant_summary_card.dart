@@ -68,9 +68,9 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
                   backgroundColor: color.surface,
                   foregroundColor: color.primary,
                   padding: EdgeInsets.zero,
-                  textStyle: getSemiBoldStyle(
+                  textStyle: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size12,
                     color: color.primary,
                   ),
                   shape: RoundedRectangleBorder(

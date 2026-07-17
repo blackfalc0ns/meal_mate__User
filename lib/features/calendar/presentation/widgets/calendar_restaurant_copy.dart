@@ -23,7 +23,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
             textAlign: TextAlign.right,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 11.79,
+              fontSize: FontSize.size12,
               color: color.onSurface,
             ).copyWith(letterSpacing: 0),
           ),
@@ -33,9 +33,9 @@ class CalendarRestaurantCopy extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.right,
-            style: getRegularStyle(
+            style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 8.5,
+              fontSize: FontSize.size10,
               color: color.onSurface.withValues(alpha: 0.62),
             ).copyWith(letterSpacing: 0),
           ),
@@ -43,9 +43,9 @@ class CalendarRestaurantCopy extends StatelessWidget {
           RichText(
             textAlign: TextAlign.right,
             text: TextSpan(
-              style: getRegularStyle(
+              style: getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: 10.96,
+                fontSize: FontSize.size11,
                 color: color.onSurface,
               ).copyWith(letterSpacing: 0),
               children: [

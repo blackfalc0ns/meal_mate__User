@@ -66,7 +66,7 @@ class _OffersHeroCardState extends State<OffersHeroCard>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(46),
         child: SizedBox(
-          height: 225,
+          height: 150,
           width: double.infinity,
           child: Image.asset(
             'assets/images/offers/banner_offfer.png',

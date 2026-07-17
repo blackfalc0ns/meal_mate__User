@@ -26,9 +26,9 @@ class CalendarTabLabel extends StatelessWidget {
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
             textAlign: TextAlign.center,
-            style: getMediumStyle(
+            style: getSemiBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 13.52,
+              fontSize: FontSize.size15,
               color: active ? color.primary : color.onSurface,
             ).copyWith(height: 12.48 / 13.52, letterSpacing: 0),
             child: Text(text),

@@ -24,9 +24,16 @@ class MealDetailsHeaderImage extends StatelessWidget {
         child: SizedBox(
           height: Spacing.xxxl * 4 + Spacing.xxl,
           width: double.infinity,
-          child: ColoredBox(
-            color: color.surfaceContainerHighest,
-            child: Image.asset(Assets.mealDetailsHero, fit: BoxFit.fitWidth),
+          child: ClipRect(
+            child: ColoredBox(
+              color: color.surfaceContainerHighest,
+              child: Image.asset(
+                Assets.mealDetailsHero,
+                fit: BoxFit.cover,
+                alignment: const Alignment(0, -0.2),
+                filterQuality: FilterQuality.medium,
+              ),
+            ),
           ),
         ),
       ),

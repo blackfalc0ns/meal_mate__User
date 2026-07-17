@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantOptionCard extends StatelessWidget {
-  const CalendarRestaurantOptionCard({
+  const CalendarRestaurantOptionCard({super.key, 
     required this.restaurant,
     required this.onTap,
   });

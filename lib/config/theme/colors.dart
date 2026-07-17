@@ -5,7 +5,7 @@ class AppColors {
   AppColors._();
 
   // Brand primary scale.
-  static const Color primary100 = Color(0xFFC2FFD3);
+  static const Color primary100 = Color(0xFFC6E3D5);
   static const Color primary200 = Color(0xFF0BF07E);
   static const Color primary300 = Color(0xFF07C466);
   static const Color primary400 = Color(0xFF04994E);

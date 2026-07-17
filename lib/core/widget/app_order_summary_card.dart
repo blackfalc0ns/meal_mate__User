@@ -236,7 +236,7 @@ class _PriceRow extends StatelessWidget {
         Text(
           label,
           textAlign: TextAlign.right,
-          style: getRegularStyle(
+          style: getMediumStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
             fontSize: FontSize.size13,
             color: const Color(0xFF8A8F98),
@@ -255,7 +255,7 @@ class _PriceRow extends StatelessWidget {
           value,
           style: getSemiBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size11,
             color: valueColor,
           ),
         ),

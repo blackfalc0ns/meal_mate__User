@@ -139,7 +139,7 @@ class Spacing {
   static const double monthlyPlanDurationControlSize = 20;
   static const double monthlyPlanDurationOptionRadius = 6.662;
   static const double monthlyPlanDurationStatusIconSize = 12;
-  static const double monthlyPlanDurationCardWidth = 398.0;
+  static const double monthlyPlanDurationCardWidth = 400;
   static const double monthlyPlanDurationCustomEnd = 208.0;
   static const double monthlyPlanDurationCardRadius = 15;
   static const double monthlyPlanDurationHeaderTop = 6.0;
