@@ -38,6 +38,21 @@ class _MonthlyPlanPackagesSectionState
                 (constraints.maxWidth / Spacing.monthlyPlanPackagesWidth)
                     .clamp(0.0, 1.0)
                     .toDouble();
+            final initialSelectedIndex = widget.packages.indexWhere(
+              (package) => package.isPopular,
+            );
+            final selectedIndex =
+                _selectedIndex ??
+                (initialSelectedIndex == -1 ? 0 : initialSelectedIndex);
+            final sideIndexes = [
+              for (var index = 0; index < widget.packages.length; index++)
+                if (index != selectedIndex) index,
+            ];
+            final slotIndexes = [
+              sideIndexes.first,
+              selectedIndex,
+              sideIndexes.last,
+            ];
 
             return Center(
               child: SizedBox(
@@ -52,31 +67,38 @@ class _MonthlyPlanPackagesSectionState
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        for (
-                          var index = 0;
-                          index < widget.packages.length;
-                          index++
-                        )
-                          Positioned(
-                            left: widget.packages[index].isPopular
+                        for (var slot = 0; slot < slotIndexes.length; slot++)
+                          AnimatedPositioned(
+                            key: ValueKey(widget.packages[slotIndexes[slot]]),
+                            duration: const Duration(milliseconds: 320),
+                            curve: Curves.easeInOutCubic,
+                            left: slot == 0
+                                ? Spacing.monthlyPlanPackageBasicLeft
+                                : slot == 1
                                 ? Spacing.monthlyPlanPackageFeaturedLeft
-                                : widget.packages[index].iconName == 'crown'
-                                ? Spacing.monthlyPlanPackagePremiumLeft
-                                : Spacing.monthlyPlanPackageBasicLeft,
-                            top: widget.packages[index].isPopular
+                                : Spacing.monthlyPlanPackagePremiumLeft,
+                            top: slot == 1
                                 ? Spacing.monthlyPlanPackageFeaturedTop
                                 : Spacing.monthlyPlanPackageSideTop,
+                            width: slot == 1
+                                ? Spacing.monthlyPlanPackageFeaturedWidth
+                                : Spacing.monthlyPlanPackageSideWidth,
+                            height: slot == 1
+                                ? Spacing.monthlyPlanPackageFeaturedHeight
+                                : Spacing.monthlyPlanPackageSideHeight,
                             child: MonthlyPlanPackageCard(
-                              package: widget.packages[index],
-                              width: widget.packages[index].isPopular
+                              package: widget.packages[slotIndexes[slot]],
+                              width: slot == 1
                                   ? Spacing.monthlyPlanPackageFeaturedWidth
                                   : Spacing.monthlyPlanPackageSideWidth,
-                              height: widget.packages[index].isPopular
+                              height: slot == 1
                                   ? Spacing.monthlyPlanPackageFeaturedHeight
                                   : Spacing.monthlyPlanPackageSideHeight,
-                              isSelected: _selectedIndex == index,
-                              onTap: () =>
-                                  setState(() => _selectedIndex = index),
+                              isCentered: slot == 1,
+                              isSelected: selectedIndex == slotIndexes[slot],
+                              onTap: () => setState(
+                                () => _selectedIndex = slotIndexes[slot],
+                              ),
                               onBrowseRestaurants: widget.onBrowseRestaurants,
                             ),
                           ),

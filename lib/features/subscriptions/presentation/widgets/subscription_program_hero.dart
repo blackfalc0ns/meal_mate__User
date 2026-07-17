@@ -30,7 +30,7 @@ class SubscriptionProgramHero extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: Spacing.xl,
+            top: Spacing.xxl,
             child: SvgPicture.asset(
               Assets.subscriptionProgramsLogo,
               width: Spacing.iconXl,

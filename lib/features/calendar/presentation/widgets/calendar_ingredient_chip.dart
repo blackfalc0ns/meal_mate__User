@@ -42,7 +42,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size10,
                 color: isMore
                     ? color.onSurface
                     : color.onSurface.withValues(alpha: 0.62),

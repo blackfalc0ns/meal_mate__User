@@ -45,7 +45,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: getSemiBoldStyle(
+            style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               fontSize: FontSize.size9,
               color: color.onSurface.withValues(alpha: 0.62),

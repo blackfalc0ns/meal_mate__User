@@ -57,6 +57,32 @@ class SubscriptionsFakeDataSource {
     ),
   ];
 
+  List<SubscriptionPackageChoiceEntity> getPackageChoices() => const [
+    SubscriptionPackageChoiceEntity(
+      title: 'باقة 4 وجبات',
+      subtitle: 'افطار - غداء - عشاء - سناك',
+      isPopular: true,
+      planDetailsIndex: 0,
+    ),
+    SubscriptionPackageChoiceEntity(
+      title: 'باقة 3 وجبات',
+      subtitle: '14 يوم ٠ 3 وجبات يومياً',
+      planDetailsIndex: 1,
+    ),
+    SubscriptionPackageChoiceEntity(
+      title: 'باقة وجبتين',
+      subtitle: '7 يوم ٠ وجبتين يومياً',
+      planDetailsIndex: 2,
+    ),
+    SubscriptionPackageChoiceEntity(
+      title: 'الأسبوع',
+      subtitle: '7 يوم ٠ وجبتين يومياً',
+      price: '930',
+      currency: 'KWD',
+      planDetailsIndex: 2,
+    ),
+  ];
+
   List<SubscriptionPlanEntity> getPlans() => [
     SubscriptionPlanEntity(
       title: 'باقة شهر',
@@ -138,4 +164,22 @@ class SubscriptionProgramEntity {
   final IconData badgeIcon;
   final IconData primaryFeatureIcon;
   final IconData secondaryFeatureIcon;
+}
+
+class SubscriptionPackageChoiceEntity {
+  const SubscriptionPackageChoiceEntity({
+    required this.title,
+    required this.subtitle,
+    this.price,
+    this.currency,
+    this.isPopular = false,
+    required this.planDetailsIndex,
+  });
+
+  final String title;
+  final String subtitle;
+  final String? price;
+  final String? currency;
+  final bool isPopular;
+  final int planDetailsIndex;
 }

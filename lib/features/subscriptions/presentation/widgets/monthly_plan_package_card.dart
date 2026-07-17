@@ -14,6 +14,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
     required this.package,
     required this.width,
     required this.height,
+    required this.isCentered,
     required this.isSelected,
     required this.onTap,
     required this.onBrowseRestaurants,
@@ -22,6 +23,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
   final MonthlyPackageTierEntity package;
   final double width;
   final double height;
+  final bool isCentered;
   final bool isSelected;
   final VoidCallback onTap;
   final VoidCallback onBrowseRestaurants;
@@ -30,27 +32,9 @@ class MonthlyPlanPackageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final isFeatured = package.isPopular;
+    final isFeatured = isCentered;
     final isPremium = package.iconName == 'crown';
     final usesLightForeground = isFeatured || isPremium;
-    final cardLeft = isFeatured
-        ? Spacing.monthlyPlanPackageFeaturedLeft
-        : isPremium
-        ? Spacing.monthlyPlanPackagePremiumLeft
-        : Spacing.monthlyPlanPackageBasicLeft;
-    final cardTop = isFeatured
-        ? Spacing.monthlyPlanPackageFeaturedTop
-        : Spacing.monthlyPlanPackageSideTop;
-    final indicatorLeft = isFeatured
-        ? Spacing.monthlyPlanPackageFeaturedIndicatorLeft - cardLeft
-        : isPremium
-        ? Spacing.monthlyPlanPackagePremiumIndicatorLeft - cardLeft
-        : Spacing.monthlyPlanPackageBasicIndicatorLeft - cardLeft;
-    final indicatorTop = isFeatured
-        ? Spacing.monthlyPlanPackageFeaturedIndicatorTop - cardTop
-        : isPremium
-        ? Spacing.monthlyPlanPackagePremiumIndicatorTop - cardTop
-        : Spacing.monthlyPlanPackageBasicIndicatorTop - cardTop;
     final countLabel = switch (package.iconName) {
       'crown' => '+100',
       'star' => '+50',
@@ -161,7 +145,8 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                         for (final bullet in package.bullets)
                           Padding(
                             padding: const EdgeInsets.only(top: Spacing.xs),
-                            child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
@@ -195,17 +180,21 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                           isFeatured: isFeatured,
                         ),
                         const SizedBox(height: Spacing.xs),
-                        CustomAppButton(
-                          size: AppButtonSize.small,
-                          text: locale.calendar_browse_restaurants,
-                          onPressed: onBrowseRestaurants,
-                          isExpanded: false,
-                          width: Spacing.monthlyPlanPackageButtonWidth,
-                          height: Spacing.monthlyPlanPackageButtonHeight,
-                          textColor: color.onPrimary,
-                          fontSize: FontSize.size9,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.xs,
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: onBrowseRestaurants,
+                          child: CustomAppButton(
+                            size: AppButtonSize.small,
+                            text: locale.calendar_browse_restaurants,
+                            onPressed: null,
+                            isExpanded: false,
+                            width: Spacing.monthlyPlanPackageButtonWidth,
+                            height: Spacing.monthlyPlanPackageButtonHeight,
+                            textColor: color.onPrimary,
+                            fontSize: FontSize.size10,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.xs,
+                            ),
                           ),
                         ),
                       ],
@@ -215,8 +204,8 @@ class MonthlyPlanPackageCard extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: indicatorLeft,
-              top: indicatorTop,
+              left: (width - Spacing.monthlyPlanPackageIndicatorSize) / 2,
+              top: -Spacing.monthlyPlanPackageIndicatorSize / 2,
               child: IgnorePointer(
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 220),

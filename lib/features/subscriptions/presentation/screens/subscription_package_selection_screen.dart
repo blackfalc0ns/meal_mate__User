@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/features/subscriptions/data/subscriptions_fake_data_source.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_package_choice_card.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_selected_program_card.dart';
@@ -22,6 +23,8 @@ class SubscriptionPackageSelectionScreen extends StatefulWidget {
 
 class _SubscriptionPackageSelectionScreenState
     extends State<SubscriptionPackageSelectionScreen> {
+  static const _dataSource = SubscriptionsFakeDataSource();
+
   int _selectedPackageIndex = 0;
 
   @override
@@ -29,32 +32,7 @@ class _SubscriptionPackageSelectionScreenState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final packages = [
-      (
-        title: locale.subscription_four_meals_package,
-        subtitle: locale.subscription_four_meals_details,
-        price: null,
-        currency: null,
-      ),
-      (
-        title: locale.subscription_three_meals_package,
-        subtitle: locale.subscription_three_meals_details,
-        price: null,
-        currency: null,
-      ),
-      (
-        title: locale.subscription_two_meals_package,
-        subtitle: locale.subscription_two_meals_details,
-        price: null,
-        currency: null,
-      ),
-      (
-        title: locale.subscription_week_plan_title,
-        subtitle: locale.subscription_week_duration,
-        price: locale.subscription_week_plan_price,
-        currency: locale.currency,
-      ),
-    ];
+    final packages = _dataSource.getPackageChoices();
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -103,8 +81,9 @@ class _SubscriptionPackageSelectionScreenState
                   price: package.price,
                   currency: package.currency,
                   isSelected: packageIndex == _selectedPackageIndex,
-                  isPopular: packageIndex == 0,
-                  onTap: () => _selectPackage(packageIndex),
+                  isPopular: package.isPopular,
+                  onTap: () =>
+                      _selectPackage(packageIndex, package.planDetailsIndex),
                 );
               },
             ),
@@ -114,8 +93,11 @@ class _SubscriptionPackageSelectionScreenState
     );
   }
 
-  void _selectPackage(int index) {
+  void _selectPackage(int index, int planDetailsIndex) {
     setState(() => _selectedPackageIndex = index);
-    context.pushNamed(AppRoutes.subscriptionPlanDetails, arguments: index);
+    context.pushNamed(
+      AppRoutes.subscriptionPlanDetails,
+      arguments: planDetailsIndex,
+    );
   }
 }

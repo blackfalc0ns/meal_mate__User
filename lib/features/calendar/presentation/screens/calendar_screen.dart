@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
@@ -11,7 +12,6 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_p
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_pick_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_summary_card.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_screen_header.dart';
 
 enum CalendarFigmaState { pickRestaurant, expandedMonth, mealsList }
 
@@ -51,17 +51,16 @@ class CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
     final meals = _dataSource.getMeals(_selectedDate.day);
 
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: color.surface,
+       appBar: CustomAppBar(title:locale.calendar_title,showBackButton: false),
         body: Column(
           children: [
-            CalendarScreenHeader(title: locale.calendar_title),
+          //  CalendarScreenHeader(title: locale.calendar_title),
             Expanded(
               child: CustomScrollView(
                 slivers: [

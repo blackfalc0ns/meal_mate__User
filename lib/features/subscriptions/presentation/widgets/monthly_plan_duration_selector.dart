@@ -208,7 +208,7 @@ class _MonthlyPlanDurationSelectorState
                           const SizedBox(width: Spacing.xs),
                           Text(
                             locale.subscription_add_friday,
-                            style: getMediumStyle(
+                            style: getSemiBoldStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
                               fontSize: FontSize.size13,
                               color: color.onSurfaceVariant,

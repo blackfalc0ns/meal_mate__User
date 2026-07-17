@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
@@ -77,7 +78,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(31, 14, 31, 0),
+                    padding: const EdgeInsets.symmetric(vertical: Spacing.sm,horizontal: Spacing.screenH),
                     child: Directionality(
                       textDirection: TextDirection.ltr,
                       child: SizedBox(
@@ -103,7 +104,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 520),
                     curve: Curves.easeInOutCubic,
-                    height: widget.isExpanded ? 8 : 4,
+                    height: widget.isExpanded ? 8 : 1,
                   ),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 520),

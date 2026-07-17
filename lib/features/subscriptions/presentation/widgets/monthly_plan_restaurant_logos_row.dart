@@ -32,8 +32,8 @@ class MonthlyPlanRestaurantLogosRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: Spacing.lg,
-              height: Spacing.lg,
+              width: Spacing.xl,
+              height: Spacing.xl,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: color.surface,
@@ -48,7 +48,7 @@ class MonthlyPlanRestaurantLogosRow extends StatelessWidget {
                 maxLines: 1,
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size6,
+                  fontSize: FontSize.size8,
                   color: color.onSurface,
                 ).copyWith(height: 1),
               ),
@@ -56,8 +56,8 @@ class MonthlyPlanRestaurantLogosRow extends StatelessWidget {
             for (final icon in icons) ...[
               const SizedBox(width: Spacing.xs),
               Container(
-                width: Spacing.lg,
-                height: Spacing.lg,
+                width: Spacing.xl,
+                height: Spacing.xl,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: color.surface,
@@ -69,7 +69,7 @@ class MonthlyPlanRestaurantLogosRow extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  size: FontSize.size10,
+                  size: FontSize.size12,
                   color: icon == Icons.restaurant_rounded
                       ? color.onSurface
                       : color.primary,
