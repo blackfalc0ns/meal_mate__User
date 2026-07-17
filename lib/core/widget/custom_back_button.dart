@@ -3,33 +3,45 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key, required this.onPressed});
+  const CustomBackButton({
+    super.key,
+    required this.onPressed,
+    this.scale = 1,
+    this.top,
+    this.end,
+    this.size = Spacing.xxl,
+    this.iconSize = Spacing.iconMd,
+  });
 
   final VoidCallback onPressed;
+  final double scale;
+  final double? top;
+  final double? end;
+  final double size;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final topInset = MediaQuery.paddingOf(context).top;
 
     return Positioned(
-      top: topInset + Spacing.lg,
-      left: Spacing.xl,
-      child: Semantics(
-        label: locale.go_back,
-        button: true,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: const Icon(Icons.arrow_forward_ios_rounded),
-          color: color.onSurface,
-          iconSize: Spacing.iconMd,
-          style: IconButton.styleFrom(
-            backgroundColor: color.surface.withValues(alpha: 0.92),
-            fixedSize: const Size(Spacing.iconXl, Spacing.iconXl),
-            padding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Spacing.radiusMd),
+      top: top ?? MediaQuery.paddingOf(context).top + Spacing.lg,
+      right: end ?? Spacing.xl,
+      child: Material(
+        color: color.surface,
+        shape: const CircleBorder(),
+        child: InkWell(
+          onTap: onPressed,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: size * scale,
+            height: size * scale,
+            child: Icon(
+              Icons.arrow_back_ios_rounded,
+              size: iconSize * scale,
+              color: color.onSurface,
+              semanticLabel: locale.go_back,
             ),
           ),
         ),

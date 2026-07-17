@@ -90,7 +90,9 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                   ),
                   child: Ink(
                     padding: EdgeInsets.only(
-                      top: isFeatured ? Spacing.lg : Spacing.base,
+                      top: isFeatured
+                          ? Spacing.lg + Spacing.xs
+                          : Spacing.base + Spacing.xs,
                       bottom: Spacing.sm,
                       left: Spacing.xss,
                       right: Spacing.xss,
@@ -174,7 +176,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: getSemiBoldStyle(
                                     fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size9,
+                                    fontSize: FontSize.size10,
                                     color: mutedForegroundColor,
                                   ).copyWith(height: 1.7),
                                 ),
@@ -219,7 +221,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                                     style: getBoldStyle(
                                       fontFamily:
                                           FontConstant.ibmPlexSansArabic,
-                                      fontSize: FontSize.size11,
+                                      fontSize: FontSize.size9,
                                       color: isFeatured
                                           ? color.primary
                                           : color.onPrimary,

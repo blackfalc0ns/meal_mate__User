@@ -53,7 +53,7 @@ class AppSubscriptionButton extends StatelessWidget {
                   locale.subscription_details_subscribe_now,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: Spacing.monthlyPlanSubscribeTitleSize,
+                    fontSize: FontSize.size22,
                     color: color.onPrimary,
                   ).copyWith(height: 1),
                 ),

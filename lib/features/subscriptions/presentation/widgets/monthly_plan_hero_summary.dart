@@ -65,12 +65,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.percent_rounded,
-                  color: color.onPrimary,
-                  size: Spacing.monthlyPlanPromotionIconSize * scale,
-                ),
-                SizedBox(width: Spacing.monthlyPlanPromotionGap * scale),
+              
                 Text(
                   plan.discountLabel,
                   style: getSemiBoldStyle(

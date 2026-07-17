@@ -10,11 +10,13 @@ class MonthlyPlanHeroSection extends StatelessWidget {
     super.key,
     required this.plan,
     required this.imageAsset,
+    this.durationSelector,
     required this.onBack,
   });
 
   final MonthlyPlanDetailsEntity plan;
   final String imageAsset;
+  final Widget? durationSelector;
   final VoidCallback onBack;
 
   @override
@@ -30,16 +32,30 @@ class MonthlyPlanHeroSection extends StatelessWidget {
               ? constraints.maxWidth
               : MediaQuery.sizeOf(context).width;
           final scale = width / Spacing.monthlyPlanDesignWidth;
+          final backgroundHeight =
+              (Spacing.monthlyPlanHeroHeight +
+                  (durationSelector == null ? 0 : Spacing.xxxl)) *
+              scale;
+          final durationSelectorHeight =
+              (width - Spacing.monthlyPlanContentHorizontalPadding * 2) *
+              Spacing.monthlyPlanDurationHeight /
+              Spacing.monthlyPlanDurationCardWidth;
+          final durationSelectorTop =
+              backgroundHeight - durationSelectorHeight - Spacing.xs * scale;
+          final heroHeight = durationSelector == null
+              ? backgroundHeight
+              : durationSelectorTop + durationSelectorHeight;
 
           return ColoredBox(
             color: color.surface,
             child: SizedBox(
-              height: Spacing.monthlyPlanHeroHeight * scale,
+              height: heroHeight,
               child: Stack(
                 children: [
                   MonthlyPlanHeroBackground(
                     imageAsset: imageAsset,
                     scale: scale,
+                    height: backgroundHeight,
                     onBack: onBack,
                   ),
                   Positioned(
@@ -50,6 +66,13 @@ class MonthlyPlanHeroSection extends StatelessWidget {
                     right: 0,
                     child: MonthlyPlanHeroSummary(plan: plan, scale: scale),
                   ),
+                  if (durationSelector != null)
+                    PositionedDirectional(
+                      top: durationSelectorTop,
+                      start: Spacing.monthlyPlanContentHorizontalPadding,
+                      end: Spacing.monthlyPlanContentHorizontalPadding,
+                      child: durationSelector!,
+                    ),
                 ],
               ),
             ),

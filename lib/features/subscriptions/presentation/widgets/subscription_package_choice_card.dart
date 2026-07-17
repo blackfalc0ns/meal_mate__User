@@ -116,11 +116,11 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                       ),
                       child: Text(
                         subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        //   maxLines: 1,
+                        // overflow: TextOverflow.ellipsis,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size10,
+                          fontSize: FontSize.size11,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -133,62 +133,69 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               const SizedBox(width: Spacing.sm),
               Expanded(
                 flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Stack(
                   children: [
                     if (isPopular)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.sm,
-                          vertical: Spacing.xs,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color.primary,
-                          borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star_rounded,
-                              size: Spacing.iconSm,
-                              color: color.onPrimary,
+                      PositionedDirectional(
+                        top: 0,
+                        start: 0,
+                        end: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: color.primary,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusXs,
                             ),
-                            const SizedBox(width: Spacing.xs),
-                            Text(
-                              locale.subscription_details_most_selected,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: getSemiBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
-                                fontSize: FontSize.size10,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.star_rounded,
+                                size: Spacing.iconSm,
                                 color: color.onPrimary,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: Spacing.xs),
+                              Text(
+                                locale.subscription_details_most_selected,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getSemiBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size10,
+                                  color: color.onPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    const Spacer(),
-
-                    Container(
-                      height: Spacing.xxl - Spacing.xs,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                      ),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isSelected ? color.primary : color.surface,
-                        border: Border.all(color: color.primary),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Text(
-                        locale.subscription_choose_plan_button,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size11,
-                          color: isSelected ? color.onPrimary : color.primary,
+                    PositionedDirectional(
+                      bottom: 0,
+                      start: 0,
+                      end: 0,
+                      child: Container(
+                        height: Spacing.xxl - Spacing.xs,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: isSelected ? color.primary : color.surface,
+                          border: Border.all(color: color.primary),
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
+                        ),
+                        child: Text(
+                          locale.subscription_choose_plan_button,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size11,
+                            color: isSelected ? color.onPrimary : color.primary,
+                          ),
                         ),
                       ),
                     ),

@@ -30,12 +30,20 @@ class MonthlyPlanDurationOption extends StatelessWidget {
 
     return Column(
       children: [
-        Text(
-          label,
-          style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: FontSize.size12,
-            color: color.onSurfaceVariant,
+        SizedBox(
+          width: Spacing.monthlyPlanDurationOptionWidth,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: getBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size12,
+                color: color.onSurfaceVariant,
+              ),
+            ),
           ),
         ),
         const SizedBox(height: Spacing.xs),
@@ -45,10 +53,10 @@ class MonthlyPlanDurationOption extends StatelessWidget {
             Spacing.monthlyPlanDurationOptionRadius,
           ),
           child: AnimatedContainer(
-            width: Spacing.monthlyPlanDurationOptionWidth,
+            width: 55,
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOutCubic,
-            height: Spacing.monthlyPlanDurationOptionHeight,
+            height:45,
             decoration: BoxDecoration(
               border: Border.all(
                 color: isSelected ? color.primary : color.outlineVariant,
@@ -92,7 +100,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                               key: ValueKey(displayedDays),
                               style: getBoldStyle(
                                 fontFamily: FontConstant.ibmPlexSansArabic,
-                                fontSize: FontSize.size15,
+                                fontSize: FontSize.size17,
                                 color: isSelected
                                     ? color.primary
                                     : color.onSurface,
@@ -114,7 +122,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                 ),
                 Positioned(
                   top: Spacing.xs,
-                  right: Spacing.xs,
+                  right: 1,
                   child: Icon(
                     isSelected
                         ? Icons.check_circle_rounded

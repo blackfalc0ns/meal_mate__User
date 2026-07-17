@@ -114,10 +114,10 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: Spacing.xs),
+                  
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xxxl,
+                        start: Spacing.xxl,
                       ),
                       child: Text(
                         description,
@@ -126,66 +126,69 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         textAlign: TextAlign.right,
                         style: getRegularStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
                       ),
                     ),
                     const Spacer(),
-                    Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Icon(
-                          primaryFeatureIcon,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                          semanticLabel: locale.nav_subscription,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Flexible(
-                          child: Text(
-                            primaryFeature,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: Spacing.xxl),
+                      child: Row(
+                        textDirection: TextDirection.rtl,
+                        children: [
+                          Icon(
+                            primaryFeatureIcon,
+                            size: Spacing.iconSm,
+                            color: color.primary,
+                            semanticLabel: locale.nav_subscription,
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              primaryFeature,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.right,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        SizedBox(
-                          height: Spacing.base,
-                          child: VerticalDivider(
-                            width: Spacing.border,
-                            thickness: Spacing.border,
-                            color: color.outlineVariant,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        Icon(
-                          secondaryFeatureIcon,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                          semanticLabel: locale.nav_subscription,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Flexible(
-                          child: Text(
-                            secondaryFeature,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
+                          const SizedBox(width: Spacing.md),
+                          SizedBox(
+                            height: Spacing.base,
+                            child: VerticalDivider(
+                              width: Spacing.border,
+                              thickness: Spacing.border,
+                              color: color.outlineVariant,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: Spacing.md),
+                          Icon(
+                            secondaryFeatureIcon,
+                            size: Spacing.iconSm,
+                            color: color.primary,
+                            semanticLabel: locale.nav_subscription,
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              secondaryFeature,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.right,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size11,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

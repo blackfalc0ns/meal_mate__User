@@ -58,83 +58,76 @@ class _SubscriptionPlanDetailsScreenState
                     child: MonthlyPlanHeroSection(
                       plan: plan,
                       imageAsset: Assets.monthlyPlanHero,
+                      durationSelector: MonthlyPlanDurationSelector(
+                        selectedIndex: _selectedDurationIndex,
+                        onSelected: (index) =>
+                            setState(() => _selectedDurationIndex = index),
+                        includesFriday: _includesFriday,
+                        onFridayChanged: (value) =>
+                            setState(() => _includesFriday = value),
+                      ),
                       onBack: _pop,
                     ),
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.monthlyPlanContentHorizontalPadding,
+                      horizontal: Spacing.screenH,
                     ),
                     sliver: SliverToBoxAdapter(
-                      child: Transform.translate(
-                        offset: const Offset(0, -Spacing.xxxl - Spacing.sm),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 360),
-                          reverseDuration: const Duration(milliseconds: 220),
-                          switchInCurve: Curves.easeOutCubic,
-                          switchOutCurve: Curves.easeInCubic,
-                          transitionBuilder: (child, animation) {
-                            final slideAnimation = Tween<Offset>(
-                              begin: const Offset(0, 0.08),
-                              end: Offset.zero,
-                            ).animate(animation);
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 360),
+                        reverseDuration: const Duration(milliseconds: 220),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeInCubic,
+                        transitionBuilder: (child, animation) {
+                          final slideAnimation = Tween<Offset>(
+                            begin: const Offset(0, 0.08),
+                            end: Offset.zero,
+                          ).animate(animation);
 
-                            return FadeTransition(
-                              opacity: animation,
-                              child: SlideTransition(
-                                position: slideAnimation,
-                                child: RepaintBoundary(child: child),
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: slideAnimation,
+                              child: RepaintBoundary(child: child),
+                            ),
+                          );
+                        },
+                        child: _isRestaurantsView
+                            ? Column(
+                                key: const ValueKey('restaurants-view'),
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: IconButton(
+                                      onPressed: () => setState(
+                                        () => _isRestaurantsView = false,
+                                      ),
+                                      icon: Icon(
+                                        Icons.close_rounded,
+                                        color: color.onSurface,
+                                        size: Spacing.iconLg,
+                                        semanticLabel: locale.go_back,
+                                      ),
+                                    ),
+                                  ),
+                                  MonthlyPlanRestaurantsSection(
+                                    mode: SubscriptionPlanViewMode.grid,
+                                    restaurants: plan.restaurants,
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                key: const ValueKey('packages-view'),
+                                children: [
+                                  MonthlyPlanPackagesSection(
+                                    packages: plan.packageTiers,
+                                    onBrowseRestaurants: () => setState(
+                                      () => _isRestaurantsView = true,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                          child: _isRestaurantsView
-                              ? Column(
-                                  key: const ValueKey('restaurants-view'),
-                                  children: [
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional.centerStart,
-                                      child: IconButton(
-                                        onPressed: () => setState(
-                                          () => _isRestaurantsView = false,
-                                        ),
-                                        icon: Icon(
-                                          Icons.close_rounded,
-                                          color: color.onSurface,
-                                          size: Spacing.iconLg,
-                                          semanticLabel: locale.go_back,
-                                        ),
-                                      ),
-                                    ),
-                                    MonthlyPlanRestaurantsSection(
-                                      mode: SubscriptionPlanViewMode.grid,
-                                      restaurants: plan.restaurants,
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  key: const ValueKey('packages-view'),
-                                  children: [
-                                    MonthlyPlanDurationSelector(
-                                      selectedIndex: _selectedDurationIndex,
-                                      onSelected: (index) => setState(
-                                        () => _selectedDurationIndex = index,
-                                      ),
-                                      includesFriday: _includesFriday,
-                                      onFridayChanged: (value) => setState(
-                                        () => _includesFriday = value,
-                                      ),
-                                    ),
-                                    const SizedBox(height: Spacing.md),
-                                    MonthlyPlanPackagesSection(
-                                      packages: plan.packageTiers,
-                                      onBrowseRestaurants: () => setState(
-                                        () => _isRestaurantsView = true,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
                       ),
                     ),
                   ),

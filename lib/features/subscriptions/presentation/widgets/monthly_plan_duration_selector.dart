@@ -170,7 +170,7 @@ class _MonthlyPlanDurationSelectorState
                       textAlign: TextAlign.center,
                       style: getRegularStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
                       ),
                     ),

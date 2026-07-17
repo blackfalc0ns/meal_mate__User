@@ -107,7 +107,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.iconSm + Spacing.sm,
+                        start: Spacing.xxl,
                       ),
                       child: Align(
                         alignment: AlignmentDirectional.centerStart,
@@ -120,7 +120,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size11,
+                              fontSize: FontSize.size12,
                               color: color.onSurfaceVariant,
                             ),
                           ),
@@ -128,47 +128,50 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Icon(
-                          Icons.bolt_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          locale.subscription_less_calories,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size10,
-                            color: color.onSurfaceVariant,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: Spacing.xl),
+                      child: Row(
+                        textDirection: TextDirection.rtl,
+                        children: [
+                          Icon(
+                            Icons.bolt_rounded,
+                            size: Spacing.iconSm,
+                            color: color.primary,
                           ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        SizedBox(
-                          height: Spacing.base,
-                          child: VerticalDivider(
-                            width: Spacing.border,
-                            color: color.outlineVariant,
+                          const SizedBox(width: Spacing.xs),
+                          Text(
+                            locale.subscription_less_calories,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size10,
+                              color: color.onSurfaceVariant,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        Icon(
-                          Icons.bar_chart_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          locale.subscription_effective_results,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size10,
-                            color: color.onSurfaceVariant,
+                          const SizedBox(width: Spacing.md),
+                          SizedBox(
+                            height: Spacing.base,
+                            child: VerticalDivider(
+                              width: Spacing.border,
+                              color: color.outlineVariant,
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: Spacing.md),
+                          Icon(
+                            Icons.bar_chart_rounded,
+                            size: Spacing.iconSm,
+                            color: color.primary,
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Text(
+                            locale.subscription_effective_results,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size10,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
