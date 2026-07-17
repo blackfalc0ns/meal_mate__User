@@ -13,7 +13,7 @@ class CalendarMealPickerIngredientChip extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsetsDirectional.only(start: 1.5),
-      height: 14.25,
+      height: Spacing.lg,
       constraints: BoxConstraints(minWidth: isMore ? 27.7 : 33.55),
       padding: const EdgeInsets.symmetric(horizontal: 4.2, vertical: 2.5),
       decoration: BoxDecoration(
@@ -25,14 +25,14 @@ class CalendarMealPickerIngredientChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!isMore) ...[
-            Icon(_iconFor(label, locale), color: color.primary, size: 8.4),
+            Icon(_iconFor(label, locale), color: color.primary, size: 10),
             const SizedBox(width: 3.35),
           ],
           Text(
             label,
-            style: getSemiBoldStyle(
+            style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 5.03,
+              fontSize: FontSize.size10,
               color: isMore
                   ? color.onSurface
                   : color.onSurface.withValues(alpha: 0.62),

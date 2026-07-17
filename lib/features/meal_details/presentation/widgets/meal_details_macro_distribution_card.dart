@@ -55,7 +55,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size8,
+                        fontSize: FontSize.size10,
                         color: color.onSurface,
                       ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),
                     ),

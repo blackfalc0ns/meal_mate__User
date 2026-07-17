@@ -26,7 +26,7 @@ class MealDetailsHeaderImage extends StatelessWidget {
           width: double.infinity,
           child: ColoredBox(
             color: color.surfaceContainerHighest,
-            child: Image.asset(Assets.mealDetailsHero, fit: BoxFit.cover),
+            child: Image.asset(Assets.mealDetailsHero, fit: BoxFit.fitWidth),
           ),
         ),
       ),

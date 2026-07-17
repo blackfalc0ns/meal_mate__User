@@ -33,7 +33,7 @@ class MealDetailsAllergenChip extends StatelessWidget {
           const SizedBox(width: Spacing.xs),
           Text(
             allergen.label,
-            style: getRegularStyle(
+            style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
               fontSize: FontSize.size10,
               color: color.onSurface,

@@ -34,16 +34,18 @@ class MealDetailsIngredientItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.xs),
-          Text(
-            ingredient.label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size7,
-              color: color.onSurfaceVariant,
-            ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),
+          FittedBox(
+            child: Text(
+              ingredient.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size10,
+                color: color.onSurfaceVariant,
+              ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),
+            ),
           ),
         ],
       ),

@@ -20,6 +20,7 @@ class CalendarMealPickerNutrition extends StatelessWidget {
     return SizedBox(
       width: label == locale.calendar_calories ? 38 : 31,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
@@ -32,9 +33,9 @@ class CalendarMealPickerNutrition extends StatelessWidget {
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 7,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ).copyWith(height: 1),
                 ),
@@ -42,15 +43,17 @@ class CalendarMealPickerNutrition extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 1),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 5.8,
-              color: color.onSurface.withValues(alpha: 0.62),
-            ).copyWith(height: 1),
+          FittedBox(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontSize: FontSize.size10,
+                color: color.onSurface.withValues(alpha: 0.62),
+              ).copyWith(height: 1),
+            ),
           ),
         ],
       ),

@@ -43,9 +43,9 @@ class MealDetailsInfoItem extends StatelessWidget {
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: getRegularStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.1),
                 ),

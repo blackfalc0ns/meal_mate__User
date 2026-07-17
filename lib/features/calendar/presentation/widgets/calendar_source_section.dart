@@ -15,11 +15,11 @@ class CalendarSourceSection extends StatelessWidget {
         children: [
           Text(
             locale.calendar_ingredient_origin_title,
-            style: getSemiBoldStyle(
+            style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 9,
+              fontSize: FontSize.size11,
               color: color.onSurface,
-            ).copyWith(height: 20 / 9),
+            )
           ),
           const SizedBox(height: 2),
           Row(

@@ -17,10 +17,11 @@ class CalendarSelectButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: color.primary, width: 1.4),
       ),
+      alignment: Alignment.center,
       child: Icon(
         selected ? Icons.check_rounded : Icons.add_rounded,
         color: selected ? color.onPrimary : color.primary,
-        size: selected ? 17 : 21,
+        size: 16,
       ),
     );
   }

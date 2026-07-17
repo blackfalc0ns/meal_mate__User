@@ -61,8 +61,8 @@ class MealDetailsIngredientsSection extends StatelessWidget {
                       ),
                       child: Icon(
                         locale.localeName == 'ar'
-                            ? Icons.chevron_left_rounded
-                            : Icons.chevron_right_rounded,
+                            ? Icons.chevron_right_rounded
+                            : Icons.chevron_left_rounded,
                         size: Spacing.iconMd,
                         color: color.onSurface,
                       ),

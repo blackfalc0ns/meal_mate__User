@@ -44,9 +44,9 @@ class MealDetailsNutritionCard extends StatelessWidget {
               item.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: getLightStyle(
+              style: getRegularStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size8,
+                fontSize: FontSize.size10,
                 color: color.onSurface,
               ).copyWith(height: locale.localeName == 'ar' ? 1.35 : 1.1),
             ),

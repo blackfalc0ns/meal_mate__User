@@ -60,9 +60,9 @@ class MealDetailsMacroItem extends StatelessWidget {
             item.label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: getRegularStyle(
+            style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size8,
+              fontSize: FontSize.size10,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),
           ),
@@ -72,7 +72,7 @@ class MealDetailsMacroItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size8,
+              fontSize: FontSize.size9,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),
           ),

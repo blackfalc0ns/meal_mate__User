@@ -7,9 +7,8 @@ class CalendarMealIngredientRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      alignment: Alignment.centerRight,
-      fit: BoxFit.scaleDown,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

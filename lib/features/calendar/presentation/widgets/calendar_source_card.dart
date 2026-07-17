@@ -32,18 +32,18 @@ class CalendarSourceCard extends StatelessWidget {
           const SizedBox(height: 1),
           Text(
             title,
-            style: getSemiBoldStyle(
+            style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 8,
+              fontSize: FontSize.size10,
               color: color.primary,
             ).copyWith(height: 1),
           ),
           const SizedBox(height: 3),
           Text(
             subtitle,
-            style: getRegularStyle(
+            style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 8,
+              fontSize: FontSize.size10,
               color: color.onSurface,
             ).copyWith(height: 1),
           ),
@@ -61,9 +61,9 @@ class CalendarSourceCard extends StatelessWidget {
                 country,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
+                style: getMediumStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: 7.6,
+                  fontSize: FontSize.size9,
                   color: color.onSurface,
                 ).copyWith(height: 1),
               ),

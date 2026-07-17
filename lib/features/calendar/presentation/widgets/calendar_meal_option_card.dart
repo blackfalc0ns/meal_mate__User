@@ -11,10 +11,10 @@ class CalendarMealOptionCard extends StatelessWidget {
     final locale = context.localization;
 
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 36.4, end: 36.4),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.lg, vertical: Spacing.xs),
       child: SizedBox(
         width: 317,
-        height: 97,
+        height: 105,
         child: Row(
           textDirection: TextDirection.ltr,
           children: [
@@ -40,12 +40,15 @@ class CalendarMealOptionCard extends StatelessWidget {
                     const SizedBox(height: 7),
                     CalendarMealPickerNutritionRow(option: option),
                     const Spacer(),
-                    Text(
-                      locale.calendar_ingredients,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: 6.8,
-                        color: color.onSurface,
+                    Padding(
+                      padding: const EdgeInsets.only(top: Spacing.xs),
+                      child: Text(
+                        locale.calendar_ingredients,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size10,
+                          color: color.onSurface,
+                        ),
                       ),
                     ),
                     const SizedBox(height: Spacing.xs),
