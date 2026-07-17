@@ -34,7 +34,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
           label,
           style: getBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: FontSize.size8,
+            fontSize: FontSize.size12,
             color: color.onSurfaceVariant,
           ),
         ),
@@ -73,10 +73,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                           layoutBuilder: (currentChild, previousChildren) =>
                               Stack(
                                 alignment: Alignment.center,
-                                children: [
-                                  ...previousChildren,
-                                  ?currentChild,
-                                ],
+                                children: [...previousChildren, ?currentChild],
                               ),
                           transitionBuilder: (child, animation) =>
                               SlideTransition(
@@ -109,7 +106,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                       locale.subscription_day,
                       style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size6,
+                        fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
                     ),

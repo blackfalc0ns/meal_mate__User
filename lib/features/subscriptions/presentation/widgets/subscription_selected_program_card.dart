@@ -85,7 +85,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                                 textAlign: TextAlign.right,
                                 style: getMediumStyle(
                                   fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size7,
+                                  fontSize: FontSize.size10,
                                   color: color.onSurfaceVariant,
                                 ),
                               ),
@@ -120,7 +120,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size9,
+                              fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),
                           ),
@@ -141,7 +141,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                           locale.subscription_less_calories,
                           style: getRegularStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size8,
+                            fontSize: FontSize.size10,
                             color: color.onSurfaceVariant,
                           ),
                         ),
@@ -164,7 +164,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                           locale.subscription_effective_results,
                           style: getRegularStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size8,
+                            fontSize: FontSize.size10,
                             color: color.onSurfaceVariant,
                           ),
                         ),

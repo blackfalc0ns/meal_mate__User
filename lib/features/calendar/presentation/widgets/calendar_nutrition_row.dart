@@ -33,7 +33,7 @@ class CalendarMealCardNutritionRow extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 22,
+      height: 26,
       child: Row(
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,7 +43,7 @@ class CalendarMealCardNutritionRow extends StatelessWidget {
             if (index != items.length - 1)
               Container(
                 width: 0.5,
-                height: 20,
+                height: 24,
                 color: color.onSurface.withValues(alpha: 0.20),
               ),
           ],

@@ -29,16 +29,16 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: Spacing.hairline),
           Text(
             restaurant.category,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 8.5,
+              fontSize: FontSize.size10,
               color: color.onPrimary,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: Spacing.hairline),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -53,14 +53,14 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: Spacing.hairline),
           Text(
             restaurant.deliveryWindow,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 8.5,
+              fontSize: FontSize.size10,
               color: color.onPrimary,
             ),
           ),

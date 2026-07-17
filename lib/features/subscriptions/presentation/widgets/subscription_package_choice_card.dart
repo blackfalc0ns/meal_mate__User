@@ -40,7 +40,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          height: Spacing.subscriptionProgramCardHeight + Spacing.xs,
+          height: Spacing.subscriptionPackageChoiceCardHeight,
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.sm,
             vertical: Spacing.xs,
@@ -69,7 +69,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   child: Image.asset(
@@ -120,7 +120,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size8,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -132,7 +132,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.sm),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -161,15 +161,15 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: getSemiBoldStyle(
                                 fontFamily: FontConstant.ibmPlexSansArabic,
-                                fontSize: FontSize.size7,
+                                fontSize: FontSize.size10,
                                 color: color.onPrimary,
                               ),
                             ),
                           ],
                         ),
                       ),
-                   const Spacer(),
-                   
+                    const Spacer(),
+
                     Container(
                       height: Spacing.xxl - Spacing.xs,
                       padding: const EdgeInsets.symmetric(

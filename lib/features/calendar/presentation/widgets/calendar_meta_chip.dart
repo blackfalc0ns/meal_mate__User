@@ -17,7 +17,7 @@ class CalendarMetaChip extends StatelessWidget {
           label,
           style: getBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: 8.5,
+            fontSize: FontSize.size10,
             color: color.onPrimary,
           ),
         ),

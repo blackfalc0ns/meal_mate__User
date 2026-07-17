@@ -70,7 +70,7 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   textStyle: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: 8.6,
+                    fontSize: FontSize.size10,
                     color: color.primary,
                   ),
                   shape: RoundedRectangleBorder(

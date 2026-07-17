@@ -78,7 +78,7 @@ class _MonthlyPlanDurationSelectorState
                         locale.subscription_duration_title,
                         style: getBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size14,
                           color: color.onSurface,
                         ),
                       ),
@@ -115,7 +115,7 @@ class _MonthlyPlanDurationSelectorState
                     textAlign: TextAlign.center,
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size12,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -170,7 +170,7 @@ class _MonthlyPlanDurationSelectorState
                       textAlign: TextAlign.center,
                       style: getRegularStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size7,
+                        fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
                     ),
@@ -210,7 +210,7 @@ class _MonthlyPlanDurationSelectorState
                             locale.subscription_add_friday,
                             style: getMediumStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size11,
+                              fontSize: FontSize.size13,
                               color: color.onSurfaceVariant,
                             ),
                           ),

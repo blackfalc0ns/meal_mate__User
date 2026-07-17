@@ -19,7 +19,7 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
             'HEALTHY',
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 7.5,
+              fontSize: FontSize.size9,
               color: color.primary,
             ).copyWith(height: 1),
           ),
@@ -27,7 +27,7 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
             'BOWL',
             style: getBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 7.5,
+              fontSize: FontSize.size9,
               color: color.primary,
             ).copyWith(height: 1),
           ),

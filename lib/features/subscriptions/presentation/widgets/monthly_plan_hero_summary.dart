@@ -75,7 +75,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                   plan.discountLabel,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: Spacing.monthlyPlanPromotionTextSize * scale,
+                    fontSize: FontSize.size16 * scale,
                     color: color.onPrimary,
                   ),
                 ),

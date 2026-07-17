@@ -85,6 +85,7 @@ class Spacing {
   static const double subscriptionProgramsHorizontalPadding = 20.0;
   static const double subscriptionProgramsBottomSpace = 118.0;
   static const double subscriptionProgramCardHeight = 111.0;
+  static const double subscriptionPackageChoiceCardHeight = 100.0;
   static const double subscriptionProgramCardRadius = 18.0;
   static const double subscriptionProgramImageWidth = 86.0;
   static const double subscriptionProgramImageHeight = 75.0;
@@ -129,7 +130,7 @@ class Spacing {
   static const double monthlyPlanSubscribeDividerHeight = 28.7;
   static const double monthlyPlanSubscribeCoinSize = 27.0;
   static const double monthlyPlanContentHorizontalPadding = 25.0;
-  static const double monthlyPlanDurationHeight = 129.0;
+  static const double monthlyPlanDurationHeight = 133.0;
   static const double monthlyPlanDurationPadding = 6.0;
   static const double monthlyPlanDurationOptionHeight = 37.0;
   static const double monthlyPlanDurationOptionWidth = 45.688;
@@ -323,4 +324,5 @@ class Spacing {
   static const double calendarHeaderIconTop = 62.0;
   static const double calendarHeaderHorizontalInset = 22.0;
   static const double calendarHeaderNotificationDotStart = 13.0;
+  static const double calendarMealCardVerticalPadding = 4.0;
 }

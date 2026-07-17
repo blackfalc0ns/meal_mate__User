@@ -149,7 +149,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: getRegularStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size6,
+                            fontSize: FontSize.size9,
                             color: mutedForegroundColor,
                           ).copyWith(height: 1.3),
                         ),
@@ -174,7 +174,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: getSemiBoldStyle(
                                     fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size7,
+                                    fontSize: FontSize.size9,
                                     color: mutedForegroundColor,
                                   ).copyWith(height: 1.7),
                                 ),
@@ -219,7 +219,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                                     style: getBoldStyle(
                                       fontFamily:
                                           FontConstant.ibmPlexSansArabic,
-                                      fontSize: FontSize.size9,
+                                      fontSize: FontSize.size11,
                                       color: isFeatured
                                           ? color.primary
                                           : color.onPrimary,

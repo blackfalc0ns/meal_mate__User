@@ -35,7 +35,12 @@ class CalendarMealCard extends StatelessWidget {
               ).pushNamed(AppRoutes.mealDetails, arguments: meal),
               borderRadius: BorderRadius.circular(15),
               child: Container(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                padding: const EdgeInsetsDirectional.only(
+                  top: Spacing.calendarMealCardVerticalPadding,
+                  bottom: Spacing.calendarMealCardVerticalPadding,
+                  start: Spacing.md,
+                  end: Spacing.md,
+                ),
                 decoration: BoxDecoration(
                   color: color.surface,
                   borderRadius: BorderRadius.circular(15),

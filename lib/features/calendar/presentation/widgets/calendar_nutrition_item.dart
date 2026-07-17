@@ -17,14 +17,14 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
     final locale = context.localization;
 
     return SizedBox(
-      width: label == locale.calendar_calories ? 48 : 34,
+      width: label == locale.calendar_calories ? 54 : 44,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 10.5, color: color.primary),
+              Icon(icon, size: 12, color: color.primary),
               const SizedBox(width: 1.5),
               FittedBox(
                 child: Text(
@@ -33,7 +33,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size7,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ).copyWith(height: 1),
                 ),
@@ -47,7 +47,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: getSemiBoldStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: 6.1,
+              fontSize: FontSize.size9,
               color: color.onSurface.withValues(alpha: 0.62),
             ).copyWith(height: 1),
           ),

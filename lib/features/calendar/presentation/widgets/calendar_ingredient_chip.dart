@@ -12,7 +12,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
     final isMore = label == locale.calendar_more;
 
     return Container(
-      height: 14.75,
+      height: Spacing.lg,
       constraints: BoxConstraints(
         minWidth: isMore ? 28.6 : 30,
         maxWidth: isMore ? 42 : 58,
@@ -30,7 +30,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
           if (!isMore) ...[
             Icon(
               _ingredientIcon(label, locale),
-              size: 8.7,
+              size: 10,
               color: color.primary,
             ),
             const SizedBox(width: 2),
@@ -42,7 +42,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: 5.2,
+                fontSize: FontSize.size9,
                 color: isMore
                     ? color.onSurface
                     : color.onSurface.withValues(alpha: 0.62),

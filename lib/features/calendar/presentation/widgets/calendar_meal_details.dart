@@ -36,7 +36,7 @@ class CalendarMealDetails extends StatelessWidget {
           locale.calendar_ingredients,
           style: getSemiBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: 6.8,
+            fontSize: FontSize.size10,
             color: color.onSurface,
           ),
         ),

@@ -126,7 +126,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         textAlign: TextAlign.right,
                         style: getRegularStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size9,
+                          fontSize: FontSize.size11,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -150,7 +150,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size8,
+                              fontSize: FontSize.size10,
                               color: color.onSurfaceVariant,
                             ),
                           ),
@@ -180,7 +180,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size8,
+                              fontSize: FontSize.size10,
                               color: color.onSurfaceVariant,
                             ),
                           ),

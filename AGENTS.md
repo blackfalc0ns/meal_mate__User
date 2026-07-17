@@ -171,3 +171,4 @@ Reuse existing code whenever possible.
 - Do not use screenshots as the source of truth.
 - Always inspect the Figma file and its nodes before implementing.
 - Never estimate values from images when they are available in Figma.
+- Avoid font sizes that are difficult to read. Use reasonable minimum font sizes for body text and labels unless there is a compelling design reason not to.

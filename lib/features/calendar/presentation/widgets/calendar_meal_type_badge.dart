@@ -18,7 +18,7 @@ class CalendarMealTypeBadge extends StatelessWidget {
           mealType,
           style: getBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: 7.55,
+            fontSize: FontSize.size10,
             color: color.primary,
           ),
         ),

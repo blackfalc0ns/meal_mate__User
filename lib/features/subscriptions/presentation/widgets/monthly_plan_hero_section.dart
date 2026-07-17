@@ -43,7 +43,9 @@ class MonthlyPlanHeroSection extends StatelessWidget {
                     onBack: onBack,
                   ),
                   Positioned(
-                    top: Spacing.monthlyPlanHeroSummaryTop * scale,
+                    top:
+                        (Spacing.monthlyPlanHeroSummaryTop - Spacing.xxxl) *
+                        scale,
                     left: 0,
                     right: 0,
                     child: MonthlyPlanHeroSummary(plan: plan, scale: scale),
