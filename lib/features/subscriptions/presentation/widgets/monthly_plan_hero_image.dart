@@ -19,7 +19,7 @@ class MonthlyPlanHeroImage extends StatelessWidget {
 
     return Positioned(
       left: -Spacing.monthlyPlanHeroImageLeft * scale,
-      top: -Spacing.monthlyPlanHeroImageTop * scale,
+      top: -(Spacing.monthlyPlanHeroImageTop + Spacing.xxxl) * scale,
       width: Spacing.monthlyPlanHeroImageWidth * scale,
       height: Spacing.monthlyPlanHeroImageHeight * scale,
       child: Semantics(

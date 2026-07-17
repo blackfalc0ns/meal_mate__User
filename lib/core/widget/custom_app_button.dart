@@ -18,6 +18,7 @@ class CustomAppButton extends StatelessWidget {
     this.height,
     this.width,
     this.textColor = Colors.white,
+    this.fontSize,
     this.fontWeight,
     this.padding,
     this.largeAsset = 'assets/images/svg/button_large.svg',
@@ -34,6 +35,7 @@ class CustomAppButton extends StatelessWidget {
   final double? height;
   final double? width;
   final Color textColor;
+  final double? fontSize;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
 
@@ -76,7 +78,10 @@ class CustomAppButton extends StatelessWidget {
                           color: textColor,
                         ),
                       )
-                    : _buildLabel(isSmall ? FontSize.size12 : FontSize.size16),
+                    : _buildLabel(
+                        fontSize ??
+                            (isSmall ? FontSize.size12 : FontSize.size16),
+                      ),
               ),
             ],
           ),

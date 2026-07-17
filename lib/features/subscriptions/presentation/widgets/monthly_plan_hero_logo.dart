@@ -12,11 +12,9 @@ class MonthlyPlanHeroLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      image: true,
-      label: locale.nav_subscription,
+    return Padding(
+      padding: const EdgeInsets.only(top: Spacing.lg),
       child: Center(
         child: ColoredBox(
           color: color.surface.withValues(alpha: 0),

@@ -157,7 +157,7 @@ class Spacing {
   static const double monthlyPlanDurationHintTop = 80.0;
   static const double monthlyPlanDurationFridayTop = 100.0;
   static const double monthlyPlanPackagesWidth = 392.0;
-  static const double monthlyPlanPackageHeight = 234.0;
+  static const double monthlyPlanPackageHeight = 234.0 + lg;
   static const double monthlyPlanPackageBasicLeft = 4.0;
   static const double monthlyPlanPackageFeaturedLeft = 130.0;
   static const double monthlyPlanPackagePremiumLeft = 271.0;
@@ -166,8 +166,8 @@ class Spacing {
   static const double monthlyPlanPackageGap = 5.0;
   static const double monthlyPlanPackageSideTop = 31.0;
   static const double monthlyPlanPackageFeaturedTop = 12.0;
-  static const double monthlyPlanPackageSideHeight = 195.0 + sm;
-  static const double monthlyPlanPackageFeaturedHeight = 214.0 + sm;
+  static const double monthlyPlanPackageSideHeight = 195.0 + sm + lg;
+  static const double monthlyPlanPackageFeaturedHeight = 214.0 + sm + lg;
   static const double monthlyPlanPackageSideRadius = 13.075;
   static const double monthlyPlanPackageFeaturedRadius = 14.689;
   static const double monthlyPlanPackageIndicatorSize = 22.0;

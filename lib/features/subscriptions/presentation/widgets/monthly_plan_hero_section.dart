@@ -34,7 +34,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
           final scale = width / Spacing.monthlyPlanDesignWidth;
           final backgroundHeight =
               (Spacing.monthlyPlanHeroHeight +
-                  (durationSelector == null ? 0 : Spacing.xxxl)) *
+                  (durationSelector == null ? 0 : Spacing.xxxl - Spacing.lg)) *
               scale;
           final durationSelectorHeight =
               (width - Spacing.monthlyPlanContentHorizontalPadding * 2) *
@@ -60,7 +60,9 @@ class MonthlyPlanHeroSection extends StatelessWidget {
                   ),
                   Positioned(
                     top:
-                        (Spacing.monthlyPlanHeroSummaryTop - Spacing.xxxl) *
+                        (Spacing.monthlyPlanHeroSummaryTop -
+                            Spacing.xxxl -
+                            Spacing.lg) *
                         scale,
                     left: 0,
                     right: 0,

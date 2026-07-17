@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_app_button.dart';
 import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_package_icon.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/monthly_plan_restaurant_logos_row.dart';
@@ -59,8 +60,8 @@ class MonthlyPlanPackageCard extends StatelessWidget {
         ? color.onPrimary
         : color.onSurface;
     final mutedForegroundColor = usesLightForeground
-        ? color.onPrimary.withValues(alpha: 0.78)
-        : color.onSurfaceVariant;
+        ? color.onPrimary
+        : color.onSurface;
 
     return Semantics(
       button: true,
@@ -132,7 +133,6 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                           iconName: package.iconName,
                           usesLightForeground: usesLightForeground,
                         ),
-                        const SizedBox(height: Spacing.hairline),
                         Text(
                           package.title,
                           maxLines: 1,
@@ -144,44 +144,50 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                             color: foregroundColor,
                           ).copyWith(height: 1.25),
                         ),
+                        const SizedBox(height: Spacing.xs),
+
                         Text(
                           package.subtitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: getRegularStyle(
+                          style: getSemiBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size9,
+                            fontSize: FontSize.size8,
                             color: mutedForegroundColor,
-                          ).copyWith(height: 1.3),
+                          ).copyWith(height: 1.2),
                         ),
-                        const SizedBox(height: Spacing.sm),
+                        const SizedBox(height: Spacing.xs),
                         for (final bullet in package.bullets)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                size: FontSize.size6,
-                                color: usesLightForeground
-                                    ? color.onPrimary.withValues(alpha: 0.72)
-                                    : color.primary,
-                              ),
-                              const SizedBox(width: Spacing.xs),
-                              Flexible(
-                                child: Text(
-                                  bullet,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: getSemiBoldStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
-                                    fontSize: FontSize.size10,
-                                    color: mutedForegroundColor,
-                                  ).copyWith(height: 1.7),
+                          Padding(
+                            padding: const EdgeInsets.only(top: Spacing.xs),
+                            child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  size: FontSize.size6,
+                                  color: usesLightForeground
+                                      ? color.onPrimary.withValues(alpha: 0.72)
+                                      : color.primary,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: Spacing.xs),
+                                Flexible(
+                                  child: Text(
+                                    bullet,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: getBoldStyle(
+                                      fontFamily:
+                                          FontConstant.ibmPlexSansArabic,
+                                      fontSize: FontSize.size10,
+                                      color: mutedForegroundColor,
+                                    ).copyWith(height: 1.35),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         const Spacer(),
                         MonthlyPlanRestaurantLogosRow(
@@ -189,47 +195,17 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                           isFeatured: isFeatured,
                         ),
                         const SizedBox(height: Spacing.xs),
-                        SizedBox(
+                        CustomAppButton(
+                          size: AppButtonSize.small,
+                          text: locale.calendar_browse_restaurants,
+                          onPressed: onBrowseRestaurants,
+                          isExpanded: false,
                           width: Spacing.monthlyPlanPackageButtonWidth,
                           height: Spacing.monthlyPlanPackageButtonHeight,
-                          child: Material(
-                            color: color.surface.withValues(alpha: 0),
-                            shape: const StadiumBorder(),
-                            child: InkWell(
-                              onTap: onBrowseRestaurants,
-                              customBorder: const StadiumBorder(),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                  color: isFeatured ? color.surface : null,
-                                  gradient: isFeatured
-                                      ? null
-                                      : LinearGradient(
-                                          colors: [
-                                            color.primary,
-                                            color.onPrimaryContainer,
-                                          ],
-                                        ),
-                                  borderRadius: BorderRadius.circular(
-                                    Spacing.radiusPill,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    locale.calendar_browse_restaurants,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: getBoldStyle(
-                                      fontFamily:
-                                          FontConstant.ibmPlexSansArabic,
-                                      fontSize: FontSize.size9,
-                                      color: isFeatured
-                                          ? color.primary
-                                          : color.onPrimary,
-                                    ).copyWith(height: 1),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          textColor: color.onPrimary,
+                          fontSize: FontSize.size9,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.xs,
                           ),
                         ),
                       ],
