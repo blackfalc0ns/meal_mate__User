@@ -43,7 +43,7 @@ class MealDetailsScreen extends StatelessWidget {
                 ),
                 Positioned(
                   left: Spacing.xl,
-                  bottom: constraints.maxHeight - (Spacing.xxxl * 4),
+                  bottom: constraints.maxHeight - (Spacing.xxxl * 3),
                   child: MealDetailsRatingBadge(
                     title: meal.ratingTitle,
                     value: meal.ratingValue,

@@ -85,9 +85,9 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: getRegularStyle(
+                style: getMediumStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size8,
+                  fontSize: FontSize.size9,
                   color: color.onSurfaceVariant,
                 ),
               ),
@@ -99,13 +99,13 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                     '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                     style: getRegularStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size9,
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
                   Icon(
                     Icons.star_rounded,
-                    size: FontSize.size10,
+                    size: 13,
                     color: color.primary,
                   ),
                   const SizedBox(width: Spacing.monthlyRestaurantCardTinyGap),
@@ -113,7 +113,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                     restaurant.rating,
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size9,
                     ),
                   ),
                 ],
@@ -128,9 +128,9 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 ),
                 child: Text(
                   '${restaurant.meals} ${locale.subscription_details_meals_in_plan}',
-                  style: getRegularStyle(
+                  style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size8,
+                    fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),
                 ),

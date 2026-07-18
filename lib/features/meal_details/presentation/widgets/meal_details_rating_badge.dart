@@ -38,7 +38,7 @@ class MealDetailsRatingBadge extends StatelessWidget {
           ),
           const SizedBox(width: Spacing.xs),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 value,
