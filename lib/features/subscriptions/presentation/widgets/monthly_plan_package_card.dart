@@ -163,7 +163,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
-                                    style: getBoldStyle(
+                                    style: getLightStyle(
                                       fontFamily:
                                           FontConstant.ibmPlexSansArabic,
                                       fontSize: FontSize.size10,

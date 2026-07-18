@@ -13,26 +13,26 @@ class AuthFormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final borderRadius = BorderRadius.circular(Spacing.bottomSheetRadius);
+    final borderRadius = BorderRadius.circular(36);
 
     return ClipRRect(
       borderRadius: borderRadius,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: Spacing.xs, sigmaY: Spacing.xs),
+        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: color.surface.withValues(alpha: 0.14),
+            color: color.surface.withValues(alpha: 0.50),
             borderRadius: borderRadius,
             border: Border.all(
-              color: color.onSurface.withValues(alpha: 0.16),
+              color: color.surface.withValues(alpha: 0.68),
               width: Spacing.border,
             ),
             boxShadow: [
               BoxShadow(
-                color: color.shadow.withValues(alpha: 0.16),
-                blurRadius: Spacing.lg,
-                offset: const Offset(0, Spacing.md),
+                color: color.shadow.withValues(alpha: 0.12),
+                blurRadius: 30,
+                offset: const Offset(0, 20),
               ),
             ],
           ),

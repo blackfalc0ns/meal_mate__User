@@ -21,7 +21,7 @@ class OfferActivatedScreen extends StatelessWidget {
   static const routeName = '/offer-activated';
 
   static const _accentColor = AppColors.primary;
-  static const _imageAsset = 'assets/images/offers/grilled_plate.png';
+  static const _imageAsset = 'assets/images/offers/banner_offfer.png';
   static const _mealBoxAsset = AssetsFake.mealBoxes;
   static const _couponCode = 'SAVE20';
 
@@ -44,11 +44,7 @@ class OfferActivatedScreen extends StatelessWidget {
                     const SizedBox(height: Spacing.base),
                     OfferActivatedHeroBanner(
                       imageAsset: _imageAsset,
-                      discountLabel: '20%',
-                      title: l10n.offers_hero_title,
-                      subtitle: l10n.offer_details_hero_description,
-                      timerText: '02 يوم : 14 ساعة',
-                      accentColor: _accentColor,
+                     
                     ),
                     const SizedBox(height: Spacing.base),
                     Padding(

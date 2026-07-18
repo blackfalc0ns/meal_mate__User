@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -70,13 +72,14 @@ class OnboardingActionButton extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onSkipTap,
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 18, vertical: 6),
             child: Text(
               l10n.skip,
-              style: getSemiBoldStyle(fontFamily: FontConstant.ibmPlexSansArabic,
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.ibmPlexSansArabic,
                 color: Colors.white,
                 fontSize: FontSize.size18,
-              )
+              ),
             ),
           ),
         ),
@@ -104,10 +107,11 @@ class _SegmentedRingPainter extends CustomPainter {
     final radius = size.shortestSide / 2 - 7;
     final safeSegmentCount = segmentCount.clamp(1, 4);
     final safeActiveIndex = activeIndex.clamp(0, safeSegmentCount - 1);
-    const startAngle = -1.36;
-    const sweepAngle = 0.98;
-    const gapAngle = 0.59;
-    const stepAngle = sweepAngle + gapAngle;
+    final gapAngle = math.pi / 15;
+    final sweepAngle =
+        ((math.pi * 2) - (safeSegmentCount * gapAngle)) / safeSegmentCount;
+    final startAngle = -math.pi / 2;
+    final stepAngle = sweepAngle + gapAngle;
 
     for (var index = 0; index < safeSegmentCount; index++) {
       final paint = Paint()
