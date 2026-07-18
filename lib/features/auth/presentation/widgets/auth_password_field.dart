@@ -48,6 +48,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         ),
         const SizedBox(height: Spacing.sm),
         AppTextField(
+          isGlass: true,
           controller: widget.controller,
           hint: widget.hintText ?? l10n.password_hint,
           obscureText: _obscureText,
@@ -63,12 +64,16 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
               });
             },
             icon: Icon(
-              _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+              _obscureText
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
               color: AppColors.greyLight,
               size: 22,
             ),
           ),
-          validator: widget.validator ?? (value) => Validations.validatePassword(context, value),
+          validator:
+              widget.validator ??
+              (value) => Validations.validatePassword(context, value),
         ),
       ],
     );

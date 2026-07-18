@@ -1,3 +1,4 @@
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -28,6 +29,14 @@ class CountryCodePrefix extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.xs),
+           CountryFlag.fromCountryCode(
+            'KW',
+            theme: ImageTheme(
+              width: Spacing.iconMd,
+              height: Spacing.base,
+              shape: RoundedRectangle(Spacing.radiusXs),
+            ),
+          ),
         ],
       ),
     );

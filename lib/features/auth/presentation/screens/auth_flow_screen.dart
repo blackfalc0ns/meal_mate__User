@@ -62,7 +62,7 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
           child: PageView(
             controller: _pageController,
             reverse: isRtl,
-            physics: const BouncingScrollPhysics(),
+            physics:NeverScrollableScrollPhysics(),
             onPageChanged: (index) {
               _currentPage = AuthPageType.values[index];
             },

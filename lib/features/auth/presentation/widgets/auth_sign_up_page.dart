@@ -84,6 +84,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
             ),
             const SizedBox(height: Spacing.sm),
             AppTextField(
+              isGlass: true,
               controller: _nameController,
               hint: l10n.auth_name_hint,
               prefixIcon: const Icon(

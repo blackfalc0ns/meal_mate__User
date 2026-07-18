@@ -23,7 +23,10 @@ class AuthPageShell extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final topSpacer = (constraints.maxHeight * 0.14).clamp(64.0, 120.0);
+        final topSpacer = (constraints.maxHeight * 0.04).clamp(
+          Spacing.xl,
+          Spacing.xxxl,
+        );
 
         return SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 /// ─────────────────────────────────────────────────────────────
 /// Reusable text field with consistent styling using AppColors.
@@ -40,6 +43,7 @@ class AppTextField extends StatelessWidget {
     this.labelStyle,
     this.textAlign = TextAlign.start,
     this.autovalidateMode,
+    this.isGlass = false,
   });
 
   final TextEditingController? controller;
@@ -71,12 +75,18 @@ class AppTextField extends StatelessWidget {
   final TextStyle? labelStyle;
   final TextAlign textAlign;
   final AutovalidateMode? autovalidateMode;
+  final bool isGlass;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final effectiveRadius = borderRadius ?? Spacing.inputRadius;
+    final inputBorderRadius = BorderRadius.circular(effectiveRadius);
+    final effectiveBorderColor = isGlass
+        ? color.surface.withValues(alpha: 0.52)
+        : borderColor ?? AppColors.border;
 
-    return TextFormField(
+    final textField = TextFormField(
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText,
@@ -108,7 +118,9 @@ class AppTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: fillColor ?? AppColors.white,
+        fillColor: isGlass
+            ? color.surface.withValues(alpha: 0.42)
+            : fillColor ?? AppColors.white,
         contentPadding:
             contentPadding ??
             const EdgeInsets.symmetric(
@@ -135,35 +147,47 @@ class AppTextField extends StatelessWidget {
           color: AppColors.error,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: BorderSide(
-            color: borderColor ?? AppColors.border,
-            width: 1.0,
+            color: effectiveBorderColor,
+            width: Spacing.border,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: BorderSide(
-            color: borderColor ?? AppColors.border,
-            width: 1.0,
+            color: effectiveBorderColor,
+            width: Spacing.border,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: const BorderSide(color: AppColors.error, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: const BorderSide(color: AppColors.error, width: 1.5),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(effectiveRadius),
+          borderRadius: inputBorderRadius,
           borderSide: BorderSide(color: AppColors.disabled, width: 1.0),
         ),
+      ),
+    );
+
+    if (!isGlass) {
+      return textField;
+    }
+
+    return ClipRRect(
+      borderRadius: inputBorderRadius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: Spacing.xs, sigmaY: Spacing.xs),
+        child: textField,
       ),
     );
   }

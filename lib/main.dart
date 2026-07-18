@@ -35,7 +35,7 @@ class MealMateApp extends StatelessWidget {
           locale ?? const Locale('ar'),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: AppRoutes.signIn,
+      initialRoute: AppRoutes.onboarding,
       onGenerateRoute: RouteGenerator.getRoute,
     );
   }

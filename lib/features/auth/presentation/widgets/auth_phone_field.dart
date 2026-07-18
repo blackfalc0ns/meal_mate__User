@@ -40,6 +40,7 @@ class AuthPhoneField extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.sm),
         AppTextField(
+          isGlass: true,
           controller: controller,
           hint: hintText ?? l10n.phone_hint,
           keyboardType: TextInputType.phone,
@@ -49,7 +50,9 @@ class AuthPhoneField extends StatelessWidget {
             size: 23,
           ),
           suffixIcon: const CountryCodePrefix(),
-          validator: validator ?? (value) => Validations.validatePhoneNumber(context, value),
+          // validator:
+          //     validator ??
+          //     (value) => Validations.validatePhoneNumber(context, value),
         ),
       ],
     );

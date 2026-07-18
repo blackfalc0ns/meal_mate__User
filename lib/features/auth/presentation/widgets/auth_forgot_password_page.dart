@@ -14,10 +14,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_phone_field.dart';
 
 class AuthForgotPasswordPage extends StatefulWidget {
-  const AuthForgotPasswordPage({
-    super.key,
-    required this.onNavigate,
-  });
+  const AuthForgotPasswordPage({super.key, required this.onNavigate});
 
   final ValueChanged<AuthPageType> onNavigate;
 
@@ -75,26 +72,21 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
             const SizedBox(height: Spacing.xl),
             AuthPhoneField(
               controller: _phoneController,
-              validator: (value) => Validations.validatePhoneNumber(context, value),
+              validator: (value) =>
+                  Validations.validatePhoneNumber(context, value),
             ),
             const SizedBox(height: Spacing.xl),
-            // AppButton.filled(
-            //   text: l10n.auth_send_otp_button,
-            //   iconWidget: SvgPicture.asset(
-            //     Assets.loginIcon,
-            //     width: 18,
-            //     height: 18,
-            //   ),
-            //   onPressed: _handleSubmit,
-            //   color: AppColors.primary,
-            //   gradient: LinearGradient(
-            //     colors: [
-            //       Color(0xFF1D8134),
-            //       Color(0xFF51C063),
-            //     ],
-            //   ),
-            //   borderRadius: 999,
-            // ),
+            AppButton.filled(
+              text: l10n.auth_send_otp_button,
+              iconWidget: SvgPicture.asset(
+                Assets.loginIcon,
+                width: Spacing.lg,
+                height: Spacing.lg,
+              ),
+              onPressed: _handleSubmit,
+              color: AppColors.primary,
+              gradient: AppColors.primaryGradient,
+            ),
           ],
         ),
       ),
