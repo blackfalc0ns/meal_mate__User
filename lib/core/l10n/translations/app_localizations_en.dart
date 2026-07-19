@@ -1999,4 +1999,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_settings_version_label => 'Version 2.4.0';
+
+  @override
+  String get health_goals_title => 'My health goals';
+
+  @override
+  String get health_goals_current_goal => 'Your current goal';
+
+  @override
+  String get health_goals_weight_loss => 'Weight loss';
+
+  @override
+  String get health_goals_current_weight => 'Current weight';
+
+  @override
+  String get health_goals_target_weight => 'Target weight';
+
+  @override
+  String get health_goals_progress => 'Progress';
+
+  @override
+  String get health_goals_body_data => 'Body data';
+
+  @override
+  String get health_goals_height => 'Height';
+
+  @override
+  String get health_goals_activity_level => 'Activity level';
+
+  @override
+  String get health_goals_activity_low => 'Low';
+
+  @override
+  String get health_goals_activity_medium => 'Medium';
+
+  @override
+  String get health_goals_activity_active => 'Active';
+
+  @override
+  String get health_goals_activity_high => 'High activity';
+
+  @override
+  String get health_goals_weekly_summary => 'This week\'s summary';
+
+  @override
+  String get health_goals_decrease => 'Decrease';
+
+  @override
+  String get health_goals_since_plan_start => 'Since your plan started';
+
+  @override
+  String get health_goals_days => '45 days';
+
+  @override
+  String get health_goals_continuous => 'Continuous';
+
+  @override
+  String get health_goals_keep_progress => 'Keep up the great progress';
+
+  @override
+  String get health_goals_save => 'Save goals';
+
+  @override
+  String get health_goals_weight_value => '78 kg';
+
+  @override
+  String get health_goals_target_weight_value => '72 kg';
+
+  @override
+  String get health_goals_height_value => '175 cm';
+
+  @override
+  String get health_goals_progress_value => '60%';
+
+  @override
+  String get health_goals_decrease_value => '4.2 kg';
 }

@@ -1970,4 +1970,79 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profile_settings_version_label => 'الإصدار 2.4.0';
+
+  @override
+  String get health_goals_title => 'أهدافي الصحية';
+
+  @override
+  String get health_goals_current_goal => 'هدفك الحالي';
+
+  @override
+  String get health_goals_weight_loss => 'خسارة الوزن';
+
+  @override
+  String get health_goals_current_weight => 'الوزن الحالي';
+
+  @override
+  String get health_goals_target_weight => 'الوزن المستهدف';
+
+  @override
+  String get health_goals_progress => 'التقدم';
+
+  @override
+  String get health_goals_body_data => 'بيانات الجسم';
+
+  @override
+  String get health_goals_height => 'الطول';
+
+  @override
+  String get health_goals_activity_level => 'مستوى النشاط';
+
+  @override
+  String get health_goals_activity_low => 'منخفض';
+
+  @override
+  String get health_goals_activity_medium => 'متوسط';
+
+  @override
+  String get health_goals_activity_active => 'نشيط';
+
+  @override
+  String get health_goals_activity_high => 'نشاط عالي';
+
+  @override
+  String get health_goals_weekly_summary => 'ملخص هذا الأسبوع';
+
+  @override
+  String get health_goals_decrease => 'انخفاض';
+
+  @override
+  String get health_goals_since_plan_start => 'منذ بداية خطتك';
+
+  @override
+  String get health_goals_days => '45 يوم';
+
+  @override
+  String get health_goals_continuous => 'متتالي';
+
+  @override
+  String get health_goals_keep_progress => 'استمر على هذا التقدم الرائع';
+
+  @override
+  String get health_goals_save => 'حفظ الأهداف';
+
+  @override
+  String get health_goals_weight_value => '78 كجم';
+
+  @override
+  String get health_goals_target_weight_value => '72 كجم';
+
+  @override
+  String get health_goals_height_value => '175 سم';
+
+  @override
+  String get health_goals_progress_value => '60%';
+
+  @override
+  String get health_goals_decrease_value => '4.2 كجم';
 }

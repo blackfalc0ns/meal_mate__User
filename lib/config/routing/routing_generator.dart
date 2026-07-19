@@ -21,6 +21,7 @@ import 'package:meal_meat_user/features/profile/presentation/screens/security_pr
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/addresses_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/dietary_preferences_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/screens/health_goals_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 
@@ -142,6 +143,8 @@ class RouteGenerator {
           settings: settings,
           page: const DietaryPreferencesScreen(),
         );
+      case AppRoutes.healthGoals:
+        return _buildRoute(settings: settings, page: const HealthGoalsScreen());
       default:
         return _buildRoute(
           settings: settings,

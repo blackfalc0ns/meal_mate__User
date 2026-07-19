@@ -26,4 +26,5 @@ abstract class AppRoutes {
   static const String securityPrivacy = '/security-privacy';
   static const String addresses = '/addresses';
   static const String dietaryPreferences = '/dietary-preferences';
+  static const String healthGoals = '/health-goals';
 }

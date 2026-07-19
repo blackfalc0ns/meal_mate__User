@@ -3865,6 +3865,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version 2.4.0'**
   String get profile_settings_version_label;
+
+  /// No description provided for @health_goals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'My health goals'**
+  String get health_goals_title;
+
+  /// No description provided for @health_goals_current_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current goal'**
+  String get health_goals_current_goal;
+
+  /// No description provided for @health_goals_weight_loss.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss'**
+  String get health_goals_weight_loss;
+
+  /// No description provided for @health_goals_current_weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Current weight'**
+  String get health_goals_current_weight;
+
+  /// No description provided for @health_goals_target_weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Target weight'**
+  String get health_goals_target_weight;
+
+  /// No description provided for @health_goals_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get health_goals_progress;
+
+  /// No description provided for @health_goals_body_data.
+  ///
+  /// In en, this message translates to:
+  /// **'Body data'**
+  String get health_goals_body_data;
+
+  /// No description provided for @health_goals_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get health_goals_height;
+
+  /// No description provided for @health_goals_activity_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity level'**
+  String get health_goals_activity_level;
+
+  /// No description provided for @health_goals_activity_low.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get health_goals_activity_low;
+
+  /// No description provided for @health_goals_activity_medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get health_goals_activity_medium;
+
+  /// No description provided for @health_goals_activity_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get health_goals_activity_active;
+
+  /// No description provided for @health_goals_activity_high.
+  ///
+  /// In en, this message translates to:
+  /// **'High activity'**
+  String get health_goals_activity_high;
+
+  /// No description provided for @health_goals_weekly_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'This week\'s summary'**
+  String get health_goals_weekly_summary;
+
+  /// No description provided for @health_goals_decrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get health_goals_decrease;
+
+  /// No description provided for @health_goals_since_plan_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Since your plan started'**
+  String get health_goals_since_plan_start;
+
+  /// No description provided for @health_goals_days.
+  ///
+  /// In en, this message translates to:
+  /// **'45 days'**
+  String get health_goals_days;
+
+  /// No description provided for @health_goals_continuous.
+  ///
+  /// In en, this message translates to:
+  /// **'Continuous'**
+  String get health_goals_continuous;
+
+  /// No description provided for @health_goals_keep_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep up the great progress'**
+  String get health_goals_keep_progress;
+
+  /// No description provided for @health_goals_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save goals'**
+  String get health_goals_save;
+
+  /// No description provided for @health_goals_weight_value.
+  ///
+  /// In en, this message translates to:
+  /// **'78 kg'**
+  String get health_goals_weight_value;
+
+  /// No description provided for @health_goals_target_weight_value.
+  ///
+  /// In en, this message translates to:
+  /// **'72 kg'**
+  String get health_goals_target_weight_value;
+
+  /// No description provided for @health_goals_height_value.
+  ///
+  /// In en, this message translates to:
+  /// **'175 cm'**
+  String get health_goals_height_value;
+
+  /// No description provided for @health_goals_progress_value.
+  ///
+  /// In en, this message translates to:
+  /// **'60%'**
+  String get health_goals_progress_value;
+
+  /// No description provided for @health_goals_decrease_value.
+  ///
+  /// In en, this message translates to:
+  /// **'4.2 kg'**
+  String get health_goals_decrease_value;
 }
 
 class _AppLocalizationsDelegate

@@ -75,6 +75,8 @@ class ProfileSettingsCard extends StatelessWidget {
                 ? () => Navigator.of(
                     context,
                   ).pushNamed(AppRoutes.dietaryPreferences)
+                : index == 1
+                ? () => Navigator.of(context).pushNamed(AppRoutes.healthGoals)
                 : null,
           );
         }),
