@@ -34,7 +34,7 @@ class DietaryPreferencesAllergyNotice extends StatelessWidget {
               children: [
                 Text(
                   locale.dietary_preferences_allergy_notice_title,
-                  style: getSemiBoldStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
                     fontSize: FontSize.size12,
                     color: color.secondary,
