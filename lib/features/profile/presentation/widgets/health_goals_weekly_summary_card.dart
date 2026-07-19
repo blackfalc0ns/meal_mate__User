@@ -114,8 +114,8 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                         alignment: Alignment.center,
                         child: SvgPicture.asset(
                           Assets.healthGoalFire,
-                          width: Spacing.xl,
-                          height: Spacing.xl,
+                          width: Spacing.md,
+                          height: Spacing.md,
                         ),
                       ),
                     ],
@@ -180,8 +180,8 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                         alignment: Alignment.center,
                         child: SvgPicture.asset(
                           Assets.healthGoalArrowDown,
-                          width: Spacing.xl,
-                          height: Spacing.xl,
+                          width: Spacing.md,
+                          height: Spacing.md,
                         ),
                       ),
                     ],

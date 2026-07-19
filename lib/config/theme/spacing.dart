@@ -123,12 +123,34 @@ class Spacing {
   static const double dietaryNotesHeaderTopInset = 6.16;
   static const double dietaryNotesFieldTopInset = 35.31;
   static const double dietaryNotesFieldHorizontalInset = 11.04;
-  static const double dietaryNotesFieldHeight = 34.21;
+  static const double dietaryNotesFieldHeight = 40.0;
   static const double dietaryNoticeHeight = 56.28;
   static const double dietarySaveButtonHeight = 31.51;
   static const double dietarySaveButtonRadius = 17.75;
   static const double dietaryIconSize = 18.13;
   static const double dietarySmallIconSize = 18.0;
+
+  // Add allergy Figma measurements.
+  static const double addAllergyScreenHorizontalPadding = 15.66;
+  static const double addAllergyContentTopPadding = 12.0;
+  static const double addAllergySectionGap = 9.0;
+  static const double addAllergySummaryHeight = 77.76;
+  static const double addAllergySummaryRadius = 14.51;
+  static const double addAllergySummaryCountSize = 48.3;
+  static const double addAllergySummaryChipWidth = 83.21;
+  static const double addAllergySummaryChipHeight = 28.6;
+  static const double addAllergySearchHeight = 36.52;
+  static const double addAllergySearchRadius = 14.51;
+  static const double addAllergyGridTileHeight = 41.24;
+  static const double addAllergyGridTileRadius = 12.96;
+  static const double addAllergyGridGap = 10.6;
+  static const double addAllergyPopularHeight = 219.14;
+  static const double addAllergyPopularRadius = 18.36;
+  static const double addAllergyPopularRowHeight = 36.52;
+  static const double addAllergyNoticeHeight = 49.0;
+  static const double addAllergyNoticeRadius = 18.36;
+  static const double addAllergyButtonHeight = 31.51;
+  static const double addAllergyButtonRadius = 17.75;
 
   // Health goals Figma measurements.
   static const double healthGoalsScreenHorizontalPadding = 22.0;
@@ -148,7 +170,7 @@ class Spacing {
   static const double healthGoalsActivityOptionHeight = 50.0;
   static const double healthGoalsSelectedActivityOptionWidth = 81.0;
   static const double healthGoalsActivityOptionWidth = 67.0;
-  static const double healthGoalsWeeklyMetricIconContainerSize = 40.17;
+  static const double healthGoalsWeeklyMetricIconContainerSize = 30;
 
   // Monthly plan Figma measurements.
   static const double monthlyPlanDesignWidth = 448.43;
@@ -342,8 +364,8 @@ class Spacing {
   static const double profilePrivacySectionGap = 6.52;
   static const double profilePrivacyIconContainerSize = 27.16;
   static const double profilePrivacyIconSize = 17.91;
-  static const double profilePrivacyNoticeHeight = 61.93;
-  static const double profilePrivacyReminderHeight = 57.0;
+  static const double profilePrivacyNoticeHeight = 70;
+  static const double profilePrivacyReminderHeight = 70;
   static const double profilePrivacyNoticeGap = 13.0;
   static const double profilePrivacyButtonHeight = 31.51;
   static const double profilePrivacyButtonRadius = 17.75;

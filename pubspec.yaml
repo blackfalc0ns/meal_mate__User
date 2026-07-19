@@ -58,6 +58,7 @@ flutter:
     - assets/images/fake/
     - assets/images/fake/calendar/
     - assets/images/fake/home/
+    - assets/images/fake/profile/
     - assets/images/fake/meal_details/
     - assets/images/fake/offers/
     - assets/images/fake/subscriptions/

@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/current_address_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/saved_address_tile.dart';
 
@@ -107,42 +108,18 @@ class AddressesScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Spacing.addressesSectionGap),
-              Container(
+              CustomWarningWidget(
+                icon: Icons.info_rounded,
+                message: locale.addresses_availability_notice,
+                isWarning: true,
                 height: Spacing.addressesAvailabilityNoticeHeight,
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
-                decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  borderRadius: BorderRadius.circular(
-                    Spacing.addressesCardRadius,
-                  ),
-                  border: Border.all(color: color.outlineVariant),
-                ),
-                child: Row(
-                  textDirection: locale.localeName == 'ar'
-                      ? TextDirection.rtl
-                      : TextDirection.ltr,
-                  children: [
-                    Icon(
-                      Icons.info_rounded,
-                      color: color.secondary,
-                      size: Spacing.lg,
-                    ),
-                    const SizedBox(width: Spacing.sm),
-                    Expanded(
-                      child: Text(
-                        locale.addresses_availability_notice,
-
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size12,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                backgroundColor: color.secondaryContainer,
+                borderColor: color.outlineVariant,
+                horizontalPadding: Spacing.md,
+                iconSize: Spacing.lg,
+                iconTextSpacing: Spacing.sm,
+                messageFontSize: FontSize.size12,
+                maxMessageLines: 1,
               ),
               const SizedBox(height: Spacing.xxl),
               AppButton.filled(

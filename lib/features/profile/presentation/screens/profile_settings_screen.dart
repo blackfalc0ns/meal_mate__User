@@ -4,7 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_section_card.dart';
+import 'package:meal_meat_user/core/widget/app_settings_section_card.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -15,7 +15,6 @@ class ProfileSettingsScreen extends StatelessWidget {
     final locale = context.localization;
 
     return Scaffold(
-     
       appBar: CustomAppBar(
         title: locale.profile_settings_title,
         titleFontSize: FontSize.size15,
@@ -30,7 +29,7 @@ class ProfileSettingsScreen extends StatelessWidget {
           ).copyWith(top: Spacing.profilePrivacyContentTopPadding),
           child: Column(
             children: [
-              SecurityPrivacySectionCard(
+              AppSettingsSectionCard(
                 title: locale.profile_settings_application_section,
                 icon: Icons.settings_rounded,
                 tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
@@ -59,7 +58,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Spacing.profilePrivacySectionGap),
-              SecurityPrivacySectionCard(
+              AppSettingsSectionCard(
                 title: locale.profile_settings_support_section,
                 icon: Icons.headset_mic_rounded,
                 tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
@@ -88,7 +87,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Spacing.profilePrivacySectionGap),
-              SecurityPrivacySectionCard(
+              AppSettingsSectionCard(
                 title: locale.profile_settings_information_section,
                 icon: Icons.info_rounded,
                 tileHeight: Spacing.profilePrivacySecondaryTileHeight,
@@ -132,15 +131,13 @@ class ProfileSettingsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                   
-                   
                     Icon(
                       Icons.verified_user_rounded,
                       size: Spacing.iconSm,
                       color: color.primary,
                     ),
-                     const SizedBox(width: Spacing.xs),
-                     Text(
+                    const SizedBox(width: Spacing.xs),
+                    Text(
                       locale.profile_settings_version_label,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,

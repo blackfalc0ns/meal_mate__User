@@ -3,10 +3,10 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_tile.dart';
+import 'package:meal_meat_user/core/widget/app_settings_tile.dart';
 
-class SecurityPrivacySectionCard extends StatelessWidget {
-  const SecurityPrivacySectionCard({
+class AppSettingsSectionCard extends StatelessWidget {
+  const AppSettingsSectionCard({
     super.key,
     required this.title,
     required this.icon,
@@ -81,7 +81,7 @@ class SecurityPrivacySectionCard extends StatelessWidget {
           Divider(height: Spacing.hairline, color: color.outlineVariant),
           ...List.generate(items.length, (index) {
             final item = items[index];
-            return ProfileSettingsTile(
+            return AppSettingsTile(
               icon: item.$1,
               title: item.$2,
               subtitle: item.$3,

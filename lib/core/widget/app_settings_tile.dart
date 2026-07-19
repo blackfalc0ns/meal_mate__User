@@ -4,8 +4,8 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class ProfileSettingsTile extends StatelessWidget {
-  const ProfileSettingsTile({
+class AppSettingsTile extends StatelessWidget {
+  const AppSettingsTile({
     super.key,
     required this.icon,
     required this.title,
@@ -62,7 +62,7 @@ class ProfileSettingsTile extends StatelessWidget {
                     const SizedBox(width: Spacing.sm),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(Spacing.xs),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +91,7 @@ class ProfileSettingsTile extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                   Icons.chevron_right_rounded,
+                      trailingIcon ?? Icons.chevron_right_rounded,
                       color: color.onSurfaceVariant,
                       size: Spacing.iconSm,
                     ),

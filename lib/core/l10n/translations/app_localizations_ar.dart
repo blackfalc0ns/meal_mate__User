@@ -620,6 +620,71 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dietary_preferences_save => 'حفظ التفضيلات';
 
   @override
+  String get add_allergy_title => 'إضافة الحساسية';
+
+  @override
+  String get add_allergy_subtitle =>
+      'اختر الحساسية التي تعاني منها لتجنب عرض الوجبات غير المناسبة لك';
+
+  @override
+  String get add_allergy_selected => 'مختارة';
+
+  @override
+  String get add_allergy_current_allergies => 'حساسياتك الحالية';
+
+  @override
+  String get add_allergy_search_hint => 'ابحث عن مكون أو حساسية';
+
+  @override
+  String get add_allergy_sesame => 'سمسم';
+
+  @override
+  String get add_allergy_eggs => 'بيض';
+
+  @override
+  String get add_allergy_gluten => 'جلوتين';
+
+  @override
+  String get add_allergy_peanuts => 'فول سوداني';
+
+  @override
+  String get add_allergy_seafood => 'مأكولات بحرية';
+
+  @override
+  String get add_allergy_soy => 'صويا';
+
+  @override
+  String get add_allergy_wheat => 'قمح';
+
+  @override
+  String get add_allergy_fish => 'سمك';
+
+  @override
+  String get add_allergy_shellfish => 'قشريات';
+
+  @override
+  String get add_allergy_common_allergies => 'الحساسيات الشائعة';
+
+  @override
+  String get add_allergy_celery => 'كرفس';
+
+  @override
+  String get add_allergy_mustard => 'خردل';
+
+  @override
+  String get add_allergy_lupin => 'ترمس';
+
+  @override
+  String get add_allergy_note_title => 'ملاحظة مهمة';
+
+  @override
+  String get add_allergy_note_message =>
+      'نعتمد على معلومات من المكونات المقدمة من شركائنا قد تحدث تغييرات في الوصفات';
+
+  @override
+  String get add_allergy_save => 'حفظ الحساسية';
+
+  @override
   String get profile_billing => 'الاشتراكات والفواتير';
 
   @override

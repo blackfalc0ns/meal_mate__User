@@ -5,9 +5,9 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/app_settings_section_card.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_notice.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_section_card.dart';
+import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 
 class SecurityPrivacyScreen extends StatelessWidget {
   const SecurityPrivacyScreen({super.key});
@@ -18,7 +18,6 @@ class SecurityPrivacyScreen extends StatelessWidget {
     final locale = context.localization;
 
     return Scaffold(
-    
       appBar: CustomAppBar(
         title: locale.profile_security,
         titleFontSize: FontSize.size16,
@@ -33,7 +32,7 @@ class SecurityPrivacyScreen extends StatelessWidget {
           ).copyWith(top: Spacing.profilePrivacyContentTopPadding),
           child: Column(
             children: [
-              SecurityPrivacySectionCard(
+              AppSettingsSectionCard(
                 title: locale.profile_privacy_security_section,
                 icon: Icons.verified_user_rounded,
                 tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
@@ -60,7 +59,7 @@ class SecurityPrivacyScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Spacing.profilePrivacySectionGap),
-              SecurityPrivacySectionCard(
+              AppSettingsSectionCard(
                 title: locale.profile_privacy_section,
                 icon: Icons.shield_rounded,
                 tileHeight: Spacing.profilePrivacySecondaryTileHeight,
@@ -92,13 +91,13 @@ class SecurityPrivacyScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Spacing.profilePrivacySectionGap),
-              SecurityPrivacyNotice(
+              CustomWarningWidget(
                 icon: Icons.gpp_good_rounded,
                 title: locale.profile_privacy_permissions_title,
                 message: locale.profile_privacy_permissions_message,
               ),
               const SizedBox(height: Spacing.profilePrivacyNoticeGap),
-              SecurityPrivacyNotice(
+              CustomWarningWidget(
                 icon: Icons.lock_rounded,
                 title: locale.profile_privacy_password_reminder_title,
                 message: locale.profile_privacy_password_reminder_message,

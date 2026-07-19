@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/dietary_preferences_allergy_notice.dart';
+import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/dietary_preferences_hero_banner.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/dietary_preferences_notes_section.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/dietary_preferences_section_card.dart';
@@ -130,12 +131,26 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                 choicesTopInset: Spacing.dietaryAllergiesChoicesTopInset,
                 choicesSpacing: Spacing.dietaryDietChoicesSpacing,
                 actionLabel: locale.dietary_preferences_manage_allergies,
-                onActionPressed: () {},
+                onActionPressed: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.addAllergy),
               ),
               const SizedBox(height: Spacing.dietarySectionGap),
               const DietaryPreferencesNotesSection(),
               const SizedBox(height: Spacing.dietarySectionGap),
-              const DietaryPreferencesAllergyNotice(),
+              CustomWarningWidget(
+                icon: Icons.warning_rounded,
+                title: locale.dietary_preferences_allergy_notice_title,
+                message: locale.dietary_preferences_allergy_notice_message,
+                isWarning: true,
+                height: Spacing.dietaryNoticeHeight,
+                backgroundColor: color.secondaryContainer,
+                borderColor: color.outlineVariant,
+                horizontalPadding: Spacing.md,
+                iconSize: Spacing.xl,
+                iconTextSpacing: Spacing.sm,
+                borderRadius: Spacing.dietaryCardRadius,
+                messageFontSize: FontSize.size10,
+              ),
               const SizedBox(height: Spacing.sm),
               AppButton.filled(
                 text: locale.dietary_preferences_save,

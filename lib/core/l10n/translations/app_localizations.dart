@@ -1262,6 +1262,132 @@ abstract class AppLocalizations {
   /// **'Save preferences'**
   String get dietary_preferences_save;
 
+  /// No description provided for @add_allergy_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add allergy'**
+  String get add_allergy_title;
+
+  /// No description provided for @add_allergy_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the allergies you have so we can avoid showing meals that are not suitable for you.'**
+  String get add_allergy_subtitle;
+
+  /// No description provided for @add_allergy_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get add_allergy_selected;
+
+  /// No description provided for @add_allergy_current_allergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current allergies'**
+  String get add_allergy_current_allergies;
+
+  /// No description provided for @add_allergy_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an ingredient or allergy'**
+  String get add_allergy_search_hint;
+
+  /// No description provided for @add_allergy_sesame.
+  ///
+  /// In en, this message translates to:
+  /// **'Sesame'**
+  String get add_allergy_sesame;
+
+  /// No description provided for @add_allergy_eggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Eggs'**
+  String get add_allergy_eggs;
+
+  /// No description provided for @add_allergy_gluten.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten'**
+  String get add_allergy_gluten;
+
+  /// No description provided for @add_allergy_peanuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Peanuts'**
+  String get add_allergy_peanuts;
+
+  /// No description provided for @add_allergy_seafood.
+  ///
+  /// In en, this message translates to:
+  /// **'Seafood'**
+  String get add_allergy_seafood;
+
+  /// No description provided for @add_allergy_soy.
+  ///
+  /// In en, this message translates to:
+  /// **'Soy'**
+  String get add_allergy_soy;
+
+  /// No description provided for @add_allergy_wheat.
+  ///
+  /// In en, this message translates to:
+  /// **'Wheat'**
+  String get add_allergy_wheat;
+
+  /// No description provided for @add_allergy_fish.
+  ///
+  /// In en, this message translates to:
+  /// **'Fish'**
+  String get add_allergy_fish;
+
+  /// No description provided for @add_allergy_shellfish.
+  ///
+  /// In en, this message translates to:
+  /// **'Shellfish'**
+  String get add_allergy_shellfish;
+
+  /// No description provided for @add_allergy_common_allergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Common allergies'**
+  String get add_allergy_common_allergies;
+
+  /// No description provided for @add_allergy_celery.
+  ///
+  /// In en, this message translates to:
+  /// **'Celery'**
+  String get add_allergy_celery;
+
+  /// No description provided for @add_allergy_mustard.
+  ///
+  /// In en, this message translates to:
+  /// **'Mustard'**
+  String get add_allergy_mustard;
+
+  /// No description provided for @add_allergy_lupin.
+  ///
+  /// In en, this message translates to:
+  /// **'Lupin'**
+  String get add_allergy_lupin;
+
+  /// No description provided for @add_allergy_note_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Important note'**
+  String get add_allergy_note_title;
+
+  /// No description provided for @add_allergy_note_message.
+  ///
+  /// In en, this message translates to:
+  /// **'We rely on ingredient information from our partners; recipes may change.'**
+  String get add_allergy_note_message;
+
+  /// No description provided for @add_allergy_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save allergies'**
+  String get add_allergy_save;
+
   /// No description provided for @profile_billing.
   ///
   /// In en, this message translates to:

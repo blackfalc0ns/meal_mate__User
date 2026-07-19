@@ -633,6 +633,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dietary_preferences_save => 'Save preferences';
 
   @override
+  String get add_allergy_title => 'Add allergy';
+
+  @override
+  String get add_allergy_subtitle =>
+      'Choose the allergies you have so we can avoid showing meals that are not suitable for you.';
+
+  @override
+  String get add_allergy_selected => 'selected';
+
+  @override
+  String get add_allergy_current_allergies => 'Your current allergies';
+
+  @override
+  String get add_allergy_search_hint => 'Search for an ingredient or allergy';
+
+  @override
+  String get add_allergy_sesame => 'Sesame';
+
+  @override
+  String get add_allergy_eggs => 'Eggs';
+
+  @override
+  String get add_allergy_gluten => 'Gluten';
+
+  @override
+  String get add_allergy_peanuts => 'Peanuts';
+
+  @override
+  String get add_allergy_seafood => 'Seafood';
+
+  @override
+  String get add_allergy_soy => 'Soy';
+
+  @override
+  String get add_allergy_wheat => 'Wheat';
+
+  @override
+  String get add_allergy_fish => 'Fish';
+
+  @override
+  String get add_allergy_shellfish => 'Shellfish';
+
+  @override
+  String get add_allergy_common_allergies => 'Common allergies';
+
+  @override
+  String get add_allergy_celery => 'Celery';
+
+  @override
+  String get add_allergy_mustard => 'Mustard';
+
+  @override
+  String get add_allergy_lupin => 'Lupin';
+
+  @override
+  String get add_allergy_note_title => 'Important note';
+
+  @override
+  String get add_allergy_note_message =>
+      'We rely on ingredient information from our partners; recipes may change.';
+
+  @override
+  String get add_allergy_save => 'Save allergies';
+
+  @override
   String get profile_billing => 'Subscriptions and billing';
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_tile.dart';
+import 'package:meal_meat_user/core/widget/app_settings_tile.dart';
 
 class ProfileSettingsCard extends StatelessWidget {
   const ProfileSettingsCard({super.key});
@@ -61,7 +61,7 @@ class ProfileSettingsCard extends StatelessWidget {
       child: Column(
         children: List.generate(items.length, (index) {
           final item = items[index];
-          return ProfileSettingsTile(
+          return AppSettingsTile(
             icon: item.$1,
             title: item.$2,
             subtitle: item.$3,

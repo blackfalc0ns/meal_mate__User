@@ -1,6 +1,27 @@
 class AssetsFake {
   AssetsFake._();
 
+  static const String addAllergyChecked =
+      'assets/images/fake/profile/add_allergy_checked.svg';
+  static const String addAllergyCrab =
+      'assets/images/fake/profile/add_allergy_crab.svg';
+  static const String addAllergyEgg =
+      'assets/images/fake/profile/add_allergy_egg.svg';
+  static const String addAllergyFishDetail =
+      'assets/images/fake/profile/add_allergy_fish_detail.svg';
+  static const String addAllergyGluten =
+      'assets/images/fake/profile/add_allergy_gluten.svg';
+  static const String addAllergyPeanut =
+      'assets/images/fake/profile/add_allergy_peanut.svg';
+  static const String addAllergyPopular =
+      'assets/images/fake/profile/add_allergy_popular.svg';
+  static const String addAllergySelected =
+      'assets/images/fake/profile/add_allergy_selected.svg';
+  static const String addAllergyShrimp =
+      'assets/images/fake/profile/add_allergy_shrimp.svg';
+  static const String addAllergyWarning =
+      'assets/images/fake/profile/add_allergy_warning.svg';
+
   static const String calendarMealBowl =
       'assets/images/fake/calendar/calendar_meal_bowl.png';
   static const String calendarMealPickerBreakfast =
