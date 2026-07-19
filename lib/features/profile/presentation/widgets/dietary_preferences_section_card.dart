@@ -18,6 +18,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
     required this.choicesSpacing,
     this.actionLabel,
     this.onActionPressed,
+    required this.iconColor,
   });
 
   final String title;
@@ -30,6 +31,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   final double choicesSpacing;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
+final Color  iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, color: color.primary, size: Spacing.lg),
+                  Icon(icon, color: iconColor, size: Spacing.lg),
                   const SizedBox(width: Spacing.xss),
                   Text(
                     title,
@@ -93,32 +95,6 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (actionLabel != null)
-                  OutlinedButton.icon(
-                    onPressed: onActionPressed,
-                    icon: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: Spacing.xs,
-                    ),
-                    label: Text(actionLabel!),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(0, Spacing.dietaryChipHeight),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                      ),
-                      textStyle: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size11,
-                        color: color.primary,
-                      ),
-                      side: BorderSide(color: color.primaryContainer),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          Spacing.dietaryChipRadius,
-                        ),
-                      ),
-                    ),
-                  ),
                 ...options.map(
                   (option) => Padding(
                     padding: EdgeInsetsDirectional.only(
@@ -132,6 +108,35 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (actionLabel != null)
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(start: choicesSpacing),
+                    child: OutlinedButton.icon(
+                      onPressed: onActionPressed,
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: Spacing.xs,
+                      ),
+                      label: Text(actionLabel!),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(0, Spacing.dietaryChipHeight),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                        ),
+                        textStyle: getMediumStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size11,
+                          color: color.primary,
+                        ),
+                        side: BorderSide(color: color.primaryContainer),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Spacing.dietaryChipRadius,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

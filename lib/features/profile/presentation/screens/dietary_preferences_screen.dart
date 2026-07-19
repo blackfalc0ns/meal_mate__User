@@ -94,6 +94,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
               const DietaryPreferencesHeroBanner(),
               const SizedBox(height: Spacing.dietarySectionGap),
               DietaryPreferencesSectionCard(
+                iconColor: color.primary,
                 title: locale.dietary_preferences_diet_title,
                 icon: Icons.eco_rounded,
                 options: dietOptions,
@@ -105,7 +106,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                 choicesSpacing: Spacing.dietaryDietChoicesSpacing,
               ),
               const SizedBox(height: Spacing.dietarySectionGap),
-              DietaryPreferencesSectionCard(
+              DietaryPreferencesSectionCard(iconColor: color.error,
                 title: locale.dietary_preferences_dislikes_title,
                 icon: Icons.cancel_rounded,
                 options: dislikeOptions,
@@ -113,10 +114,11 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                 onOptionSelected: (value) => _toggleSelection(_dislikes, value),
                 headerTopInset: Spacing.dietaryDislikesHeaderTopInset,
                 choicesTopInset: Spacing.dietaryDislikesChoicesTopInset,
-                choicesSpacing: Spacing.dietaryDislikesChoicesSpacing,
+                choicesSpacing: Spacing.dietaryDietChoicesSpacing,
               ),
               const SizedBox(height: Spacing.dietarySectionGap),
               DietaryPreferencesSectionCard(
+                iconColor: color.error,
                 title: locale.dietary_preferences_allergies_title,
                 icon: Icons.verified_user_rounded,
                 options: allergyOptions,
@@ -125,7 +127,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     _toggleSelection(_allergies, value),
                 headerTopInset: Spacing.dietaryAllergiesHeaderTopInset,
                 choicesTopInset: Spacing.dietaryAllergiesChoicesTopInset,
-                choicesSpacing: Spacing.dietaryAllergiesChoicesSpacing,
+                choicesSpacing: Spacing.dietaryDietChoicesSpacing,
                 actionLabel: locale.dietary_preferences_manage_allergies,
                 onActionPressed: () {},
               ),
