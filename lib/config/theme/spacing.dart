@@ -323,8 +323,8 @@ class Spacing {
   static const double profilePrivacyIconContainerSize = 27.16;
   static const double profilePrivacyIconSize = 17.91;
   static const double profilePrivacyNoticeHeight = 61.93;
-  static const double profilePrivacyReminderHeight = 51.0;
-  static const double profilePrivacyNoticeGap = 10.0;
+  static const double profilePrivacyReminderHeight = 57.0;
+  static const double profilePrivacyNoticeGap = 13.0;
   static const double profilePrivacyButtonHeight = 31.51;
   static const double profilePrivacyButtonRadius = 17.75;
   static const double profilePrivacyAppBarTitleSize = 15.14;

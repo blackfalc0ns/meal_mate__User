@@ -70,7 +70,7 @@ class SecurityPrivacySectionCard extends StatelessWidget {
                     title,
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
+                      fontSize: FontSize.size14,
                       color: color.onSurface,
                     ),
                   ),

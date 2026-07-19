@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_notice.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/security_privacy_section_card.dart';
@@ -17,10 +18,10 @@ class SecurityPrivacyScreen extends StatelessWidget {
     final locale = context.localization;
 
     return Scaffold(
-      backgroundColor: color.surface,
+    
       appBar: CustomAppBar(
         title: locale.profile_security,
-        titleFontSize: Spacing.profilePrivacyAppBarTitleSize,
+        titleFontSize: FontSize.size16,
         backgroundColor: color.surface,
         showShadow: false,
       ),
@@ -104,30 +105,20 @@ class SecurityPrivacyScreen extends StatelessWidget {
                 isWarning: true,
               ),
               const SizedBox(height: Spacing.lg),
-              SizedBox(
-                width: double.infinity,
+              AppButton.filled(
+                text: locale.profile_privacy_manage_security,
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.newPassword),
                 height: Spacing.profilePrivacyButtonHeight,
-                child: FilledButton.icon(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(AppRoutes.newPassword),
-                  icon: Icon(Icons.lock_rounded, size: Spacing.md),
-                  label: Text(
-                    locale.profile_privacy_manage_security,
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: color.onPrimary,
-                    ),
-                  ),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: color.primary,
-                    foregroundColor: color.onPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.profilePrivacyButtonRadius,
-                      ),
-                    ),
-                  ),
+                borderRadius: Spacing.profilePrivacyButtonRadius,
+                color: color.primary,
+                textColor: color.onPrimary,
+                fontSize: FontSize.size12,
+                fontWeight: FontWeightManger.semiBold,
+                iconWidget: Icon(
+                  Icons.lock_rounded,
+                  size: Spacing.md,
+                  color: color.onPrimary,
                 ),
               ),
               const SizedBox(height: Spacing.xxxl),

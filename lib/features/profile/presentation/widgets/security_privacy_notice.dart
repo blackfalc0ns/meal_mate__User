@@ -50,7 +50,7 @@ class SecurityPrivacyNotice extends StatelessWidget {
             ? TextDirection.rtl
             : TextDirection.ltr,
         children: [
-          Icon(icon, color: accent, size: Spacing.xxl),
+          Icon(icon, color: accent, size: Spacing.iconMd),
           const SizedBox(width: Spacing.md),
           Expanded(
             child: Column(
@@ -59,9 +59,9 @@ class SecurityPrivacyNotice extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: getSemiBoldStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size12,
                     color: accent,
                   ),
                 ),

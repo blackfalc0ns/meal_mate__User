@@ -132,19 +132,21 @@ class ProfileSettingsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      locale.profile_settings_version_label,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size7,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(width: Spacing.xs),
+                   
+                   
                     Icon(
                       Icons.verified_user_rounded,
-                      size: Spacing.sm,
+                      size: Spacing.iconSm,
                       color: color.primary,
+                    ),
+                     const SizedBox(width: Spacing.xs),
+                     Text(
+                      locale.profile_settings_version_label,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontSize: FontSize.size9,
+                        color: color.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),

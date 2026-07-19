@@ -107,7 +107,7 @@ class CurrentAddressCard extends StatelessWidget {
                     const SizedBox(height: Spacing.sm),
                     Text(
                       locale.addresses_current_home_details,
-                      textAlign: TextAlign.end,
+                     
                       style: getLightStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: FontSize.size11,

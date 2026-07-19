@@ -61,30 +61,33 @@ class ProfileSettingsTile extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.sm),
                     Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: getSemiBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size12,
-                              color: color.onSurface,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size12,
+                                color: color.onSurface,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: Spacing.xs),
-                          Text(
-                            subtitle,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
+                            const SizedBox(height: Spacing.xs),
+                            Text(
+                              subtitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Icon(

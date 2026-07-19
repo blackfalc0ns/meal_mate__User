@@ -62,7 +62,7 @@ class SavedAddressTile extends StatelessWidget {
                   title,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size11,
+                    fontSize: FontSize.size12,
                     color: color.onSurface,
                   ),
                 ),

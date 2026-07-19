@@ -3,9 +3,9 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/current_address_card.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/delivery_preferences_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/saved_address_tile.dart';
 
 class AddressesScreen extends StatelessWidget {
@@ -41,10 +41,10 @@ class AddressesScreen extends StatelessWidget {
               const SizedBox(height: Spacing.addressesSectionGap),
               Text(
                 locale.addresses_saved_section,
-             
+
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: Spacing.addressesSectionTitleSize,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
               ),
@@ -67,17 +67,17 @@ class AddressesScreen extends StatelessWidget {
                 address: locale.addresses_other_address,
               ),
               const SizedBox(height: Spacing.addressesSectionGap),
-              Text(
-                locale.addresses_delivery_preferences,
-               
-                style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: Spacing.addressesSectionTitleSize,
-                  color: color.onSurface,
-                ),
-              ),
-              const SizedBox(height: Spacing.sm),
-              const DeliveryPreferencesCard(),
+              // Text(
+              //   locale.addresses_delivery_preferences,
+
+              //   style: getBoldStyle(
+              //     fontFamily: FontConstant.ibmPlexSansArabic,
+              //     fontSize: Spacing.addressesSectionTitleSize,
+              //     color: color.onSurface,
+              //   ),
+              // ),
+              // const SizedBox(height: Spacing.sm),
+              // const DeliveryPreferencesCard(),
               const SizedBox(height: Spacing.addressesSectionGap),
               SizedBox(
                 height: Spacing.addressesAddButtonHeight,
@@ -90,9 +90,9 @@ class AddressesScreen extends StatelessWidget {
                   ),
                   label: Text(
                     locale.addresses_add_new,
-                    style: getSemiBoldStyle(
+                    style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size12,
                       color: color.primary,
                     ),
                   ),
@@ -131,12 +131,12 @@ class AddressesScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         locale.addresses_availability_notice,
-                        textAlign: TextAlign.end,
+
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: getLightStyle(
+                        style: getRegularStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size10,
+                          fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -145,28 +145,14 @@ class AddressesScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Spacing.xxl),
-              SizedBox(
+              AppButton.filled(
+                text: locale.addresses_save,
+                onPressed: () {},
                 height: Spacing.addressesSaveButtonHeight,
-                child: FilledButton(
-                  onPressed: () {},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: color.primary,
-                    foregroundColor: color.onPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.addressesSaveButtonRadius,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    locale.addresses_save,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: color.onPrimary,
-                    ),
-                  ),
-                ),
+                borderRadius: Spacing.addressesSaveButtonRadius,
+                color: color.primary,
+                textColor: color.onPrimary,
+                fontSize: FontSize.size13,
               ),
             ],
           ),
