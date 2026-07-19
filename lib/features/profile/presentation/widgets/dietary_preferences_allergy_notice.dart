@@ -29,24 +29,23 @@ class DietaryPreferencesAllergyNotice extends StatelessWidget {
           const SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   locale.dietary_preferences_allergy_notice_title,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size11,
+                    fontSize: FontSize.size12,
                     color: color.secondary,
                   ),
                 ),
                 const SizedBox(height: Spacing.xs),
                 Text(
                   locale.dietary_preferences_allergy_notice_message,
-                  textAlign: TextAlign.end,
                   style: getLightStyle(
                     fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size11,
                     color: color.onSurfaceVariant,
                   ),
                 ),

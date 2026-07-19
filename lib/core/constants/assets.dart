@@ -16,6 +16,8 @@ class Assets {
       '$_images/profile/profile_default_address_map.png';
   static const String dietaryPreferencesHero =
       '$_images/fake/dietary_preferences_hero.png';
+  static const String dietaryPreferencesSelectedCheck =
+      '$_images/profile/dietary_preferences_selected_check.svg';
   static const String homeFigmaBackgroundDoodle =
       '$_images/home/figma/home_background_doodle.svg';
   static const String homeFigmaHeaderDoodle =

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -11,10 +10,7 @@ void main() {
   debugPaintBaselinesEnabled = false;
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MealMateApp(),
-    ),
+    DevicePreview(enabled: false, builder: (context) => const MealMateApp()),
   );
 }
 
@@ -35,7 +31,7 @@ class MealMateApp extends StatelessWidget {
           locale ?? const Locale('ar'),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: AppRoutes.onboarding,
+      initialRoute: AppRoutes.home,
       onGenerateRoute: RouteGenerator.getRoute,
     );
   }

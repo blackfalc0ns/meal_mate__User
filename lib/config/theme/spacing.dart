@@ -103,17 +103,32 @@ class Spacing {
   static const double dietaryHeroIllustrationHeight = 146.0;
   static const double dietaryCardHeight = 87.18;
   static const double dietaryCardRadius = 15.59;
+  static const double dietaryCardBorderWidth = 1.2;
   static const double dietarySectionGap = 12.0;
   static const double dietaryHeroRadius = 18.09;
   static const double dietaryChipHeight = 24.28;
   static const double dietaryChipRadius = 12.31;
   static const double dietaryCardInset = 12.0;
+  static const double dietaryDietHeaderTopInset = 15.12;
+  static const double dietaryDislikesHeaderTopInset = 14.8;
+  static const double dietaryAllergiesHeaderTopInset = 15.48;
+  static const double dietaryDietChoicesTopInset = 48.56;
+  static const double dietaryDislikesChoicesTopInset = 48.56;
+  static const double dietaryAllergiesChoicesTopInset = 45.25;
+  static const double dietaryDietChoicesSpacing = 8.0;
+  static const double dietaryDislikesChoicesSpacing = 17.0;
+  static const double dietaryAllergiesChoicesSpacing = 24.0;
+  static const double dietaryHeaderIconHeight = 17.18;
+  static const double dietaryIconRadius = 2.86;
+  static const double dietaryNotesHeaderTopInset = 6.16;
+  static const double dietaryNotesFieldTopInset = 35.31;
+  static const double dietaryNotesFieldHorizontalInset = 11.04;
   static const double dietaryNotesFieldHeight = 34.21;
   static const double dietaryNoticeHeight = 56.28;
   static const double dietarySaveButtonHeight = 31.51;
   static const double dietarySaveButtonRadius = 17.75;
   static const double dietaryIconSize = 18.13;
-  static const double dietarySmallIconSize = 15.45;
+  static const double dietarySmallIconSize = 18.0;
 
   // Monthly plan Figma measurements.
   static const double monthlyPlanDesignWidth = 448.43;

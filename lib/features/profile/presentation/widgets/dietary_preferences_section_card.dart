@@ -13,6 +13,9 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
     required this.options,
     required this.selectedOptions,
     required this.onOptionSelected,
+    required this.headerTopInset,
+    required this.choicesTopInset,
+    required this.choicesSpacing,
     this.actionLabel,
     this.onActionPressed,
   });
@@ -22,61 +25,73 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   final List<String> options;
   final Set<String> selectedOptions;
   final ValueChanged<String> onOptionSelected;
+  final double headerTopInset;
+  final double choicesTopInset;
+  final double choicesSpacing;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      label: '${locale.profile_dietary_preferences}: $title',
-      child: Container(
-        constraints: const BoxConstraints(minHeight: Spacing.dietaryCardHeight),
-        padding: const EdgeInsets.all(Spacing.dietaryCardInset),
-        decoration: BoxDecoration(
-          color: color.surface,
-          borderRadius: BorderRadius.circular(Spacing.dietaryCardRadius),
-          border: Border.all(color: color.outlineVariant),
-          boxShadow: [
-            BoxShadow(
-              color: color.shadow.withValues(alpha: 0.07),
-              blurRadius: Spacing.xs,
-              offset: const Offset(0, Spacing.xs),
-            ),
-          ],
+    return Container(
+      constraints: const BoxConstraints(minHeight: Spacing.dietaryCardHeight),
+      padding: EdgeInsets.only(
+        top: headerTopInset,
+        left: Spacing.dietaryCardInset,
+      ),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.dietaryCardRadius),
+        border: Border.all(
+          color: color.outlineVariant,
+          width: Spacing.dietaryCardBorderWidth,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  title,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
-                    color: color.onSurface,
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.07),
+            blurRadius: Spacing.xs,
+            offset: const Offset(0, Spacing.xs),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: Spacing.xss),
+            child: Align(
+              alignment: AlignmentDirectional.topStart,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, color: color.primary, size: Spacing.lg),
+                  const SizedBox(width: Spacing.xss),
+                  Text(
+                    title,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size12,
+                      color: color.onSurface,
+                    ),
                   ),
-                ),
-                const SizedBox(width: Spacing.xss),
-                Container(
-                  width: Spacing.dietaryIconSize,
-                  height: Spacing.dietaryIconSize,
-                  decoration: BoxDecoration(
-                    color: color.primaryContainer,
-                    borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                  ),
-                  child: Icon(icon, color: color.primary, size: Spacing.md),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: Spacing.md),
-            Wrap(
-              spacing: Spacing.sm,
-              runSpacing: Spacing.sm,
+          ),
+          SizedBox(
+            height:
+                choicesTopInset -
+                headerTopInset -
+                Spacing.dietaryHeaderIconHeight,
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 if (actionLabel != null)
                   OutlinedButton.icon(
@@ -105,16 +120,22 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                     ),
                   ),
                 ...options.map(
-                  (option) => DietaryPreferencesChoiceChip(
-                    label: option,
-                    isSelected: selectedOptions.contains(option),
-                    onSelected: (_) => onOptionSelected(option),
+                  (option) => Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      start: choicesSpacing,
+                      //choicesSpacing,
+                    ),
+                    child: DietaryPreferencesChoiceChip(
+                      label: option,
+                      isSelected: selectedOptions.contains(option),
+                      onSelected: (_) => onOptionSelected(option),
+                    ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
