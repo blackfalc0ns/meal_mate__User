@@ -558,6 +558,68 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_dietary_preferences_subtitle => 'إدارة تفضيلاتك وحساسيتك';
 
   @override
+  String get dietary_preferences_diet_title => 'النظام الغذائي';
+
+  @override
+  String get dietary_preferences_diet_balanced => 'متوازن';
+
+  @override
+  String get dietary_preferences_diet_vegetarian => 'نباتي';
+
+  @override
+  String get dietary_preferences_diet_vegan => 'نباتي صرف';
+
+  @override
+  String get dietary_preferences_diet_keto => 'كيتو';
+
+  @override
+  String get dietary_preferences_diet_high_protein => 'عالي البروتين';
+
+  @override
+  String get dietary_preferences_dislikes_title => 'الأطعمة غير المفضلة';
+
+  @override
+  String get dietary_preferences_dislike_onion => 'بصل';
+
+  @override
+  String get dietary_preferences_dislike_mushroom => 'فطر';
+
+  @override
+  String get dietary_preferences_dislike_olives => 'زيتون';
+
+  @override
+  String get dietary_preferences_dislike_coriander => 'كزبرة';
+
+  @override
+  String get dietary_preferences_allergies_title => 'الحساسية';
+
+  @override
+  String get dietary_preferences_allergy_nuts => 'مكسرات';
+
+  @override
+  String get dietary_preferences_allergy_lactose => 'لاكتوز';
+
+  @override
+  String get dietary_preferences_manage_allergies => 'إدارة الحساسية';
+
+  @override
+  String get dietary_preferences_notes_title => 'ملاحظات غذائية';
+
+  @override
+  String get dietary_preferences_notes_hint =>
+      'مثال: أريد وجبات قليلة الصوديوم...';
+
+  @override
+  String get dietary_preferences_allergy_notice_title => 'معلومات حساسية مهمة';
+
+  @override
+  String get dietary_preferences_allergy_notice_message =>
+      'تساعدنا معلومات الحساسية على تخصيص أطعمة آمنة لك وتجنب أي مكونات قد تؤثر على صحتك.';
+
+  @override
+  String get dietary_preferences_save => 'حفظ التفضيلات';
+
+  @override
   String get profile_billing => 'الاشتراكات والفواتير';
 
   @override

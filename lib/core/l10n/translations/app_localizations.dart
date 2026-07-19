@@ -1142,6 +1142,126 @@ abstract class AppLocalizations {
   /// **'Manage your preferences and allergies'**
   String get profile_dietary_preferences_subtitle;
 
+  /// No description provided for @dietary_preferences_diet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet type'**
+  String get dietary_preferences_diet_title;
+
+  /// No description provided for @dietary_preferences_diet_balanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get dietary_preferences_diet_balanced;
+
+  /// No description provided for @dietary_preferences_diet_vegetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get dietary_preferences_diet_vegetarian;
+
+  /// No description provided for @dietary_preferences_diet_vegan.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietary_preferences_diet_vegan;
+
+  /// No description provided for @dietary_preferences_diet_keto.
+  ///
+  /// In en, this message translates to:
+  /// **'Keto'**
+  String get dietary_preferences_diet_keto;
+
+  /// No description provided for @dietary_preferences_diet_high_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'High protein'**
+  String get dietary_preferences_diet_high_protein;
+
+  /// No description provided for @dietary_preferences_dislikes_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Foods you dislike'**
+  String get dietary_preferences_dislikes_title;
+
+  /// No description provided for @dietary_preferences_dislike_onion.
+  ///
+  /// In en, this message translates to:
+  /// **'Onion'**
+  String get dietary_preferences_dislike_onion;
+
+  /// No description provided for @dietary_preferences_dislike_mushroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Mushroom'**
+  String get dietary_preferences_dislike_mushroom;
+
+  /// No description provided for @dietary_preferences_dislike_olives.
+  ///
+  /// In en, this message translates to:
+  /// **'Olives'**
+  String get dietary_preferences_dislike_olives;
+
+  /// No description provided for @dietary_preferences_dislike_coriander.
+  ///
+  /// In en, this message translates to:
+  /// **'Coriander'**
+  String get dietary_preferences_dislike_coriander;
+
+  /// No description provided for @dietary_preferences_allergies_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get dietary_preferences_allergies_title;
+
+  /// No description provided for @dietary_preferences_allergy_nuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Nuts'**
+  String get dietary_preferences_allergy_nuts;
+
+  /// No description provided for @dietary_preferences_allergy_lactose.
+  ///
+  /// In en, this message translates to:
+  /// **'Lactose'**
+  String get dietary_preferences_allergy_lactose;
+
+  /// No description provided for @dietary_preferences_manage_allergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage allergies'**
+  String get dietary_preferences_manage_allergies;
+
+  /// No description provided for @dietary_preferences_notes_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietary notes'**
+  String get dietary_preferences_notes_title;
+
+  /// No description provided for @dietary_preferences_notes_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: I want low-sodium meals...'**
+  String get dietary_preferences_notes_hint;
+
+  /// No description provided for @dietary_preferences_allergy_notice_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Important allergy information'**
+  String get dietary_preferences_allergy_notice_title;
+
+  /// No description provided for @dietary_preferences_allergy_notice_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergy information helps us customize safe meals for you and avoid ingredients that may affect your health.'**
+  String get dietary_preferences_allergy_notice_message;
+
+  /// No description provided for @dietary_preferences_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save preferences'**
+  String get dietary_preferences_save;
+
   /// No description provided for @profile_billing.
   ///
   /// In en, this message translates to:

@@ -570,6 +570,69 @@ class AppLocalizationsEn extends AppLocalizations {
       'Manage your preferences and allergies';
 
   @override
+  String get dietary_preferences_diet_title => 'Diet type';
+
+  @override
+  String get dietary_preferences_diet_balanced => 'Balanced';
+
+  @override
+  String get dietary_preferences_diet_vegetarian => 'Vegetarian';
+
+  @override
+  String get dietary_preferences_diet_vegan => 'Vegan';
+
+  @override
+  String get dietary_preferences_diet_keto => 'Keto';
+
+  @override
+  String get dietary_preferences_diet_high_protein => 'High protein';
+
+  @override
+  String get dietary_preferences_dislikes_title => 'Foods you dislike';
+
+  @override
+  String get dietary_preferences_dislike_onion => 'Onion';
+
+  @override
+  String get dietary_preferences_dislike_mushroom => 'Mushroom';
+
+  @override
+  String get dietary_preferences_dislike_olives => 'Olives';
+
+  @override
+  String get dietary_preferences_dislike_coriander => 'Coriander';
+
+  @override
+  String get dietary_preferences_allergies_title => 'Allergies';
+
+  @override
+  String get dietary_preferences_allergy_nuts => 'Nuts';
+
+  @override
+  String get dietary_preferences_allergy_lactose => 'Lactose';
+
+  @override
+  String get dietary_preferences_manage_allergies => 'Manage allergies';
+
+  @override
+  String get dietary_preferences_notes_title => 'Dietary notes';
+
+  @override
+  String get dietary_preferences_notes_hint =>
+      'Example: I want low-sodium meals...';
+
+  @override
+  String get dietary_preferences_allergy_notice_title =>
+      'Important allergy information';
+
+  @override
+  String get dietary_preferences_allergy_notice_message =>
+      'Allergy information helps us customize safe meals for you and avoid ingredients that may affect your health.';
+
+  @override
+  String get dietary_preferences_save => 'Save preferences';
+
+  @override
   String get profile_billing => 'Subscriptions and billing';
 
   @override

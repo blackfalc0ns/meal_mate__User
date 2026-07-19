@@ -71,6 +71,10 @@ class ProfileSettingsCard extends StatelessWidget {
                       Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
                 : index == 4
                 ? () => Navigator.of(context).pushNamed(AppRoutes.addresses)
+                : index == 2
+                ? () => Navigator.of(
+                    context,
+                  ).pushNamed(AppRoutes.dietaryPreferences)
                 : null,
           );
         }),

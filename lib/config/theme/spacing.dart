@@ -96,6 +96,25 @@ class Spacing {
   static const double familyPriceMinHeight = 138.0;
   static const double compactButtonHeight = 39.0;
 
+  // Dietary preferences Figma measurements.
+  static const double dietaryScreenHorizontalPadding = 24.0;
+  static const double dietaryHeroHeight = 168.24;
+  static const double dietaryHeroIllustrationWidth = 176.0;
+  static const double dietaryHeroIllustrationHeight = 146.0;
+  static const double dietaryCardHeight = 87.18;
+  static const double dietaryCardRadius = 15.59;
+  static const double dietarySectionGap = 12.0;
+  static const double dietaryHeroRadius = 18.09;
+  static const double dietaryChipHeight = 24.28;
+  static const double dietaryChipRadius = 12.31;
+  static const double dietaryCardInset = 12.0;
+  static const double dietaryNotesFieldHeight = 34.21;
+  static const double dietaryNoticeHeight = 56.28;
+  static const double dietarySaveButtonHeight = 31.51;
+  static const double dietarySaveButtonRadius = 17.75;
+  static const double dietaryIconSize = 18.13;
+  static const double dietarySmallIconSize = 15.45;
+
   // Monthly plan Figma measurements.
   static const double monthlyPlanDesignWidth = 448.43;
   static const double monthlyPlanHeroHeight = 489.0;
