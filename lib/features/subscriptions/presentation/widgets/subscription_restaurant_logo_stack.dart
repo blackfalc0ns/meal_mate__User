@@ -14,7 +14,7 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
 
     return SizedBox(
       width: Spacing.xxxl * 2.15,
-      height: Spacing.xxl,
+      height: Spacing.lg + Spacing.xs,
       child: DecoratedBox(
         decoration: BoxDecoration(color: color.surface.withValues(alpha: 0)),
         child: SvgPicture.asset(

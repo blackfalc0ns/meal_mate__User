@@ -1378,6 +1378,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_choose_plan_button => 'Choose plan';
 
   @override
+  String get subscription_individual_packages => 'Individual packages';
+
+  @override
+  String get subscription_family_packages => 'Family packages';
+
+  @override
+  String get subscription_view_family_package => 'View family package';
+
+  @override
   String get subscription_selected_program_label => 'Selected program:';
 
   @override

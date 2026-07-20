@@ -94,6 +94,8 @@ class Assets {
   static const String subscriptionRestaurantStack =
       '$_images/subscriptions/figma/restaurant_stack.svg';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
+  static const String subscriptionFamilyPackagePreview =
+      '$_images/subscriptions/figma/family_package_preview.png';
   static const String fireAnimation = 'assets/animations/fire_animation.json';
 
   static const String buttonSmall = "$_svg/button_small.svg";

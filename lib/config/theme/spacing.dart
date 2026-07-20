@@ -86,6 +86,17 @@ class Spacing {
   static const double subscriptionProgramsBottomSpace = 118.0;
   static const double subscriptionProgramCardHeight = 111.0;
   static const double subscriptionPackageChoiceCardHeight = 100.0;
+  static const double subscriptionPackageChoiceFigmaHeight = 135.0;
+  static const double subscriptionPackageChoiceImageWidth = 139.0;
+  static const double subscriptionPackageChoiceImageHeight = 94.0;
+  static const double subscriptionPackageChoiceButtonWidth = 192.0;
+  static const double subscriptionPackageChoiceButtonHeight = 24.0;
+  static const double subscriptionPackageChoiceCardGap = 15.0;
+  static const double subscriptionPackageSelectorHeight = 42.0;
+  static const double subscriptionFamilyBannerHeight = 84.0;
+  static const double subscriptionFamilyPreviewWidth = 98.32;
+  static const double subscriptionFamilyPreviewHeight = 90.54;
+  static const double subscriptionFamilyPreviewTopOffset = 32.78;
   static const double subscriptionProgramCardRadius = 18.0;
   static const double subscriptionProgramImageWidth = 86.0;
   static const double subscriptionProgramImageHeight = 75.0;

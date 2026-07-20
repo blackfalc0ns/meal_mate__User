@@ -2678,6 +2678,24 @@ abstract class AppLocalizations {
   /// **'Choose plan'**
   String get subscription_choose_plan_button;
 
+  /// No description provided for @subscription_individual_packages.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual packages'**
+  String get subscription_individual_packages;
+
+  /// No description provided for @subscription_family_packages.
+  ///
+  /// In en, this message translates to:
+  /// **'Family packages'**
+  String get subscription_family_packages;
+
+  /// No description provided for @subscription_view_family_package.
+  ///
+  /// In en, this message translates to:
+  /// **'View family package'**
+  String get subscription_view_family_package;
+
   /// No description provided for @subscription_selected_program_label.
   ///
   /// In en, this message translates to:

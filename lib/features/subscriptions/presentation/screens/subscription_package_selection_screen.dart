@@ -9,7 +9,9 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/subscriptions/data/subscriptions_fake_data_source.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_package_choice_card.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_package_selector.dart';
 import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_selected_program_card.dart';
+import 'package:meal_meat_user/features/subscriptions/presentation/widgets/subscription_family_package_banner.dart';
 
 class SubscriptionPackageSelectionScreen extends StatefulWidget {
   const SubscriptionPackageSelectionScreen({super.key, this.programIndex = 0});
@@ -26,13 +28,14 @@ class _SubscriptionPackageSelectionScreenState
   static const _dataSource = SubscriptionsFakeDataSource();
 
   int _selectedPackageIndex = 0;
+  bool _isFamilyPackageSelected = false;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final packages = _dataSource.getPackageChoices();
+    final packages = _dataSource.getPackageChoices().take(3).toList();
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -50,7 +53,7 @@ class _SubscriptionPackageSelectionScreenState
               vertical: Spacing.xl,
             ),
             sliver: SliverList.separated(
-              itemCount: packages.length + 2,
+              itemCount: _isFamilyPackageSelected ? 3 : packages.length + 2,
               separatorBuilder: (_, _) => const SizedBox(height: Spacing.md),
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -59,16 +62,35 @@ class _SubscriptionPackageSelectionScreenState
 
                 if (index == 1) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: Spacing.sm),
-                    child: Text(
-                      locale.subscription_choose_plan_title,
-                      textAlign: TextAlign.right,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size17,
-                        color: color.onSurface,
-                      ),
+                    padding: const EdgeInsets.only(top: Spacing.xs),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          locale.subscription_choose_plan_title,
+                          textAlign: TextAlign.right,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size17,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        SubscriptionPackageSelector(
+                          isFamilySelected: _isFamilyPackageSelected,
+                          onChanged: (isFamilySelected) => setState(
+                            () => _isFamilyPackageSelected = isFamilySelected,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.xl),
+                      ],
                     ),
+                  );
+                }
+
+                if (_isFamilyPackageSelected) {
+                  return SubscriptionFamilyPackageBanner(
+                    onTap: () => context.pushNamed(AppRoutes.familyPlanDetails),
                   );
                 }
 
@@ -76,8 +98,8 @@ class _SubscriptionPackageSelectionScreenState
                 final package = packages[packageIndex];
 
                 return SubscriptionPackageChoiceCard(
-                  title: package.title,
-                  subtitle: package.subtitle,
+                  title: _packageTitle(locale, packageIndex),
+                  subtitle: _packageSubtitle(locale, packageIndex),
                   price: package.price,
                   currency: package.currency,
                   isSelected: packageIndex == _selectedPackageIndex,
@@ -91,6 +113,22 @@ class _SubscriptionPackageSelectionScreenState
         ],
       ),
     );
+  }
+
+  String _packageTitle(dynamic locale, int index) {
+    return switch (index) {
+      0 => locale.subscription_four_meals_package,
+      1 => locale.subscription_three_meals_package,
+      _ => locale.subscription_two_meals_package,
+    };
+  }
+
+  String _packageSubtitle(dynamic locale, int index) {
+    return switch (index) {
+      0 => locale.subscription_four_meals_details,
+      1 => locale.subscription_three_meals_details,
+      _ => locale.subscription_two_meals_details,
+    };
   }
 
   void _selectPackage(int index, int planDetailsIndex) {

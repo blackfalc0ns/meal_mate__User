@@ -1359,6 +1359,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_choose_plan_button => 'اختر الباقة';
 
   @override
+  String get subscription_individual_packages => 'الباقات الفردية';
+
+  @override
+  String get subscription_family_packages => 'الباقات العائلية';
+
+  @override
+  String get subscription_view_family_package => 'عرض الباقة العائلية';
+
+  @override
   String get subscription_selected_program_label => 'البرنامج المختار :';
 
   @override

@@ -38,172 +38,163 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Spacing.subscriptionProgramCardRadius,
         ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          height: Spacing.subscriptionPackageChoiceCardHeight,
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.sm,
-            vertical: Spacing.xs,
-          ),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? color.primaryContainer.withValues(alpha: 0.14)
-                : color.surface,
-            borderRadius: BorderRadius.circular(
-              Spacing.subscriptionProgramCardRadius,
-            ),
-            border: Border.all(
-              color: isSelected ? color.primary : color.outlineVariant,
-              width: isSelected
-                  ? Spacing.border + Spacing.hairline
-                  : Spacing.hairline,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: color.shadow.withValues(alpha: 0.07),
-                blurRadius: Spacing.lg,
-                offset: const Offset(0, Spacing.xss),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              height: Spacing.subscriptionPackageChoiceFigmaHeight,
+              padding: const EdgeInsets.only(
+                top: Spacing.md,
+                right: Spacing.md,
+                bottom: Spacing.xxl,
+                left: Spacing.md,
               ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                  child: Image.asset(
-                    Assets.subscriptionPackageMealBox,
-                    fit: BoxFit.contain,
-                    alignment: const Alignment(0.05, 0.42),
-                    semanticLabel: title,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? color.primaryContainer.withValues(alpha: 0.14)
+                    : color.surface,
+                borderRadius: BorderRadius.circular(
+                  Spacing.subscriptionProgramCardRadius,
+                ),
+                border: Border.all(
+                  color: isSelected ? color.primary : color.surface,
+                  width: isSelected
+                      ? Spacing.border + Spacing.hairline
+                      : Spacing.hairline,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withValues(alpha: 0.07),
+                    blurRadius: Spacing.lg,
+                    offset: const Offset(0, Spacing.xs),
+                  ),
+                ],
+              ),
+              child: Row(
+                textDirection: TextDirection.ltr,
+                children: [
+                  SizedBox(
+                    width: Spacing.subscriptionPackageChoiceImageWidth,
+                    height: Spacing.subscriptionPackageChoiceImageHeight,
+                    child: Image.asset(
+                      Assets.subscriptionPackageMealBox,
+                      fit: BoxFit.contain,
+                      semanticLabel: title,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            Container(
+                              // width: Spacing.lg,
+                               height: Spacing.xxl,
+                              decoration: BoxDecoration(
+                                color: color.primaryContainer,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.calendar_month_outlined,
+                                color: color.primary,
+                                size: Spacing.iconSm,
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Expanded(
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size20,
+                                  color: color.onSurface,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: Spacing.xs),
+                        Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                      SizedBox(height: Spacing.sm,),
+                        const SubscriptionRestaurantLogoStack(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              right: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
+              left: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
+              bottom: Spacing.xss,
+              child: Container(
+                height: Spacing.subscriptionPackageChoiceButtonHeight,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected ? color.primary : color.surface,
+                  border: Border.all(color: color.primary),
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                ),
+                child: Text(
+                  locale.subscription_choose_plan_button,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size12,
+                    color: isSelected ? color.onPrimary : color.primary,
                   ),
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
-              Expanded(
-                flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Icon(
-                          Icons.calendar_month_outlined,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Expanded(
-                          child: Text(
-                            title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size15,
-                              color: color.onSurface,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: Spacing.xs,
-                        start: Spacing.iconSm + Spacing.xs,
+            ),
+            if (isPopular)
+              Positioned(
+                top: -Spacing.md,
+                left: Spacing.md,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: Spacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.primary,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.star_rounded,
+                        size: Spacing.iconSm,
+                        color: color.onPrimary,
                       ),
-                      child: Text(
-                        subtitle,
-                        //   maxLines: 1,
-                        // overflow: TextOverflow.ellipsis,
+                      const SizedBox(width: Spacing.xs),
+
+                      Text(
+                        locale.subscription_details_most_selected,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
                           fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
+                          color: color.onPrimary,
                         ),
                       ),
-                    ),
-                    const Spacer(),
-                    const SubscriptionRestaurantLogoStack(),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  children: [
-                    if (isPopular)
-                      PositionedDirectional(
-                        top: 0,
-                        start: 0,
-                        end: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: color.primary,
-                            borderRadius: BorderRadius.circular(
-                              Spacing.radiusXs,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.star_rounded,
-                                size: Spacing.iconSm,
-                                color: color.onPrimary,
-                              ),
-                              const SizedBox(width: Spacing.xs),
-                              Text(
-                                locale.subscription_details_most_selected,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size10,
-                                  color: color.onPrimary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    PositionedDirectional(
-                      bottom: 0,
-                      start: 0,
-                      end: 0,
-                      child: Container(
-                        height: Spacing.xxl - Spacing.xs,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.sm,
-                        ),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: isSelected ? color.primary : color.surface,
-                          border: Border.all(color: color.primary),
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusPill,
-                          ),
-                        ),
-                        child: Text(
-                          locale.subscription_choose_plan_button,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size11,
-                            color: isSelected ? color.onPrimary : color.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );
