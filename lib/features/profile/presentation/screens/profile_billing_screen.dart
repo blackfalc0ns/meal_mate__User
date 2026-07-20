@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_invoice_history_card.dart';
@@ -21,7 +21,7 @@ class ProfileBillingScreen extends StatelessWidget {
       backgroundColor: color.surface,
       appBar: CustomAppBar(
         title: locale.profile_billing,
-        titleFontSize: FontSize.size15,
+        titleFontSize: FontSize.size17,
         backgroundColor: color.surface,
         showShadow: false,
       ),
@@ -53,29 +53,18 @@ class ProfileBillingScreen extends StatelessWidget {
                 messageFontSize: FontSize.size11,
                 maxMessageLines: 3,
               ),
-              const SizedBox(height: Spacing.sm),
+              const SizedBox(height: Spacing.lg),
               SizedBox(
                 width: double.infinity,
                 height: Spacing.profileBillingButtonHeight,
-                child: ElevatedButton(
+                child: AppButton(
+                  text: locale.billing_manage_subscription,
                   onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: color.primary,
-                    foregroundColor: color.onPrimary,
-                    minimumSize: Size.zero,
-                    padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    ),
-                  ),
-                  child: Text(
-                    locale.billing_manage_subscription,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: color.onPrimary,
-                    ),
-                  ),
+                  height: Spacing.profileBillingButtonHeight,
+                  borderRadius: Spacing.radiusPill,
+                  color: color.primary,
+                  textColor: color.onPrimary,
+                  fontSize: FontSize.size12,
                 ),
               ),
             ],

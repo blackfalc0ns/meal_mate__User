@@ -53,7 +53,7 @@ class ProfileBillingPaymentCard extends StatelessWidget {
                 locale.billing_default_payment_method,
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size12,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
               ),
@@ -77,7 +77,7 @@ class ProfileBillingPaymentCard extends StatelessWidget {
                     locale.billing_expiration_date,
                     style: getMediumStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size9,
+                      fontSize: FontSize.size11,
                       color: color.onSurfaceVariant,
                     ),
                   ),

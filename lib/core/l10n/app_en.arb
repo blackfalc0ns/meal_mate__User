@@ -224,6 +224,8 @@
   "billing_days_remaining": "18 days remaining",
   "billing_plan_usage": "Plan usage this month",
   "billing_plan_usage_value": "22 of 30 days",
+  "billing_plan_usage_current": "22",
+  "billing_plan_usage_remaining": "of 30 days",
   "billing_renew": "Renew",
   "billing_freeze": "Freeze",
   "billing_cancel": "Cancel",

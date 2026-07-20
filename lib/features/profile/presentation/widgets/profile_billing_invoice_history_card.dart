@@ -34,7 +34,6 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-             
               Container(
                 padding: const EdgeInsets.all(Spacing.xs),
                 decoration: BoxDecoration(
@@ -47,17 +46,17 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                   height: Spacing.iconSm,
                 ),
               ),
-                            const SizedBox(width: Spacing.xs),
+              const SizedBox(width: Spacing.xs),
 
-               Text(
+              Text(
                 locale.billing_invoices,
                 style: getBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
-                  fontSize: FontSize.size12,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
               ),
-      ],
+            ],
           ),
           const SizedBox(height: Spacing.xs),
           Expanded(
@@ -93,7 +92,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                               locale.billing_paid,
                               style: getMediumStyle(
                                 fontFamily: FontConstant.ibmPlexSansArabic,
-                                fontSize: FontSize.size9,
+                                fontSize: FontSize.size10,
                                 color: color.primary,
                               ),
                             ),
@@ -103,7 +102,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                             '2025-000123',
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size9,
+                              fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),
                           ),
@@ -112,7 +111,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                             locale.billing_invoice_date,
                             style: getRegularStyle(
                               fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size9,
+                              fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),
                           ),

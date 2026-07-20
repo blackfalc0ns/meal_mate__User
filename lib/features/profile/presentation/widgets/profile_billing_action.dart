@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -6,13 +7,13 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class ProfileBillingAction extends StatelessWidget {
   const ProfileBillingAction({
-    required this.icon,
+    required this.iconAsset,
     required this.label,
     required this.actionColor,
     super.key,
   });
 
-  final IconData icon;
+  final String iconAsset;
   final String label;
   final Color actionColor;
 
@@ -38,7 +39,11 @@ class ProfileBillingAction extends StatelessWidget {
           CircleAvatar(
             radius: Spacing.md,
             backgroundColor: actionColor,
-            child: Icon(icon, size: Spacing.iconSm, color: color.onPrimary),
+            child: SvgPicture.asset(
+              iconAsset,
+              width: Spacing.iconSm,
+              height: Spacing.iconSm,
+            ),
           ),
           const SizedBox(height: Spacing.xs),
           Text(

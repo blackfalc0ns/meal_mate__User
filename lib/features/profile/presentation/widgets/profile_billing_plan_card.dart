@@ -17,86 +17,105 @@ class ProfileBillingPlanCard extends StatelessWidget {
 
     return Container(
       height: Spacing.profileBillingPlanHeight,
-      padding: const EdgeInsets.all(Spacing.base),
       decoration: BoxDecoration(
-        color: color.primaryContainer,
+        gradient: LinearGradient(
+          colors: [
+            color.primaryContainer.withValues(alpha: 0.6),
+            color.secondaryContainer,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
         borderRadius: BorderRadius.circular(Spacing.profileBillingCardRadius),
+        border: Border.all(color: color.surface),
       ),
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Align(
-            alignment: Alignment.topLeft,
+          Positioned(
+            top: -Spacing.lg,
+            left: -Spacing.md,
             child: Image.asset(
               Assets.profileBillingPlanBottle,
-              width: Spacing.xxxl * 2,
+              width: Spacing.xxxl * 3 + Spacing.xxl,
               fit: BoxFit.contain,
             ),
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: SizedBox(
-              width: Spacing.xxxl * 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    locale.billing_plan_name,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size19,
-                      color: color.onSurface,
-                    ),
-                  ),
-                  Text(
-                    locale.billing_plan_tier,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size12,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.xs),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.sm,
-                      vertical: Spacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: color.surface,
-                      borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.check_circle_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          locale.billing_active,
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size10,
-                            color: color.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+          Positioned(
+            top: Spacing.xl + Spacing.xs,
+            right: Spacing.base,
+            child: SvgPicture.asset(
+              Assets.logo,
+              width: Spacing.iconMd,
+              height: Spacing.iconMd,
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
+          Positioned(
+            top: Spacing.xxl - Spacing.xs,
+            right: Spacing.xxxl,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  locale.billing_plan_name,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size19,
+                    color: color.onSurface,
+                  ),
+                ),
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  locale.billing_plan_tier,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontSize: FontSize.size13,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: Spacing.md),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.xs,
+                    vertical: Spacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.primaryContainer.withValues(alpha: 0.45),
+                    borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.profileBillingCheck,
+                        width: Spacing.md,
+                        height: Spacing.md,
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Text(
+                        locale.billing_active,
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size11,
+                          color: color.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: Spacing.xxxl * 2 + Spacing.lg,
+            right: Spacing.base,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
                   children: [
                     SvgPicture.asset(
                       Assets.profileBillingCalendar,
@@ -106,50 +125,72 @@ class ProfileBillingPlanCard extends StatelessWidget {
                     const SizedBox(width: Spacing.xs),
                     Text(
                       locale.billing_renewal_date,
-                      style: getMediumStyle(
+                      style: getSemiBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size10,
+                        fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: Spacing.sm),
-                Text(
-                  locale.billing_days_remaining,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size11,
-                    color: color.primary,
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: Spacing.sm),
+                  child: Text(
+                    locale.billing_days_remaining,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size11,
+                      color: color.onSurfaceVariant,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            left: Spacing.base,
+            right: Spacing.base,
+            bottom: Spacing.md,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Divider(height: Spacing.xs, color: color.outlineVariant),
+                const SizedBox(height: Spacing.xs),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   
                     Text(
                       locale.billing_plan_usage,
-                      style: getMediumStyle(
+                      style: getSemiBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size10,
+                        fontSize: FontSize.size12,
                         color: color.onSurfaceVariant,
                       ),
                     ),
-                     Text(
-                      locale.billing_plan_usage_value,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size10,
-                        color: color.primary,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: locale.billing_plan_usage_current,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size12,
+                              color: color.primary,
+                            ),
+                          ),
+                          const TextSpan(text: ' '),
+                          TextSpan(
+                            text: locale.billing_plan_usage_remaining,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontSize: FontSize.size12,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
                       ),
+                      textDirection: TextDirection.rtl,
                     ),
                   ],
                 ),
@@ -168,15 +209,15 @@ class ProfileBillingPlanCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ProfileBillingAction(
-                        icon: Icons.cancel_rounded,
-                        label: locale.billing_cancel,
-                        actionColor: color.error,
+                        iconAsset: Assets.profileBillingRenew,
+                        label: locale.billing_renew,
+                        actionColor: color.primary,
                       ),
                     ),
                     const SizedBox(width: Spacing.md),
                     Expanded(
                       child: ProfileBillingAction(
-                        icon: Icons.ac_unit_rounded,
+                        iconAsset: Assets.profileBillingFreeze,
                         label: locale.billing_freeze,
                         actionColor: color.tertiary,
                       ),
@@ -184,9 +225,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                     const SizedBox(width: Spacing.md),
                     Expanded(
                       child: ProfileBillingAction(
-                        icon: Icons.autorenew_rounded,
-                        label: locale.billing_renew,
-                        actionColor: color.primary,
+                        iconAsset: Assets.profileBillingCancel,
+                        label: locale.billing_cancel,
+                        actionColor: color.error,
                       ),
                     ),
                   ],

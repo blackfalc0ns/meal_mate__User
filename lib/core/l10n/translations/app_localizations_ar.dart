@@ -712,6 +712,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get billing_plan_usage_value => '22 من 30 يوم';
 
   @override
+  String get billing_plan_usage_current => '22';
+
+  @override
+  String get billing_plan_usage_remaining => 'من 30 يوم';
+
+  @override
   String get billing_renew => 'تجديد';
 
   @override

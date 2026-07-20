@@ -1442,6 +1442,18 @@ abstract class AppLocalizations {
   /// **'22 of 30 days'**
   String get billing_plan_usage_value;
 
+  /// No description provided for @billing_plan_usage_current.
+  ///
+  /// In en, this message translates to:
+  /// **'22'**
+  String get billing_plan_usage_current;
+
+  /// No description provided for @billing_plan_usage_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'of 30 days'**
+  String get billing_plan_usage_remaining;
+
   /// No description provided for @billing_renew.
   ///
   /// In en, this message translates to:

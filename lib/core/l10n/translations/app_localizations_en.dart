@@ -726,6 +726,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billing_plan_usage_value => '22 of 30 days';
 
   @override
+  String get billing_plan_usage_current => '22';
+
+  @override
+  String get billing_plan_usage_remaining => 'of 30 days';
+
+  @override
   String get billing_renew => 'Renew';
 
   @override
