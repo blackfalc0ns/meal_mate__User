@@ -187,6 +187,10 @@ class AppButton extends StatelessWidget {
           : (textColor ?? effectiveColor),
     ).copyWith(fontWeight: fontWeight);
 
+    if (text.isEmpty && (iconWidget != null || icon != null)) {
+      return iconWidget ?? Icon(icon, size: Spacing.iconMd);
+    }
+
     if (iconWidget != null || icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
