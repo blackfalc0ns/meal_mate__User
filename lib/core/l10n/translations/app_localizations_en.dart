@@ -705,6 +705,58 @@ class AppLocalizationsEn extends AppLocalizations {
       'Manage your subscription and payment details';
 
   @override
+  String get billing_plan_name => 'Fitness plan';
+
+  @override
+  String get billing_plan_tier => 'Platinum';
+
+  @override
+  String get billing_active => 'Active';
+
+  @override
+  String get billing_renewal_date => 'Next renewal: June 15, 2025';
+
+  @override
+  String get billing_days_remaining => '18 days remaining';
+
+  @override
+  String get billing_plan_usage => 'Plan usage this month';
+
+  @override
+  String get billing_plan_usage_value => '22 of 30 days';
+
+  @override
+  String get billing_renew => 'Renew';
+
+  @override
+  String get billing_freeze => 'Freeze';
+
+  @override
+  String get billing_cancel => 'Cancel';
+
+  @override
+  String get billing_default_payment_method => 'Default payment method';
+
+  @override
+  String get billing_expiration_date => 'Expiration date';
+
+  @override
+  String get billing_invoices => 'Invoices';
+
+  @override
+  String get billing_paid => 'Paid';
+
+  @override
+  String get billing_invoice_date => 'May 15, 2025';
+
+  @override
+  String get billing_manage_subscription => 'Manage subscription';
+
+  @override
+  String get billing_notice =>
+      'You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.';
+
+  @override
   String get profile_addresses => 'Addresses';
 
   @override

@@ -691,6 +691,58 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_billing_subtitle => 'إدارة اشتراكك وتفاصيل الدفع';
 
   @override
+  String get billing_plan_name => 'باقة اللياقة';
+
+  @override
+  String get billing_plan_tier => 'بلاتينيوم';
+
+  @override
+  String get billing_active => 'نشط';
+
+  @override
+  String get billing_renewal_date => 'تاريخ التجديد القادم: 15 يونيو 2025';
+
+  @override
+  String get billing_days_remaining => 'متبقي 18 يوم';
+
+  @override
+  String get billing_plan_usage => 'استخدام الخطة هذا الشهر';
+
+  @override
+  String get billing_plan_usage_value => '22 من 30 يوم';
+
+  @override
+  String get billing_renew => 'تجديد';
+
+  @override
+  String get billing_freeze => 'تجميد';
+
+  @override
+  String get billing_cancel => 'إلغاء';
+
+  @override
+  String get billing_default_payment_method => 'وسيلة الدفع الافتراضية';
+
+  @override
+  String get billing_expiration_date => 'تاريخ الانتهاء';
+
+  @override
+  String get billing_invoices => 'الفواتير';
+
+  @override
+  String get billing_paid => 'مدفوع';
+
+  @override
+  String get billing_invoice_date => '15 مايو 2025';
+
+  @override
+  String get billing_manage_subscription => 'إدارة الاشتراك';
+
+  @override
+  String get billing_notice =>
+      'يمكنك تجميد اشتراكك حتى 30 يوماً مرة واحدة كل 6 أشهر. عند الإلغاء، ستظل تتمتع بالمزايا حتى نهاية دورة الفوترة الحالية.';
+
+  @override
   String get profile_addresses => 'العناوين';
 
   @override

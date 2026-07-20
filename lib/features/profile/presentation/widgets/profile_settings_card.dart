@@ -66,7 +66,10 @@ class ProfileSettingsCard extends StatelessWidget {
             title: item.$2,
             subtitle: item.$3,
             showDivider: index != items.length - 1,
-            onTap: index == items.length - 1
+            onTap: index == 3
+                ? () =>
+                      Navigator.of(context).pushNamed(AppRoutes.profileBilling)
+                : index == items.length - 1
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
                 : index == 4

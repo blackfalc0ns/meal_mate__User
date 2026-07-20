@@ -1400,6 +1400,108 @@ abstract class AppLocalizations {
   /// **'Manage your subscription and payment details'**
   String get profile_billing_subtitle;
 
+  /// No description provided for @billing_plan_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Fitness plan'**
+  String get billing_plan_name;
+
+  /// No description provided for @billing_plan_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum'**
+  String get billing_plan_tier;
+
+  /// No description provided for @billing_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get billing_active;
+
+  /// No description provided for @billing_renewal_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Next renewal: June 15, 2025'**
+  String get billing_renewal_date;
+
+  /// No description provided for @billing_days_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'18 days remaining'**
+  String get billing_days_remaining;
+
+  /// No description provided for @billing_plan_usage.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan usage this month'**
+  String get billing_plan_usage;
+
+  /// No description provided for @billing_plan_usage_value.
+  ///
+  /// In en, this message translates to:
+  /// **'22 of 30 days'**
+  String get billing_plan_usage_value;
+
+  /// No description provided for @billing_renew.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew'**
+  String get billing_renew;
+
+  /// No description provided for @billing_freeze.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze'**
+  String get billing_freeze;
+
+  /// No description provided for @billing_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get billing_cancel;
+
+  /// No description provided for @billing_default_payment_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Default payment method'**
+  String get billing_default_payment_method;
+
+  /// No description provided for @billing_expiration_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiration date'**
+  String get billing_expiration_date;
+
+  /// No description provided for @billing_invoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get billing_invoices;
+
+  /// No description provided for @billing_paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get billing_paid;
+
+  /// No description provided for @billing_invoice_date.
+  ///
+  /// In en, this message translates to:
+  /// **'May 15, 2025'**
+  String get billing_invoice_date;
+
+  /// No description provided for @billing_manage_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscription'**
+  String get billing_manage_subscription;
+
+  /// No description provided for @billing_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.'**
+  String get billing_notice;
+
   /// No description provided for @profile_addresses.
   ///
   /// In en, this message translates to:

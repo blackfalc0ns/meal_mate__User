@@ -28,4 +28,5 @@ abstract class AppRoutes {
   static const String dietaryPreferences = '/dietary-preferences';
   static const String addAllergy = '/add-allergy';
   static const String healthGoals = '/health-goals';
+  static const String profileBilling = '/profile-billing';
 }

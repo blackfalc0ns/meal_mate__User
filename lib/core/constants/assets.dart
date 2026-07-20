@@ -14,6 +14,16 @@ class Assets {
   static const String profileAvatar = '$_images/profile/profile_avatar.png';
   static const String profileDefaultAddressMap =
       '$_images/profile/profile_default_address_map.png';
+  static const String profileBillingPlanBottle =
+      '$_images/profile/profile_billing_plan_bottle.png';
+  static const String profileBillingWallet =
+      '$_images/profile/profile_billing_wallet.svg';
+  static const String profileBillingReceipt =
+      '$_images/profile/profile_billing_receipt.svg';
+  static const String profileBillingCheck =
+      '$_images/profile/profile_billing_check.svg';
+  static const String profileBillingCalendar =
+      '$_images/profile/profile_billing_calendar.svg';
   static const String dietaryPreferencesHero =
       '$_images/fake/dietary_preferences_hero.png';
   static const String dietaryPreferencesSelectedCheck =
