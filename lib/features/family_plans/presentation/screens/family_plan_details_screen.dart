@@ -21,57 +21,61 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
     final plan = _dataSource.getPlan();
 
-    return SafeArea(
-      child: Column(
-        children: [
-          CustomAppBar(
-            title: l10n.family_details_title,
-            titleFontSize: FontSize.size18,
-          ),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: EdgeInsets.fromLTRB(
-                    Spacing.lg,
-                    Spacing.xss,
-                    Spacing.lg,
-                    showBottomSpace ? 104 : Spacing.lg,
-                  ),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate.fixed([
-                      FamilyPlanHeroCard(plan: plan),
-                      const SizedBox(height: Spacing.xs),
-                      FamilyMembersStrip(
-                        members: plan.members,
-                        onAddTap: () => FamilyAddMemberDialog.show(context),
-                      ),
-                      const SizedBox(height: Spacing.md),
-                      FamilyPlanSummaryCard(stats: plan.summaryStats),
-                      const SizedBox(height: Spacing.md),
-                      FamilyMealsTable(members: plan.members),
-                      const SizedBox(height: Spacing.md),
-                      FamilyPlanPriceCard(plan: plan),
-                      const SizedBox(height: Spacing.lg),
-                      AppButton(
-                        text: l10n.family_confirm_plan,
-                        onPressed: () {},
-                        height: Spacing.compactButtonHeight,
-                        borderRadius: Spacing.buttonSmallRadius,
-                        gradient: AppColors.primaryGradient,
-                        fontSize: FontSize.size17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ]),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: color.surface,
+      body: SafeArea(
+        child: Column(
+          children: [
+            CustomAppBar(
+              title: locale.family_details_title,
+              titleFontSize: FontSize.size18,
             ),
-          ),
-        ],
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: EdgeInsets.only(
+                      top: Spacing.xss,
+                      right: Spacing.lg,
+                      bottom: showBottomSpace ? 104 : Spacing.lg,
+                      left: Spacing.lg,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate.fixed([
+                        FamilyPlanHeroCard(plan: plan),
+                        const SizedBox(height: Spacing.xs),
+                        FamilyMembersStrip(
+                          members: plan.members,
+                          onAddTap: () => FamilyAddMemberDialog.show(context),
+                        ),
+                        const SizedBox(height: Spacing.md),
+                        FamilyPlanSummaryCard(stats: plan.summaryStats),
+                        const SizedBox(height: Spacing.md),
+                        FamilyMealsTable(members: plan.members),
+                        const SizedBox(height: Spacing.md),
+                        FamilyPlanPriceCard(plan: plan),
+                        const SizedBox(height: Spacing.lg),
+                        AppButton(
+                          text: locale.family_confirm_plan,
+                          onPressed: () {},
+                          height: Spacing.compactButtonHeight,
+                          borderRadius: Spacing.buttonSmallRadius,
+                          gradient: AppColors.primaryGradient,
+                          fontSize: FontSize.size17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
