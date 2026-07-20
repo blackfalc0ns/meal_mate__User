@@ -13,7 +13,7 @@ class SubscriptionBestValueBadge extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      height: Spacing.base,
+      height: Spacing.lg,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xss),
       alignment: Alignment.center,
       decoration: BoxDecoration(
