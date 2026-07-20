@@ -2209,4 +2209,142 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get health_goals_decrease_value => '4.2 kg';
+
+  @override
+  String get search_hint => 'Search for a meal, restaurant, or healthy plan';
+
+  @override
+  String get search_cancel => 'Cancel';
+
+  @override
+  String get search_recent => 'Recent searches';
+
+  @override
+  String get search_popular => 'Most popular';
+
+  @override
+  String get search_categories => 'Browse by category';
+
+  @override
+  String get search_recommended => 'Recommended for you';
+
+  @override
+  String get search_quick_results => 'Quick results';
+
+  @override
+  String get search_suggestions_all => 'View all suggestions';
+
+  @override
+  String get search_filter_all => 'All';
+
+  @override
+  String get search_filter_meals => 'Meals';
+
+  @override
+  String get search_filter_restaurants => 'Restaurants';
+
+  @override
+  String get search_filter_plans => 'Plans';
+
+  @override
+  String get search_recent_grilled_chicken => 'Grilled chicken';
+
+  @override
+  String get search_recent_healthy_restaurants => 'Healthy chicken restaurants';
+
+  @override
+  String get search_recent_high_protein => 'High-protein meals';
+
+  @override
+  String get search_category_salad => 'Healthy salads';
+
+  @override
+  String get search_category_protein => 'Protein meals';
+
+  @override
+  String get search_category_juice => 'Juices and drinks';
+
+  @override
+  String get search_category_snack => 'Light snacks';
+
+  @override
+  String get search_category_salad_subtitle => 'Light choices';
+
+  @override
+  String get search_category_protein_subtitle => 'Filling and balanced';
+
+  @override
+  String get search_category_juice_subtitle => 'Natural and refreshing';
+
+  @override
+  String get search_category_snack_subtitle => 'Low calories';
+
+  @override
+  String get search_meal_badge => 'Featured meal';
+
+  @override
+  String get search_restaurant_badge => 'Healthy restaurant';
+
+  @override
+  String get search_meal_title => 'Grilled chicken with quinoa';
+
+  @override
+  String get search_meal_description =>
+      'A balanced meal rich in protein and fiber';
+
+  @override
+  String get search_restaurant_title => 'Green Light Kitchen';
+
+  @override
+  String get search_restaurant_description =>
+      'Healthy, natural, and nutritious options';
+
+  @override
+  String get search_show_details => 'View details';
+
+  @override
+  String get search_show_restaurant => 'View restaurant';
+
+  @override
+  String get search_calories => '550 calories';
+
+  @override
+  String get search_protein => '35 g protein';
+
+  @override
+  String get search_carbs => '55 g carbs';
+
+  @override
+  String get search_fat => '18 g fat';
+
+  @override
+  String get search_open => 'Open';
+
+  @override
+  String get search_cuisine_fast_food => 'Fast food';
+
+  @override
+  String get search_cuisine_chicken => 'Chicken';
+
+  @override
+  String get search_cuisine_rice => 'Rice';
+
+  @override
+  String get search_minutes => '15-20 min';
+
+  @override
+  String get search_rating => '4.0';
+
+  @override
+  String get search_suggestion_chicken_protein => 'Chicken protein';
+
+  @override
+  String get search_suggestion_chicken_rice => 'Chicken with brown rice';
+
+  @override
+  String get search_suggestion_chicken_healthy => 'Healthy chicken restaurants';
+
+  @override
+  String get search_suggestion_chicken_vegetables =>
+      'Chicken with grilled vegetables';
 }

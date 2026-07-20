@@ -57,6 +57,15 @@ class Spacing {
   static const double iconLg = 32.0;
   static const double iconXl = 48.0;
 
+  // Search Figma measurements.
+  static const double searchScreenHorizontalPadding = 20.0;
+  static const double searchPopularCardWidth = 79.0;
+  static const double searchPopularCardHeight = 103.0;
+  static const double searchPopularImageSize = 54.0;
+  static const double searchQuickCategoryCardWidth = 77.0;
+  static const double searchQuickCategoryCardHeight = 68.0;
+  static const double searchQuickCategoryGap = 10.0;
+
   // Borders
   static const double hairline = 0.5;
   static const double border = 1.0;

@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/app_shell/presentation/widgets/app_zoom_
 import 'package:meal_meat_user/features/home/domain/entities/home_dashboard_entity.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_stats_card.dart';
+import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 
 class HomeHeaderSection extends StatelessWidget {
   const HomeHeaderSection({
@@ -70,7 +71,11 @@ class HomeHeaderSection extends StatelessWidget {
             top: 235,
             left: 20,
             right: 20,
-            child: HomeSearchBar(onTap: () {}),
+            child: HomeSearchBar(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const SearchScreen()),
+              ),
+            ),
           ),
         ],
       ),

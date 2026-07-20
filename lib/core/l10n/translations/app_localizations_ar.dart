@@ -2180,4 +2180,139 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get health_goals_decrease_value => '4.2 كجم';
+
+  @override
+  String get search_hint => 'ابحث عن وجبة، مطعم، أو خطة صحية';
+
+  @override
+  String get search_cancel => 'إلغاء';
+
+  @override
+  String get search_recent => 'عمليات البحث الأخيرة';
+
+  @override
+  String get search_popular => 'الأكثر بحثاً';
+
+  @override
+  String get search_categories => 'فئات سريعة';
+
+  @override
+  String get search_recommended => 'مقترح لك';
+
+  @override
+  String get search_quick_results => 'نتائج سريعة';
+
+  @override
+  String get search_suggestions_all => 'عرض جميع الاقتراحات';
+
+  @override
+  String get search_filter_all => 'الكل';
+
+  @override
+  String get search_filter_meals => 'وجبات';
+
+  @override
+  String get search_filter_restaurants => 'مطاعم';
+
+  @override
+  String get search_filter_plans => 'خطط';
+
+  @override
+  String get search_recent_grilled_chicken => 'دجاج مشوي';
+
+  @override
+  String get search_recent_healthy_restaurants => 'مطاعم دجاج صحية';
+
+  @override
+  String get search_recent_high_protein => 'وجبات عالية البروتين';
+
+  @override
+  String get search_category_salad => 'سلطات صحية';
+
+  @override
+  String get search_category_protein => 'وجبات بروتين';
+
+  @override
+  String get search_category_juice => 'عصائر ومشروبات';
+
+  @override
+  String get search_category_snack => 'وجبات منخفضة';
+
+  @override
+  String get search_category_salad_subtitle => 'خيارات خفيفة';
+
+  @override
+  String get search_category_protein_subtitle => 'مشبعة ومتوازنة';
+
+  @override
+  String get search_category_juice_subtitle => 'طبيعية ومنعشة';
+
+  @override
+  String get search_category_snack_subtitle => 'سعرات حرارية';
+
+  @override
+  String get search_meal_badge => 'وجبة مميزة';
+
+  @override
+  String get search_restaurant_badge => 'مطعم صحي';
+
+  @override
+  String get search_meal_title => 'دجاج مشوي مع كينوا';
+
+  @override
+  String get search_meal_description => 'وجبة متوازنة غنية بالبروتين والألياف';
+
+  @override
+  String get search_restaurant_title => 'جرين لايت كيتشن';
+
+  @override
+  String get search_restaurant_description => 'خيارات صحية طبيعية ومغذية';
+
+  @override
+  String get search_show_details => 'عرض التفاصيل';
+
+  @override
+  String get search_show_restaurant => 'عرض المطعم';
+
+  @override
+  String get search_calories => '550 سعرة حرارية';
+
+  @override
+  String get search_protein => '35 جم بروتين';
+
+  @override
+  String get search_carbs => '55 جم كربوهيدرات';
+
+  @override
+  String get search_fat => '18 جم دهون';
+
+  @override
+  String get search_open => 'مفتوح';
+
+  @override
+  String get search_cuisine_fast_food => 'الوجبات السريعة';
+
+  @override
+  String get search_cuisine_chicken => 'فرخة';
+
+  @override
+  String get search_cuisine_rice => 'أرز';
+
+  @override
+  String get search_minutes => '15-20 دقيقة';
+
+  @override
+  String get search_rating => '4.0';
+
+  @override
+  String get search_suggestion_chicken_protein => 'دجاج بروتين';
+
+  @override
+  String get search_suggestion_chicken_rice => 'دجاج مع أرز بني';
+
+  @override
+  String get search_suggestion_chicken_healthy => 'مطاعم دجاج صحية';
+
+  @override
+  String get search_suggestion_chicken_vegetables => 'دجاج مع خضار مشوية';
 }

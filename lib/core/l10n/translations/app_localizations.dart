@@ -4279,6 +4279,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'4.2 kg'**
   String get health_goals_decrease_value;
+
+  /// No description provided for @search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a meal, restaurant, or healthy plan'**
+  String get search_hint;
+
+  /// No description provided for @search_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get search_cancel;
+
+  /// No description provided for @search_recent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get search_recent;
+
+  /// No description provided for @search_popular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular'**
+  String get search_popular;
+
+  /// No description provided for @search_categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse by category'**
+  String get search_categories;
+
+  /// No description provided for @search_recommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended for you'**
+  String get search_recommended;
+
+  /// No description provided for @search_quick_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick results'**
+  String get search_quick_results;
+
+  /// No description provided for @search_suggestions_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View all suggestions'**
+  String get search_suggestions_all;
+
+  /// No description provided for @search_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get search_filter_all;
+
+  /// No description provided for @search_filter_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get search_filter_meals;
+
+  /// No description provided for @search_filter_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants'**
+  String get search_filter_restaurants;
+
+  /// No description provided for @search_filter_plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get search_filter_plans;
+
+  /// No description provided for @search_recent_grilled_chicken.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled chicken'**
+  String get search_recent_grilled_chicken;
+
+  /// No description provided for @search_recent_healthy_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy chicken restaurants'**
+  String get search_recent_healthy_restaurants;
+
+  /// No description provided for @search_recent_high_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'High-protein meals'**
+  String get search_recent_high_protein;
+
+  /// No description provided for @search_category_salad.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy salads'**
+  String get search_category_salad;
+
+  /// No description provided for @search_category_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein meals'**
+  String get search_category_protein;
+
+  /// No description provided for @search_category_juice.
+  ///
+  /// In en, this message translates to:
+  /// **'Juices and drinks'**
+  String get search_category_juice;
+
+  /// No description provided for @search_category_snack.
+  ///
+  /// In en, this message translates to:
+  /// **'Light snacks'**
+  String get search_category_snack;
+
+  /// No description provided for @search_category_salad_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Light choices'**
+  String get search_category_salad_subtitle;
+
+  /// No description provided for @search_category_protein_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filling and balanced'**
+  String get search_category_protein_subtitle;
+
+  /// No description provided for @search_category_juice_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural and refreshing'**
+  String get search_category_juice_subtitle;
+
+  /// No description provided for @search_category_snack_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Low calories'**
+  String get search_category_snack_subtitle;
+
+  /// No description provided for @search_meal_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured meal'**
+  String get search_meal_badge;
+
+  /// No description provided for @search_restaurant_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy restaurant'**
+  String get search_restaurant_badge;
+
+  /// No description provided for @search_meal_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled chicken with quinoa'**
+  String get search_meal_title;
+
+  /// No description provided for @search_meal_description.
+  ///
+  /// In en, this message translates to:
+  /// **'A balanced meal rich in protein and fiber'**
+  String get search_meal_description;
+
+  /// No description provided for @search_restaurant_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Green Light Kitchen'**
+  String get search_restaurant_title;
+
+  /// No description provided for @search_restaurant_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy, natural, and nutritious options'**
+  String get search_restaurant_description;
+
+  /// No description provided for @search_show_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get search_show_details;
+
+  /// No description provided for @search_show_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'View restaurant'**
+  String get search_show_restaurant;
+
+  /// No description provided for @search_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'550 calories'**
+  String get search_calories;
+
+  /// No description provided for @search_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'35 g protein'**
+  String get search_protein;
+
+  /// No description provided for @search_carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'55 g carbs'**
+  String get search_carbs;
+
+  /// No description provided for @search_fat.
+  ///
+  /// In en, this message translates to:
+  /// **'18 g fat'**
+  String get search_fat;
+
+  /// No description provided for @search_open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get search_open;
+
+  /// No description provided for @search_cuisine_fast_food.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast food'**
+  String get search_cuisine_fast_food;
+
+  /// No description provided for @search_cuisine_chicken.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken'**
+  String get search_cuisine_chicken;
+
+  /// No description provided for @search_cuisine_rice.
+  ///
+  /// In en, this message translates to:
+  /// **'Rice'**
+  String get search_cuisine_rice;
+
+  /// No description provided for @search_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'15-20 min'**
+  String get search_minutes;
+
+  /// No description provided for @search_rating.
+  ///
+  /// In en, this message translates to:
+  /// **'4.0'**
+  String get search_rating;
+
+  /// No description provided for @search_suggestion_chicken_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken protein'**
+  String get search_suggestion_chicken_protein;
+
+  /// No description provided for @search_suggestion_chicken_rice.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken with brown rice'**
+  String get search_suggestion_chicken_rice;
+
+  /// No description provided for @search_suggestion_chicken_healthy.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy chicken restaurants'**
+  String get search_suggestion_chicken_healthy;
+
+  /// No description provided for @search_suggestion_chicken_vegetables.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken with grilled vegetables'**
+  String get search_suggestion_chicken_vegetables;
 }
 
 class _AppLocalizationsDelegate

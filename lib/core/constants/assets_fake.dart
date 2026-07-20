@@ -34,6 +34,19 @@ class AssetsFake {
   static const String homeSpecialsMeal =
       'assets/images/fake/home/home_specials_meal.png';
 
+  static const String searchFeaturedMeal =
+      'assets/images/fake/search/search_featured_meal.png';
+  static const String searchHealthyRestaurant =
+      'assets/images/fake/search/search_healthy_restaurant.png';
+  static const String searchJuice =
+      'assets/images/fake/search/search_juice.png';
+  static const String searchProtein =
+      'assets/images/fake/search/search_protein.png';
+  static const String searchSalad =
+      'assets/images/fake/search/search_salad.png';
+  static const String searchSnack =
+      'assets/images/fake/search/search_snack.png';
+
   static const String ingredientBroccoli =
       'assets/images/fake/meal_details/ingredient_broccoli.png';
   static const String ingredientCarrot =
