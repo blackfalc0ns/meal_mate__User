@@ -1365,6 +1365,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_family_packages => 'الباقات العائلية';
 
   @override
+  String get subscription_best_value => 'الأفضل قيمة';
+
+  @override
   String get subscription_view_family_package => 'عرض الباقة العائلية';
 
   @override

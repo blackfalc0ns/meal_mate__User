@@ -21,49 +21,43 @@ class SubscriptionPackageSelectorOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      label: locale.nav_subscription,
-      button: true,
-      selected: selected,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(Spacing.radiusLg),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          width: double.infinity,
-          height: double.infinity,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected
-                ? color.primaryContainer.withValues(alpha: 0.82)
-                : color.surface.withValues(alpha: 0),
-            borderRadius: BorderRadius.circular(Spacing.radiusLg),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: Spacing.iconSm,
-                color: selected ? color.primary : color.onSurfaceVariant,
-              ),
-              const SizedBox(width: Spacing.xs),
-              Flexible(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size12,
-                    color: selected ? color.primary : color.onSurface,
-                  ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(Spacing.radiusLg),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        width: double.infinity,
+        height: double.infinity,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected
+              ? color.primaryContainer.withValues(alpha: 0.82)
+              : color.surface.withValues(alpha: 0),
+          borderRadius: BorderRadius.circular(Spacing.radiusLg),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: Spacing.iconSm,
+              color: selected ? color.primary : color.onSurfaceVariant,
+            ),
+            const SizedBox(width: Spacing.xs),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontSize: FontSize.size12,
+                  color: selected ? color.primary : color.onSurface,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

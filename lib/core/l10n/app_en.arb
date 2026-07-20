@@ -432,6 +432,7 @@
   "subscription_choose_plan_button": "Choose plan",
   "subscription_individual_packages": "Individual packages",
   "subscription_family_packages": "Family packages",
+  "subscription_best_value": "Best value",
   "subscription_view_family_package": "View family package",
   "subscription_selected_program_label": "Selected program:",
   "subscription_weight_loss_title": "Weight loss",

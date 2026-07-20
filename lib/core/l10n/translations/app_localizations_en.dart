@@ -1384,6 +1384,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_family_packages => 'Family packages';
 
   @override
+  String get subscription_best_value => 'Best value';
+
+  @override
   String get subscription_view_family_package => 'View family package';
 
   @override

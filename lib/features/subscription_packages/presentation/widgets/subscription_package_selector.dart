@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_best_value_badge.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_package_selector_option.dart';
 
 class SubscriptionPackageSelector extends StatelessWidget {
@@ -18,37 +19,61 @@ class SubscriptionPackageSelector extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
+    return SizedBox(
       height: Spacing.subscriptionPackageSelectorHeight,
-      decoration: BoxDecoration(
-        color: color.surface,
-        border: Border.all(color: color.outlineVariant),
-        borderRadius: BorderRadius.circular(Spacing.radiusLg),
-      ),
-      child: Row(
-        textDirection: TextDirection.rtl,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Expanded(
-            child: SubscriptionPackageSelectorOption(
-              icon: Icons.person,
-              label: locale.subscription_individual_packages,
-              selected: !isFamilySelected,
-              onTap: () => onChanged(false),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                color: color.surface,
+                border: Border.all(color: color.outlineVariant),
+                borderRadius: BorderRadius.circular(Spacing.radiusLg),
+              ),
+              child: Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Expanded(
+                    child: SubscriptionPackageSelectorOption(
+                      icon: Icons.person,
+                      label: locale.subscription_individual_packages,
+                      selected: !isFamilySelected,
+                      onTap: () => onChanged(false),
+                    ),
+                  ),
+                  VerticalDivider(
+                    color: color.outlineVariant,
+                    thickness: Spacing.hairline,
+                    width: Spacing.border,
+                    indent: Spacing.sm,
+                    endIndent: Spacing.sm,
+                  ),
+                  Expanded(
+                    child: SubscriptionPackageSelectorOption(
+                      icon: Icons.groups,
+                      label: locale.subscription_family_packages,
+                      selected: isFamilySelected,
+                      onTap: () => onChanged(true),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          VerticalDivider(
-            color: color.outlineVariant,
-            thickness: Spacing.hairline,
-            width: Spacing.border,
-            indent: Spacing.sm,
-            endIndent: Spacing.sm,
-          ),
-          Expanded(
-            child: SubscriptionPackageSelectorOption(
-              icon: Icons.groups,
-              label: locale.subscription_family_packages,
-              selected: isFamilySelected,
-              onTap: () => onChanged(true),
+          Align(
+            alignment: Alignment.topLeft,
+            child: FractionallySizedBox(
+              widthFactor: 0.5,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: UnconstrainedBox(
+                  child: Transform.translate(
+                    offset: Offset(0, -Spacing.sm),
+                    child: SubscriptionBestValueBadge(),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

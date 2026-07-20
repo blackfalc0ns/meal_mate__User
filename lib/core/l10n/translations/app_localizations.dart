@@ -2690,6 +2690,12 @@ abstract class AppLocalizations {
   /// **'Family packages'**
   String get subscription_family_packages;
 
+  /// No description provided for @subscription_best_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Best value'**
+  String get subscription_best_value;
+
   /// No description provided for @subscription_view_family_package.
   ///
   /// In en, this message translates to:
