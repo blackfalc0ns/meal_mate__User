@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/search/data/search_fake_data_source.dart';
 import 'package:meal_meat_user/features/search/presentation/widgets/search_result_meta.dart';
 
@@ -97,13 +98,13 @@ class SearchResultCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.sm,
-                vertical: Spacing.xss,
+                vertical: Spacing.xs,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Flexible(
                         child: Text(
@@ -111,9 +112,9 @@ class SearchResultCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.right,
-                          style: getSemiBoldStyle(
+                          style: getBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size11,
+                            fontSize: FontSize.size12,
                             color: color.onSurface,
                           ),
                         ),
@@ -122,7 +123,7 @@ class SearchResultCard extends StatelessWidget {
                         const SizedBox(width: Spacing.xs),
                         Icon(
                           Icons.verified_rounded,
-                          size: Spacing.iconSm - Spacing.xs,
+                          size: Spacing.iconSm,
                           color: color.primary,
                         ),
                       ],
@@ -136,7 +137,7 @@ class SearchResultCard extends StatelessWidget {
                     textAlign: TextAlign.right,
                     style: getMediumStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size9,
+                      fontSize: FontSize.size11,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -177,13 +178,13 @@ class SearchResultCard extends StatelessWidget {
                     )
                   else
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           locale.search_minutes,
                           style: getMediumStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size8,
+                            fontSize: FontSize.size10,
                             color: color.primary,
                           ),
                         ),
@@ -218,34 +219,24 @@ class SearchResultCard extends StatelessWidget {
                   const Spacer(),
                   const SizedBox(height: Spacing.xss),
                   Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: Spacing.xl + Spacing.xs,
-                      child: TextButton.icon(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        label: Text(
-                          isMeal
-                              ? locale.search_show_details
-                              : locale.search_show_restaurant,
-                        ),
-                        style: TextButton.styleFrom(
-                          backgroundColor: color.primaryContainer,
-                          foregroundColor: color.primary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.xs,
-                          ),
-                          textStyle: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size8,
-                            color: color.primary,
-                          ),
-                        ),
+                    textDirection: TextDirection.rtl,
+                    child: AppButton.filled(
+                      text: isMeal
+                          ? locale.search_show_details
+                          : locale.search_show_restaurant,
+                      onPressed: () {},
+                      iconWidget: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: Spacing.iconSm,
+                        color: color.primary,
+                      ),
+                      height: Spacing.xl,
+                      borderRadius: Spacing.radiusSm,
+                      color: color.primaryContainer,
+                      textColor: color.primary,
+                      fontSize: FontSize.size8,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
                       ),
                     ),
                   ),

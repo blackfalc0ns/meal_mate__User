@@ -29,12 +29,21 @@ class SearchQuickCategoryStrip extends StatelessWidget {
         color: color.surface,
         child: LayoutBuilder(
           builder: (context, constraints) {
+            final contentWidth =
+                categories.length * Spacing.searchPopularCardWidth +
+                (categories.length - 1) * Spacing.sm;
+            final horizontalPadding =
+                ((constraints.maxWidth - contentWidth) / 2)
+                    .clamp(0.0, double.infinity)
+                    .toDouble();
+
             return SizedBox(
               height: Spacing.searchPopularCardHeight,
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   itemCount: categories.length,
                   separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
                   itemBuilder: (context, index) {
