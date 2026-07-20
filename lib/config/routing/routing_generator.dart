@@ -7,12 +7,6 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_m
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscriptions_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/family_plan_details_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_plan_details_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_package_selection_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/presentation/screens/subscription_summary_screen.dart';
-import 'package:meal_meat_user/features/subscriptions/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_activated_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
@@ -26,6 +20,12 @@ import 'package:meal_meat_user/features/profile/presentation/screens/health_goal
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/screens/family_plan_details_screen.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
+import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
+import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
