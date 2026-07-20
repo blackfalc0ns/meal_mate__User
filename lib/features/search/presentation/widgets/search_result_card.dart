@@ -217,7 +217,7 @@ class SearchResultCard extends StatelessWidget {
                       ],
                     ),
                   const Spacer(),
-                  const SizedBox(height: Spacing.xss),
+                  const SizedBox(height: Spacing.xs),
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: AppButton.filled(
@@ -226,7 +226,7 @@ class SearchResultCard extends StatelessWidget {
                           : locale.search_show_restaurant,
                       onPressed: () {},
                       iconWidget: Icon(
-                        Icons.arrow_back_ios_new_rounded,
+                        Icons.arrow_forward_ios,
                         size: Spacing.iconSm,
                         color: color.primary,
                       ),
@@ -234,7 +234,7 @@ class SearchResultCard extends StatelessWidget {
                       borderRadius: Spacing.radiusSm,
                       color: color.primaryContainer,
                       textColor: color.primary,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size11,
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.xs,
                       ),

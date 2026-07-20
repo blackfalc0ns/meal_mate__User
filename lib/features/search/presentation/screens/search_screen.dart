@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -89,14 +90,17 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: AppButton.filled(
                         text: '',
                         onPressed: () {},
-                        iconWidget: Icon(
-                          Icons.tune_rounded,
-                          color: color.onPrimary,
+                        iconWidget: SizedBox.square(
+                          dimension: Spacing.xxxl,
+                          child: SvgPicture.asset(
+                            AssetsFake.searchFilterIcon,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         isExpanded: false,
                         height: Spacing.xxxl,
                         borderRadius: Spacing.radiusPill,
-                        color: color.primary,
+                        color: color.surface,
                         padding: EdgeInsets.zero,
                       ),
                     ),

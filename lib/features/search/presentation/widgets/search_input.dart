@@ -29,35 +29,51 @@ class SearchInput extends StatelessWidget {
       textDirection: TextDirection.rtl,
       children: [
         Expanded(
-          child: TextField(
-            controller: controller,
-            focusNode: focusNode,
-            onChanged: onChanged,
-            textAlign: TextAlign.right,
-            style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
-              color: color.onSurface,
-            ),
-            decoration: InputDecoration(
-              hintText: locale.search_hint,
-              prefixIcon: Icon(Icons.search_rounded, color: color.primary),
-              filled: true,
-              fillColor: color.surface,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: Spacing.base,
-                vertical: Spacing.sm,
-              ),
-              border: OutlineInputBorder(
+          child: SizedBox(
+            height: Spacing.xxxl,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Spacing.radiusLg),
-                borderSide: BorderSide(color: color.outlineVariant),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withValues(alpha: .08),
+                    blurRadius: Spacing.xss,
+                    offset: const Offset(0, Spacing.xs),
+                  ),
+                ],
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Spacing.radiusLg),
-                borderSide: BorderSide(color: color.outlineVariant),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Spacing.radiusLg),
-                borderSide: BorderSide(color: color.primary),
+              child: TextField(
+                controller: controller,
+                focusNode: focusNode,
+                onChanged: onChanged,
+                textAlign: TextAlign.right,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  color: color.onSurface,
+                ),
+                decoration: InputDecoration(
+                  hintText: locale.search_hint,
+                  prefixIcon: Icon(Icons.search_rounded, color: color.primary),
+                  isDense: true,
+                  filled: true,
+                  fillColor: color.surface,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.base,
+                    vertical: Spacing.sm,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                    borderSide: BorderSide(color: color.outlineVariant),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                    borderSide: BorderSide(color: color.outlineVariant),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                    borderSide: BorderSide(color: color.primary),
+                  ),
+                ),
               ),
             ),
           ),

@@ -65,7 +65,7 @@ class SearchQuickCategoryTile extends StatelessWidget {
               textAlign: TextAlign.center,
               style: getBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size10,
                 color: color.onSurface,
               ),
             ),

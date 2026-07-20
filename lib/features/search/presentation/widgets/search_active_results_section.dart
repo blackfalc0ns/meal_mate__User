@@ -56,7 +56,7 @@ class SearchActiveResultsSection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: Spacing.md,
               mainAxisSpacing: Spacing.md,
-              childAspectRatio: .75,
+              childAspectRatio: .74,
             ),
             itemBuilder: (context, index) =>
                 SearchResultCard(result: results[index]),

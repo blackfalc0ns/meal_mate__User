@@ -27,7 +27,7 @@ class SearchSectionTitle extends StatelessWidget {
           title,
           style: getBoldStyle(
             fontFamily: FontConstant.ibmPlexSansArabic,
-            fontSize: FontSize.size11,
+            fontSize: FontSize.size12,
             color: color.onSurface,
           ),
           semanticsLabel: locale.app_brand_name,
