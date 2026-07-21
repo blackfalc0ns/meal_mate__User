@@ -58,17 +58,22 @@ class SearchQuickCategoryTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Spacing.xs),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size10,
-                color: color.onSurface,
+            FittedBox(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontSize: FontSize.size11,
+                  color: color.onSurface,
+                ),
               ),
+              
             ),
+                        const SizedBox(height: Spacing.xs),
+
             Text(
               subtitle,
               maxLines: 1,
@@ -76,7 +81,7 @@ class SearchQuickCategoryTile extends StatelessWidget {
               textAlign: TextAlign.center,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.ibmPlexSansArabic,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size10,
                 color: color.onSurfaceVariant,
               ),
             ),

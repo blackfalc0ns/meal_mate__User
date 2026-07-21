@@ -8,6 +8,7 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/search/data/search_fake_data_source.dart';
 import 'package:meal_meat_user/features/search/presentation/widgets/search_active_results_section.dart';
+import 'package:meal_meat_user/features/search/presentation/widgets/search_filter_bottom_sheet.dart';
 import 'package:meal_meat_user/features/search/presentation/widgets/search_initial_sections.dart';
 import 'package:meal_meat_user/features/search/presentation/widgets/search_input.dart';
 
@@ -23,6 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final _focusNode = FocusNode();
   final _dataSource = const SearchFakeDataSource();
   var _selectedFilter = 0;
+  var _filterCriteria = const SearchFilterCriteria.initial();
 
   @override
   void dispose() {
@@ -89,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       dimension: Spacing.xxxl,
                       child: AppButton.filled(
                         text: '',
-                        onPressed: () {},
+                        onPressed: _openFilterSheet,
                         iconWidget: SizedBox.square(
                           dimension: Spacing.xxxl,
                           child: SvgPicture.asset(
@@ -115,7 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ? SearchActiveResultsSection(
                           suggestions: content.suggestions,
                           selectedFilter: _selectedFilter,
-                          results: _dataSource.quickResults,
+                          results: _filteredResults,
                           onSuggestionTap: _setQuery,
                           onFilterSelected: (index) =>
                               setState(() => _selectedFilter = index),
@@ -133,5 +135,34 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
+  }
+
+  List<SearchResult> get _filteredResults {
+    return _dataSource.quickResults
+        .where(
+          (result) => _filterCriteria.showMeals
+              ? result == SearchResult.meal
+              : result == SearchResult.restaurant,
+        )
+        .toList();
+  }
+
+  Future<void> _openFilterSheet() async {
+    final criteria = await showModalBottomSheet<SearchFilterCriteria>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: context.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
+        ),
+      ),
+      builder: (_) => SearchFilterBottomSheet(initialCriteria: _filterCriteria),
+    );
+    if (!mounted || criteria == null) {
+      return;
+    }
+    setState(() => _filterCriteria = criteria);
   }
 }

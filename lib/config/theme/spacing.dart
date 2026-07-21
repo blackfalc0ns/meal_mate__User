@@ -59,12 +59,20 @@ class Spacing {
 
   // Search Figma measurements.
   static const double searchScreenHorizontalPadding = 20.0;
-  static const double searchPopularCardWidth = 79.0;
-  static const double searchPopularCardHeight = 103.0;
-  static const double searchPopularImageSize = 54.0;
+  static const double searchPopularCardWidth = 85;
+  static const double searchPopularCardHeight = 115.0;
+  static const double searchPopularImageSize = 60;
   static const double searchQuickCategoryCardWidth = 77.0;
   static const double searchQuickCategoryCardHeight = 68.0;
   static const double searchQuickCategoryGap = 10.0;
+  static const double searchFilterSheetHeight = 439.0;
+  static const double searchFilterSheetHandleWidth = 29.0;
+  static const double searchFilterSheetHandleHeight = 2.0;
+  static const double searchFilterSheetHorizontalPadding = 24.0;
+  static const double searchFilterSegmentHeight = 29.0;
+  static const double searchFilterOptionHeight = 26.0;
+  static const double searchFilterRangeHeight = 24.0;
+  static const double searchFilterActionHeight = 33.0;
 
   // Borders
   static const double hairline = 0.5;
