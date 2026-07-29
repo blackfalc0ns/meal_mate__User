@@ -20,16 +20,16 @@ class SearchResultMeta extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          
           Text(
             label,
+            textDirection: TextDirection.rtl,
             style: getMediumStyle(
               fontFamily: FontConstant.ibmPlexSansArabic,
-              fontSize: FontSize.size8,
+              fontSize: FontSize.size9,
               color: color.onSurface,
             ),
           ),
-                    const SizedBox(width: Spacing.xs),
+          const SizedBox(width: Spacing.xs),
 
           Icon(icon, size: Spacing.iconSm - Spacing.xs, color: color.primary),
         ],

@@ -70,9 +70,8 @@ class SearchQuickCategoryTile extends StatelessWidget {
                   color: color.onSurface,
                 ),
               ),
-              
             ),
-                        const SizedBox(height: Spacing.xs),
+            const SizedBox(height: Spacing.xs),
 
             Text(
               subtitle,

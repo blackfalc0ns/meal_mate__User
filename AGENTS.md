@@ -140,6 +140,47 @@ Always check whether the project already contains:
 
 Reuse existing code whenever possible.
 
+## Fake Data Models
+
+* Any image that will later come from the backend must be represented as a field inside the corresponding model/entity.
+* The image path must be stored in the fake data source as part of the model, not inside the UI.
+* Store the asset path using `AssetsFake`.
+* Widgets must always read the image from the model.
+* Never hardcode asset paths inside widgets.
+
+Example:
+
+```dart
+HomeMealEntity(
+  title: '...',
+  imageAsset: AssetsFake.homeOatmeal,
+)
+```
+
+```dart
+HomeCategoryEntity(
+  title: '...',
+  imageAsset: AssetsFake.homeBurger,
+)
+```
+
+And in the UI:
+
+```dart
+Image.asset(meal.imageAsset)
+```
+
+Never do:
+
+```dart
+Image.asset(AssetsFake.homeOatmeal)
+```
+
+directly inside a widget.
+
+If a model does not already contain an image field, add one instead of passing the asset separately.
+
+
 ## Never
 
 * Hardcode colors.

@@ -27,225 +27,237 @@ class SearchResultCard extends StatelessWidget {
         ? locale.search_meal_badge
         : locale.search_restaurant_badge;
 
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withValues(alpha: .08),
-            blurRadius: Spacing.xss,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            flex: 6,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(result.imageAsset, fit: BoxFit.cover),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: const EdgeInsets.all(Spacing.xss),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.sm,
-                      vertical: Spacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    ),
-                    child: Text(
-                      badge,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size7,
-                        color: color.onPrimary,
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(Spacing.xss),
-                    child: IconButton.filledTonal(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite_border_rounded,
-                        color: color.primary,
-                      ),
-                      iconSize: Spacing.iconSm,
-                      style: IconButton.styleFrom(
-                        backgroundColor: color.surface,
-                        minimumSize: const Size(Spacing.xxl, Spacing.xxl),
-                        padding: EdgeInsets.zero,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xs,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final imageHeight = constraints.maxHeight * .52;
+        final detailsTop = constraints.maxHeight * .4;
+
+        return Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: BorderRadius.circular(Spacing.radiusMd),
+            border: Border.all(color: color.outlineVariant),
+            boxShadow: [
+              BoxShadow(
+                color: color.shadow.withValues(alpha: .08),
+                blurRadius: Spacing.xss,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size12,
-                            color: color.onSurface,
-                          ),
-                        ),
-                      ),
-                      if (!isMeal) ...[
-                        const SizedBox(width: Spacing.xs),
-                        Icon(
-                          Icons.verified_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                      ],
-                    ],
+            ],
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: imageHeight,
+                child: Image.asset(result.imageAsset, fit: BoxFit.cover),
+              ),
+              Positioned(
+                top: detailsTop,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: Spacing.xs,
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  Text(
-                    description,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.right,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
-                      fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
+                  decoration: BoxDecoration(
+                    color: color.surface,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(Spacing.radiusLg),
                     ),
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  if (isMeal)
-                    Column(
-                      children: [
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SearchResultMeta(
-                              label: locale.search_calories,
-                              icon: Icons.local_fire_department_rounded,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.right,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size13,
+                                color: color.onSurface,
+                              ),
                             ),
-                            SearchResultMeta(
-                              label: locale.search_carbs,
-                              icon: Icons.grain_rounded,
+                          ),
+                          if (!isMeal) ...[
+                            const SizedBox(width: Spacing.xs),
+                            Icon(
+                              Icons.verified_rounded,
+                              size: Spacing.iconSm,
+                              color: color.primary,
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        description,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      if (isMeal)
+                        Column(
+                          children: [
+                            Row(
+                              textDirection: TextDirection.rtl,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SearchResultMeta(
+                                  label: locale.search_calories,
+                                  icon: Icons.local_fire_department_rounded,
+                                ),
+                                SearchResultMeta(
+                                  label: locale.search_carbs,
+                                  icon: Icons.grain_rounded,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: Spacing.xs),
+                            Row(
+                              textDirection: TextDirection.rtl,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SearchResultMeta(
+                                  label: locale.search_protein,
+                                  icon: Icons.fitness_center_rounded,
+                                ),
+                                SearchResultMeta(
+                                  label: locale.search_fat,
+                                  icon: Icons.water_drop_rounded,
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      else
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              locale.search_minutes,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontSize: FontSize.size11,
+                                color: color.primary,
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Icon(
+                              Icons.schedule_rounded,
+                              size: Spacing.iconSm,
+                              color: color.primary,
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.xs,
+                              ),
+                              decoration: BoxDecoration(
+                                color: color.secondary,
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusXs,
+                                ),
+                              ),
+                              child: Text(
+                                locale.search_rating,
+                                style: getMediumStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size9,
+                                  color: color.onSecondary,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SearchResultMeta(
-                              label: locale.search_protein,
-                              icon: Icons.fitness_center_rounded,
-                            ),
-                            SearchResultMeta(
-                              label: locale.search_fat,
-                              icon: Icons.water_drop_rounded,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  else
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          locale.search_minutes,
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size10,
+                      const Spacer(),
+                      const SizedBox(height: Spacing.xs),
+                      Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: AppButton.filled(
+                          text: isMeal
+                              ? locale.search_show_details
+                              : locale.search_show_restaurant,
+                          onPressed: () {},
+                          iconWidget: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: Spacing.iconSm - Spacing.xs,
                             color: color.primary,
                           ),
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Icon(
-                          Icons.schedule_rounded,
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Container(
+                          height: Spacing.xl,
+                          borderRadius: Spacing.radiusSm,
+                          color: color.primaryContainer,
+                          textColor: color.primary,
+                          fontSize: FontSize.size11,
+                          fontWeight: FontWeightManger.bold,
                           padding: const EdgeInsets.symmetric(
                             horizontal: Spacing.xs,
                           ),
-                          decoration: BoxDecoration(
-                            color: color.secondary,
-                            borderRadius: BorderRadius.circular(
-                              Spacing.radiusXs,
-                            ),
-                          ),
-                          child: Text(
-                            locale.search_rating,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
-                              fontSize: FontSize.size8,
-                              color: color.onSecondary,
-                            ),
-                          ),
                         ),
-                      ],
-                    ),
-                  const Spacer(),
-                  const SizedBox(height: Spacing.xs),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: AppButton.filled(
-                      text: isMeal
-                          ? locale.search_show_details
-                          : locale.search_show_restaurant,
-                      onPressed: () {},
-                      iconWidget: Icon(
-                        Icons.arrow_forward_ios,
-                        size: Spacing.iconSm,
-                        color: color.primary,
                       ),
-                      height: Spacing.xl,
-                      borderRadius: Spacing.radiusSm,
-                      color: color.primaryContainer,
-                      textColor: color.primary,
-                      fontSize: FontSize.size11,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.xs,
-                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: Spacing.xss,
+                left: Spacing.xss,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: Spacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.primary,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Text(
+                    badge,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontSize: FontSize.size8,
+                      color: color.onPrimary,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                top: Spacing.xss,
+                right: Spacing.xss,
+                child: IconButton.filledTonal(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.favorite_border_rounded,
+                    color: color.primary,
+                  ),
+                  iconSize: Spacing.iconSm,
+                  style: IconButton.styleFrom(
+                    backgroundColor: color.surface,
+                    minimumSize: const Size(Spacing.xxl, Spacing.xxl),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

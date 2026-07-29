@@ -170,7 +170,7 @@ class SearchInitialSections extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: Spacing.md,
               mainAxisSpacing: Spacing.md,
-              childAspectRatio: .74,
+              childAspectRatio: .78,
             ),
             itemBuilder: (context, index) =>
                 SearchResultCard(result: results[index]),
