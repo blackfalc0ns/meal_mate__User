@@ -1272,9 +1272,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offer_details_open_plans_button => 'Choose plan';
 
   @override
-  String get offer_activated_title => 'Offer activated successfully';
-
-  @override
   String get currency => 'KWD';
 
   @override

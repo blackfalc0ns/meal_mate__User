@@ -1255,9 +1255,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offer_details_open_plans_button => 'اختيار الباقة';
 
   @override
-  String get offer_activated_title => 'تم تفعيل العرض بنجاح';
-
-  @override
   String get currency => 'د.ك';
 
   @override

@@ -2480,12 +2480,6 @@ abstract class AppLocalizations {
   /// **'Choose plan'**
   String get offer_details_open_plans_button;
 
-  /// No description provided for @offer_activated_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Offer activated successfully'**
-  String get offer_activated_title;
-
   /// No description provided for @currency.
   ///
   /// In en, this message translates to:
