@@ -8,60 +8,55 @@ class OfferDetailsMonthlyStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            textDirection: TextDirection.rtl,
-            children: const [
-              _PagerDot(active: true),
-              SizedBox(width: 8),
-              _PagerDot(),
-              SizedBox(width: 8),
-              _PagerDot(),
-              SizedBox(width: 8),
-              _PagerDot(),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Row(
-            textDirection: TextDirection.rtl,
-            children: const [
-              Expanded(
-                child: _QuickFilterChip(
-                  label: 'الكل',
-                  icon: Icons.local_fire_department_rounded,
-                  selected: true,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            _PagerDot(active: true),
+            SizedBox(width: 8),
+            _PagerDot(),
+            SizedBox(width: 8),
+            _PagerDot(),
+            SizedBox(width: 8),
+            _PagerDot(),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Row(
+          children: const [
+            Expanded(
+              child: _QuickFilterChip(
+                label: 'الكل',
+                icon: Icons.local_fire_department_rounded,
+                selected: true,
               ),
-              SizedBox(width: 8),
-              Expanded(
-                child: _QuickFilterChip(
-                  label: 'العروض',
-                  icon: Icons.local_offer_rounded,
-                ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _QuickFilterChip(
+                label: 'العروض',
+                icon: Icons.local_offer_rounded,
               ),
-              SizedBox(width: 8),
-              Expanded(
-                child: _QuickFilterChip(
-                  label: 'المطاعم',
-                  icon: Icons.restaurant_rounded,
-                ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _QuickFilterChip(
+                label: 'المطاعم',
+                icon: Icons.restaurant_rounded,
               ),
-              SizedBox(width: 8),
-              Expanded(
-                child: _QuickFilterChip(
-                  label: 'اشتراكات',
-                  icon: Icons.inventory_2_rounded,
-                ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _QuickFilterChip(
+                label: 'اشتراكات',
+                icon: Icons.inventory_2_rounded,
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -110,7 +105,6 @@ class _QuickFilterChip extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        textDirection: TextDirection.rtl,
         children: [
           Icon(icon, size: 16, color: foreground),
           const SizedBox(width: 6),

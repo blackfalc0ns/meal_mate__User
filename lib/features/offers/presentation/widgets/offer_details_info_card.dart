@@ -52,7 +52,6 @@ class OfferDetailsInfoCard extends StatelessWidget {
               vertical: Spacing.xs,
             ),
             child: Row(
-              textDirection: TextDirection.rtl,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
@@ -75,7 +74,6 @@ class OfferDetailsInfoCard extends StatelessWidget {
                       ),
                       // const SizedBox(height: 4),
                       Row(
-                        textDirection: TextDirection.rtl,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           _CopyButton(
@@ -154,7 +152,7 @@ class _InfoSection extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.end,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: 11,
@@ -228,7 +226,6 @@ class _CopyButton extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        textDirection: TextDirection.rtl,
         children: [
           Text(
             label,

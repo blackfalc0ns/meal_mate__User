@@ -1937,37 +1937,37 @@ abstract class AppLocalizations {
   /// No description provided for @offers_hero_badge.
   ///
   /// In en, this message translates to:
-  /// **'Limited time'**
+  /// **'Off'**
   String get offers_hero_badge;
 
   /// No description provided for @offers_hero_discount.
   ///
   /// In en, this message translates to:
-  /// **'20%'**
+  /// **'30%'**
   String get offers_hero_discount;
 
   /// No description provided for @offers_hero_title.
   ///
   /// In en, this message translates to:
-  /// **'Off on monthly plans'**
+  /// **'30% off'**
   String get offers_hero_title;
 
   /// No description provided for @offers_hero_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Fresh bundles made for your routine'**
+  /// **'on all plans'**
   String get offers_hero_subtitle;
 
   /// No description provided for @offers_hero_description.
   ///
   /// In en, this message translates to:
-  /// **'Pick a plan that fits your day and enjoy healthy meals with better savings.'**
+  /// **'Start your healthy journey today'**
   String get offers_hero_description;
 
   /// No description provided for @offers_hero_button.
   ///
   /// In en, this message translates to:
-  /// **'Redeem now'**
+  /// **'Subscribe now'**
   String get offers_hero_button;
 
   /// No description provided for @offers_filter_all.
@@ -1979,20 +1979,26 @@ abstract class AppLocalizations {
   /// No description provided for @offers_filter_offers.
   ///
   /// In en, this message translates to:
-  /// **'Offers'**
+  /// **'Subscriptions'**
   String get offers_filter_offers;
 
   /// No description provided for @offers_filter_restaurants.
   ///
   /// In en, this message translates to:
-  /// **'Restaurants'**
+  /// **'Coupons'**
   String get offers_filter_restaurants;
 
   /// No description provided for @offers_filter_meals.
   ///
   /// In en, this message translates to:
-  /// **'Meals'**
+  /// **'Limited time'**
   String get offers_filter_meals;
+
+  /// No description provided for @offers_filter_gifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts'**
+  String get offers_filter_gifts;
 
   /// No description provided for @offers_featured_section_title.
   ///
@@ -2015,55 +2021,97 @@ abstract class AppLocalizations {
   /// No description provided for @offers_invite_title.
   ///
   /// In en, this message translates to:
-  /// **'Invite friends and earn'**
+  /// **'Invite friends and get'**
   String get offers_invite_title;
 
   /// No description provided for @offers_invite_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Share a tasty reward with your friends and unlock your own benefit.'**
+  /// **'30% off'**
   String get offers_invite_subtitle;
 
   /// No description provided for @offers_invite_button.
   ///
   /// In en, this message translates to:
-  /// **'Invite now'**
+  /// **'Invite friends'**
   String get offers_invite_button;
+
+  /// No description provided for @offers_coupon_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Use '**
+  String get offers_coupon_prefix;
+
+  /// No description provided for @offers_coupon_highlight.
+  ///
+  /// In en, this message translates to:
+  /// **'discount code'**
+  String get offers_coupon_highlight;
+
+  /// No description provided for @offers_coupon_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **' to get'**
+  String get offers_coupon_suffix;
+
+  /// No description provided for @offers_coupon_second_line.
+  ///
+  /// In en, this message translates to:
+  /// **'a discount on your subscription'**
+  String get offers_coupon_second_line;
+
+  /// No description provided for @offers_coupon_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem now'**
+  String get offers_coupon_button;
+
+  /// No description provided for @offers_countdown_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in'**
+  String get offers_countdown_label;
+
+  /// No description provided for @offers_countdown_value.
+  ///
+  /// In en, this message translates to:
+  /// **'10:18:24'**
+  String get offers_countdown_value;
 
   /// No description provided for @offers_featured_button.
   ///
   /// In en, this message translates to:
-  /// **'Claim offer'**
+  /// **'Subscribe now'**
   String get offers_featured_button;
 
   /// No description provided for @offers_featured_burger_title.
   ///
   /// In en, this message translates to:
-  /// **'Burger King combo'**
+  /// **'Monthly package'**
   String get offers_featured_burger_title;
 
   /// No description provided for @offers_featured_burger_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Large family meal with fries and drinks.'**
+  /// **'Balanced meals all month'**
   String get offers_featured_burger_subtitle;
 
   /// No description provided for @offers_featured_burger_discount.
   ///
   /// In en, this message translates to:
-  /// **'Save 15%'**
+  /// **'-20%'**
   String get offers_featured_burger_discount;
 
   /// No description provided for @offers_featured_burger_badge.
   ///
   /// In en, this message translates to:
-  /// **'Best seller'**
+  /// **'-20%'**
   String get offers_featured_burger_badge;
 
   /// No description provided for @offers_featured_burger_delivery.
   ///
   /// In en, this message translates to:
-  /// **'Delivery in 15 min'**
+  /// **'10:18:24'**
   String get offers_featured_burger_delivery;
 
   /// No description provided for @offers_featured_burger_reviews.
@@ -2075,19 +2123,19 @@ abstract class AppLocalizations {
   /// No description provided for @offers_featured_salad_title.
   ///
   /// In en, this message translates to:
-  /// **'Protein bowl'**
+  /// **'Protein package'**
   String get offers_featured_salad_title;
 
   /// No description provided for @offers_featured_salad_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Protein-packed meals for a lighter day.'**
+  /// **'20 protein-rich meals'**
   String get offers_featured_salad_subtitle;
 
   /// No description provided for @offers_featured_salad_discount.
   ///
   /// In en, this message translates to:
-  /// **'Save 12%'**
+  /// **'Most useful'**
   String get offers_featured_salad_discount;
 
   /// No description provided for @offers_featured_salad_badge.
@@ -2099,7 +2147,7 @@ abstract class AppLocalizations {
   /// No description provided for @offers_featured_salad_delivery.
   ///
   /// In en, this message translates to:
-  /// **'Delivery in 20 min'**
+  /// **'10:18:24'**
   String get offers_featured_salad_delivery;
 
   /// No description provided for @offers_featured_salad_reviews.
@@ -2111,31 +2159,31 @@ abstract class AppLocalizations {
   /// No description provided for @offers_featured_gift_title.
   ///
   /// In en, this message translates to:
-  /// **'Gift box offer'**
+  /// **'3-month subscription'**
   String get offers_featured_gift_title;
 
   /// No description provided for @offers_featured_gift_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Perfect for gifting a full week of meals.'**
+  /// **'Bigger savings with a complete 3-month nutrition plan'**
   String get offers_featured_gift_subtitle;
 
   /// No description provided for @offers_featured_gift_discount.
   ///
   /// In en, this message translates to:
-  /// **'Save 25%'**
+  /// **'-15%'**
   String get offers_featured_gift_discount;
 
   /// No description provided for @offers_featured_gift_badge.
   ///
   /// In en, this message translates to:
-  /// **'Gift ready'**
+  /// **'-15%'**
   String get offers_featured_gift_badge;
 
   /// No description provided for @offers_featured_gift_delivery.
   ///
   /// In en, this message translates to:
-  /// **'Delivery in 30 min'**
+  /// **'10:18:24'**
   String get offers_featured_gift_delivery;
 
   /// No description provided for @offers_featured_gift_reviews.

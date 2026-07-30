@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 
 class OfferDealCard extends StatelessWidget {
@@ -13,193 +13,157 @@ class OfferDealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          width: 111,
-          height: 188,
-          padding: const EdgeInsets.fromLTRB(7, 7, 7, 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            gradient: LinearGradient(
-              colors: [offer.surfaceColor, AppColors.white],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            border: Border.all(
-              color: offer.accentColor.withValues(alpha: 0.16),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: 56,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: 78,
-                        height: 52,
-                        child: Hero(
-                          tag: offer,
-                          child: Image.asset(
-                            offer.imageAsset,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
+    final color = context.colorScheme;
+    final locale = context.localization;
 
-                  if (offer.badgeLabel.isNotEmpty) ...[
-                    _Badge(label: offer.badgeLabel, color: offer.accentColor),
-                    const SizedBox(height: 2),
-                  ],
+    return Semantics(
+      button: true,
+      label: offer.title,
+      child: Material(
+        color: color.surface.withValues(alpha: 0),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+          child: Ink(
+            width: Spacing.offersDealCardWidth,
+            height: Spacing.offersDealCardHeight,
+            decoration: BoxDecoration(
+              color: color.surface,
+              borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+              border: Border.all(
+                color: color.outlineVariant,
+                width: Spacing.border,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+              child: Stack(
+                children: [
+                  PositionedDirectional(
+                    end: 0,
+                    top: 0,
+                    child: Container(
+                      height: Spacing.offersDealBadgeHeight,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                      ),
+                      decoration: BoxDecoration(
+                        color: offer.accentColor,
+                        borderRadius: const BorderRadiusDirectional.only(
+                          topEnd: Radius.circular(Spacing.offersDealCardRadius),
+                          bottomStart: Radius.circular(Spacing.sm),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        offer.discountLabel,
+                        textAlign: TextAlign.center,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontSize: FontSize.size12,
+                          color: color.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      offer.title,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size11,
-                        color: AppColors.textPrimary,
-                      ).copyWith(height: 1.2),
+                    padding: const EdgeInsetsDirectional.only(
+                      top: Spacing.md,
+                      start: Spacing.xs,
+                      end: Spacing.xs,
+                      bottom: Spacing.offersDealFooterHeight,
                     ),
-                  ),
-                 
-                  SizedBox(
-                    height: 25,
-                    child: Text(
-                      offer.subtitle,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
-                        fontSize: FontSize.size10,
-                        color: AppColors.textSecondary,
-                      ).copyWith(height: 1.2),
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  SizedBox(
-                    height: 23,
-                    child: AppButton(
-                      fontWeight: FontWeight.w700,
-                      fontSize: FontSize.size11,
-                      height: 23,
-                      text: offer.buttonLabel,
-                      onPressed: onTap,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.access_time_rounded,
-                        size: 13,
-                        color: AppColors.textHint,
-                      ),
-                      const SizedBox(width: 4),
-                      if (offer.deliveryPrefixLabel != null) ...[
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: Spacing.offersDealImageHeight,
+                          child: Center(
+                            child: Hero(
+                              tag: offer,
+                              child: Image.asset(
+                                offer.imageAsset,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.xs),
                         Text(
-                          offer.deliveryPrefixLabel!,
+                          offer.title,
+                          textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: getMediumStyle(
+                          style: getSemiBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size9,
-                            color: AppColors.textHint,
+                            fontSize: FontSize.size16,
+                            color: color.onSurface,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(height: Spacing.xs),
+                        Text(
+                          offer.subtitle,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontSize: FontSize.size9,
+                            color: color.onSurfaceVariant,
+                          ).copyWith(height: 1.25),
+                        ),
                       ],
-                      Flexible(
-                        child: Text(
-                          offer.deliveryLabel,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size9,
-                            color: AppColors.textPrimary,
+                    ),
+                  ),
+                  PositionedDirectional(
+                    start: 0,
+                    end: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: Spacing.offersDealFooterHeight,
+                      color: offer.footerColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                offer.deliveryPrefixLabel ??
+                                    locale.offers_countdown_label,
+                                textAlign: TextAlign.end,
+                                style: getMediumStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size10,
+                                  color: color.onPrimary,
+                                ),
+                              ),
+                              Text(
+                                offer.deliveryLabel,
+                                textAlign: TextAlign.end,
+                                style: getMediumStyle(
+                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontSize: FontSize.size11,
+                                  color: color.onPrimary,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
+                          const SizedBox(width: Spacing.xs),
+                          Icon(
+                            Icons.schedule_rounded,
+                            size: Spacing.iconLg,
+                            color: color.onPrimary,
+                            semanticLabel: locale.offers_countdown_label,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-              Positioned(
-                left: 0,
-                top: 0,
-                child: _RoundIcon(
-                  icon: Icons.card_giftcard_rounded,
-                  backgroundColor: offer.accentColor,
-                  iconColor: AppColors.white,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RoundIcon extends StatelessWidget {
-  const _RoundIcon({
-    required this.icon,
-    required this.backgroundColor,
-    required this.iconColor,
-  });
-
-  final IconData icon;
-  final Color backgroundColor;
-  final Color iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
-      child: Icon(icon, size: 14, color: iconColor),
-    );
-  }
-}
-
-class _Badge extends StatelessWidget {
-  const _Badge({required this.label, required this.color});
-
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(textAlign: TextAlign.center,
-        label,
-        style: getSemiBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
-          fontSize: FontSize.size10,
-          color: AppColors.white,
         ),
       ),
     );

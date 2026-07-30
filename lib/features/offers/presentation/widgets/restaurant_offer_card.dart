@@ -43,9 +43,9 @@ class RestaurantOfferCard extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      Positioned(
+                      PositionedDirectional(
                         top: 10,
-                        right: 10,
+                        end: 10,
                         child: Container(
                           width: 20,
                           height: 20,
@@ -71,9 +71,9 @@ class RestaurantOfferCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
+                      PositionedDirectional(
                         top: 10,
-                        left: 10,
+                        start: 10,
                         child: _Badge(
                           label: offer.discountLabel,
                           textColor: offer.accentColor,
@@ -84,7 +84,7 @@ class RestaurantOfferCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(6, 3, 6, 4),
+                  padding: const EdgeInsetsDirectional.fromSTEB(6, 3, 6, 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

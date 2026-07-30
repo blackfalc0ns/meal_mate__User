@@ -26,18 +26,16 @@ class OfferDetailsSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale=context.localization;
+    final locale = context.localization;
     return Column(
       children: [
         Container(
-       padding: const EdgeInsets.all(Spacing.sm),
+          padding: const EdgeInsets.all(Spacing.sm),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: AppColors.border),
           ),
           child: Column(
-          
-          
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +55,7 @@ class OfferDetailsSummaryCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                         "$totalPrice ${locale.currency}",
+                          "$totalPrice ${locale.currency}",
                           style: getBoldStyle(
                             fontFamily: FontConstant.ibmPlexSansArabic,
                             fontSize: FontSize.size18,
@@ -74,38 +72,36 @@ class OfferDetailsSummaryCard extends StatelessWidget {
                         text: buttonLabel,
                         onPressed: onPrimaryPressed,
                         height: 48,
-                       // borderRadius: 14,
+                        // borderRadius: 14,
                       ),
                     ),
                   ],
                 ],
               ),
-          
-              
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: Spacing.xs ),
+          padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.lock_outline_rounded,
-                  size: 14,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.lock_outline_rounded,
+                size: 14,
+                color: AppColors.textHint,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                securePaymentLabel,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontSize: FontSize.size10,
                   color: AppColors.textHint,
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  securePaymentLabel,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
-                    fontSize: FontSize.size10,
-                    color: AppColors.textHint,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ),
       ],
     );

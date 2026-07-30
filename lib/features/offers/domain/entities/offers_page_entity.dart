@@ -5,14 +5,14 @@ class OffersPageEntity {
     required this.hero,
     required this.filters,
     required this.featuredOffers,
-    required this.restaurantOffers,
+    required this.couponBanner,
     required this.inviteBanner,
   });
 
   final OffersHeroEntity hero;
   final List<OfferFilterEntity> filters;
   final List<OfferDealEntity> featuredOffers;
-  final List<OfferDealEntity> restaurantOffers;
+  final OfferCouponBannerEntity couponBanner;
   final InviteBannerEntity inviteBanner;
 }
 
@@ -37,9 +37,14 @@ class OffersHeroEntity {
 }
 
 class OfferFilterEntity {
-  const OfferFilterEntity({required this.label, this.isSelected = false});
+  const OfferFilterEntity({
+    required this.label,
+    required this.icon,
+    this.isSelected = false,
+  });
 
   final String label;
+  final IconData icon;
   final bool isSelected;
 }
 
@@ -58,6 +63,7 @@ class OfferDealEntity {
     required this.logoAsset,
     required this.accentColor,
     required this.surfaceColor,
+    required this.footerColor,
     this.detailTitle,
     this.detailSubtitle,
     this.couponCode,
@@ -79,6 +85,7 @@ class OfferDealEntity {
   final String logoAsset;
   final Color accentColor;
   final Color surfaceColor;
+  final Color footerColor;
   final String? detailTitle;
   final String? detailSubtitle;
   final String? couponCode;
@@ -89,16 +96,34 @@ class OfferDealEntity {
 
 enum OfferCategory { offer, restaurant, meal }
 
+class OfferCouponBannerEntity {
+  const OfferCouponBannerEntity({
+    required this.titlePrefix,
+    required this.highlight,
+    required this.titleSuffix,
+    required this.secondLine,
+    required this.buttonLabel,
+  });
+
+  final String titlePrefix;
+  final String highlight;
+  final String titleSuffix;
+  final String secondLine;
+  final String buttonLabel;
+}
+
 class InviteBannerEntity {
   const InviteBannerEntity({
     required this.title,
     required this.subtitle,
     required this.buttonLabel,
     required this.imageAsset,
+    required this.trailingImageAsset,
   });
 
   final String title;
   final String subtitle;
   final String buttonLabel;
   final String imageAsset;
+  final String trailingImageAsset;
 }

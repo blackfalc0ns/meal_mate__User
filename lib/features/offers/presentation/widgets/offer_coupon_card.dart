@@ -27,12 +27,9 @@ class OfferCouponCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 1),
       ),
       child: Column(
         children: [
@@ -42,7 +39,7 @@ class OfferCouponCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -87,7 +84,7 @@ class OfferCouponCard extends StatelessWidget {
               color: AppColors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: color.withOpacity(0.3),
+                color: color.withValues(alpha: 0.3),
                 width: 1.5,
                 style: BorderStyle.solid,
               ),
@@ -98,11 +95,7 @@ class OfferCouponCard extends StatelessWidget {
                 // Coupon code
                 Row(
                   children: [
-                    Icon(
-                      Icons.sell_rounded,
-                      size: 18,
-                      color: color,
-                    ),
+                    Icon(Icons.sell_rounded, size: 18, color: color),
                     const SizedBox(width: 10),
                     Text(
                       couponCode,
@@ -142,7 +135,10 @@ class OfferCouponCard extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: BorderRadius.circular(8),

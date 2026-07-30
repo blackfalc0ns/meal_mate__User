@@ -13,7 +13,7 @@ class OfferDetailsSheetContent extends StatelessWidget {
     required this.offer,
     this.onClose,
     this.onPrimaryPressed,
-    this.padding = const EdgeInsets.fromLTRB(20, 6, 20, 20),
+    this.padding = const EdgeInsetsDirectional.fromSTEB(20, 6, 20, 20),
     this.showCloseButton = true,
     this.showActionButton = true,
   });
@@ -75,7 +75,7 @@ class OfferDetailsSheetContent extends StatelessWidget {
                   text: 'استفد الآن',
                   onPressed: onPrimaryPressed,
                   height: 48,
-                 // borderRadius: 12,
+                  // borderRadius: 12,
                 ),
               ],
             ],

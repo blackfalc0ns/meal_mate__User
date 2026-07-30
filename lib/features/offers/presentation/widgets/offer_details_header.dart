@@ -56,9 +56,7 @@ class OfferDetailsHeader extends StatelessWidget {
           onError: (_, _) {},
         ),
       ),
-      child: Container(
-        color: offer.surfaceColor.withValues(alpha: 0.3),
-      ),
+      child: Container(color: offer.surfaceColor.withValues(alpha: 0.3)),
     );
   }
 
@@ -82,10 +80,10 @@ class OfferDetailsHeader extends StatelessWidget {
   }
 
   Widget _buildTopActionBar(BuildContext context) {
-    return Positioned(
+    return PositionedDirectional(
       top: MediaQuery.of(context).padding.top + 8,
-      left: 16,
-      right: 16,
+      start: 16,
+      end: 16,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -98,10 +96,7 @@ class OfferDetailsHeader extends StatelessWidget {
           // Action buttons
           Row(
             children: [
-              _CircleIconButton(
-                icon: Icons.share_rounded,
-                onTap: onShareTap,
-              ),
+              _CircleIconButton(icon: Icons.share_rounded, onTap: onShareTap),
               const SizedBox(width: 8),
               _CircleIconButton(
                 icon: isFavorite
@@ -118,9 +113,9 @@ class OfferDetailsHeader extends StatelessWidget {
   }
 
   Widget _buildDiscountBadge(BuildContext context) {
-    return Positioned(
+    return PositionedDirectional(
       top: MediaQuery.of(context).padding.top + 60,
-      right: 16,
+      end: 16,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
@@ -158,10 +153,10 @@ class OfferDetailsHeader extends StatelessWidget {
   }
 
   Widget _buildRestaurantInfo() {
-    return Positioned(
+    return PositionedDirectional(
       bottom: 16,
-      left: 16,
-      right: 16,
+      start: 16,
+      end: 16,
       child: Row(
         children: [
           // Restaurant logo
@@ -279,11 +274,7 @@ class _CircleIconButton extends StatelessWidget {
             width: 1,
           ),
         ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: iconColor,
-        ),
+        child: Icon(icon, size: 20, color: iconColor),
       ),
     );
   }

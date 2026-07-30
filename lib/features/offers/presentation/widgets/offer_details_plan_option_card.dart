@@ -30,9 +30,11 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale=context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
+
     return Material(
-      color: Colors.transparent,
+      color: color.surface.withValues(alpha: 0),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
@@ -48,55 +50,55 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow
-                    .withValues(alpha: isSelected ? 0.08 : 0.04),
+                color: AppColors.shadow.withValues(
+                  alpha: isSelected ? 0.08 : 0.04,
+                ),
                 blurRadius: 18,
                 offset: const Offset(0, 8),
               ),
             ],
           ),
           child: Row(
-            textDirection: TextDirection.rtl,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Selection circle (right in RTL)
               AnimatedContainer(
                 duration: const Duration(milliseconds: 180),
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? accentColor : Colors.transparent,
+                  color: isSelected
+                      ? accentColor
+                      : color.surface.withValues(alpha: 0),
                   border: Border.all(
                     color: isSelected ? accentColor : AppColors.textHint,
                     width: 1.4,
                   ),
                 ),
                 child: isSelected
-                    ? const Icon(
+                    ? Icon(
                         Icons.check_rounded,
-                        color: AppColors.white,
+                        color: color.onPrimary,
                         size: 18,
                       )
                     : null,
               ),
               const SizedBox(width: 12),
-              // Image
               SizedBox(
                 width: 70,
                 height: 68,
-                child: Image.asset(imageAsset,fit: BoxFit.cover,),
+                child: Image.asset(imageAsset, fit: BoxFit.cover),
               ),
               const SizedBox(width: 12),
-              // Title + duration + meals (center)
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FittedBox(
-                      child: Text(maxLines: 1,
+                      child: Text(
                         title,
-                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        textAlign: TextAlign.end,
                         style: getBoldStyle(
                           fontFamily: FontConstant.ibmPlexSansArabic,
                           fontSize: FontSize.size14,
@@ -107,7 +109,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       duration,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.end,
                       style: getBoldStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: FontSize.size12,
@@ -115,9 +117,10 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(maxLines: 1,
+                    Text(
                       meals,
-                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      textAlign: TextAlign.end,
                       style: getMediumStyle(
                         fontFamily: FontConstant.ibmPlexSansArabic,
                         fontSize: FontSize.size11,
@@ -128,7 +131,6 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              // Prices (left in RTL)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

@@ -992,35 +992,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offers_title => 'Offers';
 
   @override
-  String get offers_hero_badge => 'Limited time';
+  String get offers_hero_badge => 'Off';
 
   @override
-  String get offers_hero_discount => '20%';
+  String get offers_hero_discount => '30%';
 
   @override
-  String get offers_hero_title => 'Off on monthly plans';
+  String get offers_hero_title => '30% off';
 
   @override
-  String get offers_hero_subtitle => 'Fresh bundles made for your routine';
+  String get offers_hero_subtitle => 'on all plans';
 
   @override
-  String get offers_hero_description =>
-      'Pick a plan that fits your day and enjoy healthy meals with better savings.';
+  String get offers_hero_description => 'Start your healthy journey today';
 
   @override
-  String get offers_hero_button => 'Redeem now';
+  String get offers_hero_button => 'Subscribe now';
 
   @override
   String get offers_filter_all => 'All';
 
   @override
-  String get offers_filter_offers => 'Offers';
+  String get offers_filter_offers => 'Subscriptions';
 
   @override
-  String get offers_filter_restaurants => 'Restaurants';
+  String get offers_filter_restaurants => 'Coupons';
 
   @override
-  String get offers_filter_meals => 'Meals';
+  String get offers_filter_meals => 'Limited time';
+
+  @override
+  String get offers_filter_gifts => 'Gifts';
 
   @override
   String get offers_featured_section_title => 'Featured offers';
@@ -1032,71 +1034,89 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offers_restaurants_section_title => 'Popular restaurants';
 
   @override
-  String get offers_invite_title => 'Invite friends and earn';
+  String get offers_invite_title => 'Invite friends and get';
 
   @override
-  String get offers_invite_subtitle =>
-      'Share a tasty reward with your friends and unlock your own benefit.';
+  String get offers_invite_subtitle => '30% off';
 
   @override
-  String get offers_invite_button => 'Invite now';
+  String get offers_invite_button => 'Invite friends';
 
   @override
-  String get offers_featured_button => 'Claim offer';
+  String get offers_coupon_prefix => 'Use ';
 
   @override
-  String get offers_featured_burger_title => 'Burger King combo';
+  String get offers_coupon_highlight => 'discount code';
 
   @override
-  String get offers_featured_burger_subtitle =>
-      'Large family meal with fries and drinks.';
+  String get offers_coupon_suffix => ' to get';
 
   @override
-  String get offers_featured_burger_discount => 'Save 15%';
+  String get offers_coupon_second_line => 'a discount on your subscription';
 
   @override
-  String get offers_featured_burger_badge => 'Best seller';
+  String get offers_coupon_button => 'Redeem now';
 
   @override
-  String get offers_featured_burger_delivery => 'Delivery in 15 min';
+  String get offers_countdown_label => 'Ends in';
+
+  @override
+  String get offers_countdown_value => '10:18:24';
+
+  @override
+  String get offers_featured_button => 'Subscribe now';
+
+  @override
+  String get offers_featured_burger_title => 'Monthly package';
+
+  @override
+  String get offers_featured_burger_subtitle => 'Balanced meals all month';
+
+  @override
+  String get offers_featured_burger_discount => '-20%';
+
+  @override
+  String get offers_featured_burger_badge => '-20%';
+
+  @override
+  String get offers_featured_burger_delivery => '10:18:24';
 
   @override
   String get offers_featured_burger_reviews => '4.9';
 
   @override
-  String get offers_featured_salad_title => 'Protein bowl';
+  String get offers_featured_salad_title => 'Protein package';
 
   @override
-  String get offers_featured_salad_subtitle =>
-      'Protein-packed meals for a lighter day.';
+  String get offers_featured_salad_subtitle => '20 protein-rich meals';
 
   @override
-  String get offers_featured_salad_discount => 'Save 12%';
+  String get offers_featured_salad_discount => 'Most useful';
 
   @override
   String get offers_featured_salad_badge => 'Healthy pick';
 
   @override
-  String get offers_featured_salad_delivery => 'Delivery in 20 min';
+  String get offers_featured_salad_delivery => '10:18:24';
 
   @override
   String get offers_featured_salad_reviews => '4.8';
 
   @override
-  String get offers_featured_gift_title => 'Gift box offer';
+  String get offers_featured_gift_title => '3-month subscription';
 
   @override
   String get offers_featured_gift_subtitle =>
-      'Perfect for gifting a full week of meals.';
+      'Bigger savings with a complete 3-month nutrition plan';
 
   @override
-  String get offers_featured_gift_discount => 'Save 25%';
+  String get offers_featured_gift_discount => '-15%';
 
   @override
-  String get offers_featured_gift_badge => 'Gift ready';
+  String get offers_featured_gift_badge => '-15%';
 
   @override
-  String get offers_featured_gift_delivery => 'Delivery in 30 min';
+  String get offers_featured_gift_delivery => '10:18:24';
 
   @override
   String get offers_featured_gift_reviews => '5.0';

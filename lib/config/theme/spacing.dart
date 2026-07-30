@@ -452,4 +452,38 @@ class Spacing {
   static const double homeRestaurantCardHeight = 109.53;
   static const double homeInfoCardHeight = 78.0;
   static const double homeReminderHeight = 67.777;
+
+  // Offers Figma measurements.
+  static const double offersHorizontalPadding = 14.0;
+  static const double offersHeroHeight = 150.0;
+  static const double offersHeroAspectRatio = 2.651;
+  static const double offersHeroRadius = 20.07;
+  static const double offersHeroLogoWidth = 95.0;
+  static const double offersHeroButtonWidth = 113.0;
+  static const double offersHeroButtonHeight = 29.0;
+  static const double offersHeroBadgeSize = 78.0;
+  static const double offersHeroCopyWidth = 178.0;
+  static const double offersHeroImageWidth = 318.0;
+  static const double offersIndicatorGap = 10.0;
+  static const double offersIndicatorDotSize = 8.0;
+  static const double offersIndicatorActiveWidth = 32.0;
+  static const double offersFilterHeight = 42.0;
+  static const double offersFilterGap = 7.0;
+  static const double offersFilterIconSize = 16.0;
+  static const double offersFilterHorizontalPadding = 12.0;
+  static const double offersDealRowHeight = 192.0;
+  static const double offersDealCardWidth = 111.0;
+  static const double offersDealCardHeight = 191.0;
+  static const double offersDealCardRadius = 14.31;
+  static const double offersDealImageHeight = 76.0;
+  static const double offersDealFooterHeight = 48.0;
+  static const double offersDealBadgeHeight = 25.0;
+  static const double offersCouponBannerHeight = 77.0;
+  static const double offersCouponBannerRadius = 22.93;
+  static const double offersCouponButtonWidth = 117.0;
+  static const double offersCouponButtonHeight = 30.0;
+  static const double offersInviteBannerHeight = 114.0;
+  static const double offersInviteBannerRadius = 27.86;
+  static const double offersInvitePeopleWidth = 224.0;
+  static const double offersInviteGiftWidth = 112.0;
 }

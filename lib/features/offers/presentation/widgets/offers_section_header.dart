@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class OffersSectionHeader extends StatelessWidget {
   const OffersSectionHeader({
@@ -11,36 +11,46 @@ class OffersSectionHeader extends StatelessWidget {
     this.actionLabel,
     this.onActionTap,
     this.icon,
-    this.iconColor = AppColors.primaryDark,
-    this.actionColor = AppColors.primaryDark,
+    this.iconColor,
+    this.actionColor,
   });
 
   final String title;
   final String? actionLabel;
   final VoidCallback? onActionTap;
   final IconData? icon;
-  final Color iconColor;
-  final Color actionColor;
+  final Color? iconColor;
+  final Color? actionColor;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Spacing.sm,horizontal: Spacing.screenH),
+      padding: const EdgeInsets.symmetric(
+        vertical: Spacing.sm,
+        horizontal: Spacing.screenH,
+      ),
       child: Row(
-        textDirection: TextDirection.rtl,
         children: [
           Row(
-            textDirection: TextDirection.rtl,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) Icon(icon, size: 18, color: iconColor),
-              if (icon != null) const SizedBox(width: 4),
+              if (icon != null)
+                Icon(
+                  icon,
+                  size: Spacing.iconSm + Spacing.xs / 2,
+                  color: iconColor ?? color.primary,
+                  semanticLabel: locale.offers_featured_section_title,
+                ),
+              if (icon != null) const SizedBox(width: Spacing.xs),
               Text(
                 title,
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.ibmPlexSansArabic,
                   fontSize: FontSize.size15,
-                  color: AppColors.textPrimary,
+                  color: color.onSurface,
                 ),
               ),
             ],
@@ -50,21 +60,20 @@ class OffersSectionHeader extends StatelessWidget {
             GestureDetector(
               onTap: onActionTap,
               child: Row(
-                textDirection: TextDirection.ltr,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 14,
-                    color: actionColor,
+                    size: Spacing.iconSm,
+                    color: actionColor ?? color.primary,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: Spacing.xs),
                   Text(
                     actionLabel!,
                     style: getBoldStyle(
                       fontFamily: FontConstant.ibmPlexSansArabic,
                       fontSize: FontSize.size14,
-                      color: actionColor,
+                      color: actionColor ?? color.primary,
                     ),
                   ),
                 ],

@@ -978,35 +978,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offers_title => 'العروض';
 
   @override
-  String get offers_hero_badge => 'لفترة محدودة';
+  String get offers_hero_badge => 'خصم';
 
   @override
-  String get offers_hero_discount => '20%';
+  String get offers_hero_discount => '30%';
 
   @override
-  String get offers_hero_title => 'خصم على الباقات الشهرية';
+  String get offers_hero_title => 'خصم 30%';
 
   @override
-  String get offers_hero_subtitle => 'باقات طازجة تناسب روتينك اليومي';
+  String get offers_hero_subtitle => 'على جميع الباقات';
 
   @override
-  String get offers_hero_description =>
-      'اختر الباقة المناسبة ليومك واستمتع بوجبات صحية مع توفير أكبر.';
+  String get offers_hero_description => 'ابدأ رحلتك الصحية اليوم';
 
   @override
-  String get offers_hero_button => 'استفد الآن';
+  String get offers_hero_button => 'اشترك الآن';
 
   @override
   String get offers_filter_all => 'الكل';
 
   @override
-  String get offers_filter_offers => 'العروض';
+  String get offers_filter_offers => 'اشتراكات';
 
   @override
-  String get offers_filter_restaurants => 'المطاعم';
+  String get offers_filter_restaurants => 'الكوبونات';
 
   @override
-  String get offers_filter_meals => 'الوجبات';
+  String get offers_filter_meals => 'لفترة محدودة';
+
+  @override
+  String get offers_filter_gifts => 'الهدايا';
 
   @override
   String get offers_featured_section_title => 'عروض مميزة';
@@ -1018,70 +1020,89 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offers_restaurants_section_title => 'مطاعم رائجة';
 
   @override
-  String get offers_invite_title => 'ادعُ أصدقاءك واربح';
+  String get offers_invite_title => 'ادع أصدقائك واحصل على';
 
   @override
-  String get offers_invite_subtitle =>
-      'شارك أصدقاءك عرضًا لذيذًا واحصل على مكافأتك الخاصة.';
+  String get offers_invite_subtitle => 'خصم 30%';
 
   @override
-  String get offers_invite_button => 'ادعُ الآن';
+  String get offers_invite_button => 'دعوة الأصدقاء';
 
   @override
-  String get offers_featured_button => 'احصل على العرض';
+  String get offers_coupon_prefix => 'استخدم ';
 
   @override
-  String get offers_featured_burger_title => 'باقة برجر كينج';
+  String get offers_coupon_highlight => 'كود الخصم';
 
   @override
-  String get offers_featured_burger_subtitle =>
-      'وجبة عائلية كبيرة مع البطاطس والمشروبات.';
+  String get offers_coupon_suffix => ' للحصول';
 
   @override
-  String get offers_featured_burger_discount => 'وفّر 15%';
+  String get offers_coupon_second_line => 'على خصم على اشتراكك';
 
   @override
-  String get offers_featured_burger_badge => 'الأكثر مبيعًا';
+  String get offers_coupon_button => 'استفد الآن';
 
   @override
-  String get offers_featured_burger_delivery => 'التوصيل خلال 15 دقيقة';
+  String get offers_countdown_label => 'ينتهي خلال';
+
+  @override
+  String get offers_countdown_value => '10:18:24';
+
+  @override
+  String get offers_featured_button => 'اشترك الآن';
+
+  @override
+  String get offers_featured_burger_title => 'الباقة الشهرية';
+
+  @override
+  String get offers_featured_burger_subtitle => 'وجبات متوازنة طول الشهر';
+
+  @override
+  String get offers_featured_burger_discount => '-20%';
+
+  @override
+  String get offers_featured_burger_badge => '-20%';
+
+  @override
+  String get offers_featured_burger_delivery => '10:18:24';
 
   @override
   String get offers_featured_burger_reviews => '4.9';
 
   @override
-  String get offers_featured_salad_title => 'وعاء البروتين';
+  String get offers_featured_salad_title => 'باقة البروتين';
 
   @override
-  String get offers_featured_salad_subtitle => 'وجبات غنية بالبروتين ليوم أخف.';
+  String get offers_featured_salad_subtitle => '20 وجبة غنية بالبروتين';
 
   @override
-  String get offers_featured_salad_discount => 'وفّر 12%';
+  String get offers_featured_salad_discount => 'الأكثر فائدة';
 
   @override
   String get offers_featured_salad_badge => 'اختيار صحي';
 
   @override
-  String get offers_featured_salad_delivery => 'التوصيل خلال 20 دقيقة';
+  String get offers_featured_salad_delivery => '10:18:24';
 
   @override
   String get offers_featured_salad_reviews => '4.8';
 
   @override
-  String get offers_featured_gift_title => 'عرض صندوق الهدايا';
+  String get offers_featured_gift_title => 'اشتراك 3 أشهر';
 
   @override
   String get offers_featured_gift_subtitle =>
-      'مثالي لإهداء أسبوع كامل من الوجبات.';
+      'توفير أكبر مع خطة غذائية متكاملة لثلاثة أشهر';
 
   @override
-  String get offers_featured_gift_discount => 'وفّر 25%';
+  String get offers_featured_gift_discount => '-15%';
 
   @override
-  String get offers_featured_gift_badge => 'جاهز للإهداء';
+  String get offers_featured_gift_badge => '-15%';
 
   @override
-  String get offers_featured_gift_delivery => 'التوصيل خلال 30 دقيقة';
+  String get offers_featured_gift_delivery => '10:18:24';
 
   @override
   String get offers_featured_gift_reviews => '5.0';
