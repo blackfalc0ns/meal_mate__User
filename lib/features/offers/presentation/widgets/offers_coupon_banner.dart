@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 
 class OffersCouponBanner extends StatelessWidget {
@@ -9,16 +10,25 @@ class OffersCouponBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
-    return Padding(
-      padding: const EdgeInsets.all(Spacing.screenH),
-      child: Center(
-        child: SizedBox(height: 60,
-          child: Image.asset(
-            banner.imageAsset,
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Container(
+      height: Spacing.offersCouponBannerHeight,
+      margin: const EdgeInsets.symmetric(
+        horizontal: Spacing.offersHorizontalPadding,
+      ),
+      decoration: BoxDecoration(
+        color: color.tertiaryContainer,
+        borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Semantics(
+        label: '${locale.nav_offers}: ${banner.buttonLabel}',
+        child: Image.asset(
+          banner.imageAsset,
           fit: BoxFit.cover,
-            width: double.infinity,
-          ),
+          width: double.infinity,
         ),
       ),
     );

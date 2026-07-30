@@ -82,7 +82,7 @@ class OfferDealCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: Spacing.xs),
+                      
                       Text(
                         offer.title,
                         textAlign: TextAlign.center,
@@ -106,7 +106,7 @@ class OfferDealCard extends StatelessWidget {
                           color: color.onSurfaceVariant,
                         ).copyWith(height: 1.20),
                       ),
-                      SizedBox(height: Spacing.base),
+                      SizedBox(height: Spacing.xs),
                     ],
                   ),
                 ),

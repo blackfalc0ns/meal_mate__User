@@ -181,7 +181,7 @@ class MealMateDrawerSection extends StatelessWidget {
       children: [
         Text(
           title,
-          textAlign: TextAlign.right,
+          
           style: getSemiBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size10,

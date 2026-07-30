@@ -22,10 +22,10 @@ class CalendarMealDetails extends StatelessWidget {
           meal.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.right,
+         
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: 14.5,
+            fontSize: 13,
             color: color.onSurface,
           ).copyWith(height: 1.15),
         ),

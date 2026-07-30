@@ -24,7 +24,7 @@ class SubscriptionBestValueBadge extends StatelessWidget {
         locale.subscription_best_value,
         style: getBoldStyle(
           fontFamily: FontConstant.alexandria,
-          fontSize: FontSize.size10,
+          fontSize: FontSize.size9,
           color: color.onPrimary,
         ),
       ),

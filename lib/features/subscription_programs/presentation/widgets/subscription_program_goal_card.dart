@@ -105,9 +105,9 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.right,
-                            style: getBoldStyle(
+                            style: getSemiBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size17,
+                              fontSize: FontSize.size14,
                               color: color.onSurface,
                             ),
                           ),
@@ -126,7 +126,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         textAlign: TextAlign.right,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.onSurfaceVariant,
                         ),
                       ),

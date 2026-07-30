@@ -21,10 +21,10 @@ class SubscriptionProgramHeader extends StatelessWidget {
           children: [
             Text(
               locale.subscription_program_title,
-              textAlign: TextAlign.right,
+           
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size22,
+                fontSize: FontSize.size16,
                 color: color.onSurface,
               ),
             ),

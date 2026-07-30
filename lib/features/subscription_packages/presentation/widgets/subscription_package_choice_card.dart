@@ -109,9 +109,9 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                                 title,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: getBoldStyle(
+                                style: getSemiBoldStyle(
                                   fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size20,
+                                  fontSize: FontSize.size14,
                                   color: color.onSurface,
                                 ),
                               ),

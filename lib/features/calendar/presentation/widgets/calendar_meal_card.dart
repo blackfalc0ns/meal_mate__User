@@ -24,7 +24,7 @@ class CalendarMealCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     return SizedBox(
-      height: 147,
+      height: 155,
       child: Column(
         children: [
           SizedBox(
