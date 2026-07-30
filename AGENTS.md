@@ -213,3 +213,16 @@ If a model does not already contain an image field, add one instead of passing t
 - Always inspect the Figma file and its nodes before implementing.
 - Never estimate values from images when they are available in Figma.
 - Avoid font sizes that are difficult to read. Use reasonable minimum font sizes for body text and labels unless there is a compelling design reason not to.
+
+# CRITICAL RULE:
+
+If you fail to complete any step, you MUST ask me before doing anything else.
+
+Do NOT:
+- Assume values.
+- Invent implementations.
+- Redesign the UI.
+- Skip any requirement.
+- Continue with a workaround without my approval.
+
+Instead, stop, explain the issue, and ask me exactly what you need.
