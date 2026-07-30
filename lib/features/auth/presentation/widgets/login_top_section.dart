@@ -29,7 +29,7 @@ class LoginTopSection extends StatelessWidget {
             Text(
               l10n.welcome_back,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size28,
                 color: AppColors.black,
               ),
@@ -41,7 +41,7 @@ class LoginTopSection extends StatelessWidget {
                   TextSpan(
                     text: 'Meal',
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size40,
                       color: AppColors.primaryDark,
                     ),
@@ -49,7 +49,7 @@ class LoginTopSection extends StatelessWidget {
                   TextSpan(
                     text: 'Mate',
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size40,
                       color: AppColors.primary,
                     ),
@@ -61,7 +61,7 @@ class LoginTopSection extends StatelessWidget {
             Text(
               'سجل دخولك للوصول الى خطتك',
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.black,
               ),
@@ -69,7 +69,7 @@ class LoginTopSection extends StatelessWidget {
             Text(
               'الغذائية ومتابعة أهدافك الصحية',
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.black,
               ),

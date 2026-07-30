@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 
 /// ─────────────────────────────────────────────────────────────
-/// App text styles — based on the Cairo font family.
+/// App text styles.
 /// ─────────────────────────────────────────────────────────────
 class AppTextStyles {
   AppTextStyles._();
 
-  static const String _fontFamily = 'Cairo';
+  static const String _fontFamily = FontConstant.alexandria;
 
   // ── Headings ──
   static const TextStyle h1 = TextStyle(

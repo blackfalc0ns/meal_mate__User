@@ -54,7 +54,7 @@ class SubscriptionDetailsHeader extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size18,
                       color: color.primary,
                     ),
@@ -66,7 +66,7 @@ class SubscriptionDetailsHeader extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size8,
                   color: color.onSurfaceVariant,
                 ),

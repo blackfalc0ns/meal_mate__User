@@ -17,7 +17,7 @@ class CalendarMealPickerRestaurantDescription extends StatelessWidget {
         locale.calendar_restaurant_description,
         textAlign: TextAlign.right,
         style: getRegularStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: 12,
           color: color.onSurface.withValues(alpha: 0.62),
         ).copyWith(height: 20 / 12),

@@ -107,7 +107,7 @@ class AppTextField extends StatelessWidget {
       style:
           textStyle ??
           getRegularStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size14,
             color: AppColors.textPrimary,
           ),
@@ -130,19 +130,19 @@ class AppTextField extends StatelessWidget {
         labelStyle:
             labelStyle ??
             getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size13,
               color: AppColors.textSecondary,
             ),
         hintStyle:
             hintStyle ??
             getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size13,
               color: AppColors.textHint,
             ),
         errorStyle: getRegularStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size12,
           color: AppColors.error,
         ),

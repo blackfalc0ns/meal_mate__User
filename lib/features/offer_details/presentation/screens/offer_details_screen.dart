@@ -98,7 +98,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
         Text(
           l10n.offer_details_info_title,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size16,
             color: AppColors.textPrimary,
           ),
@@ -118,7 +118,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   content: Text(
                     'تم نسخ الرمز بنجاح',
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
                       color: AppColors.white,
                     ),
@@ -148,7 +148,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
         Text(
           l10n.offer_details_plan_section_title,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size16,
             color: AppColors.textPrimary,
           ),

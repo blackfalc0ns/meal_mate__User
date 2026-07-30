@@ -83,7 +83,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
               Text(
                 l10n.family_add_member,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.onSurface,
                   fontSize: FontSize.size17,
                 ),
@@ -93,7 +93,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                 l10n.family_add_member_dialog_subtitle,
                 textAlign: TextAlign.center,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.onSurfaceVariant,
                   fontSize: FontSize.size10,
                 ),
@@ -190,7 +190,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                 child: Text(
                   l10n.family_cancel,
                   style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: color.onSurface,
                     fontSize: FontSize.size14,
                   ),
@@ -236,7 +236,7 @@ class _LabeledField extends StatelessWidget {
             Text(
               label,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 color: color.onSurface,
                 fontSize: FontSize.size10,
               ),
@@ -254,12 +254,12 @@ class _LabeledField extends StatelessWidget {
 
             contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
             hintStyle: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               color: color.onSurfaceVariant,
               fontSize: FontSize.size10,
             ),
             textStyle: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               color: color.onSurface,
               fontSize: FontSize.size10,
             ),
@@ -279,7 +279,7 @@ class _LabeledField extends StatelessWidget {
                     child: Text(
                       suffix!,
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         color: color.onSurface,
                         fontSize: FontSize.size10,
                       ),
@@ -322,7 +322,7 @@ class _ChoiceSection extends StatelessWidget {
             Text(
               label,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 color: color.onSurface,
                 fontSize: FontSize.size10,
               ),
@@ -356,7 +356,7 @@ class _ChoiceSection extends StatelessWidget {
                   child: Text(
                     choices[index],
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       color: color.onSurface,
                       fontSize: FontSize.size10,
                     ),
@@ -401,7 +401,7 @@ class _InfoHint extends StatelessWidget {
                 Text(
                   l10n.family_info,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: color.onSurface,
                     fontSize: FontSize.size10,
                   ),
@@ -411,7 +411,7 @@ class _InfoHint extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getRegularStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: color.onSurfaceVariant,
                     fontSize: FontSize.size10,
                   ),

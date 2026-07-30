@@ -18,7 +18,7 @@ class MonthlyPlanSummarySection extends StatelessWidget {
           textAlign: TextAlign.center,
           text: TextSpan(
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size33,
               color: AppColors.quaternary500,
             ).copyWith(height: 1),
@@ -68,7 +68,7 @@ class MonthlyPlanSummarySection extends StatelessWidget {
               Text(
                 plan.discountLabel,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,
                   color: AppColors.white,
                 ),
@@ -96,7 +96,7 @@ class _PlanMeta extends StatelessWidget {
         Text(
           text,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: AppColors.appTextMuted,
           ),

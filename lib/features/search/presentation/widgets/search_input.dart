@@ -48,7 +48,7 @@ class SearchInput extends StatelessWidget {
                 onChanged: onChanged,
                 textAlign: TextAlign.right,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.onSurface,
                 ),
                 decoration: InputDecoration(
@@ -85,7 +85,7 @@ class SearchInput extends StatelessWidget {
             child: Text(
               locale.search_cancel,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: color.primary,
               ),

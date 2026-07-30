@@ -67,7 +67,7 @@ class OfferDetailsInfoCard extends StatelessWidget {
                       Text(
                         'رمز الخصم',
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: 12,
                           color: AppColors.primaryVariant,
                         ),
@@ -144,7 +144,7 @@ class _InfoSection extends StatelessWidget {
                       title,
 
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: AppColors.primaryVariant,
                       ),
@@ -154,7 +154,7 @@ class _InfoSection extends StatelessWidget {
                       subtitle,
                       textAlign: TextAlign.end,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: 11,
                         color: AppColors.textHint,
                       ),
@@ -195,7 +195,7 @@ class _CouponChip extends StatelessWidget {
             code,
             textAlign: TextAlign.center,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: 12,
               color: accentColor,
             ),
@@ -230,7 +230,7 @@ class _CopyButton extends StatelessWidget {
           Text(
             label,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: 11,
               color: AppColors.textPrimary,
             ),

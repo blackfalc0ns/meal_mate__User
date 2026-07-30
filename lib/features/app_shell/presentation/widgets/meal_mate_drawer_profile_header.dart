@@ -60,7 +60,7 @@ class MealMateDrawerProfileHeader extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size14,
                           color: color.onPrimary,
                         ),
@@ -162,7 +162,7 @@ class MealMateDrawerProfileMetaRow extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onPrimary,
             ),

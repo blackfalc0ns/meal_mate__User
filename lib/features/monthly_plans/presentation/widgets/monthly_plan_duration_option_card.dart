@@ -46,7 +46,7 @@ class MonthlyPlanDurationOptionCard extends StatelessWidget {
               Text(
                 duration,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size14,
                   color: isSelected ? color.onPrimary : color.onSurface,
                 ),
@@ -54,7 +54,7 @@ class MonthlyPlanDurationOptionCard extends StatelessWidget {
               Text(
                 label,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size8,
                   color: isSelected ? color.onPrimary : color.onSurfaceVariant,
                 ),

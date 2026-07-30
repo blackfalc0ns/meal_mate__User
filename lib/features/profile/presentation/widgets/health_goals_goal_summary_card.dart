@@ -38,7 +38,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                   locale.health_goals_current_goal,
                   textAlign: TextAlign.right,
                   style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
                     color: color.onSurfaceVariant,
                   ),
@@ -47,7 +47,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                   locale.health_goals_weight_loss,
                   textAlign: TextAlign.right,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size19,
                     color: color.primary,
                   ),
@@ -61,7 +61,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                         locale.health_goals_progress,
                         textAlign: TextAlign.center,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
@@ -73,7 +73,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                           locale.health_goals_target_weight,
                           textAlign: TextAlign.center,
                           style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
                             color: color.onSurfaceVariant,
                           ),
@@ -85,7 +85,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                         locale.health_goals_current_weight,
                         textAlign: TextAlign.center,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
@@ -102,7 +102,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                         '60%',
                         textAlign: TextAlign.center,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.primary,
                         ),
@@ -113,7 +113,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                         '72 كجم',
                         textAlign: TextAlign.center,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.onSurface,
                         ),
@@ -136,7 +136,7 @@ class HealthGoalsGoalSummaryCard extends StatelessWidget {
                           child: Text(
                             '78 كجم',
                             style: getSemiBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: color.primary,
                             ),

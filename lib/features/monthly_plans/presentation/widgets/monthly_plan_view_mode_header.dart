@@ -26,7 +26,7 @@ class MonthlyPlanViewModeHeader extends StatelessWidget {
         Text(
           locale.subscription_details_view_mode,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size11,
             color: color.onSurfaceVariant,
           ),

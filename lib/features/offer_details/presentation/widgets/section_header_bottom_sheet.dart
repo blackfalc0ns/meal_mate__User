@@ -64,7 +64,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size16,
                         color: AppColors.textPrimary,
                       ),
@@ -99,7 +99,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                         Text(
                           'خصم',
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size16,
                             color: AppColors.textPrimary,
                           ),
@@ -107,7 +107,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                         Text(
                           discountLabel,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: 40,
                             color: offer.accentColor,
                           ),
@@ -115,7 +115,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                         Text(
                           titleLine1,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size18,
                             color: AppColors.textPrimary,
                           ),
@@ -124,7 +124,7 @@ class SectionHeaderBottomSheet extends StatelessWidget {
                         Text(
                           titleLine2,
                           style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
                             color: AppColors.textSecondary,
                           ),

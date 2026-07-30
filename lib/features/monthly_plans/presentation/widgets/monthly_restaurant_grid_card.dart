@@ -75,7 +75,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                   color: color.onSurface,
                 ),
@@ -86,7 +86,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size9,
                   color: color.onSurfaceVariant,
                 ),
@@ -98,7 +98,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                   Text(
                     '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                     ),
                   ),
@@ -108,7 +108,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                   Text(
                     restaurant.rating,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                     ),
                   ),
@@ -125,7 +125,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 child: Text(
                   '${restaurant.meals} ${locale.subscription_details_meals_in_plan}',
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),

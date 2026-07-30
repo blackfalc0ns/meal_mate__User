@@ -55,7 +55,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
               child: Text(
                 l10n.auth_new_password_title,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size24,
                   color: AppColors.textPrimary,
                 ),
@@ -66,7 +66,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
               l10n.auth_new_password_hint,
               textAlign: TextAlign.center,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.textSecondary,
               ).copyWith(height: 1.45),

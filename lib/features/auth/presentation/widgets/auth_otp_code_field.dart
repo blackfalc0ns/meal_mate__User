@@ -68,7 +68,7 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
             textAlign: TextAlign.center,
             maxLength: 1,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size24,
               color: AppColors.textPrimary,
             ),

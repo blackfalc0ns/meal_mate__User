@@ -141,7 +141,7 @@ class OfferDetailsHeader extends StatelessWidget {
             Text(
               offer.discountLabel,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.white,
               ),
@@ -197,7 +197,7 @@ class OfferDetailsHeader extends StatelessWidget {
                 Text(
                   offer.title,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size18,
                     color: AppColors.white,
                   ),
@@ -216,7 +216,7 @@ class OfferDetailsHeader extends StatelessWidget {
                     Text(
                       offer.reviewLabel,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: AppColors.white.withValues(alpha: 0.9),
                       ),
@@ -231,7 +231,7 @@ class OfferDetailsHeader extends StatelessWidget {
                     Text(
                       offer.deliveryLabel,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: AppColors.white.withValues(alpha: 0.9),
                       ),

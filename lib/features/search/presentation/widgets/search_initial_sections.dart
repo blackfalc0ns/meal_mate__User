@@ -62,7 +62,7 @@ class SearchInitialSections extends StatelessWidget {
                   label: Text(
                     label,
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
                       color: color.onPrimary,
                     ),
@@ -140,7 +140,7 @@ class SearchInitialSections extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size10,
                               color: color.onSurface,
                             ),

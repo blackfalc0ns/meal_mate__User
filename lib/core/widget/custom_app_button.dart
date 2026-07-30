@@ -93,7 +93,7 @@ class CustomAppButton extends StatelessWidget {
   Widget _buildLabel(double fontSize) {
     final style = getBoldStyle(
       fontSize: fontSize,
-      fontFamily: FontConstant.ibmPlexSansArabic,
+      fontFamily: FontConstant.alexandria,
       color: textColor,
     ).copyWith(fontWeight: fontWeight ?? FontWeight.w700);
 

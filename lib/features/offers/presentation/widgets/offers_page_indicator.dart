@@ -11,7 +11,7 @@ class OffersPageIndicator extends StatelessWidget {
     final locale = context.localization;
 
     return Semantics(
-      label: locale.offers_title,
+      label: locale.nav_offers,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(4, (index) {

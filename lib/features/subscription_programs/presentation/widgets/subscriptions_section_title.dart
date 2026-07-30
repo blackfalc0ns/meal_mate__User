@@ -25,7 +25,7 @@ class SubscriptionsSectionTitle extends StatelessWidget {
           title,
           textAlign: TextAlign.right,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size20,
             color: color.onSurface,
           ),

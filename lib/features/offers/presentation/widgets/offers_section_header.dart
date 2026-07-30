@@ -42,13 +42,13 @@ class OffersSectionHeader extends StatelessWidget {
                   icon,
                   size: Spacing.iconSm + Spacing.xs / 2,
                   color: iconColor ?? color.primary,
-                  semanticLabel: locale.offers_featured_section_title,
+                  semanticLabel: '${locale.nav_offers}: $title',
                 ),
               if (icon != null) const SizedBox(width: Spacing.xs),
               Text(
                 title,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size15,
                   color: color.onSurface,
                 ),
@@ -71,7 +71,7 @@ class OffersSectionHeader extends StatelessWidget {
                   Text(
                     actionLabel!,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: actionColor ?? color.primary,
                     ),

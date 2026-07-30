@@ -50,7 +50,7 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
                       restaurantName,
                       textAlign: TextAlign.right,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: 20.8,
                         color: color.onSurface,
                       ).copyWith(letterSpacing: 0.46),

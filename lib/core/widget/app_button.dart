@@ -181,7 +181,7 @@ class AppButton extends StatelessWidget {
 
     final style = getBoldStyle(
       fontSize: fontSize ?? FontSize.size16,
-      fontFamily: FontConstant.ibmPlexSansArabic,
+      fontFamily: FontConstant.alexandria,
       color: variant == AppButtonVariant.filled
           ? (textColor ?? colors.onPrimary)
           : (textColor ?? effectiveColor),

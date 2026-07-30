@@ -24,7 +24,7 @@ class SearchResultMeta extends StatelessWidget {
             label,
             textDirection: TextDirection.rtl,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface,
             ),

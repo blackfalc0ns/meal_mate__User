@@ -68,7 +68,7 @@ class _AddMemberCard extends StatelessWidget {
                   l10n.family_add_member,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: color.primary,
                     fontSize: FontSize.size8,
                   ).copyWith(height: 1.1),
@@ -78,7 +78,7 @@ class _AddMemberCard extends StatelessWidget {
                   l10n.family_add_member_subtitle,
                   textAlign: TextAlign.center,
                   style: getRegularStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: color.onSurfaceVariant,
                     fontSize: FontSize.size6,
                   ).copyWith(height: 1.25),
@@ -136,7 +136,7 @@ class _MemberCard extends StatelessWidget {
                     child: Text(
                       context.localization.family_owner,
                       style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         color: color.onPrimary,
                         fontSize: FontSize.size6,
                       ),
@@ -151,7 +151,7 @@ class _MemberCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               color: color.onSurface,
               fontSize: FontSize.size8,
             ),
@@ -173,7 +173,7 @@ class _MemberCard extends StatelessWidget {
                   Text(
                     member.actionLabel,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       color: color.onPrimaryContainer,
                       fontSize: FontSize.size9,
                     ),
@@ -230,7 +230,7 @@ class _MemberDetails extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size7,
                       color: color.onSurfaceVariant,
                     ),

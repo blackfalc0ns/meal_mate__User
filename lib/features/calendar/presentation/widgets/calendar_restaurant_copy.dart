@@ -22,7 +22,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.right,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: color.onSurface,
             ).copyWith(letterSpacing: 0),
@@ -34,7 +34,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.right,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onSurface.withValues(alpha: 0.62),
             ).copyWith(letterSpacing: 0),
@@ -44,7 +44,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
             textAlign: TextAlign.right,
             text: TextSpan(
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size11,
                 color: color.onSurface,
               ).copyWith(letterSpacing: 0),
@@ -52,7 +52,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
                 TextSpan(
                   text: '${restaurant.mealCount}',
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: 10.96,
                     color: color.onSurface,
                   ).copyWith(letterSpacing: 0),

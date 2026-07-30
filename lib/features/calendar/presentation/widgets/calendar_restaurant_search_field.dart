@@ -27,7 +27,7 @@ class CalendarRestaurantSearchField extends StatelessWidget {
               locale.calendar_search_restaurant_hint,
               textAlign: TextAlign.center,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: 13,
                 color: color.onSurface.withValues(alpha: 0.62),
               ).copyWith(height: 20 / 13),

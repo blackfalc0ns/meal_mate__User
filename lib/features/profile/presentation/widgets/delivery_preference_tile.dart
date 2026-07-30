@@ -45,7 +45,7 @@ class DeliveryPreferenceTile extends StatelessWidget {
                 Text(
                   title,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurface,
                   ),
@@ -57,7 +57,7 @@ class DeliveryPreferenceTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
                   style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size8,
                     color: color.onSurfaceVariant,
                   ),

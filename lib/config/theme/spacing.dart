@@ -471,12 +471,12 @@ class Spacing {
   static const double offersFilterGap = 7.0;
   static const double offersFilterIconSize = 16.0;
   static const double offersFilterHorizontalPadding = 12.0;
-  static const double offersDealRowHeight = 192.0;
-  static const double offersDealCardWidth = 111.0;
-  static const double offersDealCardHeight = 191.0;
+  static const double offersDealRowHeight = 180.0;
+  static const double offersDealCardWidth = 145.0;
+  static const double offersDealCardHeight = 120.0;
   static const double offersDealCardRadius = 14.31;
   static const double offersDealImageHeight = 76.0;
-  static const double offersDealFooterHeight = 48.0;
+  static const double offersDealFooterHeight = 40.0;
   static const double offersDealBadgeHeight = 25.0;
   static const double offersCouponBannerHeight = 77.0;
   static const double offersCouponBannerRadius = 22.93;

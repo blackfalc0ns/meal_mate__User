@@ -32,7 +32,7 @@ class CalendarMealOptionCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: 16.64,
                         color: color.onSurface,
                       ).copyWith(height: 24.96 / 16.64),
@@ -45,7 +45,7 @@ class CalendarMealOptionCard extends StatelessWidget {
                       child: Text(
                         locale.calendar_ingredients,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size10,
                           color: color.onSurface,
                         ),

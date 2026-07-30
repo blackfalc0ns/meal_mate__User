@@ -35,7 +35,7 @@ class MealDetailsNutritionCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: color.onSurface,
               ).copyWith(height: 1),
@@ -45,7 +45,7 @@ class MealDetailsNutritionCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: color.onSurface,
               ).copyWith(height: locale.localeName == 'ar' ? 1.35 : 1.1),

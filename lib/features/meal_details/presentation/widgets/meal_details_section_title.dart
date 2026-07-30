@@ -17,7 +17,7 @@ class MealDetailsSectionTitle extends StatelessWidget {
       title,
       textAlign: TextAlign.right,
       style: getSemiBoldStyle(
-        fontFamily: FontConstant.ibmPlexSansArabic,
+        fontFamily: FontConstant.alexandria,
         fontSize: FontSize.size12,
         color: color.primary,
       ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),

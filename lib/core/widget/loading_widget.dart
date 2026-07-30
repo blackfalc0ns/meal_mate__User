@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 
 /// ─────────────────────────────────────────────────────────────
@@ -29,7 +30,7 @@ class LoadingWidget extends StatelessWidget {
     this.size = 20.0,
     this.color,
     this.strokeWidth = 2.5,
-  })  : message = null;
+  }) : message = null;
 
   final String? message;
   final double size;
@@ -69,7 +70,7 @@ class LoadingWidget extends StatelessWidget {
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
-              fontFamily: 'Cairo',
+              fontFamily: FontConstant.alexandria,
             ),
             textAlign: TextAlign.center,
           ),

@@ -21,7 +21,7 @@ class ProfileLogoutButton extends StatelessWidget {
         label: Text(
           locale.drawer_logout,
           style: getMediumStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: Spacing.profileSettingsTitleFontSize,
             color: color.error,
           ),

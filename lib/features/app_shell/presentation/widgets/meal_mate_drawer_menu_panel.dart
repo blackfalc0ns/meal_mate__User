@@ -183,7 +183,7 @@ class MealMateDrawerSection extends StatelessWidget {
           title,
           textAlign: TextAlign.right,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size10,
             color: color.onPrimary,
           ),
@@ -230,7 +230,7 @@ class MealMateDrawerItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.right,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                   color: color.onPrimary,
                 ),
@@ -267,7 +267,7 @@ class MealMateDrawerLogoutButton extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           textStyle: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: color.onSecondary,
           ),

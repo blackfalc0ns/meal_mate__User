@@ -51,7 +51,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
               Text(
                 locale.billing_invoices,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
@@ -71,7 +71,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           Text(
                             '\$49.99',
                             style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: color.onSurface,
                             ),
@@ -91,7 +91,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                             child: Text(
                               locale.billing_paid,
                               style: getMediumStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
                                 color: color.primary,
                               ),
@@ -101,7 +101,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           Text(
                             '2025-000123',
                             style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),
@@ -110,7 +110,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           Text(
                             locale.billing_invoice_date,
                             style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),

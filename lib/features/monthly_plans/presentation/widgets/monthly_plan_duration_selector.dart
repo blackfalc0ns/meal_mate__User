@@ -80,7 +80,7 @@ class _MonthlyPlanDurationSelectorState
                           Text(
                             locale.subscription_duration_title,
                             style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size14,
                               color: color.onSurface,
                             ),
@@ -117,7 +117,7 @@ class _MonthlyPlanDurationSelectorState
                         locale.subscription_custom_duration,
                         textAlign: TextAlign.center,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
@@ -142,7 +142,7 @@ class _MonthlyPlanDurationSelectorState
                         child: Text(
                           '$_customDays',
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size15,
                             color: color.onSurface,
                           ),
@@ -172,7 +172,7 @@ class _MonthlyPlanDurationSelectorState
                           locale.subscription_days_range_hint,
                           textAlign: TextAlign.center,
                           style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size9,
                             color: color.onSurfaceVariant,
                           ),
@@ -217,7 +217,7 @@ class _MonthlyPlanDurationSelectorState
                               Text(
                                 locale.subscription_add_friday,
                                 style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size13,
                                   color: color.onSurfaceVariant,
                                 ),

@@ -15,7 +15,7 @@ class CalendarMonthWeekdayLabel extends StatelessWidget {
           label,
           textAlign: TextAlign.center,
           style: getLightStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: 16,
             color: color.onSurface.withValues(alpha: 0.4),
           ).copyWith(height: 1),

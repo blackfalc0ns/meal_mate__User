@@ -53,7 +53,7 @@ class AddAllergyCommonList extends StatelessWidget {
                 Text(
                   locale.add_allergy_common_allergies,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
                     color: color.onSurface,
                   ),
@@ -71,7 +71,7 @@ class AddAllergyCommonList extends StatelessWidget {
                       child: Text(
                         option,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),

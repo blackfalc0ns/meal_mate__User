@@ -40,7 +40,7 @@ class SearchFilterRange extends StatelessWidget {
               Text(
                 label,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                   color: color.onSurface,
                 ),
@@ -61,7 +61,7 @@ class SearchFilterRange extends StatelessWidget {
                   child: Text(
                     range.start.round().toString(),
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.primary,
                     ),
@@ -90,7 +90,7 @@ class SearchFilterRange extends StatelessWidget {
                   child: Text(
                     range.end.round().toString(),
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.primary,
                     ),

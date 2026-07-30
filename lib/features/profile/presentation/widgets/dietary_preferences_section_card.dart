@@ -73,7 +73,7 @@ final Color  iconColor;
                   Text(
                     title,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
@@ -124,7 +124,7 @@ final Color  iconColor;
                           horizontal: Spacing.sm,
                         ),
                         textStyle: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.primary,
                         ),

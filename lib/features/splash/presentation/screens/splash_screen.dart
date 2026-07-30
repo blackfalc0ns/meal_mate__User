@@ -79,7 +79,7 @@ class _SplashLogo extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.white,
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: 29,
                 fontWeight: FontWeight.w700,
                 height: 1,

@@ -85,7 +85,7 @@ class CurrentAddressCard extends StatelessWidget {
                               Text(
                                 locale.addresses_default,
                                 style: getMediumStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size8,
                                   color: color.primary,
                                 ),
@@ -97,7 +97,7 @@ class CurrentAddressCard extends StatelessWidget {
                         Text(
                           locale.addresses_current_home,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
                             color: color.onSurface,
                           ),
@@ -109,7 +109,7 @@ class CurrentAddressCard extends StatelessWidget {
                       locale.addresses_current_home_details,
                      
                       style: getLightStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
@@ -130,7 +130,7 @@ class CurrentAddressCard extends StatelessWidget {
                           Text(
                             locale.addresses_access_instructions,
                             style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size9,
                               color: color.primary,
                             ),

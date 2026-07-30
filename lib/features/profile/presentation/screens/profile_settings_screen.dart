@@ -140,7 +140,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                     Text(
                       locale.profile_settings_version_label,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
                       ),

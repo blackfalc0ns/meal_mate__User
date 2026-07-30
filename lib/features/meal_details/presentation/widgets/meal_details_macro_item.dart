@@ -45,7 +45,7 @@ class MealDetailsMacroItem extends StatelessWidget {
                     Text(
                       '%${(value * 100).round()}',
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: color.onSurface,
                       ).copyWith(height: 1),
@@ -61,7 +61,7 @@ class MealDetailsMacroItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),
@@ -71,7 +71,7 @@ class MealDetailsMacroItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),

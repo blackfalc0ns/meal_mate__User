@@ -16,152 +16,146 @@ class OfferDealCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Semantics(
-      button: true,
-      label: offer.title,
-      child: Material(
-        color: color.surface.withValues(alpha: 0),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
-          child: Ink(
-            width: Spacing.offersDealCardWidth,
-            height: Spacing.offersDealCardHeight,
-            decoration: BoxDecoration(
-              color: color.surface,
-              borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
-              border: Border.all(
-                color: color.outlineVariant,
-                width: Spacing.border,
-              ),
+    return Material(
+      color: color.surface.withValues(alpha: 0),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+        child: Ink(
+          width: Spacing.offersDealCardWidth,
+          height: Spacing.offersDealCardHeight,
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+            border: Border.all(
+              color: color.outlineVariant,
+              width: Spacing.border,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
-              child: Stack(
-                children: [
-                  PositionedDirectional(
-                    end: 0,
-                    top: 0,
-                    child: Container(
-                      height: Spacing.offersDealBadgeHeight,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
+            child: Stack(
+              children: [
+                PositionedDirectional(
+                  end: 0,
+                  top: 0,
+                  child: Container(
+                    height: Spacing.offersDealBadgeHeight,
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+                    decoration: BoxDecoration(
+                      color: offer.accentColor,
+                      borderRadius: const BorderRadiusDirectional.only(
+                        topEnd: Radius.circular(Spacing.offersDealCardRadius),
+                        bottomStart: Radius.circular(Spacing.sm),
                       ),
-                      decoration: BoxDecoration(
-                        color: offer.accentColor,
-                        borderRadius: const BorderRadiusDirectional.only(
-                          topEnd: Radius.circular(Spacing.offersDealCardRadius),
-                          bottomStart: Radius.circular(Spacing.sm),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        offer.discountLabel,
-                        textAlign: TextAlign.center,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
-                          fontSize: FontSize.size12,
-                          color: color.onPrimary,
-                        ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      offer.discountLabel,
+                      textAlign: TextAlign.center,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.onPrimary,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      top: Spacing.md,
-                      start: Spacing.xs,
-                      end: Spacing.xs,
-                      bottom: Spacing.offersDealFooterHeight,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: Spacing.offersDealImageHeight,
-                          child: Center(
-                            child: Hero(
-                              tag: offer,
-                              child: Image.asset(
-                                offer.imageAsset,
-                                fit: BoxFit.contain,
-                              ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    top: Spacing.md,
+                    start: Spacing.xs,
+                    //  end: Spacing.xs,
+                    // bottom: Spacing.offersDealFooterHeight,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Spacing.offersDealImageHeight,
+                        child: Center(
+                          child: Hero(
+                            tag: offer,
+                            child: Image.asset(
+                              offer.imageAsset,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          offer.title,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size16,
-                            color: color.onSurface,
-                          ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        offer.title,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size14,
+                          color: color.onSurface,
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          offer.subtitle,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
-                            fontSize: FontSize.size9,
-                            color: color.onSurfaceVariant,
-                          ).copyWith(height: 1.25),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        offer.subtitle,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onSurfaceVariant,
+                        ).copyWith(height: 1.20),
+                      ),
+                      SizedBox(height: Spacing.base),
+                    ],
+                  ),
+                ),
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: Spacing.offersDealFooterHeight,
+                    color: offer.footerColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.schedule_rounded,
+                          size: Spacing.iconMd,
+                          color: color.onPrimary,
+                          semanticLabel: locale.nav_offers,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              offer.deliveryPrefixLabel ?? '',
+
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onPrimary,
+                              ),
+                            ),
+                            Text(
+                              offer.deliveryLabel,
+                              textAlign: TextAlign.end,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size11,
+                                color: color.onPrimary,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  PositionedDirectional(
-                    start: 0,
-                    end: 0,
-                    bottom: 0,
-                    child: Container(
-                      height: Spacing.offersDealFooterHeight,
-                      color: offer.footerColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                offer.deliveryPrefixLabel ??
-                                    locale.offers_countdown_label,
-                                textAlign: TextAlign.end,
-                                style: getMediumStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size10,
-                                  color: color.onPrimary,
-                                ),
-                              ),
-                              Text(
-                                offer.deliveryLabel,
-                                textAlign: TextAlign.end,
-                                style: getMediumStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
-                                  fontSize: FontSize.size11,
-                                  color: color.onPrimary,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Icon(
-                            Icons.schedule_rounded,
-                            size: Spacing.iconLg,
-                            color: color.onPrimary,
-                            semanticLabel: locale.offers_countdown_label,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

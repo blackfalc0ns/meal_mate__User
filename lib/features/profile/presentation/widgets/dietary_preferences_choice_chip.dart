@@ -29,7 +29,7 @@ class DietaryPreferencesChoiceChip extends StatelessWidget {
       label: Text(
         label,
         style: getMediumStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size13,
           color: isSelected ? color.onPrimary : color.onSurfaceVariant,
         ),

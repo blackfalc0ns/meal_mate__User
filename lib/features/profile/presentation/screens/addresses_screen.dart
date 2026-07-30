@@ -44,7 +44,7 @@ class AddressesScreen extends StatelessWidget {
                 locale.addresses_saved_section,
 
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
@@ -72,7 +72,7 @@ class AddressesScreen extends StatelessWidget {
               //   locale.addresses_delivery_preferences,
 
               //   style: getBoldStyle(
-              //     fontFamily: FontConstant.ibmPlexSansArabic,
+              //     fontFamily: FontConstant.alexandria,
               //     fontSize: Spacing.addressesSectionTitleSize,
               //     color: color.onSurface,
               //   ),
@@ -92,7 +92,7 @@ class AddressesScreen extends StatelessWidget {
                   label: Text(
                     locale.addresses_add_new,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: color.primary,
                     ),

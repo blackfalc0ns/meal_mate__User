@@ -205,7 +205,7 @@ class _NavItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: foreground,

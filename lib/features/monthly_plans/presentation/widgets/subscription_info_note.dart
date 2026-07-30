@@ -44,7 +44,7 @@ class SubscriptionInfoNote extends StatelessWidget {
                 textAlign: TextAlign.right,
                 text: TextSpan(
                   style: getRegularStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurface,
                   ).copyWith(height: 1.55),
@@ -53,7 +53,7 @@ class SubscriptionInfoNote extends StatelessWidget {
                     TextSpan(
                       text: highlightedText,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         color: color.primary,
                       ),
                     ),

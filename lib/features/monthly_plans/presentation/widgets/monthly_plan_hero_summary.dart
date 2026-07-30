@@ -29,7 +29,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
             text: TextSpan(
               style:
                   getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.monthlyPlanHeroTitleSize * scale,
                     color: color.onSurface,
                   ).copyWith(
@@ -42,7 +42,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                 TextSpan(
                   text: plan.titleHighlight,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.monthlyPlanHeroTitleSize * scale,
                     color: color.primary,
                   ),
@@ -68,7 +68,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                 Text(
                   plan.discountLabel,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size16 * scale,
                     color: color.onPrimary,
                   ),

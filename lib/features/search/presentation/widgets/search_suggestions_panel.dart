@@ -47,7 +47,7 @@ class SearchSuggestionsPanel extends StatelessWidget {
                 suggestions[index],
                 textAlign: TextAlign.right,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.onSurfaceVariant,
                 ),
               ),

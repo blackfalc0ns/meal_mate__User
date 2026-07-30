@@ -35,7 +35,7 @@ class CalendarProteinLogo extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: size * 0.159,
                     color: color.onInverseSurface,
                   ).copyWith(height: 1),
@@ -51,7 +51,7 @@ class CalendarProteinLogo extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: size * 0.159,
                       color: color.onInverseSurface,
                     ).copyWith(height: 1),

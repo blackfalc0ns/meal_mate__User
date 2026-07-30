@@ -55,7 +55,7 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                           overflow: TextOverflow.clip,
                           text: TextSpan(
                             style: getRegularStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: color.primary,
                             ),
@@ -63,7 +63,7 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                               TextSpan(
                                 text: locale.calendar_pick_restaurant_first,
                                 style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size11,
                                   color: color.primary,
                                 ),
@@ -71,7 +71,7 @@ class CalendarRestaurantPickCard extends StatelessWidget {
                               TextSpan(
                                 text: locale.calendar_pick_restaurant_second,
                                 style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size11,
                                   color: color.primary,
                                 ),

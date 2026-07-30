@@ -51,7 +51,7 @@ class PaymentMethodTile extends StatelessWidget {
                   Text(
                     _title(context),
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
                       color: AppColors.textPrimary,
                     ),
@@ -100,7 +100,7 @@ class PaymentMethodTile extends StatelessWidget {
           Text(
             '${method.walletBalance!.toStringAsFixed(3)} KWD',
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size13,
               color: AppColors.textSecondary,
             ),
@@ -109,7 +109,7 @@ class PaymentMethodTile extends StatelessWidget {
           Text(
             _subtitle(context),
             style: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: AppColors.textSecondary,
             ),
@@ -120,7 +120,7 @@ class PaymentMethodTile extends StatelessWidget {
     return Text(
       _subtitle(context),
       style: getMediumStyle(
-        fontFamily: FontConstant.ibmPlexSansArabic,
+        fontFamily: FontConstant.alexandria,
         fontSize: FontSize.size10,
         color: AppColors.textSecondary,
       ),
@@ -194,7 +194,7 @@ class _MadaLogo extends StatelessWidget {
           color: Colors.white,
           fontWeight: FontWeight.w700,
           fontSize: 13,
-          fontFamily: 'IBMPlexSansArabic',
+          fontFamily: FontConstant.alexandria,
         ),
       ),
     );

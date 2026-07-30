@@ -88,7 +88,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
                     Text(
                       l10n.payment_success_title,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size22,
                         color: AppColors.textPrimary,
                       ),
@@ -98,7 +98,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
                     Text(
                       l10n.payment_success_subtitle,
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size14,
                         color: AppColors.textSecondary,
                       ),

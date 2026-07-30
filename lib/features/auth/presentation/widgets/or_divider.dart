@@ -20,7 +20,7 @@ class OrDivider extends StatelessWidget {
           child: Text(
             l10n.or,
             style: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size14,
               color: AppColors.textSecondary,
             ),

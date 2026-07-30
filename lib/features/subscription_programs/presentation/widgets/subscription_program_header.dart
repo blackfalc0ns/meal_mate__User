@@ -23,7 +23,7 @@ class SubscriptionProgramHeader extends StatelessWidget {
               locale.subscription_program_title,
               textAlign: TextAlign.right,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size22,
                 color: color.onSurface,
               ),
@@ -33,7 +33,7 @@ class SubscriptionProgramHeader extends StatelessWidget {
               locale.subscription_program_subtitle,
               textAlign: TextAlign.right,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: color.onSurfaceVariant,
               ),

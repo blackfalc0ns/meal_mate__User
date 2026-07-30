@@ -82,7 +82,7 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
                     locale.calendar_browse_restaurants,
                     textAlign: TextAlign.center,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: 14,
                       color: color.onSurface,
                     ).copyWith(height: 20 / 14, letterSpacing: 0),
@@ -92,7 +92,7 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: 10,
                         color: color.onSurface.withValues(alpha: 0.64),
                       ).copyWith(height: 2, letterSpacing: 0),
@@ -103,7 +103,7 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
                         TextSpan(
                           text: locale.calendar_restaurant_picker_date,
                           style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: 10,
                             color: color.tertiary,
                           ).copyWith(height: 2, letterSpacing: 0),

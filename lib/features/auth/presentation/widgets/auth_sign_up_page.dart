@@ -64,7 +64,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               child: Text(
                 l10n.auth_create_account_title,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size24,
                   color: AppColors.textPrimary,
                 ),
@@ -76,7 +76,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               child: Text(
                 l10n.auth_name_label,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size14,
                   color: AppColors.textPrimary,
                 ),

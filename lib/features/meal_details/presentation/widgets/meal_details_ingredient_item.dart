@@ -41,7 +41,7 @@ class MealDetailsIngredientItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: color.onSurfaceVariant,
               ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),

@@ -32,7 +32,7 @@ class _AuthLoginOptionsRowState extends State<AuthLoginOptionsRow> {
           child: Text(
             l10n.forgot_password,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: AppColors.primaryDark,
             ),
@@ -58,7 +58,7 @@ class _AuthLoginOptionsRowState extends State<AuthLoginOptionsRow> {
             Text(
               l10n.remember_me,
               style: getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
                 color: AppColors.textPrimary,
               ),

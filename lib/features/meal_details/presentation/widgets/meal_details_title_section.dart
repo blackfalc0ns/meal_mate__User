@@ -32,7 +32,7 @@ class MealDetailsTitleSection extends StatelessWidget {
                 meal.title,
                 textAlign: TextAlign.right,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size18,
                   color: color.onSurface,
                 ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.15),
@@ -45,7 +45,7 @@ class MealDetailsTitleSection extends StatelessWidget {
                     meal.restaurantName,
                     textAlign: TextAlign.right,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
                       color: color.primary,
                     ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.1),
@@ -63,7 +63,7 @@ class MealDetailsTitleSection extends StatelessWidget {
                 meal.description,
                 textAlign: TextAlign.right,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                   color: color.onSurfaceVariant,
                 ).copyWith(height: locale.localeName == 'ar' ? 1.6 : 1.35),

@@ -58,7 +58,7 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
               child: Text(
                 l10n.auth_sign_in_title,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size24,
                   color: AppColors.textPrimary,
                 ),

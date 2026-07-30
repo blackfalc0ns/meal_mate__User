@@ -110,7 +110,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size20,
                                   color: color.onSurface,
                                 ),
@@ -124,7 +124,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size11,
                             color: color.onSurfaceVariant,
                           ),
@@ -152,7 +152,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 child: Text(
                   locale.subscription_choose_plan_button,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size12,
                     color: isSelected ? color.onPrimary : color.primary,
                   ),
@@ -185,7 +185,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                       Text(
                         locale.subscription_details_most_selected,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.onPrimary,
                         ),

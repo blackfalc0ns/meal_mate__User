@@ -37,12 +37,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         actionColor: const Color(0xFFF47C12),
         layout: OnboardingPageLayout.bottomLeft,
         titleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size69,
           color: AppColors.white,
         ),
         subtitleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size30,
           color: AppColors.white,
         ),
@@ -54,12 +54,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         actionColor: const Color(0xFFB37D00),
         layout: OnboardingPageLayout.bottomCenter,
         titleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size33,
           color: AppColors.black,
         ),
         subtitleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size36,
           color: AppColors.white,
         ),
@@ -71,12 +71,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         actionColor: const Color(0xFF0F8C45),
         layout: OnboardingPageLayout.topLeft,
         titleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size36,
           color: AppColors.black,
         ),
         subtitleStyle: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size33,
           color: AppColors.white,
         ),

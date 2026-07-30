@@ -51,7 +51,7 @@ class SearchFilterStrip extends StatelessWidget {
             label: Text(
               labels[index],
               style: getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: selected ? color.onPrimary : color.onSurface,
               ),

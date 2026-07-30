@@ -71,7 +71,7 @@ class ProfileHeader extends StatelessWidget {
                     Text(
                       locale.profile_user_name,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: Spacing.profileTitleFontSize,
                         color: color.onSurface,
                       ),
@@ -90,7 +90,7 @@ class ProfileHeader extends StatelessWidget {
                   locale.profile_user_email,
                   textDirection: TextDirection.ltr,
                   style: getRegularStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.profileBodyFontSize,
                     color: color.onSurfaceVariant,
                   ),
@@ -117,7 +117,7 @@ class ProfileHeader extends StatelessWidget {
                       Text(
                         locale.profile_premium_member,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: Spacing.profileBodyFontSize,
                           color: color.primary,
                         ),

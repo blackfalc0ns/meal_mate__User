@@ -74,7 +74,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                           summaryTitle ?? l10n.payment_order_summary_title,
                           textAlign: TextAlign.right,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size18,
                             color: AppColors.textPrimary,
                           ),
@@ -87,7 +87,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                               TextSpan(
                                 text: '$planTitle - ',
                                 style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size16,
                                   color: AppColors.textPrimary,
                                 ),
@@ -95,7 +95,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                               TextSpan(
                                 text: planDuration,
                                 style: getBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size16,
                                   color: AppColors.primaryVariant,
                                 ),
@@ -108,7 +108,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                           mealsPerDay,
                           textAlign: TextAlign.right,
                           style: getRegularStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
                             color: AppColors.textPrimary,
                           ),
@@ -139,7 +139,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                   l10n.payment_total_after_discount,
                   textAlign: TextAlign.right,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size16,
                     color: AppColors.textPrimary,
                   ),
@@ -159,7 +159,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                Text(
                   '$totalPrice ${l10n.currency}',
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size20,
                     color: AppColors.primaryVariant,
                   ),
@@ -190,7 +190,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                         couponHint!,
                         textAlign: TextAlign.center,
                         style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size13,
                           color: AppColors.textPrimary,
                         ),
@@ -237,7 +237,7 @@ class _PriceRow extends StatelessWidget {
           label,
           textAlign: TextAlign.right,
           style: getMediumStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size13,
             color: const Color(0xFF8A8F98),
           ),
@@ -254,7 +254,7 @@ class _PriceRow extends StatelessWidget {
         Text(
           value,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size11,
             color: valueColor,
           ),

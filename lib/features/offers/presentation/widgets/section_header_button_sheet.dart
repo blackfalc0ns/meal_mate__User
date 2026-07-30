@@ -61,7 +61,7 @@ class SectionHeaderButtonSheet extends StatelessWidget {
                     'خصم $discountLabel على الباقات الشهرية',
                     textAlign: TextAlign.center,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size16,
                       color: AppColors.textPrimary,
                     ),
@@ -83,7 +83,7 @@ class SectionHeaderButtonSheet extends StatelessWidget {
                       Text(
                         'خصم',
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size18,
                           color: AppColors.textPrimary,
                         ),
@@ -93,7 +93,7 @@ class SectionHeaderButtonSheet extends StatelessWidget {
                         discountLabel,
                         textAlign: TextAlign.end,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: 36,
                           color: AppColors.primaryDark,
                         ),
@@ -103,7 +103,7 @@ class SectionHeaderButtonSheet extends StatelessWidget {
                         'على الباقات الشهرية',
                         textAlign: TextAlign.end,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size18,
                           color: AppColors.textPrimary,
                         ),
@@ -113,7 +113,7 @@ class SectionHeaderButtonSheet extends StatelessWidget {
                         'خطط غذائية متكاملة\nتساعدك على تحقيق أهدافك',
 
                         style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size14,
                           color: AppColors.textSecondary,
                         ),
@@ -158,7 +158,7 @@ class _GenericHeader extends StatelessWidget {
                   Text(
                     discountLabel,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size24,
                       color: AppColors.textPrimary,
                     ),
@@ -167,7 +167,7 @@ class _GenericHeader extends StatelessWidget {
                   Text(
                     offer.title,
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size18,
                       color: AppColors.textSecondary,
                     ),

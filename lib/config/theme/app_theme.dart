@@ -82,7 +82,7 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      fontFamily: FontConstant.ibmPlexSansArabic,
+      fontFamily: FontConstant.alexandria,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: isDark
           ? AppColors.backgroundDark

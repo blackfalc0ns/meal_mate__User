@@ -59,7 +59,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                 Text(
                   locale.billing_plan_name,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size19,
                     color: color.onSurface,
                   ),
@@ -68,7 +68,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                 Text(
                   locale.billing_plan_tier,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size13,
                     color: color.onSurfaceVariant,
                   ),
@@ -96,7 +96,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                       Text(
                         locale.billing_active,
                         style: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.primary,
                         ),
@@ -126,7 +126,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                     Text(
                       locale.billing_renewal_date,
                       style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
@@ -139,7 +139,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                   child: Text(
                     locale.billing_days_remaining,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
                       color: color.onSurfaceVariant,
                     ),
@@ -163,7 +163,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                     Text(
                       locale.billing_plan_usage,
                       style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: color.onSurfaceVariant,
                       ),
@@ -174,7 +174,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                           TextSpan(
                             text: locale.billing_plan_usage_current,
                             style: getSemiBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size12,
                               color: color.primary,
                             ),
@@ -183,7 +183,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                           TextSpan(
                             text: locale.billing_plan_usage_remaining,
                             style: getSemiBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size12,
                               color: color.onSurfaceVariant,
                             ),

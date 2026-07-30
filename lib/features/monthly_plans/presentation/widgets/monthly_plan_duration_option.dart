@@ -39,7 +39,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
               maxLines: 1,
               textAlign: TextAlign.center,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
                 color: color.onSurfaceVariant,
               ),
@@ -99,7 +99,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                               displayedDays.toString(),
                               key: ValueKey(displayedDays),
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size17,
                                 color: isSelected
                                     ? color.primary
@@ -113,7 +113,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                     Text(
                       locale.subscription_day,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),

@@ -40,7 +40,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
           child: Text(
             widget.labelText ?? l10n.password,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size14,
               color: AppColors.textPrimary,
             ),

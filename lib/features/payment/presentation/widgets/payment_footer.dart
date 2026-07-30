@@ -49,7 +49,7 @@ class PaymentFooter extends StatelessWidget {
                     Text(
                       l10n.payment_total_label,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size13,
                         color: AppColors.textPrimary,
                       ),
@@ -57,7 +57,7 @@ class PaymentFooter extends StatelessWidget {
                     Text(
                       l10n.payment_total_includes_tax,
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
                         color: AppColors.textHint,
                       ),
@@ -68,7 +68,7 @@ class PaymentFooter extends StatelessWidget {
                 Text(
                   '${totalAmount.toStringAsFixed(3)} ${l10n.currency}',
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size20,
                     color: AppColors.primaryVariant,
                   ),
@@ -101,7 +101,7 @@ class PaymentFooter extends StatelessWidget {
               Text(
                 l10n.payment_secure_label,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
                   color: AppColors.textHint,
                 ),

@@ -56,7 +56,7 @@ class OfferCouponCard extends StatelessWidget {
                     Text(
                       'كود الخصم',
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: AppColors.textSecondary,
                       ),
@@ -65,7 +65,7 @@ class OfferCouponCard extends StatelessWidget {
                     Text(
                       'استخدم الكود للحصول على الخصم',
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: AppColors.textHint,
                       ),
@@ -100,7 +100,7 @@ class OfferCouponCard extends StatelessWidget {
                     Text(
                       couponCode,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size18,
                         color: color,
                       ),
@@ -119,7 +119,7 @@ class OfferCouponCard extends StatelessWidget {
                           content: Text(
                             'تم نسخ الكود بنجاح',
                             style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size13,
                               color: AppColors.white,
                             ),
@@ -155,7 +155,7 @@ class OfferCouponCard extends StatelessWidget {
                         Text(
                           'نسخ',
                           style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
                             color: AppColors.white,
                           ),
@@ -183,7 +183,7 @@ class OfferCouponCard extends StatelessWidget {
                 Text(
                   'ينتهي: $expiryText',
                   style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
                     color: AppColors.textHint,
                   ),

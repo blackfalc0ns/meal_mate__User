@@ -17,7 +17,7 @@ class OffersFilterStrip extends StatelessWidget {
     final locale = context.localization;
 
     return Semantics(
-      label: locale.offers_title,
+      label: locale.nav_offers,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(
@@ -53,13 +53,6 @@ class OffersFilterStrip extends StatelessWidget {
                               color: color.outlineVariant,
                               width: Spacing.border,
                             ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: color.shadow.withValues(alpha: 0.08),
-                          blurRadius: Spacing.sm,
-                          offset: const Offset(0, Spacing.xs),
-                        ),
-                      ],
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -77,9 +70,9 @@ class OffersFilterStrip extends StatelessWidget {
                           filter.label,
                           textAlign: TextAlign.center,
                           style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: selected
-                                ? FontSize.size17
+                                ? FontSize.size13
                                 : FontSize.size13,
                             color: selected ? color.onPrimary : color.onSurface,
                           ),

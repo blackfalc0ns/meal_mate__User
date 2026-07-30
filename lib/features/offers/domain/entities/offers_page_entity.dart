@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class OffersPageEntity {
   const OffersPageEntity({
     required this.hero,
+    required this.featuredSectionTitle,
     required this.filters,
     required this.featuredOffers,
     required this.couponBanner,
@@ -10,6 +11,7 @@ class OffersPageEntity {
   });
 
   final OffersHeroEntity hero;
+  final String featuredSectionTitle;
   final List<OfferFilterEntity> filters;
   final List<OfferDealEntity> featuredOffers;
   final OfferCouponBannerEntity couponBanner;
@@ -98,6 +100,7 @@ enum OfferCategory { offer, restaurant, meal }
 
 class OfferCouponBannerEntity {
   const OfferCouponBannerEntity({
+    required this.imageAsset,
     required this.titlePrefix,
     required this.highlight,
     required this.titleSuffix,
@@ -105,6 +108,7 @@ class OfferCouponBannerEntity {
     required this.buttonLabel,
   });
 
+  final String imageAsset;
   final String titlePrefix;
   final String highlight;
   final String titleSuffix;
@@ -114,6 +118,7 @@ class OfferCouponBannerEntity {
 
 class InviteBannerEntity {
   const InviteBannerEntity({
+    required this.bannerImageAsset,
     required this.title,
     required this.subtitle,
     required this.buttonLabel,
@@ -121,6 +126,7 @@ class InviteBannerEntity {
     required this.trailingImageAsset,
   });
 
+  final String bannerImageAsset;
   final String title;
   final String subtitle;
   final String buttonLabel;

@@ -114,7 +114,7 @@ class _SummaryRow extends StatelessWidget {
               text,
               textDirection: TextDirection.rtl,
               style: getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size13,
                 color: AppColors.textPrimary,
               ),
@@ -165,7 +165,7 @@ class _InfoRow extends StatelessWidget {
                     Text(
                       title,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size13,
                         color: accentColor,
                       ),
@@ -175,7 +175,7 @@ class _InfoRow extends StatelessWidget {
                       subtitle,
                       textDirection: TextDirection.rtl,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: AppColors.textHint,
                       ),
@@ -224,7 +224,7 @@ class _CouponRow extends StatelessWidget {
                 Text(
                   'رمز الخصم',
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size13,
                     color: accentColor,
                   ),
@@ -288,7 +288,7 @@ class _CopyButton extends StatelessWidget {
           Text(
             label,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size11,
               color: AppColors.textPrimary,
             ),
@@ -326,7 +326,7 @@ class _DashedChip extends StatelessWidget {
             code,
             textAlign: TextAlign.center,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: accentColor,
             ),

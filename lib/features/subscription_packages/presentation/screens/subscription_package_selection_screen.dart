@@ -70,7 +70,7 @@ class _SubscriptionPackageSelectionScreenState
                           locale.subscription_choose_plan_title,
                           textAlign: TextAlign.right,
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size17,
                             color: color.onSurface,
                           ),

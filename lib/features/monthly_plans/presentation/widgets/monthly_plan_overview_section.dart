@@ -22,7 +22,7 @@ class MonthlyPlanOverviewSection extends StatelessWidget {
           plan.description,
           textAlign: TextAlign.center,
           style: getRegularStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size15,
             color: color.onSurface,
           ).copyWith(height: 1.7),
@@ -33,7 +33,7 @@ class MonthlyPlanOverviewSection extends StatelessWidget {
           child: Text(
             locale.subscription_details_features_title,
             style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size15,
               color: AppColors.primaryVariant,
             ),
@@ -77,7 +77,7 @@ class _FeatureRow extends StatelessWidget {
               feature.title,
               textAlign: TextAlign.right,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
                 color: color.onSurface,
               ),

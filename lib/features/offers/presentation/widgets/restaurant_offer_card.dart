@@ -106,7 +106,7 @@ class RestaurantOfferCard extends StatelessWidget {
                               softWrap: true,
                               overflow: TextOverflow.visible,
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size13,
                                 color: AppColors.textPrimary,
                               ).copyWith(height: 1.15),
@@ -124,7 +124,7 @@ class RestaurantOfferCard extends StatelessWidget {
                           softWrap: true,
                           overflow: TextOverflow.visible,
                           style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size10,
                             color: AppColors.textSecondary,
                           ).copyWith(height: 1.2),
@@ -151,7 +151,7 @@ class RestaurantOfferCard extends StatelessWidget {
                           Text(
                             'توصيل مجاني',
                             style: getMediumStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size9,
                               color: AppColors.textSecondary,
                             ),
@@ -176,7 +176,7 @@ class RestaurantOfferCard extends StatelessWidget {
                           child: Text(
                             offer.buttonLabel,
                             style: getSemiBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
                               color: AppColors.white,
                             ),
@@ -221,7 +221,7 @@ class _Badge extends StatelessWidget {
           textAlign: TextAlign.center,
           label,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size15,
             color: textColor,
           ),
@@ -254,7 +254,7 @@ class _MetaItem extends StatelessWidget {
         Text(
           text,
           style: getMediumStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size9,
             color: textColor,
           ),

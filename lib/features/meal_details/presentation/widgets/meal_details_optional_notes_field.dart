@@ -21,7 +21,7 @@ class MealDetailsOptionalNotesField extends StatelessWidget {
             locale.meal_details_optional_notes_title,
             textAlign: TextAlign.start,
             style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),
@@ -34,7 +34,7 @@ class MealDetailsOptionalNotesField extends StatelessWidget {
             textAlign: TextAlign.start,
             textDirection: TextDirection.rtl,
             style: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),
@@ -52,7 +52,7 @@ class MealDetailsOptionalNotesField extends StatelessWidget {
               //   vertical: Spacing.sm,
               // ),
               hintStyle: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size11,
                 color: color.onSurfaceVariant,
               ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),

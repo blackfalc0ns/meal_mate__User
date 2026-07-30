@@ -36,7 +36,7 @@ class AuthTermsRow extends StatelessWidget {
           child: Text(
             label,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: AppColors.textPrimary,
             ),

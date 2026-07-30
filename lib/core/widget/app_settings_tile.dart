@@ -70,7 +70,7 @@ class AppSettingsTile extends StatelessWidget {
                             Text(
                               title,
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size12,
                                 color: color.onSurface,
                               ),
@@ -81,7 +81,7 @@ class AppSettingsTile extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: getRegularStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
                                 color: color.onSurfaceVariant,
                               ),

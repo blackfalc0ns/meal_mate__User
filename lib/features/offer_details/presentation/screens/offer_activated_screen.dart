@@ -96,7 +96,7 @@ class OfferActivatedScreen extends StatelessWidget {
                           Text(
                             l10n.offer_details_info_title,
                             style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size16,
                               color: AppColors.textPrimary,
                             ),

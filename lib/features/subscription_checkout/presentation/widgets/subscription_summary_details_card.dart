@@ -44,7 +44,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style:
                   getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.subscriptionSummaryTitleFontSize,
                     color: color.onSurface,
                   ).copyWith(
@@ -118,7 +118,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style:
                           getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: Spacing.subscriptionSummaryLabelFontSize,
                             color: color.onSurface,
                           ).copyWith(
@@ -154,7 +154,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style:
                                   getRegularStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
+                                    fontFamily: FontConstant.alexandria,
                                     fontSize:
                                         Spacing.subscriptionSummaryBodyFontSize,
                                     color: color.inverseSurface,
@@ -201,7 +201,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style:
                           getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: Spacing.subscriptionSummaryLabelFontSize,
                             color: color.onSurface,
                           ).copyWith(
@@ -221,7 +221,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style:
                           getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: Spacing.subscriptionSummaryPriceFontSize,
                             color: color.primary,
                           ).copyWith(
@@ -241,7 +241,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style:
                           getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: Spacing.subscriptionSummaryLabelFontSize,
                             color: color.onSurface,
                           ).copyWith(

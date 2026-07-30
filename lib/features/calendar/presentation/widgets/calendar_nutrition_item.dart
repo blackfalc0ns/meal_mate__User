@@ -32,7 +32,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurface,
                   ).copyWith(height: 1),
@@ -46,7 +46,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface.withValues(alpha: 0.62),
             ).copyWith(height: 1),

@@ -50,7 +50,7 @@ class _LoginRememberForgotRowState extends State<LoginRememberForgotRow> {
             Text(
               l10n.remember_me,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
                 color: AppColors.textSecondary,
               ),
@@ -62,7 +62,7 @@ class _LoginRememberForgotRowState extends State<LoginRememberForgotRow> {
           child: Text(
             l10n.forgot_password,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: AppColors.error,
             ),

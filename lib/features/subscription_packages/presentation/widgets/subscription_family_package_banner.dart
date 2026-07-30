@@ -56,7 +56,7 @@ class SubscriptionFamilyPackageBanner extends StatelessWidget {
                         Text(
                           locale.family_plan_title,
                           style: getSemiBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size17,
                             color: color.primary,
                           ),
@@ -64,7 +64,7 @@ class SubscriptionFamilyPackageBanner extends StatelessWidget {
                         Text(
                           locale.family_plan_subtitle,
                           style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size11,
                             color: color.onSurface,
                           ),
@@ -93,7 +93,7 @@ class SubscriptionFamilyPackageBanner extends StatelessWidget {
                               Text(
                                 locale.subscription_view_family_package,
                                 style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size10,
                                   color: color.primary,
                                 ),

@@ -20,7 +20,7 @@ class CalendarRating extends StatelessWidget {
           Text(
             value,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: 10.96,
               color: color.onSurface,
             ).copyWith(letterSpacing: 0),

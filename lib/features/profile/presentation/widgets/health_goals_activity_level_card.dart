@@ -63,7 +63,7 @@ class HealthGoalsActivityLevelCard extends StatelessWidget {
               Text(
                 locale.health_goals_activity_level,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
@@ -112,7 +112,7 @@ class HealthGoalsActivityLevelCard extends StatelessWidget {
                             Text(
                               labels[index],
                               style: getSemiBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,
                                 color: selected
                                     ? color.onPrimary

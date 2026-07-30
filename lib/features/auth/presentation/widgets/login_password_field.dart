@@ -33,7 +33,7 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
         Text(
           l10n.password,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size14,
             color: AppColors.textPrimary,
           ),

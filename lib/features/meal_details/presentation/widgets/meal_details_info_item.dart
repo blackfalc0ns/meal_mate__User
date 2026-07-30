@@ -44,7 +44,7 @@ class MealDetailsInfoItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getMediumStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.1),
@@ -54,7 +54,7 @@ class MealDetailsInfoItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size9,
                     color: color.onSurface,
                   ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.2),

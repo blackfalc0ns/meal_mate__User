@@ -22,7 +22,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
               Text(
                 restaurant.name,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: 11.7,
                   color: color.onPrimary,
                 ).copyWith(letterSpacing: 0),
@@ -33,7 +33,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
           Text(
             restaurant.category,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onPrimary,
             ),
@@ -59,7 +59,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onPrimary,
             ),

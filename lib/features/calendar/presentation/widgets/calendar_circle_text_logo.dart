@@ -49,7 +49,7 @@ class CalendarCircleTextLogo extends StatelessWidget {
 
   TextStyle _logoStyle(double size, Color color) {
     return getBoldStyle(
-      fontFamily: FontConstant.ibmPlexSansArabic,
+      fontFamily: FontConstant.alexandria,
       fontSize: size,
       color: color,
     ).copyWith(height: 0.95);

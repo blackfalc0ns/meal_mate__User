@@ -70,7 +70,7 @@ class SubscriptionPlanCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size15,
                   color: plan.accentColor,
                 ),
@@ -96,7 +96,7 @@ class SubscriptionPlanCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style:
                     getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size8,
                       color: color.onSurfaceVariant,
                     ).copyWith(
@@ -108,7 +108,7 @@ class SubscriptionPlanCard extends StatelessWidget {
                 '${plan.discountedPrice} ${l10n.currency}',
                 textAlign: TextAlign.center,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size12,
                   color: color.primary,
                 ),
@@ -117,7 +117,7 @@ class SubscriptionPlanCard extends StatelessWidget {
               Text(
                 plan.periodLabel,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size9,
                   color: color.onSurfaceVariant,
                 ),
@@ -151,7 +151,7 @@ class _DiscountBadge extends StatelessWidget {
       child: Text(
         plan.discountLabel,
         style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size6,
           color: plan.accentColor,
         ),
@@ -188,7 +188,7 @@ class _FeatureLine extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: getRegularStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size7,
                 color: color.onSurfaceVariant,
               ),
@@ -232,7 +232,7 @@ class _ChooseButton extends StatelessWidget {
       child: Text(
         context.localization.subscription_choose_plan_button,
         style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size10,
           color: colorScheme.onPrimary,
         ),

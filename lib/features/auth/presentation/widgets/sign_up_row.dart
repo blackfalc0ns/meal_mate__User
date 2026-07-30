@@ -18,7 +18,7 @@ class SignUpRow extends StatelessWidget {
         Text(
           l10n.dont_have_account,
           style: getRegularStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size14,
             color: AppColors.textSecondary,
           ),
@@ -31,7 +31,7 @@ class SignUpRow extends StatelessWidget {
           child: Text(
             l10n.sign_up,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size14,
               color: AppColors.primary,
             ),

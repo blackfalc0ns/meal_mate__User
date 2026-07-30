@@ -50,7 +50,7 @@ class ProfileBillingAction extends StatelessWidget {
             label,
             textDirection: textDirection,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface,
             ),

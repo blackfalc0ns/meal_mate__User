@@ -58,7 +58,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
                       color: color.onSurface,
                     ),
@@ -68,7 +68,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
                       color: AppColors.textSecondary,
                     ),
@@ -85,7 +85,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                       Text(
                         restaurant.rating,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size9,
                         ),
                       ),
@@ -93,7 +93,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                       Text(
                         '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size9,
                         ),
                       ),
@@ -123,7 +123,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                   Text(
                     '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: AppColors.brandDeepGreen,
                     ),

@@ -61,7 +61,7 @@ class SavedAddressTile extends StatelessWidget {
                 Text(
                   title,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size12,
                     color: color.onSurface,
                   ),
@@ -73,7 +73,7 @@ class SavedAddressTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
                   style: getLightStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ),

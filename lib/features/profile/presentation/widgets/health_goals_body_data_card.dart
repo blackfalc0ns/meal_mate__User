@@ -45,7 +45,7 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
               Text(
                 locale.health_goals_body_data,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
@@ -104,7 +104,7 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
         Text(
           label,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: color.onSurfaceVariant,
           ),
@@ -119,7 +119,7 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
             Text(
               value,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
                 color: color.onSurface,
               ),

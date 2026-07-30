@@ -68,7 +68,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                     child: Text(
                       l10n.login_title,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size22,
                         color: AppColors.textPrimary,
                       ),
@@ -80,7 +80,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                   Text(
                     l10n.phone_number,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: AppColors.textPrimary,
                     ),

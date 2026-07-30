@@ -105,4 +105,3 @@ TextStyle getSemiBoldStyle({
     color,
   );
 }
-

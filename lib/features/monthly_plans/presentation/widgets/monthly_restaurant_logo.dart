@@ -32,7 +32,7 @@ class MonthlyRestaurantLogo extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size8,
                 color: restaurant.brandColor,
               ).copyWith(height: 1.05),

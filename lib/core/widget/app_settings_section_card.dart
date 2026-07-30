@@ -69,7 +69,7 @@ class AppSettingsSectionCard extends StatelessWidget {
                   Text(
                     title,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: color.onSurface,
                     ),

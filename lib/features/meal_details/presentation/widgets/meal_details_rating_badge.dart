@@ -43,7 +43,7 @@ class MealDetailsRatingBadge extends StatelessWidget {
               Text(
                 value,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size9,
                   color: color.onSurface,
                 ).copyWith(height: 1),
@@ -51,7 +51,7 @@ class MealDetailsRatingBadge extends StatelessWidget {
               Text(
                 title,
                 style: getRegularStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size8,
                   color: color.onSurfaceVariant,
                 ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.2),

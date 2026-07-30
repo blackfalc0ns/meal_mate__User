@@ -23,7 +23,7 @@ class CountryCodePrefix extends StatelessWidget {
           Text(
             '965+',
             style: getSemiBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size14,
               color: AppColors.textPrimary,
             ),

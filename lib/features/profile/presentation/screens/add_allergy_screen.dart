@@ -75,7 +75,7 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                 locale.add_allergy_subtitle,
                 textAlign: TextAlign.center,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
                   color: color.onSurfaceVariant,
                 ),
@@ -93,7 +93,7 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                   decoration: InputDecoration(
                     hintText: locale.add_allergy_search_hint,
                     hintStyle: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: color.onSurfaceVariant,
                     ),

@@ -47,7 +47,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                 Text(
                   locale.health_goals_weekly_summary,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size12,
                     color: color.onSurface,
                   ),
@@ -71,7 +71,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                             Text(
                               '45 يوم',
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size14,
                                 color: color.onSurface,
                               ),
@@ -79,7 +79,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                             Text(
                               locale.health_goals_continuous,
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size13,
                                 color: color.onSurface,
                               ),
@@ -89,7 +89,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                               child: Text(
                                 locale.health_goals_keep_progress,
                                 style: getMediumStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size11,
                                   color: color.onSurfaceVariant,
                                 ),
@@ -140,7 +140,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                             Text(
                               '4.2 كجم',
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size13,
                                 color: color.primary,
                               ),
@@ -148,7 +148,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                             Text(
                               locale.health_goals_decrease,
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,
                                 color: color.onSurface,
                               ),
@@ -156,7 +156,7 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
                             Text(
                               locale.health_goals_since_plan_start,
                               style: getMediumStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
                                 color: color.onSurfaceVariant,
                               ),

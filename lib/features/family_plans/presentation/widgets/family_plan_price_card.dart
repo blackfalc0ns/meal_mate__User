@@ -46,7 +46,7 @@ class FamilyPlanPriceCard extends StatelessWidget {
               Text(
                 context.localization.family_price_details,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                 ),
               ),
@@ -91,11 +91,11 @@ class _PriceRow extends StatelessWidget {
             textAlign: TextAlign.right,
             style: isTotal
                 ? getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size19,
                   )
                 : getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                   ),
           ),
@@ -117,12 +117,12 @@ class _PriceAmount extends StatelessWidget {
     final color = context.colorScheme;
     final valueStyle = isTotal
         ? getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             color: color.primary,
             fontSize: FontSize.size19,
           )
         : getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             color: color.onSurface,
             fontSize: FontSize.size11,
           );

@@ -106,7 +106,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.right,
                             style: getBoldStyle(
-                              fontFamily: FontConstant.ibmPlexSansArabic,
+                              fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size17,
                               color: color.onSurface,
                             ),
@@ -125,7 +125,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
                         style: getRegularStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,
                           color: color.onSurfaceVariant,
                         ),
@@ -153,7 +153,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
                               style: getRegularStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
                                 color: color.onSurfaceVariant,
                               ),
@@ -183,7 +183,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
                               style: getRegularStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,
                                 color: color.onSurfaceVariant,
                               ),

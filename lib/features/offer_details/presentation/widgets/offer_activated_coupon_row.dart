@@ -55,7 +55,7 @@ class OfferActivatedCouponRow extends StatelessWidget {
                 Text(
                   titleLabel,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size13,
                     color: AppColors.textPrimary,
                   ),
@@ -64,7 +64,7 @@ class OfferActivatedCouponRow extends StatelessWidget {
                 Text(
                   couponCode,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,
                     color: AppColors.primaryVariant,
                   ),
@@ -119,7 +119,7 @@ class _CopyButton extends StatelessWidget {
         Text(
             label,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: AppColors.primaryVariant,
             ),

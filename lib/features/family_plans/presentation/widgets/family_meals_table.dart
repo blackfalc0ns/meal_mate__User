@@ -48,7 +48,7 @@ class FamilyMealsTable extends StatelessWidget {
               Text(
                 l10n.family_meals_each_member,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,
                 ),
               ),
@@ -104,7 +104,7 @@ class _MemberTableRow extends StatelessWidget {
                   member.mealsCount,
                   maxLines: 1,
                   style: getSemiBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     color: member.badgeTextColor,
                     fontSize: FontSize.size8,
                   ),
@@ -167,11 +167,11 @@ class _TableCell extends StatelessWidget {
         textAlign: TextAlign.center,
         style: isHeader
             ? getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size9,
               )
             : getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size8,
               ),
       ),
@@ -203,7 +203,7 @@ class _MemberNameCell extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size9,
               ),
             ),

@@ -47,7 +47,7 @@ class MonthlyPlanRestaurantLogosRow extends StatelessWidget {
                 countLabel,
                 maxLines: 1,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size8,
                   color: color.onSurface,
                 ).copyWith(height: 1),

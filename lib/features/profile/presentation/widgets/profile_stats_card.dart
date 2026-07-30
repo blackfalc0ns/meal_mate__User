@@ -77,7 +77,7 @@ class ProfileStatsCard extends StatelessWidget {
                   Text(
                     stat.$2,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: Spacing.profileTitleFontSize,
                       color: stat.$4 == color.primary
                           ? color.primary
@@ -90,7 +90,7 @@ class ProfileStatsCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: Spacing.profileBodyFontSize,
                       color: color.onSurfaceVariant,
                     ),

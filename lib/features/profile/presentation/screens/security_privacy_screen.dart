@@ -141,7 +141,7 @@ class SecurityPrivacyScreen extends StatelessWidget {
           content: Text(
             locale.coming_soon_subtitle,
             style: getRegularStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
               color: color.onPrimary,
             ),

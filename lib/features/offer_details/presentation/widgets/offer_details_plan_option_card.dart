@@ -99,7 +99,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                         maxLines: 1,
                         textAlign: TextAlign.right,
                         style: getBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size14,
                           color: AppColors.textPrimary,
                         ),
@@ -110,7 +110,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                       duration,
                       textAlign: TextAlign.right,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
                         color: accentColor,
                       ),
@@ -121,7 +121,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                       maxLines: 1,
                       textAlign: TextAlign.right,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
                         color: AppColors.textSecondary,
                       ),
@@ -137,7 +137,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                   Text(
                     '$originalPrice ${locale.currency}',
                     style: TextStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: AppColors.textHint,
                       fontWeight: FontWeightManger.medium,
@@ -149,7 +149,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                   Text(
                     '$discountedPrice ${locale.currency}',
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size16,
                       color: AppColors.primaryDark,
                     ),
@@ -167,7 +167,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                     child: Text(
                       'خصم 20%',
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
                         color: accentColor,
                       ),

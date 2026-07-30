@@ -48,7 +48,7 @@ class OfferDetailsSummaryCard extends StatelessWidget {
                         Text(
                           title,
                           style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size15,
                             color: AppColors.textPrimary,
                           ),
@@ -57,7 +57,7 @@ class OfferDetailsSummaryCard extends StatelessWidget {
                         Text(
                           "$totalPrice ${locale.currency}",
                           style: getBoldStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size18,
                             color: AppColors.primaryDark,
                           ),
@@ -95,7 +95,7 @@ class OfferDetailsSummaryCard extends StatelessWidget {
               Text(
                 securePaymentLabel,
                 style: getMediumStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
                   color: AppColors.textHint,
                 ),

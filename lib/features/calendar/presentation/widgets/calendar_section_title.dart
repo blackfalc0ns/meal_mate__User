@@ -16,7 +16,7 @@ class CalendarMealPickerSectionTitle extends StatelessWidget {
         locale.calendar_meals_for(mealType),
         textAlign: TextAlign.right,
         style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: 18,
           color: color.onSurface,
         ),

@@ -27,7 +27,7 @@ class MealDetailsRestaurantLogo extends StatelessWidget {
         label,
         textAlign: TextAlign.center,
         style: getBoldStyle(
-          fontFamily: FontConstant.ibmPlexSansArabic,
+          fontFamily: FontConstant.alexandria,
           fontSize: FontSize.size9,
           color: color.onPrimary,
         ).copyWith(height: locale.localeName == 'ar' ? 1 : 0.95),

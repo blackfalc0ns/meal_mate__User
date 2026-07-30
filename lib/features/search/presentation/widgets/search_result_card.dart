@@ -83,7 +83,7 @@ class SearchResultCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
                               style: getBoldStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size13,
                                 color: color.onSurface,
                               ),
@@ -106,7 +106,7 @@ class SearchResultCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.onSurfaceVariant,
                         ),
@@ -153,7 +153,7 @@ class SearchResultCard extends StatelessWidget {
                             Text(
                               locale.search_minutes,
                               style: getMediumStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,
                                 color: color.primary,
                               ),
@@ -178,7 +178,7 @@ class SearchResultCard extends StatelessWidget {
                               child: Text(
                                 locale.search_rating,
                                 style: getMediumStyle(
-                                  fontFamily: FontConstant.ibmPlexSansArabic,
+                                  fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size9,
                                   color: color.onSecondary,
                                 ),
@@ -230,7 +230,7 @@ class SearchResultCard extends StatelessWidget {
                   child: Text(
                     badge,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size8,
                       color: color.onPrimary,
                     ),

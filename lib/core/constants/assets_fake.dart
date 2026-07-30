@@ -75,12 +75,18 @@ class AssetsFake {
       'assets/images/fake/offers/starbucks_logo.png';
   static const String offersFigmaGiftBox =
       'assets/images/fake/offers/offers_figma_gift_box.png';
+  static const String offersHeroBanner =
+      'assets/images/fake/offers/offers_hero_banner.png';
   static const String offersFigmaHeroMeal =
       'assets/images/fake/offers/offers_figma_hero_meal.png';
   static const String offersFigmaInviteGift =
       'assets/images/fake/offers/offers_figma_invite_gift.png';
   static const String offersFigmaInvitePeople =
       'assets/images/fake/offers/offers_figma_invite_people.png';
+  static const String offersCouponBanner =
+      'assets/images/fake/offers/offers_coupon_banner.png';
+  static const String offersInviteBanner =
+      'assets/images/fake/offers/offers_invite_banner.png';
   static const String offersFigmaMonthlyBox =
       'assets/images/fake/offers/offers_figma_monthly_box.png';
   static const String offersFigmaProteinPlate =

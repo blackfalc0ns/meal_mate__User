@@ -24,7 +24,7 @@ class CalendarMealDetails extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.right,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: 14.5,
             color: color.onSurface,
           ).copyWith(height: 1.15),
@@ -35,7 +35,7 @@ class CalendarMealDetails extends StatelessWidget {
         Text(
           locale.calendar_ingredients,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size10,
             color: color.onSurface,
           ),

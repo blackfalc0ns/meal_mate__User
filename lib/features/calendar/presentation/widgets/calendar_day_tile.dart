@@ -53,7 +53,7 @@ class CalendarDayTile extends StatelessWidget {
                   '${day.dayNumber}',
                   style:
                       getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: compact ? 16 : (selected ? 17 : 14),
                         color: textColor,
                       ).copyWith(
@@ -72,12 +72,12 @@ class CalendarDayTile extends StatelessWidget {
                     style:
                         (selected
                                 ? getMediumStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
+                                    fontFamily: FontConstant.alexandria,
                                     fontSize: FontSize.size10,
                                     color: textColor,
                                   )
                                 : getRegularStyle(
-                                    fontFamily: FontConstant.ibmPlexSansArabic,
+                                    fontFamily: FontConstant.alexandria,
                                     fontSize: FontSize.size10,
                                     color: textColor,
                                   ))

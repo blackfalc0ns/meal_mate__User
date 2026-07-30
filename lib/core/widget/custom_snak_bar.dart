@@ -22,7 +22,7 @@ class CustomSnackbar {
   static TextStyle get _textStyle => getBoldStyle(
         color: AppColors.white,
         fontSize: FontSize.size13,
-        fontFamily: FontConstant.ibmPlexSansArabic,
+        fontFamily: FontConstant.alexandria,
       );
 
   static void _show({

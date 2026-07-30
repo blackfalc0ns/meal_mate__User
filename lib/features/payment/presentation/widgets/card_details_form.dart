@@ -33,7 +33,7 @@ class CardDetailsForm extends StatelessWidget {
           Text(
             l10n.payment_card_details_title,
             style: getBoldStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size16,
               color: AppColors.textPrimary,
             ),
@@ -64,7 +64,7 @@ class CardDetailsForm extends StatelessWidget {
               borderColor: AppColors.border,
               borderRadius: Spacing.inputRadius,
               textStyle: getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.textPrimary,
               ),
@@ -99,7 +99,7 @@ class CardDetailsForm extends StatelessWidget {
                     borderColor: AppColors.border,
                     borderRadius: Spacing.inputRadius,
                     textStyle: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: AppColors.textPrimary,
                     ),
@@ -133,7 +133,7 @@ class CardDetailsForm extends StatelessWidget {
                     borderColor: AppColors.border,
                     borderRadius: Spacing.inputRadius,
                     textStyle: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: AppColors.textPrimary,
                     ),
@@ -164,7 +164,7 @@ class CardDetailsForm extends StatelessWidget {
               borderColor: AppColors.border,
               borderRadius: Spacing.inputRadius,
               textStyle: getMediumStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
                 color: AppColors.textPrimary,
               ),
@@ -190,7 +190,7 @@ class _LabeledCardField extends StatelessWidget {
         Text(
           label,
           style: getBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: AppColors.textPrimary,
           ),

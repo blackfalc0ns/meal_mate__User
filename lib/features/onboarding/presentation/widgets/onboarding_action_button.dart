@@ -76,7 +76,7 @@ class OnboardingActionButton extends StatelessWidget {
             child: Text(
               l10n.skip,
               style: getSemiBoldStyle(
-                fontFamily: FontConstant.ibmPlexSansArabic,
+                fontFamily: FontConstant.alexandria,
                 color: Colors.white,
                 fontSize: FontSize.size18,
               ),

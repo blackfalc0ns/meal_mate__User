@@ -30,7 +30,7 @@ class _OffersScreenState extends State<OffersScreen> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final offers = _dataSource.getOffers(locale);
+    final offers = _dataSource.getOffers();
     final filters = List.generate(offers.filters.length, (index) {
       final filter = offers.filters[index];
       return OfferFilterEntity(
@@ -51,16 +51,8 @@ class _OffersScreenState extends State<OffersScreen> {
           children: [
             CustomAppBar(
               showBackButton: false,
-              title: locale.offers_title,
-              leading: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: color.onSurface,
-                  size: Spacing.iconMd,
-                  semanticLabel: locale.go_back,
-                ),
-              ),
+              title: locale.nav_offers,
+
               actions: [NotificationButton(onTap: () {})],
             ),
             Expanded(
@@ -80,6 +72,7 @@ class _OffersScreenState extends State<OffersScreen> {
                       child: OffersPageIndicator(),
                     ),
                   ),
+                  SliverToBoxAdapter(child: SizedBox(height: Spacing.base)),
                   SliverToBoxAdapter(
                     child: OffersFilterStrip(
                       filters: filters,
@@ -91,7 +84,7 @@ class _OffersScreenState extends State<OffersScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: OffersSectionHeader(
-                      title: locale.offers_featured_section_title,
+                      title: offers.featuredSectionTitle,
                       icon: Icons.star_rounded,
                     ),
                   ),
@@ -109,21 +102,12 @@ class _OffersScreenState extends State<OffersScreen> {
                       },
                     ),
                   ),
+                  SliverToBoxAdapter(child: SizedBox(height: Spacing.lg)),
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: Spacing.base,
-                      ),
-                      child: OffersCouponBanner(banner: offers.couponBanner),
-                    ),
+                    child: OffersCouponBanner(banner: offers.couponBanner),
                   ),
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: Spacing.base,
-                      ),
-                      child: OffersInviteBanner(banner: offers.inviteBanner),
-                    ),
+                    child: OffersInviteBanner(banner: offers.inviteBanner),
                   ),
                   const SliverToBoxAdapter(
                     child: SizedBox(height: Spacing.xxxl * 3),

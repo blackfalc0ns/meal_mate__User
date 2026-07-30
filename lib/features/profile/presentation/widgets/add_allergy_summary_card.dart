@@ -40,7 +40,7 @@ class AddAllergySummaryCard extends StatelessWidget {
                   Text(
                     selectedAllergies.length.toString(),
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size16,
                       color: color.primary,
                     ),
@@ -48,7 +48,7 @@ class AddAllergySummaryCard extends StatelessWidget {
                   Text(
                     locale.add_allergy_selected,
                     style: getMediumStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.primary,
                     ),
@@ -65,7 +65,7 @@ class AddAllergySummaryCard extends StatelessWidget {
                   Text(
                     locale.add_allergy_current_allergies,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
                       color: color.onSurface,
                     ),
@@ -89,7 +89,7 @@ class AddAllergySummaryCard extends StatelessWidget {
                             child: Text(
                               allergy,
                               style: getMediumStyle(
-                                fontFamily: FontConstant.ibmPlexSansArabic,
+                                fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size13,
                                 color: color.onPrimary,
                               ),

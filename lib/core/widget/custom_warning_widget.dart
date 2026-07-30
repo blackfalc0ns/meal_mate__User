@@ -81,7 +81,7 @@ class CustomWarningWidget extends StatelessWidget {
                   Text(
                     title!,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
                       color: accent,
                     ),
@@ -93,7 +93,7 @@ class CustomWarningWidget extends StatelessWidget {
                   maxLines: maxMessageLines,
                   overflow: TextOverflow.ellipsis,
                   style: getRegularStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: messageFontSize,
                     color: color.onSurfaceVariant,
                   ),

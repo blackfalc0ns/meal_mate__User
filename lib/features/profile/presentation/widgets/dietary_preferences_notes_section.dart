@@ -51,7 +51,7 @@ class DietaryPreferencesNotesSection extends StatelessWidget {
                   Text(
                     locale.dietary_preferences_notes_title,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
@@ -76,7 +76,7 @@ class DietaryPreferencesNotesSection extends StatelessWidget {
                 textAlign: TextAlign.start,
                 textDirection: Directionality.of(context),
                 style: getLightStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
                   color: color.onSurface,
                 ),

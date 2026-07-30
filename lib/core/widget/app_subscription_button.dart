@@ -52,7 +52,7 @@ class AppSubscriptionButton extends StatelessWidget {
                 Text(
                   locale.subscription_details_subscribe_now,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size22,
                     color: color.onPrimary,
                   ).copyWith(height: 1),
@@ -73,7 +73,7 @@ class AppSubscriptionButton extends StatelessWidget {
                 Text(
                   price,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.monthlyPlanSubscribePriceSize,
                     color: color.onPrimary,
                   ).copyWith(height: 1),
@@ -82,7 +82,7 @@ class AppSubscriptionButton extends StatelessWidget {
                 Text(
                   currency,
                   style: getBoldStyle(
-                    fontFamily: FontConstant.ibmPlexSansArabic,
+                    fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
                     color: color.onPrimary,
                   ),

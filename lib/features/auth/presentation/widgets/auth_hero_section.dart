@@ -28,7 +28,7 @@ class AuthHeroSection extends StatelessWidget {
                 title,
                 textAlign: TextAlign.right,
                 style: getBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size28,
                   color: AppColors.textPrimary,
                 ),
@@ -43,7 +43,7 @@ class AuthHeroSection extends StatelessWidget {
                     TextSpan(
                       text: 'Meal',
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size36,
                         color: AppColors.primaryDark,
                       ),
@@ -51,7 +51,7 @@ class AuthHeroSection extends StatelessWidget {
                     TextSpan(
                       text: 'Mate',
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size36,
                         color: AppColors.primary,
                       ),
@@ -70,7 +70,7 @@ class AuthHeroSection extends StatelessWidget {
                     'سجل دخولك للوصول إلى خطتك',
                     textAlign: TextAlign.right,
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: AppColors.textPrimary,
                     ),
@@ -79,7 +79,7 @@ class AuthHeroSection extends StatelessWidget {
                     'الغذائية ومتابعة أهدافك الصحية.',
                     textAlign: TextAlign.right,
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
                       color: AppColors.textPrimary,
                     ),

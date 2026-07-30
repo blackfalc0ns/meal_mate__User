@@ -34,7 +34,7 @@ class FamilyPlanSummaryCard extends StatelessWidget {
               Text(
                 context.localization.family_summary_title,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.onSurface,
                   fontSize: FontSize.size9,
                 ),
@@ -89,7 +89,7 @@ class _SummaryStat extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: getSemiBoldStyle(
-                  fontFamily: FontConstant.ibmPlexSansArabic,
+                  fontFamily: FontConstant.alexandria,
                   color: color.primary,
                   fontSize: stat.iconName == 'delivery'
                       ? FontSize.size6
@@ -106,7 +106,7 @@ class _SummaryStat extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: getSemiBoldStyle(
-            fontFamily: FontConstant.ibmPlexSansArabic,
+            fontFamily: FontConstant.alexandria,
             color: color.onSurfaceVariant,
             fontSize: FontSize.size7,
           ).copyWith(height: 1.15),

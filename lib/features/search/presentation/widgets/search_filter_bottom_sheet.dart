@@ -104,7 +104,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                     Text(
                       locale.search_quick_results,
                       style: getSemiBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size14,
                         color: color.onSurface,
                       ),
@@ -170,7 +170,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                                     item.label,
                                     style: getMediumStyle(
                                       fontFamily:
-                                          FontConstant.ibmPlexSansArabic,
+                                          FontConstant.alexandria,
                                       fontSize: FontSize.size10,
                                       color:
                                           (_showMeals ==
@@ -204,7 +204,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                       Text(
                         locale.subscription_selected_program_label,
                         style: getSemiBoldStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),
@@ -235,7 +235,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                           color: selected ? color.onPrimary : color.primary,
                         ),
                         labelStyle: getMediumStyle(
-                          fontFamily: FontConstant.ibmPlexSansArabic,
+                          fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size9,
                           color: selected ? color.onPrimary : color.onSurface,
                         ),
@@ -274,7 +274,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                   child: Text(
                     locale.dietary_preferences_allergies_title,
                     style: getSemiBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
                       color: color.onSurface,
                     ),
@@ -299,7 +299,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                         color: color.primary,
                       ),
                       labelStyle: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size9,
                         color: color.onSurface,
                       ),
@@ -327,7 +327,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                         label: Text(
                           locale.auth_reset_password_title,
                           style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
                             color: color.primary,
                           ),
@@ -351,7 +351,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                         label: Text(
                           locale.add_allergy_save,
                           style: getMediumStyle(
-                            fontFamily: FontConstant.ibmPlexSansArabic,
+                            fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
                             color: color.onPrimary,
                           ),

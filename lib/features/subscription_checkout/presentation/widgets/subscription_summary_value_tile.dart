@@ -57,7 +57,7 @@ class SubscriptionSummaryValueTile extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style:
                     getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: Spacing.subscriptionSummaryLabelFontSize,
                       color: color.onSurface,
                     ).copyWith(
@@ -77,7 +77,7 @@ class SubscriptionSummaryValueTile extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style:
                     getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: Spacing.subscriptionSummaryValueFontSize,
                       color: color.primary,
                     ).copyWith(

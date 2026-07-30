@@ -31,7 +31,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
             meal.macroDistributionTitle,
             textAlign: TextAlign.right,
             style: getMediumStyle(
-              fontFamily: FontConstant.ibmPlexSansArabic,
+              fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface,
             ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),
@@ -54,7 +54,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
                         color: color.onSurface,
                       ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),
@@ -62,7 +62,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                     Text(
                       calories.value,
                       style: getBoldStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size18,
                         color: color.onSurface,
                       ).copyWith(height: 1),
@@ -72,7 +72,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getRegularStyle(
-                        fontFamily: FontConstant.ibmPlexSansArabic,
+                        fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size8,
                         color: color.onSurfaceVariant,
                       ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),

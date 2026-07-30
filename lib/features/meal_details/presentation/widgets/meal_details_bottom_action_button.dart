@@ -40,7 +40,7 @@ class MealDetailsBottomActionButton extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size16,
                       color: color.onPrimary,
                     ).copyWith(height: locale.localeName == 'ar' ? 1.25 : 1.1),
@@ -50,7 +50,7 @@ class MealDetailsBottomActionButton extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
-                      fontFamily: FontConstant.ibmPlexSansArabic,
+                      fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.onPrimary,
                     ).copyWith(height: locale.localeName == 'ar' ? 1.35 : 1.1),
