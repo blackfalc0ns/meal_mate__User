@@ -2305,6 +2305,60 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search_rating => '4.0';
 
   @override
+  String get home_greeting => 'مرحبًا محمد';
+
+  @override
+  String get home_greeting_subtitle => 'جاهز ليوم صحي رائع؟';
+
+  @override
+  String get home_main_nutrients => 'المغذيات الرئيسية';
+
+  @override
+  String get home_remaining_calories => 'السعرات المتبقية';
+
+  @override
+  String get home_remaining_calories_value => '560';
+
+  @override
+  String get home_calories_of_goal => 'من 2000 سعرة';
+
+  @override
+  String get home_details => 'عرض التفاصيل';
+
+  @override
+  String get home_search_hint => 'ابحث عن وجبات أو مطاعم';
+
+  @override
+  String get home_subscribe_now => 'اشترك الآن';
+
+  @override
+  String get home_today_meals => 'وجبات اليوم';
+
+  @override
+  String get home_restaurants => 'المطاعم';
+
+  @override
+  String get home_view_calendar => 'عرض التقويم';
+
+  @override
+  String get home_next_box => 'الصندوق القادم';
+
+  @override
+  String get home_delivery_time => 'الساعة 11 ص - 3 م';
+
+  @override
+  String get home_edit_meals => 'تعديل الوجبات';
+
+  @override
+  String get home_next_week_meals => 'يمكنك تعديل وجبات الأسبوع القادم';
+
+  @override
+  String get home_reminder => 'تذكير مهم';
+
+  @override
+  String get home_reminder_copy => 'لديك 72 ساعة قبل تجهيز صندوقك القادم.';
+
+  @override
   String get search_suggestion_chicken_protein => 'دجاج بروتين';
 
   @override

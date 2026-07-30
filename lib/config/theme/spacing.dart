@@ -439,4 +439,17 @@ class Spacing {
   static const double calendarHeaderHorizontalInset = 22.0;
   static const double calendarHeaderNotificationDotStart = 13.0;
   static const double calendarMealCardVerticalPadding = 4.0;
+
+  // Home Figma measurements.
+  static const double homeHorizontalPadding = 20.0;
+  static const double homeHeaderHeight = 112.0;
+  static const double homeNutritionHeight = 140.0;
+  static const double homePromotionHeight = 131.263;
+  static const double homeShortcutHeight = 67.12;
+  static const double homeMealCardWidth = 106.755;
+  static const double homeMealCardHeight = 91.056;
+  static const double homeRestaurantCardWidth = 90.887;
+  static const double homeRestaurantCardHeight = 109.53;
+  static const double homeInfoCardHeight = 78.0;
+  static const double homeReminderHeight = 67.777;
 }

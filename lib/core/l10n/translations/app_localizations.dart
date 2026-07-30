@@ -4526,6 +4526,114 @@ abstract class AppLocalizations {
   /// **'4.0'**
   String get search_rating;
 
+  /// No description provided for @home_greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, Mohammed'**
+  String get home_greeting;
+
+  /// No description provided for @home_greeting_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for a great healthy day?'**
+  String get home_greeting_subtitle;
+
+  /// No description provided for @home_main_nutrients.
+  ///
+  /// In en, this message translates to:
+  /// **'Main nutrients'**
+  String get home_main_nutrients;
+
+  /// No description provided for @home_remaining_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories remaining'**
+  String get home_remaining_calories;
+
+  /// No description provided for @home_remaining_calories_value.
+  ///
+  /// In en, this message translates to:
+  /// **'560'**
+  String get home_remaining_calories_value;
+
+  /// No description provided for @home_calories_of_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'of 2000 calories'**
+  String get home_calories_of_goal;
+
+  /// No description provided for @home_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get home_details;
+
+  /// No description provided for @home_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for meals or restaurants'**
+  String get home_search_hint;
+
+  /// No description provided for @home_subscribe_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe now'**
+  String get home_subscribe_now;
+
+  /// No description provided for @home_today_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s meals'**
+  String get home_today_meals;
+
+  /// No description provided for @home_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants'**
+  String get home_restaurants;
+
+  /// No description provided for @home_view_calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'View calendar'**
+  String get home_view_calendar;
+
+  /// No description provided for @home_next_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Next box'**
+  String get home_next_box;
+
+  /// No description provided for @home_delivery_time.
+  ///
+  /// In en, this message translates to:
+  /// **'11 AM - 3 PM'**
+  String get home_delivery_time;
+
+  /// No description provided for @home_edit_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit meals'**
+  String get home_edit_meals;
+
+  /// No description provided for @home_next_week_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit next week\'s meals'**
+  String get home_next_week_meals;
+
+  /// No description provided for @home_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Important reminder'**
+  String get home_reminder;
+
+  /// No description provided for @home_reminder_copy.
+  ///
+  /// In en, this message translates to:
+  /// **'You have 72 hours before your next box is prepared.'**
+  String get home_reminder_copy;
+
   /// No description provided for @search_suggestion_chicken_protein.
   ///
   /// In en, this message translates to:

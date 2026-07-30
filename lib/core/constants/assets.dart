@@ -63,6 +63,15 @@ class Assets {
       '$_images/home/figma/home_background_doodle.svg';
   static const String homeFigmaHeaderDoodle =
       '$_images/home/figma/home_header_doodle.svg';
+  static const String homePromotion = '$_images/home/figma/home_promotion.png';
+  static const String homeBreakfast = '$_images/home/figma/home_breakfast.png';
+  static const String homeSalmon = '$_images/home/figma/home_salmon.png';
+  static const String homeLunch = '$_images/home/figma/home_lunch.png';
+  static const String homeOmelet = '$_images/home/figma/home_omelet.png';
+  static const String homeCalendar = '$_images/home/figma/home_calendar.png';
+  static const String homeDeliveryBox =
+      '$_images/home/figma/home_delivery_box.png';
+  static const String homeReminder = '$_images/home/figma/home_reminder.png';
 
   // Calendar
   static const String calendarMealPickerHero =

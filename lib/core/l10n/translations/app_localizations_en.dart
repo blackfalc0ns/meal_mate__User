@@ -2336,6 +2336,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_rating => '4.0';
 
   @override
+  String get home_greeting => 'Welcome, Mohammed';
+
+  @override
+  String get home_greeting_subtitle => 'Ready for a great healthy day?';
+
+  @override
+  String get home_main_nutrients => 'Main nutrients';
+
+  @override
+  String get home_remaining_calories => 'Calories remaining';
+
+  @override
+  String get home_remaining_calories_value => '560';
+
+  @override
+  String get home_calories_of_goal => 'of 2000 calories';
+
+  @override
+  String get home_details => 'View details';
+
+  @override
+  String get home_search_hint => 'Search for meals or restaurants';
+
+  @override
+  String get home_subscribe_now => 'Subscribe now';
+
+  @override
+  String get home_today_meals => 'Today\'s meals';
+
+  @override
+  String get home_restaurants => 'Restaurants';
+
+  @override
+  String get home_view_calendar => 'View calendar';
+
+  @override
+  String get home_next_box => 'Next box';
+
+  @override
+  String get home_delivery_time => '11 AM - 3 PM';
+
+  @override
+  String get home_edit_meals => 'Edit meals';
+
+  @override
+  String get home_next_week_meals => 'You can edit next week\'s meals';
+
+  @override
+  String get home_reminder => 'Important reminder';
+
+  @override
+  String get home_reminder_copy =>
+      'You have 72 hours before your next box is prepared.';
+
+  @override
   String get search_suggestion_chicken_protein => 'Chicken protein';
 
   @override
