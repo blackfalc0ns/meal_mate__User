@@ -1198,7 +1198,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offers_restaurant_bowls_reviews => '4.8';
 
   @override
-  String get offer_details_title => 'Redeem offer';
+  String get offer_details_title => 'Offer details';
 
   @override
   String get offer_details_hero_heading => '20% off monthly plans';
@@ -1233,7 +1233,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This offer applies to monthly plans only and cannot be combined with other offers.';
 
   @override
-  String get offer_details_info_copy_code => 'Copy code';
+  String get offer_details_info_copy_code => 'Copy';
 
   @override
   String get offer_details_plan_section_title => 'Choose the right plan';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
-import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_bottom_sheet.dart';
 import 'package:meal_meat_user/features/offers/data/offers_fake_data_source.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/animated_offer_row.dart';
@@ -96,8 +96,9 @@ class _OffersScreenState extends State<OffersScreen> {
                         return OfferDealCard(
                           key: ValueKey(offer.couponCode ?? offer.title),
                           offer: offer,
-                          onTap: () =>
-                              OfferDetailsBottomSheet.show(context, offer),
+                          onTap: () => Navigator.of(
+                            context,
+                          ).pushNamed(AppRoutes.offerDetails),
                         );
                       },
                     ),

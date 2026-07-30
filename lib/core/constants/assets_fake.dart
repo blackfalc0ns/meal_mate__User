@@ -79,6 +79,8 @@ class AssetsFake {
       'assets/images/fake/offers/offers_hero_banner.png';
   static const String offersFigmaHeroMeal =
       'assets/images/fake/offers/offers_figma_hero_meal.png';
+  static const String offerDetailsHeroBanner =
+      'assets/images/fake/offers/offer_details_hero_banner.png';
   static const String offersFigmaInviteGift =
       'assets/images/fake/offers/offers_figma_invite_gift.png';
   static const String offersFigmaInvitePeople =

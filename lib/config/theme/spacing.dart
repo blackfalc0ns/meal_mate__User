@@ -486,4 +486,27 @@ class Spacing {
   static const double offersInviteBannerRadius = 27.86;
   static const double offersInvitePeopleWidth = 224.0;
   static const double offersInviteGiftWidth = 112.0;
+
+  // Offer details Figma measurements.
+  static const double offerDetailsHorizontalPadding = 16.69;
+  static const double offerDetailsHeaderTopGap = 21.0;
+  static const double offerDetailsHeaderHeight = 32.0;
+  static const double offerDetailsHeaderActionSize = 28.609;
+  static const double offerDetailsHeroAspectRatio = 432.718 / 304.658;
+  static const double offerDetailsHeroRadius = 25.818;
+  static const double offerDetailsInfoCardMinHeight = 288.479;
+  static const double offerDetailsInfoCardRadius = 16.484;
+  static const double offerDetailsInfoIconBox = 35;
+  static const double offerDetailsInfoIconSize = 15;
+  static const double offerDetailsInfoRowHeight = 40;
+  static const double offerDetailsInfoValueWidth = 178.0;
+  static const double offerDetailsCouponHeight = 43.423;
+  static const double offerDetailsCouponButtonWidth = 65.938;
+  static const double offerDetailsCouponButtonHeight = 27.818;
+  static const double offerDetailsBenefitCardHeight = 137.683;
+  static const double offerDetailsBenefitCardRadius = 17.599;
+  static const double offerDetailsBenefitIconSize = 53.831;
+  static const double offerDetailsBottomButtonHeight = 50.829;
+  static const double offerDetailsBottomButtonRadius = 41.299;
+  static const double offerDetailsBottomNavGap = 122.0;
 }

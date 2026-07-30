@@ -2339,7 +2339,7 @@ abstract class AppLocalizations {
   /// No description provided for @offer_details_title.
   ///
   /// In en, this message translates to:
-  /// **'Redeem offer'**
+  /// **'Offer details'**
   String get offer_details_title;
 
   /// No description provided for @offer_details_hero_heading.
@@ -2405,7 +2405,7 @@ abstract class AppLocalizations {
   /// No description provided for @offer_details_info_copy_code.
   ///
   /// In en, this message translates to:
-  /// **'Copy code'**
+  /// **'Copy'**
   String get offer_details_info_copy_code;
 
   /// No description provided for @offer_details_plan_section_title.

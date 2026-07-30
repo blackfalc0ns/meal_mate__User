@@ -1182,7 +1182,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offers_restaurant_bowls_reviews => '4.8';
 
   @override
-  String get offer_details_title => 'استرداد العرض';
+  String get offer_details_title => 'تفاصيل العرض';
 
   @override
   String get offer_details_hero_heading => 'خصم 20% على الباقات الشهرية';
@@ -1216,7 +1216,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'يسري العرض على الباقات الشهرية فقط ولا يمكن دمجه مع عروض أخرى.';
 
   @override
-  String get offer_details_info_copy_code => 'نسخ الرمز';
+  String get offer_details_info_copy_code => 'نسخ';
 
   @override
   String get offer_details_plan_section_title => 'اختر الباقة المناسبة';
