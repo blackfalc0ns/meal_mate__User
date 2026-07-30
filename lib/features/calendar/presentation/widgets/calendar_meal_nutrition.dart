@@ -50,7 +50,7 @@ class CalendarMealPickerNutrition extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
+                fontSize: FontSize.size9,
                 color: color.onSurface.withValues(alpha: 0.62),
               ).copyWith(height: 1),
             ),

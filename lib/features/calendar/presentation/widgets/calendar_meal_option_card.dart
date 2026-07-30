@@ -33,7 +33,7 @@ class CalendarMealOptionCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: 16.64,
+                        fontSize: FontSize.size15,
                         color: color.onSurface,
                       ).copyWith(height: 24.96 / 16.64),
                     ),
