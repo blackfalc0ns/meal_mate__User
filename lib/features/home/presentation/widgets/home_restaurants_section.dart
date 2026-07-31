@@ -21,7 +21,7 @@ class HomeRestaurantsSection extends StatelessWidget {
       (AssetsFake.homeDonut, locale.home_restaurant_protein_kitchen),
     ];
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(

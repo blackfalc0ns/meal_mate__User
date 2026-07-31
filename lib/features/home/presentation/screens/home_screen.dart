@@ -20,56 +20,71 @@ class HomeScreen extends StatelessWidget {
     final locale = context.localization;
     return Container(
       color: color.surface,
-      child: ListView(
-        padding: const EdgeInsets.only(bottom: Spacing.xxxl),
-        children: [
-          SizedBox(
-            height: Spacing.homeTopStackHeight,
-            child: Stack(
-              children: [
-                const HomeHeader(),
-                const PositionedDirectional(
-                  top: Spacing.homeSubscriptionCardTop,
-                  start: Spacing.homeHorizontalPadding,
-                  end: Spacing.homeHorizontalPadding,
-                  child: HomeSubscriptionCard(),
-                ),
-              ],
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: Spacing.homeTopStackHeight,
+              child: Stack(
+                children: [
+                  const HomeHeader(),
+                  const PositionedDirectional(
+                    top: Spacing.homeSubscriptionCardTop,
+                    start: Spacing.screenH,
+                    end: Spacing.screenH,
+                    child: HomeSubscriptionCard(),
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.homeHorizontalPadding,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.homeHorizontalPadding,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: Spacing.base),
+                  const HomeSearchField(),
+                  const SizedBox(height: Spacing.base),
+                  const HomePromotionCard(),
+                  const SizedBox(height: Spacing.base),
+                  const HomeShortcuts(),
+                ],
+              ),
             ),
-            child: Column(
-              children: [
-                const SizedBox(height: Spacing.base),
-                const HomeSearchField(),
-                const SizedBox(height: Spacing.base),
-                const HomePromotionCard(),
-                const SizedBox(height: Spacing.base),
-                const HomeShortcuts(),
-              ],
+          ),
+          SliverToBoxAdapter(child: const SizedBox(height: Spacing.lg)),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              child: HomeTodayMeals(title: locale.home_today_meals),
             ),
           ),
-          const SizedBox(height: Spacing.lg),
-          HomeTodayMeals(title: locale.home_today_meals),
-          const SizedBox(height: Spacing.lg),
-          HomeRestaurantsSection(title: locale.home_restaurants),
-          const SizedBox(height: Spacing.lg),
-          HomeDeliveryCards(
-            calendarLabel: locale.home_view_calendar,
-            nextBoxLabel: locale.home_next_box,
-            detailsLabel: locale.home_details,
-            deliveryTime: locale.home_delivery_time,
+          SliverToBoxAdapter(child: const SizedBox(height: Spacing.sm)),
+          SliverToBoxAdapter(
+            child: HomeRestaurantsSection(title: locale.home_restaurants),
           ),
-          const SizedBox(height: Spacing.base),
-          HomeReminderCard(
-            editLabel: locale.home_edit_meals,
-            title: locale.home_next_week_meals,
-            reminder: locale.home_reminder,
-            subtitle: locale.home_reminder_copy,
+          SliverToBoxAdapter(child: const SizedBox(height: Spacing.lg)),
+          SliverToBoxAdapter(
+            child: HomeDeliveryCards(
+              calendarLabel: locale.home_view_calendar,
+              nextBoxLabel: locale.home_next_box,
+              detailsLabel: locale.home_details,
+              deliveryTime: locale.home_delivery_time,
+            ),
           ),
+          SliverToBoxAdapter(child: const SizedBox(height: Spacing.base)),
+          SliverToBoxAdapter(
+            child: HomeReminderCard(
+              editLabel: locale.home_edit_meals,
+              title: locale.home_next_week_meals,
+              reminder: locale.home_reminder,
+              subtitle: locale.home_reminder_copy,
+            ),
+          ),
+          SliverToBoxAdapter(child: const SizedBox(height: Spacing.xxxl)),
         ],
       ),
     );

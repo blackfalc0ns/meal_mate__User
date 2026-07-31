@@ -23,9 +23,16 @@ class HomeSearchField extends StatelessWidget {
       ),
       child: Row(
         children: [
+          SvgPicture.asset(
+            Assets.homeSearchLine,
+            width: Spacing.homeSearchIconSize,
+            height: Spacing.homeSearchIconSize,
+          ),
+          const SizedBox(width: Spacing.sm),
+
           Expanded(
             child: Align(
-              alignment: AlignmentDirectional.centerEnd,
+              alignment: AlignmentDirectional.centerStart,
               child: Text(
                 locale.home_search_hint,
                 style: getRegularStyle(
@@ -35,12 +42,6 @@ class HomeSearchField extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: Spacing.sm),
-          SvgPicture.asset(
-            Assets.homeSearchLine,
-            width: Spacing.homeSearchIconSize,
-            height: Spacing.homeSearchIconSize,
           ),
         ],
       ),

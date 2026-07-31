@@ -470,7 +470,7 @@ class Spacing {
   static const double homeSubscriptionSegmentTop = 9.128;
   static const double homeSubscriptionSegmentStart = 11.617;
   static const double homeSubscriptionSegmentEnd = 8.298;
-  static const double homeSubscriptionSegmentHeight = 26.553;
+  static const double homeSubscriptionSegmentHeight = 30;
   static const double homeSubscriptionSegmentRadius = 8.298;
   static const double homeSubscriptionSelectedSegmentWidth = 163.468;
   static const double homeSubscriptionPlanTop = 46.468;
@@ -484,6 +484,8 @@ class Spacing {
   static const double homeSubscriptionProgressTop = 48.128;
   static const double homeSubscriptionProgressWidth = 117.0;
   static const double homeSubscriptionProgressHeight = 122.809;
+  static const double homeSubscriptionProgressStroke = 11.0;
+  static const double homeSubscriptionProgressGap = 1.1;
   static const double homeSubscriptionRingHeight = 116.17;
   static const double homeSubscriptionRingTop = 0.0;
   static const double homeSubscriptionPlantBottom = 0.0;
@@ -513,8 +515,16 @@ class Spacing {
   static const double homePromotionHeight = 131.263;
   static const double homePromotionImageEnd = 0.0;
   static const double homeShortcutHeight = 67.12;
-  static const double homeMealCardWidth = 106.755;
+  static const double homeTodayMealsHeight = 131.0;
+  static const double homeTodayMealsTitleTop = 2.0;
+  static const double homeTodayMealsListTop = 30.0;
+  static const double homeMealCardWidth = 110;
   static const double homeMealCardHeight = 91.056;
+  static const double homeMealCardImageHeight = 48.0;
+  static const double homeMealCardRadius = 12.0;
+  static const double homeMealImageRadius = 8.0;
+  static const double homeMealBadgeHeight = 20.0;
+  static const double homeMealBadgeIconSize = 11.0;
   static const double homeRestaurantCardWidth = 90.887;
   static const double homeRestaurantCardHeight = 109.53;
   static const double homeInfoCardHeight = 78.0;
