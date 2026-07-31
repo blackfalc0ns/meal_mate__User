@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/text_styles.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class HomeRestaurantsSection extends StatelessWidget {
   const HomeRestaurantsSection({super.key, required this.title});
+
   final String title;
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    const restaurants = [
-      (AssetsFake.homeBurger, 'بروتين كيتشن'),
-      (AssetsFake.homeOatmeal, 'هيلثي بايت'),
-      (AssetsFake.homeHotdog, 'دايت هاوس'),
-      (AssetsFake.homeDonut, 'بروتين كيتشن'),
+    final restaurants = [
+      (AssetsFake.homeBurger, locale.home_restaurant_protein_kitchen),
+      (AssetsFake.homeOatmeal, locale.home_restaurant_healthy_bite),
+      (AssetsFake.homeHotdog, locale.home_restaurant_diet_house),
+      (AssetsFake.homeDonut, locale.home_restaurant_protein_kitchen),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -26,14 +29,17 @@ class HomeRestaurantsSection extends StatelessWidget {
           ),
           child: Text(
             title,
-            style: AppTextStyles.h4.copyWith(color: color.onSurface),
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size20,
+              color: color.onSurface,
+            ),
           ),
         ),
         const SizedBox(height: Spacing.sm),
         SizedBox(
           height: Spacing.homeRestaurantCardHeight,
           child: ListView.separated(
-            reverse: true,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.homeHorizontalPadding,
@@ -58,13 +64,17 @@ class HomeRestaurantsSection extends StatelessWidget {
                         restaurant.$2,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.caption.copyWith(
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
                           color: color.onSurface,
                         ),
                       ),
                       Text(
-                        'وجبات صحية متوازنة',
-                        style: AppTextStyles.overline.copyWith(
+                        locale.home_restaurant_balanced_meals,
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size7,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -73,7 +83,7 @@ class HomeRestaurantsSection extends StatelessWidget {
                         height: Spacing.xl,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text('استعراض'),
+                          child: Text(locale.home_restaurant_browse),
                         ),
                       ),
                     ],

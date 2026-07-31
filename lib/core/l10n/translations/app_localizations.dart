@@ -4394,6 +4394,60 @@ abstract class AppLocalizations {
   /// **'Plans'**
   String get search_filter_plans;
 
+  /// No description provided for @search_filter_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter results'**
+  String get search_filter_title;
+
+  /// No description provided for @search_filter_programs.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get search_filter_programs;
+
+  /// No description provided for @search_filter_weight_gain.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight gain'**
+  String get search_filter_weight_gain;
+
+  /// No description provided for @search_filter_muscle_gain.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle gain'**
+  String get search_filter_muscle_gain;
+
+  /// No description provided for @search_filter_allergy_suitable.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergy friendly'**
+  String get search_filter_allergy_suitable;
+
+  /// No description provided for @search_filter_apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filter'**
+  String get search_filter_apply;
+
+  /// No description provided for @search_filter_reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get search_filter_reset;
+
+  /// No description provided for @search_filter_calories_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get search_filter_calories_unit;
+
+  /// No description provided for @search_filter_grams_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get search_filter_grams_unit;
+
   /// No description provided for @search_recent_grilled_chicken.
   ///
   /// In en, this message translates to:
@@ -4675,6 +4729,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have 72 hours before your next box is prepared.'**
   String get home_reminder_copy;
+
+  /// No description provided for @home_promo_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'30% off'**
+  String get home_promo_discount;
+
+  /// No description provided for @home_promo_all_subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'on all subscriptions'**
+  String get home_promo_all_subscriptions;
+
+  /// No description provided for @home_shortcut_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get home_shortcut_offers;
+
+  /// No description provided for @home_shortcut_allergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergy'**
+  String get home_shortcut_allergy;
+
+  /// No description provided for @home_shortcut_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'My plan'**
+  String get home_shortcut_subscription;
+
+  /// No description provided for @home_shortcut_my_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'My meals'**
+  String get home_shortcut_my_meals;
+
+  /// No description provided for @home_meal_omelet_vegetables.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetable omelet'**
+  String get home_meal_omelet_vegetables;
+
+  /// No description provided for @home_meal_omelet_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'430 calories'**
+  String get home_meal_omelet_calories;
+
+  /// No description provided for @home_meal_chicken_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'650 calories'**
+  String get home_meal_chicken_calories;
+
+  /// No description provided for @home_meal_herb_salmon.
+  ///
+  /// In en, this message translates to:
+  /// **'Herb salmon'**
+  String get home_meal_herb_salmon;
+
+  /// No description provided for @home_meal_salmon_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'520 calories'**
+  String get home_meal_salmon_calories;
+
+  /// No description provided for @home_restaurant_protein_kitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein Kitchen'**
+  String get home_restaurant_protein_kitchen;
+
+  /// No description provided for @home_restaurant_healthy_bite.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy Bite'**
+  String get home_restaurant_healthy_bite;
+
+  /// No description provided for @home_restaurant_diet_house.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet House'**
+  String get home_restaurant_diet_house;
+
+  /// No description provided for @home_restaurant_balanced_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced healthy meals'**
+  String get home_restaurant_balanced_meals;
+
+  /// No description provided for @home_restaurant_browse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get home_restaurant_browse;
+
+  /// No description provided for @home_calendar_card_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get home_calendar_card_title;
+
+  /// No description provided for @home_calendar_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View your upcoming meals'**
+  String get home_calendar_card_subtitle;
+
+  /// No description provided for @home_subscription_tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get home_subscription_tab;
+
+  /// No description provided for @home_nutrition_tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get home_nutrition_tab;
+
+  /// No description provided for @home_current_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current plan'**
+  String get home_current_plan;
+
+  /// No description provided for @home_weight_loss_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss program'**
+  String get home_weight_loss_program;
+
+  /// No description provided for @home_renewal_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on June 24, 2026'**
+  String get home_renewal_date;
+
+  /// No description provided for @home_average_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Average calories'**
+  String get home_average_calories;
+
+  /// No description provided for @home_average_calories_value.
+  ///
+  /// In en, this message translates to:
+  /// **'612'**
+  String get home_average_calories_value;
+
+  /// No description provided for @home_calories_per_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'cal / meal'**
+  String get home_calories_per_meal;
+
+  /// No description provided for @home_completed_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed meals'**
+  String get home_completed_meals;
+
+  /// No description provided for @home_completed_meals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'18'**
+  String get home_completed_meals_value;
+
+  /// No description provided for @home_completed_meals_total.
+  ///
+  /// In en, this message translates to:
+  /// **'of 30 meals'**
+  String get home_completed_meals_total;
+
+  /// No description provided for @home_subscription_days_value.
+  ///
+  /// In en, this message translates to:
+  /// **'12'**
+  String get home_subscription_days_value;
+
+  /// No description provided for @home_days_remaining_label.
+  ///
+  /// In en, this message translates to:
+  /// **'days remaining'**
+  String get home_days_remaining_label;
+
+  /// No description provided for @home_subscription_days_total.
+  ///
+  /// In en, this message translates to:
+  /// **'of 30 days'**
+  String get home_subscription_days_total;
+
+  /// No description provided for @home_subscription_days_total_alt.
+  ///
+  /// In en, this message translates to:
+  /// **'of 30 days'**
+  String get home_subscription_days_total_alt;
+
+  /// No description provided for @home_subscription_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription details'**
+  String get home_subscription_details;
+
+  /// No description provided for @home_next_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Next delivery'**
+  String get home_next_delivery;
+
+  /// No description provided for @home_tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get home_tomorrow;
+
+  /// No description provided for @home_before_noon.
+  ///
+  /// In en, this message translates to:
+  /// **'before 12:00 PM'**
+  String get home_before_noon;
+
+  /// No description provided for @home_commitment.
+  ///
+  /// In en, this message translates to:
+  /// **'Commitment'**
+  String get home_commitment;
+
+  /// No description provided for @home_commitment_value.
+  ///
+  /// In en, this message translates to:
+  /// **'86%'**
+  String get home_commitment_value;
+
+  /// No description provided for @home_excellent_performance.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get home_excellent_performance;
+
+  /// No description provided for @home_selected_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected meals'**
+  String get home_selected_meals;
+
+  /// No description provided for @home_selected_meals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'18 /30'**
+  String get home_selected_meals_value;
+
+  /// No description provided for @home_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'meal'**
+  String get home_meal;
+
+  /// No description provided for @home_remaining_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days left'**
+  String get home_remaining_days;
+
+  /// No description provided for @home_on_track.
+  ///
+  /// In en, this message translates to:
+  /// **'You are on the right track! Keep making healthy choices.'**
+  String get home_on_track;
 
   /// No description provided for @search_suggestion_chicken_protein.
   ///

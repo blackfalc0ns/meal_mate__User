@@ -57,7 +57,7 @@ class OfferDetailsInfoRow extends StatelessWidget {
                       row.value,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                    
+
                       style: getMediumStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,

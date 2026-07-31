@@ -2264,6 +2264,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_filter_plans => 'Plans';
 
   @override
+  String get search_filter_title => 'Filter results';
+
+  @override
+  String get search_filter_programs => 'Programs';
+
+  @override
+  String get search_filter_weight_gain => 'Weight gain';
+
+  @override
+  String get search_filter_muscle_gain => 'Muscle gain';
+
+  @override
+  String get search_filter_allergy_suitable => 'Allergy friendly';
+
+  @override
+  String get search_filter_apply => 'Apply filter';
+
+  @override
+  String get search_filter_reset => 'Reset';
+
+  @override
+  String get search_filter_calories_unit => 'kcal';
+
+  @override
+  String get search_filter_grams_unit => 'g';
+
+  @override
   String get search_recent_grilled_chicken => 'Grilled chicken';
 
   @override
@@ -2406,6 +2433,142 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get home_reminder_copy =>
       'You have 72 hours before your next box is prepared.';
+
+  @override
+  String get home_promo_discount => '30% off';
+
+  @override
+  String get home_promo_all_subscriptions => 'on all subscriptions';
+
+  @override
+  String get home_shortcut_offers => 'Offers';
+
+  @override
+  String get home_shortcut_allergy => 'Allergy';
+
+  @override
+  String get home_shortcut_subscription => 'My plan';
+
+  @override
+  String get home_shortcut_my_meals => 'My meals';
+
+  @override
+  String get home_meal_omelet_vegetables => 'Vegetable omelet';
+
+  @override
+  String get home_meal_omelet_calories => '430 calories';
+
+  @override
+  String get home_meal_chicken_calories => '650 calories';
+
+  @override
+  String get home_meal_herb_salmon => 'Herb salmon';
+
+  @override
+  String get home_meal_salmon_calories => '520 calories';
+
+  @override
+  String get home_restaurant_protein_kitchen => 'Protein Kitchen';
+
+  @override
+  String get home_restaurant_healthy_bite => 'Healthy Bite';
+
+  @override
+  String get home_restaurant_diet_house => 'Diet House';
+
+  @override
+  String get home_restaurant_balanced_meals => 'Balanced healthy meals';
+
+  @override
+  String get home_restaurant_browse => 'Browse';
+
+  @override
+  String get home_calendar_card_title => 'Calendar';
+
+  @override
+  String get home_calendar_card_subtitle => 'View your upcoming meals';
+
+  @override
+  String get home_subscription_tab => 'Subscription';
+
+  @override
+  String get home_nutrition_tab => 'Nutrition';
+
+  @override
+  String get home_current_plan => 'Current plan';
+
+  @override
+  String get home_weight_loss_program => 'Weight loss program';
+
+  @override
+  String get home_renewal_date => 'Renews on June 24, 2026';
+
+  @override
+  String get home_average_calories => 'Average calories';
+
+  @override
+  String get home_average_calories_value => '612';
+
+  @override
+  String get home_calories_per_meal => 'cal / meal';
+
+  @override
+  String get home_completed_meals => 'Completed meals';
+
+  @override
+  String get home_completed_meals_value => '18';
+
+  @override
+  String get home_completed_meals_total => 'of 30 meals';
+
+  @override
+  String get home_subscription_days_value => '12';
+
+  @override
+  String get home_days_remaining_label => 'days remaining';
+
+  @override
+  String get home_subscription_days_total => 'of 30 days';
+
+  @override
+  String get home_subscription_days_total_alt => 'of 30 days';
+
+  @override
+  String get home_subscription_details => 'Subscription details';
+
+  @override
+  String get home_next_delivery => 'Next delivery';
+
+  @override
+  String get home_tomorrow => 'Tomorrow';
+
+  @override
+  String get home_before_noon => 'before 12:00 PM';
+
+  @override
+  String get home_commitment => 'Commitment';
+
+  @override
+  String get home_commitment_value => '86%';
+
+  @override
+  String get home_excellent_performance => 'Excellent';
+
+  @override
+  String get home_selected_meals => 'Selected meals';
+
+  @override
+  String get home_selected_meals_value => '18 /30';
+
+  @override
+  String get home_meal => 'meal';
+
+  @override
+  String get home_remaining_days => 'Days left';
+
+  @override
+  String get home_on_track =>
+      'You are on the right track! Keep making healthy choices.';
 
   @override
   String get search_suggestion_chicken_protein => 'Chicken protein';

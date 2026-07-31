@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/text_styles.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
@@ -17,66 +19,107 @@ class HomeHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          ColoredBox(color: color.primaryContainer),
+          DecoratedBox(
+            decoration: BoxDecoration(gradient: AppColors.homeHeaderGradient),
+          ),
           Positioned.fill(
-            child: Opacity(
-              opacity: .22,
-              child: SvgPicture.asset(
-                Assets.homeFigmaHeaderDoodle,
-                fit: BoxFit.cover,
+            child: ClipRRect(
+              child: Opacity(
+                opacity: 1,
+                child: SvgPicture.asset(
+                  Assets.homeFigmaHeaderDoodle,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.homeHorizontalPadding,
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.menu_rounded,
-                  color: color.onSurface,
-                  size: Spacing.iconLg,
-                ),
-                const SizedBox(width: Spacing.md),
-                CircleAvatar(
-                  radius: Spacing.lg,
-                  backgroundImage: const AssetImage(Assets.homeFigmaAvatar),
-                ),
-                const SizedBox(width: Spacing.sm),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      locale.home_greeting,
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      locale.home_greeting_subtitle,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Badge(
-                  smallSize: Spacing.sm,
-                  child: CircleAvatar(
-                    backgroundColor: color.surface,
-                    child: Icon(
-                      Icons.notifications_rounded,
-                      color: color.onSurface,
+          PositionedDirectional(
+            top: Spacing.homeHeaderContentTop,
+            start: Spacing.homeHorizontalPadding,
+            end: Spacing.homeHorizontalPadding,
+            child: SizedBox(
+              height: Spacing.homeHeaderAvatarSize,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: Spacing.homeHeaderMenuWidth,
+                    height: Spacing.homeHeaderMenuHeight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _menuLine(context, Spacing.homeHeaderMenuWidth),
+                        _menuLine(context, Spacing.base),
+                        _menuLine(context, Spacing.homeHeaderMenuWidth),
+                      ],
                     ),
                   ),
+                  const SizedBox(width: Spacing.md),
+                  Image.asset(
+                    Assets.homeFigmaAvatar,
+                    width: Spacing.homeHeaderAvatarSize,
+                    height: Spacing.homeHeaderAvatarSize,
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        locale.home_greeting,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: 13.176,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      Text(
+                        locale.home_greeting_subtitle,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: 9.94,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            top: Spacing.homeHeaderNotificationTop,
+            end: Spacing.homeHorizontalPadding,
+            child: SizedBox(
+              width: Spacing.homeHeaderNotificationSize,
+              height: Spacing.homeHeaderNotificationSize,
+              child: Badge(
+                smallSize: Spacing.sm,
+                child: CircleAvatar(
+                  backgroundColor: color.surface,
+                  child: SvgPicture.asset(
+                    Assets.notificationBold,
+                    width: Spacing.iconMd,
+                    height: Spacing.iconMd,
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _menuLine(BuildContext context, double width) {
+    final color = context.colorScheme;
+    return Container(
+      width: width,
+      height: Spacing.xs,
+      decoration: BoxDecoration(
+        color: color.onSurface,
+        borderRadius: BorderRadius.circular(Spacing.radiusXs),
       ),
     );
   }

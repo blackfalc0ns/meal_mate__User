@@ -50,6 +50,7 @@ class AppColors {
 
   // Core aliases used across the app.
   static const Color primary = Color(0xFF137A43);
+  static const Color homeHeaderGreen = Color(0xFF1BB368);
   static const Color primaryLight = primary200;
   static const Color primaryMedium = primary300;
   static const Color primaryDark = primary500;
@@ -79,6 +80,17 @@ class AppColors {
   );
 
   static const LinearGradient primarygradient = primaryGradient;
+
+  static LinearGradient homeHeaderGradient = LinearGradient(
+    colors: [
+      homeHeaderGreen,
+      homeHeaderGreen.withValues(alpha: 0.5),
+      homeHeaderGreen.withValues(alpha: 0.3),
+      homeHeaderGreen.withValues(alpha: 0),
+    ],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
 
   // Surfaces and content.
   static const Color transparent = Color(0x00000000);

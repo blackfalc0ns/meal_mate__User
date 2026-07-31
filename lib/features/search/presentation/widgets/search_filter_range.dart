@@ -12,6 +12,7 @@ class SearchFilterRange extends StatelessWidget {
     required this.range,
     required this.min,
     required this.max,
+    required this.unit,
     required this.onChanged,
   });
 
@@ -20,6 +21,7 @@ class SearchFilterRange extends StatelessWidget {
   final RangeValues range;
   final double min;
   final double max;
+  final String unit;
   final ValueChanged<RangeValues> onChanged;
 
   @override
@@ -33,7 +35,7 @@ class SearchFilterRange extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(icon, size: Spacing.iconSm, color: color.primary),
               const SizedBox(width: Spacing.xs),
@@ -48,52 +50,70 @@ class SearchFilterRange extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: Spacing.searchFilterRangeHeight,
-            child: Row(
+            height: Spacing.searchFilterRangeHeight + Spacing.xss,
+            child: Stack(
               children: [
-                Container(
-                  width: Spacing.xxxl - Spacing.xss,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: color.outlineVariant),
-                    borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                  ),
+                Align(
+                  alignment: Alignment.topCenter,
                   child: Text(
-                    range.start.round().toString(),
-                    style: getMediumStyle(
+                    '${range.start.round()} - ${range.end.round()} $unit',
+                    style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.primary,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: RangeSlider(
-                    values: range,
-                    min: min,
-                    max: max,
-                    divisions: (max - min).round(),
-                    labels: RangeLabels(
-                      range.start.round().toString(),
-                      range.end.round().toString(),
-                    ),
-                    onChanged: onChanged,
-                  ),
-                ),
-                Container(
-                  width: Spacing.xxxl - Spacing.xss,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: color.outlineVariant),
-                    borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                  ),
-                  child: Text(
-                    range.end.round().toString(),
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.primary,
-                    ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Spacing.xxxl - Spacing.xs,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: color.outlineVariant),
+                          borderRadius: BorderRadius.circular(Spacing.sm),
+                        ),
+                        child: Text(
+                          range.end.round().toString(),
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size9,
+                            color: color.primary,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: RangeSlider(
+                          values: range,
+                          min: min,
+                          max: max,
+                          divisions: (max - min).round(),
+                          labels: RangeLabels(
+                            range.start.round().toString(),
+                            range.end.round().toString(),
+                          ),
+                          onChanged: onChanged,
+                        ),
+                      ),
+                      Container(
+                        width: Spacing.xxxl - Spacing.xs,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: color.outlineVariant),
+                          borderRadius: BorderRadius.circular(Spacing.sm),
+                        ),
+                        child: Text(
+                          range.start.round().toString(),
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size9,
+                            color: color.primary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

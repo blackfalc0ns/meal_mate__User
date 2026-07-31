@@ -61,8 +61,20 @@ class Assets {
   static const String healthGoalFire = '$_images/profile/health_goal_fire.svg';
   static const String homeFigmaBackgroundDoodle =
       '$_images/home/figma/home_background_doodle.svg';
+  static const String homeFigmaBackgroundDoodleImage =
+      '$_images/home/figma/home_background_doodle.png';
   static const String homeFigmaHeaderDoodle =
       '$_images/home/figma/home_header_doodle.svg';
+  static const String homeSearchLine =
+      '$_images/home/figma/home_search_line.svg';
+  static const String homeShortcutGift =
+      '$_images/home/figma/home_shortcut_gift.svg';
+  static const String homeShortcutLeaf =
+      '$_images/home/figma/home_shortcut_leaf.svg';
+  static const String homeShortcutAward =
+      '$_images/home/figma/home_shortcut_award.svg';
+  static const String homeShortcutCalendar =
+      '$_images/home/figma/home_shortcut_calendar.svg';
   static const String homePromotion = '$_images/home/figma/home_promotion.png';
   static const String homeBreakfast = '$_images/home/figma/home_breakfast.png';
   static const String homeSalmon = '$_images/home/figma/home_salmon.png';
@@ -72,6 +84,30 @@ class Assets {
   static const String homeDeliveryBox =
       '$_images/home/figma/home_delivery_box.png';
   static const String homeReminder = '$_images/home/figma/home_reminder.png';
+  static const String homeSubscriptionHealth =
+      '$_images/home/figma/home_subscription_health.svg';
+  static const String homeSubscriptionCalendar =
+      '$_images/home/figma/home_subscription_calendar.svg';
+  static const String homeSubscriptionPlan =
+      '$_images/home/figma/home_subscription_plan.svg';
+  static const String homeSubscriptionFire =
+      '$_images/home/figma/home_subscription_fire.svg';
+  static const String homeSubscriptionProgress =
+      '$_images/home/figma/home_subscription_progress.svg';
+  static const String homeSubscriptionPlant =
+      '$_images/home/figma/home_subscription_plant.svg';
+  static const String homeSubscriptionArrow =
+      '$_images/home/figma/home_subscription_arrow.svg';
+  static const String homeSubscriptionDelivery =
+      '$_images/home/figma/home_subscription_delivery.svg';
+  static const String homeSubscriptionMedal =
+      '$_images/home/figma/home_subscription_medal.svg';
+  static const String homeSubscriptionMeal =
+      '$_images/home/figma/home_subscription_meal.svg';
+  static const String homeSubscriptionDayCalendar =
+      '$_images/home/figma/home_subscription_day_calendar.svg';
+  static const String homeSubscriptionCompletedProgress =
+      '$_images/home/figma/home_subscription_completed_progress.svg';
 
   // Calendar
   static const String calendarMealPickerHero =

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/text_styles.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class HomePromotionCard extends StatelessWidget {
-  const HomePromotionCard({super.key, required this.buttonLabel});
-  final String buttonLabel;
+  const HomePromotionCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -14,45 +13,17 @@ class HomePromotionCard extends StatelessWidget {
     return SizedBox(
       height: Spacing.homePromotionHeight,
       child: Card(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            PositionedDirectional(
-              end: 0,
-              child: Image.asset(
-                Assets.homePromotion,
-                height: Spacing.homePromotionHeight,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(Spacing.base),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'خصم 30%',
-                    style: AppTextStyles.h3.copyWith(color: color.primary),
-                  ),
-                  Text(
-                    'على جميع الاشتراكات',
-                    style: AppTextStyles.labelLarge.copyWith(
-                      color: color.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.xs),
-                  SizedBox(
-                    height: Spacing.buttonSmallHeight,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(buttonLabel),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        color: color.surface,
+        clipBehavior: Clip.antiAlias,
+        child: Semantics(
+          label: locale.home_promo_discount,
+          image: true,
+          child: Image.asset(
+            Assets.homePromotion,
+            width: double.infinity,
+            height: Spacing.homePromotionHeight,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

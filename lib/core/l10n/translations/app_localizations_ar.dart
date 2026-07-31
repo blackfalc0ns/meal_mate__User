@@ -2236,6 +2236,33 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search_filter_plans => 'خطط';
 
   @override
+  String get search_filter_title => 'تصفية النتائج';
+
+  @override
+  String get search_filter_programs => 'البرامج';
+
+  @override
+  String get search_filter_weight_gain => 'زيادة الوزن';
+
+  @override
+  String get search_filter_muscle_gain => 'زيادة العضلات';
+
+  @override
+  String get search_filter_allergy_suitable => 'مناسب للحساسية';
+
+  @override
+  String get search_filter_apply => 'تطبيق الفلتر';
+
+  @override
+  String get search_filter_reset => 'إعادة التعيين';
+
+  @override
+  String get search_filter_calories_unit => 'كالوري';
+
+  @override
+  String get search_filter_grams_unit => 'غ';
+
+  @override
   String get search_recent_grilled_chicken => 'دجاج مشوي';
 
   @override
@@ -2375,6 +2402,142 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get home_reminder_copy => 'لديك 72 ساعة قبل تجهيز صندوقك القادم.';
+
+  @override
+  String get home_promo_discount => 'خصم 30%';
+
+  @override
+  String get home_promo_all_subscriptions => 'على جميع الاشتراكات';
+
+  @override
+  String get home_shortcut_offers => 'العروض';
+
+  @override
+  String get home_shortcut_allergy => 'الحساسية';
+
+  @override
+  String get home_shortcut_subscription => 'اشتراكي';
+
+  @override
+  String get home_shortcut_my_meals => 'وجباتي';
+
+  @override
+  String get home_meal_omelet_vegetables => 'أومليت بالخضار';
+
+  @override
+  String get home_meal_omelet_calories => '430 سعرة';
+
+  @override
+  String get home_meal_chicken_calories => '650 سعرة';
+
+  @override
+  String get home_meal_herb_salmon => 'سلمون بالأعشاب';
+
+  @override
+  String get home_meal_salmon_calories => '520 سعرة';
+
+  @override
+  String get home_restaurant_protein_kitchen => 'بروتين كيتشن';
+
+  @override
+  String get home_restaurant_healthy_bite => 'هيلثي بايت';
+
+  @override
+  String get home_restaurant_diet_house => 'دايت هاوس';
+
+  @override
+  String get home_restaurant_balanced_meals => 'وجبات صحية متوازنة';
+
+  @override
+  String get home_restaurant_browse => 'استعراض';
+
+  @override
+  String get home_calendar_card_title => 'التقويم';
+
+  @override
+  String get home_calendar_card_subtitle => 'استعرض وجباتك القادمة';
+
+  @override
+  String get home_subscription_tab => 'الاشتراك';
+
+  @override
+  String get home_nutrition_tab => 'التغذية';
+
+  @override
+  String get home_current_plan => 'الخطة الحالية';
+
+  @override
+  String get home_weight_loss_program => 'برنامج خسارة الوزن';
+
+  @override
+  String get home_renewal_date => 'تتجدد في 24 يونيو 2026';
+
+  @override
+  String get home_average_calories => 'متوسط السعرات';
+
+  @override
+  String get home_average_calories_value => '612';
+
+  @override
+  String get home_calories_per_meal => 'سعرة / وجبة';
+
+  @override
+  String get home_completed_meals => 'الوجبات المكتملة';
+
+  @override
+  String get home_completed_meals_value => '18';
+
+  @override
+  String get home_completed_meals_total => 'من 30 وجبة';
+
+  @override
+  String get home_subscription_days_value => '12';
+
+  @override
+  String get home_days_remaining_label => 'يوماً متبقية';
+
+  @override
+  String get home_subscription_days_total => 'من 30 يوم';
+
+  @override
+  String get home_subscription_days_total_alt => 'من 30 يوماً';
+
+  @override
+  String get home_subscription_details => 'تفاصيل الاشتراك';
+
+  @override
+  String get home_next_delivery => 'التوصيل القادم';
+
+  @override
+  String get home_tomorrow => 'غداً';
+
+  @override
+  String get home_before_noon => 'قبل 12:00 م';
+
+  @override
+  String get home_commitment => 'الالتزام';
+
+  @override
+  String get home_commitment_value => '%86';
+
+  @override
+  String get home_excellent_performance => 'أداء ممتاز';
+
+  @override
+  String get home_selected_meals => 'وجبات مختارة';
+
+  @override
+  String get home_selected_meals_value => '30/ 18';
+
+  @override
+  String get home_meal => 'وجبة';
+
+  @override
+  String get home_remaining_days => 'أيام متبقية';
+
+  @override
+  String get home_on_track =>
+      'أنت على الطريق الصحيح! استمر في اختياراتك الصحية.';
 
   @override
   String get search_suggestion_chicken_protein => 'دجاج بروتين';

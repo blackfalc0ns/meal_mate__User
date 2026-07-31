@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/text_styles.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
@@ -12,10 +13,12 @@ class HomeReminderCard extends StatelessWidget {
     required this.reminder,
     required this.subtitle,
   });
+
   final String editLabel;
   final String title;
   final String reminder;
   final String subtitle;
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -49,7 +52,9 @@ class HomeReminderCard extends StatelessWidget {
                       color: color.secondary,
                       child: Text(
                         reminder,
-                        style: AppTextStyles.overline.copyWith(
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size8,
                           color: color.onSecondary,
                         ),
                       ),
@@ -57,23 +62,33 @@ class HomeReminderCard extends StatelessWidget {
                     const SizedBox(height: Spacing.xs),
                     Text(
                       title,
-                      style: AppTextStyles.labelSmall.copyWith(
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                     ),
                     Text(
                       subtitle,
-                      style: AppTextStyles.caption.copyWith(
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
                         color: color.onSurfaceVariant,
                       ),
                     ),
                     const Spacer(),
                     Align(
                       alignment: AlignmentDirectional.centerStart,
-                      child: Text(
-                        editLabel,
-                        style: AppTextStyles.caption.copyWith(
-                          color: color.primary,
+                      child: Semantics(
+                        label: locale.home_edit_meals,
+                        button: true,
+                        child: Text(
+                          editLabel,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.primary,
+                          ),
                         ),
                       ),
                     ),
