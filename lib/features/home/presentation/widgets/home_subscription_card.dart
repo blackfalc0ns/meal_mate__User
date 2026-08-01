@@ -3,10 +3,10 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_cta.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_metrics.dart';
+import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_nutrition_panel.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_plan_info.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_progress_ring.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_segment_tab.dart';
-import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_summary_card.dart';
 
 class HomeSubscriptionCard extends StatefulWidget {
   const HomeSubscriptionCard({super.key});
@@ -17,12 +17,14 @@ class HomeSubscriptionCard extends StatefulWidget {
 
 class _HomeSubscriptionCardState extends State<HomeSubscriptionCard> {
   HomeSubscriptionSegmentTabType _selectedTab =
-      HomeSubscriptionSegmentTabType.subscription;
+      HomeSubscriptionSegmentTabType.nutrition;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isNutritionSelected =
+        _selectedTab == HomeSubscriptionSegmentTabType.nutrition;
     return Semantics(
       label: locale.home_subscription_details,
       child: SizedBox(
@@ -67,9 +69,7 @@ class _HomeSubscriptionCardState extends State<HomeSubscriptionCard> {
                         Expanded(
                           child: HomeSubscriptionSegmentTab(
                             type: HomeSubscriptionSegmentTabType.subscription,
-                            isSelected:
-                                _selectedTab ==
-                                HomeSubscriptionSegmentTabType.subscription,
+                            isSelected: !isNutritionSelected,
                             onTap: () => setState(
                               () => _selectedTab =
                                   HomeSubscriptionSegmentTabType.subscription,
@@ -79,9 +79,7 @@ class _HomeSubscriptionCardState extends State<HomeSubscriptionCard> {
                         Expanded(
                           child: HomeSubscriptionSegmentTab(
                             type: HomeSubscriptionSegmentTabType.nutrition,
-                            isSelected:
-                                _selectedTab ==
-                                HomeSubscriptionSegmentTabType.nutrition,
+                            isSelected: isNutritionSelected,
                             onTap: () => setState(
                               () => _selectedTab =
                                   HomeSubscriptionSegmentTabType.nutrition,
@@ -92,26 +90,29 @@ class _HomeSubscriptionCardState extends State<HomeSubscriptionCard> {
                     ),
                   ),
                 ),
-                const PositionedDirectional(
-                  top: Spacing.homeSubscriptionPlanTop,
-                  start: Spacing.homeSubscriptionPlanStart,
-                  child: HomeSubscriptionPlanInfo(),
-                ),
-                const PositionedDirectional(
-                  top: Spacing.homeSubscriptionProgressTop,
-                  start: Spacing.homeSubscriptionProgressStart,
-                  child: HomeSubscriptionProgressRing(),
-                ),
-                const PositionedDirectional(
-                  top: Spacing.homeSubscriptionMetricsTop,
-                  start: Spacing.homeSubscriptionMetricsStart,
-                  child: HomeSubscriptionMetrics(),
-                ),
-                const PositionedDirectional(
-                  top: Spacing.homeSubscriptionSummaryTop,
-                  start: Spacing.homeSubscriptionSummaryStart,
-                  child: HomeSubscriptionSummaryCard(),
-                ),
+                if (isNutritionSelected)
+                  const Positioned(
+                    top: Spacing.homeNutritionPanelTop,
+                    left: Spacing.homeNutritionPanelStart,
+                    child: HomeSubscriptionNutritionPanel(),
+                  )
+                else ...[
+                  const PositionedDirectional(
+                    top: Spacing.homeSubscriptionPlanTop,
+                    start: Spacing.homeSubscriptionPlanStart,
+                    child: HomeSubscriptionPlanInfo(),
+                  ),
+                  const PositionedDirectional(
+                    top: Spacing.homeSubscriptionProgressTop,
+                    start: Spacing.homeSubscriptionProgressStart,
+                    child: HomeSubscriptionProgressRing(),
+                  ),
+                  const PositionedDirectional(
+                    top: Spacing.homeSubscriptionMetricsTop,
+                    start: Spacing.homeSubscriptionMetricsStart,
+                    child: HomeSubscriptionMetrics(),
+                  ),
+                ],
                 const PositionedDirectional(
                   top: Spacing.homeSubscriptionCtaTop,
                   start: Spacing.homeSubscriptionCtaStart,

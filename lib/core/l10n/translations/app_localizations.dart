@@ -4640,6 +4640,60 @@ abstract class AppLocalizations {
   /// **'Main nutrients'**
   String get home_main_nutrients;
 
+  /// No description provided for @home_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get home_protein;
+
+  /// No description provided for @home_protein_value.
+  ///
+  /// In en, this message translates to:
+  /// **'89'**
+  String get home_protein_value;
+
+  /// No description provided for @home_protein_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'120 g'**
+  String get home_protein_goal;
+
+  /// No description provided for @home_carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get home_carbs;
+
+  /// No description provided for @home_carbs_value.
+  ///
+  /// In en, this message translates to:
+  /// **'210'**
+  String get home_carbs_value;
+
+  /// No description provided for @home_carbs_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'260 g'**
+  String get home_carbs_goal;
+
+  /// No description provided for @home_fat.
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get home_fat;
+
+  /// No description provided for @home_fat_value.
+  ///
+  /// In en, this message translates to:
+  /// **'58'**
+  String get home_fat_value;
+
+  /// No description provided for @home_fat_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'70 g'**
+  String get home_fat_goal;
+
   /// No description provided for @home_remaining_calories.
   ///
   /// In en, this message translates to:

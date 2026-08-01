@@ -2389,6 +2389,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_main_nutrients => 'Main nutrients';
 
   @override
+  String get home_protein => 'Protein';
+
+  @override
+  String get home_protein_value => '89';
+
+  @override
+  String get home_protein_goal => '120 g';
+
+  @override
+  String get home_carbs => 'Carbs';
+
+  @override
+  String get home_carbs_value => '210';
+
+  @override
+  String get home_carbs_goal => '260 g';
+
+  @override
+  String get home_fat => 'Fat';
+
+  @override
+  String get home_fat_value => '58';
+
+  @override
+  String get home_fat_goal => '70 g';
+
+  @override
   String get home_remaining_calories => 'Calories remaining';
 
   @override

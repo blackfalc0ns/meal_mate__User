@@ -108,6 +108,18 @@ class Assets {
       '$_images/home/figma/home_subscription_day_calendar.svg';
   static const String homeSubscriptionCompletedProgress =
       '$_images/home/figma/home_subscription_completed_progress.svg';
+  static const String homeNutritionBackgroundGreen =
+      '$_images/home/figma/home_nutrition_background_green.svg';
+  static const String homeNutritionBackgroundLight =
+      '$_images/home/figma/home_nutrition_background_light.svg';
+  static const String homeNutritionCalorieRing =
+      '$_images/home/figma/home_nutrition_calorie_ring.svg';
+  static const String homeNutritionFireBadge =
+      '$_images/home/figma/home_nutrition_fire_badge.svg';
+  static const String homeNutritionHeart =
+      '$_images/home/figma/home_nutrition_heart.svg';
+  static const String homeNutritionDivider =
+      '$_images/home/figma/home_nutrition_divider.svg';
 
   // Calendar
   static const String calendarMealPickerHero =

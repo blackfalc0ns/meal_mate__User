@@ -27,7 +27,7 @@ class HomeSubscriptionCta extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            locale.home_subscription_details,
+            locale.home_details,
             style: getMediumStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size8,

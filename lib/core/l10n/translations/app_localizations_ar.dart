@@ -2359,6 +2359,33 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home_main_nutrients => 'المغذيات الرئيسية';
 
   @override
+  String get home_protein => 'البروتين';
+
+  @override
+  String get home_protein_value => '89';
+
+  @override
+  String get home_protein_goal => '120 جم';
+
+  @override
+  String get home_carbs => 'الكربوهيدرات';
+
+  @override
+  String get home_carbs_value => '210';
+
+  @override
+  String get home_carbs_goal => '260 جم';
+
+  @override
+  String get home_fat => 'الدهون';
+
+  @override
+  String get home_fat_value => '58';
+
+  @override
+  String get home_fat_goal => '70 جم';
+
+  @override
   String get home_remaining_calories => 'السعرات المتبقية';
 
   @override
