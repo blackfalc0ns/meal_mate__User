@@ -94,15 +94,12 @@ class HomeHeader extends StatelessWidget {
             child: SizedBox(
               width: Spacing.homeHeaderNotificationSize,
               height: Spacing.homeHeaderNotificationSize,
-              child: Badge(
-                smallSize: Spacing.sm,
-                child: CircleAvatar(
-                  backgroundColor: color.surface,
-                  child: SvgPicture.asset(
-                    Assets.notificationBold,
-                    width: Spacing.iconMd,
-                    height: Spacing.iconMd,
-                  ),
+              child: CircleAvatar(
+                backgroundColor: color.surface,
+                child: SvgPicture.asset(
+                  Assets.notificationBold,
+                  width: Spacing.iconMd,
+                  height: Spacing.iconMd,
                 ),
               ),
             ),

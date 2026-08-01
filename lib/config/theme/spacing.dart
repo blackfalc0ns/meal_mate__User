@@ -479,7 +479,7 @@ class Spacing {
   static const double homeSubscriptionBadgeHeight = 13.277;
   static const double homeSubscriptionBadgeRadius = 4.149;
   static const double homeSubscriptionPlanGap = 7.468;
-  static const double homeSubscriptionPlanIconSize = 12.447;
+  static const double homeSubscriptionPlanIconSize = 15.447;
   static const double homeSubscriptionProgressStart = 211.596;
   static const double homeSubscriptionProgressTop = 48.128;
   static const double homeSubscriptionProgressWidth = 117.0;
@@ -499,10 +499,10 @@ class Spacing {
   static const double homeSubscriptionSummaryTop = 175.915;
   static const double homeSubscriptionSummaryStart = 8.128;
   static const double homeSubscriptionSummaryWidth = 334.404;
-  static const double homeSubscriptionSummaryHeight = 82.149;
+  static const double homeSubscriptionSummaryHeight = 85.149;
   static const double homeSubscriptionSummaryRadius = 12.447;
   static const double homeSubscriptionSummaryFooterHeight = 22.404;
-  static const double homeSubscriptionStatusHeight = 39.532;
+  static const double homeSubscriptionStatusHeight = 45.0;
   static const double homeSubscriptionDividerWidth = 1.0;
   static const double homeSubscriptionDividerHeight = 34.851;
   static const double homeSubscriptionCtaTop = 272.0;

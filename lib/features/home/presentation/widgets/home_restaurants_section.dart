@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class HomeRestaurantsSection extends StatelessWidget {
   const HomeRestaurantsSection({super.key, required this.title});
@@ -81,9 +82,11 @@ class HomeRestaurantsSection extends StatelessWidget {
                       const Spacer(),
                       SizedBox(
                         height: Spacing.xl,
-                        child: ElevatedButton(
+                        child: AppButton(
+                          fontSize: FontSize.size11,
+
                           onPressed: () {},
-                          child: Text(locale.home_restaurant_browse),
+                          text: locale.home_restaurant_browse,
                         ),
                       ),
                     ],
