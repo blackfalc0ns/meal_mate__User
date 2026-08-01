@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -41,29 +42,36 @@ class HomeHeader extends StatelessWidget {
               height: Spacing.homeHeaderAvatarSize,
               child: Row(
                 children: [
-                  SizedBox(
-                    width: Spacing.homeHeaderMenuWidth,
-                    height: Spacing.homeHeaderMenuHeight,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        _menuLine(context, Spacing.homeHeaderMenuWidth),
-                        _menuLine(context, Spacing.base),
-                        _menuLine(context, Spacing.homeHeaderMenuWidth),
-                      ],
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => ZoomDrawer.of(context)?.open(),
+                    child: SizedBox(
+                      width: Spacing.homeHeaderMenuWidth,
+                      height: Spacing.homeHeaderMenuHeight,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _menuLine(context, Spacing.homeHeaderMenuWidth),
+                          _menuLine(context, Spacing.base),
+                          _menuLine(context, Spacing.homeHeaderMenuWidth),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(width: Spacing.md),
-                  Image.asset(
-                    Assets.homeFigmaAvatar,
-                    width: Spacing.homeHeaderAvatarSize,
-                    height: Spacing.homeHeaderAvatarSize,
+                  ClipOval(
+                    child: Image.asset(
+                      Assets.homePersonAvatar,
+                      width: Spacing.homeHeaderAvatarSize,
+                      height: Spacing.homeHeaderAvatarSize,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(width: Spacing.sm),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         locale.home_greeting,

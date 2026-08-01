@@ -79,7 +79,7 @@ class _AppShellView extends StatelessWidget {
         return AppZoomDrawerShell(
           userName: dashboard?.userName ?? l10n.drawer_guest_name,
           greeting: dashboard?.greeting ?? l10n.drawer_welcome,
-          avatarAsset: Assets.homeFigmaAvatar,
+          avatarAsset: Assets.homePersonAvatar,
           child: Scaffold(
             backgroundColor: Colors.transparent,
             // Keep the area around the floating glass pill transparent and let
