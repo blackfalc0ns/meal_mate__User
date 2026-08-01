@@ -4640,6 +4640,96 @@ abstract class AppLocalizations {
   /// **'Main nutrients'**
   String get home_main_nutrients;
 
+  /// No description provided for @nutrition_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Main nutrients details'**
+  String get nutrition_details_title;
+
+  /// No description provided for @nutrition_details_date_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Today - Saturday '**
+  String get nutrition_details_date_prefix;
+
+  /// No description provided for @nutrition_details_date_day.
+  ///
+  /// In en, this message translates to:
+  /// **'24'**
+  String get nutrition_details_date_day;
+
+  /// No description provided for @nutrition_details_date_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **' May'**
+  String get nutrition_details_date_suffix;
+
+  /// No description provided for @nutrition_details_burned.
+  ///
+  /// In en, this message translates to:
+  /// **'Burned'**
+  String get nutrition_details_burned;
+
+  /// No description provided for @nutrition_details_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get nutrition_details_goal;
+
+  /// No description provided for @nutrition_details_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get nutrition_details_remaining;
+
+  /// No description provided for @nutrition_details_calorie_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'calorie'**
+  String get nutrition_details_calorie_unit;
+
+  /// No description provided for @nutrition_details_fiber.
+  ///
+  /// In en, this message translates to:
+  /// **'Fiber'**
+  String get nutrition_details_fiber;
+
+  /// No description provided for @nutrition_details_sugar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar'**
+  String get nutrition_details_sugar;
+
+  /// No description provided for @nutrition_details_macro_separator.
+  ///
+  /// In en, this message translates to:
+  /// **' / '**
+  String get nutrition_details_macro_separator;
+
+  /// No description provided for @nutrition_details_gram_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **' g'**
+  String get nutrition_details_gram_suffix;
+
+  /// No description provided for @nutrition_details_percent_value.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String nutrition_details_percent_value(int percent);
+
+  /// No description provided for @nutrition_details_tip_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s tip'**
+  String get nutrition_details_tip_title;
+
+  /// No description provided for @nutrition_details_tip_message.
+  ///
+  /// In en, this message translates to:
+  /// **'You are on the right track! Try increasing protein\nand drinking more water to achieve your daily goal.'**
+  String get nutrition_details_tip_message;
+
   /// No description provided for @home_protein.
   ///
   /// In en, this message translates to:

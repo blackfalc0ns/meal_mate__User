@@ -2389,6 +2389,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_main_nutrients => 'Main nutrients';
 
   @override
+  String get nutrition_details_title => 'Main nutrients details';
+
+  @override
+  String get nutrition_details_date_prefix => 'Today - Saturday ';
+
+  @override
+  String get nutrition_details_date_day => '24';
+
+  @override
+  String get nutrition_details_date_suffix => ' May';
+
+  @override
+  String get nutrition_details_burned => 'Burned';
+
+  @override
+  String get nutrition_details_goal => 'Goal';
+
+  @override
+  String get nutrition_details_remaining => 'Remaining';
+
+  @override
+  String get nutrition_details_calorie_unit => 'calorie';
+
+  @override
+  String get nutrition_details_fiber => 'Fiber';
+
+  @override
+  String get nutrition_details_sugar => 'Sugar';
+
+  @override
+  String get nutrition_details_macro_separator => ' / ';
+
+  @override
+  String get nutrition_details_gram_suffix => ' g';
+
+  @override
+  String nutrition_details_percent_value(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get nutrition_details_tip_title => 'Today\'s tip';
+
+  @override
+  String get nutrition_details_tip_message =>
+      'You are on the right track! Try increasing protein\nand drinking more water to achieve your daily goal.';
+
+  @override
   String get home_protein => 'Protein';
 
   @override

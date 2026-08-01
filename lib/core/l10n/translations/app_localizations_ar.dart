@@ -2359,6 +2359,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home_main_nutrients => 'المغذيات الرئيسية';
 
   @override
+  String get nutrition_details_title => 'تفاصيل المغذيات الرئيسية';
+
+  @override
+  String get nutrition_details_date_prefix => 'اليوم - السبت ';
+
+  @override
+  String get nutrition_details_date_day => '24';
+
+  @override
+  String get nutrition_details_date_suffix => ' مايو';
+
+  @override
+  String get nutrition_details_burned => 'أحرقت';
+
+  @override
+  String get nutrition_details_goal => 'الهدف';
+
+  @override
+  String get nutrition_details_remaining => 'المتبقي';
+
+  @override
+  String get nutrition_details_calorie_unit => 'سعرة';
+
+  @override
+  String get nutrition_details_fiber => 'الألياف';
+
+  @override
+  String get nutrition_details_sugar => 'السكر';
+
+  @override
+  String get nutrition_details_macro_separator => ' / ';
+
+  @override
+  String get nutrition_details_gram_suffix => ' جم';
+
+  @override
+  String nutrition_details_percent_value(int percent) {
+    return '%$percent';
+  }
+
+  @override
+  String get nutrition_details_tip_title => 'نصيحة اليوم';
+
+  @override
+  String get nutrition_details_tip_message =>
+      'أنت على الطريق الصحيح! حاول زيادة البروتين\nوشرب المزيد من الماء لتحقيق هدفك اليومي.';
+
+  @override
   String get home_protein => 'البروتين';
 
   @override

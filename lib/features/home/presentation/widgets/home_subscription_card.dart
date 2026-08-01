@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_subscription_cta.dart';
@@ -113,10 +115,12 @@ class _HomeSubscriptionCardState extends State<HomeSubscriptionCard> {
                     child: HomeSubscriptionMetrics(),
                   ),
                 ],
-                const PositionedDirectional(
+                PositionedDirectional(
                   top: Spacing.homeSubscriptionCtaTop,
                   start: Spacing.homeSubscriptionCtaStart,
-                  child: HomeSubscriptionCta(),
+                  child: HomeSubscriptionCta(
+                    onTap: () => context.pushNamed(AppRoutes.nutritionDetails),
+                  ),
                 ),
               ],
             ),

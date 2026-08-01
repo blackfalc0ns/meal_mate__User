@@ -22,7 +22,7 @@ class OffersFilterStrip extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.offersHorizontalPadding,
-          vertical: Spacing.sm,
+          //vertical: Spacing.sm,
         ),
         child: Row(
           children: List.generate(filters.length, (index) {

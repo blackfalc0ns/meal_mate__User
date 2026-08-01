@@ -120,6 +120,10 @@ class Assets {
       '$_images/home/figma/home_nutrition_heart.svg';
   static const String homeNutritionDivider =
       '$_images/home/figma/home_nutrition_divider.svg';
+  static const String nutritionDetailsBack =
+      '$_images/home/figma/nutrition_details_back.svg';
+  static const String nutritionDetailsCalorieRing =
+      '$_images/home/figma/nutrition_details_calorie_ring.svg';
 
   // Calendar
   static const String calendarMealPickerHero =

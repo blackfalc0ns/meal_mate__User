@@ -771,6 +771,28 @@
   "home_greeting": "Welcome, Mohammed",
   "home_greeting_subtitle": "Ready for a great healthy day?",
   "home_main_nutrients": "Main nutrients",
+  "nutrition_details_title": "Main nutrients details",
+  "nutrition_details_date_prefix": "Today - Saturday ",
+  "nutrition_details_date_day": "24",
+  "nutrition_details_date_suffix": " May",
+  "nutrition_details_burned": "Burned",
+  "nutrition_details_goal": "Goal",
+  "nutrition_details_remaining": "Remaining",
+  "nutrition_details_calorie_unit": "calorie",
+  "nutrition_details_fiber": "Fiber",
+  "nutrition_details_sugar": "Sugar",
+  "nutrition_details_macro_separator": " / ",
+  "nutrition_details_gram_suffix": " g",
+  "nutrition_details_percent_value": "{percent}%",
+  "@nutrition_details_percent_value": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "nutrition_details_tip_title": "Today's tip",
+  "nutrition_details_tip_message": "You are on the right track! Try increasing protein\nand drinking more water to achieve your daily goal.",
   "home_protein": "Protein",
   "home_protein_value": "89",
   "home_protein_goal": "120 g",

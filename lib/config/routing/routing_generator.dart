@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
+import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition_details_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
@@ -69,6 +70,11 @@ class RouteGenerator {
         return _buildRoute(settings: settings, page: const CalendarScreen());
       case AppRoutes.mealDetails:
         return _buildRoute(settings: settings, page: const MealDetailsScreen());
+      case AppRoutes.nutritionDetails:
+        return _buildRoute(
+          settings: settings,
+          page: const HomeNutritionDetailsScreen(),
+        );
       case AppRoutes.restaurantDetails:
         final restaurant = settings.arguments! as MonthlyRestaurantPlanEntity;
         return _buildRoute(

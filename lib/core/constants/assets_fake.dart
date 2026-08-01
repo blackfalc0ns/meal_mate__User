@@ -33,6 +33,18 @@ class AssetsFake {
   static const String homeOatmeal = 'assets/images/fake/home/home_oatmeal.png';
   static const String homeSpecialsMeal =
       'assets/images/fake/home/home_specials_meal.png';
+  static const String nutritionDetailsProtein =
+      'assets/images/fake/home/nutrition_details_protein.png';
+  static const String nutritionDetailsCarbs =
+      'assets/images/fake/home/nutrition_details_carbs.png';
+  static const String nutritionDetailsFat =
+      'assets/images/fake/home/nutrition_details_fat.png';
+  static const String nutritionDetailsFiber =
+      'assets/images/fake/home/nutrition_details_fiber.png';
+  static const String nutritionDetailsSugar =
+      'assets/images/fake/home/nutrition_details_sugar.png';
+  static const String nutritionDetailsTipLeaf =
+      'assets/images/fake/home/nutrition_details_tip_leaf.png';
 
   static const String searchFeaturedMeal =
       'assets/images/fake/search/search_featured_meal.png';

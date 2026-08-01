@@ -5,6 +5,7 @@ class Spacing {
   Spacing._();
 
   // ── Base unit (4 dp grid) ──
+  static const double zero = 0.0;
   static const double unit = 4.0;
 
   // ── Named sizes ──
@@ -573,6 +574,58 @@ class Spacing {
   static const double homeInfoCardHeight = 78.0;
   static const double homeReminderHeight = 67.777;
 
+  // Home nutrition details Figma measurements.
+  static const double nutritionDetailsDesignWidth = 390.0;
+  static const double nutritionDetailsHorizontalPadding = 26.0;
+  static const double nutritionDetailsHeaderTop = 53.0;
+  static const double nutritionDetailsBackSize = 26.082;
+  static const double nutritionDetailsTitleTop = 57.1;
+  static const double nutritionDetailsDateTop = 88.22;
+  static const double nutritionDetailsDateHeight = 43.41;
+  static const double nutritionDetailsCardRadius = 12.286;
+  static const double nutritionDetailsBorderWidth = 0.819;
+  static const double nutritionDetailsSectionGap = 16.381;
+  static const double nutritionDetailsCalorieCardHeight = 135.962;
+  static const double nutritionDetailsRingSize = 117.124;
+  static const double nutritionDetailsRingTop = 11.47;
+  static const double nutritionDetailsRingStart = 113.85;
+  static const double nutritionDetailsSideMetricTop = 37.68;
+  static const double nutritionDetailsSideMetricPaddingTop = 26.21;
+  static const double nutritionDetailsBurnedStart = 32.76;
+  static const double nutritionDetailsGoalStart = 267.83;
+  static const double nutritionDetailsRemainingStart = 147.43;
+  static const double nutritionDetailsListGap = 4.095;
+  static const double nutritionDetailsMacroCardHeight = 55.962;
+  static const double nutritionDetailsMacroIconWidth = 34.656;
+  static const double nutritionDetailsMacroIconHeight = 30.895;
+  static const double nutritionDetailsMacroIconEnd = 8.75;
+  static const double nutritionDetailsMacroIconTop = 9.83;
+  static const double nutritionDetailsMacroIconBoxHeight = 26.63;
+  static const double nutritionDetailsMacroIconPaddingTop = 2.46;
+  static const double nutritionDetailsMacroTitleEnd = 92.0;
+  static const double nutritionDetailsMacroTitleGap = 48.594;
+  static const double nutritionDetailsMacroTitleTop = 9.83;
+  static const double nutritionDetailsMacroValueStart = 12.29;
+  static const double nutritionDetailsMacroValueTop = 7.37;
+  static const double nutritionDetailsMacroPercentTop = 26.21;
+  static const double nutritionDetailsMacroPercentGap = 7.84;
+  static const double nutritionDetailsProgressStart = 48.32;
+  static const double nutritionDetailsProgressEnd = 63.0;
+  static const double nutritionDetailsProgressPaddingStart = 39.57;
+  static const double nutritionDetailsProgressPaddingEnd = 55.71;
+  static const double nutritionDetailsProgressOffsetY = -3.0;
+  static const double nutritionDetailsProgressTop = 34.0;
+  static const double nutritionDetailsProgressHeight = 6.0;
+  static const double nutritionDetailsTipHeight = 90.095;
+  static const double nutritionDetailsTipImageStart = 18.84;
+  static const double nutritionDetailsTipImageTop = 16.38;
+  static const double nutritionDetailsTipImageWidth = 62.378;
+  static const double nutritionDetailsTipImageHeight = 57.214;
+  static const double nutritionDetailsTipTitleTop = 10.92;
+  static const double nutritionDetailsTipTitleEnd = 18.0;
+  static const double nutritionDetailsTipTextTop = 37.68;
+  static const double nutritionDetailsTipTextStart = 95.83;
+
   // Offers Figma measurements.
   static const double offersHorizontalPadding = 14.0;
   static const double offersHeroHeight = 150.0;
@@ -587,8 +640,8 @@ class Spacing {
   static const double offersIndicatorGap = 10.0;
   static const double offersIndicatorDotSize = 8.0;
   static const double offersIndicatorActiveWidth = 32.0;
-  static const double offersFilterHeight = 42.0;
-  static const double offersFilterGap = 7.0;
+  static const double offersFilterHeight = 35.0;
+  static const double offersFilterGap = 2.0;
   static const double offersFilterIconSize = 16.0;
   static const double offersFilterHorizontalPadding = 12.0;
   static const double offersDealRowHeight = 170.0;
@@ -613,6 +666,7 @@ class Spacing {
   static const double offerDetailsHeaderHeight = 32.0;
   static const double offerDetailsHeaderActionSize = 28.609;
   static const double offerDetailsHeroAspectRatio = 432.718 / 304.658;
+  static const double offerDetailsHeroWidthFactor = 0.92;
   static const double offerDetailsHeroRadius = 25.818;
   static const double offerDetailsInfoCardMinHeight = 288.479;
   static const double offerDetailsInfoCardRadius = 16.484;
@@ -620,7 +674,7 @@ class Spacing {
   static const double offerDetailsInfoIconSize = 15;
   static const double offerDetailsInfoRowHeight = 40;
   static const double offerDetailsInfoValueWidth = 178.0;
-  static const double offerDetailsCouponHeight = 43.423;
+  static const double offerDetailsCouponHeight = 40;
   static const double offerDetailsCouponButtonWidth = 65.938;
   static const double offerDetailsCouponButtonHeight = 27.818;
   static const double offerDetailsBenefitCardHeight = 137.683;

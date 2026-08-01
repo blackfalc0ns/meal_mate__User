@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
@@ -10,7 +12,6 @@ import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_da
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_benefits_section.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_hero_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
-import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_primary_button.dart';
 
 class OfferDetailsScreen extends StatelessWidget {
   const OfferDetailsScreen({super.key});
@@ -97,10 +98,20 @@ class OfferDetailsScreen extends StatelessWidget {
               const SizedBox(height: Spacing.md),
               OfferDetailsBenefitsSection(details: details),
               const SizedBox(height: Spacing.xl),
-              OfferDetailsPrimaryButton(
-                label: locale.offer_details_plan_section_title,
+              AppButton(
+                text: locale.offer_details_plan_section_title,
                 onPressed: () =>
                     Navigator.of(context).pushNamed(AppRoutes.subscriptions),
+                height: Spacing.offerDetailsBottomButtonHeight,
+                borderRadius: Spacing.offerDetailsBottomButtonRadius,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [color.primary, color.tertiary],
+                ),
+                textColor: color.onPrimary,
+                fontSize: FontSize.size20,
+                fontWeight: FontWeight.w600,
               ),
             ],
           ),

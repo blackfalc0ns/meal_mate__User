@@ -771,6 +771,28 @@
   "home_greeting": "مرحبًا محمد",
   "home_greeting_subtitle": "جاهز ليوم صحي رائع؟",
   "home_main_nutrients": "المغذيات الرئيسية",
+  "nutrition_details_title": "تفاصيل المغذيات الرئيسية",
+  "nutrition_details_date_prefix": "اليوم - السبت ",
+  "nutrition_details_date_day": "24",
+  "nutrition_details_date_suffix": " مايو",
+  "nutrition_details_burned": "أحرقت",
+  "nutrition_details_goal": "الهدف",
+  "nutrition_details_remaining": "المتبقي",
+  "nutrition_details_calorie_unit": "سعرة",
+  "nutrition_details_fiber": "الألياف",
+  "nutrition_details_sugar": "السكر",
+  "nutrition_details_macro_separator": " / ",
+  "nutrition_details_gram_suffix": " جم",
+  "nutrition_details_percent_value": "%{percent}",
+  "@nutrition_details_percent_value": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "nutrition_details_tip_title": "نصيحة اليوم",
+  "nutrition_details_tip_message": "أنت على الطريق الصحيح! حاول زيادة البروتين\nوشرب المزيد من الماء لتحقيق هدفك اليومي.",
   "home_protein": "البروتين",
   "home_protein_value": "89",
   "home_protein_goal": "120 جم",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
 
 class OfferDetailsHeroCard extends StatelessWidget {
@@ -9,13 +9,16 @@ class OfferDetailsHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.localization;
-
-    return Image.asset(
-      details.heroImageAsset,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      semanticLabel: locale.nav_offers,
+    return FractionallySizedBox(
+      widthFactor: Spacing.offerDetailsHeroWidthFactor,
+      child: AspectRatio(
+        aspectRatio: Spacing.offerDetailsHeroAspectRatio,
+        child: Image.asset(
+          details.heroImageAsset,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+      ),
     );
   }
 }

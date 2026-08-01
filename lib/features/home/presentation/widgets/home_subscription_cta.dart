@@ -9,40 +9,46 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class HomeSubscriptionCta extends StatelessWidget {
-  const HomeSubscriptionCta({super.key});
+  const HomeSubscriptionCta({super.key, this.onTap});
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    return Container(
-      width: Spacing.homeSubscriptionCtaWidth,
-      height: Spacing.homeSubscriptionCtaHeight,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-      decoration: BoxDecoration(
-        color: color.primary,
+    return Material(
+      color: color.primary,
+      borderRadius: BorderRadius.circular(Spacing.homeSubscriptionCtaRadius),
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(Spacing.homeSubscriptionCtaRadius),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            locale.home_details,
-            style: getMediumStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size8,
-              color: color.onPrimary,
-            ),
+        child: Container(
+          width: Spacing.homeSubscriptionCtaWidth,
+          height: Spacing.homeSubscriptionCtaHeight,
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                locale.home_details,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size8,
+                  color: color.onPrimary,
+                ),
+              ),
+              Transform.rotate(
+                angle: math.pi,
+                child: SvgPicture.asset(
+                  Assets.homeSubscriptionArrow,
+                  width: Spacing.homeSubscriptionArrowWidth,
+                  height: Spacing.homeSubscriptionArrowHeight,
+                ),
+              ),
+            ],
           ),
-          Transform.rotate(
-            angle: math.pi,
-            child: SvgPicture.asset(
-              Assets.homeSubscriptionArrow,
-              width: Spacing.homeSubscriptionArrowWidth,
-              height: Spacing.homeSubscriptionArrowHeight,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -56,7 +56,7 @@ class OfferDetailsInfoCard extends StatelessWidget {
     final resolvedCouponCode = details?.couponCode ?? couponCode;
 
     return Container(
-      height: 250,
+      height: 245,
       padding: const EdgeInsetsDirectional.only(
         start: Spacing.base,
         end: Spacing.base,
