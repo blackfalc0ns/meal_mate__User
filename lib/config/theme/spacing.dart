@@ -152,6 +152,7 @@ class Spacing {
   static const double familyProgramHeaderActionWidth = 80.0;
   static const double familyProgramHeaderActionHeight = 40.0;
   static const double familyProgramProgressTopGap = 22.0;
+  static const double familyProgramStepItemWidth = 72.0;
   static const double familyProgramStepCircleSize = 26.0;
   static const double familyProgramStepLineWidth = 96.0;
   static const double familyProgramStepLineHeight = 2.0;
@@ -186,6 +187,9 @@ class Spacing {
   static const double familyFridayCardHeight = 40.0;
   static const double familyPaymentNoteTopGap = 116.0;
   static const double familyPaymentNoteHeight = 42.0;
+  static const double familyPaymentMethodHeight = 71.0;
+  static const double familyPaymentMethodAssetWidth = 44.0;
+  static const double familyPaymentMethodAssetHeight = 26.0;
   static const double familySelectedBorderWidth = 1.5;
   static const double compactButtonHeight = 39.0;
 

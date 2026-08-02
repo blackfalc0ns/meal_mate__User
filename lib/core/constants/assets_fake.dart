@@ -122,6 +122,12 @@ class AssetsFake {
       'assets/images/fake/subscriptions/family_setup_program_muscle.png';
   static const String familySetupProgramWeightLoss =
       'assets/images/fake/subscriptions/family_setup_program_weight_loss.png';
+  static const String familyPaymentCard =
+      'assets/images/fake/subscriptions/family_payment_card.png';
+  static const String familyPaymentApplePay =
+      'assets/images/fake/subscriptions/family_payment_apple_pay.svg';
+  static const String familyPaymentMada =
+      'assets/images/fake/subscriptions/family_payment_mada.svg';
   static const String monthlyPackageBox =
       'assets/images/fake/subscriptions/monthly_package_box.png';
   static const String subscriptionProgramBalanced =

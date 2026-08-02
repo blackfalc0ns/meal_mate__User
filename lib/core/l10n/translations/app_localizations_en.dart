@@ -1866,7 +1866,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_package_choose_subtitle => 'Choose the suitable package';
 
   @override
+  String get family_package_three_meals_title => '3 meals daily';
+
+  @override
+  String get family_package_three_meals_description =>
+      'Includes breakfast, lunch and dinner';
+
+  @override
+  String get family_package_two_meals_title => '2 meals daily';
+
+  @override
+  String get family_package_two_meals_description =>
+      'Includes lunch and dinner';
+
+  @override
   String get family_days_choose_title => 'Choose number of days in the week';
+
+  @override
+  String get family_days_7 => '7 days';
+
+  @override
+  String get family_days_14 => '14 days';
+
+  @override
+  String get family_days_30 => '30 days';
 
   @override
   String get family_friday_delivery_title => 'Add Friday';
@@ -1876,8 +1899,84 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add Friday delivery for this member';
 
   @override
+  String get family_friday_delivery_added => 'Added';
+
+  @override
+  String get family_weekly_price => 'Weekly price';
+
+  @override
+  String get family_weekly_price_value => '245 KWD';
+
+  @override
+  String get family_monthly_price => 'Monthly price';
+
+  @override
+  String get family_monthly_price_value => '980 KWD';
+
+  @override
+  String get family_member_selection_summary => 'Ahmed selection summary';
+
+  @override
   String get family_payment_note =>
       'After payment, each member can choose their favorite restaurants and meals from the restaurants available in each city';
+
+  @override
+  String get family_payment_confirm_title =>
+      '3. Payment and subscription confirmation';
+
+  @override
+  String get family_subscription_summary => 'Subscription summary';
+
+  @override
+  String get family_primary_member => 'Primary member';
+
+  @override
+  String get family_subscription_program_label => 'Program';
+
+  @override
+  String get family_subscription_package_label => 'Package';
+
+  @override
+  String get family_subscription_days_label => 'Number of days';
+
+  @override
+  String get family_subscription_program_value => 'Balanced';
+
+  @override
+  String get family_subscription_package_value => '4 meals + snack';
+
+  @override
+  String get family_subscription_days_value => '7 days a week';
+
+  @override
+  String get family_price_duration_total => 'Total duration';
+
+  @override
+  String get family_price_discount => 'Family discount (10%)';
+
+  @override
+  String get family_price_tax_total => 'Total including tax (15%)';
+
+  @override
+  String get family_monthly_total_label => 'Monthly total (4 weeks)';
+
+  @override
+  String get family_payment_method_title => 'Payment method';
+
+  @override
+  String get family_payment_card_label => 'Credit card';
+
+  @override
+  String get family_payment_apple_pay_label => 'Apple Pay';
+
+  @override
+  String get family_payment_mada_label => 'Mada';
+
+  @override
+  String get family_overview_title => 'Family overview';
+
+  @override
+  String get family_confirm_payment => 'Confirm payment';
 
   @override
   String get family_next_payment => 'Next: payment';

@@ -3632,11 +3632,53 @@ abstract class AppLocalizations {
   /// **'Choose the suitable package'**
   String get family_package_choose_subtitle;
 
+  /// No description provided for @family_package_three_meals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'3 meals daily'**
+  String get family_package_three_meals_title;
+
+  /// No description provided for @family_package_three_meals_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes breakfast, lunch and dinner'**
+  String get family_package_three_meals_description;
+
+  /// No description provided for @family_package_two_meals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'2 meals daily'**
+  String get family_package_two_meals_title;
+
+  /// No description provided for @family_package_two_meals_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes lunch and dinner'**
+  String get family_package_two_meals_description;
+
   /// No description provided for @family_days_choose_title.
   ///
   /// In en, this message translates to:
   /// **'Choose number of days in the week'**
   String get family_days_choose_title;
+
+  /// No description provided for @family_days_7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get family_days_7;
+
+  /// No description provided for @family_days_14.
+  ///
+  /// In en, this message translates to:
+  /// **'14 days'**
+  String get family_days_14;
+
+  /// No description provided for @family_days_30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get family_days_30;
 
   /// No description provided for @family_friday_delivery_title.
   ///
@@ -3650,11 +3692,161 @@ abstract class AppLocalizations {
   /// **'Add Friday delivery for this member'**
   String get family_friday_delivery_subtitle;
 
+  /// No description provided for @family_friday_delivery_added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get family_friday_delivery_added;
+
+  /// No description provided for @family_weekly_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly price'**
+  String get family_weekly_price;
+
+  /// No description provided for @family_weekly_price_value.
+  ///
+  /// In en, this message translates to:
+  /// **'245 KWD'**
+  String get family_weekly_price_value;
+
+  /// No description provided for @family_monthly_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly price'**
+  String get family_monthly_price;
+
+  /// No description provided for @family_monthly_price_value.
+  ///
+  /// In en, this message translates to:
+  /// **'980 KWD'**
+  String get family_monthly_price_value;
+
+  /// No description provided for @family_member_selection_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed selection summary'**
+  String get family_member_selection_summary;
+
   /// No description provided for @family_payment_note.
   ///
   /// In en, this message translates to:
   /// **'After payment, each member can choose their favorite restaurants and meals from the restaurants available in each city'**
   String get family_payment_note;
+
+  /// No description provided for @family_payment_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Payment and subscription confirmation'**
+  String get family_payment_confirm_title;
+
+  /// No description provided for @family_subscription_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription summary'**
+  String get family_subscription_summary;
+
+  /// No description provided for @family_primary_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary member'**
+  String get family_primary_member;
+
+  /// No description provided for @family_subscription_program_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get family_subscription_program_label;
+
+  /// No description provided for @family_subscription_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get family_subscription_package_label;
+
+  /// No description provided for @family_subscription_days_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of days'**
+  String get family_subscription_days_label;
+
+  /// No description provided for @family_subscription_program_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get family_subscription_program_value;
+
+  /// No description provided for @family_subscription_package_value.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals + snack'**
+  String get family_subscription_package_value;
+
+  /// No description provided for @family_subscription_days_value.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days a week'**
+  String get family_subscription_days_value;
+
+  /// No description provided for @family_price_duration_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total duration'**
+  String get family_price_duration_total;
+
+  /// No description provided for @family_price_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Family discount (10%)'**
+  String get family_price_discount;
+
+  /// No description provided for @family_price_tax_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total including tax (15%)'**
+  String get family_price_tax_total;
+
+  /// No description provided for @family_monthly_total_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly total (4 weeks)'**
+  String get family_monthly_total_label;
+
+  /// No description provided for @family_payment_method_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get family_payment_method_title;
+
+  /// No description provided for @family_payment_card_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit card'**
+  String get family_payment_card_label;
+
+  /// No description provided for @family_payment_apple_pay_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Pay'**
+  String get family_payment_apple_pay_label;
+
+  /// No description provided for @family_payment_mada_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Mada'**
+  String get family_payment_mada_label;
+
+  /// No description provided for @family_overview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family overview'**
+  String get family_overview_title;
+
+  /// No description provided for @family_confirm_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm payment'**
+  String get family_confirm_payment;
 
   /// No description provided for @family_next_payment.
   ///

@@ -1845,7 +1845,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_package_choose_subtitle => 'اختر الباقة المناسبة';
 
   @override
+  String get family_package_three_meals_title => '3 وجبات يومياً';
+
+  @override
+  String get family_package_three_meals_description =>
+      'تشمل الإفطار والغداء والعشاء';
+
+  @override
+  String get family_package_two_meals_title => 'وجبتين يومياً';
+
+  @override
+  String get family_package_two_meals_description => 'تشمل الغداء والعشاء';
+
+  @override
   String get family_days_choose_title => 'اختر عدد الأيام في الأسبوع';
+
+  @override
+  String get family_days_7 => '7 أيام';
+
+  @override
+  String get family_days_14 => '14 أيام';
+
+  @override
+  String get family_days_30 => '30 أيام';
 
   @override
   String get family_friday_delivery_title => 'إضافة يوم الجمعة';
@@ -1854,8 +1876,83 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_friday_delivery_subtitle => 'أضف توصيل الجمعة لهذا الفرد';
 
   @override
+  String get family_friday_delivery_added => 'مضاف';
+
+  @override
+  String get family_weekly_price => 'السعر الأسبوعي';
+
+  @override
+  String get family_weekly_price_value => '245 KWD';
+
+  @override
+  String get family_monthly_price => 'السعر الشهري';
+
+  @override
+  String get family_monthly_price_value => '980 KWD';
+
+  @override
+  String get family_member_selection_summary => 'ملخص اختيار أحمد';
+
+  @override
   String get family_payment_note =>
       'بعد إتمام الدفع ، سيتمكن كل فرد من اختيار مطاعمه ووجباته المفضلة من قائمة المطاعم المتاحة لكل مدينة';
+
+  @override
+  String get family_payment_confirm_title => '3. الدفع وتأكيد الاشتراك';
+
+  @override
+  String get family_subscription_summary => 'ملخص الاشتراك';
+
+  @override
+  String get family_primary_member => 'عضو رئيسي';
+
+  @override
+  String get family_subscription_program_label => 'البرنامج';
+
+  @override
+  String get family_subscription_package_label => 'الباقة';
+
+  @override
+  String get family_subscription_days_label => 'عدد الأيام';
+
+  @override
+  String get family_subscription_program_value => 'متوازن';
+
+  @override
+  String get family_subscription_package_value => '4 وجبات + سناك';
+
+  @override
+  String get family_subscription_days_value => '7 أيام في الأسبوع';
+
+  @override
+  String get family_price_duration_total => 'إجمالي المدة';
+
+  @override
+  String get family_price_discount => 'خصم العائلة (10%)';
+
+  @override
+  String get family_price_tax_total => 'الإجمالي شامل الضريبة (15)';
+
+  @override
+  String get family_monthly_total_label => 'الإجمالي الشهري (4 أسابيع)';
+
+  @override
+  String get family_payment_method_title => 'طريقة الدفع';
+
+  @override
+  String get family_payment_card_label => 'بطاقة ائتمانية';
+
+  @override
+  String get family_payment_apple_pay_label => 'Apple Pay';
+
+  @override
+  String get family_payment_mada_label => 'مدى';
+
+  @override
+  String get family_overview_title => 'نظرة عامة على العائلة';
+
+  @override
+  String get family_confirm_payment => 'تأكيد الدفع';
 
   @override
   String get family_next_payment => 'التالي : الدفع';

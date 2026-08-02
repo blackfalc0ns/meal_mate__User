@@ -1,139 +1,249 @@
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
 
 class FamilyProgramSetupFakeDataSource {
   const FamilyProgramSetupFakeDataSource();
 
-  List<FamilyProgramSetupMemberFakeData> getMembers() {
-    return const [
+  List<FamilyProgramSetupMemberFakeData> getMembers(AppLocalizations locale) {
+    return [
       FamilyProgramSetupMemberFakeData(
-        name: 'أحمد',
+        name: locale.family_member_ahmed,
         imageAsset: AssetsFake.familyMemberAhmed,
-        status: 'قيد الإعداد',
+        status: locale.family_member_completed,
         isSelected: true,
         isInProgress: true,
       ),
       FamilyProgramSetupMemberFakeData(
-        name: 'سارة',
+        name: locale.family_member_sarah,
         imageAsset: AssetsFake.familyMemberSarah,
-        status: 'لم يبدأ',
+        status: locale.family_member_completed,
       ),
       FamilyProgramSetupMemberFakeData(
-        name: 'يوسف',
+        name: locale.family_member_yousef,
         imageAsset: AssetsFake.familyMemberYousef,
-        status: 'لم يبدأ',
+        status: locale.family_member_completed,
       ),
       FamilyProgramSetupMemberFakeData(
-        name: 'مريم',
+        name: locale.family_member_mariam,
         imageAsset: AssetsFake.familyMemberMariam,
-        status: 'لم يبدأ',
+        status: locale.family_member_completed,
       ),
     ];
   }
 
-  FamilyProgramSetupMemberDetailsFakeData getSelectedMemberDetails() {
-    return const FamilyProgramSetupMemberDetailsFakeData(
-      name: 'أحمد',
+  FamilyProgramSetupMemberDetailsFakeData getSelectedMemberDetails(
+    AppLocalizations locale,
+  ) {
+    return FamilyProgramSetupMemberDetailsFakeData(
+      name: locale.family_member_ahmed,
       imageAsset: AssetsFake.familyMemberAhmed,
-      age: '24 سنة',
-      gender: 'ذكر',
-      goal: 'متوازن',
-      activityLevel: 'مـــتوســـط',
+      age: locale.family_selected_member_age,
+      gender: locale.family_selected_member_gender,
+      goal: locale.family_subscription_program_value,
+      activityLevel: locale.family_activity_medium,
     );
   }
 
-  List<FamilyProgramSetupProgramFakeData> getPrograms() {
-    return const [
+  List<FamilyProgramSetupProgramFakeData> getPrograms(AppLocalizations locale) {
+    return [
       FamilyProgramSetupProgramFakeData(
-        title: 'متوازن',
-        description: 'نظام غذائي متوازن لطعام وصحة أفضل',
+        title: locale.family_program_balanced_title,
+        description: locale.family_program_balanced_description,
         imageAsset: AssetsFake.familySetupProgramBalanced,
         isSelected: true,
       ),
       FamilyProgramSetupProgramFakeData(
-        title: 'خسارة وزن',
-        description: 'سعرات أقل لدعم فقدان الوزن',
+        title: locale.family_program_weight_loss_title,
+        description: locale.family_program_weight_loss_description,
         imageAsset: AssetsFake.familySetupProgramWeightLoss,
       ),
       FamilyProgramSetupProgramFakeData(
-        title: 'بناء عضلات',
-        description: 'غني بالبروتين لدعم بناء العضلات',
+        title: locale.family_program_muscle_title,
+        description: locale.family_program_muscle_description,
         imageAsset: AssetsFake.familySetupProgramMuscle,
       ),
       FamilyProgramSetupProgramFakeData(
-        title: 'كيتو',
-        description: 'منخفض الكربوهيدرات وعالي الدهون',
+        title: locale.family_program_keto_title,
+        description: locale.family_program_keto_description,
         imageAsset: AssetsFake.familySetupProgramKeto,
       ),
     ];
   }
 
-  List<FamilyPackageOptionFakeData> getPackageOptions() {
-    return const [
+  List<FamilyPackageOptionFakeData> getPackageOptions(AppLocalizations locale) {
+    return [
       FamilyPackageOptionFakeData(
-        title: '4 وجبات + سناك',
-        description: 'تشمل الإفطار وسناك الغداء وسناك العشاء',
+        title: locale.family_subscription_package_value,
+        description: locale.subscription_summary_daily_meals,
         icon: FamilyPackageOptionIcon.appleCutlery,
         isSelected: true,
       ),
       FamilyPackageOptionFakeData(
-        title: '3 وجبات يومياً',
-        description: 'تشمل الإفطار والغداء والعشاء',
+        title: locale.family_package_three_meals_title,
+        description: locale.family_package_three_meals_description,
         icon: FamilyPackageOptionIcon.cutlery,
       ),
       FamilyPackageOptionFakeData(
-        title: 'وجبتين يومياً',
-        description: 'تشمل الغداء والعشاء',
+        title: locale.family_package_two_meals_title,
+        description: locale.family_package_two_meals_description,
         icon: FamilyPackageOptionIcon.cutlery,
       ),
     ];
   }
 
-  List<FamilyDayOptionFakeData> getDayOptions() {
-    return const [
-      FamilyDayOptionFakeData(label: '7 أيام', isSelected: true),
-      FamilyDayOptionFakeData(label: '14 أيام'),
-      FamilyDayOptionFakeData(label: '30 أيام'),
+  List<FamilyDayOptionFakeData> getDayOptions(AppLocalizations locale) {
+    return [
+      FamilyDayOptionFakeData(label: locale.family_days_7, isSelected: true),
+      FamilyDayOptionFakeData(label: locale.family_days_14),
+      FamilyDayOptionFakeData(label: locale.family_days_30),
     ];
   }
 
-  FamilySelectionSummaryFakeData getSelectionSummary() {
-    return const FamilySelectionSummaryFakeData(
-      title: 'ملخص اختيار أحمد',
+  FamilySelectionSummaryFakeData getPackageDaysSelectionSummary(
+    AppLocalizations locale,
+  ) {
+    return FamilySelectionSummaryFakeData(
+      title: locale.family_member_selection_summary,
       rows: [
         FamilySelectionSummaryRowFakeData(
-          label: 'البرنامج',
-          value: 'متوازن',
+          label: locale.family_subscription_program_label,
+          value: locale.family_subscription_program_value,
           icon: FamilySelectionSummaryIcon.balance,
         ),
         FamilySelectionSummaryRowFakeData(
-          label: 'الباقة',
-          value: '4 وجبات + سناك',
+          label: locale.family_subscription_package_label,
+          value: locale.family_subscription_package_value,
           icon: FamilySelectionSummaryIcon.cutlery,
         ),
         FamilySelectionSummaryRowFakeData(
-          label: 'عدد الأيام',
-          value: '7 أيام',
+          label: locale.family_subscription_days_label,
+          value: locale.family_days_7,
           icon: FamilySelectionSummaryIcon.calendar,
         ),
         FamilySelectionSummaryRowFakeData(
-          label: 'إضافة يوم الجمعة',
-          value: 'مضاف',
+          label: locale.family_friday_delivery_title,
+          value: locale.family_friday_delivery_added,
           icon: FamilySelectionSummaryIcon.check,
         ),
         FamilySelectionSummaryRowFakeData(
-          label: 'السعر الأسبوعي',
-          value: '245 KWD',
+          label: locale.family_weekly_price,
+          value: locale.family_weekly_price_value,
           icon: FamilySelectionSummaryIcon.receipt,
           isPrice: true,
         ),
         FamilySelectionSummaryRowFakeData(
-          label: 'السعر الشهري',
-          value: '980 KWD',
+          label: locale.family_monthly_price,
+          value: locale.family_monthly_price_value,
           icon: FamilySelectionSummaryIcon.calendar,
           isPrice: true,
         ),
       ],
     );
+  }
+
+  FamilySelectionSummaryFakeData getSelectionSummary(AppLocalizations locale) {
+    return FamilySelectionSummaryFakeData(
+      title: locale.family_subscription_summary,
+      rows: [
+        FamilySelectionSummaryRowFakeData(
+          label: locale.family_subscription_program_label,
+          value: locale.family_subscription_program_value,
+          icon: FamilySelectionSummaryIcon.balance,
+        ),
+        FamilySelectionSummaryRowFakeData(
+          label: locale.family_subscription_package_label,
+          value: locale.family_subscription_package_value,
+          icon: FamilySelectionSummaryIcon.cutlery,
+        ),
+        FamilySelectionSummaryRowFakeData(
+          label: locale.family_subscription_days_label,
+          value: locale.family_subscription_days_value,
+          icon: FamilySelectionSummaryIcon.calendar,
+        ),
+      ],
+    );
+  }
+
+  FamilyPaymentPriceDetailsFakeData getPaymentPriceDetails(
+    AppLocalizations locale,
+  ) {
+    return FamilyPaymentPriceDetailsFakeData(
+      rows: [
+        FamilyPaymentPriceRowFakeData(
+          label: locale.family_price_duration_total,
+          value: '420.00',
+        ),
+        FamilyPaymentPriceRowFakeData(
+          label: locale.family_price_discount,
+          value: '-42.00',
+          isDiscount: true,
+        ),
+        FamilyPaymentPriceRowFakeData(
+          label: locale.family_price_tax_total,
+          value: '378.00',
+          isStrong: true,
+        ),
+      ],
+      totalLabel: locale.family_monthly_total_label,
+      totalValue: '378.00',
+    );
+  }
+
+  List<FamilyPaymentMethodFakeData> getPaymentMethods(AppLocalizations locale) {
+    return [
+      FamilyPaymentMethodFakeData(
+        label: locale.family_payment_card_label,
+        imageAsset: AssetsFake.familyPaymentCard,
+        selected: true,
+      ),
+      FamilyPaymentMethodFakeData(
+        label: locale.family_payment_apple_pay_label,
+        imageAsset: AssetsFake.familyPaymentApplePay,
+      ),
+      FamilyPaymentMethodFakeData(
+        label: locale.family_payment_mada_label,
+        imageAsset: AssetsFake.familyPaymentMada,
+      ),
+    ];
+  }
+
+  List<FamilyMemberEntity> getOverviewMembers(AppLocalizations locale) {
+    return [
+      FamilyMemberEntity(
+        name: locale.family_member_ahmed,
+        imageAsset: AssetsFake.familyMemberAhmed,
+        detailLines: const [],
+        actionLabel: '',
+        mealsCount: locale.family_meals_4,
+        mealChecks: const [true, true, true, true],
+        isOwner: true,
+      ),
+      FamilyMemberEntity(
+        name: locale.family_member_sarah,
+        imageAsset: AssetsFake.familyMemberSarah,
+        detailLines: const [],
+        actionLabel: '',
+        mealsCount: locale.family_meals_4,
+        mealChecks: const [true, false, true, true],
+      ),
+      FamilyMemberEntity(
+        name: locale.family_member_yousef,
+        imageAsset: AssetsFake.familyMemberYousef,
+        detailLines: const [],
+        actionLabel: '',
+        mealsCount: locale.family_meals_4,
+        mealChecks: const [true, true, true, true],
+      ),
+      FamilyMemberEntity(
+        name: locale.family_member_mariam,
+        imageAsset: AssetsFake.familyMemberMariam,
+        detailLines: const [],
+        actionLabel: '',
+        mealsCount: locale.family_meals_4,
+        mealChecks: const [false, true, true, false],
+      ),
+    ];
   }
 }
 
@@ -232,4 +342,42 @@ class FamilySelectionSummaryRowFakeData {
   final String value;
   final FamilySelectionSummaryIcon icon;
   final bool isPrice;
+}
+
+class FamilyPaymentPriceDetailsFakeData {
+  const FamilyPaymentPriceDetailsFakeData({
+    required this.rows,
+    required this.totalLabel,
+    required this.totalValue,
+  });
+
+  final List<FamilyPaymentPriceRowFakeData> rows;
+  final String totalLabel;
+  final String totalValue;
+}
+
+class FamilyPaymentPriceRowFakeData {
+  const FamilyPaymentPriceRowFakeData({
+    required this.label,
+    required this.value,
+    this.isDiscount = false,
+    this.isStrong = false,
+  });
+
+  final String label;
+  final String value;
+  final bool isDiscount;
+  final bool isStrong;
+}
+
+class FamilyPaymentMethodFakeData {
+  const FamilyPaymentMethodFakeData({
+    required this.label,
+    required this.imageAsset,
+    this.selected = false,
+  });
+
+  final String label;
+  final String imageAsset;
+  final bool selected;
 }

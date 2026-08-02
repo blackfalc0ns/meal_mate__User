@@ -186,7 +186,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                         locale.subscription_details_most_selected,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onPrimary,
                         ),
                       ),

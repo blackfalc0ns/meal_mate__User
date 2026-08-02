@@ -17,8 +17,8 @@ class FamilySelectionSummaryCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.md,
-        vertical: Spacing.md,
+        horizontal: Spacing.sm,
+        vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest.withValues(alpha: 0.20),
@@ -43,7 +43,7 @@ class FamilySelectionSummaryCard extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
+                    fontSize: FontSize.size12,
                     color: color.onSurface,
                   ),
                 ),

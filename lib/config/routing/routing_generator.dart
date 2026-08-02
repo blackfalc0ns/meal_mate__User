@@ -20,6 +20,8 @@ import 'package:meal_meat_user/features/profile/presentation/screens/health_goal
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_program_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_subscription_setup_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
@@ -71,6 +73,16 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyProgramSetupScreen(),
+        );
+      case AppRoutes.familyPackageDaysSetup:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyPackageDaysSetupScreen(),
+        );
+      case AppRoutes.familyPaymentSetup:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyPaymentSetupScreen(),
         );
       case AppRoutes.calendar:
         return _buildRoute(settings: settings, page: const CalendarScreen());

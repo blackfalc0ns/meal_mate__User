@@ -58,7 +58,7 @@ class FamilyDayOptionCard extends StatelessWidget {
               top: -Spacing.md,
               end: -Spacing.xs,
               child: CircleAvatar(
-                radius: Spacing.md,
+                radius: Spacing.sm,
                 backgroundColor: color.primary,
                 child: Icon(
                   Icons.check_rounded,

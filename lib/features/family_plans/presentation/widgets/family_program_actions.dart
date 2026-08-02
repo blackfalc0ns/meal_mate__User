@@ -5,7 +5,16 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class FamilyProgramActions extends StatelessWidget {
-  const FamilyProgramActions({super.key});
+  const FamilyProgramActions({
+    super.key,
+    this.nextText,
+    this.nextIcon,
+    this.onNextPressed,
+  });
+
+  final String? nextText;
+  final IconData? nextIcon;
+  final VoidCallback? onNextPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +44,15 @@ class FamilyProgramActions extends StatelessWidget {
         SizedBox(
           width: Spacing.familyProgramNextButtonWidth,
           child: AppButton.filled(
-            text: locale.family_next_payment,
-            onPressed: () {},
+            text: nextText ?? locale.family_next_payment,
+            onPressed: onNextPressed,
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,
             fontSize: FontSize.size12,
 
             iconWidget: Icon(
-              Icons.credit_card_rounded,
+              nextIcon ?? Icons.credit_card_rounded,
               color: color.onPrimary,
               size: Spacing.iconMd,
             ),

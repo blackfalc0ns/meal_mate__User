@@ -26,9 +26,9 @@ class FamilySelectionSummaryRow extends StatelessWidget {
               row.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: getMediumStyle(
+              style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size10,
                 color: color.onSurfaceVariant,
               ),
             ),
@@ -41,10 +41,10 @@ class FamilySelectionSummaryRow extends StatelessWidget {
             style: row.isPrice
                 ? getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size11,
                     color: color.onSurface,
                   )
-                : getRegularStyle(
+                : getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurface,

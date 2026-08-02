@@ -25,46 +25,51 @@ class FamilyProgramStepperItem extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Column(
-      children: [
-        Container(
-          width: Spacing.familyProgramStepCircleSize,
-          height: Spacing.familyProgramStepCircleSize,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected || completed ? color.primary : color.surface,
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: selected || completed ? color.primary : color.outline,
+    return SizedBox(
+      width: Spacing.familyProgramStepItemWidth,
+      child: Column(
+        children: [
+          Container(
+            width: Spacing.familyProgramStepCircleSize,
+            height: Spacing.familyProgramStepCircleSize,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: selected || completed ? color.primary : color.surface,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected || completed ? color.primary : color.outline,
+              ),
+            ),
+            child: completed
+                ? Icon(
+                    Icons.check_rounded,
+                    color: color.onPrimary,
+                    size: Spacing.iconSm,
+                  )
+                : Text(
+                    number ?? locale.family_setup_step_one,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: selected ? color.onPrimary : color.onSurface,
+                    ),
+                  ),
+          ),
+          const SizedBox(height: Spacing.xs),
+          Text(
+            label,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size10,
+              color: selected || completed
+                  ? color.primary
+                  : color.onSurfaceVariant,
             ),
           ),
-          child: completed
-              ? Icon(
-                  Icons.check_rounded,
-                  color: color.onPrimary,
-                  size: Spacing.iconSm,
-                )
-              : Text(
-                  number ?? locale.family_setup_step_one,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: selected ? color.onPrimary : color.onSurface,
-                  ),
-                ),
-        ),
-        const SizedBox(height: Spacing.xs),
-        Text(
-          label,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
-            color: selected || completed
-                ? color.primary
-                : color.onSurfaceVariant,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
