@@ -1751,6 +1751,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_cancel => 'Cancel';
 
   @override
+  String get family_setup_title => 'Family subscription setup';
+
+  @override
+  String get family_setup_subtitle =>
+      'Customize the perfect plan for each family member';
+
+  @override
+  String get family_name => 'Family name';
+
+  @override
+  String get family_name_hint => 'Write the family name here';
+
+  @override
+  String get family_location => 'Location';
+
+  @override
+  String get family_location_hint => 'Choose member location';
+
+  @override
+  String get family_member_completed => 'Completed';
+
+  @override
+  String get family_next_program => 'Next: program';
+
+  @override
   String get calendar_title => 'Meal calendar';
 
   @override

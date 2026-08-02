@@ -127,6 +127,28 @@ class Spacing {
   static const double familySummaryHeight = 78.0;
   static const double familyMealsMinHeight = 129.0;
   static const double familyPriceMinHeight = 138.0;
+  static const double familySetupDesignWidth = 390.0;
+  static const double familySetupHeaderTop = 52.0;
+  static const double familySetupBackTop = 52.0;
+  static const double familySetupBackEnd = 51.0;
+  static const double familySetupContentTop = 112.0;
+  static const double familySetupHorizontalPadding = 16.0;
+  static const double familySetupSectionGap = 25.0;
+  static const double familySetupInputHeight = 40.762;
+  static const double familySetupInputRadius = 9.613;
+  static const double familySetupMemberCardHeight = 59.0;
+  static const double familySetupMemberCardRadius = 9.927;
+  static const double familySetupMemberAvatarSize = 35.0;
+  static const double familySetupAddIconSize = 36.0;
+  static const double familySetupFormCardHeight = 380.0;
+  static const double familySetupFormCardRadius = 14.42;
+  static const double familySetupFormPadding = 20.0;
+  static const double familySetupFormFieldGap = 6.729;
+  static const double familySetupTwoColumnGap = 31.723;
+  static const double familySetupActivityGap = 60.226;
+  static const double familySetupActivityOptionHeight = 35.762;
+  static const double familySetupActivityOptionWidth = 95.324;
+  static const double familySetupBottomButtonHeight = 36.0;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

@@ -3410,6 +3410,54 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get family_cancel;
 
+  /// No description provided for @family_setup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family subscription setup'**
+  String get family_setup_title;
+
+  /// No description provided for @family_setup_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize the perfect plan for each family member'**
+  String get family_setup_subtitle;
+
+  /// No description provided for @family_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Family name'**
+  String get family_name;
+
+  /// No description provided for @family_name_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the family name here'**
+  String get family_name_hint;
+
+  /// No description provided for @family_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get family_location;
+
+  /// No description provided for @family_location_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose member location'**
+  String get family_location_hint;
+
+  /// No description provided for @family_member_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get family_member_completed;
+
+  /// No description provided for @family_next_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: program'**
+  String get family_next_program;
+
   /// No description provided for @calendar_title.
   ///
   /// In en, this message translates to:

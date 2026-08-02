@@ -1730,6 +1730,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_cancel => 'إلغاء';
 
   @override
+  String get family_setup_title => 'إعداد اشتراك العائلة';
+
+  @override
+  String get family_setup_subtitle => 'خصص البرنامج المثالي لكل فرد في العائلة';
+
+  @override
+  String get family_name => 'اسم العائلة';
+
+  @override
+  String get family_name_hint => 'اكتب اسم العائلة هنا';
+
+  @override
+  String get family_location => 'الموقع';
+
+  @override
+  String get family_location_hint => 'اختر موقع الفرد';
+
+  @override
+  String get family_member_completed => 'مكتمل';
+
+  @override
+  String get family_next_program => 'التالي : البرنامج';
+
+  @override
   String get calendar_title => 'تقويم الوجبات';
 
   @override
