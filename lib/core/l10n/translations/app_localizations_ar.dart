@@ -1605,6 +1605,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_member_mariam => 'مريم';
 
   @override
+  String get family_member_laila => 'ليلى';
+
+  @override
+  String get family_member_omar => 'عمر';
+
+  @override
+  String get family_member_hana => 'هنا';
+
+  @override
+  String get family_member_khaled => 'خالد';
+
+  @override
   String get family_summary_title => 'ملخص الباقة العائلية';
 
   @override
@@ -1752,6 +1764,79 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_next_program => 'التالي : البرنامج';
+
+  @override
+  String get family_header_badge => 'عائلة أحمد';
+
+  @override
+  String get family_setup_step_one => '1';
+
+  @override
+  String get family_setup_step_two => '2';
+
+  @override
+  String get family_setup_step_three => '3';
+
+  @override
+  String get family_step_program => 'البرنامج';
+
+  @override
+  String get family_step_package_days => 'الباقة والأيام';
+
+  @override
+  String get family_step_payment => 'الدفع';
+
+  @override
+  String get family_member_not_started => 'لم يبدأ';
+
+  @override
+  String get family_member_in_progress => 'قيد الإعداد';
+
+  @override
+  String get family_selected_member_age => '24 سنة';
+
+  @override
+  String get family_selected_member_gender => 'ذكر';
+
+  @override
+  String get family_selected_member_goal_label => 'الـهـــــــدف';
+
+  @override
+  String get family_program_choose_title => 'اختر البرنامج المناسب';
+
+  @override
+  String get family_program_balanced_title => 'متوازن';
+
+  @override
+  String get family_program_balanced_description =>
+      'نظام غذائي متوازن لطعام وصحة أفضل';
+
+  @override
+  String get family_program_weight_loss_title => 'خسارة وزن';
+
+  @override
+  String get family_program_weight_loss_description =>
+      'سعرات أقل لدعم فقدان الوزن';
+
+  @override
+  String get family_program_muscle_title => 'بناء عضلات';
+
+  @override
+  String get family_program_muscle_description =>
+      'غني بالبروتين لدعم بناء العضلات';
+
+  @override
+  String get family_program_keto_title => 'كيتو';
+
+  @override
+  String get family_program_keto_description =>
+      'منخفض الكربوهيدرات وعالي الدهون';
+
+  @override
+  String get family_next_package_days => 'التالي : الباقة والأيام';
+
+  @override
+  String get family_previous_program => 'السابق : البرنامج';
 
   @override
   String get calendar_title => 'تقويم الوجبات';

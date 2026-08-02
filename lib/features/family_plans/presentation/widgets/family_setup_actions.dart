@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -30,10 +32,9 @@ class FamilySetupActions extends StatelessWidget {
         Expanded(
           child: AppButton.filled(
             text: locale.family_next_program,
-            onPressed: () {},
+            onPressed: () => context.pushNamed(AppRoutes.familyProgramSetup),
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
-            
             textColor: color.onPrimary,
             fontSize: FontSize.size12,
             fontWeight: FontWeight.w600,

@@ -3164,6 +3164,30 @@ abstract class AppLocalizations {
   /// **'Mariam'**
   String get family_member_mariam;
 
+  /// No description provided for @family_member_laila.
+  ///
+  /// In en, this message translates to:
+  /// **'Laila'**
+  String get family_member_laila;
+
+  /// No description provided for @family_member_omar.
+  ///
+  /// In en, this message translates to:
+  /// **'Omar'**
+  String get family_member_omar;
+
+  /// No description provided for @family_member_hana.
+  ///
+  /// In en, this message translates to:
+  /// **'Hana'**
+  String get family_member_hana;
+
+  /// No description provided for @family_member_khaled.
+  ///
+  /// In en, this message translates to:
+  /// **'Khaled'**
+  String get family_member_khaled;
+
   /// No description provided for @family_summary_title.
   ///
   /// In en, this message translates to:
@@ -3457,6 +3481,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next: program'**
   String get family_next_program;
+
+  /// No description provided for @family_header_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed family'**
+  String get family_header_badge;
+
+  /// No description provided for @family_setup_step_one.
+  ///
+  /// In en, this message translates to:
+  /// **'1'**
+  String get family_setup_step_one;
+
+  /// No description provided for @family_setup_step_two.
+  ///
+  /// In en, this message translates to:
+  /// **'2'**
+  String get family_setup_step_two;
+
+  /// No description provided for @family_setup_step_three.
+  ///
+  /// In en, this message translates to:
+  /// **'3'**
+  String get family_setup_step_three;
+
+  /// No description provided for @family_step_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get family_step_program;
+
+  /// No description provided for @family_step_package_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Package and days'**
+  String get family_step_package_days;
+
+  /// No description provided for @family_step_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get family_step_payment;
+
+  /// No description provided for @family_member_not_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get family_member_not_started;
+
+  /// No description provided for @family_member_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get family_member_in_progress;
+
+  /// No description provided for @family_selected_member_age.
+  ///
+  /// In en, this message translates to:
+  /// **'24 years'**
+  String get family_selected_member_age;
+
+  /// No description provided for @family_selected_member_gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get family_selected_member_gender;
+
+  /// No description provided for @family_selected_member_goal_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get family_selected_member_goal_label;
+
+  /// No description provided for @family_program_choose_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the right program'**
+  String get family_program_choose_title;
+
+  /// No description provided for @family_program_balanced_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get family_program_balanced_title;
+
+  /// No description provided for @family_program_balanced_description.
+  ///
+  /// In en, this message translates to:
+  /// **'A balanced diet for better food and health'**
+  String get family_program_balanced_description;
+
+  /// No description provided for @family_program_weight_loss_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss'**
+  String get family_program_weight_loss_title;
+
+  /// No description provided for @family_program_weight_loss_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower calories to support weight loss'**
+  String get family_program_weight_loss_description;
+
+  /// No description provided for @family_program_muscle_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle gain'**
+  String get family_program_muscle_title;
+
+  /// No description provided for @family_program_muscle_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein-rich to support muscle building'**
+  String get family_program_muscle_description;
+
+  /// No description provided for @family_program_keto_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Keto'**
+  String get family_program_keto_title;
+
+  /// No description provided for @family_program_keto_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Low carbs and high fat'**
+  String get family_program_keto_description;
+
+  /// No description provided for @family_next_package_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: package and days'**
+  String get family_next_package_days;
+
+  /// No description provided for @family_previous_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous: program'**
+  String get family_previous_program;
 
   /// No description provided for @calendar_title.
   ///

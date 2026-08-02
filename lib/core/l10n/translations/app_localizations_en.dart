@@ -1626,6 +1626,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_member_mariam => 'Mariam';
 
   @override
+  String get family_member_laila => 'Laila';
+
+  @override
+  String get family_member_omar => 'Omar';
+
+  @override
+  String get family_member_hana => 'Hana';
+
+  @override
+  String get family_member_khaled => 'Khaled';
+
+  @override
   String get family_summary_title => 'Family plan summary';
 
   @override
@@ -1774,6 +1786,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_next_program => 'Next: program';
+
+  @override
+  String get family_header_badge => 'Ahmed family';
+
+  @override
+  String get family_setup_step_one => '1';
+
+  @override
+  String get family_setup_step_two => '2';
+
+  @override
+  String get family_setup_step_three => '3';
+
+  @override
+  String get family_step_program => 'Program';
+
+  @override
+  String get family_step_package_days => 'Package and days';
+
+  @override
+  String get family_step_payment => 'Payment';
+
+  @override
+  String get family_member_not_started => 'Not started';
+
+  @override
+  String get family_member_in_progress => 'In progress';
+
+  @override
+  String get family_selected_member_age => '24 years';
+
+  @override
+  String get family_selected_member_gender => 'Male';
+
+  @override
+  String get family_selected_member_goal_label => 'Goal';
+
+  @override
+  String get family_program_choose_title => 'Choose the right program';
+
+  @override
+  String get family_program_balanced_title => 'Balanced';
+
+  @override
+  String get family_program_balanced_description =>
+      'A balanced diet for better food and health';
+
+  @override
+  String get family_program_weight_loss_title => 'Weight loss';
+
+  @override
+  String get family_program_weight_loss_description =>
+      'Lower calories to support weight loss';
+
+  @override
+  String get family_program_muscle_title => 'Muscle gain';
+
+  @override
+  String get family_program_muscle_description =>
+      'Protein-rich to support muscle building';
+
+  @override
+  String get family_program_keto_title => 'Keto';
+
+  @override
+  String get family_program_keto_description => 'Low carbs and high fat';
+
+  @override
+  String get family_next_package_days => 'Next: package and days';
+
+  @override
+  String get family_previous_program => 'Previous: program';
 
   @override
   String get calendar_title => 'Meal calendar';

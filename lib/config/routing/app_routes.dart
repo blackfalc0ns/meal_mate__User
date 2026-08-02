@@ -7,6 +7,7 @@ abstract class AppRoutes {
   static const String subscriptionPlanDetails = '/subscription-plan-details';
   static const String subscriptionSummary = '/subscription-summary';
   static const String familyPlanDetails = '/family-plan-details';
+  static const String familyProgramSetup = '/family-program-setup';
   static const String calendar = '/calendar';
   static const String mealDetails = '/meal-details';
   static const String nutritionDetails = '/nutrition-details';

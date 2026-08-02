@@ -114,6 +114,14 @@ class AssetsFake {
       'assets/images/fake/subscriptions/family_member_sarah-40a2f0.png';
   static const String familyMemberYousef =
       'assets/images/fake/subscriptions/family_member_yousef-42a7a0.png';
+  static const String familySetupProgramBalanced =
+      'assets/images/fake/subscriptions/family_setup_program_balanced.png';
+  static const String familySetupProgramKeto =
+      'assets/images/fake/subscriptions/family_setup_program_keto.png';
+  static const String familySetupProgramMuscle =
+      'assets/images/fake/subscriptions/family_setup_program_muscle.png';
+  static const String familySetupProgramWeightLoss =
+      'assets/images/fake/subscriptions/family_setup_program_weight_loss.png';
   static const String monthlyPackageBox =
       'assets/images/fake/subscriptions/monthly_package_box.png';
   static const String subscriptionProgramBalanced =
