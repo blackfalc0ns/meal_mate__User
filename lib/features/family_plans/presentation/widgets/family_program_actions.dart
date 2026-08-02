@@ -35,15 +35,15 @@ class FamilyProgramActions extends StatelessWidget {
         SizedBox(
           width: Spacing.familyProgramNextButtonWidth,
           child: AppButton.filled(
-            text: locale.family_next_package_days,
+            text: locale.family_next_payment,
             onPressed: () {},
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,
             fontSize: FontSize.size12,
-         
+
             iconWidget: Icon(
-              Icons.chevron_right_rounded,
+              Icons.credit_card_rounded,
               color: color.onPrimary,
               size: Spacing.iconMd,
             ),

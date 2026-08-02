@@ -26,7 +26,7 @@ class FamilySubscriptionSetupScreen extends StatelessWidget {
           children: [
             Text(
               locale.family_setup_title,
-              style: getSemiBoldStyle(
+              style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size13,
                 color: color.onSurface,

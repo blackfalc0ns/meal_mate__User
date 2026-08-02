@@ -1839,6 +1839,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_previous_program => 'السابق : البرنامج';
 
   @override
+  String get family_package_choose_title => '2. اختر الباقة وعدد الأيام';
+
+  @override
+  String get family_package_choose_subtitle => 'اختر الباقة المناسبة';
+
+  @override
+  String get family_days_choose_title => 'اختر عدد الأيام في الأسبوع';
+
+  @override
+  String get family_friday_delivery_title => 'إضافة يوم الجمعة';
+
+  @override
+  String get family_friday_delivery_subtitle => 'أضف توصيل الجمعة لهذا الفرد';
+
+  @override
+  String get family_payment_note =>
+      'بعد إتمام الدفع ، سيتمكن كل فرد من اختيار مطاعمه ووجباته المفضلة من قائمة المطاعم المتاحة لكل مدينة';
+
+  @override
+  String get family_next_payment => 'التالي : الدفع';
+
+  @override
   String get calendar_title => 'تقويم الوجبات';
 
   @override

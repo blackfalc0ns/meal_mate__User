@@ -17,7 +17,8 @@ class FamilyProgramMemberCard extends StatelessWidget {
         ? color.primary
         : color.onSurfaceVariant;
 
-    return Container(width: Spacing.familyProgramMemberCardWidth,
+    return Container(
+      width: Spacing.familyProgramMemberCardWidth,
       height: Spacing.familyProgramMemberCardHeight,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
       decoration: BoxDecoration(
@@ -30,7 +31,6 @@ class FamilyProgramMemberCard extends StatelessWidget {
         ),
       ),
       child: Row(
-       
         children: [
           ClipOval(
             child: Image.asset(

@@ -33,11 +33,10 @@ class FamilySetupHeaderBadge extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           
             Icon(Icons.group_rounded, size: Spacing.md, color: color.primary),
-                      const SizedBox(width: Spacing.xs),
+            const SizedBox(width: Spacing.xs),
 
-           Text(
+            Text(
               locale.family_header_badge,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
@@ -45,7 +44,6 @@ class FamilySetupHeaderBadge extends StatelessWidget {
                 color: color.onSurface,
               ),
             ),
-          
           ],
         ),
       ),

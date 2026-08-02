@@ -11,12 +11,14 @@ class FamilyProgramStepperItem extends StatelessWidget {
     required this.value,
     this.number,
     this.selected = false,
+    this.completed = false,
   });
 
   final String label;
   final String value;
   final String? number;
   final bool selected;
+  final bool completed;
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +32,24 @@ class FamilyProgramStepperItem extends StatelessWidget {
           height: Spacing.familyProgramStepCircleSize,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected ? color.primary : color.surface,
+            color: selected || completed ? color.primary : color.surface,
             shape: BoxShape.circle,
             border: Border.all(
-              color: selected ? color.primary : color.outline,
+              color: selected || completed ? color.primary : color.outline,
             ),
           ),
-          child: selected
+          child: completed
               ? Icon(
                   Icons.check_rounded,
                   color: color.onPrimary,
                   size: Spacing.iconSm,
-                  semanticLabel: locale.family_step_program,
                 )
               : Text(
                   number ?? locale.family_setup_step_one,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size12,
-                    color: color.onSurface,
+                    color: selected ? color.onPrimary : color.onSurface,
                   ),
                 ),
         ),
@@ -58,7 +59,9 @@ class FamilyProgramStepperItem extends StatelessWidget {
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size10,
-            color: color.onSurfaceVariant,
+            color: selected || completed
+                ? color.primary
+                : color.onSurfaceVariant,
           ),
         ),
       ],

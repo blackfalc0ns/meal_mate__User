@@ -24,7 +24,6 @@ class FamilySetupField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +60,6 @@ class FamilySetupField extends StatelessWidget {
                     trailing,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
-                    semanticLabel: locale.family_relation_hint,
                   ),
             prefixIcon: suffix == null
                 ? null

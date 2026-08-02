@@ -12,24 +12,20 @@ class FamilyProgramMemberStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      label: locale.family_step_program,
-      child: IconTheme(
-        data: IconThemeData(color: color.primary),
-        child: SizedBox(
-          height: Spacing.familyProgramMemberCardHeight,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemCount: members.length,
-            separatorBuilder: (_, _) =>
-                const SizedBox(width: Spacing.familyProgramMemberGap),
-            itemBuilder: (context, index) => SizedBox(
-              width: Spacing.familyProgramMemberCardWidth,
-              child: FamilyProgramMemberCard(member: members[index]),
-            ),
+    return IconTheme(
+      data: IconThemeData(color: color.primary),
+      child: SizedBox(
+        height: Spacing.familyProgramMemberCardHeight,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          itemCount: members.length,
+          separatorBuilder: (_, _) =>
+              const SizedBox(width: Spacing.familyProgramMemberGap),
+          itemBuilder: (context, index) => SizedBox(
+            width: Spacing.familyProgramMemberCardWidth,
+            child: FamilyProgramMemberCard(member: members[index]),
           ),
         ),
       ),

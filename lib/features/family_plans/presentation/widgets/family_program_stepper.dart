@@ -13,12 +13,13 @@ class FamilyProgramStepper extends StatelessWidget {
 
     return Column(
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FamilyProgramStepperItem(
               label: locale.family_step_program,
               value: locale.family_step_program,
-              selected: true,
+              completed: true,
             ),
             SizedBox(
               width: Spacing.familyProgramStepLineWidth,
@@ -31,6 +32,7 @@ class FamilyProgramStepper extends StatelessWidget {
               label: locale.family_step_package_days,
               value: locale.family_step_package_days,
               number: locale.family_setup_step_two,
+              selected: true,
             ),
             SizedBox(
               width: Spacing.familyProgramStepLineWidth,

@@ -1860,6 +1860,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_previous_program => 'Previous: program';
 
   @override
+  String get family_package_choose_title => '2. Choose package and days';
+
+  @override
+  String get family_package_choose_subtitle => 'Choose the suitable package';
+
+  @override
+  String get family_days_choose_title => 'Choose number of days in the week';
+
+  @override
+  String get family_friday_delivery_title => 'Add Friday';
+
+  @override
+  String get family_friday_delivery_subtitle =>
+      'Add Friday delivery for this member';
+
+  @override
+  String get family_payment_note =>
+      'After payment, each member can choose their favorite restaurants and meals from the restaurants available in each city';
+
+  @override
+  String get family_next_payment => 'Next: payment';
+
+  @override
   String get calendar_title => 'Meal calendar';
 
   @override

@@ -9,7 +9,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 class FamilyProgramSummaryCard extends StatelessWidget {
   const FamilyProgramSummaryCard({super.key, required this.member});
 
-  final FamilyProgramSetupMemberFakeData member;
+  final FamilyProgramSetupMemberDetailsFakeData member;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,6 @@ class FamilyProgramSummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Spacing.familyProgramSummaryRadius),
       ),
       child: Row(
-        textDirection: TextDirection.rtl,
         children: [
           ClipOval(
             child: Image.asset(
@@ -51,7 +50,6 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.sm),
                 Row(
-                
                   children: [
                     Icon(
                       Icons.calendar_month_rounded,
@@ -60,7 +58,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.xs),
                     Text(
-                      locale.family_selected_member_age,
+                      member.age,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
@@ -78,7 +76,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.md),
                     Text(
-                      locale.family_selected_member_gender,
+                      member.gender,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
@@ -92,7 +90,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
           ),
           const SizedBox(width: Spacing.md),
           FamilyProgramSummaryMetric(
-            value: locale.family_program_balanced_title,
+            value: member.goal,
             label: locale.family_selected_member_goal_label,
             icon: Icons.balance_rounded,
           ),
@@ -103,7 +101,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
           ),
           const SizedBox(width: Spacing.sm),
           FamilyProgramSummaryMetric(
-            value: locale.family_activity_medium,
+            value: member.activityLevel,
             label: locale.family_activity_level,
             icon: Icons.directions_run_rounded,
           ),

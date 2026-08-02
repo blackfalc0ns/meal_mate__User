@@ -142,12 +142,12 @@ class Spacing {
   static const double familySetupAddIconSize = 36.0;
   static const double familySetupFormCardHeight = 380.0;
   static const double familySetupFormCardRadius = 14.42;
-  static const double familySetupFormPadding = 20.0;
+  static const double familySetupFormPadding = 10.0;
   static const double familySetupFormFieldGap = 6.729;
   static const double familySetupTwoColumnGap = 31.723;
   static const double familySetupActivityGap = 60.226;
-  static const double familySetupActivityOptionHeight = 50.762;
-  static const double familySetupActivityOptionWidth = 95.324;
+  static const double familySetupActivityOptionHeight = 40.762;
+  static const double familySetupActivityOptionWidth = 85.324;
   static const double familySetupBottomButtonHeight = 36.0;
   static const double familyProgramHeaderActionWidth = 80.0;
   static const double familyProgramHeaderActionHeight = 40.0;
@@ -178,6 +178,15 @@ class Spacing {
   static const double familyProgramPreviousButtonWidth = 152.0;
   static const double familyProgramNextButtonWidth = 194.0;
   static const double familyProgramBottomNavGap = 230.0;
+  static const double familyPackageTitleTopGap = 18.0;
+  static const double familyPackageOptionsTopGap = 14.0;
+  static const double familyPackageOptionHeight = 112.0;
+  static const double familyPackageOptionIconRadius = 16.0;
+  static const double familyDayOptionHeight = 28.0;
+  static const double familyFridayCardHeight = 40.0;
+  static const double familyPaymentNoteTopGap = 116.0;
+  static const double familyPaymentNoteHeight = 42.0;
+  static const double familySelectedBorderWidth = 1.5;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

@@ -13,8 +13,8 @@ class FamilySetupFormCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      height: Spacing.familySetupFormCardHeight,
-      padding: const EdgeInsets.all(Spacing.familySetupFormPadding),
+    
+     padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(Spacing.familySetupFormCardRadius),
@@ -26,7 +26,8 @@ class FamilySetupFormCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FamilySetupField(
             label: locale.family_full_name,

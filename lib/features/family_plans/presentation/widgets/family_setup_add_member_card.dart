@@ -12,7 +12,6 @@ class FamilySetupAddMemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       height: Spacing.familySetupMemberCardHeight,
@@ -37,7 +36,6 @@ class FamilySetupAddMemberCard extends StatelessWidget {
               Icons.add_rounded,
               color: color.primary,
               size: Spacing.iconMd,
-              semanticLabel: locale.family_add_member_button,
             ),
           ),
           const SizedBox(height: Spacing.xs),

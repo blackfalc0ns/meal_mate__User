@@ -3620,6 +3620,48 @@ abstract class AppLocalizations {
   /// **'Previous: program'**
   String get family_previous_program;
 
+  /// No description provided for @family_package_choose_title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Choose package and days'**
+  String get family_package_choose_title;
+
+  /// No description provided for @family_package_choose_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the suitable package'**
+  String get family_package_choose_subtitle;
+
+  /// No description provided for @family_days_choose_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose number of days in the week'**
+  String get family_days_choose_title;
+
+  /// No description provided for @family_friday_delivery_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Friday'**
+  String get family_friday_delivery_title;
+
+  /// No description provided for @family_friday_delivery_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Friday delivery for this member'**
+  String get family_friday_delivery_subtitle;
+
+  /// No description provided for @family_payment_note.
+  ///
+  /// In en, this message translates to:
+  /// **'After payment, each member can choose their favorite restaurants and meals from the restaurants available in each city'**
+  String get family_payment_note;
+
+  /// No description provided for @family_next_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: payment'**
+  String get family_next_payment;
+
   /// No description provided for @calendar_title.
   ///
   /// In en, this message translates to:
