@@ -69,18 +69,16 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
                   const FamilyProgramStepper(currentStep: 3),
                   const SizedBox(height: Spacing.familyProgramMemberTopGap),
                   FamilyProgramMemberStrip(members: members),
-                  const SizedBox(height: Spacing.sm),
-                  Center(
-                    child: Text(
-                      locale.family_payment_confirm_title,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
-                        color: color.onSurface,
-                      ),
+                  const SizedBox(height: Spacing.md),
+                  Text(
+                    locale.family_payment_confirm_title,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onSurface,
                     ),
                   ),
-                  const SizedBox(height: Spacing.sm),
+                  const SizedBox(height: Spacing.md),
                   FamilyPaymentConfirmationSummaryCard(
                     member: selectedMember,
                     summary: summary,

@@ -16,13 +16,13 @@ class FamilyPaymentOverviewSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Column(
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           locale.family_overview_title,
-          style: getSemiBoldStyle(
+          style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size12,
             color: color.primary,
           ),
         ),

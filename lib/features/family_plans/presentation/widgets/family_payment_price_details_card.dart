@@ -29,6 +29,7 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
+       spacing: Spacing.xs,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Align(
@@ -39,9 +40,9 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
                 child: Text(
                   locale.family_price_details,
-                  style: getSemiBoldStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size12,
                     color: color.onSurface,
                   ),
                 ),
@@ -62,9 +63,9 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
               children: [
                 Text(
                   details.totalLabel,
-                  style: getSemiBoldStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size11,
                     color: color.onSurface,
                   ),
                 ),
@@ -83,7 +84,7 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  textDirection: TextDirection.ltr,
+              
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,

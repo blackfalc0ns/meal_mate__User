@@ -18,35 +18,42 @@ class FamilyPaymentPriceRow extends StatelessWidget {
 
     return Row(
       children: [
+        Text(
+          row.label,
+
+          style: getSemiBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size10,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+
+        const Spacer(),
+
         Text.rich(
           TextSpan(
             children: [
-              TextSpan(text: row.value),
+               TextSpan(text: row.value,style: valueStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size11,
+                color: valueColor,
+              ),),
               TextSpan(
                 text: ' ${locale.currency}',
                 style: valueStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
+                  fontSize: FontSize.size9,
                   color: valueColor,
                 ),
               ),
+             
             ],
           ),
-          textDirection: TextDirection.ltr,
+         
           style: valueStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size9,
             color: valueColor,
-          ),
-        ),
-        const Spacer(),
-        Text(
-          row.label,
-          textAlign: TextAlign.end,
-          style: getRegularStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size9,
-            color: color.onSurfaceVariant,
           ),
         ),
       ],

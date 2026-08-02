@@ -24,14 +24,10 @@ class FamilyMealsTable extends StatelessWidget {
     ];
 
     return Container(
-      constraints: const BoxConstraints(
-        minHeight: Spacing.familyMealsMinHeight,
-      ),
-      padding: const EdgeInsets.fromLTRB(
-        Spacing.md,
-        Spacing.xss,
-        Spacing.md,
-        Spacing.sm,
+     
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.xs,
+        vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
         color: color.surface,
@@ -41,7 +37,7 @@ class FamilyMealsTable extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            textDirection: TextDirection.rtl,
+         
             children: [
               const Icon(Icons.restaurant_rounded, size: 12),
               const SizedBox(width: Spacing.xss),
@@ -49,7 +45,7 @@ class FamilyMealsTable extends StatelessWidget {
                 l10n.family_meals_each_member,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
+                  fontSize: FontSize.size12,
                 ),
               ),
             ],
@@ -86,7 +82,7 @@ class _MemberTableRow extends StatelessWidget {
               child: Icon(
                 checked ? Icons.check_rounded : Icons.remove_rounded,
                 color: color.primary,
-                size: 15,
+                size: 18,
               ),
             ),
           Expanded(
@@ -106,7 +102,7 @@ class _MemberTableRow extends StatelessWidget {
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     color: member.badgeTextColor,
-                    fontSize: FontSize.size8,
+                    fontSize: FontSize.size9,
                   ),
                 ),
               ),
@@ -168,7 +164,7 @@ class _TableCell extends StatelessWidget {
         style: isHeader
             ? getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size11,
               )
             : getMediumStyle(
                 fontFamily: FontConstant.alexandria,
@@ -204,7 +200,7 @@ class _MemberNameCell extends StatelessWidget {
               textAlign: TextAlign.center,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size11,
               ),
             ),
           ),

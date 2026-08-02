@@ -38,25 +38,22 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    summary.title,
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: color.primary,
-                    ),
-                  ),
+              ClipOval(
+                child: Image.asset(
+                  member.imageAsset,
+                  width: Spacing.familyProgramSummaryAvatarSize,
+                  height: Spacing.familyProgramSummaryAvatarSize,
+                  fit: BoxFit.cover,
                 ),
               ),
+              const SizedBox(width: Spacing.md),
+
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     member.name,
-                    style: getSemiBoldStyle(
+                    style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
                       color: color.onSurface,
@@ -74,9 +71,9 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
                       const SizedBox(width: Spacing.xs),
                       Text(
                         locale.family_primary_member,
-                        style: getRegularStyle(
+                        style: getSemiBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size8,
+                          fontSize: FontSize.size9,
                           color: color.onSurface,
                         ),
                       ),
@@ -84,13 +81,17 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: Spacing.md),
-              ClipOval(
-                child: Image.asset(
-                  member.imageAsset,
-                  width: Spacing.familyProgramSummaryAvatarSize,
-                  height: Spacing.familyProgramSummaryAvatarSize,
-                  fit: BoxFit.cover,
+              Expanded(
+                child: Align(
+                  alignment: AlignmentDirectional.topEnd,
+                  child: Text(
+                    summary.title,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size10,
+                      color: color.primary,
+                    ),
+                  ),
                 ),
               ),
             ],

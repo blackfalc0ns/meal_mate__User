@@ -22,29 +22,31 @@ class FamilyPaymentSummaryRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
           child: Row(
             children: [
-              Text(
-                row.value,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                row.label,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: color.onSurface,
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
               Icon(
                 _icon,
                 color: color.primary,
                 size: Spacing.iconSm,
                 semanticLabel: locale.family_subscription_summary,
+              ),
+              const SizedBox(width: Spacing.sm),
+
+              Text(
+                row.label,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size10,
+                  color: color.onSurface,
+                ),
+              ),
+
+              const Spacer(),
+              Text(
+                row.value,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size10,
+                  color: color.onSurfaceVariant,
+                ),
               ),
             ],
           ),

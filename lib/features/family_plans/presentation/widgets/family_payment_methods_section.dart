@@ -20,7 +20,7 @@ class FamilyPaymentMethodsSection extends StatelessWidget {
       children: [
         Text(
           locale.family_payment_method_title,
-          style: getSemiBoldStyle(
+          style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: color.primary,
