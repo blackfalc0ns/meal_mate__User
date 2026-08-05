@@ -31,7 +31,7 @@ class FamilySetupMemberCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
         child: Row(
-          textDirection: TextDirection.rtl,
+         
           children: [
             ClipOval(
               child: Image.asset(

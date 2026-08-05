@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_field.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_form_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_members_row.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 
 class FamilySubscriptionSetupScreen extends StatelessWidget {
   const FamilySubscriptionSetupScreen({super.key});
@@ -58,6 +59,12 @@ class FamilySubscriptionSetupScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
+                      SizedBox(height: Spacing.md * scale),
+                      const FamilyProgramStepper(
+                        currentStep: 0,
+                        completedSteps: 1,
+                        includeFamilyCreationStep: true,
+                      ),
                       SizedBox(height: Spacing.xxl * scale),
                       FamilySetupField(
                         label: locale.family_name,

@@ -55,8 +55,8 @@ class HealthGoalsActivityLevelCard extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 Assets.healthGoalRunning,
-                width: Spacing.iconMd,
-                height: Spacing.iconMd,
+                width: Spacing.iconSm,
+                height: Spacing.iconSm,
               ),
               const SizedBox(width: Spacing.xs),
 
@@ -64,7 +64,7 @@ class HealthGoalsActivityLevelCard extends StatelessWidget {
                 locale.health_goals_activity_level,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
+                  fontSize: FontSize.size11,
                   color: color.onSurface,
                 ),
               ),

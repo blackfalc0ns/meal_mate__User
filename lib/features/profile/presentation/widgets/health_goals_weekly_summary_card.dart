@@ -39,8 +39,8 @@ class HealthGoalsWeeklySummaryCard extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   Assets.healthGoalTrend,
-                  width: Spacing.iconMd,
-                  height: Spacing.iconMd,
+                  width: Spacing.iconSm,
+                  height: Spacing.iconSm,
                 ),
                 const SizedBox(width: Spacing.xs),
 

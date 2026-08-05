@@ -37,8 +37,8 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 Assets.healthGoalBody,
-                width: Spacing.iconMd,
-                height: Spacing.iconMd,
+                width: Spacing.iconSm,
+                height: Spacing.iconSm,
               ),
               const SizedBox(width: Spacing.xs),
 
@@ -46,7 +46,7 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
                 locale.health_goals_body_data,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
+                  fontSize: FontSize.size11,
                   color: color.onSurface,
                 ),
               ),
@@ -105,7 +105,7 @@ class HealthGoalsBodyDataCard extends StatelessWidget {
           label,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size12,
+            fontSize: FontSize.size11,
             color: color.onSurfaceVariant,
           ),
         ),

@@ -1778,6 +1778,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_setup_step_three => '3';
 
   @override
+  String get family_step_create_family => 'انشاء العائلة';
+
+  @override
   String get family_step_program => 'البرنامج';
 
   @override

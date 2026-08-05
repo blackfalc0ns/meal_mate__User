@@ -568,6 +568,7 @@
   "family_setup_step_one": "1",
   "family_setup_step_two": "2",
   "family_setup_step_three": "3",
+  "family_step_create_family": "Create family",
   "family_step_program": "Program",
   "family_step_package_days": "Package and days",
   "family_step_payment": "Payment",

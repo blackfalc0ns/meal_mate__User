@@ -3506,6 +3506,12 @@ abstract class AppLocalizations {
   /// **'3'**
   String get family_setup_step_three;
 
+  /// No description provided for @family_step_create_family.
+  ///
+  /// In en, this message translates to:
+  /// **'Create family'**
+  String get family_step_create_family;
+
   /// No description provided for @family_step_program.
   ///
   /// In en, this message translates to:

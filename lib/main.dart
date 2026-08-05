@@ -10,7 +10,7 @@ void main() {
   debugPaintBaselinesEnabled = false;
 
   runApp(
-    DevicePreview(enabled: false, builder: (context) => const MealMateApp()),
+    DevicePreview(enabled: true, builder: (context) => const MealMateApp()),
   );
 }
 

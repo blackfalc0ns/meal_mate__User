@@ -1800,6 +1800,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_setup_step_three => '3';
 
   @override
+  String get family_step_create_family => 'Create family';
+
+  @override
   String get family_step_program => 'Program';
 
   @override

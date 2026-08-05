@@ -9,6 +9,8 @@ class FamilyProgramStepperItem extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
+    this.width = Spacing.familyProgramStepItemWidth,
+    this.labelFontSize = FontSize.size10,
     this.number,
     this.selected = false,
     this.completed = false,
@@ -16,6 +18,8 @@ class FamilyProgramStepperItem extends StatelessWidget {
 
   final String label;
   final String value;
+  final double width;
+  final double labelFontSize;
   final String? number;
   final bool selected;
   final bool completed;
@@ -26,7 +30,7 @@ class FamilyProgramStepperItem extends StatelessWidget {
     final locale = context.localization;
 
     return SizedBox(
-      width: Spacing.familyProgramStepItemWidth,
+      width: width,
       child: Column(
         children: [
           Container(
@@ -62,7 +66,7 @@ class FamilyProgramStepperItem extends StatelessWidget {
             textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: labelFontSize,
               color: selected || completed
                   ? color.primary
                   : color.onSurfaceVariant,

@@ -82,7 +82,7 @@ class CustomWarningWidget extends StatelessWidget {
                     title!,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
+                      fontSize: FontSize.size11,
                       color: accent,
                     ),
                   ),

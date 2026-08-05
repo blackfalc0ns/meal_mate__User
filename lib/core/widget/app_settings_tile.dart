@@ -71,7 +71,7 @@ class AppSettingsTile extends StatelessWidget {
                               title,
                               style: getBoldStyle(
                                 fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size12,
+                                fontSize: FontSize.size10,
                                 color: color.onSurface,
                               ),
                             ),
