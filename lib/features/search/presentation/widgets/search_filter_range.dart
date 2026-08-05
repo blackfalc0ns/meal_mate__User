@@ -38,7 +38,7 @@ class SearchFilterRange extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(icon, size: Spacing.iconSm, color: color.primary),
-              const SizedBox(width: Spacing.xs),
+              const SizedBox(width: Spacing.xss),
               Text(
                 label,
                 style: getSemiBoldStyle(
@@ -49,18 +49,22 @@ class SearchFilterRange extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: Spacing.xss),
           SizedBox(
-            height: Spacing.searchFilterRangeHeight + Spacing.xss,
+            height: Spacing.searchFilterRangeHeight,
             child: Stack(
               children: [
                 Align(
                   alignment: Alignment.topCenter,
-                  child: Text(
-                    '${range.start.round()} - ${range.end.round()} $unit',
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: Spacing.sm),
+                    child: Text(
+                      '${range.start.round()} - ${range.end.round()} $unit',
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.primary,
+                      ),
                     ),
                   ),
                 ),

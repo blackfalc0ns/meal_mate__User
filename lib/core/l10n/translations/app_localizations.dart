@@ -5042,6 +5042,60 @@ abstract class AppLocalizations {
   /// **'Open'**
   String get search_open;
 
+  /// No description provided for @search_empty_query.
+  ///
+  /// In en, this message translates to:
+  /// **'Keto sushi'**
+  String get search_empty_query;
+
+  /// No description provided for @search_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No suitable results found'**
+  String get search_empty_title;
+
+  /// No description provided for @search_empty_message_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find any results for \"'**
+  String get search_empty_message_prefix;
+
+  /// No description provided for @search_empty_message_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'\"'**
+  String get search_empty_message_suffix;
+
+  /// No description provided for @search_empty_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another keyword or explore the available options'**
+  String get search_empty_description;
+
+  /// No description provided for @search_empty_suggestions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions you may like'**
+  String get search_empty_suggestions_title;
+
+  /// No description provided for @search_empty_nearby_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby restaurants'**
+  String get search_empty_nearby_restaurants;
+
+  /// No description provided for @search_empty_explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to explore'**
+  String get search_empty_explore;
+
+  /// No description provided for @search_empty_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get search_empty_clear;
+
   /// No description provided for @search_cuisine_fast_food.
   ///
   /// In en, this message translates to:

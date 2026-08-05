@@ -1,5 +1,6 @@
 abstract class AppRoutes {
   static const String home = '/home';
+  static const String search = '/search';
   static const String offers = '/offers';
   static const String subscriptions = '/subscriptions';
   static const String subscriptionPackageSelection =

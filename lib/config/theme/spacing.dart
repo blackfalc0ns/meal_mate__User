@@ -66,18 +66,25 @@ class Spacing {
   static const double searchQuickCategoryCardWidth = 77.0;
   static const double searchQuickCategoryCardHeight = 68.0;
   static const double searchQuickCategoryGap = 10.0;
-  static const double searchFilterSheetHeight = 623.0;
+  static const double searchFilterSheetHeight = 520.0;
   static const double searchFilterSheetHandleWidth = 40.18;
   static const double searchFilterSheetHandleHeight = 2.68;
   static const double searchFilterSheetHorizontalPadding = 30.81;
   static const double searchFilterSegmentHeight = 40.18;
   static const double searchFilterOptionHeight = 36.65;
-  static const double searchFilterRangeHeight = 30.81;
+  static const double searchFilterRangeHeight = 48.0;
   static const double searchFilterActionHeight = 43.51;
   static const double searchFilterSectionGap = 26.78;
   static const double searchFilterDividerGap = 8.71;
   static const double searchFilterGoalGap = 10.72;
   static const double searchFilterPreferenceHeight = 31.5;
+  static const double searchEmptyImageHeight = 278.46;
+  static const double searchEmptyTopGap = 48.0;
+  static const double searchEmptyTitleTopGap = 2.0;
+  static const double searchEmptySuggestionHeight = 52.0;
+  static const double searchEmptySuggestionRadius = 18.913;
+  static const double searchEmptyButtonHeight = 55.25;
+  static const double searchEmptyButtonRadius = 39.234;
 
   // Borders
   static const double hairline = 0.5;
@@ -746,7 +753,7 @@ class Spacing {
   static const double offerDetailsBenefitCardHeight = 137.683;
   static const double offerDetailsBenefitCardRadius = 17.599;
   static const double offerDetailsBenefitIconSize = 53.831;
-  static const double offerDetailsBottomButtonHeight = 50.829;
+  static const double offerDetailsBottomButtonHeight = 40.829;
   static const double offerDetailsBottomButtonRadius = 41.299;
   static const double offerDetailsBottomNavGap = 122.0;
 }

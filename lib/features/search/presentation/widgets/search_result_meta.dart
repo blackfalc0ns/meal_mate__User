@@ -13,27 +13,23 @@ class SearchResultMeta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      label: locale.search_meal_title,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            label,
-            textDirection: TextDirection.rtl,
-            style: getMediumStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size9,
-              color: color.onSurface,
-            ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+    
+          style: getMediumStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size9,
+            color: color.onSurface,
           ),
-          const SizedBox(width: Spacing.xs),
-
-          Icon(icon, size: Spacing.iconSm - Spacing.xs, color: color.primary),
-        ],
-      ),
+        ),
+        const SizedBox(width: Spacing.xs),
+    
+        Icon(icon, size: Spacing.iconSm - Spacing.xs, color: color.primary),
+      ],
     );
   }
 }

@@ -2566,6 +2566,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search_open => 'مفتوح';
 
   @override
+  String get search_empty_query => 'سوشي كيتو';
+
+  @override
+  String get search_empty_title => 'لم نعثر على نتائج مناسبة';
+
+  @override
+  String get search_empty_message_prefix => 'لم نجد أي نتائج ل “ ';
+
+  @override
+  String get search_empty_message_suffix => ' ”';
+
+  @override
+  String get search_empty_description =>
+      'جرب كلمة مفتاحية أخرى أو استكشف الخيارات المتاحة';
+
+  @override
+  String get search_empty_suggestions_title => 'اقتراحات قد تهمك';
+
+  @override
+  String get search_empty_nearby_restaurants => 'مطاعم قريبة';
+
+  @override
+  String get search_empty_explore => 'العودة للاستكشاف';
+
+  @override
+  String get search_empty_clear => 'مسح البحث';
+
+  @override
   String get search_cuisine_fast_food => 'الوجبات السريعة';
 
   @override

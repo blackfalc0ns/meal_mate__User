@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -13,37 +15,40 @@ class HomeSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    return Container(
-      height: Spacing.homeSearchHeight,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.homeSearchRadius),
-        border: Border.all(color: color.outline),
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            Assets.homeSearchLine,
-            width: Spacing.homeSearchIconSize,
-            height: Spacing.homeSearchIconSize,
-          ),
-          const SizedBox(width: Spacing.sm),
+    return GestureDetector(
+      onTap: () => context.pushNamed(AppRoutes.search),
+      child: Container(
+        height: Spacing.homeSearchHeight,
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+        decoration: BoxDecoration(
+          color: color.surface,
+          borderRadius: BorderRadius.circular(Spacing.homeSearchRadius),
+          border: Border.all(color: color.outline),
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              Assets.homeSearchLine,
+              width: Spacing.homeSearchIconSize,
+              height: Spacing.homeSearchIconSize,
+            ),
+            const SizedBox(width: Spacing.sm),
 
-          Expanded(
-            child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(
-                locale.home_search_hint,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onSurfaceVariant,
+            Expanded(
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  locale.home_search_hint,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size12,
+                    color: color.onSurfaceVariant,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/search/data/search_fake_data_source.dart';
 import 'package:meal_meat_user/features/search/presentation/widgets/search_active_results_section.dart';
@@ -49,6 +52,49 @@ class _SearchScreenState extends State<SearchScreen> {
     final content = _dataSource.getContent(locale);
 
     return Scaffold(
+      extendBody: true,
+      bottomNavigationBar: AppBottomNavBar(
+        currentIndex: 0,
+        onTap: _onNavigationTap,
+        items: [
+          AppBottomNavBarItem(
+            icon: Icons.home_rounded,
+            selectedIcon: Icons.home_rounded,
+            svgAsset: Assets.logo,
+            tintSvg: false,
+            label: locale.nav_home,
+            sfSymbol: 'house.fill',
+          ),
+          AppBottomNavBarItem(
+            icon: Icons.calendar_month,
+            selectedIcon: Icons.calendar_month,
+            label: locale.nav_meals,
+            sfSymbol: 'fork.knife',
+          ),
+          AppBottomNavBarItem(
+            icon: Icons.local_fire_department_outlined,
+            selectedIcon: Icons.local_fire_department,
+            animationAsset: Assets.fireAnimation,
+            iconSize: Spacing.xxl + Spacing.sm,
+            label: locale.nav_offers,
+            sfSymbol: 'flame.fill',
+          ),
+          AppBottomNavBarItem(
+            icon: Icons.inventory_2,
+            selectedIcon: Icons.inventory_2,
+            iconSize: Spacing.xl - Spacing.xs / 2,
+            label: locale.nav_subscription,
+            sfSymbol: 'star.fill',
+          ),
+          AppBottomNavBarItem(
+            icon: Icons.person_rounded,
+            selectedIcon: Icons.person_rounded,
+            iconSize: Spacing.xl - Spacing.xs,
+            label: locale.nav_profile,
+            sfSymbol: 'person.fill',
+          ),
+        ],
+      ),
       appBar: CustomAppBar(
         actions: [
           Padding(
@@ -116,11 +162,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: isSearching
                       ? SearchActiveResultsSection(
                           suggestions: content.suggestions,
+                          query: _controller.text,
                           selectedFilter: _selectedFilter,
                           results: _filteredResults,
                           onSuggestionTap: _setQuery,
                           onFilterSelected: (index) =>
                               setState(() => _selectedFilter = index),
+                          onExploreTap: _clearSearch,
+                          onClearTap: _clearSearch,
                         )
                       : SearchInitialSections(
                           content: content,
@@ -138,6 +187,12 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   List<SearchResult> get _filteredResults {
+    final normalizedQuery = _controller.text.trim().toLowerCase();
+    if (normalizedQuery ==
+        context.localization.search_empty_query.toLowerCase()) {
+      return const [];
+    }
+
     return _dataSource.quickResults
         .where(
           (result) => _filterCriteria.showMeals
@@ -145,6 +200,23 @@ class _SearchScreenState extends State<SearchScreen> {
               : result == SearchResult.restaurant,
         )
         .toList();
+  }
+
+  void _clearSearch() {
+    _controller.clear();
+    _focusNode.unfocus();
+    setState(() {});
+  }
+
+  void _onNavigationTap(int index) {
+    final routes = [
+      AppRoutes.home,
+      AppRoutes.calendar,
+      AppRoutes.offers,
+      AppRoutes.subscriptions,
+      AppRoutes.profileSettings,
+    ];
+    context.pushReplacementNamed(routes[index]);
   }
 
   Future<void> _openFilterSheet() async {

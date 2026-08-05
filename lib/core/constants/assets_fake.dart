@@ -52,6 +52,8 @@ class AssetsFake {
       'assets/images/fake/search/search_filter_icon.svg';
   static const String searchHealthyRestaurant =
       'assets/images/fake/search/search_healthy_restaurant.png';
+  static const String searchEmptyResults =
+      'assets/images/fake/search/search_empty_results.png';
   static const String searchJuice =
       'assets/images/fake/search/search_juice.png';
   static const String searchProtein =

@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/offer_details/presentation/screens/offer
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
+import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/addresses_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/dietary_preferences_screen.dart';
@@ -35,6 +36,8 @@ class RouteGenerator {
     switch (settings.name) {
       case AppRoutes.home:
         return _buildRoute(settings: settings, page: const AppShellScreen());
+      case AppRoutes.search:
+        return _buildRoute(settings: settings, page: const SearchScreen());
       case AppRoutes.offers:
         return _buildRoute(settings: settings, page: const OffersScreen());
       case AppRoutes.subscriptions:

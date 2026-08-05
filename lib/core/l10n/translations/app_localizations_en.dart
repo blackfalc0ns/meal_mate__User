@@ -2599,6 +2599,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_open => 'Open';
 
   @override
+  String get search_empty_query => 'Keto sushi';
+
+  @override
+  String get search_empty_title => 'No suitable results found';
+
+  @override
+  String get search_empty_message_prefix =>
+      'We couldn\'t find any results for \"';
+
+  @override
+  String get search_empty_message_suffix => '\"';
+
+  @override
+  String get search_empty_description =>
+      'Try another keyword or explore the available options';
+
+  @override
+  String get search_empty_suggestions_title => 'Suggestions you may like';
+
+  @override
+  String get search_empty_nearby_restaurants => 'Nearby restaurants';
+
+  @override
+  String get search_empty_explore => 'Back to explore';
+
+  @override
+  String get search_empty_clear => 'Clear search';
+
+  @override
   String get search_cuisine_fast_food => 'Fast food';
 
   @override

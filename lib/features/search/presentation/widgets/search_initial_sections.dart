@@ -176,7 +176,7 @@ class SearchInitialSections extends StatelessWidget {
                 SearchResultCard(result: results[index]),
           ),
         ),
-        const SizedBox(height: Spacing.xxxl),
+        const SizedBox(height: Spacing.bottomNavHeight + Spacing.xxxl),
       ],
     );
   }
