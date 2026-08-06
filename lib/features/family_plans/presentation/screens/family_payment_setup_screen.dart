@@ -66,7 +66,10 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
                 delegate: SliverChildListDelegate.fixed([
                   FamilySetupHeaderBadge(),
                   const SizedBox(height: Spacing.familyProgramProgressTopGap),
-                  const FamilyProgramStepper(currentStep: 3),
+                  const FamilyProgramStepper(
+                    currentStep: 3,
+                    includeFamilyCreationStep: true,
+                  ),
                   const SizedBox(height: Spacing.familyProgramMemberTopGap),
                   FamilyProgramMemberStrip(members: members),
                   const SizedBox(height: Spacing.md),

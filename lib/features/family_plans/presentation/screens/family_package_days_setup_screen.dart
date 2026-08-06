@@ -95,7 +95,10 @@ class _FamilyPackageDaysSetupScreenState
                 delegate: SliverChildListDelegate.fixed([
                   FamilySetupHeaderBadge(),
                   const SizedBox(height: Spacing.familyProgramProgressTopGap),
-                  const FamilyProgramStepper(currentStep: 2),
+                  const FamilyProgramStepper(
+                    currentStep: 2,
+                    includeFamilyCreationStep: true,
+                  ),
                   const SizedBox(height: Spacing.familyProgramMemberTopGap),
                   FamilyProgramMemberStrip(members: members),
                   const SizedBox(height: Spacing.familyProgramSummaryTopGap),

@@ -70,7 +70,10 @@ class _FamilyProgramSetupScreenState extends State<FamilyProgramSetupScreen> {
                 delegate: SliverChildListDelegate.fixed([
                   FamilySetupHeaderBadge(),
                   const SizedBox(height: Spacing.familyProgramProgressTopGap),
-                  const FamilyProgramStepper(currentStep: 1),
+                  const FamilyProgramStepper(
+                    currentStep: 1,
+                    includeFamilyCreationStep: true,
+                  ),
                   const SizedBox(height: Spacing.familyProgramMemberTopGap),
                   FamilyProgramMemberStrip(members: members),
                   const SizedBox(height: Spacing.familyProgramSummaryTopGap),

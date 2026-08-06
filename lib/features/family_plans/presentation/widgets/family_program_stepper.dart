@@ -20,81 +20,103 @@ class FamilyProgramStepper extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final itemWidth = includeFamilyCreationStep
-        ? Spacing.familySetupProcessItemWidth
-        : Spacing.familyProgramStepItemWidth;
-    final lineWidth = includeFamilyCreationStep
-        ? Spacing.familySetupProcessLineWidth
-        : Spacing.familyProgramStepLineWidth;
-    final labelFontSize = includeFamilyCreationStep
-        ? FontSize.size8
-        : FontSize.size10;
+    const itemWidth = Spacing.familyProgramStepItemWidth;
+    const labelFontSize = FontSize.size10;
+    final lineTopOffset =
+        (Spacing.familyProgramStepCircleSize -
+            Spacing.familyProgramStepLineHeight) /
+        2;
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stepCount = includeFamilyCreationStep ? 4 : 3;
+        final stepSectionWidth = constraints.maxWidth / stepCount;
+        final lineInset = stepSectionWidth / 2;
+        final lineWidth = constraints.maxWidth - (lineInset * 2);
+        final activeStepIndex = includeFamilyCreationStep
+            ? currentStep.clamp(0, stepCount - 1)
+            : (currentStep - 1).clamp(0, stepCount - 1);
+        final progressWidth = lineWidth * (activeStepIndex / (stepCount - 1));
+
+        return Stack(
           children: [
-            if (includeFamilyCreationStep) ...[
-              FamilyProgramStepperItem(
-                label: locale.family_step_create_family,
-                value: locale.family_step_create_family,
-                width: itemWidth,
-                labelFontSize: labelFontSize,
-                selected: currentStep == 0,
-                completed: completedSteps >= 1,
+            PositionedDirectional(
+              top: lineTopOffset,
+              start: lineInset,
+              end: lineInset,
+              child: Container(
+                height: Spacing.familyProgramStepLineHeight,
+                color: color.outline,
               ),
-              SizedBox(
-                width: lineWidth,
-                child: Divider(
-                  color: color.outline,
-                  thickness: Spacing.familyProgramStepLineHeight,
+            ),
+            PositionedDirectional(
+              top: lineTopOffset,
+              start: lineInset,
+              child: Container(
+                width: progressWidth,
+                height: Spacing.familyProgramStepLineHeight,
+                color: color.primary,
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (includeFamilyCreationStep)
+                  Expanded(
+                    child: Center(
+                      child: FamilyProgramStepperItem(
+                        label: locale.family_step_create_family,
+                        value: locale.family_step_create_family,
+                        width: itemWidth,
+                        labelFontSize: labelFontSize,
+                        selected: currentStep == 0,
+                        completed: completedSteps >= 1 || currentStep > 0,
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: Center(
+                    child: FamilyProgramStepperItem(
+                      label: locale.family_step_program,
+                      value: locale.family_step_program,
+                      width: itemWidth,
+                      labelFontSize: labelFontSize,
+                      selected: currentStep == 1,
+                      completed: currentStep > 1,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-            FamilyProgramStepperItem(
-              label: locale.family_step_program,
-              value: locale.family_step_program,
-              width: itemWidth,
-              labelFontSize: labelFontSize,
-              selected: currentStep == 1,
-              completed: currentStep > 1,
-            ),
-            SizedBox(
-              width: lineWidth,
-              child: Divider(
-                color: color.outline,
-                thickness: Spacing.familyProgramStepLineHeight,
-              ),
-            ),
-            FamilyProgramStepperItem(
-              label: locale.family_step_package_days,
-              value: locale.family_step_package_days,
-              number: locale.family_setup_step_two,
-              width: itemWidth,
-              labelFontSize: labelFontSize,
-              selected: currentStep == 2,
-              completed: currentStep > 2,
-            ),
-            SizedBox(
-              width: lineWidth,
-              child: Divider(
-                color: color.outline,
-                thickness: Spacing.familyProgramStepLineHeight,
-              ),
-            ),
-            FamilyProgramStepperItem(
-              label: locale.family_step_payment,
-              value: locale.family_step_payment,
-              number: locale.family_setup_step_three,
-              width: itemWidth,
-              labelFontSize: labelFontSize,
-              selected: currentStep == 3,
-              completed: currentStep >= 3,
+                Expanded(
+                  child: Center(
+                    child: FamilyProgramStepperItem(
+                      label: locale.family_step_package_days,
+                      value: locale.family_step_package_days,
+                      number: locale.family_setup_step_two,
+                      width: itemWidth,
+                      labelFontSize: labelFontSize,
+                      selected: currentStep == 2,
+                      completed: currentStep > 2,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: FamilyProgramStepperItem(
+                      label: locale.family_step_payment,
+                      value: locale.family_step_payment,
+                      number: locale.family_setup_step_three,
+                      width: itemWidth,
+                      labelFontSize: labelFontSize,
+                      selected: currentStep == 3,
+                      completed: currentStep >= 3,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
