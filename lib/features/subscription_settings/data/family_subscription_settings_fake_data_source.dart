@@ -97,4 +97,63 @@ class FamilySubscriptionSettingsFakeDataSource {
       warningMessage: 'يرجى اختيار وجبات اليوم للفرد : أحمد',
     );
   }
+
+  FamilySubscriptionMembersPageEntity getMembersPage() {
+    return const FamilySubscriptionMembersPageEntity(
+      members: [
+        FamilySubscriptionListMemberEntity(
+          name: 'أحمد',
+          imageAsset: AssetsFake.familyMemberAhmed,
+          accountLabel: 'لديه حساب',
+          programLabel: 'متوازن',
+          mealsLabel: '4 وجبات',
+          daysLabel: '7 أيام',
+          statusLabel: 'نشط',
+          status: FamilySubscriptionListMemberStatus.active,
+          noteLabel: 'جميع الوجبات يديرها المسؤول',
+          noteStatus: FamilySubscriptionListMemberNoteStatus.success,
+          goal: FamilySubscriptionListMemberGoal.balanced,
+        ),
+        FamilySubscriptionListMemberEntity(
+          name: 'سارة',
+          imageAsset: AssetsFake.familyMemberSarah,
+          accountLabel: 'لديه حساب',
+          programLabel: 'خسارة الوزن',
+          mealsLabel: '4 وجبات',
+          daysLabel: '7 أيام',
+          statusLabel: 'نشط',
+          status: FamilySubscriptionListMemberStatus.active,
+          noteLabel: 'تم تخصيص بعض الوجبات',
+          noteStatus: FamilySubscriptionListMemberNoteStatus.warning,
+          goal: FamilySubscriptionListMemberGoal.weightLoss,
+        ),
+        FamilySubscriptionListMemberEntity(
+          name: 'يوسف',
+          imageAsset: AssetsFake.familyMemberYousef,
+          accountLabel: 'لديه حساب',
+          programLabel: 'بناء عضلات',
+          mealsLabel: '4 وجبات',
+          daysLabel: '7 أيام',
+          statusLabel: 'قيد الإعداد',
+          status: FamilySubscriptionListMemberStatus.setup,
+          noteLabel: 'جميع الوجبات يديرها المسؤول',
+          noteStatus: FamilySubscriptionListMemberNoteStatus.warning,
+          goal: FamilySubscriptionListMemberGoal.muscleGain,
+        ),
+        FamilySubscriptionListMemberEntity(
+          name: 'مريم',
+          imageAsset: AssetsFake.familyMemberMariam,
+          accountLabel: 'لديه حساب',
+          programLabel: 'متوازن',
+          mealsLabel: '4 وجبات',
+          daysLabel: '7 أيام',
+          statusLabel: 'قيد الإعداد',
+          status: FamilySubscriptionListMemberStatus.setup,
+          noteLabel: 'لم يتم اختيار النظام',
+          noteStatus: FamilySubscriptionListMemberNoteStatus.error,
+          goal: FamilySubscriptionListMemberGoal.balanced,
+        ),
+      ],
+    );
+  }
 }

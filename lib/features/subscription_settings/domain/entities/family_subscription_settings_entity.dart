@@ -30,6 +30,40 @@ class FamilySubscriptionSettingsEntity {
   final String warningMessage;
 }
 
+class FamilySubscriptionMembersPageEntity {
+  const FamilySubscriptionMembersPageEntity({required this.members});
+
+  final List<FamilySubscriptionListMemberEntity> members;
+}
+
+class FamilySubscriptionListMemberEntity {
+  const FamilySubscriptionListMemberEntity({
+    required this.name,
+    required this.imageAsset,
+    required this.accountLabel,
+    required this.programLabel,
+    required this.mealsLabel,
+    required this.daysLabel,
+    required this.statusLabel,
+    required this.status,
+    required this.noteLabel,
+    required this.noteStatus,
+    required this.goal,
+  });
+
+  final String name;
+  final String imageAsset;
+  final String accountLabel;
+  final String programLabel;
+  final String mealsLabel;
+  final String daysLabel;
+  final String statusLabel;
+  final FamilySubscriptionListMemberStatus status;
+  final String noteLabel;
+  final FamilySubscriptionListMemberNoteStatus noteStatus;
+  final FamilySubscriptionListMemberGoal goal;
+}
+
 class FamilySubscriptionMemberEntity {
   const FamilySubscriptionMemberEntity({
     required this.name,
@@ -73,3 +107,9 @@ class FamilySubscriptionMealStatusEntity {
 }
 
 enum FamilySubscriptionMealStatus { completed, selected, missing }
+
+enum FamilySubscriptionListMemberStatus { active, setup }
+
+enum FamilySubscriptionListMemberNoteStatus { success, warning, error }
+
+enum FamilySubscriptionListMemberGoal { balanced, weightLoss, muscleGain }

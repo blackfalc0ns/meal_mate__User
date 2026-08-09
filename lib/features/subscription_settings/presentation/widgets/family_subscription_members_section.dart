@@ -6,9 +6,14 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_section_header.dart';
 
 class FamilySubscriptionMembersSection extends StatelessWidget {
-  const FamilySubscriptionMembersSection({super.key, required this.members});
+  const FamilySubscriptionMembersSection({
+    super.key,
+    required this.members,
+    this.onShowAllTap,
+  });
 
   final List<FamilySubscriptionMemberEntity> members;
+  final VoidCallback? onShowAllTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class FamilySubscriptionMembersSection extends StatelessWidget {
           FamilySubscriptionSectionHeader(
             title: locale.family_manage_family_members,
             actionLabel: locale.family_manage_show_all,
+            onActionTap: onShowAllTap,
           ),
           const SizedBox(height: Spacing.md),
           Row(

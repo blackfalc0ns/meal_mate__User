@@ -1734,6 +1734,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please select today\'s meals for: Ahmed';
 
   @override
+  String get family_members_title => 'Members';
+
+  @override
+  String get family_members_search_hint => 'Search for a member';
+
+  @override
+  String get family_members_add_member => 'Add member';
+
+  @override
   String get family_plan_feature_group_delivery => 'Group delivery';
 
   @override

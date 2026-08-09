@@ -273,6 +273,27 @@ class Spacing {
   static const double familyManageQuickIconSize = 28.43;
   static const double familyManageMealsStatusHeight = 180.0;
   static const double familyManageWarningHeight = 55.66;
+  static const double familyMembersHorizontalPadding = 14.0;
+  static const double familyMembersSearchHeight = 33.68;
+  static const double familyMembersSearchRadius = 11.2268;
+  static const double familyMembersSearchIconSize = 19.99;
+  static const double familyMembersSearchTopGap = 15.95;
+  static const double familyMembersListTopGap = 12.47;
+  static const double familyMembersCardHeight = 110.72;
+  static const double familyMembersCardRadius = 21.7849;
+  static const double familyMembersCardBorder = 1.5561;
+  static const double familyMembersCardGap = 6.2371;
+  static const double familyMembersCardHorizontalPadding = 24.0;
+  static const double familyMembersCardVerticalPadding = 11.0;
+  static const double familyMembersAvatarSize = 58.0;
+  static const double familyMembersAccountChipHeight = 18.0;
+  static const double familyMembersStatusChipHeight = 20.0;
+  static const double familyMembersNoteChipHeight = 22;
+  static const double familyMembersGoalIconSize = 12.0;
+  static const double familyMembersAddButtonTopGap = 25.16;
+  static const double familyMembersAddButtonHeight = 40.83;
+  static const double familyMembersAddButtonRadius = 44.8514;
+  static const double familyMembersBottomNavTopGap = 24.0;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

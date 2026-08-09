@@ -3362,6 +3362,24 @@ abstract class AppLocalizations {
   /// **'Please select today\'s meals for: Ahmed'**
   String get family_manage_warning_message;
 
+  /// No description provided for @family_members_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get family_members_title;
+
+  /// No description provided for @family_members_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a member'**
+  String get family_members_search_hint;
+
+  /// No description provided for @family_members_add_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get family_members_add_member;
+
   /// No description provided for @family_plan_feature_group_delivery.
   ///
   /// In en, this message translates to:

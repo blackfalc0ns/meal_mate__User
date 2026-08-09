@@ -1711,6 +1711,15 @@ class AppLocalizationsAr extends AppLocalizations {
       'يرجى اختيار وجبات اليوم للفرد : أحمد';
 
   @override
+  String get family_members_title => 'الأفراد';
+
+  @override
+  String get family_members_search_hint => 'ابحث عن فرد';
+
+  @override
+  String get family_members_add_member => 'إضافة فرد';
+
+  @override
   String get family_plan_feature_group_delivery => 'توصيل مجمع';
 
   @override

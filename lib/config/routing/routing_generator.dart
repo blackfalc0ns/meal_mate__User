@@ -30,6 +30,7 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/scree
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 
 class RouteGenerator {
@@ -78,6 +79,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilySubscriptionSettingsScreen(),
+        );
+      case AppRoutes.familySubscriptionMembers:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilySubscriptionMembersScreen(),
         );
       case AppRoutes.familyProgramSetup:
         return _buildRoute(
