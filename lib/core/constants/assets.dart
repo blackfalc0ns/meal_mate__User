@@ -149,6 +149,14 @@ class Assets {
       '$_images/subscriptions/figma/programs_hero.png';
   static const String subscriptionProgramsLogo =
       '$_images/subscriptions/figma/programs_logo.svg';
+  static const String subscriptionTypeBackground =
+      '$_images/subscriptions/figma/subscription_type_background.png';
+  static const String subscriptionTypeHero =
+      '$_images/subscriptions/figma/subscription_type_hero.png';
+  static const String subscriptionTypeIndividualProduct =
+      '$_images/subscriptions/figma/subscription_type_individual_product-10d77a.png';
+  static const String subscriptionTypeFamilyProduct =
+      '$_images/subscriptions/figma/subscription_type_family_product-465c7d.png';
   static const String mealMateLogo = '$_svg/meal_mate_logo.svg';
   static const String subscriptionWeightLossProgram =
       '$_images/subscriptions/figma/weight_loss_program.png';

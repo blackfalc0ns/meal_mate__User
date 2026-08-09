@@ -1511,6 +1511,55 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose the goal that suits you so we can show the right plans';
 
   @override
+  String get subscription_type_title => 'Choose subscription type';
+
+  @override
+  String get subscription_type_subtitle =>
+      'Start by choosing whether you want an individual subscription or a family subscription';
+
+  @override
+  String get subscription_type_hero_label => 'Healthy food, better life';
+
+  @override
+  String get subscription_type_individual_label => 'Individual subscription';
+
+  @override
+  String get subscription_type_individual_description =>
+      'For one person with a meal program that fits your goal';
+
+  @override
+  String get subscription_type_individual_restaurants => 'Varied restaurants';
+
+  @override
+  String get subscription_type_individual_meal_flexibility =>
+      'Flexible meal count';
+
+  @override
+  String get subscription_type_individual_customization =>
+      'Program customization';
+
+  @override
+  String get subscription_type_family_label => 'Family subscription';
+
+  @override
+  String get subscription_type_family_description =>
+      'Add family members and set a suitable program for each person';
+
+  @override
+  String get subscription_type_family_members => 'Up to 6 members';
+
+  @override
+  String get subscription_type_family_customization =>
+      'Personalized for each person';
+
+  @override
+  String get subscription_type_family_management => 'Easy family management';
+
+  @override
+  String get subscription_type_notice_label =>
+      'After choosing the subscription type, you will move to the next step';
+
+  @override
   String get subscription_details_view_mode => 'View mode';
 
   @override

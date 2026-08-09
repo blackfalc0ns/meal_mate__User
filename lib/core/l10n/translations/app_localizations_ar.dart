@@ -1492,6 +1492,53 @@ class AppLocalizationsAr extends AppLocalizations {
       'اختر الهدف الذي يناسبك لنقدم لك الباقات المناسبة';
 
   @override
+  String get subscription_type_title => 'اختر نوع الاشتراك';
+
+  @override
+  String get subscription_type_subtitle =>
+      'ابدأ بتحديد ما إذا كنت تريد اشتراك فردي أو اشتراك عائلي';
+
+  @override
+  String get subscription_type_hero_label => 'أكل صحي ، حياة أفضل';
+
+  @override
+  String get subscription_type_individual_label => 'اشتراك فردي';
+
+  @override
+  String get subscription_type_individual_description =>
+      'لشخص واحد مع برنامج غذائي يناسب هدفك';
+
+  @override
+  String get subscription_type_individual_restaurants => 'مطاعم متنوعة';
+
+  @override
+  String get subscription_type_individual_meal_flexibility =>
+      'مرونة في عدد الوجبات';
+
+  @override
+  String get subscription_type_individual_customization => 'تخصيص البرنامج';
+
+  @override
+  String get subscription_type_family_label => 'اشتراك عائلي';
+
+  @override
+  String get subscription_type_family_description =>
+      'أضف أفراد العائلة وحدد برنامجاً مناسبا لكل فرد';
+
+  @override
+  String get subscription_type_family_members => 'حتى 6 أفراد';
+
+  @override
+  String get subscription_type_family_customization => 'تخصيص لكل فرد';
+
+  @override
+  String get subscription_type_family_management => 'إدارة عائلية سهلة';
+
+  @override
+  String get subscription_type_notice_label =>
+      'بعد اختيار نوع الاشتراك ستنتقل إلى الخطوة التالية';
+
+  @override
   String get subscription_details_view_mode => 'طريقة العرض';
 
   @override

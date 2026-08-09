@@ -2942,6 +2942,90 @@ abstract class AppLocalizations {
   /// **'Choose the goal that suits you so we can show the right plans'**
   String get subscription_program_subtitle;
 
+  /// No description provided for @subscription_type_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose subscription type'**
+  String get subscription_type_title;
+
+  /// No description provided for @subscription_type_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by choosing whether you want an individual subscription or a family subscription'**
+  String get subscription_type_subtitle;
+
+  /// No description provided for @subscription_type_hero_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy food, better life'**
+  String get subscription_type_hero_label;
+
+  /// No description provided for @subscription_type_individual_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual subscription'**
+  String get subscription_type_individual_label;
+
+  /// No description provided for @subscription_type_individual_description.
+  ///
+  /// In en, this message translates to:
+  /// **'For one person with a meal program that fits your goal'**
+  String get subscription_type_individual_description;
+
+  /// No description provided for @subscription_type_individual_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Varied restaurants'**
+  String get subscription_type_individual_restaurants;
+
+  /// No description provided for @subscription_type_individual_meal_flexibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible meal count'**
+  String get subscription_type_individual_meal_flexibility;
+
+  /// No description provided for @subscription_type_individual_customization.
+  ///
+  /// In en, this message translates to:
+  /// **'Program customization'**
+  String get subscription_type_individual_customization;
+
+  /// No description provided for @subscription_type_family_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Family subscription'**
+  String get subscription_type_family_label;
+
+  /// No description provided for @subscription_type_family_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family members and set a suitable program for each person'**
+  String get subscription_type_family_description;
+
+  /// No description provided for @subscription_type_family_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 6 members'**
+  String get subscription_type_family_members;
+
+  /// No description provided for @subscription_type_family_customization.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized for each person'**
+  String get subscription_type_family_customization;
+
+  /// No description provided for @subscription_type_family_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy family management'**
+  String get subscription_type_family_management;
+
+  /// No description provided for @subscription_type_notice_label.
+  ///
+  /// In en, this message translates to:
+  /// **'After choosing the subscription type, you will move to the next step'**
+  String get subscription_type_notice_label;
+
   /// No description provided for @subscription_details_view_mode.
   ///
   /// In en, this message translates to:

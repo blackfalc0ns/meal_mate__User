@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/subscriptions_fake_data_source.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_goal_card.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_header.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_hero.dart';
+import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_card.dart';
+import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_notice.dart';
+import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
   const SubscriptionsScreen({super.key, this.showBottomSpace = false});
@@ -19,94 +22,145 @@ class SubscriptionsScreen extends StatefulWidget {
 
 class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   static const _dataSource = SubscriptionsFakeDataSource();
-  int _selectedProgramIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final programs = _dataSource.getPrograms();
+    final types = _dataSource.getSubscriptionTypes();
 
     return Semantics(
       label: locale.nav_subscription,
-      child: ColoredBox(
-        color: color.surface,
-        child: Stack(
-          children: [
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: Spacing.subscriptionProgramsHeroHeight,
-              child: SubscriptionProgramHero(),
-            ),
-            Positioned.fill(
-              top: Spacing.subscriptionProgramsContentTop,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: color.surface,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(Spacing.radiusXl),
-                  ),
-                ),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: Spacing.base,
-                          left: Spacing.subscriptionProgramsHorizontalPadding,
-                          right: Spacing.subscriptionProgramsHorizontalPadding,
-                        ),
-                        child: SubscriptionProgramHeader(),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(
-                        top: Spacing.base,
-                        left: Spacing.subscriptionProgramsHorizontalPadding,
-                        right: Spacing.subscriptionProgramsHorizontalPadding,
-                        bottom: widget.showBottomSpace
-                            ? Spacing.subscriptionProgramsBottomSpace
-                            : Spacing.xl,
-                      ),
-                      sliver: SliverList.separated(
-                        itemCount: programs.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: Spacing.sm),
-                        itemBuilder: (context, index) {
-                          final program = programs[index];
-
-                          return SubscriptionProgramGoalCard(
-                            title: program.title,
-                            description: program.description,
-                            imageAsset: program.imageAsset,
-                            primaryFeature: program.primaryFeature,
-                            secondaryFeature: program.secondaryFeature,
-                            badgeIcon: program.badgeIcon,
-                            primaryFeatureIcon: program.primaryFeatureIcon,
-                            secondaryFeatureIcon: program.secondaryFeatureIcon,
-                            isSelected: index == _selectedProgramIndex,
-                            onTap: () => _openProgram(index),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+      child: Scaffold(
+        backgroundColor: color.surface,
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  Assets.subscriptionTypeBackground,
+                  fit: BoxFit.cover,
+                  semanticLabel: locale.nav_subscription,
                 ),
               ),
-            ),
-          ],
+              CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: EdgeInsets.only(
+                      left: Spacing.screenH,
+                      right: Spacing.screenH,
+                      top: Spacing.lg,
+                      bottom: widget.showBottomSpace
+                          ? Spacing.subscriptionProgramsBottomSpace
+                          : Spacing.xl,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate.fixed([
+                        const Center(
+                          child: AppLogo(
+                            size: Spacing.subscriptionTypeLogoHeight,
+                            alignment: CrossAxisAlignment.center,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            Spacing.subscriptionProgramCardRadius,
+                          ),
+                          child: AspectRatio(
+                            aspectRatio:
+                                Spacing.subscriptionTypeHeroWidth /
+                                Spacing.subscriptionTypeHeroHeight,
+                            child: Image.asset(
+                              Assets.subscriptionTypeHero,
+                              fit: BoxFit.cover,
+                              semanticLabel:
+                                  locale.subscription_type_hero_label,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        Text(
+                          locale.subscription_type_title,
+                          textAlign: TextAlign.center,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size20,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        Text(
+                          locale.subscription_type_subtitle,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        SubscriptionTypeCard(
+                          type: types[0],
+                          title: locale.subscription_type_individual_label,
+                          description:
+                              locale.subscription_type_individual_description,
+                          features: [
+                            locale.subscription_type_individual_customization,
+                            locale
+                                .subscription_type_individual_meal_flexibility,
+                            locale.subscription_type_individual_restaurants,
+                          ],
+                          icons: const [
+                            Icons.track_changes_rounded,
+                            Icons.calendar_month_rounded,
+                            Icons.store_rounded,
+                          ],
+                          onTap: _openIndividualSubscription,
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        SubscriptionTypeCard(
+                          type: types[1],
+                          title: locale.subscription_type_family_label,
+                          description:
+                              locale.subscription_type_family_description,
+                          features: [
+                            locale.subscription_type_family_management,
+                            locale.subscription_type_family_customization,
+                            locale.subscription_type_family_members,
+                          ],
+                          icons: const [
+                            Icons.groups_2_rounded,
+                            Icons.person_rounded,
+                            Icons.groups_rounded,
+                          ],
+                          onTap: _openFamilySubscription,
+                        ),
+                        const SizedBox(height: Spacing.base),
+                        SubscriptionTypeNotice(
+                          message: locale.subscription_type_notice_label,
+                        ),
+                      ]),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void _openProgram(int index) {
-    setState(() => _selectedProgramIndex = index);
-    context.pushNamed(
-      AppRoutes.subscriptionPackageSelection,
-      arguments: index.clamp(0, 2),
-    );
+  void _openIndividualSubscription() {
+    context.pushNamed(AppRoutes.subscriptionPackageSelection, arguments: 0);
+  }
+
+  void _openFamilySubscription() {
+    context.pushNamed(AppRoutes.familyPlanDetails);
   }
 }
