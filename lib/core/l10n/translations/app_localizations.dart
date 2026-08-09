@@ -3224,6 +3224,144 @@ abstract class AppLocalizations {
   /// **'New'**
   String get family_plan_new;
 
+  /// No description provided for @family_manage_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family package management'**
+  String get family_manage_title;
+
+  /// No description provided for @family_manage_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get family_manage_active;
+
+  /// No description provided for @family_manage_instead_of.
+  ///
+  /// In en, this message translates to:
+  /// **'Instead of'**
+  String get family_manage_instead_of;
+
+  /// No description provided for @family_manage_ends_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on May 26, 2024'**
+  String get family_manage_ends_on;
+
+  /// No description provided for @family_manage_family_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Family members'**
+  String get family_manage_family_members;
+
+  /// No description provided for @family_manage_show_all.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get family_manage_show_all;
+
+  /// No description provided for @family_manage_quick_access.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick access'**
+  String get family_manage_quick_access;
+
+  /// No description provided for @family_manage_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get family_manage_meals;
+
+  /// No description provided for @family_manage_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get family_manage_subscription;
+
+  /// No description provided for @family_manage_invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get family_manage_invoice;
+
+  /// No description provided for @family_manage_permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get family_manage_permissions;
+
+  /// No description provided for @family_manage_missing_selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing selection'**
+  String get family_manage_missing_selection;
+
+  /// No description provided for @family_manage_today_meals_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s meal status'**
+  String get family_manage_today_meals_status;
+
+  /// No description provided for @family_manage_today_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday, May 26'**
+  String get family_manage_today_date;
+
+  /// No description provided for @family_manage_meal_count_4.
+  ///
+  /// In en, this message translates to:
+  /// **'4/4 meals'**
+  String get family_manage_meal_count_4;
+
+  /// No description provided for @family_manage_meal_count_2.
+  ///
+  /// In en, this message translates to:
+  /// **'2/4 meals'**
+  String get family_manage_meal_count_2;
+
+  /// No description provided for @family_manage_meal_count_0.
+  ///
+  /// In en, this message translates to:
+  /// **'0/4 meals'**
+  String get family_manage_meal_count_0;
+
+  /// No description provided for @family_manage_completed_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get family_manage_completed_status;
+
+  /// No description provided for @family_manage_selected_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get family_manage_selected_status;
+
+  /// No description provided for @family_manage_not_started_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get family_manage_not_started_status;
+
+  /// No description provided for @family_manage_complete_missing_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete missing meals'**
+  String get family_manage_complete_missing_meals;
+
+  /// No description provided for @family_manage_warning_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Some members have not selected their meals'**
+  String get family_manage_warning_title;
+
+  /// No description provided for @family_manage_warning_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select today\'s meals for: Ahmed'**
+  String get family_manage_warning_message;
+
   /// No description provided for @family_plan_feature_group_delivery.
   ///
   /// In en, this message translates to:
@@ -3265,6 +3403,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Customize a nutrition plan for each family member'**
   String get family_add_member_subtitle;
+
+  /// No description provided for @family_edit_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get family_edit_member;
 
   /// No description provided for @family_owner.
   ///

@@ -24,13 +24,13 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_program_setup_screen.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_subscription_setup_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
@@ -74,9 +74,10 @@ class RouteGenerator {
           page: SubscriptionSummaryScreen(plan: plan),
         );
       case AppRoutes.familyPlanDetails:
+      case AppRoutes.familySubscriptionSettings:
         return _buildRoute(
           settings: settings,
-          page: const FamilySubscriptionSetupScreen(),
+          page: const FamilySubscriptionSettingsScreen(),
         );
       case AppRoutes.familyProgramSetup:
         return _buildRoute(

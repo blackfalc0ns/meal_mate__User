@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -59,7 +61,8 @@ class ProfileBillingScreen extends StatelessWidget {
                 height: Spacing.profileBillingButtonHeight,
                 child: AppButton(
                   text: locale.billing_manage_subscription,
-                  onPressed: () {},
+                  onPressed: () =>
+                      context.pushNamed(AppRoutes.familySubscriptionSettings),
                   height: Spacing.profileBillingButtonHeight,
                   borderRadius: Spacing.radiusPill,
                   color: color.primary,

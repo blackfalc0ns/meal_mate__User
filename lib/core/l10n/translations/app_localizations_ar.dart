@@ -1641,6 +1641,76 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_plan_new => 'جديد';
 
   @override
+  String get family_manage_title => 'إدارة الباقة العائلية';
+
+  @override
+  String get family_manage_active => 'نشط';
+
+  @override
+  String get family_manage_instead_of => 'بدلا من';
+
+  @override
+  String get family_manage_ends_on => 'ينتهي في 26 مايو 2024';
+
+  @override
+  String get family_manage_family_members => 'أفراد العائلة';
+
+  @override
+  String get family_manage_show_all => 'عرض الكل';
+
+  @override
+  String get family_manage_quick_access => 'الوصول السريع';
+
+  @override
+  String get family_manage_meals => 'الوجبات';
+
+  @override
+  String get family_manage_subscription => 'الاشتراك';
+
+  @override
+  String get family_manage_invoice => 'الفاتورة';
+
+  @override
+  String get family_manage_permissions => 'الصلاحيات';
+
+  @override
+  String get family_manage_missing_selection => 'اختيار ناقص';
+
+  @override
+  String get family_manage_today_meals_status => 'حالة وجبات اليوم';
+
+  @override
+  String get family_manage_today_date => 'الاثنين 26 مايو';
+
+  @override
+  String get family_manage_meal_count_4 => '4/4 وجبات';
+
+  @override
+  String get family_manage_meal_count_2 => '2/4 وجبات';
+
+  @override
+  String get family_manage_meal_count_0 => '0/4 وجبة';
+
+  @override
+  String get family_manage_completed_status => 'مكتملة';
+
+  @override
+  String get family_manage_selected_status => 'تم الاختيار';
+
+  @override
+  String get family_manage_not_started_status => 'لم يبدأ';
+
+  @override
+  String get family_manage_complete_missing_meals => 'إكمال الوجبات الناقصة';
+
+  @override
+  String get family_manage_warning_title => 'يوجد أفراد لم يتم اختيار وجباتهم';
+
+  @override
+  String get family_manage_warning_message =>
+      'يرجى اختيار وجبات اليوم للفرد : أحمد';
+
+  @override
   String get family_plan_feature_group_delivery => 'توصيل مجمع';
 
   @override
@@ -1660,6 +1730,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_add_member_subtitle => 'خصص خطة غذائية لكل فرد من عائلتك';
+
+  @override
+  String get family_edit_member => 'تعديل';
 
   @override
   String get family_owner => 'المالك';

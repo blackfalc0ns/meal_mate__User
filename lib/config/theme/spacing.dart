@@ -257,6 +257,22 @@ class Spacing {
   static const double familyPaymentMethodAssetWidth = 44.0;
   static const double familyPaymentMethodAssetHeight = 26.0;
   static const double familySelectedBorderWidth = 1.5;
+  static const double familyManageDesignWidth = 390.0;
+  static const double familyManageHorizontalPadding = 14.0;
+  static const double familyManageHeaderHeight = 104.0;
+  static const double familyManageHeaderActionSize = 24.0;
+  static const double familyManagePlanCardHeight = 135.0;
+  static const double familyManagePlanCardRadius = 13.057;
+  static const double familyManagePlanHeroWidth = 139.28;
+  static const double familyManagePlanHeroHeight = 208.92;
+  static const double familyManageMemberCardWidth = 81.06;
+  static const double familyManageMemberCardHeight = 90.7;
+  static const double familyManageMemberAvatarSize = 39.6;
+  static const double familyManageQuickTileWidth = 62.54;
+  static const double familyManageQuickTileHeight = 68.23;
+  static const double familyManageQuickIconSize = 28.43;
+  static const double familyManageMealsStatusHeight = 180.0;
+  static const double familyManageWarningHeight = 55.66;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

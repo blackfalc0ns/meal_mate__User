@@ -1,5 +1,5 @@
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
 
 class FamilyPlanFakeDataSource {
@@ -10,18 +10,18 @@ class FamilyPlanFakeDataSource {
   static const List<String> _memberDetailLines = [
     'تناول متوازن',
     '1500 سعرة',
-    '4 وجبات يومياً',
+    '4 وجبات يوميا',
   ];
 
   FamilyPlanEntity getPlan() {
-    return FamilyPlanEntity(
+    return const FamilyPlanEntity(
       title: 'الباقة العائلية',
       subtitle: 'خطة متكاملة حتى 6 أفراد',
       badge: 'خصم 20%',
       statusLabel: 'جديد',
       originalPrice: '72.000',
       discountedPrice: '57.600',
-      currency: '',
+      currency: 'KWD',
       features: [
         'توصيل مجمع',
         'فاتورة واحدة',
@@ -36,9 +36,9 @@ class FamilyPlanFakeDataSource {
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
-          mealChecks: const [false, true, true, false],
-          badgeColor: const Color(0xFFEBE3F5),
-          badgeTextColor: const Color(0xFF7643BB),
+          mealChecks: [false, true, true, false],
+          badgeColor: Color(0xFFEBE3F5),
+          badgeTextColor: Color(0xFF7643BB),
         ),
         FamilyMemberEntity(
           name: 'يوسف',
@@ -46,7 +46,7 @@ class FamilyPlanFakeDataSource {
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
-          mealChecks: const [true, true, true, true],
+          mealChecks: [true, true, true, true],
         ),
         FamilyMemberEntity(
           name: 'سارة',
@@ -54,9 +54,9 @@ class FamilyPlanFakeDataSource {
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
-          mealChecks: const [true, false, true, true],
-          badgeColor: const Color(0xFFFFEAD5),
-          badgeTextColor: const Color(0xFFFE6713),
+          mealChecks: [true, false, true, true],
+          badgeColor: Color(0xFFFFEAD5),
+          badgeTextColor: Color(0xFFFE6713),
         ),
         FamilyMemberEntity(
           name: 'أحمد',
@@ -64,7 +64,7 @@ class FamilyPlanFakeDataSource {
           detailLines: _memberDetailLines,
           actionLabel: _editLabel,
           mealsCount: _mealsCount,
-          mealChecks: const [true, true, true, true],
+          mealChecks: [true, true, true, true],
           isOwner: true,
         ),
       ],
@@ -95,7 +95,7 @@ class FamilyPlanFakeDataSource {
           iconName: 'delivery',
         ),
       ],
-      priceRows: const [
+      priceRows: [
         FamilyPriceRowEntity(
           label: 'السعر الأساسي (لـ 2 أفراد)',
           value: '42.600',

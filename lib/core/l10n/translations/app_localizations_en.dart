@@ -1663,6 +1663,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_plan_new => 'New';
 
   @override
+  String get family_manage_title => 'Family package management';
+
+  @override
+  String get family_manage_active => 'Active';
+
+  @override
+  String get family_manage_instead_of => 'Instead of';
+
+  @override
+  String get family_manage_ends_on => 'Ends on May 26, 2024';
+
+  @override
+  String get family_manage_family_members => 'Family members';
+
+  @override
+  String get family_manage_show_all => 'Show all';
+
+  @override
+  String get family_manage_quick_access => 'Quick access';
+
+  @override
+  String get family_manage_meals => 'Meals';
+
+  @override
+  String get family_manage_subscription => 'Subscription';
+
+  @override
+  String get family_manage_invoice => 'Invoice';
+
+  @override
+  String get family_manage_permissions => 'Permissions';
+
+  @override
+  String get family_manage_missing_selection => 'Missing selection';
+
+  @override
+  String get family_manage_today_meals_status => 'Today\'s meal status';
+
+  @override
+  String get family_manage_today_date => 'Monday, May 26';
+
+  @override
+  String get family_manage_meal_count_4 => '4/4 meals';
+
+  @override
+  String get family_manage_meal_count_2 => '2/4 meals';
+
+  @override
+  String get family_manage_meal_count_0 => '0/4 meals';
+
+  @override
+  String get family_manage_completed_status => 'Completed';
+
+  @override
+  String get family_manage_selected_status => 'Selected';
+
+  @override
+  String get family_manage_not_started_status => 'Not started';
+
+  @override
+  String get family_manage_complete_missing_meals => 'Complete missing meals';
+
+  @override
+  String get family_manage_warning_title =>
+      'Some members have not selected their meals';
+
+  @override
+  String get family_manage_warning_message =>
+      'Please select today\'s meals for: Ahmed';
+
+  @override
   String get family_plan_feature_group_delivery => 'Group delivery';
 
   @override
@@ -1683,6 +1754,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get family_add_member_subtitle =>
       'Customize a nutrition plan for each family member';
+
+  @override
+  String get family_edit_member => 'Edit';
 
   @override
   String get family_owner => 'Owner';

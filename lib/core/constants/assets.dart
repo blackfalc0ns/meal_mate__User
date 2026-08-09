@@ -167,6 +167,18 @@ class Assets {
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
   static const String subscriptionFamilyPackagePreview =
       '$_images/subscriptions/figma/family_package_preview.png';
+  static const String familyManagePlanCard =
+      '$_images/subscriptions/figma/family_manage_plan_card.png';
+  static const String familyManagePermissions =
+      '$_images/subscriptions/figma/family_manage_permissions.svg';
+  static const String familyManageInvoice =
+      '$_images/subscriptions/figma/family_manage_invoice.svg';
+  static const String familyManageSubscription =
+      '$_images/subscriptions/figma/family_manage_subscription.svg';
+  static const String familyManageMeals =
+      '$_images/subscriptions/figma/family_manage_meals.svg';
+  static const String familyManageAlert =
+      '$_images/subscriptions/figma/family_manage_alert.svg';
   static const String fireAnimation = 'assets/animations/fire_animation.json';
 
   static const String buttonSmall = "$_svg/button_small.svg";
