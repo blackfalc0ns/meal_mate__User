@@ -10,13 +10,11 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
   const MonthlyPlanHeroBackground({
     super.key,
     required this.imageAsset,
-    required this.scale,
     required this.height,
     required this.onBack,
   });
 
   final String imageAsset;
-  final double scale;
   final double height;
   final VoidCallback onBack;
 
@@ -33,20 +31,20 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              MonthlyPlanHeroImage(imageAsset: imageAsset, scale: scale),
-              MonthlyPlanHeroFade(scale: scale),
+              MonthlyPlanHeroImage(imageAsset: imageAsset),
+              const MonthlyPlanHeroFade(),
               CustomBackButton(
                 onPressed: onBack,
-                top: Spacing.monthlyPlanHeroLogoTop * scale + Spacing.lg,
-                end: Spacing.monthlyPlanHeroBackEnd * scale,
-                size: Spacing.monthlyPlanHeroBackSize * scale,
-                iconSize: Spacing.iconMd * scale,
+                top: Spacing.monthlyPlanHeroLogoTop + Spacing.lg,
+                end: Spacing.monthlyPlanHeroBackEnd,
+                size: Spacing.monthlyPlanHeroBackSize,
+                iconSize: Spacing.iconMd,
               ),
               Positioned(
-                top: Spacing.monthlyPlanHeroLogoTop * scale,
+                top: Spacing.monthlyPlanHeroLogoTop,
                 left: 0,
                 right: 0,
-                child: MonthlyPlanHeroLogo(scale: scale),
+                child: const MonthlyPlanHeroLogo(),
               ),
               Positioned.fill(
                 child: IgnorePointer(

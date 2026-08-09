@@ -9,7 +9,6 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/subscriptions_fake_data_source.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_package_choice_card.dart';
-import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_package_selector.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_selected_program_card.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_family_package_banner.dart';
 
@@ -75,7 +74,6 @@ class _SubscriptionPackageSelectionScreenState
                             color: color.onSurface,
                           ),
                         ),
-                     
                       ],
                     ),
                   );

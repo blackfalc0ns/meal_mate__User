@@ -2816,6 +2816,18 @@ abstract class AppLocalizations {
   /// **'Monthly plan'**
   String get subscription_month_plan_title;
 
+  /// No description provided for @subscription_month_package_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get subscription_month_package_prefix;
+
+  /// No description provided for @subscription_month_package_highlight.
+  ///
+  /// In en, this message translates to:
+  /// **'package'**
+  String get subscription_month_package_highlight;
+
   /// No description provided for @subscription_half_month_plan_title.
   ///
   /// In en, this message translates to:
@@ -2923,6 +2935,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'20% off'**
   String get subscription_discount_20;
+
+  /// No description provided for @subscription_limited_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off for a limited time'**
+  String get subscription_limited_discount;
 
   /// No description provided for @subscription_note.
   ///
@@ -3079,6 +3097,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscribe now'**
   String get subscription_details_subscribe_now;
+
+  /// No description provided for @subscription_restaurant_categories_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse categories'**
+  String get subscription_restaurant_categories_title;
+
+  /// No description provided for @subscription_restaurant_categories_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Each category includes a curated selection of featured restaurants.'**
+  String get subscription_restaurant_categories_subtitle;
+
+  /// No description provided for @subscription_tier_elite.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get subscription_tier_elite;
+
+  /// No description provided for @subscription_tier_plus.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus'**
+  String get subscription_tier_plus;
+
+  /// No description provided for @subscription_tier_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get subscription_tier_max;
 
   /// No description provided for @subscription_summary_title.
   ///

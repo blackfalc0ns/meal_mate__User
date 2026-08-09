@@ -64,9 +64,9 @@ class _ModeIconButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(Spacing.radiusXs),
-      child: AnimatedScale(
+      child: AnimatedOpacity(
         duration: const Duration(milliseconds: 160),
-        scale: selected ? 1.12 : 1,
+        opacity: selected ? 1 : 0.72,
         child: Icon(
           icon,
           size: selected ? 19 : 16,

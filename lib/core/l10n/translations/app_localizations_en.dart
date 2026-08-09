@@ -1445,6 +1445,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_month_plan_title => 'Monthly plan';
 
   @override
+  String get subscription_month_package_prefix => 'Month';
+
+  @override
+  String get subscription_month_package_highlight => 'package';
+
+  @override
   String get subscription_half_month_plan_title => 'Half-month plan';
 
   @override
@@ -1498,6 +1504,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscription_discount_20 => '20% off';
+
+  @override
+  String get subscription_limited_discount => '20% off for a limited time';
 
   @override
   String get subscription_note =>
@@ -1586,6 +1595,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscription_details_subscribe_now => 'Subscribe now';
+
+  @override
+  String get subscription_restaurant_categories_title => 'Browse categories';
+
+  @override
+  String get subscription_restaurant_categories_subtitle =>
+      'Each category includes a curated selection of featured restaurants.';
+
+  @override
+  String get subscription_tier_elite => 'Select';
+
+  @override
+  String get subscription_tier_plus => 'Plus';
+
+  @override
+  String get subscription_tier_max => 'Max';
 
   @override
   String get subscription_summary_title => 'Subscription summary';

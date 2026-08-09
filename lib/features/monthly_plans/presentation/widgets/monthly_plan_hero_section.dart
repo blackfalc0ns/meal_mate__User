@@ -26,60 +26,36 @@ class MonthlyPlanHeroSection extends StatelessWidget {
 
     return Semantics(
       label: locale.nav_subscription,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth.isFinite
-              ? constraints.maxWidth
-              : MediaQuery.sizeOf(context).width;
-          final scale = width / Spacing.monthlyPlanDesignWidth;
-          final backgroundHeight =
-              (Spacing.monthlyPlanHeroHeight +
-                  (durationSelector == null ? 0 : Spacing.xxxl - Spacing.lg)) *
-              scale;
-          final durationSelectorHeight =
-              (width - Spacing.monthlyPlanContentHorizontalPadding * 2) *
-              Spacing.monthlyPlanDurationHeight /
-              Spacing.monthlyPlanDurationCardWidth;
-          final durationSelectorTop =
-              backgroundHeight - durationSelectorHeight - Spacing.xs * scale;
-          final heroHeight = durationSelector == null
-              ? backgroundHeight
-              : durationSelectorTop + durationSelectorHeight;
-
-          return ColoredBox(
-            color: color.surface,
-            child: SizedBox(
-              height: heroHeight,
-              child: Stack(
-                children: [
-                  MonthlyPlanHeroBackground(
-                    imageAsset: imageAsset,
-                    scale: scale,
-                    height: backgroundHeight,
-                    onBack: onBack,
-                  ),
-                  Positioned(
-                    top:
-                        (Spacing.monthlyPlanHeroSummaryTop -
-                            Spacing.xxxl -
-                            Spacing.lg) *
-                        scale,
-                    left: 0,
-                    right: 0,
-                    child: MonthlyPlanHeroSummary(plan: plan, scale: scale),
-                  ),
-                  if (durationSelector != null)
-                    PositionedDirectional(
-                      top: durationSelectorTop,
-                      start: Spacing.monthlyPlanContentHorizontalPadding,
-                      end: Spacing.monthlyPlanContentHorizontalPadding,
-                      child: durationSelector!,
-                    ),
-                ],
+      child: ColoredBox(
+        color: color.surface,
+        child: SizedBox(
+          height: durationSelector == null
+              ? Spacing.monthlyPlanHeroHeight
+              : Spacing.monthlyPlanDurationCardTop +
+                    Spacing.monthlyPlanDurationHeight,
+          child: Stack(
+            children: [
+              MonthlyPlanHeroBackground(
+                imageAsset: imageAsset,
+                height: Spacing.monthlyPlanHeroHeight,
+                onBack: onBack,
               ),
-            ),
-          );
-        },
+              Positioned(
+                top: Spacing.monthlyPlanHeroSummaryTop,
+                left: 0,
+                right: 0,
+                child: MonthlyPlanHeroSummary(plan: plan),
+              ),
+              if (durationSelector != null)
+                PositionedDirectional(
+                  top: Spacing.monthlyPlanDurationCardTop,
+                  start: Spacing.monthlyPlanDurationHorizontalPadding,
+                  end: Spacing.monthlyPlanDurationHorizontalPadding,
+                  child: durationSelector!,
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

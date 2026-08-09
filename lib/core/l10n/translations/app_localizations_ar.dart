@@ -1426,6 +1426,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_month_plan_title => 'باقة شهر';
 
   @override
+  String get subscription_month_package_prefix => 'باقة';
+
+  @override
+  String get subscription_month_package_highlight => 'الشهر';
+
+  @override
   String get subscription_half_month_plan_title => 'باقة نصف شهر';
 
   @override
@@ -1479,6 +1485,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscription_discount_20 => 'خصم 20%';
+
+  @override
+  String get subscription_limited_discount => 'خصم 20% لفترة محدودة';
 
   @override
   String get subscription_note =>
@@ -1565,6 +1574,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscription_details_subscribe_now => 'اشترك الآن';
+
+  @override
+  String get subscription_restaurant_categories_title => 'استعراض التصنيفات';
+
+  @override
+  String get subscription_restaurant_categories_subtitle =>
+      'كل تصنيف يضم مجموعة مختارة من المطاعم المميزة.';
+
+  @override
+  String get subscription_tier_elite => 'سيليكت';
+
+  @override
+  String get subscription_tier_plus => 'بلس';
+
+  @override
+  String get subscription_tier_max => 'ماكس';
 
   @override
   String get subscription_summary_title => 'ملخص الاشتراك';

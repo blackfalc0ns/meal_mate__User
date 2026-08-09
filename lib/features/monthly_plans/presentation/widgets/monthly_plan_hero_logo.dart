@@ -5,9 +5,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class MonthlyPlanHeroLogo extends StatelessWidget {
-  const MonthlyPlanHeroLogo({super.key, required this.scale});
-
-  final double scale;
+  const MonthlyPlanHeroLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +18,8 @@ class MonthlyPlanHeroLogo extends StatelessWidget {
           color: color.surface.withValues(alpha: 0),
           child: SvgPicture.asset(
             Assets.monthlyProductLogo,
-            width: Spacing.monthlyPlanHeroLogoWidth * scale,
-            height: Spacing.monthlyPlanHeroLogoHeight * scale,
+            width: Spacing.monthlyPlanHeroLogoWidth,
+            height: Spacing.monthlyPlanHeroLogoHeight,
           ),
         ),
       ),

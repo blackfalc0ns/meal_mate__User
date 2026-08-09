@@ -9,40 +9,33 @@ class MonthlyPlanDurationOption extends StatelessWidget {
     super.key,
     required this.label,
     required this.days,
-    required this.fridayDays,
     required this.isSelected,
-    required this.includesFriday,
     required this.onTap,
   });
 
   final String label;
   final int days;
-  final int fridayDays;
   final bool isSelected;
-  final bool includesFriday;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final displayedDays = days + (includesFriday ? fridayDays : 0);
 
     return Column(
       children: [
         SizedBox(
           width: Spacing.monthlyPlanDurationOptionWidth,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              label,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
-                color: color.onSurfaceVariant,
-              ),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size11,
+              color: color.onSurfaceVariant,
             ),
           ),
         ),
@@ -53,10 +46,10 @@ class MonthlyPlanDurationOption extends StatelessWidget {
             Spacing.monthlyPlanDurationOptionRadius,
           ),
           child: AnimatedContainer(
-            width: 55,
+            width: Spacing.monthlyPlanDurationOptionWidth,
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOutCubic,
-            height: 45,
+            height: Spacing.monthlyPlanDurationOptionHeight,
             decoration: BoxDecoration(
               border: Border.all(
                 color: isSelected ? color.primary : color.outlineVariant,
@@ -72,7 +65,7 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: Spacing.lg,
+                      height: Spacing.xl,
                       child: ClipRect(
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 400),
@@ -96,8 +89,8 @@ class MonthlyPlanDurationOption extends StatelessWidget {
                               start: Spacing.xs,
                             ),
                             child: Text(
-                              displayedDays.toString(),
-                              key: ValueKey(displayedDays),
+                              days.toString(),
+                              key: ValueKey(days),
                               style: getBoldStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size17,

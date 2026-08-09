@@ -7,15 +7,26 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
     super.key,
     required this.iconName,
     required this.usesLightForeground,
+    required this.isSelected,
   });
 
   final String iconName;
   final bool usesLightForeground;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final isPremium = iconName == 'crown';
+    final backgroundColors = isSelected && !usesLightForeground
+        ? [color.primaryContainer, color.primary]
+        : usesLightForeground
+        ? [color.onSurface, color.inverseSurface]
+        : isPremium
+        ? [color.onSurfaceVariant, color.onSurface]
+        : [color.primaryContainer, color.primary];
 
     return Container(
       width: Spacing.xxl,
@@ -25,9 +36,7 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: usesLightForeground
-              ? [color.onSurface, color.inverseSurface]
-              : [color.onSurfaceVariant, color.onSurface],
+          colors: backgroundColors,
         ),
         shape: BoxShape.circle,
         boxShadow: [

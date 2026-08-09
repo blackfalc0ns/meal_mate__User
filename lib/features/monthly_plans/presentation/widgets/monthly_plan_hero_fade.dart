@@ -3,9 +3,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class MonthlyPlanHeroFade extends StatelessWidget {
-  const MonthlyPlanHeroFade({super.key, required this.scale});
-
-  final double scale;
+  const MonthlyPlanHeroFade({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +14,7 @@ class MonthlyPlanHeroFade extends StatelessWidget {
       top: 0,
       left: 0,
       right: 0,
-      height: Spacing.monthlyPlanHeroFadeHeight * scale,
+      height: Spacing.monthlyPlanHeroFadeHeight,
       child: Semantics(
         label: locale.nav_subscription,
         child: DecoratedBox(

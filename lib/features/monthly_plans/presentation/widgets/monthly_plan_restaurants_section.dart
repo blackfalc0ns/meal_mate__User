@@ -31,10 +31,7 @@ class MonthlyPlanRestaurantsSection extends StatelessWidget {
           opacity: animation,
           child: SlideTransition(
             position: offsetTween.animate(animation),
-            child: ScaleTransition(
-              scale: Tween<double>(begin: 0.98, end: 1).animate(animation),
-              child: child,
-            ),
+            child: child,
           ),
         );
       },
