@@ -75,14 +75,7 @@ class _SubscriptionPackageSelectionScreenState
                             color: color.onSurface,
                           ),
                         ),
-                        const SizedBox(height: Spacing.sm),
-                        SubscriptionPackageSelector(
-                          isFamilySelected: _isFamilyPackageSelected,
-                          onChanged: (isFamilySelected) => setState(
-                            () => _isFamilyPackageSelected = isFamilySelected,
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.xl),
+                     
                       ],
                     ),
                   );

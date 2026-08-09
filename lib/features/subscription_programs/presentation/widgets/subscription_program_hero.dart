@@ -25,7 +25,7 @@ class SubscriptionProgramHero extends StatelessWidget {
             child: Image.asset(
               Assets.subscriptionProgramsHero,
               fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
+              alignment: AlignmentDirectional.topStart,
               semanticLabel: locale.nav_subscription,
             ),
           ),

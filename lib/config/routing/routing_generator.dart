@@ -29,6 +29,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_pl
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
+import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
 
 class RouteGenerator {
@@ -44,6 +45,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const SubscriptionsScreen(),
+        );
+      case AppRoutes.subscriptionProgramSelection:
+        return _buildRoute(
+          settings: settings,
+          page: const SubscriptionProgramSelectionScreen(),
         );
       case AppRoutes.subscriptionPlanDetails:
         final initialPage = settings.arguments is int

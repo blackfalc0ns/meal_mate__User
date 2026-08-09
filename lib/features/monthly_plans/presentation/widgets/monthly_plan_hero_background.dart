@@ -37,10 +37,10 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
               MonthlyPlanHeroFade(scale: scale),
               CustomBackButton(
                 onPressed: onBack,
-                scale: scale,
                 top: Spacing.monthlyPlanHeroLogoTop * scale + Spacing.lg,
                 end: Spacing.monthlyPlanHeroBackEnd * scale,
-                size: Spacing.monthlyPlanHeroBackSize,
+                size: Spacing.monthlyPlanHeroBackSize * scale,
+                iconSize: Spacing.iconMd * scale,
               ),
               Positioned(
                 top: Spacing.monthlyPlanHeroLogoTop * scale,

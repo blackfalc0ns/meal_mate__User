@@ -157,7 +157,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   }
 
   void _openIndividualSubscription() {
-    context.pushNamed(AppRoutes.subscriptionPackageSelection, arguments: 0);
+    context.pushNamed(AppRoutes.subscriptionProgramSelection);
   }
 
   void _openFamilySubscription() {

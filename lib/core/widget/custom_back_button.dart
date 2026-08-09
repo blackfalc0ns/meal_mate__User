@@ -6,7 +6,6 @@ class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
     super.key,
     required this.onPressed,
-    this.scale = 1,
     this.top,
     this.end,
     this.size = Spacing.xxl,
@@ -14,7 +13,6 @@ class CustomBackButton extends StatelessWidget {
   });
 
   final VoidCallback onPressed;
-  final double scale;
   final double? top;
   final double? end;
   final double size;
@@ -35,11 +33,11 @@ class CustomBackButton extends StatelessWidget {
           onTap: onPressed,
           customBorder: const CircleBorder(),
           child: SizedBox(
-            width: size * scale,
-            height: size * scale,
+            width: size,
+            height: size,
             child: Icon(
               Icons.arrow_back_ios_rounded,
-              size: iconSize * scale,
+              size: iconSize,
               color: color.onSurface,
               semanticLabel: locale.go_back,
             ),
