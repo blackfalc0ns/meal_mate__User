@@ -48,6 +48,10 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
               current.resetPassword.errorMessage,
       listener: (context, state) {
         if (state.resetPassword.isSuccess) {
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_reset_password_success,
+          );
           widget.onNavigate(AuthPageType.signIn);
           return;
         }

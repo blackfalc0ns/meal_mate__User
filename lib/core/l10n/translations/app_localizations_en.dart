@@ -439,6 +439,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auth_create_account_button => 'Create account';
 
   @override
+  String get auth_register_success =>
+      'Account created successfully. OTP code has been sent.';
+
+  @override
+  String get auth_login_success => 'Signed in successfully.';
+
+  @override
   String get auth_reset_password_title => 'Reset your password';
 
   @override
@@ -451,6 +458,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_send_otp_button => 'Send OTP';
+
+  @override
+  String get auth_otp_sent_success => 'OTP code sent successfully.';
 
   @override
   String get auth_otp_title => 'Verify your code';
@@ -486,6 +496,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auth_resend_code => 'Resend code';
 
   @override
+  String get auth_otp_resent_success => 'OTP code resent successfully.';
+
+  @override
   String get auth_resend_code_in => 'Resend code in';
 
   @override
@@ -510,6 +523,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_new_password_button => 'Save password';
+
+  @override
+  String get auth_reset_password_success => 'Password changed successfully.';
 
   @override
   String get onboarding_first_subtitle => 'Your healthy companion every day.';

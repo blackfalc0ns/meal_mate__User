@@ -430,6 +430,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get auth_create_account_button => 'إنشاء حساب';
 
   @override
+  String get auth_register_success =>
+      'تم إنشاء الحساب بنجاح وتم إرسال رمز OTP.';
+
+  @override
+  String get auth_login_success => 'تم تسجيل الدخول بنجاح.';
+
+  @override
   String get auth_reset_password_title => 'تعيين كلمة مرور';
 
   @override
@@ -441,6 +448,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get auth_send_otp_button => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get auth_otp_sent_success => 'تم إرسال رمز OTP بنجاح.';
 
   @override
   String get auth_otp_title => 'تحقق من رقم هاتفك';
@@ -476,6 +486,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get auth_resend_code => 'أعد إرسال الرمز';
 
   @override
+  String get auth_otp_resent_success => 'تم إعادة إرسال رمز OTP بنجاح.';
+
+  @override
   String get auth_resend_code_in => 'أعد إرسال الرمز خلال';
 
   @override
@@ -499,6 +512,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get auth_new_password_button => 'حفظ كلمة المرور';
+
+  @override
+  String get auth_reset_password_success => 'تم تغيير كلمة المرور بنجاح.';
 
   @override
   String get onboarding_first_subtitle => 'رفيقك الصحي كل يوم.';

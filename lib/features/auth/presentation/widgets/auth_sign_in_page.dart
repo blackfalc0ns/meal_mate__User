@@ -53,6 +53,10 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
           previous.login.errorMessage != current.login.errorMessage,
       listener: (context, state) {
         if (state.login.isSuccess) {
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_login_success,
+          );
           Navigator.of(
             context,
           ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);

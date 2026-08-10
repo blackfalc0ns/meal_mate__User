@@ -55,6 +55,10 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
               current.forgotPassword.errorMessage,
       listener: (context, state) {
         if (state.forgotPassword.isSuccess) {
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_otp_sent_success,
+          );
           widget.onOtpSent();
           return;
         }

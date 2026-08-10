@@ -63,6 +63,10 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
           previous.register.errorMessage != current.register.errorMessage,
       listener: (context, state) {
         if (state.register.isSuccess) {
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_register_success,
+          );
           widget.onOtpSent();
           return;
         }

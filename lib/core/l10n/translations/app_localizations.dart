@@ -890,6 +890,18 @@ abstract class AppLocalizations {
   /// **'Create account'**
   String get auth_create_account_button;
 
+  /// No description provided for @auth_register_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully. OTP code has been sent.'**
+  String get auth_register_success;
+
+  /// No description provided for @auth_login_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in successfully.'**
+  String get auth_login_success;
+
   /// No description provided for @auth_reset_password_title.
   ///
   /// In en, this message translates to:
@@ -913,6 +925,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send OTP'**
   String get auth_send_otp_button;
+
+  /// No description provided for @auth_otp_sent_success.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP code sent successfully.'**
+  String get auth_otp_sent_success;
 
   /// No description provided for @auth_otp_title.
   ///
@@ -974,6 +992,12 @@ abstract class AppLocalizations {
   /// **'Resend code'**
   String get auth_resend_code;
 
+  /// No description provided for @auth_otp_resent_success.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP code resent successfully.'**
+  String get auth_otp_resent_success;
+
   /// No description provided for @auth_resend_code_in.
   ///
   /// In en, this message translates to:
@@ -1021,6 +1045,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save password'**
   String get auth_new_password_button;
+
+  /// No description provided for @auth_reset_password_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully.'**
+  String get auth_reset_password_success;
 
   /// No description provided for @onboarding_first_subtitle.
   ///

@@ -43,6 +43,8 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
   Timer? _timer;
   int _secondsLeft = 23;
   String _otpValue = '';
+  bool _resendPhoneOtpSuccessShown = false;
+  bool _resendPasswordOtpSuccessShown = false;
 
   @override
   void initState() {
@@ -98,8 +100,12 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               current.verifyPhone.errorMessage ||
           previous.resendPhoneOtp.errorMessage !=
               current.resendPhoneOtp.errorMessage ||
+          previous.resendPhoneOtp.isSuccess !=
+              current.resendPhoneOtp.isSuccess ||
           previous.resendPasswordOtp.errorMessage !=
-              current.resendPasswordOtp.errorMessage,
+              current.resendPasswordOtp.errorMessage ||
+          previous.resendPasswordOtp.isSuccess !=
+              current.resendPasswordOtp.isSuccess,
       listener: (context, state) {
         if (widget.purpose == AuthOtpPurpose.phoneVerification &&
             state.verifyPhone.isSuccess) {
@@ -122,12 +128,35 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
           );
         }
 
+        if (!state.resendPhoneOtp.isSuccess) {
+          _resendPhoneOtpSuccessShown = false;
+        }
+        if (state.resendPhoneOtp.isSuccess && !_resendPhoneOtpSuccessShown) {
+          _resendPhoneOtpSuccessShown = true;
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_otp_resent_success,
+          );
+        }
+
         final resendPasswordOtpMessage = state.resendPasswordOtp.errorMessage;
         if (resendPasswordOtpMessage != null &&
             resendPasswordOtpMessage.isNotEmpty) {
           CustomSnackbar.showError(
             context: context,
             message: resendPasswordOtpMessage,
+          );
+        }
+
+        if (!state.resendPasswordOtp.isSuccess) {
+          _resendPasswordOtpSuccessShown = false;
+        }
+        if (state.resendPasswordOtp.isSuccess &&
+            !_resendPasswordOtpSuccessShown) {
+          _resendPasswordOtpSuccessShown = true;
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: l10n.auth_otp_resent_success,
           );
         }
       },
@@ -224,12 +253,9 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
 
   void _handleSubmit() {
     if (!AppRegExp.isOTPValid(_otpValue)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.verification_code_invalid,
-          ),
-        ),
+      CustomSnackbar.showError(
+        context: context,
+        message: AppLocalizations.of(context)!.verification_code_invalid,
       );
       return;
     }
