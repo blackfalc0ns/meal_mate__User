@@ -77,10 +77,9 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
           previous.verifyPhone.errorMessage != current.verifyPhone.errorMessage,
       listener: (context, state) {
         if (state.verifyPhone.isSuccess) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.subscriptionProgramSelection,
-            (route) => false,
-          );
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
           return;
         }
 
