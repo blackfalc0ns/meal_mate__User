@@ -13,19 +13,27 @@ import 'package:meal_meat_user/core/helpers/regex.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_password_otp_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_phone_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_footer_action.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_code_field.dart';
+import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_purpose.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_shell.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 
 class AuthOtpPage extends StatefulWidget {
-  const AuthOtpPage({super.key, required this.onNavigate});
+  const AuthOtpPage({
+    super.key,
+    required this.onNavigate,
+    required this.purpose,
+  });
 
   final ValueChanged<AuthPageType> onNavigate;
+  final AuthOtpPurpose purpose;
 
   @override
   State<AuthOtpPage> createState() => _AuthOtpPageState();
@@ -70,13 +78,31 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final canResend = _secondsLeft == 0;
+    final title = widget.purpose == AuthOtpPurpose.resetPassword
+        ? l10n.auth_reset_password_otp_title
+        : l10n.auth_otp_title;
+    final subtitle = widget.purpose == AuthOtpPurpose.resetPassword
+        ? l10n.auth_reset_password_otp_subtitle
+        : l10n.auth_otp_subtitle;
+    final hint = widget.purpose == AuthOtpPurpose.resetPassword
+        ? l10n.auth_reset_password_otp_hint
+        : l10n.auth_otp_hint;
+    final buttonText = widget.purpose == AuthOtpPurpose.resetPassword
+        ? l10n.auth_reset_password_otp_button
+        : l10n.auth_verify_code_button;
 
     return BlocConsumer<AuthViewModel, AuthState>(
       listenWhen: (previous, current) =>
           previous.verifyPhone.isSuccess != current.verifyPhone.isSuccess ||
-          previous.verifyPhone.errorMessage != current.verifyPhone.errorMessage,
+          previous.verifyPhone.errorMessage !=
+              current.verifyPhone.errorMessage ||
+          previous.resendPhoneOtp.errorMessage !=
+              current.resendPhoneOtp.errorMessage ||
+          previous.resendPasswordOtp.errorMessage !=
+              current.resendPasswordOtp.errorMessage,
       listener: (context, state) {
-        if (state.verifyPhone.isSuccess) {
+        if (widget.purpose == AuthOtpPurpose.phoneVerification &&
+            state.verifyPhone.isSuccess) {
           Navigator.of(
             context,
           ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
@@ -87,11 +113,28 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
         if (message != null && message.isNotEmpty) {
           CustomSnackbar.showError(context: context, message: message);
         }
+
+        final resendPhoneOtpMessage = state.resendPhoneOtp.errorMessage;
+        if (resendPhoneOtpMessage != null && resendPhoneOtpMessage.isNotEmpty) {
+          CustomSnackbar.showError(
+            context: context,
+            message: resendPhoneOtpMessage,
+          );
+        }
+
+        final resendPasswordOtpMessage = state.resendPasswordOtp.errorMessage;
+        if (resendPasswordOtpMessage != null &&
+            resendPasswordOtpMessage.isNotEmpty) {
+          CustomSnackbar.showError(
+            context: context,
+            message: resendPasswordOtpMessage,
+          );
+        }
       },
       builder: (context, state) {
         return AuthPageShell(
-          title: l10n.auth_otp_title,
-          subtitle: l10n.auth_otp_subtitle,
+          title: title,
+          subtitle: subtitle,
           topOffset: Spacing.xxl,
           footer: AuthFooterAction(
             prompt: l10n.auth_have_account_prompt,
@@ -103,7 +146,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
             children: [
               Center(
                 child: Text(
-                  l10n.auth_otp_title,
+                  title,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size24,
@@ -113,7 +156,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               ),
               const SizedBox(height: Spacing.sm),
               Text(
-                l10n.auth_otp_hint,
+                hint,
                 textAlign: TextAlign.center,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
@@ -130,7 +173,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               const SizedBox(height: Spacing.xl),
               AppButton(
                 variant: AppButtonVariant.filled,
-                text: l10n.auth_verify_code_button,
+                text: buttonText,
                 isLoading: state.verifyPhone.isLoading,
                 iconWidget: SvgPicture.asset(
                   Assets.loginIcon,
@@ -157,7 +200,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               const SizedBox(height: Spacing.xs),
               Center(
                 child: GestureDetector(
-                  onTap: canResend ? _startTimer : null,
+                  onTap: canResend ? _handleResend : null,
                   child: Text(
                     canResend
                         ? l10n.auth_resend_code
@@ -190,6 +233,14 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
       );
       return;
     }
+    if (widget.purpose == AuthOtpPurpose.resetPassword) {
+      context.read<AuthViewModel>().doIntent(
+        SaveResetPasswordOtpCodeEvent(_otpValue),
+      );
+      widget.onNavigate(AuthPageType.newPassword);
+      return;
+    }
+
     final authState = context.read<AuthViewModel>().state;
     final phone = authState.register.data?.phone ?? '';
     final countryCode = authState.callingCodes.selected?.countryCode ?? 'KW';
@@ -210,5 +261,55 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
         ),
       ),
     );
+  }
+
+  void _handleResend() {
+    final authState = context.read<AuthViewModel>().state;
+
+    switch (widget.purpose) {
+      case AuthOtpPurpose.phoneVerification:
+        final phone = authState.register.data?.phone ?? '';
+        final countryCode =
+            authState.callingCodes.selected?.countryCode ?? 'KW';
+        if (phone.isEmpty) {
+          CustomSnackbar.showError(
+            context: context,
+            message: AppLocalizations.of(context)!.error_unknown,
+          );
+          return;
+        }
+
+        context.read<AuthViewModel>().doIntent(
+          ResendPhoneOtpEvent(
+            ResendPhoneOtpRequestEntity(phone: phone, countryCode: countryCode),
+          ),
+        );
+
+      case AuthOtpPurpose.resetPassword:
+        final forgotPasswordData = authState.forgotPassword.data;
+        final phone = forgotPasswordData?.phone ?? '';
+        final countryCode =
+            forgotPasswordData?.countryCode ??
+            authState.callingCodes.selected?.countryCode ??
+            'KW';
+        if (phone.isEmpty) {
+          CustomSnackbar.showError(
+            context: context,
+            message: AppLocalizations.of(context)!.error_unknown,
+          );
+          return;
+        }
+
+        context.read<AuthViewModel>().doIntent(
+          ResendPasswordOtpEvent(
+            ResendPasswordOtpRequestEntity(
+              phone: phone,
+              countryCode: countryCode,
+            ),
+          ),
+        );
+    }
+
+    _startTimer();
   }
 }

@@ -22,12 +22,20 @@ import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart'
     as _i508;
 import '../../features/auth/data/repo/auth_repository_impl.dart' as _i607;
 import '../../features/auth/domain/repo/auth_repository.dart' as _i2;
+import '../../features/auth/domain/usecase/forgot_password_usecase.dart'
+    as _i749;
 import '../../features/auth/domain/usecase/get_calling_codes_usecase.dart'
     as _i171;
 import '../../features/auth/domain/usecase/login_usecase.dart' as _i911;
 import '../../features/auth/domain/usecase/logout_usecase.dart' as _i757;
 import '../../features/auth/domain/usecase/refresh_token_usecase.dart' as _i501;
 import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
+import '../../features/auth/domain/usecase/resend_password_otp_usecase.dart'
+    as _i610;
+import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart'
+    as _i621;
+import '../../features/auth/domain/usecase/reset_password_usecase.dart'
+    as _i1029;
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
 import '../helpers/shared_pref.dart' as _i42;
@@ -99,6 +107,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i227.TokenService>(),
       ),
     );
+    gh.factory<_i749.ForgotPasswordUseCase>(
+      () => _i749.ForgotPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
     gh.factory<_i171.GetCallingCodesUseCase>(
       () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
     );
@@ -114,6 +125,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i769.RegisterUseCase>(
       () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
     );
+    gh.factory<_i610.ResendPasswordOtpUseCase>(
+      () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i621.ResendPhoneOtpUseCase>(
+      () => _i621.ResendPhoneOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i1029.ResetPasswordUseCase>(
+      () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
     gh.factory<_i918.VerifyPhoneUseCase>(
       () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
     );
@@ -123,6 +143,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i769.RegisterUseCase>(),
         gh<_i171.GetCallingCodesUseCase>(),
         gh<_i918.VerifyPhoneUseCase>(),
+        gh<_i621.ResendPhoneOtpUseCase>(),
+        gh<_i749.ForgotPasswordUseCase>(),
+        gh<_i1029.ResetPasswordUseCase>(),
+        gh<_i610.ResendPasswordOtpUseCase>(),
         gh<_i501.RefreshTokenUseCase>(),
         gh<_i757.LogoutUseCase>(),
       ),

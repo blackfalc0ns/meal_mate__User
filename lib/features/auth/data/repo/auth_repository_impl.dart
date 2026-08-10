@@ -3,12 +3,18 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/calling_code_mapper.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/forgot_password_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/login_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/logout_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/refresh_token_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/register_mapper.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/resend_password_otp_mapper.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/resend_phone_otp_mapper.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/reset_password_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/verify_phone_mapper.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/logout_entity.dart';
@@ -17,6 +23,12 @@ import 'package:meal_meat_user/features/auth/domain/entities/refresh_token_entit
 import 'package:meal_meat_user/features/auth/domain/entities/refresh_token_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_password_otp_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_password_otp_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_phone_otp_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/resend_phone_otp_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/reset_password_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/reset_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/repo/auth_repository.dart';
@@ -67,6 +79,48 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return entity;
+    });
+  }
+
+  @override
+  Future<ApiResult<ResendPhoneOtpEntity>> resendPhoneOtp(
+    ResendPhoneOtpRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.resendPhoneOtp(request.toDto());
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<ForgotPasswordEntity>> forgotPassword(
+    ForgotPasswordRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.forgotPassword(request.toDto());
+      return response.toEntity(request);
+    });
+  }
+
+  @override
+  Future<ApiResult<ResetPasswordEntity>> resetPassword(
+    ResetPasswordRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.resetPassword(request.toDto());
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<ResendPasswordOtpEntity>> resendPasswordOtp(
+    ResendPasswordOtpRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.resendPasswordOtp(
+        request.toDto(),
+      );
+      return response.toEntity();
     });
   }
 

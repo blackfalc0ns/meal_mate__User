@@ -181,34 +181,6 @@ abstract class Validations {
     if (normalizedPhoneNumber.isEmpty) {
       return localized.phone_number_is_required;
     }
-
-    if (!RegExp(r'^\d+$').hasMatch(normalizedPhoneNumber)) {
-      return _localizedMessage(
-        context,
-        ar: 'رقم الجوال لازم يحتوي أرقام فقط',
-        en: 'Phone number must contain digits only',
-      );
-    }
-
-    if (normalizedPhoneNumber.length != 11) {
-      return _localizedMessage(
-        context,
-        ar: 'رقم الجوال لازم يكون 11 رقم',
-        en: 'Phone number must be 11 digits',
-      );
-    }
-
-    if (!RegExp(r'^01[0125]').hasMatch(normalizedPhoneNumber)) {
-      return _localizedMessage(
-        context,
-        ar: 'رقم الجوال لازم يبدأ بـ 010 أو 011 أو 012 أو 015',
-        en: 'Phone number must start with 010, 011, 012, or 015',
-      );
-    }
-
-    if (!AppRegExp.isPhoneNumberValid(normalizedPhoneNumber)) {
-      return localized.phone_number_is_not_valid;
-    }
     return null;
   }
 

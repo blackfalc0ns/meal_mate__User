@@ -938,6 +938,30 @@ abstract class AppLocalizations {
   /// **'Verify code'**
   String get auth_verify_code_button;
 
+  /// No description provided for @auth_reset_password_otp_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm reset code'**
+  String get auth_reset_password_otp_title;
+
+  /// No description provided for @auth_reset_password_otp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the OTP code sent to your phone.'**
+  String get auth_reset_password_otp_subtitle;
+
+  /// No description provided for @auth_reset_password_otp_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code to continue setting your new password.'**
+  String get auth_reset_password_otp_hint;
+
+  /// No description provided for @auth_reset_password_otp_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get auth_reset_password_otp_button;
+
   /// No description provided for @auth_no_code_title.
   ///
   /// In en, this message translates to:
@@ -971,19 +995,19 @@ abstract class AppLocalizations {
   /// No description provided for @auth_new_password_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose a strong password for your account.'**
+  /// **'Enter a new password for your account.'**
   String get auth_new_password_subtitle;
 
   /// No description provided for @auth_new_password_hint.
   ///
   /// In en, this message translates to:
-  /// **'Enter your new password.'**
+  /// **'Create a new password so you can sign in'**
   String get auth_new_password_hint;
 
   /// No description provided for @auth_new_password_label.
   ///
   /// In en, this message translates to:
-  /// **'Password'**
+  /// **'New password'**
   String get auth_new_password_label;
 
   /// No description provided for @auth_new_password_hint_field.

@@ -466,6 +466,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auth_verify_code_button => 'Verify code';
 
   @override
+  String get auth_reset_password_otp_title => 'Confirm reset code';
+
+  @override
+  String get auth_reset_password_otp_subtitle =>
+      'Enter the OTP code sent to your phone.';
+
+  @override
+  String get auth_reset_password_otp_hint =>
+      'Enter the code to continue setting your new password.';
+
+  @override
+  String get auth_reset_password_otp_button => 'Continue';
+
+  @override
   String get auth_no_code_title => 'Didn\'t receive the code?';
 
   @override
@@ -482,13 +496,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_new_password_subtitle =>
-      'Choose a strong password for your account.';
+      'Enter a new password for your account.';
 
   @override
-  String get auth_new_password_hint => 'Enter your new password.';
+  String get auth_new_password_hint =>
+      'Create a new password so you can sign in';
 
   @override
-  String get auth_new_password_label => 'Password';
+  String get auth_new_password_label => 'New password';
 
   @override
   String get auth_new_password_hint_field => 'Enter your new password';

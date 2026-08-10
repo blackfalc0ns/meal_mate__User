@@ -23,9 +23,14 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_phone_fie
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_terms_section.dart';
 
 class AuthSignUpPage extends StatefulWidget {
-  const AuthSignUpPage({super.key, required this.onNavigate});
+  const AuthSignUpPage({
+    super.key,
+    required this.onNavigate,
+    required this.onOtpSent,
+  });
 
   final ValueChanged<AuthPageType> onNavigate;
+  final VoidCallback onOtpSent;
 
   @override
   State<AuthSignUpPage> createState() => _AuthSignUpPageState();
@@ -58,7 +63,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
           previous.register.errorMessage != current.register.errorMessage,
       listener: (context, state) {
         if (state.register.isSuccess) {
-          widget.onNavigate(AuthPageType.otp);
+          widget.onOtpSent();
           return;
         }
 

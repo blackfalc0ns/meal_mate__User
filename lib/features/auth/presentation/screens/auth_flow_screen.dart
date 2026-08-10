@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_backgroun
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_forgot_password_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_new_password_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_page.dart';
+import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_purpose.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_sign_in_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_sign_up_page.dart';
@@ -25,6 +26,7 @@ class AuthFlowScreen extends StatefulWidget {
 class _AuthFlowScreenState extends State<AuthFlowScreen> {
   late final PageController _pageController;
   late AuthPageType _currentPage;
+  AuthOtpPurpose _otpPurpose = AuthOtpPurpose.phoneVerification;
 
   @override
   void initState() {
@@ -53,6 +55,20 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
       duration: const Duration(milliseconds: 320),
       curve: Curves.easeInOut,
     );
+  }
+
+  void _goToResetPasswordOtp() {
+    setState(() {
+      _otpPurpose = AuthOtpPurpose.resetPassword;
+    });
+    _goToPage(AuthPageType.otp);
+  }
+
+  void _goToPhoneVerificationOtp() {
+    setState(() {
+      _otpPurpose = AuthOtpPurpose.phoneVerification;
+    });
+    _goToPage(AuthPageType.otp);
   }
 
   @override
@@ -95,9 +111,15 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
                   },
                   children: [
                     AuthSignInPage(onNavigate: _goToPage),
-                    AuthSignUpPage(onNavigate: _goToPage),
-                    AuthForgotPasswordPage(onNavigate: _goToPage),
-                    AuthOtpPage(onNavigate: _goToPage),
+                    AuthSignUpPage(
+                      onNavigate: _goToPage,
+                      onOtpSent: _goToPhoneVerificationOtp,
+                    ),
+                    AuthForgotPasswordPage(
+                      onNavigate: _goToPage,
+                      onOtpSent: _goToResetPasswordOtp,
+                    ),
+                    AuthOtpPage(onNavigate: _goToPage, purpose: _otpPurpose),
                     AuthNewPasswordPage(onNavigate: _goToPage),
                   ],
                 );

@@ -456,6 +456,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get auth_verify_code_button => 'تأكيد الرمز';
 
   @override
+  String get auth_reset_password_otp_title => 'تأكيد رمز إعادة التعيين';
+
+  @override
+  String get auth_reset_password_otp_subtitle =>
+      'أدخل رمز OTP المرسل إلى رقم جوالك.';
+
+  @override
+  String get auth_reset_password_otp_hint =>
+      'أدخل الرمز للمتابعة إلى تعيين كلمة المرور الجديدة.';
+
+  @override
+  String get auth_reset_password_otp_button => 'متابعة';
+
+  @override
   String get auth_no_code_title => 'ألم تستلم الرمز؟';
 
   @override
@@ -468,22 +482,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get auth_seconds_label => 'ثانية';
 
   @override
-  String get auth_new_password_title => 'أعد تعيين كلمة المرور الخاصة بك.';
+  String get auth_new_password_title => 'تعيين كلمة مرور جديدة';
 
   @override
-  String get auth_new_password_subtitle => 'أدخل كلمة المرور الجديدة.';
+  String get auth_new_password_subtitle => 'أدخل كلمة مرور جديدة لحسابك.';
 
   @override
-  String get auth_new_password_hint => 'أدخل كلمة المرور الجديدة';
+  String get auth_new_password_hint =>
+      'اكتب كلمة المرور الجديدة لتتمكن من تسجيل الدخول';
 
   @override
-  String get auth_new_password_label => 'كلمة المرور';
+  String get auth_new_password_label => 'كلمة المرور الجديدة';
 
   @override
   String get auth_new_password_hint_field => 'أدخل كلمة المرور الجديدة';
 
   @override
-  String get auth_new_password_button => 'إعادة تعيين كلمة المرور';
+  String get auth_new_password_button => 'حفظ كلمة المرور';
 
   @override
   String get onboarding_first_subtitle => 'رفيقك الصحي كل يوم.';
