@@ -43,7 +43,7 @@ class LoginTopSection extends StatelessWidget {
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size40,
-                      color: AppColors.primaryDark,
+                      color: AppColors.logoMeal,
                     ),
                   ),
                   TextSpan(
@@ -51,7 +51,7 @@ class LoginTopSection extends StatelessWidget {
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size40,
-                      color: AppColors.primary,
+                      color: AppColors.logoMate,
                     ),
                   ),
                 ],

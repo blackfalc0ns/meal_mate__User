@@ -39,6 +39,7 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
     return AuthPageShell(
       title: l10n.auth_reset_password_title,
       subtitle: l10n.auth_reset_password_subtitle,
+      topOffset: Spacing.xxl,
       footer: AuthFooterAction(
         prompt: l10n.auth_have_account_prompt,
         actionText: l10n.auth_sign_in_link,

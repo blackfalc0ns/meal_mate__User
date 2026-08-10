@@ -58,6 +58,8 @@ class AppColors {
   static const Color primaryDarkest = primary700;
   static const Color primarySurface = primary100;
   static const Color primaryVariant = Color(0xFF1B8E2F);
+  static const Color logoMeal = Color(0xFF006D40);
+  static const Color logoMate = Color(0xFF32983C);
 
   static const Color primaryDeep = secondary100;
   static const Color primaryDeepMedium = secondary300;

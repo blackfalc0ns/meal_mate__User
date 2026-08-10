@@ -125,7 +125,7 @@
   "auth_have_account_prompt": "لديك حساب؟",
   "auth_sign_in_link": "تسجيل الدخول",
   "auth_create_account_title": "إنشاء حساب",
-  "auth_create_account_subtitle": "انضم إلى MealMate وابدأ رحلتك الصحية.",
+  "auth_create_account_subtitle": "انضم إلى MealMate وإبدأ رحلتك الصحية.",
   "auth_name_label": "الاسم",
   "auth_name_hint": "أدخل الاسم",
   "auth_confirm_password_label": "تأكيد كلمة المرور",

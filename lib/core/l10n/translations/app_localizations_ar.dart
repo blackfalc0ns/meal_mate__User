@@ -409,7 +409,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get auth_create_account_subtitle =>
-      'انضم إلى MealMate وابدأ رحلتك الصحية.';
+      'انضم إلى MealMate وإبدأ رحلتك الصحية.';
 
   @override
   String get auth_name_label => 'الاسم';

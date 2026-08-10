@@ -69,7 +69,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
       },
       builder: (context, state) {
         return AuthPageShell(
-          title: l10n.auth_create_account_title,
+          title: '',
           subtitle: l10n.auth_create_account_subtitle,
           footer: AuthFooterAction(
             prompt: l10n.auth_have_account_prompt,

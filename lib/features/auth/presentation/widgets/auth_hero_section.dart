@@ -16,79 +16,101 @@ class AuthHeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 360),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size20,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-         
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Meal',
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size36,
-                        color: AppColors.primaryDark,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'Mate',
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size36,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            
-            Align(
-              alignment: Alignment.centerRight,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final contentWidth = constraints.maxWidth * 0.62;
+          final isInlineSubtitle = title.isEmpty;
+
+          return Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: contentWidth,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'سجل دخولك للوصول إلى خطتك',
-                    textAlign: TextAlign.right,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  Text(
-                    'الغذائية ومتابعة أهدافك الصحية.',
-                    textAlign: TextAlign.right,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: isInlineSubtitle
+                    ? [_buildInlineMealMateText(subtitle)]
+                    : [
+                        Text(
+                          title,
+                          textAlign: TextAlign.right,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size20,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Meal',
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size36,
+                                  color: AppColors.logoMeal,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Mate',
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size36,
+                                  color: AppColors.logoMate,
+                                ),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          subtitle,
+                          textAlign: TextAlign.right,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size14,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildInlineMealMateText(String text) {
+    const appName = 'MealMate';
+    final appNameStart = text.indexOf(appName);
+    final style = getBoldStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: FontSize.size20,
+      color: AppColors.textPrimary,
+    );
+
+    if (appNameStart == -1) {
+      return Text(text, textAlign: TextAlign.right, style: style);
+    }
+
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          TextSpan(text: text.substring(0, appNameStart)),
+          TextSpan(
+            text: 'Meal',
+            style: style.copyWith(color: AppColors.logoMeal),
+          ),
+          TextSpan(
+            text: 'Mate',
+            style: style.copyWith(color: AppColors.logoMate),
+          ),
+          TextSpan(text: text.substring(appNameStart + appName.length)),
+        ],
+      ),
+      textAlign: TextAlign.right,
     );
   }
 }
