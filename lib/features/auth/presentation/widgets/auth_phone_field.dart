@@ -3,7 +3,6 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/country_code_prefix.dart';
@@ -50,9 +49,14 @@ class AuthPhoneField extends StatelessWidget {
             size: 23,
           ),
           suffixIcon: const CountryCodePrefix(),
-          // validator:
-          //     validator ??
-          //     (value) => Validations.validatePhoneNumber(context, value),
+          validator:
+              validator ??
+              (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return l10n.phone_number_is_required;
+                }
+                return null;
+              },
         ),
       ],
     );

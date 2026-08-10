@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 .continue/
 .continue/mcpServers/
+**/*.g.dart
+**/*.freezed.dart
+**/*.config.dart

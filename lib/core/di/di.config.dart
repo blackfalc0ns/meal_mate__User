@@ -16,6 +16,14 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../features/auth/data/data_source/auth_remote_data_source.dart'
+    as _i182;
+import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart'
+    as _i508;
+import '../../features/auth/data/repo/auth_repository_impl.dart' as _i607;
+import '../../features/auth/domain/repo/auth_repository.dart' as _i2;
+import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
+import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
 import '../network/external_modules.dart' as _i576;
@@ -76,6 +84,18 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i804.ApiServices>(() => _i804.ApiServices(gh<_i361.Dio>()));
+    gh.factory<_i182.AuthRemoteDataSource>(
+      () => _i508.AuthRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i2.AuthRepository>(
+      () => _i607.AuthRepositoryImpl(gh<_i182.AuthRemoteDataSource>()),
+    );
+    gh.factory<_i769.RegisterUseCase>(
+      () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i892.AuthViewModel>(
+      () => _i892.AuthViewModel(gh<_i769.RegisterUseCase>()),
+    );
     return this;
   }
 }

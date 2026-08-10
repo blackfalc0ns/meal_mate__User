@@ -4,9 +4,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_generator.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   debugPaintBaselinesEnabled = false;
 
   runApp(
@@ -31,7 +34,7 @@ class MealMateApp extends StatelessWidget {
           locale ?? const Locale('ar'),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.signIn,
       onGenerateRoute: RouteGenerator.getRoute,
     );
   }

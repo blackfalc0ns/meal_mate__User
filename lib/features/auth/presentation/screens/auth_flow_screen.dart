@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_background.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_forgot_password_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_new_password_page.dart';
@@ -8,10 +11,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_sign_in_p
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_sign_up_page.dart';
 
 class AuthFlowScreen extends StatefulWidget {
-  const AuthFlowScreen({
-    super.key,
-    this.initialPage = AuthPageType.signIn,
-  });
+  const AuthFlowScreen({super.key, this.initialPage = AuthPageType.signIn});
 
   final AuthPageType initialPage;
 
@@ -56,23 +56,26 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
-    return Scaffold(
-      body: AuthBackground(
-        child: SafeArea(
-          child: PageView(
-            controller: _pageController,
-            reverse: isRtl,
-            physics:NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              _currentPage = AuthPageType.values[index];
-            },
-            children: [
-              AuthSignInPage(onNavigate: _goToPage),
-              AuthSignUpPage(onNavigate: _goToPage),
-              AuthForgotPasswordPage(onNavigate: _goToPage),
-              AuthOtpPage(onNavigate: _goToPage),
-              AuthNewPasswordPage(onNavigate: _goToPage),
-            ],
+    return BlocProvider<AuthViewModel>(
+      create: (_) => getIt<AuthViewModel>(),
+      child: Scaffold(
+        body: AuthBackground(
+          child: SafeArea(
+            child: PageView(
+              controller: _pageController,
+              reverse: isRtl,
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (index) {
+                _currentPage = AuthPageType.values[index];
+              },
+              children: [
+                AuthSignInPage(onNavigate: _goToPage),
+                AuthSignUpPage(onNavigate: _goToPage),
+                AuthForgotPasswordPage(onNavigate: _goToPage),
+                AuthOtpPage(onNavigate: _goToPage),
+                AuthNewPasswordPage(onNavigate: _goToPage),
+              ],
+            ),
           ),
         ),
       ),
