@@ -32,8 +32,6 @@ class AuthSignUpPage extends StatefulWidget {
 }
 
 class _AuthSignUpPageState extends State<AuthSignUpPage> {
-  static const String _defaultCountryCode = 'SL';
-
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -164,13 +162,18 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
     if (!_acceptedTerms) {
       return;
     }
+    final selectedCallingCode = context
+        .read<AuthViewModel>()
+        .state
+        .selectedCallingCode;
+
     context.read<AuthViewModel>().doIntent(
       RegisterCustomerEvent(
         RegisterRequestEntity(
           fullName: _nameController.text.trim(),
           phone: _phoneController.text.trim(),
           password: _passwordController.text,
-          countryCode: _defaultCountryCode,
+          countryCode: selectedCallingCode?.countryCode ?? 'KW',
         ),
       ),
     );

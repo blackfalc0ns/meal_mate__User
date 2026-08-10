@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_background.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_forgot_password_page.dart';
@@ -57,24 +60,51 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return BlocProvider<AuthViewModel>(
-      create: (_) => getIt<AuthViewModel>(),
+      create: (_) =>
+          getIt<AuthViewModel>()..doIntent(const GetCallingCodesEvent()),
       child: Scaffold(
         body: AuthBackground(
           child: SafeArea(
-            child: PageView(
-              controller: _pageController,
-              reverse: isRtl,
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) {
-                _currentPage = AuthPageType.values[index];
+            child: BlocBuilder<AuthViewModel, AuthState>(
+              buildWhen: (previous, current) =>
+                  previous.isCallingCodesLoading !=
+                      current.isCallingCodesLoading ||
+                  previous.callingCodes != current.callingCodes ||
+                  previous.callingCodesFailure != current.callingCodesFailure,
+              builder: (context, state) {
+                final showCallingCodesError =
+                    !state.isCallingCodesLoading &&
+                    state.callingCodes.isEmpty &&
+                    state.callingCodesFailure != null;
+
+                if (showCallingCodesError) {
+                  return ApiErrorWidget(
+                    exception: state.callingCodesFailure!.exception,
+                    onRetry: () => context.read<AuthViewModel>().doIntent(
+                      const GetCallingCodesEvent(),
+                    ),
+                    onCheckConnection: () => context
+                        .read<AuthViewModel>()
+                        .doIntent(const GetCallingCodesEvent()),
+                  );
+                }
+
+                return PageView(
+                  controller: _pageController,
+                  reverse: isRtl,
+                  physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {
+                    _currentPage = AuthPageType.values[index];
+                  },
+                  children: [
+                    AuthSignInPage(onNavigate: _goToPage),
+                    AuthSignUpPage(onNavigate: _goToPage),
+                    AuthForgotPasswordPage(onNavigate: _goToPage),
+                    AuthOtpPage(onNavigate: _goToPage),
+                    AuthNewPasswordPage(onNavigate: _goToPage),
+                  ],
+                );
               },
-              children: [
-                AuthSignInPage(onNavigate: _goToPage),
-                AuthSignUpPage(onNavigate: _goToPage),
-                AuthForgotPasswordPage(onNavigate: _goToPage),
-                AuthOtpPage(onNavigate: _goToPage),
-                AuthNewPasswordPage(onNavigate: _goToPage),
-              ],
             ),
           ),
         ),

@@ -1,3 +1,6 @@
+backend_integration_clean_architecture_rules_updated.md
+
+
 # Backend Integration & Clean Architecture Rules
 
 These rules are mandatory when integrating any backend API into this Flutter project.
@@ -2462,6 +2465,7 @@ ApiResult
 safeApiCall
 Retrofit
 DTO → Mapper → Entity
+existing Core ApiErrorWidget / InlineApiErrorWidget
 single immutable State + copyWith
 sealed Event
 doIntent
@@ -2481,6 +2485,302 @@ Do not duplicate existing Core functionality.
 Do not redesign the UI while connecting the backend.
 
 The existing project architecture is always preferred over inventing a new abstraction.
+
+---
+
+# 74. Error Widget Usage — CRITICAL
+
+The project already contains reusable Core error widgets.
+
+Do not create a new error screen/widget inside every feature.
+
+Before implementing UI error handling, inspect and reuse:
+
+lib/core/errors/
+The default rules are:
+
+Whole screen/feature failed with no usable data
+→ ApiErrorWidget
+
+One section/part of a screen failed
+→ InlineApiErrorWidget
+
+Request succeeded but returned no data
+→ EmptyStateWidget
+
+Loading
+→ Existing feature loader/shimmer
+
+Content exists
+→ Keep the content visible
+Screen-Level API Errors
+For a normal backend-connected screen, when the request fails and there is no usable data to display, use the existing:
+
+ApiErrorWidget.fromTypedFailure(
+  state.failure!,
+  onRetry: () {
+    viewModel.doIntent(
+      LoadFeatureEvent(),
+    );
+  },
+)
+Do not create custom conditions for:
+
+no internet
+timeout
+server error
+unauthorized
+forbidden
+not found
+inside every feature UI when ApiErrorWidget already knows how to present the existing typed Failure.
+
+Do not duplicate error-type switching in feature screens.
+
+Wrong:
+
+if (failure.exception.errorType == ApiErrorType.noInternetConnection) {
+  return NoInternetErrorWidget(...);
+}
+
+if (failure.exception.errorType == ApiErrorType.timeout) {
+  return TimeoutErrorWidget(...);
+}
+
+if (failure.exception.errorType == ApiErrorType.serverError) {
+  return ServerErrorWidget(...);
+}
+Correct:
+
+return ApiErrorWidget.fromTypedFailure(
+  state.failure!,
+  onRetry: () {
+    viewModel.doIntent(
+      LoadFeatureEvent(),
+    );
+  },
+);
+ApiErrorWidget is the default reusable full-feature error UI.
+
+Keep The Existing State Architecture
+Do not convert a feature from the project's single immutable State + copyWith architecture into:
+
+FeatureInitial
+FeatureLoading
+FeatureLoaded
+FeatureError
+only to make error rendering easier.
+
+Use the existing State fields.
+
+Example:
+
+BlocBuilder<ProfileViewModel, ProfileState>(
+  builder: (context, state) {
+    if (state.isLoading && state.profile == null) {
+      return const ProfileShimmer();
+    }
+
+    if (state.failure != null && state.profile == null) {
+      return ApiErrorWidget.fromTypedFailure(
+        state.failure!,
+        onRetry: () {
+          context.read<ProfileViewModel>().doIntent(
+                GetProfileEvent(),
+              );
+        },
+      );
+    }
+
+    if (state.isSuccess && state.profile == null) {
+      return const EmptyStateWidget();
+    }
+
+    return ProfileContent(
+      profile: state.profile,
+    );
+  },
+);
+The exact hasData condition depends on the feature.
+
+Examples:
+
+state.profile != null
+state.orders.isNotEmpty
+state.meals.isNotEmpty
+state.favorites.isNotEmpty
+Do not add a generic hasData abstraction unless the feature actually benefits from it.
+
+Typed State Features That Already Exist
+If an existing feature already uses typed/sealed states such as:
+
+ExamsLoading
+ExamsError
+ExamsLoaded
+do not rewrite it only to match another feature.
+
+Use the reusable error widget directly:
+
+if (state is ExamsLoading) {
+  return const Center(
+    child: LogoShimmerLoader(size: 120),
+  );
+}
+
+if (state is ExamsError) {
+  return ApiErrorWidget.fromTypedFailure(
+    state.failure,
+    onRetry: () => _load(context, page: _page),
+  );
+}
+
+if (state is ExamsLoaded) {
+  return _buildContent(
+    context,
+    state.data,
+  );
+}
+Preserve the feature's existing State style.
+
+The general rule is to reuse the same Core error widgets, not to force every feature to use the same State class shape.
+
+Partial / Section Errors
+If a screen already has usable data and only one independent section fails, do not replace the entire screen with ApiErrorWidget.
+
+Use:
+
+InlineApiErrorWidget(
+  failure: state.sectionFailure!,
+  onRetry: () {
+    viewModel.doIntent(
+      ReloadSectionEvent(),
+    );
+  },
+)
+Example:
+
+Home
+├── Categories      ✅
+├── Popular Meals   ✅
+├── Offers           ❌
+└── Recommended     ✅
+Correct behavior:
+
+Keep Home visible
++
+show InlineApiErrorWidget only for Offers
+Do not show a full-screen error while useful screen data is already available.
+
+Refresh Errors With Existing Data
+If refresh/reload fails but existing data is still available:
+
+Keep existing data visible.
+Do not replace it with a full-screen error.
+
+A full-screen ApiErrorWidget is appropriate when:
+
+loading finished
++
+the required request failed
++
+there is no usable data to render
+Example condition for a multi-section feature:
+
+final showGlobalError =
+    !state.isLoading &&
+    state.hasStartedLoadingContent &&
+    !state.hasAnyData &&
+    state.firstFailure != null;
+Then:
+
+if (showGlobalError)
+  SliverFillRemaining(
+    hasScrollBody: false,
+    child: ApiErrorWidget.fromTypedFailure(
+      state.firstFailure!,
+      onRetry: () {
+        _reloadAllSections(context);
+      },
+    ),
+  ),
+The SliverFillRemaining wrapper is only for screens already built with Slivers.
+
+Do not force Slivers into normal screens just for error handling.
+
+For a normal widget tree, return ApiErrorWidget directly.
+
+Empty State Is Not An Error
+A successful request with empty data is not a network failure.
+
+Example:
+
+200 OK
+[]
+Use the project's existing empty-state UI/widget.
+
+Do not create a fake Failure.
+
+Do not show ApiErrorWidget for successful empty data.
+
+Action / Form Errors
+For operations where the current UI should remain visible, such as:
+
+login
+register
+update profile
+add/remove favorite
+delete item
+submit form
+do not remove the form/content and replace the whole screen with a full-screen error.
+
+When an existing reusable inline error presentation fits the design, prefer:
+
+InlineApiErrorWidget(
+  failure: state.failure!,
+  onRetry: retryAction,
+)
+Otherwise preserve the feature's existing feedback pattern.
+
+Do not introduce BlocListener, Snackbar, Toast, or a new feedback mechanism solely for API errors unless the existing feature/UI already requires that pattern.
+
+Retry Must Repeat The Correct Intent
+onRetry must retry only the operation that failed.
+
+Correct:
+
+onRetry: () {
+  viewModel.doIntent(
+    GetOrdersEvent(),
+  );
+}
+For a failed Home section:
+
+onRetry: () {
+  viewModel.doIntent(
+    GetOffersEvent(),
+  );
+}
+Do not reload unrelated features or reset unrelated state.
+
+Error Widget Decision Summary
+Use this decision:
+
+Is loading?
+→ Existing loader/shimmer
+
+Else, failure + no usable data?
+→ ApiErrorWidget
+
+Else, partial failure + other usable data?
+→ InlineApiErrorWidget
+
+Else, success + empty data?
+→ EmptyStateWidget
+
+Else
+→ Content
+Do not create another generic feature-state/error wrapper unless explicitly requested.
+
+Reuse the existing Core widgets directly in BlocBuilder / the existing UI state rendering.
 
 # CRITICAL BACKEND RULE
 

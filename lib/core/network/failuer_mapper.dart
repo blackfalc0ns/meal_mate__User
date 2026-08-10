@@ -16,6 +16,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'error_request_cancelled':
       return locale.error_request_cancelled;
     case 'error_no_internet':
+    case 'error_no_internet_connection':
       return locale.error_no_internet;
     case 'error_unknown':
       return locale.error_unknown;

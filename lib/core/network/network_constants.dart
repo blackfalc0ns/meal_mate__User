@@ -5,5 +5,6 @@ abstract class NetworkConstants {
 }
 
 abstract class EndPoints {
-  static const String register = 'api/v1/auth/customers/register';
+  static const String register = '/api/v1/auth/customers/register';
+  static const String callingCodes = '/api/v1/catalog/calling-codes';
 }

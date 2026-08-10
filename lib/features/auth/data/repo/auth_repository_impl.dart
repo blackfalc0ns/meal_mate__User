@@ -1,7 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/calling_code_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/register_mapper.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/repo/auth_repository.dart';
@@ -17,6 +19,14 @@ class AuthRepositoryImpl implements AuthRepository {
     return safeApiCall(() async {
       final response = await _remoteDataSource.register(request.toDto());
       return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<List<CallingCodeEntity>>> getCallingCodes() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getCallingCodes();
+      return response.map((item) => item.toEntity()).toList();
     });
   }
 }

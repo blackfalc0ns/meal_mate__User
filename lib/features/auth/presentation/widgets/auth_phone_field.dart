@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/widgets/calling_codes_bottom_sheet.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/country_code_prefix.dart';
 
 class AuthPhoneField extends StatelessWidget {
@@ -48,7 +54,16 @@ class AuthPhoneField extends StatelessWidget {
             color: AppColors.primary,
             size: 23,
           ),
-          suffixIcon: const CountryCodePrefix(),
+          suffixIcon: BlocBuilder<AuthViewModel, AuthState>(
+            buildWhen: (previous, current) =>
+                previous.selectedCallingCode != current.selectedCallingCode,
+            builder: (context, state) {
+              return CountryCodePrefix(
+                callingCode: state.selectedCallingCode,
+                onTap: () => _openCallingCodesSheet(context),
+              );
+            },
+          ),
           validator:
               validator ??
               (value) {
@@ -59,6 +74,31 @@ class AuthPhoneField extends StatelessWidget {
               },
         ),
       ],
+    );
+  }
+
+  Future<void> _openCallingCodesSheet(BuildContext context) async {
+    final viewModel = context.read<AuthViewModel>();
+
+    if (viewModel.state.callingCodes.isEmpty &&
+        !viewModel.state.isCallingCodesLoading) {
+      viewModel.doIntent(const GetCallingCodesEvent());
+    }
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: context.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
+        ),
+      ),
+      builder: (_) => BlocProvider.value(
+        value: viewModel,
+        child: const CallingCodesBottomSheet(),
+      ),
     );
   }
 }

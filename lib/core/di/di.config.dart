@@ -22,6 +22,8 @@ import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart'
     as _i508;
 import '../../features/auth/data/repo/auth_repository_impl.dart' as _i607;
 import '../../features/auth/domain/repo/auth_repository.dart' as _i2;
+import '../../features/auth/domain/usecase/get_calling_codes_usecase.dart'
+    as _i171;
 import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
 import '../helpers/shared_pref.dart' as _i42;
@@ -90,11 +92,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i2.AuthRepository>(
       () => _i607.AuthRepositoryImpl(gh<_i182.AuthRemoteDataSource>()),
     );
+    gh.factory<_i171.GetCallingCodesUseCase>(
+      () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
+    );
     gh.factory<_i769.RegisterUseCase>(
       () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
     );
     gh.factory<_i892.AuthViewModel>(
-      () => _i892.AuthViewModel(gh<_i769.RegisterUseCase>()),
+      () => _i892.AuthViewModel(
+        gh<_i769.RegisterUseCase>(),
+        gh<_i171.GetCallingCodesUseCase>(),
+      ),
     );
     return this;
   }
