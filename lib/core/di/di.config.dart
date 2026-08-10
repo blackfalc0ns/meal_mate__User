@@ -24,7 +24,11 @@ import '../../features/auth/data/repo/auth_repository_impl.dart' as _i607;
 import '../../features/auth/domain/repo/auth_repository.dart' as _i2;
 import '../../features/auth/domain/usecase/get_calling_codes_usecase.dart'
     as _i171;
+import '../../features/auth/domain/usecase/login_usecase.dart' as _i911;
+import '../../features/auth/domain/usecase/logout_usecase.dart' as _i757;
+import '../../features/auth/domain/usecase/refresh_token_usecase.dart' as _i501;
 import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
+import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
@@ -90,18 +94,37 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i508.AuthRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i2.AuthRepository>(
-      () => _i607.AuthRepositoryImpl(gh<_i182.AuthRemoteDataSource>()),
+      () => _i607.AuthRepositoryImpl(
+        gh<_i182.AuthRemoteDataSource>(),
+        gh<_i227.TokenService>(),
+      ),
     );
     gh.factory<_i171.GetCallingCodesUseCase>(
       () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
     );
+    gh.factory<_i911.LoginUseCase>(
+      () => _i911.LoginUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i757.LogoutUseCase>(
+      () => _i757.LogoutUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i501.RefreshTokenUseCase>(
+      () => _i501.RefreshTokenUseCase(gh<_i2.AuthRepository>()),
+    );
     gh.factory<_i769.RegisterUseCase>(
       () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
     );
+    gh.factory<_i918.VerifyPhoneUseCase>(
+      () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
+    );
     gh.factory<_i892.AuthViewModel>(
       () => _i892.AuthViewModel(
+        gh<_i911.LoginUseCase>(),
         gh<_i769.RegisterUseCase>(),
         gh<_i171.GetCallingCodesUseCase>(),
+        gh<_i918.VerifyPhoneUseCase>(),
+        gh<_i501.RefreshTokenUseCase>(),
+        gh<_i757.LogoutUseCase>(),
       ),
     );
     return this;

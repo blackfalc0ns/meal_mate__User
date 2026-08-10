@@ -54,15 +54,15 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
 
     return BlocConsumer<AuthViewModel, AuthState>(
       listenWhen: (previous, current) =>
-          previous.isRegisterSuccess != current.isRegisterSuccess ||
-          previous.errorMessage != current.errorMessage,
+          previous.register.isSuccess != current.register.isSuccess ||
+          previous.register.errorMessage != current.register.errorMessage,
       listener: (context, state) {
-        if (state.isRegisterSuccess) {
+        if (state.register.isSuccess) {
           widget.onNavigate(AuthPageType.otp);
           return;
         }
 
-        final message = state.errorMessage;
+        final message = state.register.errorMessage;
         if (message != null && message.isNotEmpty) {
           CustomSnackbar.showError(context: context, message: message);
         }
@@ -135,7 +135,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                 AppButton(
                   variant: AppButtonVariant.filled,
                   text: l10n.auth_create_account_button,
-                  isLoading: state.isRegisterLoading,
+                  isLoading: state.register.isLoading,
                   iconWidget: SvgPicture.asset(
                     Assets.loginIcon,
                     width: 18,
@@ -165,7 +165,8 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
     final selectedCallingCode = context
         .read<AuthViewModel>()
         .state
-        .selectedCallingCode;
+        .callingCodes
+        .selected;
 
     context.read<AuthViewModel>().doIntent(
       RegisterCustomerEvent(

@@ -26,10 +26,9 @@ class AuthHeroSection extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 title,
-                textAlign: TextAlign.right,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size28,
+                  fontSize: FontSize.size20,
                   color: AppColors.textPrimary,
                 ),
               ),

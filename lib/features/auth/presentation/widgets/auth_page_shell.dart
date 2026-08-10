@@ -10,12 +10,14 @@ class AuthPageShell extends StatelessWidget {
     required this.subtitle,
     required this.child,
     this.footer,
+    this.topOffset = Spacing.zero,
   });
 
   final String title;
   final String subtitle;
   final Widget child;
   final Widget? footer;
+  final double topOffset;
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +46,8 @@ class AuthPageShell extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: topSpacer),
-                  AuthHeroSection(
-                    title: title,
-                    subtitle: subtitle,
-                  ),
+                  SizedBox(height: topSpacer + topOffset),
+                  AuthHeroSection(title: title, subtitle: subtitle),
                   const SizedBox(height: 28),
                   AuthFormCard(child: child),
                   if (footer != null) ...[

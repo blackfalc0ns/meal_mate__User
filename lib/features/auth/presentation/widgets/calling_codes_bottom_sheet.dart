@@ -39,14 +39,12 @@ class CallingCodesBottomSheet extends StatelessWidget {
               Flexible(
                 child: BlocBuilder<AuthViewModel, AuthState>(
                   buildWhen: (previous, current) =>
-                      previous.callingCodes != current.callingCodes ||
-                      previous.selectedCallingCode !=
-                          current.selectedCallingCode ||
-                      previous.isCallingCodesLoading !=
-                          current.isCallingCodesLoading,
+                      previous.callingCodes != current.callingCodes,
                   builder: (context, state) {
-                    if (state.callingCodes.isEmpty &&
-                        state.isCallingCodesLoading) {
+                    final callingCodesState = state.callingCodes;
+
+                    if (callingCodesState.items.isEmpty &&
+                        callingCodesState.isLoading) {
                       return Center(
                         child: CircularProgressIndicator(color: color.primary),
                       );
@@ -54,16 +52,16 @@ class CallingCodesBottomSheet extends StatelessWidget {
 
                     return ListView.separated(
                       shrinkWrap: true,
-                      itemCount: state.callingCodes.length,
+                      itemCount: callingCodesState.items.length,
                       separatorBuilder: (context, index) => Divider(
                         height: Spacing.border,
                         color: color.outlineVariant,
                       ),
                       itemBuilder: (context, index) {
-                        final callingCode = state.callingCodes[index];
+                        final callingCode = callingCodesState.items[index];
                         final isSelected =
                             callingCode.countryCode ==
-                            state.selectedCallingCode?.countryCode;
+                            callingCodesState.selected?.countryCode;
                         final countryName =
                             Localizations.localeOf(context).languageCode == 'ar'
                             ? callingCode.nameAr

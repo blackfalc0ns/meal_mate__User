@@ -67,19 +67,16 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
           child: SafeArea(
             child: BlocBuilder<AuthViewModel, AuthState>(
               buildWhen: (previous, current) =>
-                  previous.isCallingCodesLoading !=
-                      current.isCallingCodesLoading ||
-                  previous.callingCodes != current.callingCodes ||
-                  previous.callingCodesFailure != current.callingCodesFailure,
+                  previous.callingCodes != current.callingCodes,
               builder: (context, state) {
                 final showCallingCodesError =
-                    !state.isCallingCodesLoading &&
-                    state.callingCodes.isEmpty &&
-                    state.callingCodesFailure != null;
+                    !state.callingCodes.isLoading &&
+                    state.callingCodes.items.isEmpty &&
+                    state.callingCodes.failure != null;
 
                 if (showCallingCodesError) {
                   return ApiErrorWidget(
-                    exception: state.callingCodesFailure!.exception,
+                    exception: state.callingCodes.failure!.exception,
                     onRetry: () => context.read<AuthViewModel>().doIntent(
                       const GetCallingCodesEvent(),
                     ),

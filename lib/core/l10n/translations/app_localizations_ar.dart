@@ -443,17 +443,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get auth_send_otp_button => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get auth_otp_title => 'أعد تعيين كلمة المرور الخاصة بك.';
+  String get auth_otp_title => 'تحقق من رقم هاتفك';
 
   @override
   String get auth_otp_subtitle =>
-      'أدخل رمز OTP المكون من 6 أرقام لإعادة التعيين.';
+      'أدخل رمز OTP المكون من 6 أرقام المرسل إلى هاتفك.';
 
   @override
   String get auth_otp_hint => 'أدخل رمز OTP المكون من 6 أرقام للمتابعة.';
 
   @override
-  String get auth_verify_code_button => 'إعادة تعيين كلمة المرور';
+  String get auth_verify_code_button => 'تأكيد الرمز';
 
   @override
   String get auth_no_code_title => 'ألم تستلم الرمز؟';

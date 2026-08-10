@@ -6,10 +6,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/helpers/regex.dart';
 
 class AuthOtpCodeField extends StatefulWidget {
-  const AuthOtpCodeField({
-    super.key,
-    required this.onChanged,
-  });
+  const AuthOtpCodeField({super.key, required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -44,18 +41,64 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
   }
 
   void _handleChanged(String value, int index) {
-    if (value.length == 1 && index < _focusNodes.length - 1) {
-      FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
+    final digits = value.replaceAll(RegExp(r'\D'), '');
+
+    if (digits.length > 1) {
+      _fillFrom(index, digits);
+      return;
     }
-    if (value.isEmpty && index > 0) {
+
+    if (digits.isNotEmpty) {
+      _controllers[index].text = digits;
+      _moveToNextField(index);
+    } else {
+      _controllers[index].clear();
+      _moveToPreviousField(index);
+    }
+
+    _notifyValueChanged();
+  }
+
+  void _fillFrom(int startIndex, String digits) {
+    var currentIndex = startIndex;
+
+    for (final digit in digits.split('')) {
+      if (currentIndex >= _controllers.length) {
+        break;
+      }
+      _controllers[currentIndex].text = digit;
+      currentIndex++;
+    }
+
+    final focusIndex = currentIndex.clamp(0, _focusNodes.length - 1);
+    if (currentIndex >= _focusNodes.length) {
+      _focusNodes.last.unfocus();
+    } else {
+      FocusScope.of(context).requestFocus(_focusNodes[focusIndex]);
+    }
+
+    _notifyValueChanged();
+  }
+
+  void _moveToNextField(int index) {
+    if (index < _focusNodes.length - 1) {
+      FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
+      return;
+    }
+
+    _focusNodes[index].unfocus();
+  }
+
+  void _moveToPreviousField(int index) {
+    if (index > 0) {
       FocusScope.of(context).requestFocus(_focusNodes[index - 1]);
     }
-    _notifyValueChanged();
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      textDirection: TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(6, (index) {
         return SizedBox(
@@ -66,6 +109,7 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
             focusNode: _focusNodes[index],
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
             maxLength: 1,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
@@ -87,12 +131,17 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
+                  width: 1.5,
+                ),
               ),
             ),
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onTap: () => _controllers[index].selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: _controllers[index].text.length,
+            ),
             onChanged: (value) => _handleChanged(value, index),
           ),
         );

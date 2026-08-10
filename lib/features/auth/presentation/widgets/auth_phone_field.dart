@@ -56,10 +56,10 @@ class AuthPhoneField extends StatelessWidget {
           ),
           suffixIcon: BlocBuilder<AuthViewModel, AuthState>(
             buildWhen: (previous, current) =>
-                previous.selectedCallingCode != current.selectedCallingCode,
+                previous.callingCodes.selected != current.callingCodes.selected,
             builder: (context, state) {
               return CountryCodePrefix(
-                callingCode: state.selectedCallingCode,
+                callingCode: state.callingCodes.selected,
                 onTap: () => _openCallingCodesSheet(context),
               );
             },
@@ -80,8 +80,8 @@ class AuthPhoneField extends StatelessWidget {
   Future<void> _openCallingCodesSheet(BuildContext context) async {
     final viewModel = context.read<AuthViewModel>();
 
-    if (viewModel.state.callingCodes.isEmpty &&
-        !viewModel.state.isCallingCodesLoading) {
+    if (viewModel.state.callingCodes.items.isEmpty &&
+        !viewModel.state.callingCodes.isLoading) {
       viewModel.doIntent(const GetCallingCodesEvent());
     }
 
