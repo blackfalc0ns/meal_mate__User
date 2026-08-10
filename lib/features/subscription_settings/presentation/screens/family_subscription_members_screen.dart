@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -53,6 +55,9 @@ class FamilySubscriptionMembersScreen extends StatelessWidget {
                   ),
                   child: FamilyMembersListCard(
                     member: membersPage.members[index],
+                    onTap: () => context.pushNamed(
+                      AppRoutes.familySubscriptionMemberDetails,
+                    ),
                   ),
                 ),
               const SizedBox(height: Spacing.familyMembersAddButtonTopGap),

@@ -36,6 +36,66 @@ class FamilySubscriptionMembersPageEntity {
   final List<FamilySubscriptionListMemberEntity> members;
 }
 
+class FamilyMemberDetailEntity {
+  const FamilyMemberDetailEntity({
+    required this.title,
+    required this.name,
+    required this.imageAsset,
+    required this.ageLabel,
+    required this.statusLabel,
+    required this.roleLabel,
+    required this.programTitle,
+    required this.programImageAsset,
+    required this.programName,
+    required this.changeProgramLabel,
+    required this.packageTitle,
+    required this.remainingDaysLabel,
+    required this.packageDescription,
+    required this.editPackageLabel,
+    required this.selectionTitle,
+    required this.completedValue,
+    required this.completedLabel,
+    required this.progress,
+    required this.showCalendarLabel,
+    required this.shortcuts,
+  });
+
+  final String title;
+  final String name;
+  final String imageAsset;
+  final String ageLabel;
+  final String statusLabel;
+  final String roleLabel;
+  final String programTitle;
+  final String programImageAsset;
+  final String programName;
+  final String changeProgramLabel;
+  final String packageTitle;
+  final String remainingDaysLabel;
+  final String packageDescription;
+  final String editPackageLabel;
+  final String selectionTitle;
+  final String completedValue;
+  final String completedLabel;
+  final double progress;
+  final String showCalendarLabel;
+  final List<FamilyMemberDetailShortcutEntity> shortcuts;
+}
+
+class FamilyMemberDetailShortcutEntity {
+  const FamilyMemberDetailShortcutEntity({
+    required this.title,
+    required this.subtitle,
+    required this.type,
+  });
+
+  final String title;
+  final String subtitle;
+  final FamilyMemberDetailShortcutType type;
+}
+
+enum FamilyMemberDetailShortcutType { dailyMeals, permissions }
+
 class FamilySubscriptionListMemberEntity {
   const FamilySubscriptionListMemberEntity({
     required this.name,

@@ -294,6 +294,37 @@ class Spacing {
   static const double familyMembersAddButtonHeight = 40.83;
   static const double familyMembersAddButtonRadius = 44.8514;
   static const double familyMembersBottomNavTopGap = 24.0;
+  static const double familyMemberDetailDesignWidth = 390.0;
+  static const double familyMemberDetailHorizontalPadding = 14.0;
+  static const double familyMemberDetailTitleTop = 80.49;
+  static const double familyMemberDetailBackTop = 66.0;
+  static const double familyMemberDetailBackEnd = 37.0;
+  static const double familyMemberDetailContentTop = 124.15;
+  static const double familyMemberDetailCardGap = 10.0;
+  static const double familyMemberDetailCardRadius = 17.464;
+  static const double familyMemberDetailCardBorder = 1.247;
+  static const double familyMemberDetailCardPadding = 14.97;
+  static const double familyMemberDetailProfileHeight = 129.73;
+  static const double familyMemberDetailStandardCardHeight = 158.42;
+  static const double familyMemberDetailProgressCardHeight = 124.74;
+  static const double familyMemberDetailShortcutHeight = 56.13;
+  static const double familyMemberDetailAvatarSize = 89.3;
+  static const double familyMemberDetailAvatarStatusSize = 13.72;
+  static const double familyMemberDetailHeaderIconSize = 19.96;
+  static const double familyMemberDetailProgramImageWidth = 64.77;
+  static const double familyMemberDetailProgramImageHeight = 58.03;
+  static const double familyMemberDetailChipHeight = 19.96;
+  static const double familyMemberDetailChipRadius = 7.485;
+  static const double familyMemberDetailStatusDotSize = 8.73;
+  static const double familyMemberDetailButtonHeight = 35.43;
+  static const double familyMemberDetailButtonRadius = 12.474;
+  static const double familyMemberDetailProgressRingSize = 70;
+  static const double familyMemberDetailCalendarButtonWidth = 98.55;
+  static const double familyMemberDetailCalendarButtonHeight = 36.18;
+  static const double familyMemberDetailCalendarButtonRadius = 9.979;
+  static const double familyMemberDetailShortcutDividerHeight = 41.16;
+  static const double familyMemberDetailShortcutIconSize = 22.45;
+  static const double familyMemberDetailBottomSpace = 132.0;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

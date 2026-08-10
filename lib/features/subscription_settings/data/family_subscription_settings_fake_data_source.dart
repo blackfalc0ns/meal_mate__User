@@ -156,4 +156,40 @@ class FamilySubscriptionSettingsFakeDataSource {
       ],
     );
   }
+
+  FamilyMemberDetailEntity getMemberDetail() {
+    return const FamilyMemberDetailEntity(
+      title: 'تفاصيل أحمد',
+      name: 'أحمد',
+      imageAsset: AssetsFake.familyMemberAhmed,
+      ageLabel: '24 سنة',
+      statusLabel: 'نشط',
+      roleLabel: 'عضو أساسي',
+      programTitle: 'البرنامج الغذائي',
+      programImageAsset: AssetsFake.familyMemberProgramBalanced,
+      programName: 'متوازن',
+      changeProgramLabel: 'تغيير البرنامج',
+      packageTitle: 'الباقة',
+      remainingDaysLabel: '7 أيام متبقية',
+      packageDescription: '4 وجبات يومياً + سناك',
+      editPackageLabel: 'تعديل الباقة',
+      selectionTitle: 'إجمالي الاختيارات',
+      completedValue: '6/4',
+      completedLabel: 'أيام مكتملة',
+      progress: 0.62,
+      showCalendarLabel: 'عرض التقويم',
+      shortcuts: [
+        FamilyMemberDetailShortcutEntity(
+          title: 'الوجبات اليومية',
+          subtitle: 'عرض الوجبات والخطط',
+          type: FamilyMemberDetailShortcutType.dailyMeals,
+        ),
+        FamilyMemberDetailShortcutEntity(
+          title: 'الصلاحيات',
+          subtitle: 'عرض وإدرة الصلاحيات',
+          type: FamilyMemberDetailShortcutType.permissions,
+        ),
+      ],
+    );
+  }
 }

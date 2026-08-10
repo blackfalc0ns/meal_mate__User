@@ -116,6 +116,8 @@ class AssetsFake {
       'assets/images/fake/subscriptions/family_member_sarah-40a2f0.png';
   static const String familyMemberYousef =
       'assets/images/fake/subscriptions/family_member_yousef-42a7a0.png';
+  static const String familyMemberProgramBalanced =
+      'assets/images/fake/subscriptions/family_member_program_balanced.png';
   static const String familySetupProgramBalanced =
       'assets/images/fake/subscriptions/family_setup_program_balanced.png';
   static const String familySetupProgramKeto =
