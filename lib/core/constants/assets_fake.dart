@@ -24,6 +24,14 @@ class AssetsFake {
 
   static const String calendarMealBowl =
       'assets/images/fake/calendar/calendar_meal_bowl.png';
+  static const String familyDayBreakfast =
+      'assets/images/fake/calendar/family_day_breakfast.png';
+  static const String familyDayMemberAhmed =
+      'assets/images/fake/calendar/family_day_member_ahmed.png';
+  static const String familyDaySalmon =
+      'assets/images/fake/calendar/family_day_salmon.png';
+  static const String familyDaySnack =
+      'assets/images/fake/calendar/family_day_snack.png';
   static const String calendarMealPickerBreakfast =
       'assets/images/fake/calendar/meal_picker_breakfast.png';
 

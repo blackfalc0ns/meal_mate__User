@@ -27,6 +27,7 @@ class AppButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.padding,
+    this.locale,
   });
 
   /// Named factories for convenience.
@@ -46,6 +47,7 @@ class AppButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.padding,
+    this.locale,
   }) : variant = AppButtonVariant.filled;
 
   const AppButton.outlined({
@@ -64,6 +66,7 @@ class AppButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.padding,
+    this.locale,
   }) : variant = AppButtonVariant.outlined;
 
   const AppButton.text({
@@ -82,6 +85,7 @@ class AppButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.padding,
+    this.locale,
   }) : variant = AppButtonVariant.text;
   final String text;
   final VoidCallback? onPressed;
@@ -98,6 +102,7 @@ class AppButton extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,8 @@ class AppButton extends StatelessWidget {
                   ? effectiveColor
                   : Colors.transparent,
               foregroundColor: textColor ?? colors.onPrimary,
-              minimumSize: Size(isExpanded ? double.infinity : 0, h),
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(r),
               ),
@@ -152,7 +158,8 @@ class AppButton extends StatelessWidget {
             padding:
                 padding ?? const EdgeInsets.symmetric(horizontal: Spacing.sm),
             foregroundColor: textColor ?? effectiveColor,
-            minimumSize: Size(isExpanded ? double.infinity : 0, h),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(r),
             ),
@@ -166,13 +173,18 @@ class AppButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           style: TextButton.styleFrom(
             foregroundColor: textColor ?? effectiveColor,
-            minimumSize: Size(isExpanded ? double.infinity : 0, h),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: child,
         );
         break;
     }
-    return button;
+    return SizedBox(
+      width: isExpanded ? double.infinity : null,
+      height: h,
+      child: button,
+    );
   }
 
   Widget _buildContent(BuildContext context, Color effectiveColor) {
@@ -199,6 +211,7 @@ class AppButton extends StatelessWidget {
         children: [
           Text(
             text,
+            locale: locale,
             style: style,
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -211,6 +224,7 @@ class AppButton extends StatelessWidget {
     }
     return Text(
       text,
+      locale: locale,
       style: style,
       textAlign: TextAlign.center,
       maxLines: 2,
