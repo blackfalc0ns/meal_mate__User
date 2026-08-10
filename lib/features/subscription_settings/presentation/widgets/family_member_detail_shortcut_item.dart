@@ -18,9 +18,14 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
     final icon = shortcut.type == FamilyMemberDetailShortcutType.dailyMeals
         ? Icons.calendar_month_rounded
         : Icons.manage_accounts_rounded;
-    final onTap = shortcut.type == FamilyMemberDetailShortcutType.dailyMeals
-        ? () => Navigator.of(context).pushNamed(AppRoutes.calendar)
-        : null;
+    final onTap = switch (shortcut.type) {
+      FamilyMemberDetailShortcutType.dailyMeals => () => Navigator.of(
+        context,
+      ).pushNamed(AppRoutes.calendar),
+      FamilyMemberDetailShortcutType.permissions => () => Navigator.of(
+        context,
+      ).pushNamed(AppRoutes.familyMemberPermissions),
+    };
 
     return Expanded(
       child: InkWell(

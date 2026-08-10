@@ -3362,6 +3362,108 @@ abstract class AppLocalizations {
   /// **'Please select today\'s meals for: Ahmed'**
   String get family_manage_warning_message;
 
+  /// No description provided for @family_member_permissions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions for {memberName}'**
+  String family_member_permissions_title(String memberName);
+
+  /// No description provided for @family_member_permissions_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what {memberName} can do inside the account'**
+  String family_member_permissions_subtitle(String memberName);
+
+  /// No description provided for @family_member_permissions_note.
+  ///
+  /// In en, this message translates to:
+  /// **'The family manager remains in primary control of the family plan settings\nand can edit permissions at any time'**
+  String get family_member_permissions_note;
+
+  /// No description provided for @family_member_permissions_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get family_member_permissions_save;
+
+  /// No description provided for @family_member_permissions_meals_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get family_member_permissions_meals_section;
+
+  /// No description provided for @family_member_permissions_program_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get family_member_permissions_program_section;
+
+  /// No description provided for @family_member_permissions_settings_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Account and settings'**
+  String get family_member_permissions_settings_section;
+
+  /// No description provided for @family_member_permission_choose_daily_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose daily meals'**
+  String get family_member_permission_choose_daily_meals;
+
+  /// No description provided for @family_member_permission_edit_meals_before_lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit meals before lock time'**
+  String get family_member_permission_edit_meals_before_lock;
+
+  /// No description provided for @family_member_permission_view_meal_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View meal details'**
+  String get family_member_permission_view_meal_details;
+
+  /// No description provided for @family_member_permission_view_nutrition_program.
+  ///
+  /// In en, this message translates to:
+  /// **'View nutrition program'**
+  String get family_member_permission_view_nutrition_program;
+
+  /// No description provided for @family_member_permission_change_nutrition_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Change nutrition program'**
+  String get family_member_permission_change_nutrition_program;
+
+  /// No description provided for @family_member_permission_edit_meals_and_days_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit meals and days count'**
+  String get family_member_permission_edit_meals_and_days_count;
+
+  /// No description provided for @family_member_permission_edit_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit address'**
+  String get family_member_permission_edit_address;
+
+  /// No description provided for @family_member_permission_replace_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace meal'**
+  String get family_member_permission_replace_meal;
+
+  /// No description provided for @family_member_permission_view_reports_and_payments.
+  ///
+  /// In en, this message translates to:
+  /// **'View reports and payments'**
+  String get family_member_permission_view_reports_and_payments;
+
+  /// No description provided for @family_member_permission_leave_family_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave family plan'**
+  String get family_member_permission_leave_family_plan;
+
   /// No description provided for @family_members_title.
   ///
   /// In en, this message translates to:

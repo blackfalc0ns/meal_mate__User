@@ -1711,6 +1711,69 @@ class AppLocalizationsAr extends AppLocalizations {
       'يرجى اختيار وجبات اليوم للفرد : أحمد';
 
   @override
+  String family_member_permissions_title(String memberName) {
+    return 'الصلاحيات لـ $memberName';
+  }
+
+  @override
+  String family_member_permissions_subtitle(String memberName) {
+    return 'حدد ما يمكن لـ $memberName القيام به داخل حسابه';
+  }
+
+  @override
+  String get family_member_permissions_note =>
+      'يظل المدير العائلي هو المتحكم الأساسي في إعدادات\nالباقة العائلية ويمكنه تعديل الصلاحيات في أي وقت';
+
+  @override
+  String get family_member_permissions_save => 'حفظ';
+
+  @override
+  String get family_member_permissions_meals_section => 'الوجبات';
+
+  @override
+  String get family_member_permissions_program_section => 'البرنامج';
+
+  @override
+  String get family_member_permissions_settings_section => 'الحساب والإعدادات';
+
+  @override
+  String get family_member_permission_choose_daily_meals =>
+      'اختيار وجباته اليومية';
+
+  @override
+  String get family_member_permission_edit_meals_before_lock =>
+      'تعديل وجباته قبل وقت القفل';
+
+  @override
+  String get family_member_permission_view_meal_details => 'عرض تفاصيل الوجبات';
+
+  @override
+  String get family_member_permission_view_nutrition_program =>
+      'عرض البرنامج الغذائي';
+
+  @override
+  String get family_member_permission_change_nutrition_program =>
+      'تغيير البرنامج الغذائي';
+
+  @override
+  String get family_member_permission_edit_meals_and_days_count =>
+      'تعديل عدد الوجبات والأيام';
+
+  @override
+  String get family_member_permission_edit_address => 'تعديل العنوان';
+
+  @override
+  String get family_member_permission_replace_meal => 'استبدال وجبة';
+
+  @override
+  String get family_member_permission_view_reports_and_payments =>
+      'عرض التقارير والمدفوعات';
+
+  @override
+  String get family_member_permission_leave_family_plan =>
+      'مغادرة الباقة العائلية';
+
+  @override
   String get family_members_title => 'الأفراد';
 
   @override

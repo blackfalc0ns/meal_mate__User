@@ -33,6 +33,7 @@ import 'package:meal_meat_user/features/subscription_programs/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
@@ -90,6 +91,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyMemberDetailScreen(),
+        );
+      case AppRoutes.familyMemberPermissions:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyMemberPermissionsScreen(),
         );
       case AppRoutes.familyProgramSetup:
         return _buildRoute(

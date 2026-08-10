@@ -192,4 +192,68 @@ class FamilySubscriptionSettingsFakeDataSource {
       ],
     );
   }
+
+  FamilyMemberPermissionsPageEntity getMemberPermissions() {
+    return const FamilyMemberPermissionsPageEntity(
+      memberName: 'أحمد',
+      memberImageAsset: AssetsFake.familyDayMemberAhmed,
+      sections: [
+        FamilyMemberPermissionSectionEntity(
+          iconType: FamilyMemberPermissionSectionIconType.meals,
+          permissions: [
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.chooseDailyMeals,
+              enabled: true,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.editMealsBeforeLock,
+              enabled: true,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.viewMealDetails,
+              enabled: true,
+            ),
+          ],
+        ),
+        FamilyMemberPermissionSectionEntity(
+          iconType: FamilyMemberPermissionSectionIconType.program,
+          permissions: [
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.viewNutritionProgram,
+              enabled: true,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.changeNutritionProgram,
+              enabled: false,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.editMealsAndDaysCount,
+              enabled: false,
+            ),
+          ],
+        ),
+        FamilyMemberPermissionSectionEntity(
+          iconType: FamilyMemberPermissionSectionIconType.settings,
+          permissions: [
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.editAddress,
+              enabled: true,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.replaceMeal,
+              enabled: true,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.viewReportsAndPayments,
+              enabled: false,
+            ),
+            FamilyMemberPermissionEntity(
+              type: FamilyMemberPermissionType.leaveFamilyPlan,
+              enabled: false,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

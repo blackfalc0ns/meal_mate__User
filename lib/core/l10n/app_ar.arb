@@ -544,6 +544,37 @@
   "family_manage_complete_missing_meals": "إكمال الوجبات الناقصة",
   "family_manage_warning_title": "يوجد أفراد لم يتم اختيار وجباتهم",
   "family_manage_warning_message": "يرجى اختيار وجبات اليوم للفرد : أحمد",
+  "family_member_permissions_title": "الصلاحيات لـ {memberName}",
+  "@family_member_permissions_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_subtitle": "حدد ما يمكن لـ {memberName} القيام به داخل حسابه",
+  "@family_member_permissions_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_note": "يظل المدير العائلي هو المتحكم الأساسي في إعدادات\nالباقة العائلية ويمكنه تعديل الصلاحيات في أي وقت",
+  "family_member_permissions_save": "حفظ",
+  "family_member_permissions_meals_section": "الوجبات",
+  "family_member_permissions_program_section": "البرنامج",
+  "family_member_permissions_settings_section": "الحساب والإعدادات",
+  "family_member_permission_choose_daily_meals": "اختيار وجباته اليومية",
+  "family_member_permission_edit_meals_before_lock": "تعديل وجباته قبل وقت القفل",
+  "family_member_permission_view_meal_details": "عرض تفاصيل الوجبات",
+  "family_member_permission_view_nutrition_program": "عرض البرنامج الغذائي",
+  "family_member_permission_change_nutrition_program": "تغيير البرنامج الغذائي",
+  "family_member_permission_edit_meals_and_days_count": "تعديل عدد الوجبات والأيام",
+  "family_member_permission_edit_address": "تعديل العنوان",
+  "family_member_permission_replace_meal": "استبدال وجبة",
+  "family_member_permission_view_reports_and_payments": "عرض التقارير والمدفوعات",
+  "family_member_permission_leave_family_plan": "مغادرة الباقة العائلية",
   "family_members_title": "الأفراد",
   "family_members_search_hint": "ابحث عن فرد",
   "family_members_add_member": "إضافة فرد",

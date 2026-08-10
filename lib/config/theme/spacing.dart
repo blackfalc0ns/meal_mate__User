@@ -325,6 +325,31 @@ class Spacing {
   static const double familyMemberDetailShortcutDividerHeight = 41.16;
   static const double familyMemberDetailShortcutIconSize = 22.45;
   static const double familyMemberDetailBottomSpace = 132.0;
+  static const double familyPermissionsHorizontalPadding = 14.0;
+  static const double familyPermissionsHeaderTopGap = 10.0;
+  static const double familyPermissionsHeaderHeight = 82.11;
+  static const double familyPermissionsAvatarWidth = 50.51;
+  static const double familyPermissionsAvatarHeight = 54.33;
+  static const double familyPermissionsAvatarRadius = 27.088;
+  static const double familyPermissionsSectionGap = 7.12;
+  static const double familyPermissionsSectionPadding = 18.52;
+  static const double familyPermissionsSectionRadius = 26.898;
+  static const double familyPermissionsSectionBorder = 1.921;
+  static const double familyPermissionsSectionHeight = 161.74;
+  static const double familyPermissionsSettingsSectionHeight = 201.26;
+  static const double familyPermissionsSectionIconBox = 22.16;
+  static const double familyPermissionsSectionIconSize = 19.0;
+  static const double familyPermissionsRowHeight = 37.04;
+  static const double familyPermissionsDividerHeight = 0.617;
+  static const double familyPermissionsSwitchWidth = 42.08;
+  static const double familyPermissionsSwitchHeight = 24.0;
+  static const double familyPermissionsSwitchThumbSize = 17.0;
+  static const double familyPermissionsNoteTopGap = 8.1;
+  static const double familyPermissionsNoteHeight = 55.15;
+  static const double familyPermissionsNoteRadius = 16.051;
+  static const double familyPermissionsNoteIconSize = 24.69;
+  static const double familyPermissionsSaveTopGap = 6.99;
+  static const double familyPermissionsSaveButtonHeight = 39.24;
   static const double compactButtonHeight = 39.0;
 
   // Dietary preferences Figma measurements.

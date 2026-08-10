@@ -96,6 +96,53 @@ class FamilyMemberDetailShortcutEntity {
 
 enum FamilyMemberDetailShortcutType { dailyMeals, permissions }
 
+class FamilyMemberPermissionsPageEntity {
+  const FamilyMemberPermissionsPageEntity({
+    required this.memberName,
+    required this.memberImageAsset,
+    required this.sections,
+  });
+
+  final String memberName;
+  final String memberImageAsset;
+  final List<FamilyMemberPermissionSectionEntity> sections;
+}
+
+class FamilyMemberPermissionSectionEntity {
+  const FamilyMemberPermissionSectionEntity({
+    required this.iconType,
+    required this.permissions,
+  });
+
+  final FamilyMemberPermissionSectionIconType iconType;
+  final List<FamilyMemberPermissionEntity> permissions;
+}
+
+class FamilyMemberPermissionEntity {
+  const FamilyMemberPermissionEntity({
+    required this.type,
+    required this.enabled,
+  });
+
+  final FamilyMemberPermissionType type;
+  final bool enabled;
+}
+
+enum FamilyMemberPermissionSectionIconType { meals, program, settings }
+
+enum FamilyMemberPermissionType {
+  chooseDailyMeals,
+  editMealsBeforeLock,
+  viewMealDetails,
+  viewNutritionProgram,
+  changeNutritionProgram,
+  editMealsAndDaysCount,
+  editAddress,
+  replaceMeal,
+  viewReportsAndPayments,
+  leaveFamilyPlan,
+}
+
 class FamilySubscriptionListMemberEntity {
   const FamilySubscriptionListMemberEntity({
     required this.name,

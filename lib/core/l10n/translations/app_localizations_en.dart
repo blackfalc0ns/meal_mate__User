@@ -1734,6 +1734,69 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please select today\'s meals for: Ahmed';
 
   @override
+  String family_member_permissions_title(String memberName) {
+    return 'Permissions for $memberName';
+  }
+
+  @override
+  String family_member_permissions_subtitle(String memberName) {
+    return 'Choose what $memberName can do inside the account';
+  }
+
+  @override
+  String get family_member_permissions_note =>
+      'The family manager remains in primary control of the family plan settings\nand can edit permissions at any time';
+
+  @override
+  String get family_member_permissions_save => 'Save';
+
+  @override
+  String get family_member_permissions_meals_section => 'Meals';
+
+  @override
+  String get family_member_permissions_program_section => 'Program';
+
+  @override
+  String get family_member_permissions_settings_section =>
+      'Account and settings';
+
+  @override
+  String get family_member_permission_choose_daily_meals =>
+      'Choose daily meals';
+
+  @override
+  String get family_member_permission_edit_meals_before_lock =>
+      'Edit meals before lock time';
+
+  @override
+  String get family_member_permission_view_meal_details => 'View meal details';
+
+  @override
+  String get family_member_permission_view_nutrition_program =>
+      'View nutrition program';
+
+  @override
+  String get family_member_permission_change_nutrition_program =>
+      'Change nutrition program';
+
+  @override
+  String get family_member_permission_edit_meals_and_days_count =>
+      'Edit meals and days count';
+
+  @override
+  String get family_member_permission_edit_address => 'Edit address';
+
+  @override
+  String get family_member_permission_replace_meal => 'Replace meal';
+
+  @override
+  String get family_member_permission_view_reports_and_payments =>
+      'View reports and payments';
+
+  @override
+  String get family_member_permission_leave_family_plan => 'Leave family plan';
+
+  @override
   String get family_members_title => 'Members';
 
   @override

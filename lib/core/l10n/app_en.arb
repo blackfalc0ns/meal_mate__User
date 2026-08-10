@@ -544,6 +544,37 @@
   "family_manage_complete_missing_meals": "Complete missing meals",
   "family_manage_warning_title": "Some members have not selected their meals",
   "family_manage_warning_message": "Please select today's meals for: Ahmed",
+  "family_member_permissions_title": "Permissions for {memberName}",
+  "@family_member_permissions_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_subtitle": "Choose what {memberName} can do inside the account",
+  "@family_member_permissions_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_note": "The family manager remains in primary control of the family plan settings\nand can edit permissions at any time",
+  "family_member_permissions_save": "Save",
+  "family_member_permissions_meals_section": "Meals",
+  "family_member_permissions_program_section": "Program",
+  "family_member_permissions_settings_section": "Account and settings",
+  "family_member_permission_choose_daily_meals": "Choose daily meals",
+  "family_member_permission_edit_meals_before_lock": "Edit meals before lock time",
+  "family_member_permission_view_meal_details": "View meal details",
+  "family_member_permission_view_nutrition_program": "View nutrition program",
+  "family_member_permission_change_nutrition_program": "Change nutrition program",
+  "family_member_permission_edit_meals_and_days_count": "Edit meals and days count",
+  "family_member_permission_edit_address": "Edit address",
+  "family_member_permission_replace_meal": "Replace meal",
+  "family_member_permission_view_reports_and_payments": "View reports and payments",
+  "family_member_permission_leave_family_plan": "Leave family plan",
   "family_members_title": "Members",
   "family_members_search_hint": "Search for a member",
   "family_members_add_member": "Add member",
