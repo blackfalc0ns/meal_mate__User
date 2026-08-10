@@ -52,7 +52,7 @@ class FamilySubscriptionSectionHeader extends StatelessWidget {
                     ),
                   ),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.primary,
                   ),
