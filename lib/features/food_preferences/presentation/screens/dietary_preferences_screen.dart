@@ -10,6 +10,8 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
+import 'package:meal_meat_user/features/food_preferences/data/mapper/food_preferences_mapper.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
@@ -37,9 +39,9 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FoodPreferencesViewModel>(
-      create: (_) =>
-          getIt<FoodPreferencesViewModel>()
-            ..doIntent(const GetFoodPreferencesEvent()),
+      create: (_) => getIt<FoodPreferencesViewModel>()
+        ..doIntent(const GetFoodPreferencesEvent())
+        ..doIntent(const GetFoodPreferencesCatalogEvent()),
       child: BlocListener<FoodPreferencesViewModel, FoodPreferencesState>(
         listenWhen: (previous, current) =>
             previous.preferences.data != current.preferences.data,
@@ -60,10 +62,6 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
 
     final locale = context.localization;
     _diets.add(locale.dietary_preferences_diet_balanced);
-    _dislikes.add(locale.dietary_preferences_dislike_mushroom);
-    _allergies
-      ..add(locale.dietary_preferences_allergy_nuts)
-      ..add(locale.dietary_preferences_allergy_lactose);
     _hasInitialSelections = true;
   }
 
@@ -76,10 +74,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
         ]);
       _dislikes
         ..clear()
-        ..addAll(preferences.dislikedFoods.map((item) => item.nameAr));
+        ..addAll(preferences.dislikedFoods.map((item) => item.code));
       _allergies
         ..clear()
-        ..addAll(preferences.allergies.map((item) => item.nameAr));
+        ..addAll(preferences.allergies.map((item) => item.code));
       _notes = preferences.notes;
       _hasInitialSelections = true;
       _hasAppliedRemotePreferences = true;
@@ -105,21 +103,26 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
     final color = context.colorScheme;
     final locale = context.localization;
     final dietOptions = [
-      locale.dietary_preferences_diet_balanced,
-      locale.dietary_preferences_diet_vegetarian,
-      locale.dietary_preferences_diet_vegan,
-      locale.dietary_preferences_diet_keto,
-      locale.dietary_preferences_diet_high_protein,
-    ];
-    final dislikeOptions = [
-      locale.dietary_preferences_dislike_onion,
-      locale.dietary_preferences_dislike_mushroom,
-      locale.dietary_preferences_dislike_olives,
-      locale.dietary_preferences_dislike_coriander,
-    ];
-    final allergyOptions = [
-      locale.dietary_preferences_allergy_nuts,
-      locale.dietary_preferences_allergy_lactose,
+      (
+        code: locale.dietary_preferences_diet_balanced,
+        label: locale.dietary_preferences_diet_balanced,
+      ),
+      (
+        code: locale.dietary_preferences_diet_vegetarian,
+        label: locale.dietary_preferences_diet_vegetarian,
+      ),
+      (
+        code: locale.dietary_preferences_diet_vegan,
+        label: locale.dietary_preferences_diet_vegan,
+      ),
+      (
+        code: locale.dietary_preferences_diet_keto,
+        label: locale.dietary_preferences_diet_keto,
+      ),
+      (
+        code: locale.dietary_preferences_diet_high_protein,
+        label: locale.dietary_preferences_diet_high_protein,
+      ),
     ];
 
     return Scaffold(
@@ -132,23 +135,39 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
       body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
         buildWhen: (previous, current) =>
             previous.preferences != current.preferences ||
+            previous.catalog != current.catalog ||
             previous.action != current.action,
         builder: (context, state) {
           final preferencesState = state.preferences;
+          final catalogState = state.catalog;
+          final catalog = catalogState.data;
 
-          if (preferencesState.isLoading && preferencesState.data == null) {
+          if ((preferencesState.isLoading && preferencesState.data == null) ||
+              (catalogState.isLoading && catalog == null)) {
             return const LoadingWidget.fullScreen();
           }
 
-          if (preferencesState.failure != null &&
-              preferencesState.data == null) {
+          final failure = preferencesState.failure ?? catalogState.failure;
+          if (failure != null &&
+              (preferencesState.data == null || catalog == null)) {
             return ApiErrorWidget(
-              exception: preferencesState.failure!.exception,
-              onRetry: () => context.read<FoodPreferencesViewModel>().doIntent(
-                const GetFoodPreferencesEvent(),
-              ),
+              exception: failure.exception,
+              onRetry: () {
+                context.read<FoodPreferencesViewModel>()
+                  ..doIntent(const GetFoodPreferencesEvent())
+                  ..doIntent(const GetFoodPreferencesCatalogEvent());
+              },
             );
           }
+
+          final dislikeOptions = _catalogOptions(
+            catalog?.ingredients ?? const [],
+            locale.localeName,
+          );
+          final allergyOptions = _catalogOptions(
+            catalog?.allergens ?? const [],
+            locale.localeName,
+          );
 
           return SafeArea(
             top: false,
@@ -229,7 +248,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     onPressed: () =>
                         context.read<FoodPreferencesViewModel>().doIntent(
                           UpdateFoodPreferencesEvent(
-                            _buildPreferencesEntity(locale.localeName),
+                            _buildPreferencesEntity(catalog),
                           ),
                         ),
                     isLoading: state.action.isLoading,
@@ -248,34 +267,48 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
     );
   }
 
-  FoodPreferencesEntity _buildPreferencesEntity(String localeName) {
+  List<DietaryPreferencesOption> _catalogOptions(
+    List<FoodPreferenceCatalogItemEntity> items,
+    String localeName,
+  ) {
+    return items
+        .map(
+          (item) => (
+            code: item.code,
+            label: localeName == 'ar' ? item.nameAr : item.nameEn,
+          ),
+        )
+        .where((item) => item.code.isNotEmpty && item.label.isNotEmpty)
+        .toList();
+  }
+
+  FoodPreferencesEntity _buildPreferencesEntity(
+    FoodPreferencesCatalogEntity? catalog,
+  ) {
     return FoodPreferencesEntity(
       dietaryPattern: _diets.isEmpty ? null : _diets.first,
-      allergies: _allergies
-          .map(
-            (name) => FoodPreferenceItemEntity(
-              code: _codeFromName(name),
-              nameAr: localeName == 'ar' ? name : '',
-              nameEn: localeName == 'ar' ? '' : name,
-              severity: null,
-            ),
-          )
-          .toList(),
-      dislikedFoods: _dislikes
-          .map(
-            (name) => FoodPreferenceItemEntity(
-              code: _codeFromName(name),
-              nameAr: localeName == 'ar' ? name : '',
-              nameEn: localeName == 'ar' ? '' : name,
-              severity: null,
-            ),
-          )
-          .toList(),
+      allergies: _selectedCatalogItems(
+        selectedCodes: _allergies,
+        catalogItems: catalog?.allergens ?? const [],
+      ),
+      dislikedFoods: _selectedCatalogItems(
+        selectedCodes: _dislikes,
+        catalogItems: catalog?.ingredients ?? const [],
+      ),
       notes: _notes,
     );
   }
 
-  String _codeFromName(String name) {
-    return name.trim().toLowerCase().replaceAll(RegExp(r'\s+'), '_');
+  List<FoodPreferenceItemEntity> _selectedCatalogItems({
+    required Set<String> selectedCodes,
+    required List<FoodPreferenceCatalogItemEntity> catalogItems,
+  }) {
+    final itemsByCode = {for (final item in catalogItems) item.code: item};
+
+    return selectedCodes
+        .map((code) => itemsByCode[code])
+        .nonNulls
+        .map((item) => item.toPreferenceItemEntity())
+        .toList();
   }
 }

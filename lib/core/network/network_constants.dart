@@ -28,4 +28,6 @@ abstract class EndPoints {
   static const String customerPassword = '/api/v1/customers/me/password';
   static const String customerFoodPreferences =
       '/api/v1/customers/me/food-preferences';
+  static const String customerFoodPreferencesCatalog =
+      '/api/v1/customers/me/food-preferences/catalog';
 }

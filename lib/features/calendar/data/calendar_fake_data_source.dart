@@ -14,6 +14,7 @@ typedef CalendarMealPickerOption = ({
   String fat,
   List<String> ingredients,
   bool selected,
+  String? blockReason,
 });
 
 class CalendarFakeDataSource {
@@ -276,6 +277,7 @@ class CalendarFakeDataSource {
           fat: '12',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_egg_avocado_toast,
@@ -286,6 +288,7 @@ class CalendarFakeDataSource {
           fat: '5',
           ingredients: ingredients,
           selected: true,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_greek_yogurt_parfait,
@@ -296,6 +299,7 @@ class CalendarFakeDataSource {
           fat: '9',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_turkey_cheese_wrap,
@@ -306,6 +310,7 @@ class CalendarFakeDataSource {
           fat: '16',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_banana_protein_pancakes,
@@ -316,6 +321,7 @@ class CalendarFakeDataSource {
           fat: '13',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_smoked_salmon_bagel,
@@ -326,6 +332,7 @@ class CalendarFakeDataSource {
           fat: '17',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
       ],
       1 => [
@@ -338,6 +345,7 @@ class CalendarFakeDataSource {
           fat: '18',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_salmon_rice_plate,
@@ -348,6 +356,7 @@ class CalendarFakeDataSource {
           fat: '21',
           ingredients: ingredients,
           selected: true,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_beef_vegetable_box,
@@ -358,6 +367,7 @@ class CalendarFakeDataSource {
           fat: '14',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_shrimp_noodle_bowl,
@@ -368,6 +378,7 @@ class CalendarFakeDataSource {
           fat: '11',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_chicken_caesar_wrap,
@@ -378,6 +389,7 @@ class CalendarFakeDataSource {
           fat: '16',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_veggie_pasta_box,
@@ -388,6 +400,7 @@ class CalendarFakeDataSource {
           fat: '12',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
       ],
       _ => [
@@ -400,6 +413,7 @@ class CalendarFakeDataSource {
           fat: '14',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_tuna_potato_plate,
@@ -410,6 +424,7 @@ class CalendarFakeDataSource {
           fat: '18',
           ingredients: ingredients,
           selected: true,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_steak_mushroom_plate,
@@ -420,6 +435,7 @@ class CalendarFakeDataSource {
           fat: '5',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_chicken_soup_box,
@@ -430,6 +446,7 @@ class CalendarFakeDataSource {
           fat: '12',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_halloumi_salad,
@@ -440,6 +457,7 @@ class CalendarFakeDataSource {
           fat: '20',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
         (
           title: locale.calendar_meal_light_fajita_bowl,
@@ -450,6 +468,7 @@ class CalendarFakeDataSource {
           fat: '15',
           ingredients: ingredients,
           selected: false,
+          blockReason: null,
         ),
       ],
     };

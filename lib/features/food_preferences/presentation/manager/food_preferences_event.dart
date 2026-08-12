@@ -8,6 +8,10 @@ class GetFoodPreferencesEvent extends FoodPreferencesEvent {
   const GetFoodPreferencesEvent();
 }
 
+class GetFoodPreferencesCatalogEvent extends FoodPreferencesEvent {
+  const GetFoodPreferencesCatalogEvent();
+}
+
 class UpdateFoodPreferencesEvent extends FoodPreferencesEvent {
   const UpdateFoodPreferencesEvent(this.preferences);
 

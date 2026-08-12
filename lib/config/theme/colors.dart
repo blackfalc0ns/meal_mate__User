@@ -197,4 +197,18 @@ class AppColors {
   static const Color calendarLightShadow = Color(0x08000000);
   static const Color calendarCardShadow = Color(0x1A000000);
   static const Color calendarCurrentShadow = Color(0x66FF6B57);
+
+  // Addresses choose location.
+  static const Color addressesBackground = Color(0xFFF4F5F7);
+  static const Color addressesDeepGreen = Color(0xFF015329);
+  static const Color addressesPrimary = Color(0xFF04994E);
+  static const Color addressesOrange = Color(0xFFEEAE4E);
+  static const Color addressesTextMuted = Color(0xFF7A869A);
+  static const Color addressesFormTextMuted = Color(0xFF6B7380);
+  static const Color addressesInputLabel = Color(0xFF595E69);
+  static const Color addressesInputHint = Color(0xFF969CA6);
+  static const Color addressesInputBorder = Color(0xFFDBDEE3);
+  static const Color addressesInputIconBackground = Color(0xFFEDF7F2);
+  static const Color addressesBuildingBackground = Color(0xFFF7F7F7);
+  static const Color addressesOptionalText = Color(0xFF8C919C);
 }

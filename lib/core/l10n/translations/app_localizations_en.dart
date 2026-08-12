@@ -884,6 +884,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addresses_save => 'Save address';
 
   @override
+  String get addresses_choose_location_title => 'Choose home location';
+
+  @override
+  String get addresses_choose_location_subtitle =>
+      'Choose the main delivery location for home';
+
+  @override
+  String get addresses_confirm_location => 'Confirm location';
+
+  @override
+  String get addresses_home_address_title => 'Home address';
+
+  @override
+  String get addresses_home_address_subtitle =>
+      'Enter your home address to set the main delivery location';
+
+  @override
+  String get addresses_governorate_label => 'Governorate';
+
+  @override
+  String get addresses_governorate_hint => 'Choose governorate';
+
+  @override
+  String get addresses_area_label => 'Area';
+
+  @override
+  String get addresses_area_hint => 'Choose area';
+
+  @override
+  String get addresses_block_label => 'Block';
+
+  @override
+  String get addresses_block_hint => 'Choose block';
+
+  @override
+  String get addresses_street_label => 'Street';
+
+  @override
+  String get addresses_street_hint => 'Write street name';
+
+  @override
+  String get addresses_avenue_label => 'Avenue';
+
+  @override
+  String get addresses_avenue_hint => 'Write avenue name';
+
+  @override
+  String get addresses_optional => '(optional)';
+
+  @override
+  String get addresses_building_type_label => 'Building type';
+
+  @override
+  String get addresses_building_type_home => 'Home';
+
+  @override
+  String get addresses_building_type_building => 'Building';
+
+  @override
+  String get addresses_floor_label => 'Floor';
+
+  @override
+  String get addresses_floor_hint => 'Choose floor';
+
+  @override
+  String get addresses_building_number_label => 'House / building number';
+
+  @override
+  String get addresses_building_number_hint => 'Write number';
+
+  @override
+  String get addresses_apartment_number_label => 'Apartment number';
+
+  @override
+  String get addresses_apartment_number_hint => 'Write apartment number';
+
+  @override
+  String get addresses_use_current_location => 'Use my current location';
+
+  @override
+  String get addresses_use_current_location_subtitle =>
+      'Set my current location as home address';
+
+  @override
   String get profile_security => 'Security and privacy';
 
   @override

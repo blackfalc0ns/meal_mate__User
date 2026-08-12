@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/food_preferences/data/data_source/food_preferences_remote_data_source.dart';
 import 'package:meal_meat_user/features/food_preferences/data/mapper/food_preferences_mapper.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/repo/food_preferences_repository.dart';
 
@@ -15,6 +16,14 @@ class FoodPreferencesRepositoryImpl implements FoodPreferencesRepository {
   Future<ApiResult<FoodPreferencesEntity>> getFoodPreferences() {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getFoodPreferences();
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<FoodPreferencesCatalogEntity>> getFoodPreferencesCatalog() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getFoodPreferencesCatalog();
       return response.toEntity();
     });
   }

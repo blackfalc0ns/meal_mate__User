@@ -74,6 +74,8 @@ import '../../features/food_preferences/data/repo/food_preferences_repository_im
     as _i1070;
 import '../../features/food_preferences/domain/repo/food_preferences_repository.dart'
     as _i62;
+import '../../features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart'
+    as _i32;
 import '../../features/food_preferences/domain/usecase/get_food_preferences_usecase.dart'
     as _i608;
 import '../../features/food_preferences/domain/usecase/update_food_preferences_usecase.dart'
@@ -247,6 +249,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
       ),
     );
+    gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
+      () => _i32.GetFoodPreferencesCatalogUseCase(
+        gh<_i62.FoodPreferencesRepository>(),
+      ),
+    );
     gh.factory<_i608.GetFoodPreferencesUseCase>(
       () =>
           _i608.GetFoodPreferencesUseCase(gh<_i62.FoodPreferencesRepository>()),
@@ -269,6 +276,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i420.FoodPreferencesViewModel>(
       () => _i420.FoodPreferencesViewModel(
         gh<_i608.GetFoodPreferencesUseCase>(),
+        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
         gh<_i635.UpdateFoodPreferencesUseCase>(),
       ),
     );

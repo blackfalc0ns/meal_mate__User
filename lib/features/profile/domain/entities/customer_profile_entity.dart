@@ -12,6 +12,7 @@ class CustomerProfileEntity {
     this.dateOfBirth,
     required this.onboardingCompleted,
     this.profileImageStorageKey,
+    this.profileImageUrl,
     required this.accountStatus,
   });
 
@@ -27,6 +28,7 @@ class CustomerProfileEntity {
   final String? dateOfBirth;
   final bool onboardingCompleted;
   final String? profileImageStorageKey;
+  final String? profileImageUrl;
   final String accountStatus;
 
   String get displayContact => email ?? phoneNumber ?? '';

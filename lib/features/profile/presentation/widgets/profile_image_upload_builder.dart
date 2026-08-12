@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/upload_file/domain/entities/upload_file_request_entity.dart';
 import 'package:meal_meat_user/core/widget/app_image_source_sheet.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_image_request_entity.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
@@ -40,7 +39,7 @@ class ProfileImageUploadBuilder extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.upload.errorMessage != current.upload.errorMessage &&
               current.upload.errorMessage != null,
-          listener: (context, state) => _showMessage(
+          listener: (context, state) => _showErrorMessage(
             context,
             state.upload.errorMessage ?? locale.profile_photo_upload_error,
           ),
@@ -49,7 +48,7 @@ class ProfileImageUploadBuilder extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.action.errorMessage != current.action.errorMessage &&
               current.action.errorMessage != null,
-          listener: (context, state) => _showMessage(
+          listener: (context, state) => _showErrorMessage(
             context,
             state.action.errorMessage ?? locale.profile_photo_upload_error,
           ),
@@ -59,7 +58,7 @@ class ProfileImageUploadBuilder extends StatelessWidget {
               previous.action.isSuccess != current.action.isSuccess &&
               current.action.isSuccess,
           listener: (context, state) =>
-              _showMessage(context, locale.profile_photo_upload_success),
+              _showSuccessMessage(context, locale.profile_photo_upload_success),
         ),
       ],
       child: BlocBuilder<ProfileViewModel, ProfileState>(
@@ -108,7 +107,7 @@ class ProfileImageUploadBuilder extends StatelessWidget {
       );
     } catch (_) {
       if (!context.mounted) return;
-      _showMessage(context, locale.profile_photo_permission_error);
+      _showErrorMessage(context, locale.profile_photo_permission_error);
     }
   }
 
@@ -127,24 +126,9 @@ class ProfileImageUploadBuilder extends StatelessWidget {
     );
   }
 
-  void _showMessage(BuildContext context, String message) {
-    final color = context.colorScheme;
+  void _showErrorMessage(BuildContext context, String message) =>
+      CustomSnackbar.showError(context: context, message: message);
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          backgroundColor: color.primary,
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            message,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
-              color: color.onPrimary,
-            ),
-          ),
-        ),
-      );
-  }
+  void _showSuccessMessage(BuildContext context, String message) =>
+      CustomSnackbar.showSuccess(context: context, message: message);
 }

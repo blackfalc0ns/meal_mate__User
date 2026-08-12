@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -95,7 +96,9 @@ class AddressesScreen extends StatelessWidget {
                     SizedBox(
                       height: Spacing.addressesAddButtonHeight,
                       child: OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.addressChooseLocation),
                         icon: Icon(
                           Icons.add_circle_rounded,
                           color: color.primary,

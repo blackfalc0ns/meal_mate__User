@@ -1730,6 +1730,168 @@ abstract class AppLocalizations {
   /// **'Save address'**
   String get addresses_save;
 
+  /// No description provided for @addresses_choose_location_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose home location'**
+  String get addresses_choose_location_title;
+
+  /// No description provided for @addresses_choose_location_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the main delivery location for home'**
+  String get addresses_choose_location_subtitle;
+
+  /// No description provided for @addresses_confirm_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm location'**
+  String get addresses_confirm_location;
+
+  /// No description provided for @addresses_home_address_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Home address'**
+  String get addresses_home_address_title;
+
+  /// No description provided for @addresses_home_address_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your home address to set the main delivery location'**
+  String get addresses_home_address_subtitle;
+
+  /// No description provided for @addresses_governorate_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Governorate'**
+  String get addresses_governorate_label;
+
+  /// No description provided for @addresses_governorate_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose governorate'**
+  String get addresses_governorate_hint;
+
+  /// No description provided for @addresses_area_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get addresses_area_label;
+
+  /// No description provided for @addresses_area_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose area'**
+  String get addresses_area_hint;
+
+  /// No description provided for @addresses_block_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get addresses_block_label;
+
+  /// No description provided for @addresses_block_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose block'**
+  String get addresses_block_hint;
+
+  /// No description provided for @addresses_street_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Street'**
+  String get addresses_street_label;
+
+  /// No description provided for @addresses_street_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write street name'**
+  String get addresses_street_hint;
+
+  /// No description provided for @addresses_avenue_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Avenue'**
+  String get addresses_avenue_label;
+
+  /// No description provided for @addresses_avenue_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write avenue name'**
+  String get addresses_avenue_hint;
+
+  /// No description provided for @addresses_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'(optional)'**
+  String get addresses_optional;
+
+  /// No description provided for @addresses_building_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Building type'**
+  String get addresses_building_type_label;
+
+  /// No description provided for @addresses_building_type_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get addresses_building_type_home;
+
+  /// No description provided for @addresses_building_type_building.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get addresses_building_type_building;
+
+  /// No description provided for @addresses_floor_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor'**
+  String get addresses_floor_label;
+
+  /// No description provided for @addresses_floor_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose floor'**
+  String get addresses_floor_hint;
+
+  /// No description provided for @addresses_building_number_label.
+  ///
+  /// In en, this message translates to:
+  /// **'House / building number'**
+  String get addresses_building_number_label;
+
+  /// No description provided for @addresses_building_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write number'**
+  String get addresses_building_number_hint;
+
+  /// No description provided for @addresses_apartment_number_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment number'**
+  String get addresses_apartment_number_label;
+
+  /// No description provided for @addresses_apartment_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write apartment number'**
+  String get addresses_apartment_number_hint;
+
+  /// No description provided for @addresses_use_current_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my current location'**
+  String get addresses_use_current_location;
+
+  /// No description provided for @addresses_use_current_location_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set my current location as home address'**
+  String get addresses_use_current_location_subtitle;
+
   /// No description provided for @profile_security.
   ///
   /// In en, this message translates to:

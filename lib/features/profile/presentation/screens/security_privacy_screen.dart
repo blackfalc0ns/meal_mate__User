@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_settings_section_card.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 
 class SecurityPrivacyScreen extends StatelessWidget {
@@ -129,24 +129,11 @@ class SecurityPrivacyScreen extends StatelessWidget {
   }
 
   void _showComingSoon(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          backgroundColor: color.primary,
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            locale.coming_soon_subtitle,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
-              color: color.onPrimary,
-            ),
-          ),
-        ),
-      );
+    CustomSnackbar.showInfo(
+      context: context,
+      message: locale.coming_soon_subtitle,
+    );
   }
 }

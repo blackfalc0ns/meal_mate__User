@@ -16,6 +16,34 @@ class Assets {
   static const String profileAvatar = '$_images/profile/profile_avatar.png';
   static const String profileDefaultAddressMap =
       '$_images/profile/profile_default_address_map.png';
+  static const String addressesChooseLocationMap =
+      '$_images/profile/addresses_choose_location_map.png';
+  static const String addressesIconApartment =
+      '$_images/profile/addresses_icon_apartment.svg';
+  static const String addressesIconArea =
+      '$_images/profile/addresses_icon_area.svg';
+  static const String addressesIconAvenue =
+      '$_images/profile/addresses_icon_avenue.svg';
+  static const String addressesIconBlock =
+      '$_images/profile/addresses_icon_block.svg';
+  static const String addressesIconBuilding =
+      '$_images/profile/addresses_icon_building.svg';
+  static const String addressesIconFloor =
+      '$_images/profile/addresses_icon_floor.svg';
+  static const String addressesIconGovernorate =
+      '$_images/profile/addresses_icon_governorate.svg';
+  static const String addressesIconGps =
+      '$_images/profile/addresses_icon_gps.svg';
+  static const String addressesIconHome =
+      '$_images/profile/addresses_icon_home.svg';
+  static const String addressesIconHomeOutline =
+      '$_images/profile/addresses_icon_home_outline.svg';
+  static const String addressesIconNumber =
+      '$_images/profile/addresses_icon_number.svg';
+  static const String addressesIconPin =
+      '$_images/profile/addresses_icon_pin.svg';
+  static const String addressesIconStreet =
+      '$_images/profile/addresses_icon_street.svg';
   static const String profileBillingPlanBottle =
       '$_images/profile/profile_billing_plan_bottle.png';
   static const String profileBillingWallet =

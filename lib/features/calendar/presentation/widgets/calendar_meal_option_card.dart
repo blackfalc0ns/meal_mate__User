@@ -9,6 +9,8 @@ class CalendarMealOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final blockReason = option.blockReason;
+    final isBlocked = blockReason != null && blockReason.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -17,60 +19,81 @@ class CalendarMealOptionCard extends StatelessWidget {
       ),
       child: SizedBox(
         width: 317,
-        height: 105,
-        child: Row(
-          textDirection: TextDirection.ltr,
-          children: [
-            CalendarSelectButton(selected: option.selected),
-            const SizedBox(width: Spacing.lg),
-            Expanded(
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 3),
-                    Text(
-                      option.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size15,
-                        color: color.onSurface,
-                      ).copyWith(height: 24.96 / 16.64),
-                    ),
-                    const SizedBox(height: 7),
-                    CalendarMealPickerNutritionRow(option: option),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: Spacing.xs),
-                      child: Text(
-                        locale.calendar_ingredients,
-                        style: getBoldStyle(
+        height: isBlocked ? 126 : 105,
+        child: Opacity(
+          opacity: isBlocked ? 0.58 : 1,
+          child: Row(
+            textDirection: TextDirection.ltr,
+            children: [
+              CalendarSelectButton(
+                selected: option.selected,
+                enabled: !isBlocked,
+              ),
+              const SizedBox(width: Spacing.lg),
+              Expanded(
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 3),
+                      Text(
+                        option.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getMediumStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
+                          fontSize: FontSize.size15,
                           color: color.onSurface,
+                        ).copyWith(height: 24.96 / 16.64),
+                      ),
+                      const SizedBox(height: 7),
+                      CalendarMealPickerNutritionRow(option: option),
+                      if (isBlocked) ...[
+                        const SizedBox(height: Spacing.xs),
+                        Text(
+                          blockReason,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.error,
+                          ),
+                        ),
+                      ],
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: Spacing.xs),
+                        child: Text(
+                          locale.calendar_ingredients,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.onSurface,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    CalendarMealIngredientRow(ingredients: option.ingredients),
-                  ],
+                      const SizedBox(height: Spacing.xs),
+                      CalendarMealIngredientRow(
+                        ingredients: option.ingredients,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: Spacing.xss),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15.6),
-              child: Image.asset(
-                option.imageAsset,
-                width: 92,
-                height: 92,
-                fit: BoxFit.cover,
+              const SizedBox(width: Spacing.xss),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.6),
+                child: Image.asset(
+                  option.imageAsset,
+                  width: 92,
+                  height: 92,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

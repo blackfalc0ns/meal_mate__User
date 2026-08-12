@@ -1,5 +1,7 @@
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 
 extension FoodPreferencesResponseDtoMapper on FoodPreferencesResponseDto {
@@ -44,5 +46,50 @@ extension FoodPreferenceItemEntityMapper on FoodPreferenceItemEntity {
       nameEn: nameEn,
       severity: severity,
     );
+  }
+}
+
+extension FoodPreferencesCatalogResponseDtoMapper
+    on FoodPreferencesCatalogResponseDto {
+  FoodPreferencesCatalogEntity toEntity() {
+    return FoodPreferencesCatalogEntity(
+      ingredients:
+          ingredients?.map((item) => item.toCatalogItemEntity()).toList() ??
+          const [],
+      allergens:
+          allergens?.map((item) => item.toCatalogItemEntity()).toList() ??
+          const [],
+    );
+  }
+}
+
+extension FoodPreferencesCatalogIngredientResponseDtoMapper
+    on FoodPreferencesCatalogIngredientResponseDto {
+  FoodPreferenceCatalogItemEntity toCatalogItemEntity() {
+    return FoodPreferenceCatalogItemEntity(
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      category: category,
+      allergenCodes: allergenCodes ?? const [],
+    );
+  }
+}
+
+extension FoodPreferencesCatalogAllergenResponseDtoMapper
+    on FoodPreferencesCatalogAllergenResponseDto {
+  FoodPreferenceCatalogItemEntity toCatalogItemEntity() {
+    return FoodPreferenceCatalogItemEntity(
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+    );
+  }
+}
+
+extension FoodPreferenceCatalogItemEntityMapper
+    on FoodPreferenceCatalogItemEntity {
+  FoodPreferenceItemEntity toPreferenceItemEntity() {
+    return FoodPreferenceItemEntity(code: code, nameAr: nameAr, nameEn: nameEn);
   }
 }

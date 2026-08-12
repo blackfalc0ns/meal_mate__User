@@ -5,6 +5,8 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_choice_chip.dart';
 
+typedef DietaryPreferencesOption = ({String code, String label});
+
 class DietaryPreferencesSectionCard extends StatelessWidget {
   const DietaryPreferencesSectionCard({
     super.key,
@@ -23,7 +25,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
 
   final String title;
   final IconData icon;
-  final List<String> options;
+  final List<DietaryPreferencesOption> options;
   final Set<String> selectedOptions;
   final ValueChanged<String> onOptionSelected;
   final double headerTopInset;
@@ -102,9 +104,9 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                       //choicesSpacing,
                     ),
                     child: DietaryPreferencesChoiceChip(
-                      label: option,
-                      isSelected: selectedOptions.contains(option),
-                      onSelected: (_) => onOptionSelected(option),
+                      label: option.label,
+                      isSelected: selectedOptions.contains(option.code),
+                      onSelected: (_) => onOptionSelected(option.code),
                     ),
                   ),
                 ),

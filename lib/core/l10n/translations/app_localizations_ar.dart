@@ -869,6 +869,90 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addresses_save => 'حفظ العنوان';
 
   @override
+  String get addresses_choose_location_title => 'اختيار موقع البيت';
+
+  @override
+  String get addresses_choose_location_subtitle =>
+      'اختر موقع التوصيل الأساسي للمنزل';
+
+  @override
+  String get addresses_confirm_location => 'تأكــــيـد المــوقـــع';
+
+  @override
+  String get addresses_home_address_title => 'عنوان المنزل';
+
+  @override
+  String get addresses_home_address_subtitle =>
+      'أدخل عنوان منزلك لتحديد موقع التوصيل الأساسي';
+
+  @override
+  String get addresses_governorate_label => 'المحافظة';
+
+  @override
+  String get addresses_governorate_hint => 'اختر المحافظة';
+
+  @override
+  String get addresses_area_label => 'المنطقة';
+
+  @override
+  String get addresses_area_hint => 'اختر المنطقة';
+
+  @override
+  String get addresses_block_label => 'القطعة';
+
+  @override
+  String get addresses_block_hint => 'اختر القطعة';
+
+  @override
+  String get addresses_street_label => 'الشارع';
+
+  @override
+  String get addresses_street_hint => 'اكتب اسم الشارع';
+
+  @override
+  String get addresses_avenue_label => 'الجادة';
+
+  @override
+  String get addresses_avenue_hint => 'اكتب اسم الجادة';
+
+  @override
+  String get addresses_optional => '(اختياري)';
+
+  @override
+  String get addresses_building_type_label => 'نوع المبنى';
+
+  @override
+  String get addresses_building_type_home => 'منزل';
+
+  @override
+  String get addresses_building_type_building => 'بناية';
+
+  @override
+  String get addresses_floor_label => 'الدور';
+
+  @override
+  String get addresses_floor_hint => 'اختر الدور';
+
+  @override
+  String get addresses_building_number_label => 'رقم المنزل / البناية';
+
+  @override
+  String get addresses_building_number_hint => 'اكتب الرقم';
+
+  @override
+  String get addresses_apartment_number_label => 'رقم الشقة';
+
+  @override
+  String get addresses_apartment_number_hint => 'اكتب رقم الشقة';
+
+  @override
+  String get addresses_use_current_location => 'استخدام موقعي الحالي';
+
+  @override
+  String get addresses_use_current_location_subtitle =>
+      'حدد موقعي الحالي كعنوان للبيت';
+
+  @override
   String get profile_security => 'الأمان والخصوصية';
 
   @override

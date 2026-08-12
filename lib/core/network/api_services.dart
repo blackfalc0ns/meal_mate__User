@@ -23,6 +23,7 @@ import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_r
 import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
@@ -136,6 +137,9 @@ abstract class ApiServices {
 
   @GET(EndPoints.customerFoodPreferences)
   Future<FoodPreferencesResponseDto> getFoodPreferences();
+
+  @GET(EndPoints.customerFoodPreferencesCatalog)
+  Future<FoodPreferencesCatalogResponseDto> getFoodPreferencesCatalog();
 
   @PUT(EndPoints.customerFoodPreferences)
   Future<void> updateFoodPreferences(@Body() FoodPreferencesRequestDto request);

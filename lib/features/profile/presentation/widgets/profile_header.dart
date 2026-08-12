@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 
@@ -26,7 +25,7 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final imageUrl = _buildProfileImageUrl(profile?.profileImageStorageKey);
+    final imageUrl = profile?.profileImageUrl;
 
     return SizedBox(
       height: Spacing.profileHeaderHeight,
@@ -170,12 +169,5 @@ class ProfileHeader extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String? _buildProfileImageUrl(String? storageKey) {
-    if (storageKey == null || storageKey.isEmpty) return null;
-
-    final query = Uri(queryParameters: {'key': storageKey}).query;
-    return '${NetworkConstants.baseUrl}${EndPoints.uploadContent}?$query';
   }
 }

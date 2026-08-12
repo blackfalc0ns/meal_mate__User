@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/payment/presentation/screens/payment_suc
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/addresses_screen.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/dietary_preferences_screen.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/add_allergy_screen.dart';
@@ -192,6 +193,11 @@ class RouteGenerator {
         );
       case AppRoutes.addresses:
         return _buildRoute(settings: settings, page: const AddressesScreen());
+      case AppRoutes.addressChooseLocation:
+        return _buildRoute(
+          settings: settings,
+          page: const AddressChooseLocationScreen(),
+        );
       case AppRoutes.dietaryPreferences:
         return _buildRoute(
           settings: settings,
