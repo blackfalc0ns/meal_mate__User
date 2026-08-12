@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/subscriptions_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_card.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_notice.dart';
@@ -22,6 +23,7 @@ class SubscriptionsScreen extends StatefulWidget {
 
 class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   static const _dataSource = SubscriptionsFakeDataSource();
+  int? _selectedTypeIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +122,8 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                             Icons.calendar_month_rounded,
                             Icons.store_rounded,
                           ],
-                          onTap: _openIndividualSubscription,
+                          isSelected: _selectedTypeIndex == 0,
+                          onTap: () => _selectSubscriptionType(0),
                         ),
                         const SizedBox(height: Spacing.sm),
                         SubscriptionTypeCard(
@@ -138,11 +141,27 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                             Icons.person_rounded,
                             Icons.groups_rounded,
                           ],
-                          onTap: _openFamilySubscription,
+                          isSelected: _selectedTypeIndex == 1,
+                          onTap: () => _selectSubscriptionType(1),
                         ),
                         const SizedBox(height: Spacing.base),
                         SubscriptionTypeNotice(
                           message: locale.subscription_type_notice_label,
+                        ),
+                        const SizedBox(height: Spacing.md),
+                        AppButton.filled(
+                          text: locale.family_next_program,
+                          onPressed: _selectedTypeIndex == null
+                              ? null
+                              : _openSelectedSubscription,
+                          borderRadius: Spacing.radiusPill,
+                          textColor: color.onPrimary,
+                          fontSize: FontSize.size12,
+                          iconWidget: Icon(
+                            Icons.chevron_right_rounded,
+                            color: color.onPrimary,
+                            size: Spacing.iconMd,
+                          ),
                         ),
                       ]),
                     ),
@@ -156,11 +175,16 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     );
   }
 
-  void _openIndividualSubscription() {
-    context.pushNamed(AppRoutes.subscriptionProgramSelection);
+  void _selectSubscriptionType(int index) {
+    setState(() => _selectedTypeIndex = index);
   }
 
-  void _openFamilySubscription() {
+  void _openSelectedSubscription() {
+    if (_selectedTypeIndex == 0) {
+      context.pushNamed(AppRoutes.subscriptionProgramSelection);
+      return;
+    }
+
     context.pushNamed(AppRoutes.familyPlanDetails);
   }
 }

@@ -24,7 +24,7 @@ class SubscriptionProgramSelectionView extends StatefulWidget {
 class _SubscriptionProgramSelectionViewState
     extends State<SubscriptionProgramSelectionView> {
   static const _dataSource = SubscriptionsFakeDataSource();
-  int _selectedProgramIndex = 0;
+  int? _selectedProgramIndex;
 
   @override
   Widget build(BuildContext context) {

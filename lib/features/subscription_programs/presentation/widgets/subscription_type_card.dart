@@ -14,6 +14,7 @@ class SubscriptionTypeCard extends StatelessWidget {
     required this.description,
     required this.features,
     required this.icons,
+    required this.isSelected,
     required this.onTap,
   });
 
@@ -22,6 +23,7 @@ class SubscriptionTypeCard extends StatelessWidget {
   final String description;
   final List<String> features;
   final List<IconData> icons;
+  final bool isSelected;
   final VoidCallback onTap;
 
   @override
@@ -70,10 +72,14 @@ class SubscriptionTypeCard extends StatelessWidget {
                       Spacing.subscriptionProgramCardRadius,
                     ),
                     border: Border.all(
-                      color: type.isFamily
+                      color: isSelected
+                          ? accentColor
+                          : type.isFamily
                           ? color.secondary
                           : color.primary.withValues(alpha: 0.42),
-                      width: Spacing.border,
+                      width: isSelected
+                          ? Spacing.border + Spacing.hairline
+                          : Spacing.border,
                     ),
                     gradient: type.isFamily
                         ? null
@@ -204,14 +210,25 @@ class SubscriptionTypeCard extends StatelessWidget {
                                 width: Spacing.lg,
                                 height: Spacing.lg,
                                 decoration: BoxDecoration(
-                                  color: color.surface,
+                                  color: isSelected
+                                      ? accentColor
+                                      : color.surface,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: color.onSurfaceVariant.withValues(
-                                      alpha: 0.72,
-                                    ),
+                                    color: isSelected
+                                        ? accentColor
+                                        : color.onSurfaceVariant.withValues(
+                                            alpha: 0.72,
+                                          ),
                                   ),
                                 ),
+                                child: isSelected
+                                    ? Icon(
+                                        Icons.check_rounded,
+                                        size: Spacing.iconSm,
+                                        color: color.onPrimary,
+                                      )
+                                    : null,
                               ),
                             ],
                           ),

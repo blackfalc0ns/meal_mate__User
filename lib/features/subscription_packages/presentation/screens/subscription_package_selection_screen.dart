@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/subscriptions_fake_data_source.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
@@ -26,8 +27,9 @@ class _SubscriptionPackageSelectionScreenState
     extends State<SubscriptionPackageSelectionScreen> {
   static const _dataSource = SubscriptionsFakeDataSource();
 
-  int _selectedPackageIndex = 0;
-  bool _isFamilyPackageSelected = false;
+  int? _selectedPackageIndex;
+  int? _selectedPlanDetailsIndex;
+  final bool _isFamilyPackageSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,29 @@ class _SubscriptionPackageSelectionScreenState
         titleWidget: const AppLogo(alignment: CrossAxisAlignment.center),
         backgroundColor: color.surface,
         onBackPressed: () => Navigator.maybePop(context),
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.lg,
+            vertical: Spacing.md,
+          ),
+          child: AppButton.filled(
+            text: locale.subscription_choose_plan_button,
+            onPressed: _selectedPlanDetailsIndex == null
+                ? null
+                : _openSelectedPackage,
+            borderRadius: Spacing.radiusPill,
+            textColor: color.onPrimary,
+            fontSize: FontSize.size12,
+            iconWidget: Icon(
+              Icons.chevron_right_rounded,
+              color: color.onPrimary,
+              size: Spacing.iconMd,
+            ),
+          ),
+        ),
       ),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -123,10 +148,19 @@ class _SubscriptionPackageSelectionScreenState
   }
 
   void _selectPackage(int index, int planDetailsIndex) {
-    setState(() => _selectedPackageIndex = index);
+    setState(() {
+      _selectedPackageIndex = index;
+      _selectedPlanDetailsIndex = planDetailsIndex;
+    });
+  }
+
+  void _openSelectedPackage() {
+    final selectedPlanDetailsIndex = _selectedPlanDetailsIndex;
+    if (selectedPlanDetailsIndex == null) return;
+
     context.pushNamed(
       AppRoutes.subscriptionPlanDetails,
-      arguments: planDetailsIndex,
+      arguments: selectedPlanDetailsIndex,
     );
   }
 }
