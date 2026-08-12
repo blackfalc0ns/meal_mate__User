@@ -14,9 +14,9 @@ import 'package:meal_meat_user/features/payment/presentation/screens/payment_suc
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/addresses_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/dietary_preferences_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/add_allergy_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/screens/addresses_screen.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/screens/dietary_preferences_screen.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/screens/add_allergy_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/health_goals_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';

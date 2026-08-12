@@ -1,0 +1,106 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_usecase.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/usecase/update_food_preferences_usecase.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
+
+@injectable
+class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
+  FoodPreferencesViewModel(
+    this._getFoodPreferencesUseCase,
+    this._updateFoodPreferencesUseCase,
+  ) : super(const FoodPreferencesState());
+
+  final GetFoodPreferencesUseCase _getFoodPreferencesUseCase;
+  final UpdateFoodPreferencesUseCase _updateFoodPreferencesUseCase;
+
+  void doIntent(FoodPreferencesEvent event) {
+    switch (event) {
+      case GetFoodPreferencesEvent():
+        _getFoodPreferences();
+      case UpdateFoodPreferencesEvent():
+        _updateFoodPreferences(event.preferences);
+    }
+  }
+
+  Future<void> _getFoodPreferences() async {
+    emit(
+      state.copyWith(
+        preferences: state.preferences.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _getFoodPreferencesUseCase();
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            preferences: state.preferences.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              data: result.data,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            preferences: state.preferences.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _updateFoodPreferences(FoodPreferencesEntity preferences) async {
+    await _runAction(() => _updateFoodPreferencesUseCase(preferences));
+    if (state.action.isSuccess) {
+      _getFoodPreferences();
+    }
+  }
+
+  Future<void> _runAction(Future<ApiResult<void>> Function() action) async {
+    emit(
+      state.copyWith(
+        action: state.action.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearError: true,
+        ),
+      ),
+    );
+
+    final result = await action();
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            action: state.action.copyWith(isLoading: false, isSuccess: true),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            action: state.action.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              errorMessage: result.failure.errorMessage,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+}

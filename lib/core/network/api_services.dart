@@ -20,15 +20,15 @@ import 'package:meal_meat_user/features/auth/data/models/response/resend_passwor
 import 'package:meal_meat_user/features/auth/data/models/response/resend_phone_otp_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/reset_password_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_response_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/change_customer_password_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/customer_address_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/food_preferences_request_dto.dart';
+import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/food_preferences_response_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/upload_file_response_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
+import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
 
