@@ -4,9 +4,12 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/customer_address_entity.dart';
 
 class CurrentAddressCard extends StatelessWidget {
-  const CurrentAddressCard({super.key});
+  const CurrentAddressCard({super.key, this.address});
+
+  final CustomerAddressEntity? address;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +98,9 @@ class CurrentAddressCard extends StatelessWidget {
                         ),
                         const SizedBox(width: Spacing.sm),
                         Text(
-                          locale.addresses_current_home,
+                          address?.label.isNotEmpty == true
+                              ? address!.label
+                              : locale.addresses_current_home,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
@@ -106,8 +111,10 @@ class CurrentAddressCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.sm),
                     Text(
-                      locale.addresses_current_home_details,
-                     
+                      address?.addressLine.isNotEmpty == true
+                          ? address!.addressLine
+                          : locale.addresses_current_home_details,
+
                       style: getLightStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,

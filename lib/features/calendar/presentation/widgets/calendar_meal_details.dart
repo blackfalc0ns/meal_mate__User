@@ -22,7 +22,7 @@ class CalendarMealDetails extends StatelessWidget {
           meal.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-         
+
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: 13,

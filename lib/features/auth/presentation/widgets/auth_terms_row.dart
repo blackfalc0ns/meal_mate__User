@@ -27,9 +27,7 @@ class AuthTermsRow extends StatelessWidget {
           activeColor: AppColors.primary,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
         const SizedBox(width: Spacing.xs),
         Flexible(

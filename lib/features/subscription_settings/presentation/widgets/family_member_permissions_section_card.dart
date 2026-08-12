@@ -55,7 +55,7 @@ class FamilyMemberPermissionsSectionCard extends StatelessWidget {
                 const SizedBox(width: Spacing.md),
                 Text(
                   _sectionTitle(locale),
-                
+
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size13,

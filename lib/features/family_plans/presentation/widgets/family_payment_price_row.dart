@@ -33,11 +33,14 @@ class FamilyPaymentPriceRow extends StatelessWidget {
         Text.rich(
           TextSpan(
             children: [
-               TextSpan(text: row.value,style: valueStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
-                color: valueColor,
-              ),),
+              TextSpan(
+                text: row.value,
+                style: valueStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size11,
+                  color: valueColor,
+                ),
+              ),
               TextSpan(
                 text: ' ${locale.currency}',
                 style: valueStyle(
@@ -46,10 +49,9 @@ class FamilyPaymentPriceRow extends StatelessWidget {
                   color: valueColor,
                 ),
               ),
-             
             ],
           ),
-         
+
           style: valueStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size9,

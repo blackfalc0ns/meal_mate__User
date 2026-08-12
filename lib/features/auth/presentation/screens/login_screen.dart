@@ -7,8 +7,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthFlowScreen(
-      initialPage: AuthPageType.signIn,
-    );
+    return const AuthFlowScreen(initialPage: AuthPageType.signIn);
   }
 }

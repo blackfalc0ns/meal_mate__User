@@ -83,11 +83,11 @@ class _FamilyMemberPermissionsScreenState
                           ),
                         ],
                       ),
-                      SizedBox(height: Spacing.md),
+                    SizedBox(height: Spacing.md),
                     FamilyMemberPermissionsNote(
                       note: locale.family_member_permissions_note,
                     ),
-                      SizedBox(height: Spacing.md),
+                    SizedBox(height: Spacing.md),
                   ],
                 ),
               ),

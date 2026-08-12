@@ -3,14 +3,10 @@ import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 
-
 class ErrorMessagePresenter {
   const ErrorMessagePresenter._();
 
-  static String snackBarMessage(
-    BuildContext context,
-    ApiException exception,
-  ) {
+  static String snackBarMessage(BuildContext context, ApiException exception) {
     return userFacingMessage(context, exception);
   }
 

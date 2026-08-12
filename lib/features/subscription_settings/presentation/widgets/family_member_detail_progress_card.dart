@@ -44,11 +44,10 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center, 
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                
-              
                 SizedBox(
                   width: Spacing.familyMemberDetailCalendarButtonWidth,
                   height: Spacing.familyMemberDetailCalendarButtonHeight,

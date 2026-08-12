@@ -11,7 +11,10 @@ class CalendarMealOptionCard extends StatelessWidget {
     final locale = context.localization;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.lg, vertical: Spacing.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.lg,
+        vertical: Spacing.xs,
+      ),
       child: SizedBox(
         width: 317,
         height: 105,

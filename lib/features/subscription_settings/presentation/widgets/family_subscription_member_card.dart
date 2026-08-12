@@ -33,7 +33,7 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          
+
           Text(
             member.name,
             locale: Locale(locale.localeName),
@@ -49,7 +49,6 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             
               Container(
                 width: Spacing.xss,
                 height: Spacing.xss,
@@ -61,7 +60,7 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-               Text(
+              Text(
                 member.statusLabel,
                 locale: Locale(locale.localeName),
                 maxLines: 1,
@@ -74,7 +73,6 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
                       : color.onSurfaceVariant,
                 ),
               ),
-              
             ],
           ),
         ],

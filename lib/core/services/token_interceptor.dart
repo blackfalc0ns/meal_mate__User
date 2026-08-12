@@ -31,12 +31,7 @@ class TokenInterceptor extends QueuedInterceptor {
 
       handler.next(options);
     } catch (e) {
-      handler.reject(
-        DioException(
-          requestOptions: options,
-          error: e,
-        ),
-      );
+      handler.reject(DioException(requestOptions: options, error: e));
     }
   }
 }

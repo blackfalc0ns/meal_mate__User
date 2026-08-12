@@ -61,8 +61,9 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
                 widget.baseColor ?? AppColors.shimmerBase,
               ],
               stops: const [0.0, 0.5, 1.0],
-              transform:
-                  _SlidingGradientTransform(slidePercent: _animation.value),
+              transform: _SlidingGradientTransform(
+                slidePercent: _animation.value,
+              ),
             ).createShader(bounds);
           },
           child: child,
@@ -109,9 +110,9 @@ class ShimmerPlaceholder extends StatelessWidget {
     super.key,
     this.size = Spacing.avatarMd,
     this.margin,
-  })  : width = null,
-        height = null,
-        borderRadius = null;
+  }) : width = null,
+       height = null,
+       borderRadius = null;
 
   final double? width;
   final double? height;

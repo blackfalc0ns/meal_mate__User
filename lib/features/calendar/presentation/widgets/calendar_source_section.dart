@@ -19,7 +19,7 @@ class CalendarSourceSection extends StatelessWidget {
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size11,
               color: color.onSurface,
-            )
+            ),
           ),
           const SizedBox(height: 2),
           Row(

@@ -8,10 +8,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 
 class LoginPasswordField extends StatefulWidget {
-  const LoginPasswordField({
-    super.key,
-    required this.controller,
-  });
+  const LoginPasswordField({super.key, required this.controller});
 
   final TextEditingController controller;
 

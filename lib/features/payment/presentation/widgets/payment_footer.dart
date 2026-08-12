@@ -23,7 +23,10 @@ class PaymentFooter extends StatelessWidget {
     final l10n = context.localization;
 
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: Spacing.lg, vertical: Spacing.base),
+      padding: EdgeInsets.symmetric(
+        horizontal: Spacing.lg,
+        vertical: Spacing.base,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

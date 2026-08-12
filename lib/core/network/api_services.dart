@@ -20,6 +20,15 @@ import 'package:meal_meat_user/features/auth/data/models/response/resend_passwor
 import 'package:meal_meat_user/features/auth/data/models/response/resend_phone_otp_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/reset_password_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/change_customer_password_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/food_preferences_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/food_preferences_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/upload_file_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
 
@@ -80,4 +89,54 @@ abstract class ApiServices {
   @GET(EndPoints.callingCodes)
   @Extra({TokenInterceptor.skipAuthKey: true})
   Future<List<CallingCodeResponseDto>> getCallingCodes();
+
+  @GET(EndPoints.customerProfile)
+  Future<CustomerProfileResponseDto> getCustomerProfile();
+
+  @PUT(EndPoints.customerProfile)
+  Future<void> updateCustomerProfile(
+    @Body() UpdateCustomerProfileRequestDto request,
+  );
+
+  @MultiPart()
+  @POST(EndPoints.uploads)
+  Future<UploadFileResponseDto> uploadFile(
+    @Part(name: 'file') MultipartFile file,
+    @Part(name: 'scope') String scope,
+    @Part(name: 'folder') String folder,
+  );
+
+  @POST(EndPoints.customerProfileImage)
+  Future<void> updateCustomerProfileImage(
+    @Body() ProfileImageRequestDto request,
+  );
+
+  @DELETE(EndPoints.customerProfileImage)
+  Future<void> deleteCustomerProfileImage();
+
+  @GET(EndPoints.customerAddresses)
+  Future<List<CustomerAddressResponseDto>> getCustomerAddresses();
+
+  @POST(EndPoints.customerAddresses)
+  Future<void> addCustomerAddress(@Body() CustomerAddressRequestDto request);
+
+  @PUT(EndPoints.customerAddress)
+  Future<void> updateCustomerAddress(
+    @Path('addressId') String addressId,
+    @Body() CustomerAddressRequestDto request,
+  );
+
+  @DELETE(EndPoints.customerAddress)
+  Future<void> deleteCustomerAddress(@Path('addressId') String addressId);
+
+  @PUT(EndPoints.customerPassword)
+  Future<void> changeCustomerPassword(
+    @Body() ChangeCustomerPasswordRequestDto request,
+  );
+
+  @GET(EndPoints.customerFoodPreferences)
+  Future<FoodPreferencesResponseDto> getFoodPreferences();
+
+  @PUT(EndPoints.customerFoodPreferences)
+  Future<void> updateFoodPreferences(@Body() FoodPreferencesRequestDto request);
 }

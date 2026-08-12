@@ -64,7 +64,7 @@ class FamilyFridayDeliveryCard extends StatelessWidget {
                       color: color.onSurface,
                     ),
                   ),
-                                    const SizedBox(height: Spacing.xs),
+                  const SizedBox(height: Spacing.xs),
 
                   Text(
                     locale.family_friday_delivery_subtitle,
@@ -77,7 +77,6 @@ class FamilyFridayDeliveryCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Spacing.xs),
-
                 ],
               ),
             ),

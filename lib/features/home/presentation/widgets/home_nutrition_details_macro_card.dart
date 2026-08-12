@@ -75,7 +75,7 @@ class HomeNutritionDetailsMacroCard extends StatelessWidget {
                     ),
                   ),
                 ),
-               SizedBox(width: Spacing.base),
+                SizedBox(width: Spacing.base),
                 Text(
                   label,
                   style: getSemiBoldStyle(

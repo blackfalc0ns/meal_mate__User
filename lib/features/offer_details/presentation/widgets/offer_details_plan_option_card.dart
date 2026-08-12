@@ -48,8 +48,9 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow
-                    .withValues(alpha: isSelected ? 0.08 : 0.04),
+                color: AppColors.shadow.withValues(
+                  alpha: isSelected ? 0.08 : 0.04,
+                ),
                 blurRadius: 18,
                 offset: const Offset(0, 8),
               ),

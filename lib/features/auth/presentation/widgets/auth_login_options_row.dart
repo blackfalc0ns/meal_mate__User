@@ -6,10 +6,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
 class AuthLoginOptionsRow extends StatefulWidget {
-  const AuthLoginOptionsRow({
-    super.key,
-    required this.onForgotPassword,
-  });
+  const AuthLoginOptionsRow({super.key, required this.onForgotPassword});
 
   final VoidCallback onForgotPassword;
 

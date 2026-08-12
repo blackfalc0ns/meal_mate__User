@@ -3,10 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 
 class AuthBackground extends StatelessWidget {
-  const AuthBackground({
-    super.key,
-    required this.child,
-  });
+  const AuthBackground({super.key, required this.child});
 
   final Widget child;
 

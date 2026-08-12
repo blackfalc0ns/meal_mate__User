@@ -13,8 +13,7 @@ class FamilySetupFormCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-    
-     padding: const EdgeInsets.all(Spacing.sm),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(Spacing.familySetupFormCardRadius),

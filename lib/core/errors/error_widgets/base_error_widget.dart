@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
-
 class BaseErrorWidget extends StatelessWidget {
   const BaseErrorWidget({
     super.key,

@@ -4,16 +4,20 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/network_constants.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, required this.semanticsLabel});
+  const ProfileHeader({super.key, required this.semanticsLabel, this.profile});
 
   final String semanticsLabel;
+  final CustomerProfileEntity? profile;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final imageUrl = _buildProfileImageUrl(profile?.profileImageStorageKey);
 
     return SizedBox(
       height: Spacing.profileHeaderHeight,
@@ -29,7 +33,9 @@ class ProfileHeader extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: Spacing.profileAvatarSize / 2,
-                  backgroundImage: const AssetImage(Assets.profileAvatar),
+                  backgroundImage: imageUrl == null
+                      ? const AssetImage(Assets.profileAvatar)
+                      : NetworkImage(imageUrl),
                   backgroundColor: color.surfaceContainerHighest,
                 ),
                 Positioned(
@@ -69,7 +75,9 @@ class ProfileHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      locale.profile_user_name,
+                      profile?.fullName.isNotEmpty == true
+                          ? profile!.fullName
+                          : locale.profile_user_name,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: Spacing.profileTitleFontSize,
@@ -77,7 +85,7 @@ class ProfileHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: Spacing.xs),
-    
+
                     Icon(
                       Icons.verified_rounded,
                       color: color.primary,
@@ -87,7 +95,9 @@ class ProfileHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xss),
                 Text(
-                  locale.profile_user_email,
+                  profile?.displayContact.isNotEmpty == true
+                      ? profile!.displayContact
+                      : locale.profile_user_email,
                   textDirection: TextDirection.ltr,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
@@ -131,5 +141,12 @@ class ProfileHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String? _buildProfileImageUrl(String? storageKey) {
+    if (storageKey == null || storageKey.isEmpty) return null;
+
+    final query = Uri(queryParameters: {'key': storageKey}).query;
+    return '${NetworkConstants.baseUrl}${EndPoints.uploadContent}?$query';
   }
 }

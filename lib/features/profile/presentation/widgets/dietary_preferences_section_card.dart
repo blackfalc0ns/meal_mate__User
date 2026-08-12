@@ -31,7 +31,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   final double choicesSpacing;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
-final Color  iconColor;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {

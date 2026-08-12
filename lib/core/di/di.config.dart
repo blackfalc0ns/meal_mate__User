@@ -38,6 +38,39 @@ import '../../features/auth/domain/usecase/reset_password_usecase.dart'
     as _i1029;
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
+import '../../features/profile/data/data_source/profile_remote_data_source.dart'
+    as _i998;
+import '../../features/profile/data/data_source/profile_remote_data_source_impl.dart'
+    as _i531;
+import '../../features/profile/data/repo/profile_repository_impl.dart'
+    as _i1015;
+import '../../features/profile/domain/repo/profile_repository.dart' as _i311;
+import '../../features/profile/domain/usecase/add_customer_address_usecase.dart'
+    as _i121;
+import '../../features/profile/domain/usecase/change_customer_password_usecase.dart'
+    as _i655;
+import '../../features/profile/domain/usecase/delete_customer_address_usecase.dart'
+    as _i322;
+import '../../features/profile/domain/usecase/delete_customer_profile_image_usecase.dart'
+    as _i186;
+import '../../features/profile/domain/usecase/get_customer_addresses_usecase.dart'
+    as _i650;
+import '../../features/profile/domain/usecase/get_customer_profile_usecase.dart'
+    as _i994;
+import '../../features/profile/domain/usecase/get_food_preferences_usecase.dart'
+    as _i1014;
+import '../../features/profile/domain/usecase/update_customer_address_usecase.dart'
+    as _i624;
+import '../../features/profile/domain/usecase/update_customer_profile_image_usecase.dart'
+    as _i399;
+import '../../features/profile/domain/usecase/update_customer_profile_usecase.dart'
+    as _i857;
+import '../../features/profile/domain/usecase/update_food_preferences_usecase.dart'
+    as _i88;
+import '../../features/profile/domain/usecase/upload_file_usecase.dart'
+    as _i237;
+import '../../features/profile/presentation/manager/profile_view_model.dart'
+    as _i446;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
 import '../network/external_modules.dart' as _i576;
@@ -137,6 +170,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i918.VerifyPhoneUseCase>(
       () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
     );
+    gh.factory<_i998.ProfileRemoteDataSource>(
+      () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i892.AuthViewModel>(
       () => _i892.AuthViewModel(
         gh<_i911.LoginUseCase>(),
@@ -149,6 +185,65 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i610.ResendPasswordOtpUseCase>(),
         gh<_i501.RefreshTokenUseCase>(),
         gh<_i757.LogoutUseCase>(),
+      ),
+    );
+    gh.factory<_i311.ProfileRepository>(
+      () => _i1015.ProfileRepositoryImpl(gh<_i998.ProfileRemoteDataSource>()),
+    );
+    gh.factory<_i121.AddCustomerAddressUseCase>(
+      () => _i121.AddCustomerAddressUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i655.ChangeCustomerPasswordUseCase>(
+      () => _i655.ChangeCustomerPasswordUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i322.DeleteCustomerAddressUseCase>(
+      () => _i322.DeleteCustomerAddressUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
+      () => _i186.DeleteCustomerProfileImageUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i650.GetCustomerAddressesUseCase>(
+      () => _i650.GetCustomerAddressesUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i994.GetCustomerProfileUseCase>(
+      () => _i994.GetCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i1014.GetFoodPreferencesUseCase>(
+      () => _i1014.GetFoodPreferencesUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i624.UpdateCustomerAddressUseCase>(
+      () => _i624.UpdateCustomerAddressUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i399.UpdateCustomerProfileImageUseCase>(
+      () => _i399.UpdateCustomerProfileImageUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i857.UpdateCustomerProfileUseCase>(
+      () => _i857.UpdateCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i88.UpdateFoodPreferencesUseCase>(
+      () => _i88.UpdateFoodPreferencesUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i237.UploadFileUseCase>(
+      () => _i237.UploadFileUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i446.ProfileViewModel>(
+      () => _i446.ProfileViewModel(
+        gh<_i994.GetCustomerProfileUseCase>(),
+        gh<_i857.UpdateCustomerProfileUseCase>(),
+        gh<_i237.UploadFileUseCase>(),
+        gh<_i399.UpdateCustomerProfileImageUseCase>(),
+        gh<_i186.DeleteCustomerProfileImageUseCase>(),
+        gh<_i650.GetCustomerAddressesUseCase>(),
+        gh<_i121.AddCustomerAddressUseCase>(),
+        gh<_i624.UpdateCustomerAddressUseCase>(),
+        gh<_i322.DeleteCustomerAddressUseCase>(),
+        gh<_i655.ChangeCustomerPasswordUseCase>(),
+        gh<_i1014.GetFoodPreferencesUseCase>(),
+        gh<_i88.UpdateFoodPreferencesUseCase>(),
       ),
     );
     return this;

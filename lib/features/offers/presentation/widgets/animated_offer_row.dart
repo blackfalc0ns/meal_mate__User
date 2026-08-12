@@ -44,14 +44,13 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       height: Spacing.offersDealRowHeight,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.offersHorizontalPadding,
         ),
-     
+
         scrollDirection: Axis.horizontal,
         itemCount: widget.itemCount,
         separatorBuilder: (_, _) => const SizedBox(width: Spacing.base),
@@ -61,7 +60,7 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
             parent: _controller,
             curve: Interval(start, 1, curve: Curves.easeOutBack),
           );
-    
+
           return AnimatedBuilder(
             animation: animation,
             child: widget.itemBuilder(context, index),
@@ -74,9 +73,7 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
                   child: Transform.scale(
                     scale: 0.92 + (value * 0.08),
                     child: DecoratedBox(
-                      decoration: BoxDecoration(
-                       
-                      ),
+                      decoration: BoxDecoration(),
                       child: child,
                     ),
                   ),

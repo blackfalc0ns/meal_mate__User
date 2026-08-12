@@ -26,8 +26,7 @@ class HomeSubscriptionNutritionMacro extends StatelessWidget {
     final color = context.colorScheme;
     return SizedBox(
       width: width,
-      height:
-          75,
+      height: 75,
       child: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [

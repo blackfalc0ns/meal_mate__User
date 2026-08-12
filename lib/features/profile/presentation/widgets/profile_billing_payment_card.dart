@@ -47,7 +47,7 @@ class ProfileBillingPaymentCard extends StatelessWidget {
                   height: Spacing.iconSm,
                 ),
               ),
-                            const SizedBox(width: Spacing.xs),
+              const SizedBox(width: Spacing.xs),
 
               Text(
                 locale.billing_default_payment_method,

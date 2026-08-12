@@ -6,11 +6,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+  const AuthHeader({super.key, required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;

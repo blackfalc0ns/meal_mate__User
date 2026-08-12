@@ -143,7 +143,8 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                 onToggle: _toggleAllergy,
               ),
               const SizedBox(height: Spacing.addAllergySectionGap),
-              CustomWarningWidget(messageFontSize: FontSize.size10,
+              CustomWarningWidget(
+                messageFontSize: FontSize.size10,
                 icon: Icons.warning_rounded,
                 title: locale.add_allergy_note_title,
                 message: locale.add_allergy_note_message,
@@ -161,7 +162,7 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                 onPressed: () => Navigator.of(context).maybePop(),
                 height: Spacing.addAllergyButtonHeight,
                 borderRadius: Spacing.addAllergyButtonRadius,
-                
+
                 textColor: color.onPrimary,
                 fontSize: FontSize.size12,
               ),

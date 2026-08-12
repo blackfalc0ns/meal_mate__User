@@ -52,15 +52,15 @@ class HomeNutritionDetailsTipCard extends StatelessWidget {
                       color: color.onSurface,
                     ),
                   ),
-                 SizedBox(height: Spacing.base),
+                  SizedBox(height: Spacing.base),
                   Text(
                     locale.nutrition_details_tip_message,
-                   
+
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: color.onSurfaceVariant,
-                    )
+                    ),
                   ),
                 ],
               ),

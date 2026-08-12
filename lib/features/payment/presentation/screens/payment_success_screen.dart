@@ -114,10 +114,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
               AppButton(
                 text: l10n.payment_success_button,
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRoutes.home,
-                    (route) => false,
-                  );
+                  Navigator.of(
+                    context,
+                  ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
                 },
               ),
               const SizedBox(height: Spacing.xl),

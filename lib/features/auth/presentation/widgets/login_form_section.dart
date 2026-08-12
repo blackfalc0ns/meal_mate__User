@@ -47,16 +47,12 @@ class _LoginFormSectionState extends State<LoginFormSection> {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(Spacing.xl),
-            border: Border.all(
-              color: AppColors.divider,
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.divider, width: 1),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.xl,
-              vertical: 
-        Spacing.xxl,
+              vertical: Spacing.xxl,
             ),
             child: Form(
               key: _formKey,
@@ -116,11 +112,11 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                   const SizedBox(height: Spacing.xl),
 
                   // Login Button
-                  AppButton(variant: AppButtonVariant.filled,
+                  AppButton(
+                    variant: AppButtonVariant.filled,
                     text: '${l10n.login_button}  ←',
                     onPressed: _onLogin,
                     color: AppColors.primary,
-                   
                   ),
                   const SizedBox(height: Spacing.base),
 
@@ -129,9 +125,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                   const SizedBox(height: Spacing.base),
 
                   // Google Login Button
-                  SocialLoginButton(
-                    onPressed: _onGoogleLogin,
-                  ),
+                  SocialLoginButton(onPressed: _onGoogleLogin),
                 ],
               ),
             ),

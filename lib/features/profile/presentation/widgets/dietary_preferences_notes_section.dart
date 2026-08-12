@@ -5,7 +5,14 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class DietaryPreferencesNotesSection extends StatelessWidget {
-  const DietaryPreferencesNotesSection({super.key});
+  const DietaryPreferencesNotesSection({
+    super.key,
+    this.initialValue,
+    this.onChanged,
+  });
+
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +80,8 @@ class DietaryPreferencesNotesSection extends StatelessWidget {
                 horizontal: Spacing.dietaryNotesFieldHorizontalInset,
               ),
               child: TextFormField(
+                initialValue: initialValue,
+                onChanged: onChanged,
                 textAlign: TextAlign.start,
                 textDirection: Directionality.of(context),
                 style: getLightStyle(

@@ -38,7 +38,8 @@ class SectionHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: padding ??
+          padding:
+              padding ??
               const EdgeInsets.symmetric(
                 horizontal: Spacing.screenH,
                 vertical: Spacing.sm,
@@ -90,8 +91,7 @@ class SectionHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (actionColor == null)
-                  const SizedBox(width: 4),
+                if (actionColor == null) const SizedBox(width: 4),
                 if (actionColor == null)
                   Icon(
                     Icons.arrow_forward_ios,

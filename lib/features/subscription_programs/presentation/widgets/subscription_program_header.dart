@@ -21,7 +21,7 @@ class SubscriptionProgramHeader extends StatelessWidget {
           children: [
             Text(
               locale.subscription_program_title,
-           
+
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size16,

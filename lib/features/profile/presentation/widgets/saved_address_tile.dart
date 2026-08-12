@@ -10,11 +10,13 @@ class SavedAddressTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.address,
+    this.onDelete,
   });
 
   final IconData icon;
   final String title;
   final String address;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -82,17 +84,22 @@ class SavedAddressTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.sm),
-          Container(
-            width: Spacing.addressesOverflowButtonSize,
-            height: Spacing.addressesOverflowButtonSize,
-            decoration: BoxDecoration(
-              color: color.secondaryContainer,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.more_horiz_rounded,
-              color: color.primary,
-              size: Spacing.iconMd,
+          GestureDetector(
+            onTap: onDelete,
+            child: Container(
+              width: Spacing.addressesOverflowButtonSize,
+              height: Spacing.addressesOverflowButtonSize,
+              decoration: BoxDecoration(
+                color: color.secondaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                onDelete == null
+                    ? Icons.more_horiz_rounded
+                    : Icons.delete_rounded,
+                color: color.primary,
+                size: Spacing.iconMd,
+              ),
             ),
           ),
         ],

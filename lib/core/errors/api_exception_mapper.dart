@@ -4,7 +4,6 @@ import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/location_exception.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 
-
 class ApiExceptionMapper {
   const ApiExceptionMapper._();
 

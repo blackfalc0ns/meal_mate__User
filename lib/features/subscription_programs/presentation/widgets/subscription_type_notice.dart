@@ -41,7 +41,7 @@ class SubscriptionTypeNotice extends StatelessWidget {
               semanticLabel: locale.nav_subscription,
             ),
           ),
-                     const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.md),
 
           Flexible(
             child: Text(
@@ -56,7 +56,6 @@ class SubscriptionTypeNotice extends StatelessWidget {
               ),
             ),
           ),
-         
         ],
       ),
     );

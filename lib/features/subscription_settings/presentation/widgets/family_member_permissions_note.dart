@@ -35,8 +35,7 @@ class FamilyMemberPermissionsNote extends StatelessWidget {
               Expanded(
                 child: Text(
                   note,
-                
-               
+
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(

@@ -82,7 +82,7 @@ class OfferDealCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+
                       Text(
                         offer.title,
                         textAlign: TextAlign.center,

@@ -20,7 +20,7 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
       height: Spacing.familyMemberDetailProfileHeight,
       child: Row(
         children: [
-            Stack(
+          Stack(
             alignment: AlignmentDirectional.bottomEnd,
             children: [
               ClipOval(
@@ -41,15 +41,15 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
               ),
             ],
           ),
-          
-         SizedBox(width: Spacing.lg),
+
+          SizedBox(width: Spacing.lg),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 member.name,
-              
+
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size18,
@@ -60,24 +60,22 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-
                   Icon(
                     Icons.calendar_month_rounded,
                     size: Spacing.iconSm,
                     color: color.primary,
                   ),
-                                      const SizedBox(width: Spacing.sm),
+                  const SizedBox(width: Spacing.sm),
 
                   Text(
                     member.ageLabel,
-                  
+
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,
                     ),
                   ),
-                
                 ],
               ),
               const SizedBox(height: Spacing.xs),
@@ -98,7 +96,7 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
                       size: Spacing.familyMemberDetailStatusDotSize,
                       color: color.primary,
                     ),
-                                         const SizedBox(width: Spacing.sm),
+                    const SizedBox(width: Spacing.sm),
 
                     Text(
                       member.statusLabel,
@@ -109,7 +107,6 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
                         color: color.primary,
                       ),
                     ),
-                   
                   ],
                 ),
               ),
@@ -137,13 +134,11 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
             ],
           ),
           const Spacer(),
-            Icon(
+          Icon(
             Icons.chevron_right_rounded,
             size: Spacing.iconLg,
             color: color.onSurfaceVariant,
           ),
-          
-        
         ],
       ),
     );

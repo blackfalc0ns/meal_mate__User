@@ -24,7 +24,6 @@ class FamilyMealsTable extends StatelessWidget {
     ];
 
     return Container(
-     
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.xs,
         vertical: Spacing.xs,
@@ -37,7 +36,6 @@ class FamilyMealsTable extends StatelessWidget {
       child: Column(
         children: [
           Row(
-         
             children: [
               const Icon(Icons.restaurant_rounded, size: 12),
               const SizedBox(width: Spacing.xss),

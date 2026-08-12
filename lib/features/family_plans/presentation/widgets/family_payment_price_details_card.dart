@@ -29,7 +29,7 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
-       spacing: Spacing.xs,
+        spacing: Spacing.xs,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Align(
@@ -84,7 +84,7 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-              
+
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,

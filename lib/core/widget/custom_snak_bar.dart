@@ -20,10 +20,10 @@ class CustomSnackbar {
   static const double _toastWidth = 340;
 
   static TextStyle get _textStyle => getBoldStyle(
-        color: AppColors.white,
-        fontSize: FontSize.size13,
-        fontFamily: FontConstant.alexandria,
-      );
+    color: AppColors.white,
+    fontSize: FontSize.size13,
+    fontFamily: FontConstant.alexandria,
+  );
 
   static void _show({
     required BuildContext context,
@@ -35,7 +35,8 @@ class CustomSnackbar {
   }) {
     final localizedMessage = mapFailureMessage(context, message);
 
-    CherryToast(animationCurve: Curves.linearToEaseOut,
+    CherryToast(
+      animationCurve: Curves.linearToEaseOut,
       icon: icon,
       iconColor: AppColors.white,
       themeColor: themeColor,

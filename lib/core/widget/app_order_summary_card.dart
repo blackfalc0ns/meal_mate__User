@@ -134,8 +134,7 @@ class AppOrderSummaryCard extends StatelessWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-
-  Text(
+                Text(
                   l10n.payment_total_after_discount,
                   textAlign: TextAlign.right,
                   style: getBoldStyle(
@@ -145,8 +144,6 @@ class AppOrderSummaryCard extends StatelessWidget {
                   ),
                 ),
 
-
-               
                 const SizedBox(width: 10),
                 const Expanded(
                   child: Divider(
@@ -156,7 +153,7 @@ class AppOrderSummaryCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-               Text(
+                Text(
                   '$totalPrice ${l10n.currency}',
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
@@ -247,9 +244,6 @@ class _PriceRow extends StatelessWidget {
           child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
         ),
         const SizedBox(width: 8),
-        
-
-
 
         Text(
           value,

@@ -16,7 +16,8 @@ class FamilyPaymentOverviewSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           locale.family_overview_title,

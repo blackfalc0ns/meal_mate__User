@@ -21,7 +21,7 @@ class FamilyMemberDetailActionButton extends StatelessWidget {
       color: color.primary,
       textColor: color.primary,
       fontSize: FontSize.size12,
-    
+
       padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
     );
   }
