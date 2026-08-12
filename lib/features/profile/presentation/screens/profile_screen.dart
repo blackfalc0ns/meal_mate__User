@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -42,9 +43,8 @@ class ProfileScreen extends StatelessWidget {
                   child: SvgPicture.asset(Assets.mealMateLogo),
                 ),
                 leading: IconButton(
-                  onPressed: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.profileSettings),
+                  onPressed: () => context.pushNamed(AppRoutes.profileSettings),
+
                   constraints: const BoxConstraints.tightFor(
                     width: Spacing.profileHeaderActionSize,
                     height: Spacing.profileHeaderActionSize,

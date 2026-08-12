@@ -29,72 +29,63 @@ class ProfileHeader extends StatelessWidget {
 
     return SizedBox(
       height: Spacing.profileHeaderHeight,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Positioned(
-            right: Spacing.xs,
-            top: Spacing.profileAvatarTop,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                AppCachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: Spacing.profileAvatarSize,
-                  height: Spacing.profileAvatarSize,
-                  shape: BoxShape.circle,
-                  semanticLabel: semanticsLabel,
-                  errorWidget: Image.asset(
-                    Assets.profileAvatar,
-                    fit: BoxFit.cover,
-                  ),
+          Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+              AppCachedNetworkImage(
+                imageUrl: imageUrl,
+                width: Spacing.profileAvatarSize,
+                height: Spacing.profileAvatarSize,
+                shape: BoxShape.circle,
+                semanticLabel: semanticsLabel,
+                errorWidget: Image.asset(
+                  Assets.profileAvatar,
+                  fit: BoxFit.cover,
                 ),
-                Positioned(
-                  bottom: -Spacing.xs,
-                  right: -Spacing.xs,
-                  child: Semantics(
-                    label: locale.profile_change_photo,
-                    button: true,
-                    child: InkWell(
-                      onTap: isImageActionLoading ? null : onEditImagePressed,
-                      customBorder: const CircleBorder(),
-                      child: Container(
-                        width: Spacing.profileAvatarEditSize,
-                        height: Spacing.profileAvatarEditSize,
-                        decoration: BoxDecoration(
-                          color: color.surface,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: color.shadow.withValues(alpha: 0.1),
-                              blurRadius: Spacing.xs,
-                              offset: const Offset(0, Spacing.xs),
-                            ),
-                          ],
+              ),
+              Semantics(
+                label: locale.profile_change_photo,
+                button: true,
+                child: InkWell(
+                  onTap: isImageActionLoading ? null : onEditImagePressed,
+                  customBorder: const CircleBorder(),
+                  child: Container(
+                    width: Spacing.profileAvatarEditSize,
+                    height: Spacing.profileAvatarEditSize,
+                    decoration: BoxDecoration(
+                      color: color.surface,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.shadow.withValues(alpha: 0.1),
+                          blurRadius: Spacing.xs,
+                          offset: const Offset(0, Spacing.xs),
                         ),
-                        child: isImageActionLoading
-                            ? Padding(
-                                padding: const EdgeInsets.all(Spacing.sm),
-                                child: CircularProgressIndicator(
-                                  strokeWidth: Spacing.border,
-                                  color: color.primary,
-                                ),
-                              )
-                            : Icon(
-                                Icons.camera_alt_rounded,
-                                color: color.onSurface,
-                                size: Spacing.lg,
-                              ),
-                      ),
+                      ],
                     ),
+                    child: isImageActionLoading
+                        ? Padding(
+                            padding: const EdgeInsets.all(Spacing.sm),
+                            child: CircularProgressIndicator(
+                              strokeWidth: Spacing.border,
+                              color: color.primary,
+                            ),
+                          )
+                        : Icon(
+                            Icons.camera_alt_rounded,
+                            color: color.onSurface,
+                            size: Spacing.lg,
+                          ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Positioned(
-            top: Spacing.profileIdentityTop,
+          const SizedBox(width: Spacing.base),
+          Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,18 +93,21 @@ class ProfileHeader extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      profile?.fullName.isNotEmpty == true
-                          ? profile!.fullName
-                          : locale.profile_user_name,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: Spacing.profileTitleFontSize,
-                        color: color.onSurface,
+                    Flexible(
+                      child: Text(
+                        profile?.fullName.isNotEmpty == true
+                            ? profile!.fullName
+                            : locale.profile_user_name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: Spacing.profileTitleFontSize,
+                          color: color.onSurface,
+                        ),
                       ),
                     ),
                     const SizedBox(width: Spacing.xs),
-
                     Icon(
                       Icons.verified_rounded,
                       color: color.primary,
@@ -127,6 +121,8 @@ class ProfileHeader extends StatelessWidget {
                       ? profile!.displayContact
                       : locale.profile_user_email,
                   textDirection: TextDirection.ltr,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.profileBodyFontSize,
