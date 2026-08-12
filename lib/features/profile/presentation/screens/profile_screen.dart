@@ -58,23 +58,20 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 actions: [
                   Badge(
+                    alignment: Alignment.topRight,
+                    backgroundColor: color.error,
                     smallSize: Spacing.md,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.screenH,
+                    child: IconButton(
+                      onPressed: () {},
+                      constraints: const BoxConstraints.tightFor(
+                        width: Spacing.profileHeaderActionSize,
+                        height: Spacing.profileHeaderActionSize,
                       ),
-                      child: IconButton(
-                        onPressed: () {},
-                        constraints: const BoxConstraints.tightFor(
-                          width: Spacing.profileHeaderActionSize,
-                          height: Spacing.profileHeaderActionSize,
-                        ),
-                        padding: EdgeInsets.zero,
-                        icon: Icon(
-                          Icons.notifications_rounded,
-                          color: color.onSurface,
-                          size: Spacing.profileHeaderIconSize,
-                        ),
+                      padding: EdgeInsets.zero,
+                      icon: Icon(
+                        Icons.notifications_rounded,
+                        color: color.onSurface,
+                        size: Spacing.profileHeaderIconSize,
                       ),
                     ),
                   ),
