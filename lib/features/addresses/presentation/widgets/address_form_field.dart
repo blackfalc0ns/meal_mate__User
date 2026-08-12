@@ -135,26 +135,29 @@ class AddressFormField extends StatelessWidget {
               top: hintTop,
               width: textWidth,
               child: isInput
-                  ? TextField(
-                      controller: controller,
-                      keyboardType: keyboardType,
-                      textInputAction: textInputAction,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: hintSize,
-                        color: color.onSurface,
-                      ),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        hintText: hint,
-                        hintStyle: getRegularStyle(
+                  ? SizedBox(
+                      height: height - hintTop,
+                      child: TextField(
+                        controller: controller,
+                        keyboardType: keyboardType,
+                        textInputAction: textInputAction,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        cursorColor: color.primary,
+                        style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: hintSize,
-                          color: color.onSurfaceVariant.withValues(alpha: 0.7),
+                          color: color.onSurface,
+                        ),
+                        decoration: InputDecoration.collapsed(
+                          hintText: hint,
+                          hintStyle: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: hintSize,
+                            color: color.onSurfaceVariant.withValues(
+                              alpha: 0.7,
+                            ),
+                          ),
                         ),
                       ),
                     )
