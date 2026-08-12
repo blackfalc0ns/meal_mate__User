@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_date_arrow_button.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_date_arrow_button.dart';
 
 class FamilyDayHeader extends StatelessWidget {
   const FamilyDayHeader({

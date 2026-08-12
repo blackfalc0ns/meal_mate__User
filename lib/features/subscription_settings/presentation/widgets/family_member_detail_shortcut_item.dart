@@ -21,7 +21,7 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
     final onTap = switch (shortcut.type) {
       FamilyMemberDetailShortcutType.dailyMeals => () => Navigator.of(
         context,
-      ).pushNamed(AppRoutes.calendar),
+      ).pushNamed(AppRoutes.familyMemberDailyMeals),
       FamilyMemberDetailShortcutType.permissions => () => Navigator.of(
         context,
       ).pushNamed(AppRoutes.familyMemberPermissions),

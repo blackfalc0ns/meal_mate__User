@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AnimatedOfferRow extends StatefulWidget {
   const AnimatedOfferRow({
@@ -45,7 +44,6 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
 
     return SizedBox(
       height: Spacing.offersDealRowHeight,

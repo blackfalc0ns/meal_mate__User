@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/calendar/data/family_day_details_fake_data_source.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_header.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_meal_card.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_member_card.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_review_button.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_selected_status.dart';
+import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_pick_card.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_summary_card.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key, this.showBottomSpace = false});
@@ -22,102 +24,199 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  static const _dataSource = FamilyDayDetailsFakeDataSource();
-  DateTime _selectedDate = DateTime(2024, 5, 26);
+  static const _dataSource = CalendarFakeDataSource();
+
+  DateTime _focusedMonth = DateTime(2026, 9);
+  DateTime _selectedDate = DateTime(2026, 9, 25);
+  CalendarRestaurantEntity? _restaurant = _dataSource.getRestaurant();
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final details = _dataSource.getDetails();
+    final days = _isExpanded
+        ? _dataSource.getMonthDays(
+            focusedMonth: _focusedMonth,
+            selectedDate: _selectedDate,
+          )
+        : _dataSource.getWeekDays(
+            selectedDate: _selectedDate,
+            focusedMonth: _focusedMonth,
+          );
+    final restaurant = _restaurant;
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        titleWidget: Text(
-          details.title,
-          locale: Locale(locale.localeName),
-          textAlign: TextAlign.center,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size18,
-            color: color.onSurface,
-          ),
-        ),
-        onBackPressed: () => Navigator.maybePop(context),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: color.primary,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsetsDirectional.only(
-            start: Spacing.familyDayHorizontalPadding,
-            end: Spacing.familyDayHorizontalPadding,
-            bottom: widget.showBottomSpace
-                ? Spacing.bottomNavHeight + Spacing.xxxl
-                : Spacing.xl,
-          ),
-          child: Semantics(
-            label: locale.calendar_title,
-            child: Column(
-              children: [
-                FamilyDayHeader(
-                  dateLabel: _formatDate(context, _selectedDate),
-                  onPreviousDay: () => _changeDay(-1),
-                  onNextDay: () => _changeDay(1),
-                  onDatePressed: _openDatePicker,
+      child: Scaffold(
+        backgroundColor: color.surface,
+        body: Column(
+          children: [
+            SizedBox(
+              height: Spacing.calendarHeaderHeight,
+              width: double.infinity,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: color.primary,
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(Spacing.calendarHeaderRadius),
+                  ),
                 ),
-                FamilyDayMemberCard(member: details.member),
-                const SizedBox(height: Spacing.familyDayMemberTopGap),
-                for (final meal in details.meals) ...[
-                  FamilyDayMealCard(meal: meal),
-                  const SizedBox(height: Spacing.familyDayMealListGap),
-                ],
-                const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
-                FamilyDayReviewButton(
-                  label: details.reviewButtonLabel,
-                  onPressed: () {},
+                child: SafeArea(
+                  bottom: false,
+                  child: Stack(
+                    children: [
+                      PositionedDirectional(
+                        top: Spacing.lg,
+                        start: Spacing.calendarHeaderHorizontalInset,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Icon(
+                              Icons.notifications_rounded,
+                              color: color.onPrimary,
+                              size: Spacing.iconLg,
+                            ),
+                            PositionedDirectional(
+                              top: Spacing.xs,
+                              start: Spacing.calendarHeaderNotificationDotStart,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: color.secondary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const SizedBox(
+                                  width: Spacing.sm,
+                                  height: Spacing.sm,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PositionedDirectional(
+                        top: Spacing.lg,
+                        end: Spacing.calendarHeaderHorizontalInset,
+                        child: Icon(
+                          Icons.volume_mute_rounded,
+                          color: color.onPrimary,
+                          size: Spacing.iconLg,
+                        ),
+                      ),
+                      PositionedDirectional(
+                        top: Spacing.xxxl,
+                        start: 0,
+                        end: 0,
+                        child: Text(
+                          locale.calendar_title,
+                          textAlign: TextAlign.center,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size22,
+                            color: color.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: Spacing.familyDaySelectedTopGap),
-                FamilyDaySelectedStatus(label: details.selectedMealsLabel),
-              ],
+              ),
             ),
-          ),
+            CalendarPickerPanel(
+              monthTitle: _dataSource.getMonthTitle(_focusedMonth),
+              days: days,
+              isExpanded: _isExpanded,
+              onToggleExpanded: () {
+                setState(() => _isExpanded = !_isExpanded);
+              },
+              onMonthChanged: _changeMonth,
+              onDaySelected: _selectDay,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsetsDirectional.only(
+                  start: Spacing.screenH,
+                  end: Spacing.screenH,
+                  top: Spacing.xxxl,
+                  bottom: widget.showBottomSpace
+                      ? Spacing.bottomNavHeight + Spacing.xxxl
+                      : Spacing.xl,
+                ),
+                child: Column(
+                  children: [
+                    if (restaurant == null)
+                      CalendarRestaurantPickCard(onTap: _openRestaurantPicker)
+                    else
+                      CalendarRestaurantSummaryCard(
+                        restaurant: restaurant,
+                        onMorePressed: _openRestaurantPicker,
+                      ),
+                    const SizedBox(height: Spacing.xl),
+                    for (final meal in _dataSource.getMeals(
+                      _selectedDate.day,
+                    )) ...[
+                      CalendarMealCard(meal: meal),
+                      const SizedBox(height: Spacing.md),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  void _changeDay(int days) {
+  void _changeMonth(int direction) {
     setState(() {
-      _selectedDate = DateUtils.dateOnly(
-        _selectedDate.add(Duration(days: days)),
+      _focusedMonth = DateTime(
+        _focusedMonth.year,
+        _focusedMonth.month + direction,
       );
+      _selectedDate = DateTime(_focusedMonth.year, _focusedMonth.month, 25);
     });
   }
 
-  Future<void> _openDatePicker() async {
-    final locale = context.localization;
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2024),
-      lastDate: DateTime(2030, 12, 31),
-      locale: Locale(locale.localeName),
-    );
-
-    if (pickedDate == null || !mounted) {
+  void _selectDay(CalendarDayEntity day) {
+    final date = day.date;
+    if (date == null) {
       return;
     }
 
     setState(() {
-      _selectedDate = DateUtils.dateOnly(pickedDate);
+      _selectedDate = date;
+      _focusedMonth = DateTime(date.year, date.month);
     });
   }
 
-  String _formatDate(BuildContext context, DateTime date) {
-    final locale = context.localization;
-    return DateFormat.yMMMMEEEEd(locale.localeName).format(date);
+  Future<void> _openRestaurantPicker() async {
+    final selectedRestaurant =
+        await showModalBottomSheet<CalendarRestaurantOptionEntity>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: context.colorScheme.surface,
+          builder: (sheetContext) {
+            return CalendarRestaurantPickerSheet(
+              restaurants: _dataSource.getRestaurantOptions(),
+              onRestaurantSelected: (restaurant) {
+                Navigator.pop(sheetContext, restaurant);
+              },
+            );
+          },
+        );
+
+    if (selectedRestaurant == null || !mounted) {
+      return;
+    }
+
+    setState(() {
+      _restaurant = _dataSource.getRestaurantFromOption(selectedRestaurant);
+    });
   }
 }

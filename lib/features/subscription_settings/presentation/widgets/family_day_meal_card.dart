@@ -4,13 +4,18 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/family_day_details_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/family_day_meal_icon.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_icon.dart';
 
 class FamilyDayMealCard extends StatelessWidget {
-  const FamilyDayMealCard({super.key, required this.meal});
+  const FamilyDayMealCard({
+    super.key,
+    required this.meal,
+    required this.onEditPressed,
+  });
 
   final FamilyDayMealEntity meal;
+  final VoidCallback onEditPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +114,7 @@ class FamilyDayMealCard extends StatelessWidget {
                   height: Spacing.familyDayMealButtonHeight,
                   child: AppButton.outlined(
                     text: meal.actionLabel,
+                    onPressed: onEditPressed,
                     isExpanded: true,
                     height: Spacing.familyDayMealButtonHeight,
                     borderRadius: Spacing.familyDayMealButtonRadius,

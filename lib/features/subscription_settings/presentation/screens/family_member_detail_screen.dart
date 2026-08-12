@@ -27,7 +27,7 @@ class FamilyMemberDetailScreen extends StatelessWidget {
       appBar: CustomAppBar(
         titleWidget: Text(
           member.title,
-        
+          locale: Locale(locale.localeName),
           textAlign: TextAlign.center,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,

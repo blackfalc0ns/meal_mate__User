@@ -1,5 +1,5 @@
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 
 class FamilyDayDetailsFakeDataSource {
   const FamilyDayDetailsFakeDataSource();
