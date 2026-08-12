@@ -45,6 +45,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             focusedMonth: _focusedMonth,
           );
     final restaurant = _restaurant;
+    final meals = _dataSource.getMeals(_selectedDate.day);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -154,12 +155,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     else
                       CalendarRestaurantSummaryCard(
                         restaurant: restaurant,
+                        meals: meals,
                         onMorePressed: _openRestaurantPicker,
                       ),
                     const SizedBox(height: Spacing.xl),
-                    for (final meal in _dataSource.getMeals(
-                      _selectedDate.day,
-                    )) ...[
+                    for (final meal in meals) ...[
                       CalendarMealCard(meal: meal),
                       const SizedBox(height: Spacing.md),
                     ],

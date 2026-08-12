@@ -2473,6 +2473,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_ingredients => 'المكونات';
 
   @override
+  String get calendar_daily_nutrition_total => 'إجمالي القيم من هذا اليوم';
+
+  @override
   String get calendar_calories => 'سعرة حرارية';
 
   @override

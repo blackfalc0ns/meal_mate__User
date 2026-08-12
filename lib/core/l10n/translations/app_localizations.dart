@@ -4820,6 +4820,12 @@ abstract class AppLocalizations {
   /// **'Ingredients'**
   String get calendar_ingredients;
 
+  /// No description provided for @calendar_daily_nutrition_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total nutrition for this day'**
+  String get calendar_daily_nutrition_total;
+
   /// No description provided for @calendar_calories.
   ///
   /// In en, this message translates to:
