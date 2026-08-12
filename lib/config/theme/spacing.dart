@@ -681,6 +681,7 @@ class Spacing {
   static const double addressesChooseLocationColumnStart = 26.48;
   static const double addressesChooseLocationColumnTop = 293.0;
   static const double addressesChooseLocationColumnGap = 26.481;
+  static const double addressesChooseLocationBottomPadding = 48.0;
   static const double addressesChooseLocationCardWidth = 567.689;
   static const double addressesChooseLocationCardPadding = 26.481;
   static const double addressesChooseLocationCardRadius = 19.861;

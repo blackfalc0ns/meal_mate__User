@@ -40,9 +40,14 @@ class AddressChooseLocationScreen extends StatelessWidget {
                             constraints.maxWidth /
                             Spacing.addressesChooseLocationDesignWidth;
                         final contentHeight =
-                            Spacing.addressesChooseLocationDesignHeight * scale;
+                            (Spacing.addressesChooseLocationDesignHeight +
+                                Spacing.addressesChooseLocationBottomPadding) *
+                            scale;
 
                         return SingleChildScrollView(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.paddingOf(context).bottom,
+                          ),
                           child: SizedBox(
                             width: constraints.maxWidth,
                             height: contentHeight,

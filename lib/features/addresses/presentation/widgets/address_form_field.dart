@@ -13,6 +13,9 @@ class AddressFormField extends StatelessWidget {
     required this.iconAsset,
     this.showDropdown = false,
     this.value,
+    this.controller,
+    this.keyboardType,
+    this.textInputAction,
     this.onTap,
     this.optionalText,
     this.small = false,
@@ -23,6 +26,9 @@ class AddressFormField extends StatelessWidget {
   final String iconAsset;
   final bool showDropdown;
   final String? value;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
   final VoidCallback? onTap;
   final String? optionalText;
   final bool small;
@@ -65,6 +71,7 @@ class AddressFormField extends StatelessWidget {
         ? Spacing.addressesHomeFormSmallTextWidth
         : Spacing.addressesHomeFormTextWidth;
 
+    final isInput = !showDropdown;
     final displayValue = value ?? hint;
     final hasValue = value != null && value!.isNotEmpty;
 
@@ -127,19 +134,43 @@ class AddressFormField extends StatelessWidget {
               start: Spacing.addressesHomeFormTextEnd,
               top: hintTop,
               width: textWidth,
-              child: Text(
-                displayValue,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: hintSize,
-                  color: hasValue
-                      ? color.onSurface
-                      : color.onSurfaceVariant.withValues(alpha: 0.7),
-                ),
-              ),
+              child: isInput
+                  ? TextField(
+                      controller: controller,
+                      keyboardType: keyboardType,
+                      textInputAction: textInputAction,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: hintSize,
+                        color: color.onSurface,
+                      ),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        hintText: hint,
+                        hintStyle: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: hintSize,
+                          color: color.onSurfaceVariant.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    )
+                  : Text(
+                      displayValue,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: hintSize,
+                        color: hasValue
+                            ? color.onSurface
+                            : color.onSurfaceVariant.withValues(alpha: 0.7),
+                      ),
+                    ),
             ),
             if (showDropdown)
               PositionedDirectional(

@@ -8,7 +8,7 @@ import 'package:meal_meat_user/features/addresses/domain/entities/locations_cata
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_form_field.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/building_type_selector.dart';
 
-class HomeAddressFormCard extends StatelessWidget {
+class HomeAddressFormCard extends StatefulWidget {
   const HomeAddressFormCard({
     super.key,
     required this.governorates,
@@ -31,6 +31,27 @@ class HomeAddressFormCard extends StatelessWidget {
   final ValueChanged<LocationGovernorateEntity> onGovernorateSelected;
   final ValueChanged<LocationAreaEntity> onAreaSelected;
   final ValueChanged<LocationBlockEntity> onBlockSelected;
+
+  @override
+  State<HomeAddressFormCard> createState() => _HomeAddressFormCardState();
+}
+
+class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _avenueController = TextEditingController();
+  final TextEditingController _buildingNumberController =
+      TextEditingController();
+  final TextEditingController _apartmentController = TextEditingController();
+  AddressBuildingType _buildingType = AddressBuildingType.home;
+
+  @override
+  void dispose() {
+    _streetController.dispose();
+    _avenueController.dispose();
+    _buildingNumberController.dispose();
+    _apartmentController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +117,16 @@ class HomeAddressFormCard extends StatelessWidget {
                     hint: locale.addresses_governorate_hint,
                     iconAsset: Assets.addressesIconGovernorate,
                     showDropdown: true,
-                    value: selectedGovernorate?.nameForLanguage(
+                    value: widget.selectedGovernorate?.nameForLanguage(
                       Localizations.localeOf(context).languageCode,
                     ),
                     onTap: () => _showOptions<LocationGovernorateEntity>(
                       context: fieldContext,
-                      items: governorates,
+                      items: widget.governorates,
                       labelBuilder: (item) => item.nameForLanguage(
                         Localizations.localeOf(context).languageCode,
                       ),
-                      onSelected: onGovernorateSelected,
+                      onSelected: widget.onGovernorateSelected,
                     ),
                   );
                 },
@@ -121,18 +142,18 @@ class HomeAddressFormCard extends StatelessWidget {
                     hint: locale.addresses_area_hint,
                     iconAsset: Assets.addressesIconArea,
                     showDropdown: true,
-                    value: selectedArea?.nameForLanguage(
+                    value: widget.selectedArea?.nameForLanguage(
                       Localizations.localeOf(context).languageCode,
                     ),
-                    onTap: selectedGovernorate == null
+                    onTap: widget.selectedGovernorate == null
                         ? null
                         : () => _showOptions<LocationAreaEntity>(
                             context: fieldContext,
-                            items: areas,
+                            items: widget.areas,
                             labelBuilder: (item) => item.nameForLanguage(
                               Localizations.localeOf(context).languageCode,
                             ),
-                            onSelected: onAreaSelected,
+                            onSelected: widget.onAreaSelected,
                           ),
                   );
                 },
@@ -148,18 +169,18 @@ class HomeAddressFormCard extends StatelessWidget {
                     hint: locale.addresses_block_hint,
                     iconAsset: Assets.addressesIconBlock,
                     showDropdown: true,
-                    value: selectedBlock?.nameForLanguage(
+                    value: widget.selectedBlock?.nameForLanguage(
                       Localizations.localeOf(context).languageCode,
                     ),
-                    onTap: selectedArea == null
+                    onTap: widget.selectedArea == null
                         ? null
                         : () => _showOptions<LocationBlockEntity>(
                             context: fieldContext,
-                            items: blocks,
+                            items: widget.blocks,
                             labelBuilder: (item) => item.nameForLanguage(
                               Localizations.localeOf(context).languageCode,
                             ),
-                            onSelected: onBlockSelected,
+                            onSelected: widget.onBlockSelected,
                           ),
                   );
                 },
@@ -172,6 +193,8 @@ class HomeAddressFormCard extends StatelessWidget {
                 label: locale.addresses_street_label,
                 hint: locale.addresses_street_hint,
                 iconAsset: Assets.addressesIconStreet,
+                controller: _streetController,
+                textInputAction: TextInputAction.next,
               ),
             ),
             PositionedDirectional(
@@ -181,13 +204,18 @@ class HomeAddressFormCard extends StatelessWidget {
                 label: locale.addresses_avenue_label,
                 hint: locale.addresses_avenue_hint,
                 iconAsset: Assets.addressesIconAvenue,
+                controller: _avenueController,
+                textInputAction: TextInputAction.next,
                 optionalText: locale.addresses_optional,
               ),
             ),
             PositionedDirectional(
               start: Spacing.addressesHomeFormFieldStart,
               top: Spacing.addressesHomeFormBuildingTop,
-              child: const BuildingTypeSelector(),
+              child: BuildingTypeSelector(
+                selectedType: _buildingType,
+                onChanged: (type) => setState(() => _buildingType = type),
+              ),
             ),
             PositionedDirectional(
               start: Spacing.addressesHomeFormFieldStart,
@@ -207,6 +235,9 @@ class HomeAddressFormCard extends StatelessWidget {
                 label: locale.addresses_building_number_label,
                 hint: locale.addresses_building_number_hint,
                 iconAsset: Assets.addressesIconNumber,
+                controller: _buildingNumberController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
                 small: true,
               ),
             ),
@@ -217,6 +248,9 @@ class HomeAddressFormCard extends StatelessWidget {
                 label: locale.addresses_apartment_number_label,
                 hint: locale.addresses_apartment_number_hint,
                 iconAsset: Assets.addressesIconApartment,
+                controller: _apartmentController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
                 optionalText: locale.addresses_optional,
                 small: true,
               ),
