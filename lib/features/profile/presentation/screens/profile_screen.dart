@@ -13,6 +13,7 @@ import 'package:meal_meat_user/features/profile/presentation/manager/profile_eve
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_header.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_image_upload_builder.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_logout_button.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_stats_card.dart';
@@ -28,97 +29,105 @@ class ProfileScreen extends StatelessWidget {
     return BlocProvider<ProfileViewModel>(
       create: (_) =>
           getIt<ProfileViewModel>()..doIntent(const GetCustomerProfileEvent()),
-      child: Scaffold(
-        backgroundColor: color.surface,
-        appBar: CustomAppBar(
-          showBackButton: false,
-          automaticallyImplyLeading: false,
-          titleWidget: SizedBox(
-            width: Spacing.profileAppBarLogoWidth,
-            height: Spacing.profileAppBarLogoHeight,
-            child: SvgPicture.asset(Assets.mealMateLogo),
-          ),
-          leading: IconButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamed(AppRoutes.profileSettings),
-            constraints: const BoxConstraints.tightFor(
-              width: Spacing.profileHeaderActionSize,
-              height: Spacing.profileHeaderActionSize,
-            ),
-            padding: EdgeInsetsDirectional.only(start: Spacing.screenH),
-            icon: Icon(
-              Icons.settings_rounded,
-              color: color.onSurface,
-              size: Spacing.profileHeaderIconSize,
-            ),
-          ),
-          actions: [
-            Badge(
-              smallSize: Spacing.md,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  start: Spacing.screenH,
+      child: ProfileImageUploadBuilder(
+        builder: (context, isImageActionLoading, onEditImagePressed) =>
+            Scaffold(
+              backgroundColor: color.surface,
+              appBar: CustomAppBar(
+                showBackButton: false,
+                automaticallyImplyLeading: false,
+                titleWidget: SizedBox(
+                  width: Spacing.profileAppBarLogoWidth,
+                  height: Spacing.profileAppBarLogoHeight,
+                  child: SvgPicture.asset(Assets.mealMateLogo),
                 ),
-                child: IconButton(
-                  onPressed: () {},
+                leading: IconButton(
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pushNamed(AppRoutes.profileSettings),
                   constraints: const BoxConstraints.tightFor(
                     width: Spacing.profileHeaderActionSize,
                     height: Spacing.profileHeaderActionSize,
                   ),
-                  padding: EdgeInsets.zero,
+                  padding: EdgeInsetsDirectional.only(start: Spacing.screenH),
                   icon: Icon(
-                    Icons.notifications_rounded,
+                    Icons.settings_rounded,
                     color: color.onSurface,
                     size: Spacing.profileHeaderIconSize,
                   ),
                 ),
+                actions: [
+                  Badge(
+                    smallSize: Spacing.md,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        start: Spacing.screenH,
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        constraints: const BoxConstraints.tightFor(
+                          width: Spacing.profileHeaderActionSize,
+                          height: Spacing.profileHeaderActionSize,
+                        ),
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          Icons.notifications_rounded,
+                          color: color.onSurface,
+                          size: Spacing.profileHeaderIconSize,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              body: BlocBuilder<ProfileViewModel, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.profile != current.profile,
+                builder: (context, state) {
+                  final profileState = state.profile;
+
+                  if (profileState.isLoading && profileState.data == null) {
+                    return const LoadingWidget.fullScreen();
+                  }
+
+                  if (profileState.failure != null &&
+                      profileState.data == null) {
+                    return ApiErrorWidget(
+                      exception: profileState.failure!.exception,
+                      onRetry: () => context.read<ProfileViewModel>().doIntent(
+                        const GetCustomerProfileEvent(),
+                      ),
+                    );
+                  }
+
+                  return SafeArea(
+                    top: false,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.profileScreenHorizontalPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          ProfileHeader(
+                            semanticsLabel: locale.nav_profile,
+                            profile: profileState.data,
+                            isImageActionLoading: isImageActionLoading,
+                            onEditImagePressed: onEditImagePressed,
+                          ),
+                          const SizedBox(height: Spacing.profileStatsTopGap),
+                          const ProfileStatsCard(),
+                          const SizedBox(height: Spacing.profileSettingsTopGap),
+                          const ProfileSettingsCard(),
+                          const SizedBox(height: Spacing.profileLogoutTopGap),
+                          const ProfileLogoutButton(),
+                          const SizedBox(height: Spacing.xxxl),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-          ],
-        ),
-        body: BlocBuilder<ProfileViewModel, ProfileState>(
-          buildWhen: (previous, current) => previous.profile != current.profile,
-          builder: (context, state) {
-            final profileState = state.profile;
-
-            if (profileState.isLoading && profileState.data == null) {
-              return const LoadingWidget.fullScreen();
-            }
-
-            if (profileState.failure != null && profileState.data == null) {
-              return ApiErrorWidget(
-                exception: profileState.failure!.exception,
-                onRetry: () => context.read<ProfileViewModel>().doIntent(
-                  const GetCustomerProfileEvent(),
-                ),
-              );
-            }
-
-            return SafeArea(
-              top: false,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.profileScreenHorizontalPadding,
-                ),
-                child: Column(
-                  children: [
-                    ProfileHeader(
-                      semanticsLabel: locale.nav_profile,
-                      profile: profileState.data,
-                    ),
-                    const SizedBox(height: Spacing.profileStatsTopGap),
-                    const ProfileStatsCard(),
-                    const SizedBox(height: Spacing.profileSettingsTopGap),
-                    const ProfileSettingsCard(),
-                    const SizedBox(height: Spacing.profileLogoutTopGap),
-                    const ProfileLogoutButton(),
-                    const SizedBox(height: Spacing.xxxl),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }

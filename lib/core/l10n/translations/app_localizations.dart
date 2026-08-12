@@ -1136,6 +1136,48 @@ abstract class AppLocalizations {
   /// **'Premium member'**
   String get profile_premium_member;
 
+  /// No description provided for @profile_change_photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile photo'**
+  String get profile_change_photo;
+
+  /// No description provided for @profile_photo_source_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose profile photo'**
+  String get profile_photo_source_title;
+
+  /// No description provided for @profile_photo_source_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get profile_photo_source_camera;
+
+  /// No description provided for @profile_photo_source_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get profile_photo_source_gallery;
+
+  /// No description provided for @profile_photo_upload_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo updated successfully.'**
+  String get profile_photo_upload_success;
+
+  /// No description provided for @profile_photo_upload_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update profile photo. Please try again.'**
+  String get profile_photo_upload_error;
+
+  /// No description provided for @profile_photo_permission_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please allow camera or photo access to update your profile photo.'**
+  String get profile_photo_permission_error;
+
   /// No description provided for @profile_completed_plans.
   ///
   /// In en, this message translates to:

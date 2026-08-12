@@ -559,6 +559,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_premium_member => 'عضو مميز';
 
   @override
+  String get profile_change_photo => 'تغيير صورة البروفايل';
+
+  @override
+  String get profile_photo_source_title => 'اختر صورة البروفايل';
+
+  @override
+  String get profile_photo_source_camera => 'الكاميرا';
+
+  @override
+  String get profile_photo_source_gallery => 'المعرض';
+
+  @override
+  String get profile_photo_upload_success => 'تم تحديث صورة البروفايل بنجاح.';
+
+  @override
+  String get profile_photo_upload_error =>
+      'تعذر تحديث صورة البروفايل. حاول مرة أخرى.';
+
+  @override
+  String get profile_photo_permission_error =>
+      'يرجى السماح للكاميرا أو الصور لتحديث صورة البروفايل.';
+
+  @override
   String get profile_completed_plans => 'الخطط المكتملة';
 
   @override

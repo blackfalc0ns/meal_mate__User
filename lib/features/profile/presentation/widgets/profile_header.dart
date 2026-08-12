@@ -5,13 +5,22 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, required this.semanticsLabel, this.profile});
+  const ProfileHeader({
+    super.key,
+    required this.semanticsLabel,
+    this.profile,
+    this.onEditImagePressed,
+    this.isImageActionLoading = false,
+  });
 
   final String semanticsLabel;
   final CustomerProfileEntity? profile;
+  final VoidCallback? onEditImagePressed;
+  final bool isImageActionLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +40,54 @@ class ProfileHeader extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                CircleAvatar(
-                  radius: Spacing.profileAvatarSize / 2,
-                  backgroundImage: imageUrl == null
-                      ? const AssetImage(Assets.profileAvatar)
-                      : NetworkImage(imageUrl),
-                  backgroundColor: color.surfaceContainerHighest,
+                AppCachedNetworkImage(
+                  imageUrl: imageUrl,
+                  width: Spacing.profileAvatarSize,
+                  height: Spacing.profileAvatarSize,
+                  shape: BoxShape.circle,
+                  semanticLabel: semanticsLabel,
+                  errorWidget: Image.asset(
+                    Assets.profileAvatar,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Positioned(
                   bottom: -Spacing.xs,
                   right: -Spacing.xs,
-                  child: Container(
-                    width: Spacing.profileAvatarEditSize,
-                    height: Spacing.profileAvatarEditSize,
-                    decoration: BoxDecoration(
-                      color: color.surface,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: color.shadow.withValues(alpha: 0.1),
-                          blurRadius: Spacing.xs,
-                          offset: const Offset(0, Spacing.xs),
+                  child: Semantics(
+                    label: locale.profile_change_photo,
+                    button: true,
+                    child: InkWell(
+                      onTap: isImageActionLoading ? null : onEditImagePressed,
+                      customBorder: const CircleBorder(),
+                      child: Container(
+                        width: Spacing.profileAvatarEditSize,
+                        height: Spacing.profileAvatarEditSize,
+                        decoration: BoxDecoration(
+                          color: color.surface,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: color.shadow.withValues(alpha: 0.1),
+                              blurRadius: Spacing.xs,
+                              offset: const Offset(0, Spacing.xs),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.camera_alt_rounded,
-                      color: color.onSurface,
-                      size: Spacing.lg,
+                        child: isImageActionLoading
+                            ? Padding(
+                                padding: const EdgeInsets.all(Spacing.sm),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: Spacing.border,
+                                  color: color.primary,
+                                ),
+                              )
+                            : Icon(
+                                Icons.camera_alt_rounded,
+                                color: color.onSurface,
+                                size: Spacing.lg,
+                              ),
+                      ),
                     ),
                   ),
                 ),

@@ -570,6 +570,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_premium_member => 'Premium member';
 
   @override
+  String get profile_change_photo => 'Change profile photo';
+
+  @override
+  String get profile_photo_source_title => 'Choose profile photo';
+
+  @override
+  String get profile_photo_source_camera => 'Camera';
+
+  @override
+  String get profile_photo_source_gallery => 'Gallery';
+
+  @override
+  String get profile_photo_upload_success =>
+      'Profile photo updated successfully.';
+
+  @override
+  String get profile_photo_upload_error =>
+      'Could not update profile photo. Please try again.';
+
+  @override
+  String get profile_photo_permission_error =>
+      'Please allow camera or photo access to update your profile photo.';
+
+  @override
   String get profile_completed_plans => 'Completed plans';
 
   @override

@@ -34,8 +34,8 @@ class ProfileSettingsScreen extends StatelessWidget {
                 icon: Icons.settings_rounded,
                 tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
                 trailingIcon: locale.localeName == 'ar'
-                    ? Icons.chevron_left_rounded
-                    : Icons.chevron_right_rounded,
+                    ? Icons.chevron_right_rounded
+                    : Icons.chevron_left_rounded,
                 items: [
                   (
                     Icons.notifications_rounded,
@@ -63,8 +63,8 @@ class ProfileSettingsScreen extends StatelessWidget {
                 icon: Icons.headset_mic_rounded,
                 tileHeight: Spacing.profilePrivacyPrimaryTileHeight,
                 trailingIcon: locale.localeName == 'ar'
-                    ? Icons.chevron_left_rounded
-                    : Icons.chevron_right_rounded,
+                    ? Icons.chevron_right_rounded
+                    : Icons.chevron_left_rounded,
                 items: [
                   (
                     Icons.menu_book_rounded,
@@ -92,8 +92,8 @@ class ProfileSettingsScreen extends StatelessWidget {
                 icon: Icons.info_rounded,
                 tileHeight: Spacing.profilePrivacySecondaryTileHeight,
                 trailingIcon: locale.localeName == 'ar'
-                    ? Icons.chevron_left_rounded
-                    : Icons.chevron_right_rounded,
+                    ? Icons.chevron_right_rounded
+                    : Icons.chevron_left_rounded,
                 items: [
                   (
                     Icons.mail_rounded,
