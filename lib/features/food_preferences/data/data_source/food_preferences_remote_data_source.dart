@@ -10,7 +10,7 @@ abstract interface class FoodPreferencesRemoteDataSource {
 
   Future<void> updateFoodPreferences(FoodPreferencesRequestDto request);
 
-  Future<void> updateFoodPreferencesAllergies(
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesAllergies(
     FoodPreferencesAllergiesRequestDto request,
   );
 }

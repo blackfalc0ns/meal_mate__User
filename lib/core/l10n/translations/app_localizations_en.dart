@@ -699,6 +699,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dietary_preferences_save => 'Save preferences';
 
   @override
+  String get dietary_preferences_update_success =>
+      'Preferences saved successfully.';
+
+  @override
   String get add_allergy_title => 'Add allergy';
 
   @override

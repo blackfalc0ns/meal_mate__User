@@ -29,7 +29,7 @@ class FoodPreferencesRemoteDataSourceImpl
   }
 
   @override
-  Future<void> updateFoodPreferencesAllergies(
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesAllergies(
     FoodPreferencesAllergiesRequestDto request,
   ) {
     return _apiServices.updateFoodPreferencesAllergies(request);

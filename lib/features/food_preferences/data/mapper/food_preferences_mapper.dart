@@ -32,6 +32,7 @@ extension FoodPreferencesEntityMapper on FoodPreferencesEntity {
   FoodPreferencesRequestDto toDto() {
     return FoodPreferencesRequestDto(
       dietaryPattern: dietaryPattern,
+      allergies: allergies.map((item) => item.toDto()).toList(),
       dislikedFoods: dislikedFoods.map((item) => item.toDto()).toList(),
       notes: notes,
     );

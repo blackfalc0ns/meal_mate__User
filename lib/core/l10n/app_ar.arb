@@ -213,6 +213,7 @@
   "dietary_preferences_allergy_notice_title": "معلومات حساسية مهمة",
   "dietary_preferences_allergy_notice_message": "تساعدنا معلومات الحساسية على تخصيص أطعمة آمنة لك وتجنب أي مكونات قد تؤثر على صحتك.",
   "dietary_preferences_save": "حفظ التفضيلات",
+  "dietary_preferences_update_success": "تم حفظ التفضيلات بنجاح.",
   "add_allergy_title": "إضافة الحساسية",
   "add_allergy_subtitle": "اختر الحساسية التي تعاني منها لتجنب عرض الوجبات غير المناسبة لك",
   "add_allergy_selected": "مختارة",

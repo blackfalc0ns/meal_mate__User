@@ -1376,6 +1376,12 @@ abstract class AppLocalizations {
   /// **'Save preferences'**
   String get dietary_preferences_save;
 
+  /// No description provided for @dietary_preferences_update_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences saved successfully.'**
+  String get dietary_preferences_update_success;
+
   /// No description provided for @add_allergy_title.
   ///
   /// In en, this message translates to:

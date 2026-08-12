@@ -337,6 +337,33 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<RegionCatalogResponseDto> getCountryRegions(String countryCode) async {
+    final _extra = <String, dynamic>{'skipAuth': true};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<RegionCatalogResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/catalog/countries/${countryCode}/regions',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late RegionCatalogResponseDto _value;
+    try {
+      _value = RegionCatalogResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<CustomerProfileResponseDto> getCustomerProfile() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -656,7 +683,7 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<void> updateFoodPreferencesAllergies(
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesAllergies(
     FoodPreferencesAllergiesRequestDto request,
   ) async {
     final _extra = <String, dynamic>{};
@@ -664,7 +691,7 @@ class _ApiServices implements ApiServices {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<void>(
+    final _options = _setStreamType<FoodPreferencesResponseDto>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -674,7 +701,15 @@ class _ApiServices implements ApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late FoodPreferencesResponseDto _value;
+    try {
+      _value = FoodPreferencesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

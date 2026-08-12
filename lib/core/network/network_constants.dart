@@ -18,6 +18,8 @@ abstract class EndPoints {
   static const String logout = '/api/v1/auth/logout';
   static const String callingCodes = '/api/v1/catalog/calling-codes';
   static const String locations = '/api/v1/catalog/locations';
+  static const String countryRegions =
+      '/api/v1/catalog/countries/{countryCode}/regions';
   static const String customerProfile = '/api/v1/customers/me';
   static const String uploads = '/api/v1/uploads';
   static const String uploadContent = '/api/v1/uploads/content';

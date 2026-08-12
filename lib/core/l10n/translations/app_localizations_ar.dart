@@ -685,6 +685,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dietary_preferences_save => 'حفظ التفضيلات';
 
   @override
+  String get dietary_preferences_update_success => 'تم حفظ التفضيلات بنجاح.';
+
+  @override
   String get add_allergy_title => 'إضافة الحساسية';
 
   @override

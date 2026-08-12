@@ -6,11 +6,13 @@ part 'food_preferences_request_dto.g.dart';
 class FoodPreferencesRequestDto {
   const FoodPreferencesRequestDto({
     this.dietaryPattern,
+    required this.allergies,
     required this.dislikedFoods,
     this.notes,
   });
 
   final String? dietaryPattern;
+  final List<FoodPreferenceItemRequestDto> allergies;
   final List<FoodPreferenceItemRequestDto> dislikedFoods;
   final String? notes;
 

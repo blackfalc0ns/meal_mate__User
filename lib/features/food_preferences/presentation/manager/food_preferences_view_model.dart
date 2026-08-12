@@ -112,16 +112,7 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
   }
 
   Future<void> _updateFoodPreferences(FoodPreferencesEntity preferences) async {
-    await _runAction(() async {
-      final preferencesResult = await _updateFoodPreferencesUseCase(
-        preferences,
-      );
-      if (preferencesResult is ApiErrorResult<void>) {
-        return preferencesResult;
-      }
-
-      return _updateFoodPreferencesAllergiesUseCase(preferences.allergies);
-    });
+    await _runAction(() => _updateFoodPreferencesUseCase(preferences));
 
     if (state.action.isSuccess) {
       _getFoodPreferences();

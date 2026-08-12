@@ -213,6 +213,7 @@
   "dietary_preferences_allergy_notice_title": "Important allergy information",
   "dietary_preferences_allergy_notice_message": "Allergy information helps us customize safe meals for you and avoid ingredients that may affect your health.",
   "dietary_preferences_save": "Save preferences",
+  "dietary_preferences_update_success": "Preferences saved successfully.",
   "add_allergy_title": "Add allergy",
   "add_allergy_subtitle": "Choose the allergies you have so we can avoid showing meals that are not suitable for you.",
   "add_allergy_selected": "selected",

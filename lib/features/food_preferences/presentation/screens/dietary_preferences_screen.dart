@@ -8,6 +8,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
@@ -43,11 +44,20 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
         ..doIntent(const GetFoodPreferencesCatalogEvent()),
       child: BlocListener<FoodPreferencesViewModel, FoodPreferencesState>(
         listenWhen: (previous, current) =>
-            previous.preferences.data != current.preferences.data,
+            previous.preferences.data != current.preferences.data ||
+            previous.action != current.action,
         listener: (context, state) {
           final preferences = state.preferences.data;
-          if (preferences == null || _hasAppliedRemotePreferences) return;
-          _applyPreferences(preferences);
+          if (preferences != null && !_hasAppliedRemotePreferences) {
+            _applyPreferences(preferences);
+          }
+
+          if (state.action.isSuccess) {
+            CustomSnackbar.showSuccess(
+              context: context,
+              message: context.localization.dietary_preferences_update_success,
+            );
+          }
         },
         child: _buildContent(context),
       ),

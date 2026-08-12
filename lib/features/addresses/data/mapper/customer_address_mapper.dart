@@ -1,6 +1,7 @@
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
@@ -57,6 +58,83 @@ extension LocationsCatalogResponseDtoMapper on LocationsCatalogResponseDto {
       countryCode: countryCode ?? '',
       governorates:
           governorates?.map((item) => item.toEntity()).toList() ?? const [],
+    );
+  }
+}
+
+extension RegionCatalogResponseDtoMapper on RegionCatalogResponseDto {
+  LocationsCatalogEntity toEntity() {
+    final activeRegions =
+        regions
+            ?.where((region) => region.isActive ?? true)
+            .where((region) => region.id != null && region.id!.isNotEmpty)
+            .toList() ??
+        const <LocationRegionResponseDto>[];
+
+    final blocksByAreaId = <String, List<LocationBlockEntity>>{};
+    for (final region in activeRegions.where((region) => region.type == 3)) {
+      final parentId = region.parentId;
+      if (parentId == null || parentId.isEmpty) continue;
+      blocksByAreaId
+          .putIfAbsent(parentId, () => [])
+          .add(region.toBlockEntity());
+    }
+
+    final areasByGovernorateId = <String, List<LocationAreaEntity>>{};
+    for (final region in activeRegions.where((region) => region.type == 2)) {
+      final parentId = region.parentId;
+      if (parentId == null || parentId.isEmpty) continue;
+      areasByGovernorateId
+          .putIfAbsent(parentId, () => [])
+          .add(region.toAreaEntity(blocksByAreaId[region.id] ?? const []));
+    }
+
+    final governorates = activeRegions
+        .where((region) => region.type == 1)
+        .map(
+          (region) => region.toGovernorateEntity(
+            areasByGovernorateId[region.id] ?? const [],
+          ),
+        )
+        .toList();
+
+    return LocationsCatalogEntity(
+      countryId: id ?? '',
+      countryCode: code ?? '',
+      governorates: governorates,
+    );
+  }
+}
+
+extension LocationRegionResponseDtoMapper on LocationRegionResponseDto {
+  LocationGovernorateEntity toGovernorateEntity(
+    List<LocationAreaEntity> areas,
+  ) {
+    return LocationGovernorateEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      areas: areas,
+    );
+  }
+
+  LocationAreaEntity toAreaEntity(List<LocationBlockEntity> blocks) {
+    return LocationAreaEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      blocks: blocks,
+    );
+  }
+
+  LocationBlockEntity toBlockEntity() {
+    return LocationBlockEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
     );
   }
 }

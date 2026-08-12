@@ -28,37 +28,8 @@ class LocationConfirmationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      locale.addresses_choose_location_title,
-                      textAlign: TextAlign.end,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: Spacing.addressesChooseLocationTitleSize,
-                        color: color.primary,
-                      ),
-                    ),
-                    Text(
-                      locale.addresses_choose_location_subtitle,
-                      textAlign: TextAlign.end,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: Spacing.addressesChooseLocationSubtitleSize,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(width: Spacing.addressesChooseLocationHeaderGap),
               Container(
                 width: Spacing.addressesChooseLocationHeroIconSize,
@@ -75,6 +46,34 @@ class LocationConfirmationCard extends StatelessWidget {
                     width: Spacing.addressesChooseLocationHeroGlyphSize,
                     height: Spacing.addressesChooseLocationHeroGlyphSize,
                   ),
+                ),
+              ),
+              const SizedBox(width: Spacing.addressesChooseLocationHeaderGap),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      locale.addresses_choose_location_title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: Spacing.addressesChooseLocationTitleSize,
+                        color: color.primary,
+                      ),
+                    ),
+                    Text(
+                      locale.addresses_choose_location_subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: Spacing.addressesChooseLocationSubtitleSize,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

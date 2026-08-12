@@ -684,8 +684,8 @@ class Spacing {
   static const double addressesChooseLocationCardWidth = 567.689;
   static const double addressesChooseLocationCardPadding = 26.481;
   static const double addressesChooseLocationCardRadius = 19.861;
-  static const double addressesChooseLocationHeroIconSize = 79.443;
-  static const double addressesChooseLocationHeroGlyphSize = 52.962;
+  static const double addressesChooseLocationHeroIconSize = 50.443;
+  static const double addressesChooseLocationHeroGlyphSize = 40.962;
   static const double addressesChooseLocationHeaderGap = 26.481;
   static const double addressesChooseLocationTitleSize = 26.481;
   static const double addressesChooseLocationSubtitleSize = 23.171;
