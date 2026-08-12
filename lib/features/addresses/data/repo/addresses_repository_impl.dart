@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/addresses/data/data_source/addresses_rem
 import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_mapper.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/repo/addresses_repository.dart';
 
 @Injectable(as: AddressesRepository)
@@ -11,6 +12,16 @@ class AddressesRepositoryImpl implements AddressesRepository {
   AddressesRepositoryImpl(this._remoteDataSource);
 
   final AddressesRemoteDataSource _remoteDataSource;
+
+  @override
+  Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
+    String countryCode,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getLocationsCatalog(countryCode);
+      return response.toEntity();
+    });
+  }
 
   @override
   Future<ApiResult<List<CustomerAddressEntity>>> getCustomerAddresses() {

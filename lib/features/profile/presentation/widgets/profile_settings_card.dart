@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_settings_tile.dart';
+import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
+import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
 
 class ProfileSettingsCard extends StatelessWidget {
   const ProfileSettingsCard({super.key});
@@ -66,7 +69,26 @@ class ProfileSettingsCard extends StatelessWidget {
             title: item.$2,
             subtitle: item.$3,
             showDivider: index != items.length - 1,
-            onTap: index == 3
+            onTap: index == 0
+                ? () async {
+                    final profile = context
+                        .read<ProfileViewModel>()
+                        .state
+                        .profile
+                        .data;
+                    if (profile == null) return;
+
+                    final navigator = Navigator.of(context);
+                    final viewModel = context.read<ProfileViewModel>();
+                    final updated = await navigator.pushNamed(
+                      AppRoutes.personalInformation,
+                      arguments: profile,
+                    );
+                    if (updated == true) {
+                      viewModel.doIntent(const GetCustomerProfileEvent());
+                    }
+                  }
+                : index == 3
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.profileBilling)
                 : index == items.length - 1

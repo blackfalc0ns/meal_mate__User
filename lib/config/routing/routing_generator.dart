@@ -11,6 +11,8 @@ import 'package:meal_meat_user/features/offers/presentation/screens/offers_scree
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
+import 'package:meal_meat_user/features/profile/presentation/screens/personal_information_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
@@ -185,6 +187,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const SecurityPrivacyScreen(),
+        );
+      case AppRoutes.personalInformation:
+        final profile = settings.arguments! as CustomerProfileEntity;
+        return _buildRoute(
+          settings: settings,
+          page: PersonalInformationScreen(profile: profile),
         );
       case AppRoutes.profileSettings:
         return _buildRoute(

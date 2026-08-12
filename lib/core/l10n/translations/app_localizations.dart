@@ -1214,6 +1214,24 @@ abstract class AppLocalizations {
   /// **'Edit your personal details'**
   String get profile_personal_info_subtitle;
 
+  /// No description provided for @profile_personal_info_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get profile_personal_info_save;
+
+  /// No description provided for @profile_personal_info_update_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information updated successfully.'**
+  String get profile_personal_info_update_success;
+
+  /// No description provided for @profile_personal_info_update_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update personal information. Please try again.'**
+  String get profile_personal_info_update_error;
+
   /// No description provided for @profile_goals.
   ///
   /// In en, this message translates to:
@@ -1483,6 +1501,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save allergies'**
   String get add_allergy_save;
+
+  /// No description provided for @add_allergy_update_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies updated successfully.'**
+  String get add_allergy_update_success;
+
+  /// No description provided for @add_allergy_update_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update allergies. Please try again.'**
+  String get add_allergy_update_error;
 
   /// No description provided for @profile_billing.
   ///

@@ -9,12 +9,12 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_header.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_image_upload_builder.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_loading_skeleton.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_logout_button.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_stats_card.dart';
@@ -84,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                   final profileState = state.profile;
 
                   if (profileState.isLoading && profileState.data == null) {
-                    return const LoadingWidget.fullScreen();
+                    return const ProfileLoadingSkeleton();
                   }
 
                   if (profileState.failure != null &&

@@ -2,9 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
@@ -13,12 +15,14 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 class AddressesViewModel extends Cubit<AddressesState> {
   AddressesViewModel(
     this._getCustomerAddressesUseCase,
+    this._getLocationsCatalogUseCase,
     this._addCustomerAddressUseCase,
     this._updateCustomerAddressUseCase,
     this._deleteCustomerAddressUseCase,
   ) : super(const AddressesState());
 
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
+  final GetLocationsCatalogUseCase _getLocationsCatalogUseCase;
   final AddCustomerAddressUseCase _addCustomerAddressUseCase;
   final UpdateCustomerAddressUseCase _updateCustomerAddressUseCase;
   final DeleteCustomerAddressUseCase _deleteCustomerAddressUseCase;
@@ -27,6 +31,14 @@ class AddressesViewModel extends Cubit<AddressesState> {
     switch (event) {
       case GetCustomerAddressesEvent():
         _getCustomerAddresses();
+      case GetLocationsCatalogEvent():
+        _getLocationsCatalog(event.countryCode);
+      case SelectAddressGovernorateEvent():
+        _selectGovernorate(event.governorate);
+      case SelectAddressAreaEvent():
+        _selectArea(event.area);
+      case SelectAddressBlockEvent():
+        _selectBlock(event.block);
       case AddCustomerAddressEvent():
         _addCustomerAddress(event.request);
       case UpdateCustomerAddressEvent():
@@ -71,6 +83,72 @@ class AddressesViewModel extends Cubit<AddressesState> {
           ),
         );
     }
+  }
+
+  Future<void> _getLocationsCatalog(String countryCode) async {
+    emit(
+      state.copyWith(
+        locations: state.locations.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _getLocationsCatalogUseCase(countryCode);
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            locations: state.locations.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              data: result.data,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            locations: state.locations.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  void _selectGovernorate(LocationGovernorateEntity governorate) {
+    emit(
+      state.copyWith(
+        locations: state.locations.copyWith(
+          selectedGovernorate: governorate,
+          clearSelectedArea: true,
+          clearSelectedBlock: true,
+        ),
+      ),
+    );
+  }
+
+  void _selectArea(LocationAreaEntity area) {
+    emit(
+      state.copyWith(
+        locations: state.locations.copyWith(
+          selectedArea: area,
+          clearSelectedBlock: true,
+        ),
+      ),
+    );
+  }
+
+  void _selectBlock(LocationBlockEntity block) {
+    emit(
+      state.copyWith(locations: state.locations.copyWith(selectedBlock: block)),
+    );
   }
 
   Future<void> _addCustomerAddress(CustomerAddressRequestEntity request) async {

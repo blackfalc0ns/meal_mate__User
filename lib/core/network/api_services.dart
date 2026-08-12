@@ -22,6 +22,8 @@ import 'package:meal_meat_user/features/auth/data/models/response/reset_password
 import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_response_dto.dart';
 import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_allergies_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
@@ -91,6 +93,12 @@ abstract class ApiServices {
   @Extra({TokenInterceptor.skipAuthKey: true})
   Future<List<CallingCodeResponseDto>> getCallingCodes();
 
+  @GET(EndPoints.locations)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<LocationsCatalogResponseDto> getLocationsCatalog(
+    @Query('countryCode') String countryCode,
+  );
+
   @GET(EndPoints.customerProfile)
   Future<CustomerProfileResponseDto> getCustomerProfile();
 
@@ -143,4 +151,9 @@ abstract class ApiServices {
 
   @PUT(EndPoints.customerFoodPreferences)
   Future<void> updateFoodPreferences(@Body() FoodPreferencesRequestDto request);
+
+  @PUT(EndPoints.customerFoodPreferencesAllergies)
+  Future<void> updateFoodPreferencesAllergies(
+    @Body() FoodPreferencesAllergiesRequestDto request,
+  );
 }

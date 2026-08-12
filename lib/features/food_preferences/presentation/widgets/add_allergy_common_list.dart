@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
 class AddAllergyCommonList extends StatelessWidget {
   const AddAllergyCommonList({
@@ -14,7 +15,7 @@ class AddAllergyCommonList extends StatelessWidget {
     required this.onToggle,
   });
 
-  final List<String> options;
+  final List<DietaryPreferencesOption> options;
   final Set<String> selectedOptions;
   final ValueChanged<String> onToggle;
 
@@ -64,12 +65,12 @@ class AddAllergyCommonList extends StatelessWidget {
           ...options.map(
             (option) => Expanded(
               child: InkWell(
-                onTap: () => onToggle(option),
+                onTap: () => onToggle(option.code),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        option,
+                        option.label,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -77,7 +78,7 @@ class AddAllergyCommonList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    selectedOptions.contains(option)
+                    selectedOptions.contains(option.code)
                         ? SvgPicture.asset(
                             AssetsFake.addAllergyChecked,
                             width: Spacing.dietaryIconSize,

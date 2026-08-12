@@ -36,4 +36,15 @@ class FoodPreferencesRepositoryImpl implements FoodPreferencesRepository {
       await _remoteDataSource.updateFoodPreferences(preferences.toDto());
     });
   }
+
+  @override
+  Future<ApiResult<void>> updateFoodPreferencesAllergies(
+    List<FoodPreferenceItemEntity> allergies,
+  ) {
+    return safeApiCall(() async {
+      await _remoteDataSource.updateFoodPreferencesAllergies(
+        allergies.toAllergiesDto(),
+      );
+    });
+  }
 }

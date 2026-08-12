@@ -1,7 +1,9 @@
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 
 extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
   CustomerAddressEntity toEntity() {
@@ -44,6 +46,53 @@ extension CustomerAddressRequestEntityMapper on CustomerAddressRequestEntity {
       notes: notes,
       isDefault: isDefault,
       notifyOnDelivery: notifyOnDelivery,
+    );
+  }
+}
+
+extension LocationsCatalogResponseDtoMapper on LocationsCatalogResponseDto {
+  LocationsCatalogEntity toEntity() {
+    return LocationsCatalogEntity(
+      countryId: countryId ?? '',
+      countryCode: countryCode ?? '',
+      governorates:
+          governorates?.map((item) => item.toEntity()).toList() ?? const [],
+    );
+  }
+}
+
+extension LocationGovernorateResponseDtoMapper
+    on LocationGovernorateResponseDto {
+  LocationGovernorateEntity toEntity() {
+    return LocationGovernorateEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      areas: areas?.map((item) => item.toEntity()).toList() ?? const [],
+    );
+  }
+}
+
+extension LocationAreaResponseDtoMapper on LocationAreaResponseDto {
+  LocationAreaEntity toEntity() {
+    return LocationAreaEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      blocks: blocks?.map((item) => item.toEntity()).toList() ?? const [],
+    );
+  }
+}
+
+extension LocationBlockResponseDtoMapper on LocationBlockResponseDto {
+  LocationBlockEntity toEntity() {
+    return LocationBlockEntity(
+      id: id ?? '',
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
     );
   }
 }

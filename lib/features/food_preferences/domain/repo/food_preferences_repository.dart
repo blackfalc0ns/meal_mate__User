@@ -10,4 +10,8 @@ abstract interface class FoodPreferencesRepository {
   Future<ApiResult<void>> updateFoodPreferences(
     FoodPreferencesEntity preferences,
   );
+
+  Future<ApiResult<void>> updateFoodPreferencesAllergies(
+    List<FoodPreferenceItemEntity> allergies,
+  );
 }

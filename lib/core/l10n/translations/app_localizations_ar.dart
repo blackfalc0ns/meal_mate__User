@@ -600,6 +600,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_personal_info_subtitle => 'تعديل بياناتك الشخصية';
 
   @override
+  String get profile_personal_info_save => 'حفظ التغييرات';
+
+  @override
+  String get profile_personal_info_update_success =>
+      'تم تحديث المعلومات الشخصية بنجاح.';
+
+  @override
+  String get profile_personal_info_update_error =>
+      'تعذر تحديث المعلومات الشخصية. حاول مرة أخرى.';
+
+  @override
   String get profile_goals => 'أهدافي';
 
   @override
@@ -737,6 +748,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get add_allergy_save => 'حفظ الحساسية';
+
+  @override
+  String get add_allergy_update_success => 'تم تحديث الحساسية بنجاح.';
+
+  @override
+  String get add_allergy_update_error => 'تعذر تحديث الحساسية. حاول مرة أخرى.';
 
   @override
   String get profile_billing => 'الاشتراكات والفواتير';

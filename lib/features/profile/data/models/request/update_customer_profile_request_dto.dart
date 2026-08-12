@@ -6,6 +6,7 @@ part 'update_customer_profile_request_dto.g.dart';
 class UpdateCustomerProfileRequestDto {
   const UpdateCustomerProfileRequestDto({
     required this.fullName,
+    this.phoneNumber,
     required this.preferredLanguage,
     this.defaultRegionId,
     this.deliveryAddressLine,
@@ -15,6 +16,7 @@ class UpdateCustomerProfileRequestDto {
   });
 
   final String fullName;
+  final String? phoneNumber;
   final String preferredLanguage;
   final String? defaultRegionId;
   final String? deliveryAddressLine;

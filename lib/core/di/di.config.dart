@@ -30,6 +30,8 @@ import '../../features/addresses/domain/usecase/delete_customer_address_usecase.
     as _i624;
 import '../../features/addresses/domain/usecase/get_customer_addresses_usecase.dart'
     as _i945;
+import '../../features/addresses/domain/usecase/get_locations_catalog_usecase.dart'
+    as _i2;
 import '../../features/addresses/domain/usecase/update_customer_address_usecase.dart'
     as _i241;
 import '../../features/addresses/presentation/manager/addresses_view_model.dart'
@@ -78,6 +80,8 @@ import '../../features/food_preferences/domain/usecase/get_food_preferences_cata
     as _i32;
 import '../../features/food_preferences/domain/usecase/get_food_preferences_usecase.dart'
     as _i608;
+import '../../features/food_preferences/domain/usecase/update_food_preferences_allergies_usecase.dart'
+    as _i400;
 import '../../features/food_preferences/domain/usecase/update_food_preferences_usecase.dart'
     as _i635;
 import '../../features/food_preferences/presentation/manager/food_preferences_view_model.dart'
@@ -258,6 +262,11 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i608.GetFoodPreferencesUseCase(gh<_i62.FoodPreferencesRepository>()),
     );
+    gh.factory<_i400.UpdateFoodPreferencesAllergiesUseCase>(
+      () => _i400.UpdateFoodPreferencesAllergiesUseCase(
+        gh<_i62.FoodPreferencesRepository>(),
+      ),
+    );
     gh.factory<_i635.UpdateFoodPreferencesUseCase>(
       () => _i635.UpdateFoodPreferencesUseCase(
         gh<_i62.FoodPreferencesRepository>(),
@@ -270,15 +279,16 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
     );
-    gh.factory<_i995.UploadFileUseCase>(
-      () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
-    );
     gh.factory<_i420.FoodPreferencesViewModel>(
       () => _i420.FoodPreferencesViewModel(
         gh<_i608.GetFoodPreferencesUseCase>(),
         gh<_i32.GetFoodPreferencesCatalogUseCase>(),
         gh<_i635.UpdateFoodPreferencesUseCase>(),
+        gh<_i400.UpdateFoodPreferencesAllergiesUseCase>(),
       ),
+    );
+    gh.factory<_i995.UploadFileUseCase>(
+      () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
     );
     gh.factory<_i556.AddressesRepository>(
       () =>
@@ -318,12 +328,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i945.GetCustomerAddressesUseCase>(
       () => _i945.GetCustomerAddressesUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i2.GetLocationsCatalogUseCase>(
+      () => _i2.GetLocationsCatalogUseCase(gh<_i556.AddressesRepository>()),
+    );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
         gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i2.GetLocationsCatalogUseCase>(),
         gh<_i898.AddCustomerAddressUseCase>(),
         gh<_i241.UpdateCustomerAddressUseCase>(),
         gh<_i624.DeleteCustomerAddressUseCase>(),

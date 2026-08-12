@@ -17,3 +17,9 @@ class UpdateFoodPreferencesEvent extends FoodPreferencesEvent {
 
   final FoodPreferencesEntity preferences;
 }
+
+class UpdateFoodPreferencesAllergiesEvent extends FoodPreferencesEvent {
+  const UpdateFoodPreferencesAllergiesEvent(this.allergies);
+
+  final List<FoodPreferenceItemEntity> allergies;
+}

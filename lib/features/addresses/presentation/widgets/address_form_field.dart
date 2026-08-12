@@ -12,6 +12,8 @@ class AddressFormField extends StatelessWidget {
     required this.hint,
     required this.iconAsset,
     this.showDropdown = false,
+    this.value,
+    this.onTap,
     this.optionalText,
     this.small = false,
   });
@@ -20,6 +22,8 @@ class AddressFormField extends StatelessWidget {
   final String hint;
   final String iconAsset;
   final bool showDropdown;
+  final String? value;
+  final VoidCallback? onTap;
   final String? optionalText;
   final bool small;
 
@@ -61,101 +65,110 @@ class AddressFormField extends StatelessWidget {
         ? Spacing.addressesHomeFormSmallTextWidth
         : Spacing.addressesHomeFormTextWidth;
 
-    return Container(
-      width: Spacing.addressesHomeFormFieldWidth,
-      height: height,
-      decoration: BoxDecoration(
-        color: color.surface,
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.addressesHomeFormFieldBorder,
+    final displayValue = value ?? hint;
+    final hasValue = value != null && value!.isNotEmpty;
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: Spacing.addressesHomeFormFieldWidth,
+        height: height,
+        decoration: BoxDecoration(
+          color: color.surface,
+          border: Border.all(
+            color: color.outlineVariant,
+            width: Spacing.addressesHomeFormFieldBorder,
+          ),
+          borderRadius: BorderRadius.circular(
+            Spacing.addressesHomeFormFieldRadius,
+          ),
         ),
-        borderRadius: BorderRadius.circular(
-          Spacing.addressesHomeFormFieldRadius,
-        ),
-      ),
-      child: Stack(
-        children: [
-          PositionedDirectional(
-            start: iconInset,
-            top: iconInset,
-            child: Container(
-              width: iconBoxSize,
-              height: iconBoxSize,
-              decoration: BoxDecoration(
-                color: color.secondaryContainer,
-                borderRadius: BorderRadius.circular(
-                  Spacing.addressesHomeFormIconBoxRadius,
+        child: Stack(
+          children: [
+            PositionedDirectional(
+              start: iconInset,
+              top: iconInset,
+              child: Container(
+                width: iconBoxSize,
+                height: iconBoxSize,
+                decoration: BoxDecoration(
+                  color: color.secondaryContainer,
+                  borderRadius: BorderRadius.circular(
+                    Spacing.addressesHomeFormIconBoxRadius,
+                  ),
+                ),
+                child: Center(
+                  child: SvgPicture.asset(
+                    iconAsset,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
                 ),
               ),
-              child: Center(
-                child: SvgPicture.asset(
-                  iconAsset,
-                  width: iconSize,
-                  height: iconSize,
-                ),
-              ),
             ),
-          ),
-          PositionedDirectional(
-            start: Spacing.addressesHomeFormTextEnd,
-            top: labelTop,
-            width: textWidth,
-            child: Text(
-              label,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: labelSize,
-                color: color.onSurfaceVariant,
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            start: Spacing.addressesHomeFormTextEnd,
-            top: hintTop,
-            width: textWidth,
-            child: Text(
-              hint,
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: hintSize,
-                color: color.onSurfaceVariant.withValues(alpha: 0.7),
-              ),
-            ),
-          ),
-          if (showDropdown)
             PositionedDirectional(
-              end: Spacing.addressesHomeFormArrowStart,
-              top: arrowTop,
-              child: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                size: Spacing.addressesHomeFormSmallIconSize,
-                color: color.onSurfaceVariant,
-                semanticLabel: locale.addresses_choose_location_title,
-              ),
-            ),
-          if (optionalText != null)
-            PositionedDirectional(
-              end: Spacing.addressesHomeFormOptionalStart,
-              top: Spacing.addressesHomeFormOptionalTop,
+              start: Spacing.addressesHomeFormTextEnd,
+              top: labelTop,
+              width: textWidth,
               child: Text(
-                optionalText!,
+                label,
+                textAlign: TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
+                style: getSemiBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: optionalSize,
+                  fontSize: labelSize,
                   color: color.onSurfaceVariant,
                 ),
               ),
             ),
-        ],
+            PositionedDirectional(
+              start: Spacing.addressesHomeFormTextEnd,
+              top: hintTop,
+              width: textWidth,
+              child: Text(
+                displayValue,
+                textAlign: TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: hintSize,
+                  color: hasValue
+                      ? color.onSurface
+                      : color.onSurfaceVariant.withValues(alpha: 0.7),
+                ),
+              ),
+            ),
+            if (showDropdown)
+              PositionedDirectional(
+                end: Spacing.addressesHomeFormArrowStart,
+                top: arrowTop,
+                child: Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: Spacing.addressesHomeFormSmallIconSize,
+                  color: color.onSurfaceVariant,
+                  semanticLabel: locale.addresses_choose_location_title,
+                ),
+              ),
+            if (optionalText != null)
+              PositionedDirectional(
+                end: Spacing.addressesHomeFormOptionalStart,
+                top: Spacing.addressesHomeFormOptionalTop,
+                child: Text(
+                  optionalText!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: optionalSize,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

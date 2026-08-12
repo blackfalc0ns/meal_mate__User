@@ -9,14 +9,13 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
-import 'package:meal_meat_user/features/food_preferences/data/mapper/food_preferences_mapper.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_hero_banner.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_loading_skeleton.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_notes_section.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
@@ -144,7 +143,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
 
           if ((preferencesState.isLoading && preferencesState.data == null) ||
               (catalogState.isLoading && catalog == null)) {
-            return const LoadingWidget.fullScreen();
+            return const DietaryPreferencesLoadingSkeleton();
           }
 
           final failure = preferencesState.failure ?? catalogState.failure;
@@ -219,8 +218,17 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     choicesTopInset: Spacing.dietaryAllergiesChoicesTopInset,
                     choicesSpacing: Spacing.dietaryDietChoicesSpacing,
                     actionLabel: locale.dietary_preferences_manage_allergies,
-                    onActionPressed: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.addAllergy),
+                    onActionPressed: () async {
+                      final navigator = Navigator.of(context);
+                      final viewModel = context
+                          .read<FoodPreferencesViewModel>();
+                      final updated = await navigator.pushNamed(
+                        AppRoutes.addAllergy,
+                      );
+                      if (updated == true) {
+                        viewModel.doIntent(const GetFoodPreferencesEvent());
+                      }
+                    },
                   ),
                   const SizedBox(height: Spacing.dietarySectionGap),
                   DietaryPreferencesNotesSection(
@@ -308,7 +316,13 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
     return selectedCodes
         .map((code) => itemsByCode[code])
         .nonNulls
-        .map((item) => item.toPreferenceItemEntity())
+        .map(
+          (item) => FoodPreferenceItemEntity(
+            code: item.code,
+            nameAr: item.nameAr,
+            nameEn: item.nameEn,
+          ),
+        )
         .toList();
   }
 }

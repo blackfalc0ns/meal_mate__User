@@ -4,6 +4,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_usecase.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/usecase/update_food_preferences_allergies_usecase.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/update_food_preferences_usecase.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
@@ -14,11 +15,14 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
     this._getFoodPreferencesUseCase,
     this._getFoodPreferencesCatalogUseCase,
     this._updateFoodPreferencesUseCase,
+    this._updateFoodPreferencesAllergiesUseCase,
   ) : super(const FoodPreferencesState());
 
   final GetFoodPreferencesUseCase _getFoodPreferencesUseCase;
   final GetFoodPreferencesCatalogUseCase _getFoodPreferencesCatalogUseCase;
   final UpdateFoodPreferencesUseCase _updateFoodPreferencesUseCase;
+  final UpdateFoodPreferencesAllergiesUseCase
+  _updateFoodPreferencesAllergiesUseCase;
 
   void doIntent(FoodPreferencesEvent event) {
     switch (event) {
@@ -28,6 +32,8 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
         _getFoodPreferencesCatalog();
       case UpdateFoodPreferencesEvent():
         _updateFoodPreferences(event.preferences);
+      case UpdateFoodPreferencesAllergiesEvent():
+        _updateFoodPreferencesAllergies(event.allergies);
     }
   }
 
@@ -106,7 +112,26 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
   }
 
   Future<void> _updateFoodPreferences(FoodPreferencesEntity preferences) async {
-    await _runAction(() => _updateFoodPreferencesUseCase(preferences));
+    await _runAction(() async {
+      final preferencesResult = await _updateFoodPreferencesUseCase(
+        preferences,
+      );
+      if (preferencesResult is ApiErrorResult<void>) {
+        return preferencesResult;
+      }
+
+      return _updateFoodPreferencesAllergiesUseCase(preferences.allergies);
+    });
+
+    if (state.action.isSuccess) {
+      _getFoodPreferences();
+    }
+  }
+
+  Future<void> _updateFoodPreferencesAllergies(
+    List<FoodPreferenceItemEntity> allergies,
+  ) async {
+    await _runAction(() => _updateFoodPreferencesAllergiesUseCase(allergies));
     if (state.action.isSuccess) {
       _getFoodPreferences();
     }

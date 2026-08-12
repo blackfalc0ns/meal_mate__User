@@ -17,6 +17,7 @@ abstract class EndPoints {
   static const String refresh = '/api/v1/auth/refresh';
   static const String logout = '/api/v1/auth/logout';
   static const String callingCodes = '/api/v1/catalog/calling-codes';
+  static const String locations = '/api/v1/catalog/locations';
   static const String customerProfile = '/api/v1/customers/me';
   static const String uploads = '/api/v1/uploads';
   static const String uploadContent = '/api/v1/uploads/content';
@@ -30,4 +31,6 @@ abstract class EndPoints {
       '/api/v1/customers/me/food-preferences';
   static const String customerFoodPreferencesCatalog =
       '/api/v1/customers/me/food-preferences/catalog';
+  static const String customerFoodPreferencesAllergies =
+      '/api/v1/customers/me/food-preferences/allergies';
 }

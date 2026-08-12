@@ -11,11 +11,11 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_address_tile.dart';
 
@@ -46,7 +46,7 @@ class AddressesScreen extends StatelessWidget {
             final addressesState = state.addresses;
 
             if (addressesState.isLoading && addressesState.items.isEmpty) {
-              return const LoadingWidget.fullScreen();
+              return const AddressesLoadingSkeleton();
             }
 
             if (addressesState.failure != null &&

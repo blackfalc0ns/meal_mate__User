@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
@@ -31,9 +32,17 @@ extension FoodPreferencesEntityMapper on FoodPreferencesEntity {
   FoodPreferencesRequestDto toDto() {
     return FoodPreferencesRequestDto(
       dietaryPattern: dietaryPattern,
-      allergies: allergies.map((item) => item.toDto()).toList(),
       dislikedFoods: dislikedFoods.map((item) => item.toDto()).toList(),
       notes: notes,
+    );
+  }
+}
+
+extension FoodPreferencesAllergiesEntityMapper
+    on List<FoodPreferenceItemEntity> {
+  FoodPreferencesAllergiesRequestDto toAllergiesDto() {
+    return FoodPreferencesAllergiesRequestDto(
+      allergies: map((item) => item.toDto()).toList(),
     );
   }
 }
@@ -84,12 +93,5 @@ extension FoodPreferencesCatalogAllergenResponseDtoMapper
       nameAr: nameAr ?? '',
       nameEn: nameEn ?? '',
     );
-  }
-}
-
-extension FoodPreferenceCatalogItemEntityMapper
-    on FoodPreferenceCatalogItemEntity {
-  FoodPreferenceItemEntity toPreferenceItemEntity() {
-    return FoodPreferenceItemEntity(code: code, nameAr: nameAr, nameEn: nameEn);
   }
 }

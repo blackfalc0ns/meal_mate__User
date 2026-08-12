@@ -612,6 +612,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_personal_info_subtitle => 'Edit your personal details';
 
   @override
+  String get profile_personal_info_save => 'Save changes';
+
+  @override
+  String get profile_personal_info_update_success =>
+      'Personal information updated successfully.';
+
+  @override
+  String get profile_personal_info_update_error =>
+      'Could not update personal information. Please try again.';
+
+  @override
   String get profile_goals => 'My goals';
 
   @override
@@ -751,6 +762,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get add_allergy_save => 'Save allergies';
+
+  @override
+  String get add_allergy_update_success => 'Allergies updated successfully.';
+
+  @override
+  String get add_allergy_update_error =>
+      'Could not update allergies. Please try again.';
 
   @override
   String get profile_billing => 'Subscriptions and billing';

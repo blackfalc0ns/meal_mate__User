@@ -1,6 +1,7 @@
 class UpdateCustomerProfileRequestEntity {
   const UpdateCustomerProfileRequestEntity({
     required this.fullName,
+    this.phoneNumber,
     required this.preferredLanguage,
     this.defaultRegionId,
     this.deliveryAddressLine,
@@ -10,6 +11,7 @@ class UpdateCustomerProfileRequestEntity {
   });
 
   final String fullName;
+  final String? phoneNumber;
   final String preferredLanguage;
   final String? defaultRegionId;
   final String? deliveryAddressLine;

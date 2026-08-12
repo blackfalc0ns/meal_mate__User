@@ -44,6 +44,7 @@ extension UpdateCustomerProfileRequestEntityMapper
   UpdateCustomerProfileRequestDto toDto() {
     return UpdateCustomerProfileRequestDto(
       fullName: fullName,
+      phoneNumber: phoneNumber,
       preferredLanguage: preferredLanguage,
       defaultRegionId: defaultRegionId,
       deliveryAddressLine: deliveryAddressLine,
