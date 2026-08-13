@@ -39,4 +39,6 @@ abstract class EndPoints {
       '/api/v1/customer/subscription-flow/types';
   static const String subscriptionPrograms =
       '/api/v1/customer/subscription-flow/programs';
+  static const String subscriptionProgramBundles =
+      '/api/v1/customer/subscription-flow/programs/{programId}/bundles';
 }

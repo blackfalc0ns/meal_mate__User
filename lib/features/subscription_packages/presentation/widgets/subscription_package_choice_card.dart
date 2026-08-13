@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_restaurant_logo_stack.dart';
 
 class SubscriptionPackageChoiceCard extends StatelessWidget {
@@ -12,7 +12,11 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.isSelected,
+    required this.fallbackImageAsset,
     this.isPopular = false,
+    this.imageUrl,
+    this.restaurantLogoUrls = const [],
+    this.badgeLabel,
     this.price,
     this.currency,
     this.onTap,
@@ -21,7 +25,11 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isSelected;
+  final String fallbackImageAsset;
   final bool isPopular;
+  final String? imageUrl;
+  final List<String?> restaurantLogoUrls;
+  final String? badgeLabel;
   final String? price;
   final String? currency;
   final VoidCallback? onTap;
@@ -76,10 +84,11 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                   SizedBox(
                     width: Spacing.subscriptionPackageChoiceImageWidth,
                     height: Spacing.subscriptionPackageChoiceImageHeight,
-                    child: Image.asset(
-                      Assets.subscriptionPackageMealBox,
+                    child: AppCachedNetworkImage(
+                      imageUrl: imageUrl,
                       fit: BoxFit.contain,
                       semanticLabel: title,
+                    
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
@@ -91,7 +100,6 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                           textDirection: TextDirection.rtl,
                           children: [
                             Container(
-                              // width: Spacing.lg,
                               height: Spacing.xxl,
                               decoration: BoxDecoration(
                                 color: color.primaryContainer,
@@ -129,8 +137,10 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                             color: color.onSurfaceVariant,
                           ),
                         ),
-                        SizedBox(height: Spacing.sm),
-                        const SubscriptionRestaurantLogoStack(),
+                        const SizedBox(height: Spacing.sm),
+                        SubscriptionRestaurantLogoStack(
+                          logoUrls: restaurantLogoUrls,
+                        ),
                       ],
                     ),
                   ),
@@ -183,7 +193,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                       const SizedBox(width: Spacing.xs),
 
                       Text(
-                        locale.subscription_details_most_selected,
+                        badgeLabel ?? locale.subscription_details_most_selected,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size10,

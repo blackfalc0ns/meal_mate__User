@@ -486,6 +486,8 @@
   "subscription_hero_subtitle": "اختر الباقة المناسبة لأسلوب حياتك واستمتع بوجبات صحية كل يوم",
   "subscription_choose_plan_title": "اختر الباقة التي تناسبك",
   "subscription_choose_plan_button": "اختر الباقة",
+  "subscription_packages_empty_title": "لا توجد باقات متاحة حاليًا",
+  "subscription_packages_empty_description": "لا توجد باقات لهذا البرنامج الآن. جرّب برنامجًا آخر أو أعد المحاولة لاحقًا.",
   "subscription_individual_packages": "الباقات الفردية",
   "subscription_family_packages": "الباقات العائلية",
   "subscription_best_value": "الأفضل قيمة",

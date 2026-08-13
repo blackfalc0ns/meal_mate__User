@@ -486,6 +486,8 @@
   "subscription_hero_subtitle": "Choose the plan that fits your lifestyle and enjoy healthy meals every day",
   "subscription_choose_plan_title": "Choose the package that suits you",
   "subscription_choose_plan_button": "Choose plan",
+  "subscription_packages_empty_title": "No packages available right now",
+  "subscription_packages_empty_description": "There are no packages for this program yet. Try another program or check again later.",
   "subscription_individual_packages": "Individual packages",
   "subscription_family_packages": "Family packages",
   "subscription_best_value": "Best value",

@@ -1535,6 +1535,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_choose_plan_button => 'اختر الباقة';
 
   @override
+  String get subscription_packages_empty_title => 'لا توجد باقات متاحة حاليًا';
+
+  @override
+  String get subscription_packages_empty_description =>
+      'لا توجد باقات لهذا البرنامج الآن. جرّب برنامجًا آخر أو أعد المحاولة لاحقًا.';
+
+  @override
   String get subscription_individual_packages => 'الباقات الفردية';
 
   @override

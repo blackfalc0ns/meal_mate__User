@@ -119,6 +119,8 @@ import '../../features/subscription_programs/domain/repo/subscription_programs_r
     as _i650;
 import '../../features/subscription_programs/domain/repo/subscription_types_repository.dart'
     as _i866;
+import '../../features/subscription_programs/domain/usecase/get_subscription_program_bundles_usecase.dart'
+    as _i718;
 import '../../features/subscription_programs/domain/usecase/get_subscription_programs_usecase.dart'
     as _i178;
 import '../../features/subscription_programs/domain/usecase/get_subscription_types_usecase.dart'
@@ -325,6 +327,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i400.UpdateFoodPreferencesAllergiesUseCase>(),
       ),
     );
+    gh.factory<_i718.GetSubscriptionProgramBundlesUseCase>(
+      () => _i718.GetSubscriptionProgramBundlesUseCase(
+        gh<_i650.SubscriptionProgramsRepository>(),
+      ),
+    );
     gh.factory<_i178.GetSubscriptionProgramsUseCase>(
       () => _i178.GetSubscriptionProgramsUseCase(
         gh<_i650.SubscriptionProgramsRepository>(),
@@ -395,6 +402,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i420.SubscriptionProgramsViewModel>(
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

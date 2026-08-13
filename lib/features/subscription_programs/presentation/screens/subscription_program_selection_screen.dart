@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_state.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_view_model.dart';
@@ -66,7 +67,7 @@ class _SubscriptionProgramSelectionScreenState
                                 _selectedProgramIndex == null ||
                                     state.programs.isEmpty
                                 ? null
-                                : _openPackageSelection,
+                                : () => _openPackageSelection(state.programs),
                             borderRadius: Spacing.radiusPill,
                             textColor: color.onPrimary,
                             fontSize: FontSize.size12,
@@ -123,13 +124,13 @@ class _SubscriptionProgramSelectionScreenState
     setState(() => _selectedProgramIndex = index);
   }
 
-  void _openPackageSelection() {
+  void _openPackageSelection(List<SubscriptionProgramEntity> programs) {
     final selectedProgramIndex = _selectedProgramIndex;
     if (selectedProgramIndex == null) return;
 
     context.pushNamed(
       AppRoutes.subscriptionPackageSelection,
-      arguments: selectedProgramIndex.clamp(0, 2),
+      arguments: programs[selectedProgramIndex],
     );
   }
 }

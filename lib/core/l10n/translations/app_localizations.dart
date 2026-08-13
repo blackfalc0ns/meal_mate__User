@@ -3014,6 +3014,18 @@ abstract class AppLocalizations {
   /// **'Choose plan'**
   String get subscription_choose_plan_button;
 
+  /// No description provided for @subscription_packages_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No packages available right now'**
+  String get subscription_packages_empty_title;
+
+  /// No description provided for @subscription_packages_empty_description.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no packages for this program yet. Try another program or check again later.'**
+  String get subscription_packages_empty_description;
+
   /// No description provided for @subscription_individual_packages.
   ///
   /// In en, this message translates to:

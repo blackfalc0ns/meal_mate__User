@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 
 class SubscriptionSelectedProgramCard extends StatelessWidget {
-  const SubscriptionSelectedProgramCard({super.key});
+  const SubscriptionSelectedProgramCard({super.key, required this.program});
+
+  final SubscriptionProgramEntity program;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +71,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            Icons.monitor_weight_outlined,
+                            _badgeIconForProgram(program),
                             size: Spacing.iconSm,
                             color: color.primary,
                           ),
@@ -90,7 +93,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                locale.subscription_weight_loss_title,
+                                program.name(locale.localeName),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.right,
@@ -114,7 +117,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         child: SizedBox(
                           width: Spacing.xxxl * 2.75,
                           child: Text(
-                            locale.subscription_weight_loss_description,
+                            program.description(locale.localeName),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.right,
@@ -136,13 +139,13 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         textDirection: TextDirection.rtl,
                         children: [
                           Icon(
-                            Icons.bolt_rounded,
+                            _primaryFeatureIconForProgram(program),
                             size: Spacing.iconSm,
                             color: color.primary,
                           ),
                           const SizedBox(width: Spacing.xs),
                           Text(
-                            locale.subscription_less_calories,
+                            _featureAt(program.keywords(locale.localeName), 0),
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size10,
@@ -159,13 +162,13 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                           ),
                           const SizedBox(width: Spacing.md),
                           Icon(
-                            Icons.bar_chart_rounded,
+                            _secondaryFeatureIconForProgram(program),
                             size: Spacing.iconSm,
                             color: color.primary,
                           ),
                           const SizedBox(width: Spacing.xs),
                           Text(
-                            locale.subscription_effective_results,
+                            _featureAt(program.keywords(locale.localeName), 1),
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size10,
@@ -195,11 +198,12 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                     ],
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      Assets.subscriptionWeightLossProgram,
+                    child: AppCachedNetworkImage(
+                      imageUrl: program.imageUrl,
+                      shape: BoxShape.circle,
                       fit: BoxFit.cover,
-                      alignment: const Alignment(0.1, 0.32),
-                      semanticLabel: locale.subscription_weight_loss_title,
+                      semanticLabel: program.name(locale.localeName),
+                     
                     ),
                   ),
                 ),
@@ -209,5 +213,40 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _featureAt(List<String> keywords, int index) {
+    if (index >= keywords.length) return '';
+    return keywords[index];
+  }
+
+  IconData _badgeIconForProgram(SubscriptionProgramEntity program) {
+    return switch (program.code) {
+      'PROG_WEIGHT_LOSS' => Icons.monitor_weight_outlined,
+      'PROG_MUSCLE_GAIN' => Icons.fitness_center_rounded,
+      'PROG_ATHLETE' => Icons.directions_run_rounded,
+      'PROG_KETO' => Icons.water_drop_rounded,
+      'PROG_BALANCED' => Icons.favorite_border_rounded,
+      'PROG_LOW_CARB' => Icons.eco_rounded,
+      _ => Icons.restaurant_menu_rounded,
+    };
+  }
+
+  IconData _primaryFeatureIconForProgram(SubscriptionProgramEntity program) {
+    return switch (program.code) {
+      'PROG_WEIGHT_LOSS' => Icons.bar_chart_rounded,
+      'PROG_BALANCED' => Icons.eco_rounded,
+      'PROG_ATHLETE' => Icons.bolt_rounded,
+      _ => Icons.bolt_rounded,
+    };
+  }
+
+  IconData _secondaryFeatureIconForProgram(SubscriptionProgramEntity program) {
+    return switch (program.code) {
+      'PROG_MUSCLE_GAIN' => Icons.sync_rounded,
+      'PROG_ATHLETE' => Icons.sync_rounded,
+      'PROG_LOW_CARB' => Icons.tune_rounded,
+      _ => Icons.my_location_rounded,
+    };
   }
 }

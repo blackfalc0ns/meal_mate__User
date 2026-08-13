@@ -1556,6 +1556,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_choose_plan_button => 'Choose plan';
 
   @override
+  String get subscription_packages_empty_title =>
+      'No packages available right now';
+
+  @override
+  String get subscription_packages_empty_description =>
+      'There are no packages for this program yet. Try another program or check again later.';
+
+  @override
   String get subscription_individual_packages => 'Individual packages';
 
   @override

@@ -31,6 +31,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_pl
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
@@ -70,12 +71,14 @@ class RouteGenerator {
           page: SubscriptionPlanDetailsScreen(initialPage: initialPage),
         );
       case AppRoutes.subscriptionPackageSelection:
-        final programIndex = settings.arguments is int
-            ? settings.arguments! as int
-            : 0;
+        final selectedProgram = settings.arguments is SubscriptionProgramEntity
+            ? settings.arguments! as SubscriptionProgramEntity
+            : null;
         return _buildRoute(
           settings: settings,
-          page: SubscriptionPackageSelectionScreen(programIndex: programIndex),
+          page: SubscriptionPackageSelectionScreen(
+            selectedProgram: selectedProgram,
+          ),
         );
       case AppRoutes.subscriptionSummary:
         final plan = settings.arguments! as MonthlyPlanDetailsEntity;
