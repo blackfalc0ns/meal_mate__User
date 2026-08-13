@@ -707,7 +707,7 @@ class Spacing {
   static const double addressesHomeFormSubtitleSize = 17.458;
   static const double addressesHomeFormFieldStart = 25.39;
   static const double addressesHomeFormFieldWidth = 517.384;
-  static const double addressesHomeFormFieldHeight = 69.831;
+  static const double addressesHomeFormFieldHeight = 100.831;
   static const double addressesHomeFormSmallFieldHeight = 63.483;
   static const double addressesHomeFormFieldRadius = 14.284;
   static const double addressesHomeFormFieldBorder = 1.587;

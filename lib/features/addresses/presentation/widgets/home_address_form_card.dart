@@ -77,185 +77,188 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Spacing.addressesHomeFormRadius),
-        child: Stack(
-          children: [
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormTitleEnd,
-              top: Spacing.addressesHomeFormTitleTop,
-              child: Text(
-                locale.addresses_home_address_title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: Spacing.addressesHomeFormTitleSize,
-                  color: color.primary,
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormSubtitleEnd,
-              top: Spacing.addressesHomeFormSubtitleTop,
-              child: Text(
-                locale.addresses_home_address_subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: Spacing.addressesHomeFormSubtitleSize,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-            ),
-            PositionedDirectional(
+        child: SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.only(
+            bottom: Spacing.addressesHomeFormTitleTop,
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
               start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormGovernorateTop,
-              child: Builder(
-                builder: (fieldContext) {
-                  return AddressFormField(
-                    label: locale.addresses_governorate_label,
-                    hint: locale.addresses_governorate_hint,
-                    iconAsset: Assets.addressesIconGovernorate,
-                    showDropdown: true,
-                    value: widget.selectedGovernorate?.nameForLanguage(
-                      Localizations.localeOf(context).languageCode,
+              end: Spacing.addressesHomeFormFieldStart,
+              top: Spacing.addressesHomeFormTitleTop,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start:
+                        Spacing.addressesHomeFormTitleEnd -
+                        Spacing.addressesHomeFormFieldStart,
+                  ),
+                  child: Text(
+                    locale.addresses_home_address_title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: Spacing.addressesHomeFormTitleSize,
+                      color: color.primary,
                     ),
-                    onTap: () => _showOptions<LocationGovernorateEntity>(
-                      context: fieldContext,
-                      items: widget.governorates,
-                      labelBuilder: (item) => item.nameForLanguage(
+                  ),
+                ),
+                SizedBox(
+                  height:
+                      Spacing.addressesHomeFormSubtitleTop -
+                      Spacing.addressesHomeFormTitleTop -
+                      Spacing.addressesHomeFormTitleSize,
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start:
+                        Spacing.addressesHomeFormSubtitleEnd -
+                        Spacing.addressesHomeFormFieldStart,
+                  ),
+                  child: Text(
+                    locale.addresses_home_address_subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: Spacing.addressesHomeFormSubtitleSize,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height:
+                      Spacing.addressesHomeFormGovernorateTop -
+                      Spacing.addressesHomeFormSubtitleTop -
+                      Spacing.addressesHomeFormSubtitleSize,
+                ),
+                Builder(
+                  builder: (fieldContext) {
+                    return AddressFormField(
+                      label: locale.addresses_governorate_label,
+                      hint: locale.addresses_governorate_hint,
+                      iconAsset: Assets.addressesIconGovernorate,
+                      showDropdown: true,
+                      value: widget.selectedGovernorate?.nameForLanguage(
                         Localizations.localeOf(context).languageCode,
                       ),
-                      onSelected: widget.onGovernorateSelected,
-                    ),
-                  );
-                },
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormAreaTop,
-              child: Builder(
-                builder: (fieldContext) {
-                  return AddressFormField(
-                    label: locale.addresses_area_label,
-                    hint: locale.addresses_area_hint,
-                    iconAsset: Assets.addressesIconArea,
-                    showDropdown: true,
-                    value: widget.selectedArea?.nameForLanguage(
-                      Localizations.localeOf(context).languageCode,
-                    ),
-                    onTap: widget.selectedGovernorate == null
-                        ? null
-                        : () => _showOptions<LocationAreaEntity>(
-                            context: fieldContext,
-                            items: widget.areas,
-                            labelBuilder: (item) => item.nameForLanguage(
-                              Localizations.localeOf(context).languageCode,
+                      onTap: () => _showOptions<LocationGovernorateEntity>(
+                        context: fieldContext,
+                        items: widget.governorates,
+                        labelBuilder: (item) => item.nameForLanguage(
+                          Localizations.localeOf(context).languageCode,
+                        ),
+                        onSelected: widget.onGovernorateSelected,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                Builder(
+                  builder: (fieldContext) {
+                    return AddressFormField(
+                      label: locale.addresses_area_label,
+                      hint: locale.addresses_area_hint,
+                      iconAsset: Assets.addressesIconArea,
+                      showDropdown: true,
+                      value: widget.selectedArea?.nameForLanguage(
+                        Localizations.localeOf(context).languageCode,
+                      ),
+                      onTap: widget.selectedGovernorate == null
+                          ? null
+                          : () => _showOptions<LocationAreaEntity>(
+                              context: fieldContext,
+                              items: widget.areas,
+                              labelBuilder: (item) => item.nameForLanguage(
+                                Localizations.localeOf(context).languageCode,
+                              ),
+                              onSelected: widget.onAreaSelected,
                             ),
-                            onSelected: widget.onAreaSelected,
-                          ),
-                  );
-                },
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormBlockTop,
-              child: Builder(
-                builder: (fieldContext) {
-                  return AddressFormField(
-                    label: locale.addresses_block_label,
-                    hint: locale.addresses_block_hint,
-                    iconAsset: Assets.addressesIconBlock,
-                    showDropdown: true,
-                    value: widget.selectedBlock?.nameForLanguage(
-                      Localizations.localeOf(context).languageCode,
-                    ),
-                    onTap: widget.selectedArea == null
-                        ? null
-                        : () => _showOptions<LocationBlockEntity>(
-                            context: fieldContext,
-                            items: widget.blocks,
-                            labelBuilder: (item) => item.nameForLanguage(
-                              Localizations.localeOf(context).languageCode,
+                    );
+                  },
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                Builder(
+                  builder: (fieldContext) {
+                    return AddressFormField(
+                      label: locale.addresses_block_label,
+                      hint: locale.addresses_block_hint,
+                      iconAsset: Assets.addressesIconBlock,
+                      showDropdown: true,
+                      value: widget.selectedBlock?.nameForLanguage(
+                        Localizations.localeOf(context).languageCode,
+                      ),
+                      onTap: widget.selectedArea == null
+                          ? null
+                          : () => _showOptions<LocationBlockEntity>(
+                              context: fieldContext,
+                              items: widget.blocks,
+                              labelBuilder: (item) => item.nameForLanguage(
+                                Localizations.localeOf(context).languageCode,
+                              ),
+                              onSelected: widget.onBlockSelected,
                             ),
-                            onSelected: widget.onBlockSelected,
-                          ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                AddressFormField(
+                  label: locale.addresses_street_label,
+                  hint: locale.addresses_street_hint,
+                  iconAsset: Assets.addressesIconStreet,
+                  controller: _streetController,
+                  textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                AddressFormField(
+                  label: locale.addresses_avenue_label,
+                  hint: locale.addresses_avenue_hint,
+                  iconAsset: Assets.addressesIconAvenue,
+                  controller: _avenueController,
+                  textInputAction: TextInputAction.next,
+                  optionalText: locale.addresses_optional,
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                BuildingTypeSelector(
+                  selectedType: _buildingType,
+                  onChanged: (type) => setState(() => _buildingType = type),
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                AddressFormField(
+                  label: locale.addresses_floor_label,
+                  hint: locale.addresses_floor_hint,
+                  iconAsset: Assets.addressesIconFloor,
+                  showDropdown: true,
+                  small: true,
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                AddressFormField(
+                  label: locale.addresses_building_number_label,
+                  hint: locale.addresses_building_number_hint,
+                  iconAsset: Assets.addressesIconNumber,
+                  controller: _buildingNumberController,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  small: true,
+                ),
+                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                AddressFormField(
+                  label: locale.addresses_apartment_number_label,
+                  hint: locale.addresses_apartment_number_hint,
+                  iconAsset: Assets.addressesIconApartment,
+                  controller: _apartmentController,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  optionalText: locale.addresses_optional,
+                  small: true,
+                ),
+              ],
             ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormStreetTop,
-              child: AddressFormField(
-                label: locale.addresses_street_label,
-                hint: locale.addresses_street_hint,
-                iconAsset: Assets.addressesIconStreet,
-                controller: _streetController,
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormAvenueTop,
-              child: AddressFormField(
-                label: locale.addresses_avenue_label,
-                hint: locale.addresses_avenue_hint,
-                iconAsset: Assets.addressesIconAvenue,
-                controller: _avenueController,
-                textInputAction: TextInputAction.next,
-                optionalText: locale.addresses_optional,
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormBuildingTop,
-              child: BuildingTypeSelector(
-                selectedType: _buildingType,
-                onChanged: (type) => setState(() => _buildingType = type),
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormFloorTop,
-              child: AddressFormField(
-                label: locale.addresses_floor_label,
-                hint: locale.addresses_floor_hint,
-                iconAsset: Assets.addressesIconFloor,
-                showDropdown: true,
-                small: true,
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormNumberTop,
-              child: AddressFormField(
-                label: locale.addresses_building_number_label,
-                hint: locale.addresses_building_number_hint,
-                iconAsset: Assets.addressesIconNumber,
-                controller: _buildingNumberController,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                small: true,
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormFieldStart,
-              top: Spacing.addressesHomeFormApartmentTop,
-              child: AddressFormField(
-                label: locale.addresses_apartment_number_label,
-                hint: locale.addresses_apartment_number_hint,
-                iconAsset: Assets.addressesIconApartment,
-                controller: _apartmentController,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-                optionalText: locale.addresses_optional,
-                small: true,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

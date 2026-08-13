@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
@@ -25,9 +24,38 @@ class AddressChooseLocationScreen extends StatelessWidget {
         backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
         extendBody: true,
-        body: Stack(
+        body: Column(
           children: [
-            Positioned.fill(
+            Padding(
+              padding: EdgeInsetsDirectional.only(
+                top: MediaQuery.paddingOf(context).top + Spacing.lg,
+                end: Spacing.xl,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Material(
+                    color: color.surface,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      onTap: () => Navigator.maybePop(context),
+                      customBorder: const CircleBorder(),
+                      child: SizedBox(
+                        width: Spacing.xxl,
+                        height: Spacing.xxl,
+                        child: Icon(
+                          Icons.arrow_back_ios_rounded,
+                          size: Spacing.iconMd,
+                          color: color.onSurface,
+                          semanticLabel: locale.go_back,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
               child: Semantics(
                 label: locale.addresses_choose_location_title,
                 child: BlocBuilder<AddressesViewModel, AddressesState>(
@@ -40,9 +68,7 @@ class AddressChooseLocationScreen extends StatelessWidget {
                             constraints.maxWidth /
                             Spacing.addressesChooseLocationDesignWidth;
                         final contentHeight =
-                            (Spacing.addressesChooseLocationDesignHeight +
-                                Spacing.addressesChooseLocationBottomPadding) *
-                            scale;
+                            AddressesFigmaFrame.frameHeight * scale;
 
                         return SingleChildScrollView(
                           padding: EdgeInsets.only(
@@ -57,8 +83,7 @@ class AddressChooseLocationScreen extends StatelessWidget {
                               child: SizedBox(
                                 width:
                                     Spacing.addressesChooseLocationDesignWidth,
-                                height:
-                                    Spacing.addressesChooseLocationDesignHeight,
+                                height: AddressesFigmaFrame.frameHeight,
                                 child: AddressesFigmaFrame(
                                   locations: state.locations,
                                 ),
@@ -72,7 +97,6 @@ class AddressChooseLocationScreen extends StatelessWidget {
                 ),
               ),
             ),
-            CustomBackButton(onPressed: () => Navigator.maybePop(context)),
           ],
         ),
       ),

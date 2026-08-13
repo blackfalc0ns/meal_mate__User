@@ -38,7 +38,7 @@ class AddressFormField extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final height = small
-        ? Spacing.addressesHomeFormSmallFieldHeight
+        ? Spacing.addressesHomeFormSmallFieldHeight + Spacing.hairline
         : Spacing.addressesHomeFormFieldHeight;
     final iconBoxSize = small
         ? Spacing.addressesHomeFormSmallIconBoxSize
@@ -64,25 +64,45 @@ class AddressFormField extends StatelessWidget {
     final optionalSize = small
         ? Spacing.addressesHomeFormSmallOptionalSize
         : Spacing.addressesHomeFormOptionalSize;
-    final arrowTop = small
-        ? Spacing.addressesHomeFormSmallArrowTop
-        : Spacing.addressesHomeFormArrowTop;
-    final textWidth = small
-        ? Spacing.addressesHomeFormSmallTextWidth
-        : Spacing.addressesHomeFormTextWidth;
 
     final isInput = !showDropdown;
     final displayValue = value ?? hint;
     final hasValue = value != null && value!.isNotEmpty;
+    final textTopPadding = labelTop > iconInset
+        ? labelTop - iconInset
+        : Spacing.zero;
+    final labelStyle = getSemiBoldStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: labelSize,
+      color: color.onSurfaceVariant,
+    ).copyWith(height: 1);
+    final optionalStyle = getRegularStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: optionalSize,
+      color: color.onSurfaceVariant,
+    ).copyWith(height: 1);
     final inputTextStyle = getRegularStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
       color: color.onSurface,
-    );
+    ).copyWith(height: 1);
     final inputHintStyle = getRegularStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
       color: color.onSurfaceVariant.withValues(alpha: 0.7),
+    ).copyWith(height: 1);
+    final displayTextStyle = getRegularStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: hintSize,
+      color: hasValue
+          ? color.onSurface
+          : color.onSurfaceVariant.withValues(alpha: 0.7),
+    ).copyWith(height: 1);
+    final textStrutStyle = StrutStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: hintSize,
+      height: 1,
+      forceStrutHeight: true,
     );
 
     return GestureDetector(
@@ -91,6 +111,12 @@ class AddressFormField extends StatelessWidget {
       child: Container(
         width: Spacing.addressesHomeFormFieldWidth,
         height: height,
+        padding: EdgeInsetsDirectional.only(
+          start: iconInset,
+          end: iconInset,
+          top: iconInset,
+          bottom: iconInset,
+        ),
         decoration: BoxDecoration(
           color: color.surface,
           border: Border.all(
@@ -101,116 +127,120 @@ class AddressFormField extends StatelessWidget {
             Spacing.addressesHomeFormFieldRadius,
           ),
         ),
-        child: Stack(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PositionedDirectional(
-              start: iconInset,
-              top: iconInset,
-              child: Container(
-                width: iconBoxSize,
-                height: iconBoxSize,
-                decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  borderRadius: BorderRadius.circular(
-                    Spacing.addressesHomeFormIconBoxRadius,
-                  ),
+            Container(
+              width: iconBoxSize,
+              height: iconBoxSize,
+              decoration: BoxDecoration(
+                color: color.secondaryContainer,
+                borderRadius: BorderRadius.circular(
+                  Spacing.addressesHomeFormIconBoxRadius,
                 ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    iconAsset,
-                    width: iconSize,
-                    height: iconSize,
-                  ),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  iconAsset,
+                  width: iconSize,
+                  height: iconSize,
                 ),
               ),
             ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormTextEnd,
-              top: labelTop,
-              width: textWidth,
-              child: Text(
-                label,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getSemiBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: labelSize,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: Spacing.addressesHomeFormTextEnd,
-              top: hintTop,
-              width: textWidth,
-              child: isInput
-                  ? SizedBox(
-                      height: height - hintTop,
-                      child: TextField(
-                        controller: controller,
-                        keyboardType: keyboardType,
-                        textInputAction: textInputAction,
-                        textAlign: TextAlign.start,
-                        textAlignVertical: TextAlignVertical.center,
-                        maxLines: 1,
-                        cursorColor: color.primary,
-                        style: inputTextStyle,
-                        decoration: InputDecoration(
-                          hintText: hint,
-                          hintStyle: inputHintStyle,
-                          isCollapsed: true,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(Spacing.zero),
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
+            const SizedBox(width: Spacing.addressesHomeFormFieldGap),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: textTopPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            label,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            strutStyle: StrutStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: labelSize,
+                              height: 1,
+                              forceStrutHeight: true,
+                            ),
+                            style: labelStyle,
+                          ),
                         ),
-                      ),
-                    )
-                  : Text(
-                      displayValue,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: hintSize,
-                        color: hasValue
-                            ? color.onSurface
-                            : color.onSurfaceVariant.withValues(alpha: 0.7),
-                      ),
+                        if (optionalText != null)
+                          Text(
+                            optionalText!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            strutStyle: StrutStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: optionalSize,
+                              height: 1,
+                              forceStrutHeight: true,
+                            ),
+                            style: optionalStyle,
+                          ),
+                      ],
                     ),
+                    SizedBox(height: hintTop - labelTop - labelSize),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: isInput
+                              ? TextField(
+                                  controller: controller,
+                                  keyboardType: keyboardType,
+                                  textInputAction: textInputAction,
+                                  textAlign: TextAlign.start,
+                                  maxLines: 1,
+                                  cursorColor: color.primary,
+                                  strutStyle: textStrutStyle,
+                                  style: inputTextStyle,
+                                  decoration: InputDecoration(
+                                    hintText: hint,
+                                    hintStyle: inputHintStyle,
+                                    isCollapsed: true,
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.all(
+                                      Spacing.zero,
+                                    ),
+                                    filled: false,
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    focusedErrorBorder: InputBorder.none,
+                                  ),
+                                )
+                              : Text(
+                                  displayValue,
+                                  textAlign: TextAlign.start,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  strutStyle: textStrutStyle,
+                                  style: displayTextStyle,
+                                ),
+                        ),
+                        if (showDropdown)
+                          Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: Spacing.addressesHomeFormSmallIconSize,
+                            color: color.onSurfaceVariant,
+                            semanticLabel:
+                                locale.addresses_choose_location_title,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            if (showDropdown)
-              PositionedDirectional(
-                end: Spacing.addressesHomeFormArrowStart,
-                top: arrowTop,
-                child: Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  size: Spacing.addressesHomeFormSmallIconSize,
-                  color: color.onSurfaceVariant,
-                  semanticLabel: locale.addresses_choose_location_title,
-                ),
-              ),
-            if (optionalText != null)
-              PositionedDirectional(
-                end: Spacing.addressesHomeFormOptionalStart,
-                top: Spacing.addressesHomeFormOptionalTop,
-                child: Text(
-                  optionalText!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: optionalSize,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
-              ),
           ],
         ),
       ),

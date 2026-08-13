@@ -24,48 +24,52 @@ class BuildingTypeSelector extends StatelessWidget {
     return Container(
       width: Spacing.addressesHomeFormFieldWidth,
       height: Spacing.addressesHomeFormFieldHeight,
+      padding: const EdgeInsetsDirectional.only(
+        start: Spacing.addressesBuildingTypeLabelEnd,
+        end: Spacing.addressesBuildingTypeLabelEnd,
+        top: Spacing.addressesBuildingTypeLabelTop,
+      ),
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(
           Spacing.addressesHomeFormFieldRadius,
         ),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PositionedDirectional(
-            start: Spacing.addressesBuildingTypeLabelEnd,
-            top: Spacing.addressesBuildingTypeLabelTop,
-            child: Text(
-              locale.addresses_building_type_label,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: Spacing.addressesBuildingTypeLabelSize,
-                color: color.onSurfaceVariant,
-              ),
+          Text(
+            locale.addresses_building_type_label,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size18,
+              color: color.onSurfaceVariant,
             ),
           ),
-          Positioned.fill(
-            top: Spacing.addressesBuildingTypeSelectedTop,
-            child: Row(
-              children: [
-                Expanded(
-                  child: BuildingTypeOption(
-                    label: locale.addresses_building_type_home,
-                    iconAsset: Assets.addressesIconHome,
-                    isSelected: selectedType == AddressBuildingType.home,
-                    onTap: () => onChanged(AddressBuildingType.home),
-                  ),
+          SizedBox(
+            height:
+                Spacing.addressesBuildingTypeSelectedTop -
+                Spacing.addressesBuildingTypeLabelTop,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: BuildingTypeOption(
+                  label: locale.addresses_building_type_home,
+                  iconAsset: Assets.addressesIconHome,
+                  isSelected: selectedType == AddressBuildingType.home,
+                  onTap: () => onChanged(AddressBuildingType.home),
                 ),
-                Expanded(
-                  child: BuildingTypeOption(
-                    label: locale.addresses_building_type_building,
-                    iconAsset: Assets.addressesIconBuilding,
-                    isSelected: selectedType == AddressBuildingType.building,
-                    onTap: () => onChanged(AddressBuildingType.building),
-                  ),
+              ),
+              Expanded(
+                child: BuildingTypeOption(
+                  label: locale.addresses_building_type_building,
+                  iconAsset: Assets.addressesIconBuilding,
+                  isSelected: selectedType == AddressBuildingType.building,
+                  onTap: () => onChanged(AddressBuildingType.building),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
