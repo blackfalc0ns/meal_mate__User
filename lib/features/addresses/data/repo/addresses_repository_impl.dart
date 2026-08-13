@@ -16,9 +16,13 @@ class AddressesRepositoryImpl implements AddressesRepository {
   @override
   Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
     String countryCode,
+    String? areaId,
   ) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getLocationsCatalog(countryCode);
+      final response = await _remoteDataSource.getLocationsCatalog(
+        countryCode,
+        areaId,
+      );
       return response.toEntity();
     });
   }

@@ -74,6 +74,16 @@ class AddressFormField extends StatelessWidget {
     final isInput = !showDropdown;
     final displayValue = value ?? hint;
     final hasValue = value != null && value!.isNotEmpty;
+    final inputTextStyle = getRegularStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: hintSize,
+      color: color.onSurface,
+    );
+    final inputHintStyle = getRegularStyle(
+      fontFamily: FontConstant.alexandria,
+      fontSize: hintSize,
+      color: color.onSurfaceVariant.withValues(alpha: 0.7),
+    );
 
     return GestureDetector(
       onTap: onTap,
@@ -142,22 +152,22 @@ class AddressFormField extends StatelessWidget {
                         keyboardType: keyboardType,
                         textInputAction: textInputAction,
                         textAlign: TextAlign.start,
+                        textAlignVertical: TextAlignVertical.center,
                         maxLines: 1,
                         cursorColor: color.primary,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: hintSize,
-                          color: color.onSurface,
-                        ),
-                        decoration: InputDecoration.collapsed(
+                        style: inputTextStyle,
+                        decoration: InputDecoration(
                           hintText: hint,
-                          hintStyle: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: hintSize,
-                            color: color.onSurfaceVariant.withValues(
-                              alpha: 0.7,
-                            ),
-                          ),
+                          hintStyle: inputHintStyle,
+                          isCollapsed: true,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(Spacing.zero),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
                         ),
                       ),
                     )

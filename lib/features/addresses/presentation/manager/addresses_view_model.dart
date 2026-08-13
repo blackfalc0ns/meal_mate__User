@@ -134,21 +134,61 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
   }
 
-  void _selectArea(LocationAreaEntity area) {
+  Future<void> _selectArea(LocationAreaEntity area) async {
     emit(
       state.copyWith(
         locations: state.locations.copyWith(
           selectedArea: area,
           clearSelectedBlock: true,
+          clearFailure: true,
         ),
       ),
     );
+
+    final countryCode = state.locations.data?.countryCode.isNotEmpty == true
+        ? state.locations.data!.countryCode
+        : 'KW';
+    final result = await _getLocationsCatalogUseCase(
+      countryCode,
+      areaId: area.id,
+    );
+
+    switch (result) {
+      case ApiSuccessResult():
+        final selectedAreaWithBlocks = _findAreaById(result.data, area.id);
+        emit(
+          state.copyWith(
+            locations: state.locations.copyWith(
+              selectedArea: selectedAreaWithBlocks ?? area,
+              clearSelectedBlock: true,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            locations: state.locations.copyWith(failure: result.failure),
+          ),
+        );
+    }
   }
 
   void _selectBlock(LocationBlockEntity block) {
     emit(
       state.copyWith(locations: state.locations.copyWith(selectedBlock: block)),
     );
+  }
+
+  LocationAreaEntity? _findAreaById(
+    LocationsCatalogEntity locations,
+    String areaId,
+  ) {
+    for (final governorate in locations.governorates) {
+      for (final area in governorate.areas) {
+        if (area.id == areaId) return area;
+      }
+    }
+    return null;
   }
 
   Future<void> _addCustomerAddress(CustomerAddressRequestEntity request) async {

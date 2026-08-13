@@ -9,7 +9,10 @@ class GetLocationsCatalogUseCase {
 
   final AddressesRepository _repository;
 
-  Future<ApiResult<LocationsCatalogEntity>> call(String countryCode) {
-    return _repository.getLocationsCatalog(countryCode);
+  Future<ApiResult<LocationsCatalogEntity>> call(
+    String countryCode, {
+    String? areaId,
+  }) {
+    return _repository.getLocationsCatalog(countryCode, areaId);
   }
 }

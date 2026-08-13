@@ -98,6 +98,7 @@ abstract class ApiServices {
   @Extra({TokenInterceptor.skipAuthKey: true})
   Future<LocationsCatalogResponseDto> getLocationsCatalog(
     @Query('countryCode') String countryCode,
+    @Query('areaId') String? areaId,
   );
 
   @GET(EndPoints.countryRegions)

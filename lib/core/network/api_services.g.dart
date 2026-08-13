@@ -310,9 +310,14 @@ class _ApiServices implements ApiServices {
   @override
   Future<LocationsCatalogResponseDto> getLocationsCatalog(
     String countryCode,
+    String? areaId,
   ) async {
     final _extra = <String, dynamic>{'skipAuth': true};
-    final queryParameters = <String, dynamic>{r'countryCode': countryCode};
+    final queryParameters = <String, dynamic>{
+      r'countryCode': countryCode,
+      r'areaId': areaId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<LocationsCatalogResponseDto>(

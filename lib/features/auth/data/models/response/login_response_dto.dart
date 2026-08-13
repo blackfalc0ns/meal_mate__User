@@ -29,8 +29,8 @@ class LoginResponseDto {
   final String? email;
   final String? phoneNumber;
   final String? fullName;
-  final int? userType;
-  final int? accountStatus;
+  final Object? userType;
+  final Object? accountStatus;
   final String? restaurantId;
   final List<String>? roles;
   final List<String>? permissions;

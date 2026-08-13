@@ -24,8 +24,8 @@ class LoginEntity {
   final String? email;
   final String phoneNumber;
   final String fullName;
-  final int userType;
-  final int accountStatus;
+  final String userType;
+  final String accountStatus;
   final String? restaurantId;
   final List<String> roles;
   final List<String> permissions;

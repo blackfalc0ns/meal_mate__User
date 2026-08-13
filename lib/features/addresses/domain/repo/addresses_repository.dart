@@ -6,6 +6,7 @@ import 'package:meal_meat_user/features/addresses/domain/entities/locations_cata
 abstract interface class AddressesRepository {
   Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
     String countryCode,
+    String? areaId,
   );
 
   Future<ApiResult<List<CustomerAddressEntity>>> getCustomerAddresses();
