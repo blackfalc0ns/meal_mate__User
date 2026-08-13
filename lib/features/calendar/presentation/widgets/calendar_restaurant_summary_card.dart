@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_nutrition_row.dart';
@@ -29,6 +30,12 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
 
     return Container(
       height: Spacing.calendarRestaurantSummaryHeight,
+      padding: const EdgeInsetsDirectional.only(
+        top: Spacing.sm,
+         start: Spacing.sm,
+         end: Spacing.sm,
+        bottom: Spacing.sm,
+      ),
       decoration: BoxDecoration(
         color: color.primary,
         borderRadius: BorderRadius.circular(
@@ -37,37 +44,25 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: color.primary.withValues(alpha: 0.20),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: Spacing.sm,
+            offset: const Offset(Spacing.zero, Spacing.xs),
           ),
         ],
       ),
-      child: Stack(
+      child: Column(
         children: [
-          PositionedDirectional(
-            top: Spacing.calendarRestaurantSummaryTopPadding,
-            start: Spacing.calendarRestaurantSummaryHorizontalPadding,
-            end: Spacing.calendarRestaurantSummaryHorizontalPadding,
-            child: Directionality(
-              textDirection: Directionality.of(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CalendarRestaurantTextBlock(restaurant: restaurant),
-                  ),
-                  const SizedBox(
-                    width: Spacing.calendarRestaurantSummaryLogoGap,
-                  ),
-                  const CalendarRestaurantSummaryLogo(),
-                ],
+          Row(
+            children: [
+              const CalendarRestaurantSummaryLogo(),
+              const SizedBox(width: Spacing.calendarRestaurantSummaryLogoGap),
+              Expanded(
+                child: CalendarRestaurantTextBlock(restaurant: restaurant),
               ),
-            ),
+            ],
           ),
-          PositionedDirectional(
-            top: Spacing.calendarRestaurantSummaryDividerTop,
-            start: Spacing.zero,
-            end: Spacing.zero,
+          const SizedBox(height: Spacing.sm),
+          SizedBox(
+            width: double.infinity,
             child: CustomPaint(
               painter: _CalendarRestaurantSummaryDividerPainter(
                 color: color.onPrimary.withValues(alpha: 0.52),
@@ -75,57 +70,32 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
               child: const SizedBox(height: Spacing.border),
             ),
           ),
-          PositionedDirectional(
-            top: Spacing.calendarRestaurantSummaryNutritionTop,
-            start: Spacing.lg,
-            end: Spacing.lg,
-            child: Column(
-              children: [
-                Text(
-                  locale.calendar_daily_nutrition_total,
-                  textAlign: TextAlign.center,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onPrimary,
-                  ),
-                ),
-                const SizedBox(
-                  height: Spacing.calendarRestaurantSummaryNutritionGap,
-                ),
-                CalendarRestaurantNutritionRow(meals: meals),
-              ],
+          const SizedBox(height: Spacing.xs),
+          Text(
+            locale.calendar_daily_nutrition_total,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size11,
+              color: color.onPrimary,
             ),
           ),
-          PositionedDirectional(
-            bottom: Spacing.calendarRestaurantSummaryButtonBottom,
-            start: Spacing.xxl,
-            end: Spacing.xxl,
-            child: SizedBox(
-              height: Spacing.calendarRestaurantSummaryButtonHeight,
-              child: FilledButton.icon(
-                onPressed: onMorePressed,
-                icon: Icon(
-                  Icons.restaurant_rounded,
-                  color: color.primary,
-                  size: Spacing.iconSm,
-                ),
-                label: Text(locale.calendar_change_restaurant),
-                style: FilledButton.styleFrom(
-                  backgroundColor: color.surface,
-                  foregroundColor: color.primary,
-                  padding: EdgeInsets.zero,
-                  textStyle: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.primary,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                  ),
-                ),
-              ),
-            ),
+          const SizedBox(height: Spacing.calendarRestaurantSummaryNutritionGap),
+          CalendarRestaurantNutritionRow(meals: meals),
+       //   const Spacer(),
+       SizedBox(
+            height: Spacing.md,
+          ),
+          AppButton(
+            text: locale.calendar_change_restaurant,
+            onPressed: onMorePressed,
+            height: Spacing.calendarRestaurantSummaryButtonHeight,
+            borderRadius: Spacing.radiusPill,
+            color: color.surface,
+            textColor: color.primary,
+            fontSize: FontSize.size11,
+            icon: Icons.restaurant_rounded,
+            padding: EdgeInsets.zero,
           ),
         ],
       ),

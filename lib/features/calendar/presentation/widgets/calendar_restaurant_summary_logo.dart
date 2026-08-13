@@ -6,6 +6,8 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
+    assert(locale.localeName.isNotEmpty);
 
     return Container(
       width: Spacing.calendarRestaurantSummaryLogoSize,
@@ -14,12 +16,16 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.ramen_dining_rounded, color: color.primary, size: 28),
+          Icon(
+            Icons.ramen_dining_rounded,
+            color: color.primary,
+            size: Spacing.calendarRestaurantSummaryNutritionIconSize,
+          ),
           Text(
             'HEALTHY',
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size11,
+              fontSize: FontSize.size9,
               color: color.primary,
             ).copyWith(height: 1),
           ),
@@ -27,7 +33,7 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
             'BOWL',
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size11,
+              fontSize: FontSize.size9,
               color: color.primary,
             ).copyWith(height: 1),
           ),

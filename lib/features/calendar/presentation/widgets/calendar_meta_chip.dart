@@ -17,6 +17,8 @@ class CalendarMetaChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
+    assert(locale.localeName.isNotEmpty);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -46,11 +48,11 @@ class CalendarMetaChip extends StatelessWidget {
               ),
             ),
           ),
-        const SizedBox(width: 2),
+        const SizedBox(width: Spacing.calendarRestaurantSummaryMetaGap),
         Icon(
           icon,
           color: iconColor,
-          size: badgeColor == null ? FontSize.size11 : FontSize.size9,
+          size: badgeColor == null ? FontSize.size11 : FontSize.size10,
         ),
       ],
     );
