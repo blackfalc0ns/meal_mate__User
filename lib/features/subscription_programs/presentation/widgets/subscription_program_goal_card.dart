@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_arrow_button.dart';
 
 class SubscriptionProgramGoalCard extends StatelessWidget {
@@ -10,7 +11,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.imageAsset,
+    required this.imageUrl,
+    required this.fallbackImageAsset,
     required this.primaryFeature,
     required this.secondaryFeature,
     required this.badgeIcon,
@@ -22,7 +24,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
 
   final String title;
   final String description;
-  final String imageAsset;
+  final String? imageUrl;
+  final String fallbackImageAsset;
   final String primaryFeature;
   final String secondaryFeature;
   final IconData badgeIcon;
@@ -201,8 +204,10 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                 child: SizedBox(
                   width: Spacing.subscriptionProgramImageWidth,
                   height: Spacing.subscriptionProgramImageHeight,
-                  child: Image.asset(
-                    imageAsset,
+                  child: AppCachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: Spacing.subscriptionProgramImageWidth,
+                    height: Spacing.subscriptionProgramImageHeight,
                     fit: BoxFit.contain,
                     semanticLabel: title,
                   ),

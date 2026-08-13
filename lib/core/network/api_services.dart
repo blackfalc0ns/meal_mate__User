@@ -33,6 +33,7 @@ import 'package:meal_meat_user/features/addresses/data/models/response/customer_
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -168,4 +169,7 @@ abstract class ApiServices {
 
   @GET(EndPoints.subscriptionTypes)
   Future<List<SubscriptionTypeResponseDto>> getSubscriptionTypes();
+
+  @GET(EndPoints.subscriptionPrograms)
+  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();
 }
