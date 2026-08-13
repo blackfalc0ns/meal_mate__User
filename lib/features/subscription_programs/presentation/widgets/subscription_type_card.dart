@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/subscriptions_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_feature_item.dart';
 
 class SubscriptionTypeCard extends StatelessWidget {

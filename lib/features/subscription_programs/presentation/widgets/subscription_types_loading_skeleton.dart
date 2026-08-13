@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
+import 'package:meal_meat_user/shared/widgets/app_logo.dart';
+
+class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
+  const SubscriptionTypesLoadingSkeleton({
+    super.key,
+    required this.showBottomSpace,
+  });
+
+  final bool showBottomSpace;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Semantics(
+      label: locale.nav_subscription,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              Assets.subscriptionTypeBackground,
+              fit: BoxFit.cover,
+              semanticLabel: locale.nav_subscription,
+            ),
+          ),
+          CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.only(
+                  left: Spacing.screenH,
+                  right: Spacing.screenH,
+                  top: Spacing.lg,
+                  bottom: showBottomSpace
+                      ? Spacing.subscriptionProgramsBottomSpace
+                      : Spacing.xl,
+                ),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    const Center(
+                      child: AppLogo(
+                        size: Spacing.subscriptionTypeLogoHeight,
+                        alignment: CrossAxisAlignment.center,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    const ShimmerPlaceholder.rect(
+                      height: Spacing.subscriptionTypeMobileCardHeight,
+                      borderRadius: Spacing.subscriptionProgramCardRadius,
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    Text(
+                      locale.subscription_type_title,
+                      textAlign: TextAlign.center,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size20,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.xl),
+                      child: ShimmerPlaceholder.rect(
+                        height: Spacing.base,
+                        borderRadius: Spacing.radiusSm,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    ...List.generate(2, (index) {
+                      return const Padding(
+                        padding: EdgeInsets.only(bottom: Spacing.sm),
+                        child: ShimmerPlaceholder.rect(
+                          height: Spacing.subscriptionTypeMobileCardHeight,
+                          borderRadius: Spacing.subscriptionProgramCardRadius,
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: Spacing.base),
+                    const ShimmerPlaceholder.rect(
+                      height: Spacing.subscriptionTypeNoticeHeight,
+                      borderRadius: Spacing.subscriptionProgramCardRadius,
+                    ),
+                    const SizedBox(height: Spacing.md),
+                    const ShimmerPlaceholder.rect(
+                      height: Spacing.buttonHeight,
+                      borderRadius: Spacing.radiusPill,
+                    ),
+                  ]),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

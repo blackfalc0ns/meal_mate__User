@@ -35,4 +35,6 @@ abstract class EndPoints {
       '/api/v1/customers/me/food-preferences/catalog';
   static const String customerFoodPreferencesAllergies =
       '/api/v1/customers/me/food-preferences/allergies';
+  static const String subscriptionTypes =
+      '/api/v1/customer/subscription-flow/types';
 }

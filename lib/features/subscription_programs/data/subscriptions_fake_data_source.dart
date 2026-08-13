@@ -2,18 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_plan_entity.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
 
 class SubscriptionsFakeDataSource {
   const SubscriptionsFakeDataSource();
 
   List<SubscriptionTypeEntity> getSubscriptionTypes() => const [
     SubscriptionTypeEntity(
+      code: 'INDIVIDUAL',
+      nameAr: '',
+      nameEn: '',
+      descriptionAr: '',
+      descriptionEn: '',
+      maxMembers: 1,
+      isAvailable: true,
+      membersConfiguredAfterPayment: false,
       imageAsset: Assets.subscriptionTypeIndividualProduct,
-      isFamily: false,
     ),
     SubscriptionTypeEntity(
+      code: 'FAMILY',
+      nameAr: '',
+      nameEn: '',
+      descriptionAr: '',
+      descriptionEn: '',
+      maxMembers: 4,
+      isAvailable: true,
+      membersConfiguredAfterPayment: true,
       imageAsset: Assets.subscriptionTypeFamilyProduct,
-      isFamily: true,
     ),
   ];
 
@@ -154,16 +169,6 @@ class SubscriptionsFakeDataSource {
       ],
     ),
   ];
-}
-
-class SubscriptionTypeEntity {
-  const SubscriptionTypeEntity({
-    required this.imageAsset,
-    required this.isFamily,
-  });
-
-  final String imageAsset;
-  final bool isFamily;
 }
 
 class SubscriptionProgramEntity {
