@@ -602,7 +602,7 @@ class Spacing {
   static const double profileStatsTopGap = 18.38;
   static const double profileStatsHeight = 96.03;
   static const double profileSettingsTopGap = 11.57;
-  static const double profileSettingsHeight = 319.34;
+  static const double profileSettingsHeight = 371.41;
   static const double profileCardRadius = 15.04;
   static const double profileSettingsTileHeight = 52.07;
   static const double profileSettingsIconContainer = 30.08;
@@ -1053,4 +1053,34 @@ class Spacing {
   static const double offerDetailsBottomButtonHeight = 40.829;
   static const double offerDetailsBottomButtonRadius = 41.299;
   static const double offerDetailsBottomNavGap = 122.0;
+
+  // Wallet Figma measurements.
+  static const double walletDesignWidth = 539.0;
+  static const double walletHorizontalPadding = 30.0;
+  static const double walletHeaderHeight = 140.0;
+  static const double walletHeaderIconSize = 32.0;
+  static const double walletBalanceCardHeight = 260.0;
+  static const double walletBalanceCardRadius = 16.0;
+  static const double walletActionHeight = 60.0;
+  static const double walletActionRadius = 16.0;
+  static const double walletActionGap = 16.0;
+  static const double walletInfoHeight = 149.0;
+  static const double walletInfoRadius = 15.0;
+  static const double walletIconBubbleSize = 64.0;
+  static const double walletRecentCardRadius = 19.0;
+  static const double walletRecentItemHeight = 79.0;
+  static const double walletTransactionIconBox = 30.0;
+  static const double walletSecurityIconSize = 21.0;
+  static const double walletRefundHeroHeight = 145.0;
+  static const double walletPaymentCardHeight = 78.0;
+  static const double walletPaymentCardRadius = 14.0;
+  static const double walletAmountInputHeight = 45.0;
+  static const double walletToggleHeight = 34.0;
+  static const double walletNoticeHeight = 74.0;
+  static const double walletSummaryHeight = 169.0;
+  static const double walletLargeButtonHeight = 60.0;
+  static const double walletFilterHeight = 52.0;
+  static const double walletFilterRadius = 15.0;
+  static const double walletSearchHeight = 54.0;
+  static const double walletTransactionGroupRadius = 19.0;
 }

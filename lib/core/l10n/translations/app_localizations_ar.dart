@@ -3262,4 +3262,133 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get search_suggestion_chicken_vegetables => 'دجاج مع خضار مشوية';
+
+  @override
+  String get wallet_title => 'المحفظة';
+
+  @override
+  String get wallet_total_refundable_balance_title =>
+      'إجمالي الرصيد القابل للاسترداد';
+
+  @override
+  String get wallet_total_refundable_balance_subtitle =>
+      'رصيد ناتج عن إلغاء الاشتراكات أو التسويات';
+
+  @override
+  String get wallet_transactions_history => 'سجل العمليات';
+
+  @override
+  String get wallet_refund_to_card => 'استرداد إلى البطاقة';
+
+  @override
+  String get wallet_important_info_title => 'معلومات مهمة';
+
+  @override
+  String get wallet_important_info_body =>
+      'هذا الرصيد مخصص فقط لاستقبال المبالغ المستردة\nمن إلغاء الاشتراكات أو عند حدوث تسوية خاصة\nلا يمكن شحن المحفظة أو إضافة مبالغ إليها';
+
+  @override
+  String get wallet_recent_transactions => 'آخر العمليات';
+
+  @override
+  String get wallet_view_all => 'عرض الكل';
+
+  @override
+  String get wallet_security_note =>
+      'نحرص على حماية بياناتك ومعاملاتك وفق أعلى معايير الأمان';
+
+  @override
+  String get wallet_refundable_balance => 'الرصيد القابل للاسترداد';
+
+  @override
+  String wallet_last_updated(String date) {
+    return 'آخر تحديث: $date';
+  }
+
+  @override
+  String get wallet_filter_settlements => 'تسويات';
+
+  @override
+  String get wallet_filter_card_refund => 'استرداد إلى البطاقة';
+
+  @override
+  String get wallet_filter_refunds => 'المبالغ المستردة';
+
+  @override
+  String get wallet_filter_all => 'الكل';
+
+  @override
+  String get wallet_search_hint => 'ابحث في العمليات';
+
+  @override
+  String get wallet_group_today => 'اليوم';
+
+  @override
+  String get wallet_group_this_week => 'هذا الأسبوع';
+
+  @override
+  String get wallet_group_april_2026 => 'أبريل 2026';
+
+  @override
+  String get wallet_transactions_notice =>
+      'يحتوي سجل العمليات على المدفوعات والمبالغ المستردة\nوتسويات المحفظة فقط';
+
+  @override
+  String get wallet_status_completed => 'مكتمل';
+
+  @override
+  String get wallet_status_processing => 'قيد المعالجة';
+
+  @override
+  String get wallet_select_card => 'اختر البطاقة';
+
+  @override
+  String get wallet_refund_notice_body =>
+      '• سيتم خصم المبلغ من رصيد المحفظة عند إرسال الطلب\n• لا يمكن التراجع بعد بدء المعالجة';
+
+  @override
+  String get wallet_order_summary_title => 'ملخص الطلب';
+
+  @override
+  String get wallet_confirm_refund => 'تأكيد طلب الاسترداد';
+
+  @override
+  String get wallet_cancel => 'إلغاء';
+
+  @override
+  String get wallet_refund_available_balance => 'الرصيد المتاح للاسترداد';
+
+  @override
+  String get wallet_refund_hero_subtitle =>
+      'سيتم تحويل المبلغ إلى بطاقتك خلال 3-7 أيام عمل';
+
+  @override
+  String get wallet_refund_amount => 'مبلغ الاسترداد';
+
+  @override
+  String get wallet_refund_custom_amount => 'مبلغ مخصص';
+
+  @override
+  String get wallet_refund_full_balance => 'كامل الرصيد';
+
+  @override
+  String get wallet_summary_receiving_card => 'البطاقة المستلمة';
+
+  @override
+  String get wallet_summary_amount => 'المبلغ';
+
+  @override
+  String get wallet_summary_fees => 'الرسوم';
+
+  @override
+  String get wallet_summary_free => 'مجانا';
+
+  @override
+  String get wallet_summary_expected_receipt => 'الاستلام المتوقع';
+
+  @override
+  String get wallet_summary_expected_receipt_value => 'خلال 7-14 يوم عمل';
+
+  @override
+  String get wallet_card_expires_at => 'تنتهي في';
 }

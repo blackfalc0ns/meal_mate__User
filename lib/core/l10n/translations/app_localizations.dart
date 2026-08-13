@@ -6367,6 +6367,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chicken with grilled vegetables'**
   String get search_suggestion_chicken_vegetables;
+
+  /// No description provided for @wallet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet_title;
+
+  /// No description provided for @wallet_total_refundable_balance_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Total refundable balance'**
+  String get wallet_total_refundable_balance_title;
+
+  /// No description provided for @wallet_total_refundable_balance_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance from subscription cancellations or settlements'**
+  String get wallet_total_refundable_balance_subtitle;
+
+  /// No description provided for @wallet_transactions_history.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history'**
+  String get wallet_transactions_history;
+
+  /// No description provided for @wallet_refund_to_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund to card'**
+  String get wallet_refund_to_card;
+
+  /// No description provided for @wallet_important_info_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Important information'**
+  String get wallet_important_info_title;
+
+  /// No description provided for @wallet_important_info_body.
+  ///
+  /// In en, this message translates to:
+  /// **'This balance is only for receiving refunded amounts\nfrom subscription cancellations or special settlements.\nYou cannot top up the wallet or add amounts to it.'**
+  String get wallet_important_info_body;
+
+  /// No description provided for @wallet_recent_transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent transactions'**
+  String get wallet_recent_transactions;
+
+  /// No description provided for @wallet_view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get wallet_view_all;
+
+  /// No description provided for @wallet_security_note.
+  ///
+  /// In en, this message translates to:
+  /// **'We protect your data and transactions according to the highest security standards'**
+  String get wallet_security_note;
+
+  /// No description provided for @wallet_refundable_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Refundable balance'**
+  String get wallet_refundable_balance;
+
+  /// No description provided for @wallet_last_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String wallet_last_updated(String date);
+
+  /// No description provided for @wallet_filter_settlements.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlements'**
+  String get wallet_filter_settlements;
+
+  /// No description provided for @wallet_filter_card_refund.
+  ///
+  /// In en, this message translates to:
+  /// **'Card refunds'**
+  String get wallet_filter_card_refund;
+
+  /// No description provided for @wallet_filter_refunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds'**
+  String get wallet_filter_refunds;
+
+  /// No description provided for @wallet_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get wallet_filter_all;
+
+  /// No description provided for @wallet_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search transactions'**
+  String get wallet_search_hint;
+
+  /// No description provided for @wallet_group_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get wallet_group_today;
+
+  /// No description provided for @wallet_group_this_week.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get wallet_group_this_week;
+
+  /// No description provided for @wallet_group_april_2026.
+  ///
+  /// In en, this message translates to:
+  /// **'April 2026'**
+  String get wallet_group_april_2026;
+
+  /// No description provided for @wallet_transactions_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history contains payments, refunds,\nand wallet settlements only.'**
+  String get wallet_transactions_notice;
+
+  /// No description provided for @wallet_status_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get wallet_status_completed;
+
+  /// No description provided for @wallet_status_processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get wallet_status_processing;
+
+  /// No description provided for @wallet_select_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose card'**
+  String get wallet_select_card;
+
+  /// No description provided for @wallet_refund_notice_body.
+  ///
+  /// In en, this message translates to:
+  /// **'• The amount will be deducted from your wallet balance when the request is sent\n• You cannot undo after processing starts'**
+  String get wallet_refund_notice_body;
+
+  /// No description provided for @wallet_order_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Order summary'**
+  String get wallet_order_summary_title;
+
+  /// No description provided for @wallet_confirm_refund.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm refund request'**
+  String get wallet_confirm_refund;
+
+  /// No description provided for @wallet_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get wallet_cancel;
+
+  /// No description provided for @wallet_refund_available_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available refundable balance'**
+  String get wallet_refund_available_balance;
+
+  /// No description provided for @wallet_refund_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount will be transferred to your card within 3-7 business days'**
+  String get wallet_refund_hero_subtitle;
+
+  /// No description provided for @wallet_refund_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund amount'**
+  String get wallet_refund_amount;
+
+  /// No description provided for @wallet_refund_custom_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom amount'**
+  String get wallet_refund_custom_amount;
+
+  /// No description provided for @wallet_refund_full_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Full balance'**
+  String get wallet_refund_full_balance;
+
+  /// No description provided for @wallet_summary_receiving_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Receiving card'**
+  String get wallet_summary_receiving_card;
+
+  /// No description provided for @wallet_summary_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get wallet_summary_amount;
+
+  /// No description provided for @wallet_summary_fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees'**
+  String get wallet_summary_fees;
+
+  /// No description provided for @wallet_summary_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get wallet_summary_free;
+
+  /// No description provided for @wallet_summary_expected_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected receipt'**
+  String get wallet_summary_expected_receipt;
+
+  /// No description provided for @wallet_summary_expected_receipt_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Within 7-14 business days'**
+  String get wallet_summary_expected_receipt_value;
+
+  /// No description provided for @wallet_card_expires_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires'**
+  String get wallet_card_expires_at;
 }
 
 class _AppLocalizationsDelegate

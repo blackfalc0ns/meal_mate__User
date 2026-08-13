@@ -12,10 +12,10 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
     return Directionality(
       textDirection: Directionality.of(context),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Flexible(
@@ -23,7 +23,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
                   restaurant.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
+                
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size16,

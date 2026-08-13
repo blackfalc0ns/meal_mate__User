@@ -1079,5 +1079,52 @@
   "search_suggestion_chicken_protein": "دجاج بروتين",
   "search_suggestion_chicken_rice": "دجاج مع أرز بني",
   "search_suggestion_chicken_healthy": "مطاعم دجاج صحية",
-  "search_suggestion_chicken_vegetables": "دجاج مع خضار مشوية"
+  "search_suggestion_chicken_vegetables": "دجاج مع خضار مشوية",
+  "wallet_title": "المحفظة",
+  "wallet_total_refundable_balance_title": "إجمالي الرصيد القابل للاسترداد",
+  "wallet_total_refundable_balance_subtitle": "رصيد ناتج عن إلغاء الاشتراكات أو التسويات",
+  "wallet_transactions_history": "سجل العمليات",
+  "wallet_refund_to_card": "استرداد إلى البطاقة",
+  "wallet_important_info_title": "معلومات مهمة",
+  "wallet_important_info_body": "هذا الرصيد مخصص فقط لاستقبال المبالغ المستردة\nمن إلغاء الاشتراكات أو عند حدوث تسوية خاصة\nلا يمكن شحن المحفظة أو إضافة مبالغ إليها",
+  "wallet_recent_transactions": "آخر العمليات",
+  "wallet_view_all": "عرض الكل",
+  "wallet_security_note": "نحرص على حماية بياناتك ومعاملاتك وفق أعلى معايير الأمان",
+  "wallet_refundable_balance": "الرصيد القابل للاسترداد",
+  "wallet_last_updated": "آخر تحديث: {date}",
+  "@wallet_last_updated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "wallet_filter_settlements": "تسويات",
+  "wallet_filter_card_refund": "استرداد إلى البطاقة",
+  "wallet_filter_refunds": "المبالغ المستردة",
+  "wallet_filter_all": "الكل",
+  "wallet_search_hint": "ابحث في العمليات",
+  "wallet_group_today": "اليوم",
+  "wallet_group_this_week": "هذا الأسبوع",
+  "wallet_group_april_2026": "أبريل 2026",
+  "wallet_transactions_notice": "يحتوي سجل العمليات على المدفوعات والمبالغ المستردة\nوتسويات المحفظة فقط",
+  "wallet_status_completed": "مكتمل",
+  "wallet_status_processing": "قيد المعالجة",
+  "wallet_select_card": "اختر البطاقة",
+  "wallet_refund_notice_body": "• سيتم خصم المبلغ من رصيد المحفظة عند إرسال الطلب\n• لا يمكن التراجع بعد بدء المعالجة",
+  "wallet_order_summary_title": "ملخص الطلب",
+  "wallet_confirm_refund": "تأكيد طلب الاسترداد",
+  "wallet_cancel": "إلغاء",
+  "wallet_refund_available_balance": "الرصيد المتاح للاسترداد",
+  "wallet_refund_hero_subtitle": "سيتم تحويل المبلغ إلى بطاقتك خلال 3-7 أيام عمل",
+  "wallet_refund_amount": "مبلغ الاسترداد",
+  "wallet_refund_custom_amount": "مبلغ مخصص",
+  "wallet_refund_full_balance": "كامل الرصيد",
+  "wallet_summary_receiving_card": "البطاقة المستلمة",
+  "wallet_summary_amount": "المبلغ",
+  "wallet_summary_fees": "الرسوم",
+  "wallet_summary_free": "مجانا",
+  "wallet_summary_expected_receipt": "الاستلام المتوقع",
+  "wallet_summary_expected_receipt_value": "خلال 7-14 يوم عمل",
+  "wallet_card_expires_at": "تنتهي في"
 }

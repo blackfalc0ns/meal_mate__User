@@ -38,6 +38,9 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
+import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
+import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_transactions_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
@@ -219,6 +222,18 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const ProfileBillingScreen(),
+        );
+      case AppRoutes.wallet:
+        return _buildRoute(settings: settings, page: const WalletScreen());
+      case AppRoutes.walletRefund:
+        return _buildRoute(
+          settings: settings,
+          page: const WalletRefundScreen(),
+        );
+      case AppRoutes.walletTransactions:
+        return _buildRoute(
+          settings: settings,
+          page: const WalletTransactionsScreen(),
         );
       default:
         return _buildRoute(

@@ -36,6 +36,11 @@ class ProfileSettingsCard extends StatelessWidget {
         locale.profile_billing_subtitle,
       ),
       (
+        Icons.account_balance_wallet_rounded,
+        locale.payment_method_wallet,
+        locale.payment_method_wallet_balance,
+      ),
+      (
         Icons.location_on_outlined,
         locale.profile_addresses,
         locale.profile_addresses_subtitle,
@@ -91,10 +96,12 @@ class ProfileSettingsCard extends StatelessWidget {
                 : index == 3
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.profileBilling)
+                : index == 4
+                ? () => Navigator.of(context).pushNamed(AppRoutes.wallet)
                 : index == items.length - 1
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
-                : index == 4
+                : index == 5
                 ? () => Navigator.of(context).pushNamed(AppRoutes.addresses)
                 : index == 2
                 ? () => Navigator.of(

@@ -36,6 +36,20 @@ class ProfileBillingScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
+              SizedBox(
+                width: double.infinity,
+                height: Spacing.profileBillingButtonHeight,
+                child: AppButton(
+                  text: locale.payment_method_wallet,
+                  onPressed: () => context.pushNamed(AppRoutes.wallet),
+                  height: Spacing.profileBillingButtonHeight,
+                  borderRadius: Spacing.radiusPill,
+                  color: color.primary,
+                  textColor: color.onPrimary,
+                  fontSize: FontSize.size12,
+                ),
+              ),
+              const SizedBox(height: Spacing.md),
               const ProfileBillingPlanCard(),
               const SizedBox(height: Spacing.md),
               const ProfileBillingPaymentCard(),

@@ -35,12 +35,12 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: Spacing.calendarRestaurantSummaryNutritionIconSize,
-              color: iconColor,
-            ),
-            const SizedBox(width: Spacing.xs),
+            // Icon(
+            //   icon,
+            //   size: Spacing.calendarRestaurantSummaryNutritionIconSize,
+            //   color: iconColor,
+            // ),
+            // const SizedBox(width: Spacing.xs),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
+                      fontSize: FontSize.size9,
                       color: color.onSurface,
                     ).copyWith(height: 1),
                   ),
@@ -67,20 +67,27 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                       color: color.primary,
                     ).copyWith(height: 1),
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    child: LinearProgressIndicator(
-                      minHeight: Spacing
-                          .calendarRestaurantSummaryNutritionProgressHeight,
-                      value: _progressValue,
-                      backgroundColor: color.outline.withValues(alpha: 0.35),
-                      valueColor: AlwaysStoppedAnimation<Color>(color.primary),
-                    ),
-                  ),
+                  // const SizedBox(height: Spacing.xs),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  //   child: LinearProgressIndicator(
+                  //     minHeight: Spacing
+                  //         .calendarRestaurantSummaryNutritionProgressHeight,
+                  //     value: _progressValue,
+                  //     backgroundColor: color.outline.withValues(alpha: 0.35),
+                  //     valueColor: AlwaysStoppedAnimation<Color>(color.primary),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
+              const SizedBox(width: Spacing.xs),
+            Icon(
+              icon,
+              size: Spacing.iconMd,
+              color: iconColor,
+            ),
+          
           ],
         ),
       ),

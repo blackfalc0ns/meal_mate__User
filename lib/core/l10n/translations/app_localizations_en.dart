@@ -3304,4 +3304,134 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get search_suggestion_chicken_vegetables =>
       'Chicken with grilled vegetables';
+
+  @override
+  String get wallet_title => 'Wallet';
+
+  @override
+  String get wallet_total_refundable_balance_title =>
+      'Total refundable balance';
+
+  @override
+  String get wallet_total_refundable_balance_subtitle =>
+      'Balance from subscription cancellations or settlements';
+
+  @override
+  String get wallet_transactions_history => 'Transaction history';
+
+  @override
+  String get wallet_refund_to_card => 'Refund to card';
+
+  @override
+  String get wallet_important_info_title => 'Important information';
+
+  @override
+  String get wallet_important_info_body =>
+      'This balance is only for receiving refunded amounts\nfrom subscription cancellations or special settlements.\nYou cannot top up the wallet or add amounts to it.';
+
+  @override
+  String get wallet_recent_transactions => 'Recent transactions';
+
+  @override
+  String get wallet_view_all => 'View all';
+
+  @override
+  String get wallet_security_note =>
+      'We protect your data and transactions according to the highest security standards';
+
+  @override
+  String get wallet_refundable_balance => 'Refundable balance';
+
+  @override
+  String wallet_last_updated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get wallet_filter_settlements => 'Settlements';
+
+  @override
+  String get wallet_filter_card_refund => 'Card refunds';
+
+  @override
+  String get wallet_filter_refunds => 'Refunds';
+
+  @override
+  String get wallet_filter_all => 'All';
+
+  @override
+  String get wallet_search_hint => 'Search transactions';
+
+  @override
+  String get wallet_group_today => 'Today';
+
+  @override
+  String get wallet_group_this_week => 'This week';
+
+  @override
+  String get wallet_group_april_2026 => 'April 2026';
+
+  @override
+  String get wallet_transactions_notice =>
+      'Transaction history contains payments, refunds,\nand wallet settlements only.';
+
+  @override
+  String get wallet_status_completed => 'Completed';
+
+  @override
+  String get wallet_status_processing => 'Processing';
+
+  @override
+  String get wallet_select_card => 'Choose card';
+
+  @override
+  String get wallet_refund_notice_body =>
+      '• The amount will be deducted from your wallet balance when the request is sent\n• You cannot undo after processing starts';
+
+  @override
+  String get wallet_order_summary_title => 'Order summary';
+
+  @override
+  String get wallet_confirm_refund => 'Confirm refund request';
+
+  @override
+  String get wallet_cancel => 'Cancel';
+
+  @override
+  String get wallet_refund_available_balance => 'Available refundable balance';
+
+  @override
+  String get wallet_refund_hero_subtitle =>
+      'The amount will be transferred to your card within 3-7 business days';
+
+  @override
+  String get wallet_refund_amount => 'Refund amount';
+
+  @override
+  String get wallet_refund_custom_amount => 'Custom amount';
+
+  @override
+  String get wallet_refund_full_balance => 'Full balance';
+
+  @override
+  String get wallet_summary_receiving_card => 'Receiving card';
+
+  @override
+  String get wallet_summary_amount => 'Amount';
+
+  @override
+  String get wallet_summary_fees => 'Fees';
+
+  @override
+  String get wallet_summary_free => 'Free';
+
+  @override
+  String get wallet_summary_expected_receipt => 'Expected receipt';
+
+  @override
+  String get wallet_summary_expected_receipt_value =>
+      'Within 7-14 business days';
+
+  @override
+  String get wallet_card_expires_at => 'Expires';
 }
