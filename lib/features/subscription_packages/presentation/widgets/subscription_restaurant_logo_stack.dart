@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 
@@ -15,20 +13,6 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final visibleLogoUrls = logoUrls.take(3).toList();
-
-    if (visibleLogoUrls.isEmpty) {
-      return SizedBox(
-        width: Spacing.xxxl * 2.15,
-        height: Spacing.lg + Spacing.xs,
-        child: DecoratedBox(
-          decoration: BoxDecoration(color: color.surface.withValues(alpha: 0)),
-          child: SvgPicture.asset(
-            Assets.subscriptionRestaurantStack,
-            semanticsLabel: locale.nav_subscription,
-          ),
-        ),
-      );
-    }
 
     return SizedBox(
       width: Spacing.xxxl * 2.15,
