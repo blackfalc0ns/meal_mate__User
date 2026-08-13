@@ -38,6 +38,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final textDirection = Directionality.of(context);
 
     return Material(
       color: color.surface.withValues(alpha: 0),
@@ -75,14 +76,14 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
             ],
           ),
           child: Row(
-            textDirection: TextDirection.rtl,
+            textDirection: textDirection,
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      textDirection: TextDirection.rtl,
+                      textDirection: textDirection,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
@@ -107,7 +108,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.start,
                             style: getSemiBoldStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size14,
@@ -126,7 +127,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         description,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -140,7 +141,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         start: Spacing.xxl,
                       ),
                       child: Row(
-                        textDirection: TextDirection.rtl,
+                        textDirection: textDirection,
                         children: [
                           Icon(
                             primaryFeatureIcon,
@@ -154,7 +155,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               primaryFeature,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               style: getRegularStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
@@ -184,7 +185,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               secondaryFeature,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               style: getRegularStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,

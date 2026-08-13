@@ -5216,6 +5216,24 @@ abstract class AppLocalizations {
   /// **'Choose your preferred app language'**
   String get profile_settings_language_subtitle;
 
+  /// No description provided for @profile_settings_language_sheet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose language'**
+  String get profile_settings_language_sheet_title;
+
+  /// No description provided for @profile_settings_language_arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get profile_settings_language_arabic;
+
+  /// No description provided for @profile_settings_language_english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get profile_settings_language_english;
+
   /// No description provided for @profile_settings_appearance.
   ///
   /// In en, this message translates to:

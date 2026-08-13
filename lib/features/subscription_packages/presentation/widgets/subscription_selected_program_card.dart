@@ -15,6 +15,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final textDirection = Directionality.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +24,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
           child: Text(
             locale.subscription_selected_program_label,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             style: getSemiBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size17,
@@ -52,14 +53,14 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
             ],
           ),
           child: Row(
-            textDirection: TextDirection.rtl,
+            textDirection: textDirection,
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      textDirection: TextDirection.rtl,
+                      textDirection: textDirection,
                       children: [
                         Container(
                           width: Spacing.xxl,
@@ -85,7 +86,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                                 locale.subscription_selected_program_label,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.right,
+                                textAlign: TextAlign.start,
                                 style: getMediumStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size10,
@@ -96,7 +97,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                                 program.name(locale.localeName),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.right,
+                                textAlign: TextAlign.start,
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size15,
@@ -120,7 +121,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             program.description(locale.localeName),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.start,
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size12,
@@ -136,7 +137,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         start: Spacing.xl,
                       ),
                       child: Row(
-                        textDirection: TextDirection.rtl,
+                        textDirection: textDirection,
                         children: [
                           Icon(
                             _primaryFeatureIconForProgram(program),
@@ -144,12 +145,20 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             color: color.primary,
                           ),
                           const SizedBox(width: Spacing.xs),
-                          Text(
-                            _featureAt(program.keywords(locale.localeName), 0),
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
+                          Flexible(
+                            child: Text(
+                              _featureAt(
+                                program.keywords(locale.localeName),
+                                0,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
+                              ),
                             ),
                           ),
                           const SizedBox(width: Spacing.md),
@@ -167,12 +176,20 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                             color: color.primary,
                           ),
                           const SizedBox(width: Spacing.xs),
-                          Text(
-                            _featureAt(program.keywords(locale.localeName), 1),
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
+                          Flexible(
+                            child: Text(
+                              _featureAt(
+                                program.keywords(locale.localeName),
+                                1,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
+                              ),
                             ),
                           ),
                         ],
@@ -203,7 +220,6 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       fit: BoxFit.cover,
                       semanticLabel: program.name(locale.localeName),
-                     
                     ),
                   ),
                 ),

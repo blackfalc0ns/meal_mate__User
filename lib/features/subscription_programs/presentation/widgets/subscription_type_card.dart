@@ -30,6 +30,7 @@ class SubscriptionTypeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final textDirection = Directionality.of(context);
     final accentColor = type.isFamily ? color.secondary : color.primary;
     final dividerColor = type.isFamily
         ? color.outlineVariant
@@ -88,8 +89,8 @@ class SubscriptionTypeCard extends StatelessWidget {
                               color.surface.withValues(alpha: 0.72),
                               color.primaryContainer.withValues(alpha: 0.52),
                             ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                            begin: AlignmentDirectional.topStart,
+                            end: AlignmentDirectional.bottomEnd,
                           ),
                   ),
                   child: ClipRRect(
@@ -99,24 +100,26 @@ class SubscriptionTypeCard extends StatelessWidget {
                     child: Stack(
                       children: [
                         if (!type.isFamily)
-                          Positioned(
-                            right: -cardWidth * 0.03,
+                          PositionedDirectional(
+                            end: -cardWidth * 0.03,
                             bottom: -cardHeight * 0.18,
                             child: Container(
                               width: cardWidth * 0.42,
                               height: cardHeight * 0.82,
                               decoration: BoxDecoration(
                                 color: color.primary.withValues(alpha: 0.34),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(cardWidth * 0.42),
-                                  bottomLeft: Radius.circular(cardWidth * 0.42),
+                                borderRadius: BorderRadiusDirectional.only(
+                                  topStart: Radius.circular(cardWidth * 0.42),
+                                  bottomStart: Radius.circular(
+                                    cardWidth * 0.42,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        Positioned(
+                        PositionedDirectional(
                           top: imageTop,
-                          right: imageEnd,
+                          end: imageEnd,
                           child: Image.asset(
                             type.imageAsset,
                             width: imageWidth,
@@ -125,20 +128,21 @@ class SubscriptionTypeCard extends StatelessWidget {
                             semanticLabel: locale.nav_subscription,
                           ),
                         ),
-                        Positioned(
+                        PositionedDirectional(
                           top: contentTop,
-                          left: Spacing.lg,
+                          start: Spacing.lg,
                           width: contentWidth,
                           child: Row(
+                            textDirection: textDirection,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 flex: 4,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      textDirection: textDirection,
                                       children: [
                                         Container(
                                           width: Spacing.xl,
@@ -170,7 +174,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                                               title,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.right,
+                                              textAlign: TextAlign.start,
                                               style: getBoldStyle(
                                                 fontFamily:
                                                     FontConstant.alexandria,
@@ -184,7 +188,8 @@ class SubscriptionTypeCard extends StatelessWidget {
                                     ),
                                     const SizedBox(height: Spacing.sm),
                                     Align(
-                                      alignment: AlignmentDirectional.centerEnd,
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
                                       child: ConstrainedBox(
                                         constraints: BoxConstraints(
                                           maxWidth: cardWidth * 0.34,
@@ -193,7 +198,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                                           description,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.right,
+                                          textAlign: TextAlign.start,
                                           style: getRegularStyle(
                                             fontFamily: FontConstant.alexandria,
                                             fontSize: FontSize.size11,
@@ -233,9 +238,9 @@ class SubscriptionTypeCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Positioned(
+                        PositionedDirectional(
                           top: dividerTop,
-                          left: Spacing.xxl,
+                          start: Spacing.xxl,
                           width: contentWidth - Spacing.xxl,
                           child: Divider(
                             color: dividerColor,
@@ -243,11 +248,12 @@ class SubscriptionTypeCard extends StatelessWidget {
                             thickness: Spacing.hairline,
                           ),
                         ),
-                        Positioned(
+                        PositionedDirectional(
                           top: featureTop,
-                          left: Spacing.xl,
+                          start: Spacing.xl,
                           width: contentWidth - Spacing.xxl,
                           child: Row(
+                            textDirection: textDirection,
                             children: [
                               SubscriptionTypeFeatureItem(
                                 label: features[0],

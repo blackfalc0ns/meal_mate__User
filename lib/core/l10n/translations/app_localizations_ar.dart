@@ -2679,6 +2679,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_settings_language_subtitle => 'اختر لغة التطبيق المفضلة';
 
   @override
+  String get profile_settings_language_sheet_title => 'اختر اللغة';
+
+  @override
+  String get profile_settings_language_arabic => 'العربية';
+
+  @override
+  String get profile_settings_language_english => 'الإنجليزية';
+
+  @override
   String get profile_settings_appearance => 'المظهر';
 
   @override

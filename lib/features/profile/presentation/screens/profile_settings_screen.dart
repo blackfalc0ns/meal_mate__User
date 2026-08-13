@@ -3,8 +3,13 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/services/app_locale_notifier.dart';
+import 'package:meal_meat_user/core/services/language_service.dart';
+import 'package:meal_meat_user/core/utils/constants.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/app_settings_section_card.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_language_bottom_sheet.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -47,7 +52,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                     Icons.language_rounded,
                     locale.profile_settings_language,
                     locale.profile_settings_language_subtitle,
-                    null,
+                    () => _showLanguageSheet(context),
                   ),
                   (
                     Icons.palette_rounded,
@@ -153,6 +158,35 @@ class ProfileSettingsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showLanguageSheet(BuildContext context) async {
+    final languageService = getIt<LanguageService>();
+    final selectedCode = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
+        ),
+      ),
+      builder: (context) => ProfileLanguageBottomSheet(
+        selectedCode: languageService.getLanguageCode(),
+      ),
+    );
+
+    if (selectedCode == null ||
+        selectedCode == languageService.getLanguageCode()) {
+      return;
+    }
+
+    await languageService.saveLanguageCode(selectedCode);
+
+    appLocaleNotifier.value = Locale(
+      selectedCode == AppConstants.enKey
+          ? AppConstants.enKey
+          : AppConstants.arKey,
     );
   }
 }

@@ -218,7 +218,7 @@ class MealMateDrawerItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
         child: Row(
-          textDirection: ui.TextDirection.rtl,
+        
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(item.icon, color: color.onPrimary, size: 18),
@@ -228,7 +228,7 @@ class MealMateDrawerItem extends StatelessWidget {
                 item.label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.right,
+             
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,

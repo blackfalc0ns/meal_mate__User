@@ -31,7 +31,7 @@ class SubscriptionProgramHeader extends StatelessWidget {
             const SizedBox(height: Spacing.xs),
             Text(
               locale.subscription_program_subtitle,
-              textAlign: TextAlign.right,
+           
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,

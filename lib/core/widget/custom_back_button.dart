@@ -23,9 +23,9 @@ class CustomBackButton extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Positioned(
+    return PositionedDirectional(
       top: top ?? MediaQuery.paddingOf(context).top + Spacing.lg,
-      right: end ?? Spacing.xl,
+      start: end ?? Spacing.xl,
       child: Material(
         color: color.surface,
         shape: const CircleBorder(),
@@ -35,11 +35,13 @@ class CustomBackButton extends StatelessWidget {
           child: SizedBox(
             width: size,
             height: size,
-            child: Icon(
-              Icons.arrow_back_ios_rounded,
-              size: iconSize,
-              color: color.onSurface,
-              semanticLabel: locale.go_back,
+            child: Semantics(
+              label: locale.go_back,
+              button: true,
+              child: IconTheme(
+                data: IconThemeData(size: iconSize, color: color.onSurface),
+                child: const BackButtonIcon(),
+              ),
             ),
           ),
         ),

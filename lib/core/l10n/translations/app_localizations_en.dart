@@ -2714,6 +2714,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose your preferred app language';
 
   @override
+  String get profile_settings_language_sheet_title => 'Choose language';
+
+  @override
+  String get profile_settings_language_arabic => 'Arabic';
+
+  @override
+  String get profile_settings_language_english => 'English';
+
+  @override
   String get profile_settings_appearance => 'Appearance';
 
   @override
