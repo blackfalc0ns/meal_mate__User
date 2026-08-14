@@ -45,8 +45,12 @@ class PaymentScreen extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.checkout != current.checkout,
         listener: (context, state) {
-          if (state.checkout != null) {
-            Navigator.of(context).pushNamed(AppRoutes.paymentSuccess);
+          final checkout = state.checkout;
+          if (checkout != null && checkout.paymentUrl.isNotEmpty) {
+            Navigator.of(context).pushNamed(
+              AppRoutes.paymentWebView,
+              arguments: PaymentWebViewArgs(checkout: checkout),
+            );
           }
         },
         builder: (context, state) {
@@ -56,14 +60,7 @@ class PaymentScreen extends StatelessWidget {
             bottomNavigationBar: PaymentFooter(
               totalAmount: paymentArgs.summary.finalPrice,
               isLoading: state.isCheckoutLoading,
-              onPayNow: _canCheckout(paymentArgs, state)
-                  ? () => context.read<PaymentViewModel>().doIntent(
-                      CheckoutPaymentEvent(
-                        args: paymentArgs,
-                        address: state.defaultAddress!,
-                      ),
-                    )
-                  : null,
+              onPayNow: () => _handlePayNow(context, paymentArgs, state),
             ),
           );
         },
@@ -144,14 +141,14 @@ class PaymentScreen extends StatelessWidget {
                   ),
                   child: ApiErrorWidget(
                     exception: state.checkoutFailure!.exception,
-                    onRetry: _canCheckout(paymentArgs, state)
-                        ? () => context.read<PaymentViewModel>().doIntent(
+                    onRetry: state.isCheckoutLoading
+                        ? null
+                        : () => context.read<PaymentViewModel>().doIntent(
                             CheckoutPaymentEvent(
                               args: paymentArgs,
-                              address: state.defaultAddress!,
+                              address: state.defaultAddress,
                             ),
-                          )
-                        : null,
+                          ),
                   ),
                 ),
               const SizedBox(height: Spacing.base),
@@ -162,14 +159,15 @@ class PaymentScreen extends StatelessWidget {
     );
   }
 
-  bool _canCheckout(PaymentArgs args, PaymentState state) {
-    final address = state.defaultAddress;
-    return state.selectedMethod != null &&
-        args.restaurantId.isNotEmpty &&
-        args.summary.startDate.isNotEmpty &&
-        address != null &&
-        (address.regionId?.isNotEmpty ?? false) &&
-        address.addressLine.isNotEmpty &&
-        !state.isCheckoutLoading;
+  void _handlePayNow(
+    BuildContext context,
+    PaymentArgs args,
+    PaymentState state,
+  ) {
+    if (state.isCheckoutLoading) return;
+
+    context.read<PaymentViewModel>().doIntent(
+      CheckoutPaymentEvent(args: args, address: state.defaultAddress),
+    );
   }
 }

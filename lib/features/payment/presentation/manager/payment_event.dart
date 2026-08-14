@@ -22,5 +22,15 @@ class CheckoutPaymentEvent extends PaymentEvent {
   const CheckoutPaymentEvent({required this.args, required this.address});
 
   final PaymentArgs args;
-  final CustomerAddressEntity address;
+  final CustomerAddressEntity? address;
+}
+
+class VerifyPaymentFulfillmentEvent extends PaymentEvent {
+  const VerifyPaymentFulfillmentEvent(this.subscriptionId);
+
+  final String subscriptionId;
+}
+
+class MarkPaymentFailedEvent extends PaymentEvent {
+  const MarkPaymentFailedEvent();
 }

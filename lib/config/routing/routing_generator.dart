@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/offer_details/presentation/screens/offer
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/payment_web_view_screen.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/personal_information_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
@@ -169,6 +170,14 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: PaymentScreen(args: args),
+        );
+      case AppRoutes.paymentWebView:
+        final args = settings.arguments is PaymentWebViewArgs
+            ? settings.arguments! as PaymentWebViewArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: PaymentWebViewScreen(args: args),
         );
       case AppRoutes.paymentSuccess:
         return _buildRoute(

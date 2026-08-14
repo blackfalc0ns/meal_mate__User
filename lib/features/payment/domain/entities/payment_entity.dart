@@ -32,6 +32,7 @@ class PaymentMethodEntity {
     required this.type,
     required this.title,
     required this.subtitle,
+    required this.isAvailable,
     this.walletBalance,
   });
 
@@ -39,6 +40,7 @@ class PaymentMethodEntity {
   final PaymentMethodType type;
   final String title;
   final String subtitle;
+  final bool isAvailable;
 
   /// Only relevant for [PaymentMethodType.wallet]
   final double? walletBalance;
@@ -98,6 +100,7 @@ class PaymentCheckoutEntity {
     required this.finalPrice,
     required this.priceSnapshotId,
     required this.restaurantPoolSnapshotId,
+    required this.paymentStatus,
   });
 
   final String subscriptionId;
@@ -106,4 +109,5 @@ class PaymentCheckoutEntity {
   final double finalPrice;
   final String priceSnapshotId;
   final String restaurantPoolSnapshotId;
+  final String paymentStatus;
 }

@@ -10,4 +10,6 @@ abstract interface class PaymentRemoteDataSource {
   Future<PaymentCheckoutResponseDto> checkout(
     PaymentCheckoutRequestDto request,
   );
+
+  Future<void> getSubscriptionCalendar(String subscriptionId);
 }

@@ -24,4 +24,9 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
   ) {
     return _apiServices.checkoutSubscription(request);
   }
+
+  @override
+  Future<void> getSubscriptionCalendar(String subscriptionId) {
+    return _apiServices.getSubscriptionCalendar(subscriptionId);
+  }
 }

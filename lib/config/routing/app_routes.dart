@@ -27,6 +27,7 @@ abstract class AppRoutes {
   static const String restaurantDetails = '/restaurant-details';
   static const String offerDetails = '/offer-details';
   static const String payment = '/payment';
+  static const String paymentWebView = '/payment-web-view';
   static const String paymentSuccess = '/payment-success';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';

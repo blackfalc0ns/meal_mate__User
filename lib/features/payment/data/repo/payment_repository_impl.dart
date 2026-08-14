@@ -32,4 +32,11 @@ class PaymentRepositoryImpl implements PaymentRepository {
       return response.toEntity();
     });
   }
+
+  @override
+  Future<ApiResult<void>> getSubscriptionCalendar(String subscriptionId) {
+    return safeApiCall(() {
+      return _remoteDataSource.getSubscriptionCalendar(subscriptionId);
+    });
+  }
 }

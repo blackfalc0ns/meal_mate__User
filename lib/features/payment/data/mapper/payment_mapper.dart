@@ -10,6 +10,7 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
       type: _methodType,
       title: titleAr ?? titleEn ?? title ?? nameAr ?? nameEn ?? name ?? '',
       subtitle: descriptionAr ?? descriptionEn ?? description ?? '',
+      isAvailable: isAvailable ?? false,
       walletBalance: walletBalance,
     );
   }
@@ -63,6 +64,7 @@ extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
       finalPrice: finalPrice ?? 0,
       priceSnapshotId: priceSnapshotId ?? '',
       restaurantPoolSnapshotId: restaurantPoolSnapshotId ?? '',
+      paymentStatus: paymentStatus ?? '',
     );
   }
 }

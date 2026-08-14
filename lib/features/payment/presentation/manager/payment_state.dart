@@ -7,6 +7,9 @@ class PaymentState {
     this.isMethodsLoading = false,
     this.isAddressesLoading = false,
     this.isCheckoutLoading = false,
+    this.isFulfillmentLoading = false,
+    this.isFulfillmentSuccess = false,
+    this.isPaymentFailed = false,
     this.methods = const [],
     this.selectedMethod,
     this.defaultAddress,
@@ -14,11 +17,15 @@ class PaymentState {
     this.methodsFailure,
     this.addressesFailure,
     this.checkoutFailure,
+    this.fulfillmentFailure,
   });
 
   final bool isMethodsLoading;
   final bool isAddressesLoading;
   final bool isCheckoutLoading;
+  final bool isFulfillmentLoading;
+  final bool isFulfillmentSuccess;
+  final bool isPaymentFailed;
   final List<PaymentMethodEntity> methods;
   final PaymentMethodEntity? selectedMethod;
   final CustomerAddressEntity? defaultAddress;
@@ -26,6 +33,7 @@ class PaymentState {
   final Failure? methodsFailure;
   final Failure? addressesFailure;
   final Failure? checkoutFailure;
+  final Failure? fulfillmentFailure;
 
   bool get isLoading => isMethodsLoading || isAddressesLoading;
 
@@ -35,6 +43,9 @@ class PaymentState {
     bool? isMethodsLoading,
     bool? isAddressesLoading,
     bool? isCheckoutLoading,
+    bool? isFulfillmentLoading,
+    bool? isFulfillmentSuccess,
+    bool? isPaymentFailed,
     List<PaymentMethodEntity>? methods,
     PaymentMethodEntity? selectedMethod,
     CustomerAddressEntity? defaultAddress,
@@ -42,17 +53,22 @@ class PaymentState {
     Failure? methodsFailure,
     Failure? addressesFailure,
     Failure? checkoutFailure,
+    Failure? fulfillmentFailure,
     bool clearSelectedMethod = false,
     bool clearDefaultAddress = false,
     bool clearCheckout = false,
     bool clearMethodsFailure = false,
     bool clearAddressesFailure = false,
     bool clearCheckoutFailure = false,
+    bool clearFulfillmentFailure = false,
   }) {
     return PaymentState(
       isMethodsLoading: isMethodsLoading ?? this.isMethodsLoading,
       isAddressesLoading: isAddressesLoading ?? this.isAddressesLoading,
       isCheckoutLoading: isCheckoutLoading ?? this.isCheckoutLoading,
+      isFulfillmentLoading: isFulfillmentLoading ?? this.isFulfillmentLoading,
+      isFulfillmentSuccess: isFulfillmentSuccess ?? this.isFulfillmentSuccess,
+      isPaymentFailed: isPaymentFailed ?? this.isPaymentFailed,
       methods: methods ?? this.methods,
       selectedMethod: clearSelectedMethod
           ? null
@@ -70,6 +86,9 @@ class PaymentState {
       checkoutFailure: clearCheckoutFailure
           ? null
           : checkoutFailure ?? this.checkoutFailure,
+      fulfillmentFailure: clearFulfillmentFailure
+          ? null
+          : fulfillmentFailure ?? this.fulfillmentFailure,
     );
   }
 }

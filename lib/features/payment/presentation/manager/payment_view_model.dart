@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
@@ -7,6 +10,7 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dar
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 
@@ -16,11 +20,13 @@ class PaymentViewModel extends Cubit<PaymentState> {
     this._getPaymentMethodsUseCase,
     this._checkoutSubscriptionUseCase,
     this._getCustomerAddressesUseCase,
+    this._getSubscriptionCalendarUseCase,
   ) : super(const PaymentState());
 
   final GetPaymentMethodsUseCase _getPaymentMethodsUseCase;
   final CheckoutSubscriptionUseCase _checkoutSubscriptionUseCase;
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
+  final GetSubscriptionCalendarUseCase _getSubscriptionCalendarUseCase;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -30,6 +36,16 @@ class PaymentViewModel extends Cubit<PaymentState> {
         emit(state.copyWith(selectedMethod: event.method));
       case CheckoutPaymentEvent():
         _checkout(args: event.args, address: event.address);
+      case VerifyPaymentFulfillmentEvent():
+        _verifyFulfillment(event.subscriptionId);
+      case MarkPaymentFailedEvent():
+        emit(
+          state.copyWith(
+            isPaymentFailed: true,
+            isFulfillmentLoading: false,
+            isFulfillmentSuccess: false,
+          ),
+        );
     }
   }
 
@@ -55,7 +71,12 @@ class PaymentViewModel extends Cubit<PaymentState> {
     switch (methodsResult) {
       case ApiSuccessResult():
         final methods = methodsResult.data
-            .where((method) => method.id > 0)
+            .where(
+              (method) =>
+                  method.id > 0 &&
+                  method.isAvailable &&
+                  method.type != PaymentMethodType.wallet,
+            )
             .toList();
         emit(
           state.copyWith(
@@ -95,7 +116,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
   Future<void> _checkout({
     required PaymentArgs args,
-    required CustomerAddressEntity address,
+    required CustomerAddressEntity? address,
   }) async {
     final selectedMethod = state.selectedMethod;
     if (selectedMethod == null) return;
@@ -106,17 +127,15 @@ class PaymentViewModel extends Cubit<PaymentState> {
       bundleId: args.summaryRequest.bundleId,
       tier: args.summaryRequest.tier,
       durationDays: args.summaryRequest.durationDays,
-      startDate: args.summary.startDate,
-      regionId: address.regionId ?? '',
-      deliveryAddress: address.addressLine,
+      startDate: _checkoutStartDate(args),
+      regionId: address?.regionId ?? '',
+      deliveryAddress: address?.addressLine ?? '',
       callbackUrl: 'mealmate://payment/success',
       errorUrl: 'mealmate://payment/error',
       includeFriday: args.summaryRequest.includeFriday,
       paymentMethodId: selectedMethod.id,
-      correlationId: DateTime.now().microsecondsSinceEpoch.toString(),
+      correlationId: _generateCorrelationId(),
     );
-
-    if (!request.isComplete) return;
 
     emit(
       state.copyWith(
@@ -154,5 +173,89 @@ class PaymentViewModel extends Cubit<PaymentState> {
       if (address.isDefault) return address;
     }
     return addresses.isEmpty ? null : addresses.first;
+  }
+
+  Future<void> _verifyFulfillment(String subscriptionId) async {
+    if (subscriptionId.isEmpty) return;
+
+    emit(
+      state.copyWith(
+        isFulfillmentLoading: true,
+        isFulfillmentSuccess: false,
+        isPaymentFailed: false,
+        clearFulfillmentFailure: true,
+      ),
+    );
+
+    ApiErrorResult<void>? lastConflict;
+
+    for (final delay in const [
+      Duration.zero,
+      Duration(seconds: 2),
+      Duration(seconds: 4),
+      Duration(seconds: 8),
+    ]) {
+      if (delay != Duration.zero) {
+        await Future<void>.delayed(delay);
+      }
+
+      final result = await _getSubscriptionCalendarUseCase(subscriptionId);
+
+      switch (result) {
+        case ApiSuccessResult():
+          emit(
+            state.copyWith(
+              isFulfillmentLoading: false,
+              isFulfillmentSuccess: true,
+              clearFulfillmentFailure: true,
+            ),
+          );
+          return;
+        case ApiErrorResult():
+          if (result.failure.exception.errorType == ApiErrorType.conflict) {
+            lastConflict = result;
+            continue;
+          }
+
+          emit(
+            state.copyWith(
+              isFulfillmentLoading: false,
+              fulfillmentFailure: result.failure,
+            ),
+          );
+          return;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        isFulfillmentLoading: false,
+        fulfillmentFailure: lastConflict?.failure,
+      ),
+    );
+  }
+
+  String _generateCorrelationId() {
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+    String hex(int value) => value.toRadixString(16).padLeft(2, '0');
+    final chars = bytes.map(hex).join();
+
+    return '${chars.substring(0, 8)}-'
+        '${chars.substring(8, 12)}-'
+        '${chars.substring(12, 16)}-'
+        '${chars.substring(16, 20)}-'
+        '${chars.substring(20)}';
+  }
+
+  String _checkoutStartDate(PaymentArgs args) {
+    if (args.summary.startDate.isNotEmpty) return args.summary.startDate;
+    return args.summary.serviceDates.isEmpty
+        ? ''
+        : args.summary.serviceDates.first;
   }
 }

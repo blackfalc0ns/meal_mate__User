@@ -116,6 +116,8 @@ import '../../features/payment/domain/usecase/checkout_subscription_usecase.dart
     as _i895;
 import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart'
     as _i365;
+import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart'
+    as _i182;
 import '../../features/payment/presentation/manager/payment_view_model.dart'
     as _i502;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
@@ -367,6 +369,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i365.GetPaymentMethodsUseCase>(
       () => _i365.GetPaymentMethodsUseCase(gh<_i996.PaymentRepository>()),
     );
+    gh.factory<_i182.GetSubscriptionCalendarUseCase>(
+      () => _i182.GetSubscriptionCalendarUseCase(gh<_i996.PaymentRepository>()),
+    );
     gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
       () => _i32.GetFoodPreferencesCatalogUseCase(
         gh<_i62.FoodPreferencesRepository>(),
@@ -521,6 +526,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i365.GetPaymentMethodsUseCase>(),
         gh<_i895.CheckoutSubscriptionUseCase>(),
         gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i182.GetSubscriptionCalendarUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

@@ -17,6 +17,7 @@ class PaymentMethodResponseDto {
     this.description,
     this.descriptionAr,
     this.descriptionEn,
+    this.isAvailable,
     this.walletBalance,
   });
 
@@ -32,6 +33,7 @@ class PaymentMethodResponseDto {
   final String? description;
   final String? descriptionAr;
   final String? descriptionEn;
+  final bool? isAvailable;
   final double? walletBalance;
 
   factory PaymentMethodResponseDto.fromJson(Map<String, dynamic> json) =>

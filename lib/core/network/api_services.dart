@@ -237,4 +237,9 @@ abstract class ApiServices {
   Future<PaymentCheckoutResponseDto> checkoutSubscription(
     @Body() PaymentCheckoutRequestDto request,
   );
+
+  @GET(EndPoints.subscriptionCalendar)
+  Future<void> getSubscriptionCalendar(
+    @Path('subscriptionId') String subscriptionId,
+  );
 }
