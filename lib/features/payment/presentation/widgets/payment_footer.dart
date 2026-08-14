@@ -10,12 +10,12 @@ class PaymentFooter extends StatelessWidget {
   const PaymentFooter({
     super.key,
     required this.totalAmount,
-    required this.onPayNow,
+    this.onPayNow,
     this.isLoading = false,
   });
 
   final double totalAmount;
-  final VoidCallback onPayNow;
+  final VoidCallback? onPayNow;
   final bool isLoading;
 
   @override

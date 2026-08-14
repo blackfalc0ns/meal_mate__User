@@ -106,6 +106,18 @@ import '../../features/monthly_plans/presentation/manager/subscription_plan_view
     as _i527;
 import '../../features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart'
     as _i851;
+import '../../features/payment/data/data_source/payment_remote_data_source.dart'
+    as _i957;
+import '../../features/payment/data/data_source/payment_remote_data_source_impl.dart'
+    as _i621;
+import '../../features/payment/data/repo/payment_repository_impl.dart' as _i914;
+import '../../features/payment/domain/repo/payment_repository.dart' as _i996;
+import '../../features/payment/domain/usecase/checkout_subscription_usecase.dart'
+    as _i895;
+import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart'
+    as _i365;
+import '../../features/payment/presentation/manager/payment_view_model.dart'
+    as _i502;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
     as _i998;
 import '../../features/profile/data/data_source/profile_remote_data_source_impl.dart'
@@ -244,6 +256,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.factory<_i957.PaymentRemoteDataSource>(
+      () => _i621.PaymentRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i263.ChangePasswordRemoteDataSource>(
       () => _i949.ChangePasswordRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -256,6 +271,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i636.SubscriptionSummaryRepositoryImpl(
         gh<_i155.SubscriptionSummaryRemoteDataSource>(),
       ),
+    );
+    gh.factory<_i996.PaymentRepository>(
+      () => _i914.PaymentRepositoryImpl(gh<_i957.PaymentRemoteDataSource>()),
     );
     gh.factory<_i2.AuthRepository>(
       () => _i607.AuthRepositoryImpl(
@@ -342,6 +360,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i926.GetSubscriptionSummaryUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
       ),
+    );
+    gh.factory<_i895.CheckoutSubscriptionUseCase>(
+      () => _i895.CheckoutSubscriptionUseCase(gh<_i996.PaymentRepository>()),
+    );
+    gh.factory<_i365.GetPaymentMethodsUseCase>(
+      () => _i365.GetPaymentMethodsUseCase(gh<_i996.PaymentRepository>()),
     );
     gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
       () => _i32.GetFoodPreferencesCatalogUseCase(
@@ -490,6 +514,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+      ),
+    );
+    gh.factory<_i502.PaymentViewModel>(
+      () => _i502.PaymentViewModel(
+        gh<_i365.GetPaymentMethodsUseCase>(),
+        gh<_i895.CheckoutSubscriptionUseCase>(),
+        gh<_i945.GetCustomerAddressesUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

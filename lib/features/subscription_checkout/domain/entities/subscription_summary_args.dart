@@ -5,8 +5,10 @@ class SubscriptionSummaryArgs {
   const SubscriptionSummaryArgs({
     required this.initialPlan,
     required this.request,
+    this.restaurantId = '',
   });
 
   final MonthlyPlanDetailsEntity initialPlan;
   final SubscriptionSummaryRequestEntity request;
+  final String restaurantId;
 }

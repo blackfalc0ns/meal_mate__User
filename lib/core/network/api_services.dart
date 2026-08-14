@@ -37,6 +37,9 @@ import 'package:meal_meat_user/features/monthly_plans/data/models/response/subsc
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
@@ -223,5 +226,15 @@ abstract class ApiServices {
     @Query('Tier') String tier,
     @Query('BundleId') String bundleId,
     @Query('ProgramId') String programId,
+  );
+
+  @GET(EndPoints.paymentMethods)
+  Future<List<PaymentMethodResponseDto>> getPaymentMethods(
+    @Query('amount') double amount,
+  );
+
+  @POST(EndPoints.subscriptionCheckout)
+  Future<PaymentCheckoutResponseDto> checkoutSubscription(
+    @Body() PaymentCheckoutRequestDto request,
   );
 }

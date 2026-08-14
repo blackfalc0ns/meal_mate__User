@@ -15,13 +15,13 @@ class PaymentMethodSelector extends StatelessWidget {
   const PaymentMethodSelector({
     super.key,
     required this.methods,
-    required this.selectedType,
+    required this.selectedMethodId,
     required this.onMethodSelected,
   });
 
   final List<PaymentMethodEntity> methods;
-  final PaymentMethodType selectedType;
-  final ValueChanged<PaymentMethodType> onMethodSelected;
+  final int selectedMethodId;
+  final ValueChanged<PaymentMethodEntity> onMethodSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,8 @@ class PaymentMethodSelector extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: Spacing.sm),
               child: PaymentMethodTile(
                 method: method,
-                isSelected: method.type == selectedType,
-                onTap: () => onMethodSelected(method.type),
+                isSelected: method.id == selectedMethodId,
+                onTap: () => onMethodSelected(method),
               ),
             ),
           ),

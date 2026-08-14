@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
@@ -162,7 +163,13 @@ class RouteGenerator {
           page: const OfferDetailsScreen(),
         );
       case AppRoutes.payment:
-        return _buildRoute(settings: settings, page: const PaymentScreen());
+        final args = settings.arguments is PaymentArgs
+            ? settings.arguments! as PaymentArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: PaymentScreen(args: args),
+        );
       case AppRoutes.paymentSuccess:
         return _buildRoute(
           settings: settings,

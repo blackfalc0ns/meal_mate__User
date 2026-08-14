@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
@@ -115,7 +116,16 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                 price: hasSummary ? plan.price : '',
                                 currency: hasSummary ? plan.currency : '',
                                 onPressed: hasSummary
-                                    ? () => context.pushNamed(AppRoutes.payment)
+                                    ? () => context.pushNamed(
+                                        AppRoutes.payment,
+                                        arguments: PaymentArgs(
+                                          summary: summary,
+                                          summaryRequest: summaryArgs.request,
+                                          restaurantId:
+                                              summary.restaurantId ??
+                                              summaryArgs.restaurantId,
+                                        ),
+                                      )
                                     : null,
                               ),
                       ),

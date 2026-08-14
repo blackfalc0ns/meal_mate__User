@@ -369,6 +369,9 @@ class _SubscriptionPlanDetailsScreenState
       AppRoutes.subscriptionSummary,
       arguments: SubscriptionSummaryArgs(
         initialPlan: plan,
+        restaurantId: selectedTier.restaurants.isEmpty
+            ? ''
+            : selectedTier.restaurants.first.restaurantId,
         request: SubscriptionSummaryRequestEntity(
           includeFriday: state.includeFriday,
           durationDays: durationDays,

@@ -72,6 +72,7 @@ class PaymentMethodTile extends StatelessWidget {
   }
 
   String _title(BuildContext context) {
+    if (method.title.isNotEmpty) return method.title;
     final l10n = context.localization;
     return switch (method.type) {
       PaymentMethodType.mada => l10n.payment_method_mada,
@@ -82,6 +83,7 @@ class PaymentMethodTile extends StatelessWidget {
   }
 
   String _subtitle(BuildContext context) {
+    if (method.subtitle.isNotEmpty) return method.subtitle;
     final l10n = context.localization;
     return switch (method.type) {
       PaymentMethodType.mada => l10n.payment_method_mada_subtitle,
