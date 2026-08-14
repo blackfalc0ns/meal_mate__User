@@ -3179,8 +3179,26 @@ abstract class AppLocalizations {
   /// No description provided for @subscription_days_range_hint.
   ///
   /// In en, this message translates to:
-  /// **'You can enter any number of days (1-30 days)'**
-  String get subscription_days_range_hint;
+  /// **'You can enter any number of days ({minDays}-{maxDays} days)'**
+  String subscription_days_range_hint(int minDays, int maxDays);
+
+  /// No description provided for @subscription_custom_duration_input_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter days'**
+  String get subscription_custom_duration_input_hint;
+
+  /// No description provided for @subscription_custom_duration_invalid_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number from {minDays} to {maxDays}'**
+  String subscription_custom_duration_invalid_error(int minDays, int maxDays);
+
+  /// No description provided for @subscription_custom_duration_duplicate_error.
+  ///
+  /// In en, this message translates to:
+  /// **'This duration is already available as a preset'**
+  String get subscription_custom_duration_duplicate_error;
 
   /// No description provided for @subscription_day.
   ///

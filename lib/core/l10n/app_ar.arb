@@ -513,7 +513,30 @@
   "subscription_duration_title": "مدة الاشتراك",
   "subscription_custom_duration": "مخصص",
   "subscription_add_friday": "إضافة يوم الجمعة",
-  "subscription_days_range_hint": "يمكنك إدخال أي عدد من الأيام (1-30 يوم)",
+  "subscription_days_range_hint": "يمكنك إدخال أي عدد من الأيام ({minDays}-{maxDays} يوم)",
+  "@subscription_days_range_hint": {
+    "placeholders": {
+      "minDays": {
+        "type": "int"
+      },
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "subscription_custom_duration_input_hint": "اكتب عدد الأيام",
+  "subscription_custom_duration_invalid_error": "ادخل رقم من {minDays} إلى {maxDays}",
+  "@subscription_custom_duration_invalid_error": {
+    "placeholders": {
+      "minDays": {
+        "type": "int"
+      },
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "subscription_custom_duration_duplicate_error": "هذه المدة متاحة بالفعل كاختيار جاهز",
   "subscription_day": "يوم",
   "subscription_half_month_duration": "12 أيام",
   "subscription_week_duration": "7 أيام",

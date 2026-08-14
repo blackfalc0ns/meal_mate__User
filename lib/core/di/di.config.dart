@@ -86,6 +86,20 @@ import '../../features/food_preferences/domain/usecase/update_food_preferences_u
     as _i635;
 import '../../features/food_preferences/presentation/manager/food_preferences_view_model.dart'
     as _i420;
+import '../../features/monthly_plans/data/data_source/subscription_plan_remote_data_source.dart'
+    as _i755;
+import '../../features/monthly_plans/data/data_source/subscription_plan_remote_data_source_impl.dart'
+    as _i509;
+import '../../features/monthly_plans/data/repo/subscription_plan_repository_impl.dart'
+    as _i738;
+import '../../features/monthly_plans/domain/repo/subscription_plan_repository.dart'
+    as _i986;
+import '../../features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart'
+    as _i275;
+import '../../features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart'
+    as _i101;
+import '../../features/monthly_plans/presentation/manager/subscription_plan_view_model.dart'
+    as _i527;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
     as _i998;
 import '../../features/profile/data/data_source/profile_remote_data_source_impl.dart'
@@ -226,6 +240,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i96.SubscriptionProgramsRemoteDataSource>(),
       ),
     );
+    gh.factory<_i755.SubscriptionPlanRemoteDataSource>(
+      () => _i509.SubscriptionPlanRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i99.UploadFileRemoteDataSource>(
       () => _i963.UploadFileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -340,6 +357,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i995.UploadFileUseCase>(
       () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
     );
+    gh.factory<_i986.SubscriptionPlanRepository>(
+      () => _i738.SubscriptionPlanRepositoryImpl(
+        gh<_i755.SubscriptionPlanRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i866.SubscriptionTypesRepository>(
       () => _i715.SubscriptionTypesRepositoryImpl(
         gh<_i1021.SubscriptionTypesRemoteDataSource>(),
@@ -375,6 +397,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i247.GetSubscriptionTypesUseCase>(),
       ),
     );
+    gh.factory<_i275.GetSubscriptionDurationsUseCase>(
+      () => _i275.GetSubscriptionDurationsUseCase(
+        gh<_i986.SubscriptionPlanRepository>(),
+      ),
+    );
+    gh.factory<_i101.GetSubscriptionTiersUseCase>(
+      () => _i101.GetSubscriptionTiersUseCase(
+        gh<_i986.SubscriptionPlanRepository>(),
+      ),
+    );
     gh.factory<_i446.ProfileViewModel>(
       () => _i446.ProfileViewModel(
         gh<_i994.GetCustomerProfileUseCase>(),
@@ -403,6 +435,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+      ),
+    );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i275.GetSubscriptionDurationsUseCase>(),
+        gh<_i101.GetSubscriptionTiersUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

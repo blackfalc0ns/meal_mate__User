@@ -11,10 +11,14 @@ class MonthlyPlanPackagesSection extends StatefulWidget {
     super.key,
     required this.packages,
     required this.onBrowseRestaurants,
+    required this.selectedIndex,
+    required this.onSelected,
   });
 
   final List<MonthlyPackageTierEntity> packages;
   final VoidCallback onBrowseRestaurants;
+  final int? selectedIndex;
+  final ValueChanged<int> onSelected;
 
   @override
   State<MonthlyPlanPackagesSection> createState() =>
@@ -23,8 +27,6 @@ class MonthlyPlanPackagesSection extends StatefulWidget {
 
 class _MonthlyPlanPackagesSectionState
     extends State<MonthlyPlanPackagesSection> {
-  int? _selectedIndex;
-
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -42,7 +44,7 @@ class _MonthlyPlanPackagesSectionState
             final cardWidth = width < Spacing.monthlyPlanPackagesWidth
                 ? width
                 : Spacing.monthlyPlanPackagesWidth;
-            final selectedIndex = _selectedIndex ?? 0;
+            final selectedIndex = widget.selectedIndex;
 
             return Center(
               child: SizedBox(
@@ -108,12 +110,12 @@ class _MonthlyPlanPackagesSectionState
                         ),
                         child: MonthlyPlanPackageCard(
                           package: widget.packages[index],
-                          title: _packageTitle(locale, index),
+                          title: widget.packages[index].title,
                           width: cardWidth,
                           height: Spacing.monthlyPlanPackageSideHeight,
                           isCentered: index == 1,
                           isSelected: selectedIndex == index,
-                          onTap: () => setState(() => _selectedIndex = index),
+                          onTap: () => widget.onSelected(index),
                           onBrowseRestaurants: widget.onBrowseRestaurants,
                         ),
                       ),
@@ -125,13 +127,5 @@ class _MonthlyPlanPackagesSectionState
         ),
       ),
     );
-  }
-
-  String _packageTitle(dynamic locale, int index) {
-    return switch (index) {
-      0 => locale.subscription_tier_elite,
-      1 => locale.subscription_tier_plus,
-      _ => locale.subscription_tier_max,
-    };
   }
 }

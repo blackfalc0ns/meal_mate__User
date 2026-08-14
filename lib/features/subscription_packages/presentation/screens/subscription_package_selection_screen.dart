@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
@@ -81,7 +82,7 @@ class _SubscriptionPackageSelectionScreenState
                           _selectedPlanDetailsIndex == null ||
                               state.bundles.isEmpty
                           ? null
-                          : _openSelectedPackage,
+                          : () => _openSelectedPackage(state.bundles),
                       borderRadius: Spacing.radiusPill,
                       textColor: color.onPrimary,
                       fontSize: FontSize.size12,
@@ -229,13 +230,21 @@ class _SubscriptionPackageSelectionScreenState
     });
   }
 
-  void _openSelectedPackage() {
+  void _openSelectedPackage(List<SubscriptionBundleEntity> bundles) {
     final selectedPlanDetailsIndex = _selectedPlanDetailsIndex;
     if (selectedPlanDetailsIndex == null) return;
 
+    final selectedProgram = widget.selectedProgram;
+    if (selectedProgram == null) return;
+
+    if (selectedPlanDetailsIndex >= bundles.length) return;
+
     context.pushNamed(
       AppRoutes.subscriptionPlanDetails,
-      arguments: selectedPlanDetailsIndex,
+      arguments: SubscriptionPlanDetailsArgs(
+        program: selectedProgram,
+        bundle: bundles[selectedPlanDetailsIndex],
+      ),
     );
   }
 }

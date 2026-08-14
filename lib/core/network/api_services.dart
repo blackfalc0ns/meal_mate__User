@@ -33,6 +33,8 @@ import 'package:meal_meat_user/features/addresses/data/models/response/customer_
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
@@ -177,5 +179,20 @@ abstract class ApiServices {
   @GET(EndPoints.subscriptionProgramBundles)
   Future<List<SubscriptionBundleResponseDto>> getSubscriptionProgramBundles(
     @Path('programId') String programId,
+  );
+
+  @GET(EndPoints.subscriptionDurations)
+  Future<List<SubscriptionDurationResponseDto>> getSubscriptionDurations(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId,
+    @Query('includeFriday') bool includeFriday,
+  );
+
+  @GET(EndPoints.subscriptionTiers)
+  Future<List<SubscriptionTierResponseDto>> getSubscriptionTiers(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId,
+    @Query('durationDays') int? durationDays,
+    @Query('includeFriday') bool includeFriday,
   );
 }

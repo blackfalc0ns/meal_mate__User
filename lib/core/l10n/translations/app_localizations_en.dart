@@ -1641,8 +1641,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_add_friday => 'Add Friday';
 
   @override
-  String get subscription_days_range_hint =>
-      'You can enter any number of days (1-30 days)';
+  String subscription_days_range_hint(int minDays, int maxDays) {
+    return 'You can enter any number of days ($minDays-$maxDays days)';
+  }
+
+  @override
+  String get subscription_custom_duration_input_hint => 'Enter days';
+
+  @override
+  String subscription_custom_duration_invalid_error(int minDays, int maxDays) {
+    return 'Enter a number from $minDays to $maxDays';
+  }
+
+  @override
+  String get subscription_custom_duration_duplicate_error =>
+      'This duration is already available as a preset';
 
   @override
   String get subscription_day => 'Day';

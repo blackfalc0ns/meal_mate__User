@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
+
+class MonthlyPlanCustomDurationInput extends StatelessWidget {
+  const MonthlyPlanCustomDurationInput({
+    super.key,
+    required this.label,
+    required this.isSelected,
+    required this.value,
+    required this.minDays,
+    required this.maxDays,
+    required this.errorText,
+    required this.onTap,
+    required this.onIncrement,
+    required this.onDecrement,
+  });
+
+  final String label;
+  final bool isSelected;
+  final int value;
+  final int minDays;
+  final int maxDays;
+  final String? errorText;
+  final VoidCallback onTap;
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrement;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Stack(
+      children: [
+        Positioned(
+          left:
+              Spacing.monthlyPlanDurationCustomInputLeft -
+              Spacing.monthlyPlanDurationMinusLeft,
+          top: Spacing.zero,
+          width: Spacing.monthlyPlanCustomDurationWidth,
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size11,
+              color: color.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Positioned(
+          left:
+              Spacing.monthlyPlanDurationCustomInputLeft -
+              Spacing.monthlyPlanDurationMinusLeft,
+          top:
+              Spacing.monthlyPlanDurationControlTop -
+              Spacing.monthlyPlanDurationOptionTop,
+          width: Spacing.monthlyPlanCustomDurationWidth,
+          height: Spacing.monthlyPlanDurationCustomInputHeight,
+          child: OutlinedButton(
+            onPressed: onTap,
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              side: BorderSide(
+                color: isSelected ? color.primary : color.outlineVariant,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  Spacing.monthlyPlanDurationOptionRadius,
+                ),
+              ),
+            ),
+            child: Text(
+              value.toString(),
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size15,
+                color: isSelected ? color.primary : color.onSurface,
+              ),
+            ),
+          ),
+        ),
+        _customControl(
+          color: color,
+          start: Spacing.zero,
+          icon: Icons.remove_rounded,
+          onPressed: onDecrement,
+        ),
+        _customControl(
+          color: color,
+          start:
+              Spacing.monthlyPlanDurationPlusLeft -
+              Spacing.monthlyPlanDurationMinusLeft,
+          icon: Icons.add_rounded,
+          onPressed: onIncrement,
+        ),
+        Positioned(
+          top:
+              Spacing.monthlyPlanDurationHintTop -
+              Spacing.monthlyPlanDurationOptionTop,
+          left: Spacing.zero,
+          width: Spacing.monthlyPlanDurationCustomGroupWidth,
+          child: Center(
+            child: Text(
+              errorText ??
+                  locale.subscription_days_range_hint(minDays, maxDays),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size8,
+                color: errorText == null ? color.onSurfaceVariant : color.error,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _customControl({
+    required ColorScheme color,
+    required double start,
+    required IconData icon,
+    required VoidCallback? onPressed,
+  }) {
+    return Positioned(
+      left: start,
+      top:
+          Spacing.monthlyPlanDurationControlTop -
+          Spacing.monthlyPlanDurationOptionTop,
+      width: Spacing.monthlyPlanDurationControlWidth,
+      height: Spacing.monthlyPlanDurationControlWidth,
+      child: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints.tightFor(
+          width: Spacing.monthlyPlanDurationControlWidth,
+          height: Spacing.monthlyPlanDurationControlWidth,
+        ),
+        icon: Icon(
+          icon,
+          color: onPressed == null ? color.outline : color.onSurface,
+          size: Spacing.monthlyPlanDurationControlSize,
+        ),
+      ),
+    );
+  }
+}

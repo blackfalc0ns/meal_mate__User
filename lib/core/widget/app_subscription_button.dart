@@ -14,28 +14,41 @@ class AppSubscriptionButton extends StatelessWidget {
 
   final String price;
   final String currency;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isEnabled = onPressed != null;
+    final hasPrice = price.isNotEmpty;
+    final foregroundColor = isEnabled
+        ? color.onPrimary
+        : color.onSurfaceVariant;
 
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Spacing.monthlyPlanSubscribeRadius),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [color.primary.withValues(alpha: 0.82), color.primary],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.primary.withValues(alpha: 0.22),
-            blurRadius: Spacing.monthlyPlanSubscribeShadowBlur,
-            offset: const Offset(0, Spacing.monthlyPlanSubscribeShadowOffset),
-          ),
-        ],
+        color: isEnabled ? null : color.surfaceContainerHighest,
+        gradient: isEnabled
+            ? LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [color.primary.withValues(alpha: 0.82), color.primary],
+              )
+            : null,
+        boxShadow: isEnabled
+            ? [
+                BoxShadow(
+                  color: color.primary.withValues(alpha: 0.22),
+                  blurRadius: Spacing.monthlyPlanSubscribeShadowBlur,
+                  offset: const Offset(
+                    0,
+                    Spacing.monthlyPlanSubscribeShadowOffset,
+                  ),
+                ),
+              ]
+            : null,
       ),
       child: Material(
         color: color.surface.withValues(alpha: 0),
@@ -54,39 +67,42 @@ class AppSubscriptionButton extends StatelessWidget {
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size22,
-                    color: color.onPrimary,
+                    color: foregroundColor,
                   ).copyWith(height: 1),
                 ),
-                const Spacer(flex: 4),
-                Container(
-                  width: Spacing.monthlyPlanSubscribeDividerWidth,
-                  height: Spacing.monthlyPlanSubscribeDividerHeight,
-                  color: color.onPrimary,
-                ),
-                const Spacer(flex: 3),
-                Icon(
-                  Icons.monetization_on_rounded,
-                  color: color.onPrimary,
-                  size: Spacing.monthlyPlanSubscribeCoinSize,
-                ),
-                const SizedBox(width: Spacing.sm),
-                Text(
-                  price,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanSubscribePriceSize,
-                    color: color.onPrimary,
-                  ).copyWith(height: 1),
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  currency,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
-                    color: color.onPrimary,
+                if (hasPrice) ...[
+                  const Spacer(flex: 4),
+                  Container(
+                    width: Spacing.monthlyPlanSubscribeDividerWidth,
+                    height: Spacing.monthlyPlanSubscribeDividerHeight,
+                    color: foregroundColor,
                   ),
-                ),
+                  const Spacer(flex: 3),
+                  Icon(
+                    Icons.monetization_on_rounded,
+                    color: foregroundColor,
+                    size: Spacing.monthlyPlanSubscribeCoinSize,
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Text(
+                    price,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: Spacing.monthlyPlanSubscribePriceSize,
+                      color: foregroundColor,
+                    ).copyWith(height: 1),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    currency,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
+                      color: foregroundColor,
+                    ),
+                  ),
+                ] else
+                  const Spacer(flex: 4),
                 const Spacer(flex: 4),
               ],
             ),

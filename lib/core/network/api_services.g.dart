@@ -817,6 +817,84 @@ class _ApiServices implements ApiServices {
     return _value;
   }
 
+  @override
+  Future<List<SubscriptionDurationResponseDto>> getSubscriptionDurations(
+    String programId,
+    String bundleId,
+    bool includeFriday,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'includeFriday': includeFriday};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<SubscriptionDurationResponseDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/programs/${programId}/bundles/${bundleId}/durations',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<SubscriptionDurationResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) => SubscriptionDurationResponseDto.fromJson(
+              i as Map<String, dynamic>,
+            ),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<SubscriptionTierResponseDto>> getSubscriptionTiers(
+    String programId,
+    String bundleId,
+    int? durationDays,
+    bool includeFriday,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'durationDays': durationDays,
+      r'includeFriday': includeFriday,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<SubscriptionTierResponseDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/programs/${programId}/bundles/${bundleId}/tiers',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<SubscriptionTierResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                SubscriptionTierResponseDto.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

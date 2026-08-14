@@ -1,0 +1,18 @@
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
+
+abstract interface class SubscriptionPlanRepository {
+  Future<ApiResult<List<SubscriptionDurationEntity>>> getDurations({
+    required String programId,
+    required String bundleId,
+    required bool includeFriday,
+  });
+
+  Future<ApiResult<List<SubscriptionTierEntity>>> getTiers({
+    required String programId,
+    required String bundleId,
+    required int? durationDays,
+    required bool includeFriday,
+  });
+}

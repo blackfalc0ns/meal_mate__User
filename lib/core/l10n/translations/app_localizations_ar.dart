@@ -1618,8 +1618,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_add_friday => 'إضافة يوم الجمعة';
 
   @override
-  String get subscription_days_range_hint =>
-      'يمكنك إدخال أي عدد من الأيام (1-30 يوم)';
+  String subscription_days_range_hint(int minDays, int maxDays) {
+    return 'يمكنك إدخال أي عدد من الأيام ($minDays-$maxDays يوم)';
+  }
+
+  @override
+  String get subscription_custom_duration_input_hint => 'اكتب عدد الأيام';
+
+  @override
+  String subscription_custom_duration_invalid_error(int minDays, int maxDays) {
+    return 'ادخل رقم من $minDays إلى $maxDays';
+  }
+
+  @override
+  String get subscription_custom_duration_duplicate_error =>
+      'هذه المدة متاحة بالفعل كاختيار جاهز';
 
   @override
   String get subscription_day => 'يوم';
