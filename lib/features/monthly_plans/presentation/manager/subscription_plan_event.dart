@@ -55,3 +55,15 @@ class UpdateCustomSubscriptionDurationEvent extends SubscriptionPlanEvent {
   final String bundleId;
   final int? durationDays;
 }
+
+class BrowseSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
+  const BrowseSubscriptionTierRestaurantsEvent({
+    required this.programId,
+    required this.bundleId,
+    required this.tierIndex,
+  });
+
+  final String programId;
+  final String bundleId;
+  final int tierIndex;
+}

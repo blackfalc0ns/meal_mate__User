@@ -13,6 +13,7 @@ import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
@@ -20,6 +21,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/month
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_loading_skeleton.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_section.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_loading_skeleton.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_section.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
@@ -263,10 +265,7 @@ class _SubscriptionPlanDetailsScreenState
                     ),
                   ),
                 ),
-                MonthlyPlanRestaurantsSection(
-                  mode: SubscriptionPlanViewMode.grid,
-                  restaurants: plan.restaurants,
-                ),
+                _buildRestaurantsContent(context, state, plan),
               ],
             )
           : Column(
@@ -287,12 +286,72 @@ class _SubscriptionPlanDetailsScreenState
                   onSelected: (index) => context
                       .read<SubscriptionPlanViewModel>()
                       .doIntent(SelectSubscriptionTierEvent(index)),
-                  onBrowseRestaurants: () =>
-                      setState(() => _isRestaurantsView = true),
+                  onBrowseRestaurants: (index) =>
+                      _browseRestaurants(context, index),
                 ),
               ],
             ),
     );
+  }
+
+  Widget _buildRestaurantsContent(
+    BuildContext context,
+    SubscriptionPlanState state,
+    MonthlyPlanDetailsEntity plan,
+  ) {
+    final locale = context.localization;
+    final args = widget.args;
+    final browsedTierIndex = state.browsedTierIndex;
+
+    if (state.isBrowseRestaurantsLoading && state.browseRestaurants.isEmpty) {
+      return const MonthlyPlanRestaurantsLoadingSkeleton();
+    }
+
+    if (state.browseRestaurantsFailure != null &&
+        state.browseRestaurants.isEmpty) {
+      return ApiErrorWidget(
+        exception: state.browseRestaurantsFailure!.exception,
+        onRetry: args == null || browsedTierIndex == null
+            ? null
+            : () => context.read<SubscriptionPlanViewModel>().doIntent(
+                BrowseSubscriptionTierRestaurantsEvent(
+                  programId: args.program.programId,
+                  bundleId: args.bundle.bundleId,
+                  tierIndex: browsedTierIndex,
+                ),
+              ),
+      );
+    }
+
+    if (state.browseRestaurants.isEmpty) {
+      return EmptyStateWidget(
+        title: locale.subscription_restaurant_categories_title,
+        description: locale.subscription_restaurant_categories_subtitle,
+        icon: Icons.restaurant_rounded,
+      );
+    }
+
+    return MonthlyPlanRestaurantsSection(
+      mode: SubscriptionPlanViewMode.grid,
+      restaurants: plan.restaurants,
+    );
+  }
+
+  void _browseRestaurants(BuildContext context, int tierIndex) {
+    final args = widget.args;
+    if (args == null) return;
+
+    context.read<SubscriptionPlanViewModel>()
+      ..doIntent(SelectSubscriptionTierEvent(tierIndex))
+      ..doIntent(
+        BrowseSubscriptionTierRestaurantsEvent(
+          programId: args.program.programId,
+          bundleId: args.bundle.bundleId,
+          tierIndex: tierIndex,
+        ),
+      );
+
+    setState(() => _isRestaurantsView = true);
   }
 
   void _openSubscriptionSummary(
@@ -353,7 +412,14 @@ class _SubscriptionPlanDetailsScreenState
           .map((tier) => tier.toPackageTier(locale.localeName))
           .toList(),
       filters: const [],
-      restaurants: selectedTier?.toRestaurants(color.primary) ?? const [],
+      restaurants: state.browseRestaurants
+          .map(
+            (restaurant) => restaurant.toRestaurantPlan(
+              localeName: locale.localeName,
+              brandColor: color.primary,
+            ),
+          )
+          .toList(),
       meals: const [],
     );
   }
@@ -391,21 +457,29 @@ extension on SubscriptionTierEntity {
     );
   }
 
-  List<MonthlyRestaurantPlanEntity> toRestaurants(Color brandColor) {
-    return restaurants
-        .map(
-          (restaurant) => MonthlyRestaurantPlanEntity(
-            name: restaurant.restaurantId,
-            subtitle: '',
-            meals: '',
-            rating: '',
-            brandColor: brandColor,
-            logoUrl: restaurant.logoUrl,
-            initials: restaurant.restaurantId.isEmpty
-                ? null
-                : restaurant.restaurantId.substring(0, 2).toUpperCase(),
-          ),
-        )
-        .toList();
+}
+
+extension on SubscriptionTierRestaurantBrowseEntity {
+  MonthlyRestaurantPlanEntity toRestaurantPlan({
+    required String localeName,
+    required Color brandColor,
+  }) {
+    final restaurantName = name(localeName);
+
+    return MonthlyRestaurantPlanEntity(
+      name: restaurantName,
+      subtitle: tierName(localeName),
+      meals: mealCount.toString(),
+      bundleMeals: bundleMealCount.toString(),
+      rating: rating == null ? '' : rating!.toStringAsFixed(1),
+      brandColor: brandColor,
+      classificationLogoUrls: classifications
+          .map((classification) => classification.logoUrl)
+          .toList(),
+      logoUrl: logoUrl,
+      initials: restaurantName.isEmpty
+          ? null
+          : restaurantName.characters.take(2).toString().toUpperCase(),
+    );
   }
 }

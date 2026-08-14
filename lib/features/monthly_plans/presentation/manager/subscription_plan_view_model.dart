@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
 
@@ -11,10 +12,13 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
   SubscriptionPlanViewModel(
     this._getSubscriptionDurationsUseCase,
     this._getSubscriptionTiersUseCase,
+    this._getSubscriptionTierRestaurantsUseCase,
   ) : super(const SubscriptionPlanState());
 
   final GetSubscriptionDurationsUseCase _getSubscriptionDurationsUseCase;
   final GetSubscriptionTiersUseCase _getSubscriptionTiersUseCase;
+  final GetSubscriptionTierRestaurantsUseCase
+  _getSubscriptionTierRestaurantsUseCase;
 
   void doIntent(SubscriptionPlanEvent event) {
     switch (event) {
@@ -45,6 +49,12 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         );
       case SelectSubscriptionTierEvent():
         emit(state.copyWith(selectedTierIndex: event.tierIndex));
+      case BrowseSubscriptionTierRestaurantsEvent():
+        _browseTierRestaurants(
+          programId: event.programId,
+          bundleId: event.bundleId,
+          tierIndex: event.tierIndex,
+        );
     }
   }
 
@@ -221,6 +231,53 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
             isTiersLoading: false,
             isSuccess: false,
             failure: result.failure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _browseTierRestaurants({
+    required String programId,
+    required String bundleId,
+    required int tierIndex,
+  }) async {
+    if (tierIndex < 0 || tierIndex >= state.tiers.length) return;
+
+    final tier = state.tiers[tierIndex];
+    final restaurantIds = tier.restaurants
+        .map((restaurant) => restaurant.restaurantId)
+        .where((restaurantId) => restaurantId.isNotEmpty)
+        .toList();
+
+    emit(
+      state.copyWith(
+        isBrowseRestaurantsLoading: true,
+        browsedTierIndex: tierIndex,
+        clearBrowseRestaurants: true,
+        clearBrowseRestaurantsFailure: true,
+      ),
+    );
+
+    final result = await _getSubscriptionTierRestaurantsUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      tier: tier.tier,
+      restaurantIds: restaurantIds,
+    );
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            isBrowseRestaurantsLoading: false,
+            browseRestaurants: result.data,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isBrowseRestaurantsLoading: false,
+            browseRestaurantsFailure: result.failure,
           ),
         );
     }

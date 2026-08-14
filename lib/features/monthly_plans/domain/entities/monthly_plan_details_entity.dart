@@ -50,8 +50,10 @@ class MonthlyRestaurantPlanEntity {
     required this.name,
     required this.subtitle,
     required this.meals,
+    required this.bundleMeals,
     required this.rating,
     required this.brandColor,
+    this.classificationLogoUrls = const [],
     this.logoAsset,
     this.logoUrl,
     this.initials,
@@ -60,8 +62,10 @@ class MonthlyRestaurantPlanEntity {
   final String name;
   final String subtitle;
   final String meals;
+  final String bundleMeals;
   final String rating;
   final Color brandColor;
+  final List<String?> classificationLogoUrls;
   final String? logoAsset;
   final String? logoUrl;
   final String? initials;

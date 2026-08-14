@@ -30,23 +30,14 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
           Spacing.monthlyRestaurantCardRadius,
         ),
         child: Ink(
-          padding: const EdgeInsets.only(
+          padding: const EdgeInsetsDirectional.only(
             top: Spacing.md,
-            bottom: Spacing.monthlyRestaurantCardBottomPadding,
-            left: Spacing.sm,
-            right: Spacing.sm,
+            bottom: Spacing.sm,
+            start: Spacing.md,
+            end: Spacing.md,
           ),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                color.surfaceContainerHighest,
-                color.surface,
-                color.surface.withValues(alpha: 0.75),
-              ],
-              stops: const [0, 0.38, 1],
-            ),
+           
             borderRadius: BorderRadius.circular(
               Spacing.monthlyRestaurantCardRadius,
             ),
@@ -54,32 +45,28 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
               color: color.outlineVariant,
               width: Spacing.monthlyRestaurantCardBorderWidth,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: color.shadow.withValues(alpha: 0.04),
-                blurRadius: Spacing.monthlyRestaurantCardShadowBlur,
-                offset: const Offset(0, Spacing.xs),
-              ),
-            ],
+           
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MonthlyRestaurantLogo(
                 restaurant: restaurant,
-                size: Spacing.monthlyRestaurantCardLogoSize,
+                size: Spacing.iconXl,
               ),
               const SizedBox(height: Spacing.xs),
               Text(
                 restaurant.name,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
-                ),
+                ).copyWith(height: 1.25),
               ),
+              const SizedBox(height: Spacing.sm),
               Text(
                 restaurant.subtitle,
                 maxLines: 1,
@@ -87,34 +74,12 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size11,
                   color: color.onSurfaceVariant,
                 ),
               ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.sm),
-                  Icon(Icons.star_rounded, size: 13, color: color.primary),
-                  const SizedBox(width: Spacing.monthlyRestaurantCardTinyGap),
-                  Text(
-                    restaurant.rating,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: Spacing.xs),
+              
+             Spacer(),
               Container(
                 height: Spacing.monthlyRestaurantCardMetaHeight,
                 alignment: Alignment.center,
@@ -123,10 +88,12 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Text(
-                  '${restaurant.meals} ${locale.subscription_details_meals_in_plan}',
+                  '${restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size11,
                     color: color.onSurfaceVariant,
                   ),
                 ),

@@ -10,15 +10,15 @@ class MonthlyPlanPackagesSection extends StatefulWidget {
   const MonthlyPlanPackagesSection({
     super.key,
     required this.packages,
-    required this.onBrowseRestaurants,
     required this.selectedIndex,
     required this.onSelected,
+    required this.onBrowseRestaurants,
   });
 
   final List<MonthlyPackageTierEntity> packages;
-  final VoidCallback onBrowseRestaurants;
   final int? selectedIndex;
   final ValueChanged<int> onSelected;
+  final ValueChanged<int> onBrowseRestaurants;
 
   @override
   State<MonthlyPlanPackagesSection> createState() =>
@@ -116,7 +116,8 @@ class _MonthlyPlanPackagesSectionState
                           isCentered: index == 1,
                           isSelected: selectedIndex == index,
                           onTap: () => widget.onSelected(index),
-                          onBrowseRestaurants: widget.onBrowseRestaurants,
+                          onBrowseRestaurants: () =>
+                              widget.onBrowseRestaurants(index),
                         ),
                       ),
                   ],

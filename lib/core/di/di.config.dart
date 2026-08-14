@@ -96,6 +96,8 @@ import '../../features/monthly_plans/domain/repo/subscription_plan_repository.da
     as _i986;
 import '../../features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart'
     as _i275;
+import '../../features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
+    as _i903;
 import '../../features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart'
     as _i101;
 import '../../features/monthly_plans/presentation/manager/subscription_plan_view_model.dart'
@@ -434,6 +436,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i986.SubscriptionPlanRepository>(),
       ),
     );
+    gh.factory<_i903.GetSubscriptionTierRestaurantsUseCase>(
+      () => _i903.GetSubscriptionTierRestaurantsUseCase(
+        gh<_i986.SubscriptionPlanRepository>(),
+      ),
+    );
     gh.factory<_i101.GetSubscriptionTiersUseCase>(
       () => _i101.GetSubscriptionTiersUseCase(
         gh<_i986.SubscriptionPlanRepository>(),
@@ -473,6 +480,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i527.SubscriptionPlanViewModel(
         gh<_i275.GetSubscriptionDurationsUseCase>(),
         gh<_i101.GetSubscriptionTiersUseCase>(),
+        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

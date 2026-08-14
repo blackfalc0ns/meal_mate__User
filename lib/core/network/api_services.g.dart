@@ -896,6 +896,49 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<List<SubscriptionTierRestaurantBrowseResponseDto>>
+  getSubscriptionTierRestaurants(
+    String programId,
+    String bundleId,
+    String tier,
+    List<String>? restaurantIds,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'restaurantIds': restaurantIds};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<List<SubscriptionTierRestaurantBrowseResponseDto>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscription-flow/programs/${programId}/bundles/${bundleId}/tiers/${tier}/restaurants',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<SubscriptionTierRestaurantBrowseResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) => SubscriptionTierRestaurantBrowseResponseDto.fromJson(
+              i as Map<String, dynamic>,
+            ),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<SubscriptionSummaryResponseDto> getSubscriptionSummary(
     bool includeFriday,
     int durationDays,

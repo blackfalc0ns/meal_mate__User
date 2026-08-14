@@ -121,7 +121,7 @@ class MonthlyRestaurantListTile extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.xs),
                   Text(
-                    '${restaurant.meals} ${locale.subscription_details_meal_suffix}',
+                    '${restaurant.bundleMeals} ${locale.subscription_details_meal_suffix}',
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,

@@ -3,8 +3,10 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/data_source/subscription_plan_remote_data_source.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/mapper/subscription_duration_mapper.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/mapper/subscription_tier_mapper.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/mapper/subscription_tier_restaurant_browse_mapper.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/repo/subscription_plan_repository.dart';
 
 @Injectable(as: SubscriptionPlanRepository)
@@ -44,6 +46,25 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
         includeFriday: includeFriday,
       );
       return response.map((tier) => tier.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>>
+  getTierRestaurants({
+    required String programId,
+    required String bundleId,
+    required String tier,
+    required List<String> restaurantIds,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getTierRestaurants(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier,
+        restaurantIds: restaurantIds,
+      );
+      return response.map((restaurant) => restaurant.toEntity()).toList();
     });
   }
 }
