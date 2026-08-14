@@ -18,12 +18,16 @@ class MealDetailsEntity {
     required this.macroItems,
     required this.allergensTitle,
     required this.allergens,
+    this.headerImageUrl,
+    this.restaurantLogoUrl,
   });
 
   final String title;
   final String description;
   final String restaurantName;
   final String restaurantLogo;
+  final String? headerImageUrl;
+  final String? restaurantLogoUrl;
   final String ratingTitle;
   final String ratingValue;
   final String programLabel;
@@ -41,10 +45,15 @@ class MealDetailsEntity {
 }
 
 class MealDetailsIngredientEntity {
-  const MealDetailsIngredientEntity({required this.label, required this.asset});
+  const MealDetailsIngredientEntity({
+    required this.label,
+    required this.asset,
+    this.iconUrl,
+  });
 
   final String label;
   final String asset;
+  final String? iconUrl;
 }
 
 class MealDetailsNutritionEntity {

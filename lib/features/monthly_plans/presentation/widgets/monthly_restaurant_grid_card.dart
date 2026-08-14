@@ -32,6 +32,7 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
             restaurantName: restaurant.name,
             restaurantLogoUrl: restaurant.logoUrl,
             restaurantInitials: restaurant.initials,
+            restaurantRating: restaurant.rating,
           ),
         ),
         borderRadius: BorderRadius.circular(

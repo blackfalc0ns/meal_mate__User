@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 
 class MealDetailsIngredientItem extends StatelessWidget {
@@ -30,7 +31,13 @@ class MealDetailsIngredientItem extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Spacing.radiusXs),
-              child: Image.asset(ingredient.asset, fit: BoxFit.cover),
+              child: ingredient.iconUrl == null || ingredient.iconUrl!.isEmpty
+                  ? Image.asset(ingredient.asset, fit: BoxFit.cover)
+                  : AppCachedNetworkImage(
+                      imageUrl: ingredient.iconUrl!,
+                      fit: BoxFit.cover,
+                      semanticLabel: ingredient.label,
+                    ),
             ),
           ),
           const SizedBox(height: Spacing.xs),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -9,6 +10,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
+import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_entity.dart';
 
 part 'calendar_sheet_handle.dart';
@@ -36,6 +38,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
     this.restaurantLogoAsset,
     this.restaurantLogoUrl,
     this.restaurantInitials,
+    this.restaurantRating,
     this.details,
   });
 
@@ -43,6 +46,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
   final String? restaurantLogoAsset;
   final String? restaurantLogoUrl;
   final String? restaurantInitials;
+  final String? restaurantRating;
   final SubscriptionRestaurantDetailsEntity? details;
 
   @override
@@ -156,6 +160,11 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                                 mealType: mealTabs[selectedTab],
                                 tabIndex: selectedTab,
                                 options: options,
+                                onOptionSelected: groups.isEmpty
+                                    ? null
+                                    : (index) => _openMealDetails(
+                                        groups[selectedTab].meals[index],
+                                      ),
                               ),
                               const SizedBox(height: Spacing.xxl),
                             ],
@@ -169,6 +178,88 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _openMealDetails(SubscriptionRestaurantMealEntity meal) {
+    final locale = context.localization;
+    final details = widget.details;
+    final restaurantName =
+        details?.name(locale.localeName) ??
+        widget.restaurantName ??
+        locale.calendar_restaurant_name;
+
+    Navigator.of(context).pushNamed(
+      AppRoutes.mealDetails,
+      arguments: MealDetailsEntity(
+        title: meal.name(locale.localeName),
+        description: locale.search_meal_description,
+        restaurantName: restaurantName,
+        restaurantLogo: widget.restaurantInitials ?? _initials(restaurantName),
+        restaurantLogoUrl: widget.restaurantLogoUrl ?? details?.logoUrl,
+        headerImageUrl: meal.imageUrl ?? details?.coverImageUrl,
+        ratingTitle: locale.localeName == 'ar'
+            ? 'تقييم المطعم'
+            : 'Restaurant rating',
+        ratingValue: widget.restaurantRating ?? '',
+        programLabel: locale.localeName == 'ar'
+            ? 'مناسبة لبرنامج'
+            : 'Suitable for program',
+        programValue: '',
+        deliveryLabel: locale.localeName == 'ar'
+            ? 'وقت التوصيل'
+            : 'Delivery time',
+        deliveryValue: '',
+        ingredientsTitle: locale.calendar_ingredients,
+        ingredients: meal.ingredients
+            .map(
+              (ingredient) => MealDetailsIngredientEntity(
+                label: ingredient.name(locale.localeName),
+                asset: _ingredientAsset(ingredient.category),
+                iconUrl: ingredient.iconUrl,
+              ),
+            )
+            .where((ingredient) => ingredient.label.isNotEmpty)
+            .toList(),
+        nutritionTitle: locale.localeName == 'ar'
+            ? 'القيم الغذائية'
+            : 'Nutrition facts',
+        nutritionItems: [
+          MealDetailsNutritionEntity(
+            value: _gramValue(null, locale.localeName),
+            label: locale.localeName == 'ar' ? 'ألياف' : 'Fiber',
+            type: MealDetailsNutritionType.fiber,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(meal.proteinG, locale.localeName),
+            label: locale.calendar_protein,
+            type: MealDetailsNutritionType.protein,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(meal.carbsG, locale.localeName),
+            label: locale.calendar_carbs,
+            type: MealDetailsNutritionType.carbs,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(meal.fatG, locale.localeName),
+            label: locale.calendar_fat,
+            type: MealDetailsNutritionType.fat,
+          ),
+          MealDetailsNutritionEntity(
+            value: meal.calories?.toString() ?? '-',
+            label: locale.calendar_calories,
+            type: MealDetailsNutritionType.calories,
+          ),
+        ],
+        macroDistributionTitle: locale.localeName == 'ar'
+            ? 'توزيع العناصر الغذائية'
+            : 'Macro distribution',
+        macroItems: _macroItems(meal, locale.localeName, locale),
+        allergensTitle: locale.localeName == 'ar'
+            ? 'مسببات الحساسية'
+            : 'Allergens',
+        allergens: const [],
       ),
     );
   }
@@ -200,5 +291,63 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         blockReason: null,
       );
     }).toList();
+  }
+
+  List<MealDetailsMacroEntity> _macroItems(
+    SubscriptionRestaurantMealEntity meal,
+    String localeName,
+    AppLocalizations locale,
+  ) {
+    final fatCalories = (meal.fatG ?? 0) * 9;
+    final proteinCalories = (meal.proteinG ?? 0) * 4;
+    final carbsCalories = (meal.carbsG ?? 0) * 4;
+    final total = fatCalories + proteinCalories + carbsCalories;
+
+    return [
+      MealDetailsMacroEntity(
+        percent: _percent(fatCalories, total),
+        label: locale.calendar_fat,
+        value: _gramValue(meal.fatG, localeName),
+        type: MealDetailsNutritionType.fat,
+      ),
+      MealDetailsMacroEntity(
+        percent: _percent(proteinCalories, total),
+        label: locale.calendar_protein,
+        value: _gramValue(meal.proteinG, localeName),
+        type: MealDetailsNutritionType.protein,
+      ),
+      MealDetailsMacroEntity(
+        percent: _percent(carbsCalories, total),
+        label: locale.calendar_carbs,
+        value: _gramValue(meal.carbsG, localeName),
+        type: MealDetailsNutritionType.carbs,
+      ),
+    ];
+  }
+
+  String _percent(int value, int total) {
+    if (total == 0) return '-';
+    return '%${((value / total) * 100).round()}';
+  }
+
+  String _gramValue(int? value, String localeName) {
+    if (value == null) return '-';
+    return localeName == 'ar' ? '$value جم' : '${value}g';
+  }
+
+  String _ingredientAsset(String category) {
+    return switch (category) {
+      'meat' || 'poultry' => AssetsFake.ingredientChicken,
+      'grains' => AssetsFake.ingredientRice,
+      'produce' => AssetsFake.ingredientBroccoli,
+      'vegetables' => AssetsFake.ingredientCarrot,
+      _ => AssetsFake.ingredientLettuce,
+    };
+  }
+
+  String _initials(String value) {
+    final words = value.trim().split(RegExp(r'\s+'));
+    if (words.isEmpty || words.first.isEmpty) return value;
+    return words.take(3).map((word) => word.characters.first).join();
   }
 }

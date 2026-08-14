@@ -93,6 +93,7 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
                 restaurantLogoUrl:
                     details.logoUrl ?? detailsArgs.restaurantLogoUrl,
                 restaurantInitials: detailsArgs.restaurantInitials,
+                restaurantRating: detailsArgs.restaurantRating,
                 details: details,
               );
             },

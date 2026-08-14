@@ -6,6 +6,7 @@ class SubscriptionRestaurantDetailsArgs {
     required this.restaurantName,
     this.restaurantLogoUrl,
     this.restaurantInitials,
+    this.restaurantRating,
   });
 
   final String programId;
@@ -14,4 +15,5 @@ class SubscriptionRestaurantDetailsArgs {
   final String restaurantName;
   final String? restaurantLogoUrl;
   final String? restaurantInitials;
+  final String? restaurantRating;
 }

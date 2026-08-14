@@ -2,14 +2,17 @@ part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealOptionsSection extends StatelessWidget {
   const CalendarMealOptionsSection({
+    super.key,
     required this.mealType,
     required this.tabIndex,
     required this.options,
+    this.onOptionSelected,
   });
 
   final String mealType;
   final int tabIndex;
   final List<CalendarMealPickerOption> options;
+  final ValueChanged<int>? onOptionSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,12 @@ class CalendarMealOptionsSection extends StatelessWidget {
           CalendarMealPickerSectionTitle(mealType: mealType),
           const SizedBox(height: Spacing.base),
           for (var index = 0; index < options.length; index++) ...[
-            CalendarMealOptionCard(option: options[index]),
+            CalendarMealOptionCard(
+              option: options[index],
+              onTap: onOptionSelected == null
+                  ? null
+                  : () => onOptionSelected!(index),
+            ),
             if (index != options.length - 1) const CalendarDividerLine(),
           ],
         ],
