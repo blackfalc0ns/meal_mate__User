@@ -29,9 +29,10 @@ class SubscriptionSummaryDetailsLoadingSkeleton extends StatelessWidget {
 
     return Semantics(
       label: locale.subscription_summary_title,
-      child: SizedBox(
-        width: Spacing.subscriptionSummaryDetailsWidth,
-        height: Spacing.subscriptionSummaryDetailsHeight,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: Spacing.subscriptionSummaryDetailsWidth,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
