@@ -33,108 +33,89 @@ class MonthlyPlanCustomDurationInput extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Stack(
-      children: [
-        Positioned(
-          left:
-              Spacing.monthlyPlanDurationCustomInputLeft -
-              Spacing.monthlyPlanDurationMinusLeft,
-          top: Spacing.zero,
-          width: Spacing.monthlyPlanCustomDurationWidth,
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size11,
-              color: color.onSurfaceVariant,
-            ),
-          ),
-        ),
-        Positioned(
-          left:
-              Spacing.monthlyPlanDurationCustomInputLeft -
-              Spacing.monthlyPlanDurationMinusLeft,
-          top:
-              Spacing.monthlyPlanDurationControlTop -
-              Spacing.monthlyPlanDurationOptionTop,
-          width: Spacing.monthlyPlanCustomDurationWidth,
-          height: Spacing.monthlyPlanDurationCustomInputHeight,
-          child: OutlinedButton(
-            onPressed: onTap,
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              side: BorderSide(
-                color: isSelected ? color.primary : color.outlineVariant,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  Spacing.monthlyPlanDurationOptionRadius,
-                ),
-              ),
-            ),
+    return SizedBox(
+      width: Spacing.monthlyPlanDurationCustomGroupWidth,
+      child: Column(
+        children: [
+          SizedBox(
+            width: Spacing.monthlyPlanCustomDurationWidth,
             child: Text(
-              value.toString(),
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size15,
-                color: isSelected ? color.primary : color.onSurface,
-              ),
-            ),
-          ),
-        ),
-        _customControl(
-          color: color,
-          start: Spacing.zero,
-          icon: Icons.remove_rounded,
-          onPressed: onDecrement,
-        ),
-        _customControl(
-          color: color,
-          start:
-              Spacing.monthlyPlanDurationPlusLeft -
-              Spacing.monthlyPlanDurationMinusLeft,
-          icon: Icons.add_rounded,
-          onPressed: onIncrement,
-        ),
-        Positioned(
-          top:
-              Spacing.monthlyPlanDurationHintTop -
-              Spacing.monthlyPlanDurationOptionTop,
-          left: Spacing.zero,
-          width: Spacing.monthlyPlanDurationCustomGroupWidth,
-          child: Center(
-            child: Text(
-              errorText ??
-                  locale.subscription_days_range_hint(minDays, maxDays),
+              label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: getRegularStyle(
+              style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size8,
-                color: errorText == null ? color.onSurfaceVariant : color.error,
+                fontSize: FontSize.size11,
+                color: color.onSurfaceVariant,
               ),
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: Spacing.xs),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _customControl(
+                color: color,
+                icon: Icons.add_rounded,
+                onPressed: onIncrement,
+              ),
+              SizedBox(
+                width: Spacing.monthlyPlanCustomDurationWidth,
+                height: Spacing.monthlyPlanDurationCustomInputHeight,
+                child: OutlinedButton(
+                  onPressed: onTap,
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    side: BorderSide(
+                      color: isSelected ? color.primary : color.outlineVariant,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        Spacing.monthlyPlanDurationOptionRadius,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    value.toString(),
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size15,
+                      color: isSelected ? color.primary : color.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+              _customControl(
+                color: color,
+                icon: Icons.remove_rounded,
+                onPressed: onDecrement,
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.xs),
+          Text(
+            errorText ?? locale.subscription_days_range_hint(minDays, maxDays),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size8,
+              color: errorText == null ? color.onSurfaceVariant : color.error,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _customControl({
     required ColorScheme color,
-    required double start,
     required IconData icon,
     required VoidCallback? onPressed,
   }) {
-    return Positioned(
-      left: start,
-      top:
-          Spacing.monthlyPlanDurationControlTop -
-          Spacing.monthlyPlanDurationOptionTop,
+    return SizedBox(
       width: Spacing.monthlyPlanDurationControlWidth,
       height: Spacing.monthlyPlanDurationControlWidth,
       child: IconButton(

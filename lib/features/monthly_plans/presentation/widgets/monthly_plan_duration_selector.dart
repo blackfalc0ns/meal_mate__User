@@ -51,7 +51,7 @@ class _MonthlyPlanDurationSelectorState
 
     return Center(
       child: SizedBox(
-        width:double.infinity,
+        width: double.infinity,
         height: Spacing.monthlyPlanDurationHeight,
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -70,15 +70,17 @@ class _MonthlyPlanDurationSelectorState
           ),
           child: widget.isLoading
               ? const MonthlyPlanDurationSelectorSkeleton()
-              : Stack(
-                  children: [
-                    PositionedDirectional(
-                      top: Spacing.monthlyPlanDurationHeaderTop,
-                      start: Spacing.monthlyPlanDurationHeaderEnd,
-                      child: Row(
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: Spacing.sm,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.calendar_month_outlined,
@@ -96,48 +98,53 @@ class _MonthlyPlanDurationSelectorState
                           ),
                         ],
                       ),
-                    ),
-                    for (var index = 0; index < presetDurations.length; index++)
-                      _option(
-                        start: _durationStart(index),
-                        label: presetDurations[index].name(locale.localeName),
-                        days: presetDurations[index].totalServiceDays,
-                        index: widget.durations.indexOf(presetDurations[index]),
-                      ),
-                    if (customDuration != null && customIndex != null)
-                      Positioned(
-                        left: Spacing.monthlyPlanDurationMinusLeft,
-                        top: Spacing.monthlyPlanDurationOptionTop,
-                        width: Spacing.monthlyPlanDurationCustomGroupWidth,
-                        height:
-                            Spacing.monthlyPlanDurationFridayTop -
-                            Spacing.monthlyPlanDurationOptionTop,
-                        child: MonthlyPlanCustomDurationInput(
-                          label: customDuration.name(locale.localeName),
-                          isSelected: widget.selectedIndex == customIndex,
-                          value: _customDurationValue(customDuration),
-                          minDays: customDuration.minDays!,
-                          maxDays: customDuration.maxDays!,
-                          errorText: _customDurationError(customDuration),
-                          onTap: () => _selectCustomDuration(
-                            customIndex,
-                            customDuration,
-                          ),
-                          onIncrement: _nextCustomDuration(
-                            customIndex,
-                            customDuration,
-                          ),
-                          onDecrement: _previousCustomDuration(
-                            customIndex,
-                            customDuration,
-                          ),
+                      const SizedBox(height: Spacing.xs),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (
+                              var index = 0;
+                              index < presetDurations.length;
+                              index++
+                            ) ...[
+                              if (index > 0) const SizedBox(width: Spacing.sm),
+                              _option(
+                                label: presetDurations[index].name(
+                                  locale.localeName,
+                                ),
+                                days: presetDurations[index].totalServiceDays,
+                                index: widget.durations.indexOf(
+                                  presetDurations[index],
+                                ),
+                              ),
+                            ],
+                            const Spacer(),
+                            if (customDuration != null && customIndex != null)
+                              MonthlyPlanCustomDurationInput(
+                                label: customDuration.name(locale.localeName),
+                                isSelected: widget.selectedIndex == customIndex,
+                                value: _customDurationValue(customDuration),
+                                minDays: customDuration.minDays!,
+                                maxDays: customDuration.maxDays!,
+                                errorText: _customDurationError(customDuration),
+                                onTap: () => _selectCustomDuration(
+                                  customIndex,
+                                  customDuration,
+                                ),
+                                onIncrement: _nextCustomDuration(
+                                  customIndex,
+                                  customDuration,
+                                ),
+                                onDecrement: _previousCustomDuration(
+                                  customIndex,
+                                  customDuration,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                    Positioned(
-                      top: Spacing.monthlyPlanDurationFridayTop,
-                      left: 0,
-                      right: 0,
-                      child: Center(
+                      Center(
                         child: InkWell(
                           onTap: widget.isFridayEnabled
                               ? () => widget.onFridayChanged(
@@ -183,8 +190,8 @@ class _MonthlyPlanDurationSelectorState
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
         ),
       ),
@@ -192,14 +199,11 @@ class _MonthlyPlanDurationSelectorState
   }
 
   Widget _option({
-    required double start,
     required String label,
     required int days,
     required int index,
   }) {
-    return Positioned(
-      left: start,
-      top: Spacing.monthlyPlanDurationOptionTop,
+    return SizedBox(
       width: Spacing.monthlyPlanDurationOptionWidth,
       child: MonthlyPlanDurationOption(
         label: label,
@@ -208,14 +212,6 @@ class _MonthlyPlanDurationSelectorState
         onTap: () => widget.onSelected(index),
       ),
     );
-  }
-
-  double _durationStart(int index) {
-    return switch (index) {
-      0 => Spacing.monthlyPlanDurationMonthOptionLeft,
-      1 => Spacing.monthlyPlanDurationHalfMonthOptionLeft,
-      _ => Spacing.monthlyPlanDurationWeekOptionLeft,
-    };
   }
 
   List<SubscriptionDurationEntity> get _presetDurations => widget.durations
