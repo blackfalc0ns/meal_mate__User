@@ -5,11 +5,13 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
     super.key,
     required this.restaurantName,
     this.restaurantLogoAsset,
+    this.restaurantLogoUrl,
     this.restaurantInitials,
   });
 
   final String restaurantName;
   final String? restaurantLogoAsset;
+  final String? restaurantLogoUrl;
   final String? restaurantInitials;
 
   @override
@@ -31,6 +33,7 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
                 size: Spacing.xxxl + Spacing.md,
                 label: restaurantInitials ?? restaurantName,
                 logoAsset: restaurantLogoAsset,
+                logoUrl: restaurantLogoUrl,
               ),
             ),
             Positioned(

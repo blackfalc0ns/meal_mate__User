@@ -52,7 +52,12 @@ class CalendarMealTabs extends StatelessWidget {
             child: AnimatedAlign(
               duration: const Duration(milliseconds: 260),
               curve: Curves.easeOutCubic,
-              alignment: Alignment(1 - selectedIndex.toDouble(), 0),
+              alignment: Alignment(
+                labels.length <= 1
+                    ? 1
+                    : 1 - ((selectedIndex * 2) / (labels.length - 1)),
+                0,
+              ),
               child: Container(
                 width: 100,
                 height: 2,

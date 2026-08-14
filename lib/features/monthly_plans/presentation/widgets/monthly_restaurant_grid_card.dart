@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_restaurant_logo.dart';
 
 class MonthlyRestaurantGridCard extends StatelessWidget {
@@ -24,7 +25,14 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
       child: InkWell(
         onTap: () => context.pushNamed(
           AppRoutes.restaurantDetails,
-          arguments: restaurant,
+          arguments: SubscriptionRestaurantDetailsArgs(
+            programId: restaurant.programId,
+            bundleId: restaurant.bundleId,
+            restaurantId: restaurant.restaurantId,
+            restaurantName: restaurant.name,
+            restaurantLogoUrl: restaurant.logoUrl,
+            restaurantInitials: restaurant.initials,
+          ),
         ),
         borderRadius: BorderRadius.circular(
           Spacing.monthlyRestaurantCardRadius,

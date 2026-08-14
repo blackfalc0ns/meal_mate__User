@@ -3,7 +3,6 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition_details_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -27,9 +26,10 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_program_setup_screen.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_restaurant_details_screen.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
@@ -141,14 +141,12 @@ class RouteGenerator {
           page: const HomeNutritionDetailsScreen(),
         );
       case AppRoutes.restaurantDetails:
-        final restaurant = settings.arguments! as MonthlyRestaurantPlanEntity;
+        final args = settings.arguments is SubscriptionRestaurantDetailsArgs
+            ? settings.arguments! as SubscriptionRestaurantDetailsArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: CalendarMealPickerSheet(
-            restaurantName: restaurant.name,
-            restaurantLogoAsset: restaurant.logoAsset,
-            restaurantInitials: restaurant.initials,
-          ),
+          page: SubscriptionRestaurantDetailsScreen(args: args),
         );
 
       case AppRoutes.offerDetails:

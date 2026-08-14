@@ -3,10 +3,13 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_entity.dart';
 
 part 'calendar_sheet_handle.dart';
 part 'calendar_meal_picker_restaurant_header.dart';
@@ -31,12 +34,16 @@ class CalendarMealPickerSheet extends StatefulWidget {
     super.key,
     this.restaurantName,
     this.restaurantLogoAsset,
+    this.restaurantLogoUrl,
     this.restaurantInitials,
+    this.details,
   });
 
   final String? restaurantName;
   final String? restaurantLogoAsset;
+  final String? restaurantLogoUrl;
   final String? restaurantInitials;
+  final SubscriptionRestaurantDetailsEntity? details;
 
   @override
   State<CalendarMealPickerSheet> createState() =>
@@ -55,12 +62,29 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     final height = MediaQuery.sizeOf(context).height;
     final restaurantName =
         widget.restaurantName ?? locale.calendar_restaurant_name;
+    final details = widget.details;
+    final groups = details?.mealGroups ?? const [];
+    final mealTabs = groups.isEmpty
+        ? [
+            locale.calendar_breakfast,
+            locale.calendar_lunch,
+            locale.calendar_dinner,
+          ]
+        : groups.map((group) => group.name(locale.localeName)).toList();
+    final selectedTab = mealTabs.isEmpty
+        ? 0
+        : _selectedTab.clamp(0, mealTabs.length - 1);
+    final options = groups.isEmpty
+        ? _dataSource.getMealPickerOptions(
+            locale: locale,
+            selectedTab: selectedTab,
+          )
+        : _optionsFromGroup(
+            groups[selectedTab],
+            locale.localeName,
+            locale.calendar_more,
+          );
 
-    final mealTabs = [
-      locale.calendar_breakfast,
-      locale.calendar_lunch,
-      locale.calendar_dinner,
-    ];
     return Material(
       color: color.surface,
       child: Directionality(
@@ -75,10 +99,16 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                 left: 0,
                 right: 0,
                 height: 221,
-                child: Image.asset(
-                  Assets.calendarMealPickerHero,
-                  fit: BoxFit.cover,
-                ),
+                child: details?.coverImageUrl == null
+                    ? Image.asset(
+                        Assets.calendarMealPickerHero,
+                        fit: BoxFit.cover,
+                      )
+                    : AppCachedNetworkImage(
+                        imageUrl: details!.coverImageUrl,
+                        fit: BoxFit.cover,
+                        semanticLabel: restaurantName,
+                      ),
               ),
               CustomBackButton(onPressed: () => Navigator.pop(context)),
               Positioned(
@@ -103,27 +133,29 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                               CalendarMealPickerRestaurantHeader(
                                 restaurantName: restaurantName,
                                 restaurantLogoAsset: widget.restaurantLogoAsset,
+                                restaurantLogoUrl:
+                                    widget.restaurantLogoUrl ??
+                                    details?.logoUrl,
                                 restaurantInitials: widget.restaurantInitials,
                               ),
                               const CalendarMealPickerRestaurantDescription(),
                               const CalendarDividerLine(),
-                              const CalendarSourceSection(),
+                              CalendarSourceSection(
+                                origins: details?.ingredientOrigins ?? const [],
+                              ),
                               const SizedBox(height: Spacing.base),
                               CalendarMealTabs(
                                 labels: mealTabs,
-                                selectedIndex: _selectedTab,
+                                selectedIndex: selectedTab,
                                 onChanged: (index) {
                                   setState(() => _selectedTab = index);
                                 },
                               ),
                               const SizedBox(height: Spacing.sm),
                               CalendarMealOptionsSection(
-                                mealType: mealTabs[_selectedTab],
-                                tabIndex: _selectedTab,
-                                options: _dataSource.getMealPickerOptions(
-                                  locale: locale,
-                                  selectedTab: _selectedTab,
-                                ),
+                                mealType: mealTabs[selectedTab],
+                                tabIndex: selectedTab,
+                                options: options,
                               ),
                               const SizedBox(height: Spacing.xxl),
                             ],
@@ -139,5 +171,34 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         ),
       ),
     );
+  }
+
+  List<CalendarMealPickerOption> _optionsFromGroup(
+    SubscriptionRestaurantMealGroupEntity group,
+    String localeName,
+    String moreLabel,
+  ) {
+    return group.meals.map((meal) {
+      final ingredients = meal.ingredients
+          .map((ingredient) => ingredient.name(localeName))
+          .where((name) => name.isNotEmpty)
+          .toList();
+      final visibleIngredients = ingredients.length > 4
+          ? [...ingredients.take(4), moreLabel]
+          : ingredients;
+
+      return (
+        title: meal.name(localeName),
+        imageAsset: AssetsFake.homeOatmeal,
+        imageUrl: meal.imageUrl,
+        calories: meal.calories?.toString() ?? '',
+        protein: meal.proteinG?.toString() ?? '',
+        carbs: meal.carbsG?.toString() ?? '',
+        fat: meal.fatG?.toString() ?? '',
+        ingredients: visibleIngredients,
+        selected: false,
+        blockReason: null,
+      );
+    }).toList();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
 
@@ -21,5 +22,11 @@ abstract interface class SubscriptionPlanRemoteDataSource {
     required String bundleId,
     required String tier,
     required List<String> restaurantIds,
+  });
+
+  Future<SubscriptionRestaurantDetailsResponseDto> getRestaurantDetails({
+    required String programId,
+    required String bundleId,
+    required String restaurantId,
   });
 }

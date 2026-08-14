@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/data_source/subscription_plan_remote_data_source.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
 
@@ -52,6 +53,19 @@ class SubscriptionPlanRemoteDataSourceImpl
       bundleId,
       tier,
       restaurantIds.isEmpty ? null : restaurantIds,
+    );
+  }
+
+  @override
+  Future<SubscriptionRestaurantDetailsResponseDto> getRestaurantDetails({
+    required String programId,
+    required String bundleId,
+    required String restaurantId,
+  }) {
+    return _apiServices.getSubscriptionRestaurantDetails(
+      programId,
+      bundleId,
+      restaurantId,
     );
   }
 }

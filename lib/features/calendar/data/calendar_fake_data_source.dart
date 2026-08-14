@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 typedef CalendarMealPickerOption = ({
   String title,
   String imageAsset,
+  String? imageUrl,
   String calories,
   String protein,
   String carbs,
@@ -271,6 +272,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_overnight_oats,
           imageAsset: AssetsFake.homeOatmeal,
+          imageUrl: null,
           calories: '450',
           protein: '24',
           carbs: '62',
@@ -282,6 +284,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_egg_avocado_toast,
           imageAsset: AssetsFake.homeDonut,
+          imageUrl: null,
           calories: '180',
           protein: '8',
           carbs: '34',
@@ -293,6 +296,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_greek_yogurt_parfait,
           imageAsset: AssetsFake.calendarMealPickerBreakfast,
+          imageUrl: null,
           calories: '390',
           protein: '18',
           carbs: '58',
@@ -304,6 +308,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_turkey_cheese_wrap,
           imageAsset: AssetsFake.calendarMealBowl,
+          imageUrl: null,
           calories: '520',
           protein: '36',
           carbs: '42',
@@ -315,6 +320,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_banana_protein_pancakes,
           imageAsset: AssetsFake.homeOatmeal,
+          imageUrl: null,
           calories: '430',
           protein: '30',
           carbs: '50',
@@ -326,6 +332,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_smoked_salmon_bagel,
           imageAsset: AssetsFake.grilledPlate,
+          imageUrl: null,
           calories: '470',
           protein: '29',
           carbs: '44',
@@ -339,6 +346,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_grilled_chicken_bowl,
           imageAsset: AssetsFake.grilledPlate,
+          imageUrl: null,
           calories: '550',
           protein: '35',
           carbs: '55',
@@ -350,6 +358,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_salmon_rice_plate,
           imageAsset: AssetsFake.calendarMealBowl,
+          imageUrl: null,
           calories: '610',
           protein: '42',
           carbs: '48',
@@ -361,6 +370,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_beef_vegetable_box,
           imageAsset: AssetsFake.homeHotdog,
+          imageUrl: null,
           calories: '420',
           protein: '28',
           carbs: '39',
@@ -372,6 +382,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_shrimp_noodle_bowl,
           imageAsset: AssetsFake.calendarMealPickerBreakfast,
+          imageUrl: null,
           calories: '480',
           protein: '22',
           carbs: '64',
@@ -383,6 +394,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_chicken_caesar_wrap,
           imageAsset: AssetsFake.grilledPlate,
+          imageUrl: null,
           calories: '530',
           protein: '37',
           carbs: '46',
@@ -394,6 +406,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_veggie_pasta_box,
           imageAsset: AssetsFake.homeDonut,
+          imageUrl: null,
           calories: '500',
           protein: '21',
           carbs: '70',
@@ -407,6 +420,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_lemon_chicken_salad,
           imageAsset: AssetsFake.homeHotdog,
+          imageUrl: null,
           calories: '420',
           protein: '28',
           carbs: '39',
@@ -418,6 +432,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_tuna_potato_plate,
           imageAsset: AssetsFake.grilledPlate,
+          imageUrl: null,
           calories: '550',
           protein: '35',
           carbs: '55',
@@ -429,6 +444,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_steak_mushroom_plate,
           imageAsset: AssetsFake.homeDonut,
+          imageUrl: null,
           calories: '180',
           protein: '8',
           carbs: '34',
@@ -440,6 +456,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_chicken_soup_box,
           imageAsset: AssetsFake.homeOatmeal,
+          imageUrl: null,
           calories: '450',
           protein: '24',
           carbs: '62',
@@ -451,6 +468,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_halloumi_salad,
           imageAsset: AssetsFake.calendarMealPickerBreakfast,
+          imageUrl: null,
           calories: '390',
           protein: '24',
           carbs: '34',
@@ -462,6 +480,7 @@ class CalendarFakeDataSource {
         (
           title: locale.calendar_meal_light_fajita_bowl,
           imageAsset: AssetsFake.calendarMealBowl,
+          imageUrl: null,
           calories: '510',
           protein: '39',
           carbs: '43',

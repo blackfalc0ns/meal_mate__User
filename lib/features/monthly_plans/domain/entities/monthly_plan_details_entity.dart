@@ -47,6 +47,9 @@ class MonthlyPlanFilterEntity {
 
 class MonthlyRestaurantPlanEntity {
   const MonthlyRestaurantPlanEntity({
+    required this.programId,
+    required this.bundleId,
+    required this.restaurantId,
     required this.name,
     required this.subtitle,
     required this.meals,
@@ -59,6 +62,9 @@ class MonthlyRestaurantPlanEntity {
     this.initials,
   });
 
+  final String programId;
+  final String bundleId;
+  final String restaurantId;
   final String name;
   final String subtitle;
   final String meals;

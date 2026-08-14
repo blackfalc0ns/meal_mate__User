@@ -415,6 +415,8 @@ class _SubscriptionPlanDetailsScreenState
       restaurants: state.browseRestaurants
           .map(
             (restaurant) => restaurant.toRestaurantPlan(
+              programId: args.program.programId,
+              bundleId: args.bundle.bundleId,
               localeName: locale.localeName,
               brandColor: color.primary,
             ),
@@ -456,17 +458,21 @@ extension on SubscriptionTierEntity {
       isPopular: isRecommended,
     );
   }
-
 }
 
 extension on SubscriptionTierRestaurantBrowseEntity {
   MonthlyRestaurantPlanEntity toRestaurantPlan({
+    required String programId,
+    required String bundleId,
     required String localeName,
     required Color brandColor,
   }) {
     final restaurantName = name(localeName);
 
     return MonthlyRestaurantPlanEntity(
+      programId: programId,
+      bundleId: bundleId,
+      restaurantId: restaurantId,
       name: restaurantName,
       subtitle: tierName(localeName),
       meals: mealCount.toString(),

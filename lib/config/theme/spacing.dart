@@ -782,6 +782,16 @@ class Spacing {
   static const double calendarRestaurantSummaryNutritionProgressHeight = 3.0;
   static const double calendarRestaurantSummaryButtonHeight = 25.0;
   static const double calendarRestaurantSummaryButtonBottom = 12.0;
+  static const double restaurantDetailsHeroHeight = 221.0;
+  static const double restaurantDetailsSheetTop = 189.0;
+  static const double restaurantDetailsSheetRadius = 31.2;
+  static const double restaurantDetailsHandleWidth = 41.6;
+  static const double restaurantDetailsHandleHeight = 5.2;
+  static const double restaurantDetailsHeaderLogoSize = 60.0;
+  static const double restaurantDetailsSourceCardWidth = 68.8;
+  static const double restaurantDetailsSourceCardHeight = 67.0;
+  static const double restaurantDetailsMealCardHeight = 105.0;
+  static const double restaurantDetailsMealImageSize = 92.0;
   static const double familyDayDesignWidth = 390.0;
   static const double familyDayHorizontalPadding = 14.0;
   static const double familyDayHeaderHeight = 180.0;

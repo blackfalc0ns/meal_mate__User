@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/network_constants.dart';
 
 class AppCachedNetworkImage extends StatelessWidget {
   const AppCachedNetworkImage({
@@ -30,7 +31,7 @@ class AppCachedNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final url = imageUrl;
+    final url = _resolveUrl(imageUrl);
 
     final child = url == null || url.isEmpty
         ? _buildError(context)
@@ -58,6 +59,14 @@ class AppCachedNetworkImage extends StatelessWidget {
             borderRadius: borderRadius ?? BorderRadius.zero,
             child: imageContent,
           );
+  }
+
+  String? _resolveUrl(String? url) {
+    if (url == null || url.isEmpty) return url;
+    final uri = Uri.tryParse(url);
+    if (uri != null && uri.hasScheme) return url;
+    if (url.startsWith('/')) return '${NetworkConstants.baseUrl}$url';
+    return url;
   }
 
   Widget _buildLoading(BuildContext context) {

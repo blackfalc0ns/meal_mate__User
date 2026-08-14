@@ -34,6 +34,7 @@ import 'package:meal_meat_user/features/profile/data/models/response/customer_pr
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
@@ -205,6 +206,14 @@ abstract class ApiServices {
     @Path('bundleId') String bundleId,
     @Path('tier') String tier,
     @Query('restaurantIds') List<String>? restaurantIds,
+  );
+
+  @GET(EndPoints.subscriptionRestaurantDetails)
+  Future<SubscriptionRestaurantDetailsResponseDto>
+  getSubscriptionRestaurantDetails(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId,
+    @Path('restaurantId') String restaurantId,
   );
 
   @GET(EndPoints.subscriptionSummary)

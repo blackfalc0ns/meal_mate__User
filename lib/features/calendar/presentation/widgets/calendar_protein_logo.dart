@@ -6,11 +6,13 @@ class CalendarProteinLogo extends StatelessWidget {
     required this.size,
     required this.label,
     this.logoAsset,
+    this.logoUrl,
   });
 
   final double size;
   final String label;
   final String? logoAsset;
+  final String? logoUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,14 @@ class CalendarProteinLogo extends StatelessWidget {
           color: color.inverseSurface,
           shape: BoxShape.circle,
         ),
-        child: logoAsset == null
+        child: logoUrl != null && logoUrl!.isNotEmpty
+            ? AppCachedNetworkImage(
+                imageUrl: logoUrl,
+                fit: BoxFit.contain,
+                shape: BoxShape.circle,
+                semanticLabel: label,
+              )
+            : logoAsset == null
             ? Center(
                 child: Text(
                   label,

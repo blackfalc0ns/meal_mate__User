@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
@@ -23,5 +24,11 @@ abstract interface class SubscriptionPlanRepository {
     required String bundleId,
     required String tier,
     required List<String> restaurantIds,
+  });
+
+  Future<ApiResult<SubscriptionRestaurantDetailsEntity>> getRestaurantDetails({
+    required String programId,
+    required String bundleId,
+    required String restaurantId,
   });
 }

@@ -47,6 +47,8 @@ abstract class EndPoints {
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/tiers';
   static const String subscriptionTierRestaurants =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/tiers/{tier}/restaurants';
+  static const String subscriptionRestaurantDetails =
+      '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/restaurants/{restaurantId}/details';
   static const String subscriptionSummary =
       '/api/v1/customer/subscription-flow/summary';
 }

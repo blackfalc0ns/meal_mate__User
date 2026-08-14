@@ -85,12 +85,20 @@ class CalendarMealOptionCard extends StatelessWidget {
               const SizedBox(width: Spacing.xss),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.6),
-                child: Image.asset(
-                  option.imageAsset,
-                  width: 92,
-                  height: 92,
-                  fit: BoxFit.cover,
-                ),
+                child: option.imageUrl == null || option.imageUrl!.isEmpty
+                    ? Image.asset(
+                        option.imageAsset,
+                        width: 92,
+                        height: 92,
+                        fit: BoxFit.cover,
+                      )
+                    : AppCachedNetworkImage(
+                        imageUrl: option.imageUrl,
+                        width: 92,
+                        height: 92,
+                        fit: BoxFit.cover,
+                        semanticLabel: option.title,
+                      ),
               ),
             ],
           ),
