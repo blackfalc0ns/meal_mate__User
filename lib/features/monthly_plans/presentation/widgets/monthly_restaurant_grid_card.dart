@@ -37,7 +37,6 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
             end: Spacing.md,
           ),
           decoration: BoxDecoration(
-           
             borderRadius: BorderRadius.circular(
               Spacing.monthlyRestaurantCardRadius,
             ),
@@ -45,7 +44,6 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
               color: color.outlineVariant,
               width: Spacing.monthlyRestaurantCardBorderWidth,
             ),
-           
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -78,8 +76,8 @@ class MonthlyRestaurantGridCard extends StatelessWidget {
                   color: color.onSurfaceVariant,
                 ),
               ),
-              
-             Spacer(),
+
+              Spacer(),
               Container(
                 height: Spacing.monthlyRestaurantCardMetaHeight,
                 alignment: Alignment.center,
