@@ -35,6 +35,7 @@ import 'package:meal_meat_user/features/food_preferences/data/models/response/fo
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
@@ -194,5 +195,14 @@ abstract class ApiServices {
     @Path('bundleId') String bundleId,
     @Query('durationDays') int? durationDays,
     @Query('includeFriday') bool includeFriday,
+  );
+
+  @GET(EndPoints.subscriptionSummary)
+  Future<SubscriptionSummaryResponseDto> getSubscriptionSummary(
+    @Query('IncludeFriday') bool includeFriday,
+    @Query('DurationDays') int durationDays,
+    @Query('Tier') String tier,
+    @Query('BundleId') String bundleId,
+    @Query('ProgramId') String programId,
   );
 }

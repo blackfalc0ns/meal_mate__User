@@ -30,6 +30,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/screens/family
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
@@ -82,10 +83,12 @@ class RouteGenerator {
           ),
         );
       case AppRoutes.subscriptionSummary:
-        final plan = settings.arguments! as MonthlyPlanDetailsEntity;
+        final args = settings.arguments is SubscriptionSummaryArgs
+            ? settings.arguments! as SubscriptionSummaryArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: SubscriptionSummaryScreen(plan: plan),
+          page: SubscriptionSummaryScreen(args: args),
         );
       case AppRoutes.familyPlanDetails:
       case AppRoutes.familySubscriptionSettings:

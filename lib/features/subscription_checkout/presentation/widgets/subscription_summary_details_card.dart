@@ -61,7 +61,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               width: Spacing.subscriptionSummaryTileWidth,
               height: Spacing.subscriptionSummaryTopTileHeight,
               label: locale.subscription_summary_package_label,
-              value: locale.subscription_four_meals_package,
+              value: plan.packageTiers.isEmpty
+                  ? plan.mealsPerDay
+                  : plan.packageTiers.first.title,
               labelTop: Spacing.subscriptionSummaryTileLabelTop,
               valueTop: Spacing.subscriptionSummaryTileValueTop,
             ),
@@ -73,7 +75,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               width: Spacing.subscriptionSummaryTileWidth,
               height: Spacing.subscriptionSummaryTopTileHeight,
               label: locale.subscription_summary_duration_label,
-              value: locale.subscription_summary_duration_value,
+              value: plan.duration,
               labelTop: Spacing.subscriptionSummaryTileLabelTop,
               valueTop: Spacing.subscriptionSummaryTileValueTop,
             ),
@@ -85,7 +87,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               width: Spacing.subscriptionSummaryDetailsWidth,
               height: Spacing.subscriptionSummaryTopTileHeight,
               label: locale.subscription_summary_restaurant_tier_label,
-              value: locale.subscription_summary_restaurant_tier_value,
+              value: plan.discountLabel,
               labelTop: Spacing.subscriptionSummaryClassificationLabelTop,
               valueTop: Spacing.subscriptionSummaryClassificationValueTop,
             ),

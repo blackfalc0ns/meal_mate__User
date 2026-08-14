@@ -21,6 +21,8 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/month
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_loading_skeleton.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_section.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_section.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 
 class SubscriptionPlanDetailsScreen extends StatefulWidget {
   const SubscriptionPlanDetailsScreen({super.key, this.args});
@@ -146,10 +148,7 @@ class _SubscriptionPlanDetailsScreenState
                         : '',
                     currency: canSubscribe ? selectedTier.currencyCode : '',
                     onPressed: canSubscribe
-                        ? () => context.pushNamed(
-                            AppRoutes.subscriptionSummary,
-                            arguments: plan,
-                          )
+                        ? () => _openSubscriptionSummary(context, state, plan)
                         : null,
                   ),
                 ),
@@ -293,6 +292,32 @@ class _SubscriptionPlanDetailsScreenState
                 ),
               ],
             ),
+    );
+  }
+
+  void _openSubscriptionSummary(
+    BuildContext context,
+    SubscriptionPlanState state,
+    MonthlyPlanDetailsEntity plan,
+  ) {
+    final args = widget.args!;
+    final durationDays = state.selectedDurationDays;
+    final selectedTier = state.selectedTier;
+
+    if (durationDays == null || selectedTier == null) return;
+
+    context.pushNamed(
+      AppRoutes.subscriptionSummary,
+      arguments: SubscriptionSummaryArgs(
+        initialPlan: plan,
+        request: SubscriptionSummaryRequestEntity(
+          includeFriday: state.includeFriday,
+          durationDays: durationDays,
+          tier: selectedTier.tier,
+          bundleId: args.bundle.bundleId,
+          programId: args.program.programId,
+        ),
+      ),
     );
   }
 
