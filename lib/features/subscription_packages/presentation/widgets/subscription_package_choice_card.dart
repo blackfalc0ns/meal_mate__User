@@ -38,7 +38,6 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final textDirection = Directionality.of(context);
 
     return Material(
       color: color.surface.withValues(alpha: 0),
@@ -80,24 +79,12 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 ],
               ),
               child: Row(
-                textDirection: textDirection,
                 children: [
-                  SizedBox(
-                    width: Spacing.subscriptionPackageChoiceImageWidth,
-                    height: Spacing.subscriptionPackageChoiceImageHeight,
-                    child: AppCachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.contain,
-                      semanticLabel: title,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.sm),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          textDirection: textDirection,
                           children: [
                             Container(
                               height: Spacing.xxl,
@@ -144,6 +131,17 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(width: Spacing.sm),
+
+                  SizedBox(
+                    width: Spacing.subscriptionPackageChoiceImageWidth,
+                    height: Spacing.subscriptionPackageChoiceImageHeight,
+                    child: AppCachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.contain,
+                      semanticLabel: title,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -170,9 +168,9 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               ),
             ),
             if (isPopular)
-              PositionedDirectional(
+              Positioned(
                 top: -Spacing.md,
-                start: Spacing.md,
+                left: Spacing.md,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.sm,

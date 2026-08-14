@@ -37,8 +37,6 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    final textDirection = Directionality.of(context);
 
     return Material(
       color: color.surface.withValues(alpha: 0),
@@ -76,52 +74,30 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
             ],
           ),
           child: Row(
-            textDirection: textDirection,
             children: [
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      textDirection: textDirection,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: Spacing.xxl,
-                          height: Spacing.xxl,
-                          decoration: BoxDecoration(
-                            color: color.primaryContainer.withValues(
-                              alpha: 0.6,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            badgeIcon,
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                            semanticLabel: locale.nav_subscription,
-                          ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(start: Spacing.sm),
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size14,
+                          color: color.onSurface,
                         ),
-                        const SizedBox(width: Spacing.sm),
-                        Expanded(
-                          child: Text(
-                            title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: getSemiBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size14,
-                              color: color.onSurface,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
 
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xxl,
+                        start: Spacing.sm,
                       ),
                       child: Text(
                         description,
@@ -135,21 +111,14 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Spacer(),
+               //     const Spacer(),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xxl,
+                        start: Spacing.sm,
                       ),
                       child: Row(
-                        textDirection: textDirection,
                         children: [
-                          Icon(
-                            primaryFeatureIcon,
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                            semanticLabel: locale.nav_subscription,
-                          ),
-                          const SizedBox(width: Spacing.xs),
+                        
                           Flexible(
                             child: Text(
                               primaryFeature,
@@ -159,7 +128,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               style: getRegularStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
-                                color: color.onSurfaceVariant,
+                                color:   color.primary,
                               ),
                             ),
                           ),
@@ -169,16 +138,10 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                             child: VerticalDivider(
                               width: Spacing.border,
                               thickness: Spacing.border,
-                              color: color.outlineVariant,
+                              color:   color.primary,
                             ),
                           ),
-                          const SizedBox(width: Spacing.md),
-                          Icon(
-                            secondaryFeatureIcon,
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                            semanticLabel: locale.nav_subscription,
-                          ),
+
                           const SizedBox(width: Spacing.xs),
                           Flexible(
                             child: Text(
@@ -186,10 +149,11 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,
-                              style: getRegularStyle(
+                              style: getMediumStyle(
                                 fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size11,
-                                color: color.onSurfaceVariant,
+                                fontSize: FontSize.size10,
+                                color:
+                                color.primary,
                               ),
                             ),
                           ),

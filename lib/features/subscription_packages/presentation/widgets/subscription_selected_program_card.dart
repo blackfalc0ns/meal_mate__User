@@ -116,7 +116,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                       child: Align(
                         alignment: AlignmentDirectional.centerStart,
                         child: SizedBox(
-                          width: Spacing.xxxl * 2.75,
+                          width: double.infinity,
                           child: Text(
                             program.description(locale.localeName),
                             maxLines: 2,
