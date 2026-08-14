@@ -33,9 +33,9 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                         Spacing.monthlyPlanHeroTitleSize,
                   ),
               children: [
-                TextSpan(text: '${locale.subscription_month_package_prefix} '),
+                TextSpan(text: '${plan.titlePrefix} '),
                 TextSpan(
-                  text: locale.subscription_month_package_highlight,
+                  text: plan.titleHighlight,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: Spacing.monthlyPlanHeroTitleSize,
@@ -45,32 +45,35 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: Spacing.monthlyPlanPromotionGap),
-          Container(
-            height: Spacing.monthlyPlanPromotionHeight,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.monthlyPlanPromotionPadding,
-            ),
-            decoration: BoxDecoration(
-              color: color.primary,
-              borderRadius: BorderRadius.circular(
-                Spacing.monthlyPlanPromotionRadius,
+          if (plan.discountLabel.isNotEmpty) ...[
+            const SizedBox(height: Spacing.monthlyPlanPromotionGap),
+            Container(
+              constraints: const BoxConstraints(
+                minHeight: Spacing.monthlyPlanPromotionHeight,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.monthlyPlanPromotionPadding,
+                vertical: Spacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: color.primary,
+                borderRadius: BorderRadius.circular(
+                  Spacing.monthlyPlanPromotionRadius,
+                ),
+              ),
+              child: Text(
+                plan.discountLabel,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: Spacing.monthlyPlanPromotionTextSize,
+                  color: color.onPrimary,
+                ),
               ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  locale.subscription_limited_discount,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanPromotionTextSize,
-                    color: color.onPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ],
         ],
       ),
     );

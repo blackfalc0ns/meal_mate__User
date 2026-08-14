@@ -60,6 +60,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
               final hasSummary = summary != null;
 
               return Scaffold(
+                backgroundColor: color.surface,
                 body: Semantics(
                   label: locale.subscription_summary_title,
                   child: Stack(
@@ -69,39 +70,33 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                         slivers: [
                           SliverToBoxAdapter(
                             child: Center(
-                              child: SizedBox(
-                                width: Spacing.monthlyPlanDesignWidth,
-                                height:
-                                    Spacing.subscriptionSummaryDesignHeight,
-                                child: Stack(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: Spacing.monthlyPlanDesignWidth,
+                                ),
+                                child: Column(
                                   children: [
-                                    Positioned.fill(
-                                      child: ColoredBox(color: color.surface),
+                                    MonthlyPlanHeroSection(
+                                      plan: plan,
+                                      imageAsset: Assets.monthlyPlanHero,
+                                      onBack: () => Navigator.maybePop(context),
                                     ),
-                                    Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: MonthlyPlanHeroSection(
-                                        plan: plan,
-                                        imageAsset: Assets.monthlyPlanHero,
-                                        onBack: () =>
-                                            Navigator.maybePop(context),
+                                    const SizedBox(height: Spacing.xl),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: Spacing.md,
+                                      ),
+                                      child: _buildDetailsContent(
+                                        context,
+                                        state,
+                                        summaryArgs,
+                                        plan,
                                       ),
                                     ),
-                                    Positioned(
-                                      top: Spacing
-                                          .subscriptionSummaryDetailsTop,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: _buildDetailsContent(
-                                          context,
-                                          state,
-                                          summaryArgs,
-                                          plan,
-                                        ),
-                                      ),
+                                    const SizedBox(
+                                      height:
+                                          Spacing.monthlyPlanSubscribeHeight +
+                                          Spacing.xxxl,
                                     ),
                                   ],
                                 ),
@@ -120,8 +115,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                 price: hasSummary ? plan.price : '',
                                 currency: hasSummary ? plan.currency : '',
                                 onPressed: hasSummary
-                                    ? () =>
-                                          context.pushNamed(AppRoutes.payment)
+                                    ? () => context.pushNamed(AppRoutes.payment)
                                     : null,
                               ),
                       ),
@@ -153,7 +147,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
       );
     }
 
-    return SubscriptionSummaryDetailsCard(plan: plan);
+    return SubscriptionSummaryDetailsCard(plan: plan, summary: state.summary);
   }
 
   MonthlyPlanDetailsEntity _buildSummaryPlan(
@@ -188,6 +182,9 @@ class SubscriptionSummaryScreen extends StatelessWidget {
             'platinum' => 'star',
             _ => 'leaf',
           },
+          logoUrl: _selectedTierLogoUrl(initialPlan),
+          restaurantCount: summary.restaurantCount,
+          restaurantLogoUrls: const [],
         ),
       ],
       filters: initialPlan.filters,
@@ -199,5 +196,13 @@ class SubscriptionSummaryScreen extends StatelessWidget {
   String _formatPrice(double price) {
     final fixed = price.toStringAsFixed(3);
     return fixed.replaceFirst(RegExp(r'\.?0+$'), '');
+  }
+
+  String? _selectedTierLogoUrl(MonthlyPlanDetailsEntity initialPlan) {
+    for (final tier in initialPlan.packageTiers) {
+      if (tier.title == initialPlan.discountLabel) return tier.logoUrl;
+    }
+
+    return null;
   }
 }

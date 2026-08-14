@@ -3,6 +3,7 @@ class SubscriptionTierEntity {
     required this.tier,
     required this.nameAr,
     required this.nameEn,
+    required this.logoUrl,
     required this.descriptionAr,
     required this.descriptionEn,
     required this.restaurantCount,
@@ -22,6 +23,7 @@ class SubscriptionTierEntity {
   final String tier;
   final String nameAr;
   final String nameEn;
+  final String? logoUrl;
   final String descriptionAr;
   final String descriptionEn;
   final int restaurantCount;

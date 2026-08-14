@@ -36,6 +36,13 @@ extension SubscriptionSummaryResponseDtoMapper
       includeFriday: includeFriday ?? false,
       fridayDays: fridayDays ?? 0,
       totalServiceDays: totalServiceDays ?? 0,
+      includes:
+          includes?.toEntity() ??
+          const SubscriptionSummaryIncludesEntity(
+            titleAr: '',
+            titleEn: '',
+            items: [],
+          ),
     );
   }
 }
@@ -45,7 +52,31 @@ extension SubscriptionSummarySlotRequirementResponseDtoMapper
   SubscriptionSummarySlotRequirementEntity toEntity() {
     return SubscriptionSummarySlotRequirementEntity(
       slot: slot ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
       count: count ?? 0,
+    );
+  }
+}
+
+extension SubscriptionSummaryIncludesResponseDtoMapper
+    on SubscriptionSummaryIncludesResponseDto {
+  SubscriptionSummaryIncludesEntity toEntity() {
+    return SubscriptionSummaryIncludesEntity(
+      titleAr: titleAr ?? '',
+      titleEn: titleEn ?? '',
+      items: (items ?? const []).map((item) => item.toEntity()).toList(),
+    );
+  }
+}
+
+extension SubscriptionSummaryIncludeItemResponseDtoMapper
+    on SubscriptionSummaryIncludeItemResponseDto {
+  SubscriptionSummaryIncludeItemEntity toEntity() {
+    return SubscriptionSummaryIncludeItemEntity(
+      code: code ?? '',
+      textAr: textAr ?? '',
+      textEn: textEn ?? '',
     );
   }
 }

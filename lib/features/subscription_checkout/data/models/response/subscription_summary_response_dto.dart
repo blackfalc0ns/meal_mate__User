@@ -34,6 +34,7 @@ class SubscriptionSummaryResponseDto {
     this.includeFriday,
     this.fridayDays,
     this.totalServiceDays,
+    this.includes,
   });
 
   final String? programId;
@@ -65,6 +66,7 @@ class SubscriptionSummaryResponseDto {
   final bool? includeFriday;
   final int? fridayDays;
   final int? totalServiceDays;
+  final SubscriptionSummaryIncludesResponseDto? includes;
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);
@@ -72,12 +74,53 @@ class SubscriptionSummaryResponseDto {
 
 @JsonSerializable(createToJson: false)
 class SubscriptionSummarySlotRequirementResponseDto {
-  const SubscriptionSummarySlotRequirementResponseDto({this.slot, this.count});
+  const SubscriptionSummarySlotRequirementResponseDto({
+    this.slot,
+    this.nameAr,
+    this.nameEn,
+    this.count,
+  });
 
   final String? slot;
+  final String? nameAr;
+  final String? nameEn;
   final int? count;
 
   factory SubscriptionSummarySlotRequirementResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionSummarySlotRequirementResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionSummaryIncludesResponseDto {
+  const SubscriptionSummaryIncludesResponseDto({
+    this.titleAr,
+    this.titleEn,
+    this.items,
+  });
+
+  final String? titleAr;
+  final String? titleEn;
+  final List<SubscriptionSummaryIncludeItemResponseDto>? items;
+
+  factory SubscriptionSummaryIncludesResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionSummaryIncludesResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionSummaryIncludeItemResponseDto {
+  const SubscriptionSummaryIncludeItemResponseDto({
+    this.code,
+    this.textAr,
+    this.textEn,
+  });
+
+  final String? code;
+  final String? textAr;
+  final String? textEn;
+
+  factory SubscriptionSummaryIncludeItemResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionSummaryIncludeItemResponseDtoFromJson(json);
 }

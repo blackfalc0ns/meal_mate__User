@@ -7,6 +7,7 @@ extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
       tier: tier ?? '',
       nameAr: nameAr ?? '',
       nameEn: nameEn ?? '',
+      logoUrl: logoUrl,
       descriptionAr: descriptionAr ?? '',
       descriptionEn: descriptionEn ?? '',
       restaurantCount: restaurantCount ?? 0,

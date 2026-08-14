@@ -53,6 +53,7 @@ class MonthlyRestaurantPlanEntity {
     required this.rating,
     required this.brandColor,
     this.logoAsset,
+    this.logoUrl,
     this.initials,
   });
 
@@ -62,6 +63,7 @@ class MonthlyRestaurantPlanEntity {
   final String rating;
   final Color brandColor;
   final String? logoAsset;
+  final String? logoUrl;
   final String? initials;
 }
 
@@ -81,6 +83,9 @@ class MonthlyPackageTierEntity {
     required this.period,
     required this.bullets,
     required this.iconName,
+    required this.logoUrl,
+    required this.restaurantCount,
+    required this.restaurantLogoUrls,
     this.isPopular = false,
   });
 
@@ -91,6 +96,9 @@ class MonthlyPackageTierEntity {
   final String period;
   final List<String> bullets;
   final String iconName;
+  final String? logoUrl;
+  final int restaurantCount;
+  final List<String?> restaurantLogoUrls;
   final bool isPopular;
 }
 

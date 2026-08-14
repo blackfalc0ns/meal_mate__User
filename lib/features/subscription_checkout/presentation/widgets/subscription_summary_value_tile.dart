@@ -34,8 +34,13 @@ class SubscriptionSummaryValueTile extends StatelessWidget {
           : TextDirection.ltr,
       child: Container(
         width: width,
-        height: height,
+        constraints: BoxConstraints(minHeight: height),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.md,
+          vertical: Spacing.sm,
+        ),
         decoration: BoxDecoration(
+          color: color.surface,
           border: Border.all(
             color: color.outlineVariant,
             width: Spacing.subscriptionSummaryCardBorder,
@@ -44,48 +49,31 @@ class SubscriptionSummaryValueTile extends StatelessWidget {
             Spacing.subscriptionSummaryCardRadius,
           ),
         ),
-        child: Stack(
-          clipBehavior: Clip.none,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Positioned(
-              top: labelTop,
-              left: 0,
-              right: 0,
-              height: Spacing.subscriptionSummaryLabelHeight,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style:
-                    getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: Spacing.subscriptionSummaryLabelFontSize,
-                      color: color.onSurface,
-                    ).copyWith(
-                      height:
-                          Spacing.subscriptionSummaryLabelLineHeight /
-                          Spacing.subscriptionSummaryLabelFontSize,
-                    ),
-              ),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size14,
+                color: color.onSurface,
+              ).copyWith(height: FontSize.size18 / FontSize.size14),
             ),
-            Positioned(
-              top: valueTop,
-              left: 0,
-              right: 0,
-              height: Spacing.subscriptionSummaryValueHeight,
-              child: Text(
-                value,
-                textAlign: TextAlign.center,
-                style:
-                    getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: Spacing.subscriptionSummaryValueFontSize,
-                      color: color.primary,
-                    ).copyWith(
-                      height:
-                          Spacing.subscriptionSummaryValueLineHeight /
-                          Spacing.subscriptionSummaryValueFontSize,
-                    ),
-              ),
+            const SizedBox(height: Spacing.xs),
+            Text(
+              value,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size16,
+                color: color.primary,
+              ).copyWith(height: FontSize.size22 / FontSize.size16),
             ),
           ],
         ),

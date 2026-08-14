@@ -9,6 +9,7 @@ class SubscriptionTierResponseDto {
     this.tier,
     this.nameAr,
     this.nameEn,
+    this.logoUrl,
     this.descriptionAr,
     this.descriptionEn,
     this.restaurantCount,
@@ -29,6 +30,7 @@ class SubscriptionTierResponseDto {
   final String? tier;
   final String? nameAr;
   final String? nameEn;
+  final String? logoUrl;
   final String? descriptionAr;
   final String? descriptionEn;
   final int? restaurantCount;

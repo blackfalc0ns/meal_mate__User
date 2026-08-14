@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 
 class MonthlyPlanPackageIcon extends StatelessWidget {
   const MonthlyPlanPackageIcon({
     super.key,
     required this.iconName,
+    required this.logoUrl,
     required this.usesLightForeground,
     required this.isSelected,
   });
 
   final String iconName;
+  final String? logoUrl;
   final bool usesLightForeground;
   final bool isSelected;
 
@@ -47,15 +50,14 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(
-        switch (iconName) {
-          'crown' => Icons.workspace_premium_rounded,
-          'star' => Icons.star_rounded,
-          _ => Icons.favorite_rounded,
-        },
-        size: Spacing.iconMd,
-        color: color.onPrimary,
+      child: AppCachedNetworkImage(
+        imageUrl: logoUrl,
+        width: Spacing.xxl,
+        height: Spacing.xxl,
+        shape: BoxShape.circle,
+        fit: BoxFit.contain,
         semanticLabel: locale.nav_subscription,
+        errorWidget: const SizedBox.shrink(),
       ),
     );
   }

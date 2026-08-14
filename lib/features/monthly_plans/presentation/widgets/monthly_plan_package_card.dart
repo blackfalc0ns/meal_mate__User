@@ -36,11 +36,9 @@ class MonthlyPlanPackageCard extends StatelessWidget {
     final isFeatured = isCentered;
     final isPremium = package.iconName == 'crown';
     final usesLightForeground = isFeatured || isPremium;
-    final countLabel = switch (package.iconName) {
-      'crown' => '+100',
-      'star' => '+50',
-      _ => '+25',
-    };
+    final countLabel = package.restaurantCount > 0
+        ? '+${package.restaurantCount}'
+        : '';
     final foregroundColor = isSelected && !usesLightForeground
         ? color.primary
         : usesLightForeground
@@ -88,6 +86,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                   top: Spacing.monthlyPlanPackageLogoTop,
                   child: MonthlyPlanRestaurantLogosRow(
                     countLabel: countLabel,
+                    logoUrls: package.restaurantLogoUrls,
                     isFeatured: isFeatured,
                   ),
                 ),
@@ -96,6 +95,7 @@ class MonthlyPlanPackageCard extends StatelessWidget {
                   top: Spacing.monthlyPlanPackageIconTop,
                   child: MonthlyPlanPackageIcon(
                     iconName: package.iconName,
+                    logoUrl: package.logoUrl,
                     usesLightForeground: usesLightForeground,
                     isSelected: isSelected,
                   ),

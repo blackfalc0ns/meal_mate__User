@@ -29,6 +29,7 @@ class SubscriptionSummaryEntity {
     required this.includeFriday,
     required this.fridayDays,
     required this.totalServiceDays,
+    required this.includes,
   });
 
   final String programId;
@@ -60,6 +61,7 @@ class SubscriptionSummaryEntity {
   final bool includeFriday;
   final int fridayDays;
   final int totalServiceDays;
+  final SubscriptionSummaryIncludesEntity includes;
 
   String programName(String localeName) =>
       localeName == 'ar' ? programNameAr : programNameEn;
@@ -74,9 +76,43 @@ class SubscriptionSummaryEntity {
 class SubscriptionSummarySlotRequirementEntity {
   const SubscriptionSummarySlotRequirementEntity({
     required this.slot,
+    required this.nameAr,
+    required this.nameEn,
     required this.count,
   });
 
   final String slot;
+  final String nameAr;
+  final String nameEn;
   final int count;
+
+  String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
+}
+
+class SubscriptionSummaryIncludesEntity {
+  const SubscriptionSummaryIncludesEntity({
+    required this.titleAr,
+    required this.titleEn,
+    required this.items,
+  });
+
+  final String titleAr;
+  final String titleEn;
+  final List<SubscriptionSummaryIncludeItemEntity> items;
+
+  String title(String localeName) => localeName == 'ar' ? titleAr : titleEn;
+}
+
+class SubscriptionSummaryIncludeItemEntity {
+  const SubscriptionSummaryIncludeItemEntity({
+    required this.code,
+    required this.textAr,
+    required this.textEn,
+  });
+
+  final String code;
+  final String textAr;
+  final String textEn;
+
+  String text(String localeName) => localeName == 'ar' ? textAr : textEn;
 }

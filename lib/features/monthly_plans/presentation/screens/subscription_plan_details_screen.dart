@@ -382,6 +382,11 @@ extension on SubscriptionTierEntity {
         'platinum' => 'star',
         _ => 'leaf',
       },
+      logoUrl: logoUrl,
+      restaurantCount: restaurantCount,
+      restaurantLogoUrls: restaurants
+          .map((restaurant) => restaurant.logoUrl)
+          .toList(),
       isPopular: isRecommended,
     );
   }
@@ -395,6 +400,7 @@ extension on SubscriptionTierEntity {
             meals: '',
             rating: '',
             brandColor: brandColor,
+            logoUrl: restaurant.logoUrl,
             initials: restaurant.restaurantId.isEmpty
                 ? null
                 : restaurant.restaurantId.substring(0, 2).toUpperCase(),
