@@ -49,6 +49,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _getCustomerAddresses() async {
+    if (isClosed) return;
+
     emit(
       state.copyWith(
         addresses: state.addresses.copyWith(
@@ -60,6 +62,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await _getCustomerAddressesUseCase();
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -193,8 +196,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   Future<void> _addCustomerAddress(CustomerAddressRequestEntity request) async {
     await _runAction(() => _addCustomerAddressUseCase(request));
-    if (state.action.isSuccess) {
-      _getCustomerAddresses();
+    if (!isClosed && state.action.isSuccess) {
+      await _getCustomerAddresses();
     }
   }
 
@@ -203,15 +206,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
     CustomerAddressRequestEntity request,
   ) async {
     await _runAction(() => _updateCustomerAddressUseCase(addressId, request));
-    if (state.action.isSuccess) {
-      _getCustomerAddresses();
+    if (!isClosed && state.action.isSuccess) {
+      await _getCustomerAddresses();
     }
   }
 
   Future<void> _deleteCustomerAddress(String addressId) async {
     await _runAction(() => _deleteCustomerAddressUseCase(addressId));
-    if (state.action.isSuccess) {
-      _getCustomerAddresses();
+    if (!isClosed && state.action.isSuccess) {
+      await _getCustomerAddresses();
     }
   }
 

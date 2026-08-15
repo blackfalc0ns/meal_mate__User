@@ -162,7 +162,7 @@ class AddressFormField extends StatelessWidget {
                         ),
                     ],
                   ),
-                  const SizedBox(height: Spacing.sm),
+                  const SizedBox(height: Spacing.base),
                   Row(
                     children: [
                       Expanded(

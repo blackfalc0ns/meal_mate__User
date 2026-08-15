@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
@@ -38,9 +39,27 @@ class AddressChooseLocationScreen extends StatelessWidget {
                 Expanded(
                   child: Semantics(
                     label: locale.addresses_choose_location_title,
-                    child: BlocBuilder<AddressesViewModel, AddressesState>(
+                    child: BlocConsumer<AddressesViewModel, AddressesState>(
+                      listenWhen: (previous, current) =>
+                          previous.action != current.action,
+                      listener: (context, state) {
+                        final errorMessage =
+                            state.action.errorMessage ??
+                            state.action.failure?.errorMessage;
+                        if (errorMessage != null && errorMessage.isNotEmpty) {
+                          CustomSnackbar.showError(
+                            context: context,
+                            message: errorMessage,
+                          );
+                        }
+
+                        if (state.action.isSuccess) {
+                          Navigator.of(context).pop(true);
+                        }
+                      },
                       buildWhen: (previous, current) =>
-                          previous.locations != current.locations,
+                          previous.locations != current.locations ||
+                          previous.action != current.action,
                       builder: (context, state) {
                         return LayoutBuilder(
                           builder: (context, constraints) {
@@ -66,6 +85,7 @@ class AddressChooseLocationScreen extends StatelessWidget {
                                     height: AddressesFigmaFrame.frameHeight,
                                     child: AddressesFigmaFrame(
                                       locations: state.locations,
+                                      isSubmitting: state.action.isLoading,
                                     ),
                                   ),
                                 ),

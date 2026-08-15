@@ -5,9 +5,17 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/loading_widget.dart';
 
 class LocationConfirmationCard extends StatelessWidget {
-  const LocationConfirmationCard({super.key});
+  const LocationConfirmationCard({
+    super.key,
+    required this.onConfirm,
+    required this.isLoading,
+  });
+
+  final VoidCallback onConfirm;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +96,7 @@ class LocationConfirmationCard extends StatelessWidget {
           SizedBox(
             height: Spacing.addressesChooseLocationButtonHeight,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: isLoading ? null : onConfirm,
               style: ElevatedButton.styleFrom(
                 backgroundColor: color.primary,
                 foregroundColor: color.onPrimary,
@@ -99,16 +107,18 @@ class LocationConfirmationCard extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(
-                locale.addresses_confirm_location,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: Spacing.addressesChooseLocationButtonTextSize,
-                  color: color.onPrimary,
-                ),
-              ),
+              child: isLoading
+                  ? LoadingWidget.inline(color: color.onPrimary)
+                  : Text(
+                      locale.addresses_confirm_location,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: Spacing.addressesChooseLocationButtonTextSize,
+                        color: color.onPrimary,
+                      ),
+                    ),
             ),
           ),
         ],

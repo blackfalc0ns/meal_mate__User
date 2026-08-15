@@ -17,9 +17,16 @@ class HomeAddressFormCard extends StatefulWidget {
     this.selectedGovernorate,
     this.selectedArea,
     this.selectedBlock,
+    required this.streetController,
+    required this.avenueController,
+    required this.floorController,
+    required this.buildingNumberController,
+    required this.apartmentController,
+    required this.selectedBuildingType,
     required this.onGovernorateSelected,
     required this.onAreaSelected,
     required this.onBlockSelected,
+    required this.onBuildingTypeChanged,
   });
 
   final List<LocationGovernorateEntity> governorates;
@@ -28,35 +35,28 @@ class HomeAddressFormCard extends StatefulWidget {
   final LocationGovernorateEntity? selectedGovernorate;
   final LocationAreaEntity? selectedArea;
   final LocationBlockEntity? selectedBlock;
+  final TextEditingController streetController;
+  final TextEditingController avenueController;
+  final TextEditingController floorController;
+  final TextEditingController buildingNumberController;
+  final TextEditingController apartmentController;
+  final AddressBuildingType selectedBuildingType;
   final ValueChanged<LocationGovernorateEntity> onGovernorateSelected;
   final ValueChanged<LocationAreaEntity> onAreaSelected;
   final ValueChanged<LocationBlockEntity> onBlockSelected;
+  final ValueChanged<AddressBuildingType> onBuildingTypeChanged;
 
   @override
   State<HomeAddressFormCard> createState() => _HomeAddressFormCardState();
 }
 
 class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
-  final TextEditingController _streetController = TextEditingController();
-  final TextEditingController _avenueController = TextEditingController();
-  final TextEditingController _buildingNumberController =
-      TextEditingController();
-  final TextEditingController _apartmentController = TextEditingController();
-  AddressBuildingType _buildingType = AddressBuildingType.home;
-
-  @override
-  void dispose() {
-    _streetController.dispose();
-    _avenueController.dispose();
-    _buildingNumberController.dispose();
-    _apartmentController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final showHomeOnlyFields =
+        widget.selectedBuildingType == AddressBuildingType.home;
 
     return Container(
       width: Spacing.addressesHomeFormWidth,
@@ -216,7 +216,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                   label: locale.addresses_street_label,
                   hint: locale.addresses_street_hint,
                   iconAsset: Assets.addressesIconStreet,
-                  controller: _streetController,
+                  controller: widget.streetController,
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: Spacing.addressesHomeFormFieldGap),
@@ -224,44 +224,50 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                   label: locale.addresses_avenue_label,
                   hint: locale.addresses_avenue_hint,
                   iconAsset: Assets.addressesIconAvenue,
-                  controller: _avenueController,
+                  controller: widget.avenueController,
                   textInputAction: TextInputAction.next,
                   optionalText: locale.addresses_optional,
                 ),
                 const SizedBox(height: Spacing.addressesHomeFormFieldGap),
                 BuildingTypeSelector(
-                  selectedType: _buildingType,
-                  onChanged: (type) => setState(() => _buildingType = type),
+                  selectedType: widget.selectedBuildingType,
+                  onChanged: widget.onBuildingTypeChanged,
                 ),
-                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
-                AddressFormField(
-                  label: locale.addresses_floor_label,
-                  hint: locale.addresses_floor_hint,
-                  iconAsset: Assets.addressesIconFloor,
-                  showDropdown: true,
-                  small: true,
-                ),
+                if (showHomeOnlyFields) ...[
+                  const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                  AddressFormField(
+                    label: locale.addresses_floor_label,
+                    hint: locale.addresses_floor_hint,
+                    iconAsset: Assets.addressesIconFloor,
+                    controller: widget.floorController,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    small: true,
+                  ),
+                ],
                 const SizedBox(height: Spacing.addressesHomeFormFieldGap),
                 AddressFormField(
                   label: locale.addresses_building_number_label,
                   hint: locale.addresses_building_number_hint,
                   iconAsset: Assets.addressesIconNumber,
-                  controller: _buildingNumberController,
+                  controller: widget.buildingNumberController,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   small: true,
                 ),
-                const SizedBox(height: Spacing.addressesHomeFormFieldGap),
-                AddressFormField(
-                  label: locale.addresses_apartment_number_label,
-                  hint: locale.addresses_apartment_number_hint,
-                  iconAsset: Assets.addressesIconApartment,
-                  controller: _apartmentController,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  optionalText: locale.addresses_optional,
-                  small: true,
-                ),
+                if (showHomeOnlyFields) ...[
+                  const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+                  AddressFormField(
+                    label: locale.addresses_apartment_number_label,
+                    hint: locale.addresses_apartment_number_hint,
+                    iconAsset: Assets.addressesIconApartment,
+                    controller: widget.apartmentController,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    optionalText: locale.addresses_optional,
+                    small: true,
+                  ),
+                ],
               ],
             ),
           ),
