@@ -16,7 +16,7 @@ class MealDetailsIngredientsSection extends StatelessWidget {
     final locale = context.localization;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         MealDetailsSectionTitle(title: meal.ingredientsTitle),
         const SizedBox(height: Spacing.xs),
@@ -28,48 +28,60 @@ class MealDetailsIngredientsSection extends StatelessWidget {
           ),
           child: SizedBox(
             height: Spacing.avatarLg + Spacing.md,
-            child: Stack(
-              alignment: Alignment.centerLeft,
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsetsDirectional.only(
-                    end: Spacing.xl,
-                    top: Spacing.xs,
-                    bottom: Spacing.xs,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      for (final ingredient in meal.ingredients) ...[
-                        MealDetailsIngredientItem(ingredient: ingredient),
-                        if (ingredient != meal.ingredients.last)
-                          const SizedBox(width: Spacing.md),
-                      ],
-                    ],
-                  ),
-                ),
-                PositionedDirectional(
-                  end: 0,
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: color.surface.withValues(alpha: 0.92),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: color.outlineVariant),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final itemsWidth =
+                    meal.ingredients.length * Spacing.iconXl +
+                    (meal.ingredients.length - 1) * Spacing.md +
+                    Spacing.xl +
+                    Spacing.xl;
+                final needsScroll = itemsWidth > constraints.maxWidth;
+
+                return Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsetsDirectional.only(
+                        start: Spacing.xl,
+                        end: Spacing.xl,
+                        top: Spacing.xs,
+                        bottom: Spacing.xs,
                       ),
-                      child: Icon(
-                        locale.localeName == 'ar'
-                            ? Icons.chevron_right_rounded
-                            : Icons.chevron_left_rounded,
-                        size: Spacing.iconMd,
-                        color: color.onSurface,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (final ingredient in meal.ingredients) ...[
+                            MealDetailsIngredientItem(ingredient: ingredient),
+                            if (ingredient != meal.ingredients.last)
+                              const SizedBox(width: Spacing.md),
+                          ],
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              ],
+                    if (needsScroll)
+                      Positioned(
+                        left: 0,
+                        child: IgnorePointer(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: color.surface.withValues(alpha: 0.92),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: color.outlineVariant),
+                            ),
+                            child: Icon(
+                              Icons.chevron_left_rounded,
+                              semanticLabel: locale.calendar_ingredients,
+                              size: Spacing.iconMd,
+                              color: color.onSurface,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ),

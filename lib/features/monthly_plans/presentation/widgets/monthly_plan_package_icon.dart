@@ -8,7 +8,7 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
     super.key,
     required this.iconName,
     required this.logoUrl,
-    required this.usesLightForeground,
+   required this.usesLightForeground,
     required this.isSelected,
   });
 
