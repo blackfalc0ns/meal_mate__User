@@ -118,6 +118,8 @@ import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart'
     as _i365;
 import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart'
     as _i182;
+import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart'
+    as _i173;
 import '../../features/payment/presentation/manager/payment_view_model.dart'
     as _i502;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
@@ -372,6 +374,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i182.GetSubscriptionCalendarUseCase>(
       () => _i182.GetSubscriptionCalendarUseCase(gh<_i996.PaymentRepository>()),
     );
+    gh.factory<_i173.GetSubscriptionPaymentStatusUseCase>(
+      () => _i173.GetSubscriptionPaymentStatusUseCase(
+        gh<_i996.PaymentRepository>(),
+      ),
+    );
     gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
       () => _i32.GetFoodPreferencesCatalogUseCase(
         gh<_i62.FoodPreferencesRepository>(),
@@ -508,6 +515,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i502.PaymentViewModel>(
+      () => _i502.PaymentViewModel(
+        gh<_i365.GetPaymentMethodsUseCase>(),
+        gh<_i895.CheckoutSubscriptionUseCase>(),
+        gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
+      ),
+    );
     gh.factory<_i527.SubscriptionPlanViewModel>(
       () => _i527.SubscriptionPlanViewModel(
         gh<_i275.GetSubscriptionDurationsUseCase>(),
@@ -519,14 +534,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-      ),
-    );
-    gh.factory<_i502.PaymentViewModel>(
-      () => _i502.PaymentViewModel(
-        gh<_i365.GetPaymentMethodsUseCase>(),
-        gh<_i895.CheckoutSubscriptionUseCase>(),
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i182.GetSubscriptionCalendarUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

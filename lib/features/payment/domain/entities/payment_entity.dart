@@ -111,3 +111,19 @@ class PaymentCheckoutEntity {
   final String restaurantPoolSnapshotId;
   final String paymentStatus;
 }
+
+class PaymentStatusEntity {
+  const PaymentStatusEntity({
+    required this.paymentStatus,
+    required this.isPaid,
+    required this.isFailed,
+    required this.amount,
+    required this.currencyCode,
+  });
+
+  final String paymentStatus;
+  final bool isPaid;
+  final bool isFailed;
+  final double amount;
+  final String currencyCode;
+}

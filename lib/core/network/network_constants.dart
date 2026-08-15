@@ -55,6 +55,8 @@ abstract class EndPoints {
       '/api/v1/customer/subscription-flow/payment-methods';
   static const String subscriptionCheckout =
       '/api/v1/customer/subscriptions/checkout';
+  static const String subscriptionPaymentStatus =
+      '/api/v1/customer/subscriptions/{subscriptionId}/payment';
   static const String subscriptionCalendar =
       '/api/v1/customer/subscriptions/{subscriptionId}/calendar';
 }

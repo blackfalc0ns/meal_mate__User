@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/payment/data/data_source/payment_remote_
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 
 @Injectable(as: PaymentRemoteDataSource)
 class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
@@ -23,6 +24,13 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
     PaymentCheckoutRequestDto request,
   ) {
     return _apiServices.checkoutSubscription(request);
+  }
+
+  @override
+  Future<PaymentStatusResponseDto> getSubscriptionPaymentStatus(
+    String subscriptionId,
+  ) {
+    return _apiServices.getSubscriptionPaymentStatus(subscriptionId);
   }
 
   @override

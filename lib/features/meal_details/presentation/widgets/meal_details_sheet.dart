@@ -56,16 +56,16 @@ class MealDetailsSheet extends StatelessWidget {
                     MealDetailsMacroDistributionCard(meal: meal),
                     const Spacer(),
                     const SizedBox(height: Spacing.lg),
-                    MealDetailsAllergensSection(meal: meal),
+                  //  MealDetailsAllergensSection(meal: meal),
                     const SizedBox(height: Spacing.lg),
-                    const MealDetailsOptionalNotesField(),
-                    const SizedBox(height: Spacing.md),
-                    MealDetailsBottomActionButton(
-                      onPressed: () => Navigator.maybePop(context),
-                    ),
-                    SizedBox(
-                      height: locale.localeName == 'ar' ? Spacing.sm : 0,
-                    ),
+                //    const MealDetailsOptionalNotesField(),
+                    // const SizedBox(height: Spacing.md),
+                    // MealDetailsBottomActionButton(
+                    //   onPressed: () => Navigator.maybePop(context),
+                    // ),
+                    // SizedBox(
+                    //   height: locale.localeName == 'ar' ? Spacing.sm : 0,
+                    // ),
                   ],
                 ),
               ),

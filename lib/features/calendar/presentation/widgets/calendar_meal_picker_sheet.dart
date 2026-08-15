@@ -23,7 +23,6 @@ part 'calendar_tab_label.dart';
 part 'calendar_meal_options_section.dart';
 part 'calendar_section_title.dart';
 part 'calendar_meal_option_card.dart';
-part 'calendar_select_button.dart';
 part 'calendar_meal_nutrition_row.dart';
 part 'calendar_meal_nutrition.dart';
 part 'calendar_meal_ingredient_row.dart';

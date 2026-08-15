@@ -25,6 +25,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final PaymentViewModel _viewModel;
   WebViewController? _controller;
   bool _isPageLoading = true;
+  bool _hasStartedVerification = false;
 
   @override
   void initState() {
@@ -74,12 +75,19 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       value: _viewModel,
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
-            previous.isFulfillmentSuccess != current.isFulfillmentSuccess,
+            previous.isFulfillmentSuccess != current.isFulfillmentSuccess ||
+            previous.isPaymentFailed != current.isPaymentFailed,
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
-            Navigator.of(
-              context,
-            ).pushNamedAndRemoveUntil(AppRoutes.calendar, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRoutes.paymentSuccess,
+              (route) => false,
+            );
+            return;
+          }
+
+          if (state.isPaymentFailed) {
+            Navigator.maybePop(context);
           }
         },
         builder: (context, state) {
@@ -115,24 +123,59 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
   NavigationDecision _handleNavigationRequest(NavigationRequest request) {
     final uri = Uri.tryParse(request.url);
-    if (uri == null || uri.scheme != 'mealmate' || uri.host != 'payment') {
+    if (uri == null) {
       return NavigationDecision.navigate;
     }
 
+    if (_isBackendPaymentCallback(uri)) {
+      _handleBackendPaymentCallback(uri);
+      return NavigationDecision.prevent;
+    }
+
+    if (uri.scheme != 'mealmate' || uri.host != 'payment') {
+      return NavigationDecision.navigate;
+    }
+
+    return _handleAppPaymentCallback(uri);
+  }
+
+  bool _isBackendPaymentCallback(Uri uri) {
+    return uri.host == 'maelmate.runasp.net' &&
+        uri.path.contains('/api/v1/payments/myfatoorah');
+  }
+
+  void _handleBackendPaymentCallback(Uri uri) {
+    final target = Uri.tryParse(uri.queryParameters['to'] ?? '');
+    if (target != null &&
+        target.scheme == 'mealmate' &&
+        target.host == 'payment') {
+      _handleAppPaymentCallback(target);
+      return;
+    }
+
+    _verifyPayment();
+  }
+
+  NavigationDecision _handleAppPaymentCallback(Uri uri) {
     if (uri.path == '/success') {
-      _viewModel.doIntent(
-        VerifyPaymentFulfillmentEvent(
-          widget.args?.checkout.subscriptionId ?? '',
-        ),
-      );
+      _verifyPayment();
       return NavigationDecision.prevent;
     }
 
     if (uri.path == '/error') {
-      Navigator.maybePop(context);
+      _verifyPayment();
       return NavigationDecision.prevent;
     }
 
     return NavigationDecision.prevent;
+  }
+
+  void _verifyPayment() {
+    if (_hasStartedVerification) return;
+    _hasStartedVerification = true;
+
+    _viewModel.doIntent(
+      VerifyPaymentFulfillmentEvent(widget.args?.checkout.subscriptionId ?? ''),
+    );
   }
 }

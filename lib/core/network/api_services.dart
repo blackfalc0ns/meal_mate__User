@@ -40,6 +40,7 @@ import 'package:meal_meat_user/features/monthly_plans/data/models/response/subsc
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
@@ -236,6 +237,11 @@ abstract class ApiServices {
   @POST(EndPoints.subscriptionCheckout)
   Future<PaymentCheckoutResponseDto> checkoutSubscription(
     @Body() PaymentCheckoutRequestDto request,
+  );
+
+  @GET(EndPoints.subscriptionPaymentStatus)
+  Future<PaymentStatusResponseDto> getSubscriptionPaymentStatus(
+    @Path('subscriptionId') String subscriptionId,
   );
 
   @GET(EndPoints.subscriptionCalendar)

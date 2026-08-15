@@ -1,6 +1,7 @@
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
@@ -65,6 +66,18 @@ extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
       priceSnapshotId: priceSnapshotId ?? '',
       restaurantPoolSnapshotId: restaurantPoolSnapshotId ?? '',
       paymentStatus: paymentStatus ?? '',
+    );
+  }
+}
+
+extension PaymentStatusResponseDtoMapper on PaymentStatusResponseDto {
+  PaymentStatusEntity toEntity() {
+    return PaymentStatusEntity(
+      paymentStatus: paymentStatus ?? '',
+      isPaid: isPaid ?? false,
+      isFailed: isFailed ?? false,
+      amount: amount ?? 0,
+      currencyCode: currencyCode ?? '',
     );
   }
 }

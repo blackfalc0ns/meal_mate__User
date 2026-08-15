@@ -10,5 +10,9 @@ abstract interface class PaymentRepository {
     PaymentCheckoutRequestEntity request,
   );
 
+  Future<ApiResult<PaymentStatusEntity>> getSubscriptionPaymentStatus(
+    String subscriptionId,
+  );
+
   Future<ApiResult<void>> getSubscriptionCalendar(String subscriptionId);
 }

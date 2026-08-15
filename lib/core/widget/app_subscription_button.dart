@@ -59,53 +59,61 @@ class AppSubscriptionButton extends StatelessWidget {
           ),
           child: SizedBox(
             height: Spacing.monthlyPlanSubscribeHeight,
-            child: Row(
-              children: [
-                const Spacer(flex: 5),
-                Text(
-                  locale.subscription_details_subscribe_now,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size22,
-                    color: foregroundColor,
-                  ).copyWith(height: 1),
-                ),
-                if (hasPrice) ...[
-                  const Spacer(flex: 4),
-                  Container(
-                    width: Spacing.monthlyPlanSubscribeDividerWidth,
-                    height: Spacing.monthlyPlanSubscribeDividerHeight,
-                    color: foregroundColor,
-                  ),
-                  const Spacer(flex: 3),
-                  Icon(
-                    Icons.monetization_on_rounded,
-                    color: foregroundColor,
-                    size: Spacing.monthlyPlanSubscribeCoinSize,
-                  ),
-                  const SizedBox(width: Spacing.sm),
-                  Text(
-                    price,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: Spacing.monthlyPlanSubscribePriceSize,
-                      color: foregroundColor,
-                    ).copyWith(height: 1),
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    currency,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
-                      color: foregroundColor,
+            child: hasPrice
+                ? Row(
+                    children: [
+                      const Spacer(flex: 5),
+                      Text(
+                        locale.subscription_details_subscribe_now,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size22,
+                          color: foregroundColor,
+                        ).copyWith(height: 1),
+                      ),
+                      const Spacer(flex: 4),
+                      Container(
+                        width: Spacing.monthlyPlanSubscribeDividerWidth,
+                        height: Spacing.monthlyPlanSubscribeDividerHeight,
+                        color: foregroundColor,
+                      ),
+                      const Spacer(flex: 3),
+                      Icon(
+                        Icons.monetization_on_rounded,
+                        color: foregroundColor,
+                        size: Spacing.monthlyPlanSubscribeCoinSize,
+                      ),
+                      const SizedBox(width: Spacing.sm),
+                      Text(
+                        price,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: Spacing.monthlyPlanSubscribePriceSize,
+                          color: foregroundColor,
+                        ).copyWith(height: 1),
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Text(
+                        currency,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
+                          color: foregroundColor,
+                        ),
+                      ),
+                      const Spacer(flex: 4),
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      locale.subscription_details_subscribe_now,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size22,
+                        color: foregroundColor,
+                      ).copyWith(height: 1),
                     ),
                   ),
-                ] else
-                  const Spacer(flex: 4),
-                const Spacer(flex: 4),
-              ],
-            ),
           ),
         ),
       ),

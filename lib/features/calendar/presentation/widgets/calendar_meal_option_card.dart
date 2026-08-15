@@ -29,10 +29,10 @@ class CalendarMealOptionCard extends StatelessWidget {
             child: Row(
               textDirection: TextDirection.ltr,
               children: [
-                CalendarSelectButton(
-                  selected: option.selected,
-                  enabled: !isBlocked,
-                ),
+                // CalendarSelectButton(
+                //   selected: option.selected,
+                //   enabled: !isBlocked,
+                // ),
                 const SizedBox(width: Spacing.lg),
                 Expanded(
                   child: Directionality(

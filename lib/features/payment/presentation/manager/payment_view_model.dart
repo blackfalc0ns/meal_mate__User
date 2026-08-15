@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
@@ -10,7 +9,7 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dar
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
+import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 
@@ -20,13 +19,14 @@ class PaymentViewModel extends Cubit<PaymentState> {
     this._getPaymentMethodsUseCase,
     this._checkoutSubscriptionUseCase,
     this._getCustomerAddressesUseCase,
-    this._getSubscriptionCalendarUseCase,
+    this._getSubscriptionPaymentStatusUseCase,
   ) : super(const PaymentState());
 
   final GetPaymentMethodsUseCase _getPaymentMethodsUseCase;
   final CheckoutSubscriptionUseCase _checkoutSubscriptionUseCase;
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
-  final GetSubscriptionCalendarUseCase _getSubscriptionCalendarUseCase;
+  final GetSubscriptionPaymentStatusUseCase
+  _getSubscriptionPaymentStatusUseCase;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -187,36 +187,51 @@ class PaymentViewModel extends Cubit<PaymentState> {
       ),
     );
 
-    ApiErrorResult<void>? lastConflict;
-
     for (final delay in const [
       Duration.zero,
       Duration(seconds: 2),
       Duration(seconds: 4),
       Duration(seconds: 8),
+      Duration(seconds: 8),
+      Duration(seconds: 8),
+      Duration(seconds: 10),
+      Duration(seconds: 10),
+      Duration(seconds: 10),
     ]) {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
 
-      final result = await _getSubscriptionCalendarUseCase(subscriptionId);
+      final result = await _getSubscriptionPaymentStatusUseCase(subscriptionId);
 
       switch (result) {
         case ApiSuccessResult():
-          emit(
-            state.copyWith(
-              isFulfillmentLoading: false,
-              isFulfillmentSuccess: true,
-              clearFulfillmentFailure: true,
-            ),
-          );
-          return;
-        case ApiErrorResult():
-          if (result.failure.exception.errorType == ApiErrorType.conflict) {
-            lastConflict = result;
-            continue;
+          if (_isPaymentPaid(result.data)) {
+            emit(
+              state.copyWith(
+                isFulfillmentLoading: false,
+                isFulfillmentSuccess: true,
+                isPaymentFailed: false,
+                clearFulfillmentFailure: true,
+              ),
+            );
+            return;
           }
 
+          if (_isPaymentFailed(result.data)) {
+            emit(
+              state.copyWith(
+                isFulfillmentLoading: false,
+                isFulfillmentSuccess: false,
+                isPaymentFailed: true,
+                clearFulfillmentFailure: true,
+              ),
+            );
+            return;
+          }
+
+          continue;
+        case ApiErrorResult():
           emit(
             state.copyWith(
               isFulfillmentLoading: false,
@@ -227,12 +242,20 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
-    emit(
-      state.copyWith(
-        isFulfillmentLoading: false,
-        fulfillmentFailure: lastConflict?.failure,
-      ),
-    );
+    emit(state.copyWith(isFulfillmentLoading: false));
+  }
+
+  bool _isPaymentPaid(PaymentStatusEntity paymentStatus) {
+    return paymentStatus.isPaid ||
+        paymentStatus.paymentStatus.toLowerCase() == 'paid';
+  }
+
+  bool _isPaymentFailed(PaymentStatusEntity paymentStatus) {
+    final status = paymentStatus.paymentStatus.toLowerCase();
+    return paymentStatus.isFailed ||
+        status == 'failed' ||
+        status == 'canceled' ||
+        status == 'cancelled';
   }
 
   String _generateCorrelationId() {
