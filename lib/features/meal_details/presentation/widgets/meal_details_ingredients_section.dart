@@ -38,7 +38,7 @@ class MealDetailsIngredientsSection extends StatelessWidget {
                 final needsScroll = itemsWidth > constraints.maxWidth;
 
                 return Stack(
-                  alignment: Alignment.centerLeft,
+                //  alignment: Alignment.centerRight,
                   children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

@@ -15,6 +15,7 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.loadingWidget,
     this.errorWidget,
     this.semanticLabel,
+    this.backgroundColor,
   });
 
   final String? imageUrl;
@@ -26,6 +27,7 @@ class AppCachedNetworkImage extends StatelessWidget {
   final Widget? loadingWidget;
   final Widget? errorWidget;
   final String? semanticLabel;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class AppCachedNetworkImage extends StatelessWidget {
           );
 
     final imageContent = ColoredBox(
-      color: color.surfaceContainerHighest,
+      color: backgroundColor ?? color.surfaceContainerHighest,
       child: SizedBox(width: width, height: height, child: child),
     );
 

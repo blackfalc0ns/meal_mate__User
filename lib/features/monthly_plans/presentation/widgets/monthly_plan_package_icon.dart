@@ -8,7 +8,7 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
     super.key,
     required this.iconName,
     required this.logoUrl,
-   required this.usesLightForeground,
+    required this.usesLightForeground,
     required this.isSelected,
   });
 
@@ -57,6 +57,7 @@ class MonthlyPlanPackageIcon extends StatelessWidget {
         shape: BoxShape.circle,
         fit: BoxFit.contain,
         semanticLabel: locale.nav_subscription,
+        backgroundColor: color.surface.withValues(alpha: 0),
         errorWidget: const SizedBox.shrink(),
       ),
     );
