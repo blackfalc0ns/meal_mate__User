@@ -2,6 +2,7 @@ part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarTabLabel extends StatelessWidget {
   const CalendarTabLabel({
+    super.key,
     required this.text,
     required this.active,
     required this.onTap,
@@ -19,7 +20,7 @@ class CalendarTabLabel extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(Spacing.radiusSm),
       child: SizedBox(
-        width: 100,
+        width: double.infinity,
         height: 26.3,
         child: Center(
           child: AnimatedDefaultTextStyle(
@@ -31,7 +32,7 @@ class CalendarTabLabel extends StatelessWidget {
               fontSize: FontSize.size15,
               color: active ? color.primary : color.onSurface,
             ).copyWith(height: 12.48 / 13.52, letterSpacing: 0),
-            child: Text(text),
+            child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
         ),
       ),

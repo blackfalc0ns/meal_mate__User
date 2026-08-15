@@ -2,6 +2,7 @@ part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealTabs extends StatelessWidget {
   const CalendarMealTabs({
+    super.key,
     required this.labels,
     required this.selectedIndex,
     required this.onChanged,
@@ -33,41 +34,50 @@ class CalendarMealTabs extends StatelessWidget {
             right: 36,
             left: 36,
             top: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var index = 0; index < labels.length; index++)
-                  CalendarTabLabel(
-                    text: labels[index],
-                    active: selectedIndex == index,
-                    onTap: () => onChanged(index),
+            child: labels.isEmpty
+                ? const SizedBox.shrink()
+                : Row(
+                    children: [
+                      for (var index = 0; index < labels.length; index++)
+                        Expanded(
+                          child: CalendarTabLabel(
+                            text: labels[index],
+                            active: selectedIndex == index,
+                            onTap: () => onChanged(index),
+                          ),
+                        ),
+                    ],
                   ),
-              ],
-            ),
           ),
           Positioned(
             right: 36,
             left: 36,
             bottom: 0,
-            child: AnimatedAlign(
-              duration: const Duration(milliseconds: 260),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment(
-                labels.length <= 1
-                    ? 1
-                    : 1 - ((selectedIndex * 2) / (labels.length - 1)),
-                0,
-              ),
-              child: Container(
-                width: 100,
-                height: 2,
-                decoration: BoxDecoration(
-                  color: color.primary,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(16.6),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final tabCount = labels.isEmpty ? 1 : labels.length;
+
+                return AnimatedAlign(
+                  duration: const Duration(milliseconds: 260),
+                  curve: Curves.easeOutCubic,
+                  alignment: Alignment(
+                    labels.length <= 1
+                        ? 1
+                        : 1 - ((selectedIndex * 2) / (labels.length - 1)),
+                    0,
                   ),
-                ),
-              ),
+                  child: Container(
+                    width: constraints.maxWidth / tabCount,
+                    height: 2,
+                    decoration: BoxDecoration(
+                      color: color.primary,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(16.6),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
