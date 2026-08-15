@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
@@ -24,79 +25,61 @@ class AddressChooseLocationScreen extends StatelessWidget {
         backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
         extendBody: true,
-        body: Column(
+        body: Stack(
           children: [
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                top: MediaQuery.paddingOf(context).top + Spacing.lg,
-                end: Spacing.xl,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Material(
-                    color: color.surface,
-                    shape: const CircleBorder(),
-                    child: InkWell(
-                      onTap: () => Navigator.maybePop(context),
-                      customBorder: const CircleBorder(),
-                      child: SizedBox(
-                        width: Spacing.xxl,
-                        height: Spacing.xxl,
-                        child: Icon(
-                          Icons.arrow_back_ios_rounded,
-                          size: Spacing.iconMd,
-                          color: color.onSurface,
-                          semanticLabel: locale.go_back,
-                        ),
-                      ),
-                    ),
+            Column(
+              children: [
+                const SafeArea(
+                  bottom: false,
+                  child: SizedBox(
+                    height: Spacing.addressesChooseLocationScreenTopGap,
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Semantics(
-                label: locale.addresses_choose_location_title,
-                child: BlocBuilder<AddressesViewModel, AddressesState>(
-                  buildWhen: (previous, current) =>
-                      previous.locations != current.locations,
-                  builder: (context, state) {
-                    return LayoutBuilder(
-                      builder: (context, constraints) {
-                        final scale =
-                            constraints.maxWidth /
-                            Spacing.addressesChooseLocationDesignWidth;
-                        final contentHeight =
-                            AddressesFigmaFrame.frameHeight * scale;
+                ),
+                Expanded(
+                  child: Semantics(
+                    label: locale.addresses_choose_location_title,
+                    child: BlocBuilder<AddressesViewModel, AddressesState>(
+                      buildWhen: (previous, current) =>
+                          previous.locations != current.locations,
+                      builder: (context, state) {
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            final scale =
+                                constraints.maxWidth /
+                                Spacing.addressesChooseLocationDesignWidth;
+                            final contentHeight =
+                                AddressesFigmaFrame.frameHeight * scale;
 
-                        return SingleChildScrollView(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.paddingOf(context).bottom,
-                          ),
-                          child: SizedBox(
-                            width: constraints.maxWidth,
-                            height: contentHeight,
-                            child: FittedBox(
-                              alignment: Alignment.topCenter,
-                              fit: BoxFit.fitWidth,
+                            return SingleChildScrollView(
+                              padding: EdgeInsets.only(
+                                bottom: MediaQuery.paddingOf(context).bottom,
+                              ),
                               child: SizedBox(
-                                width:
-                                    Spacing.addressesChooseLocationDesignWidth,
-                                height: AddressesFigmaFrame.frameHeight,
-                                child: AddressesFigmaFrame(
-                                  locations: state.locations,
+                                width: constraints.maxWidth,
+                                height: contentHeight,
+                                child: FittedBox(
+                                  alignment: Alignment.topCenter,
+                                  fit: BoxFit.fitWidth,
+                                  child: SizedBox(
+                                    width: Spacing
+                                        .addressesChooseLocationDesignWidth,
+                                    height: AddressesFigmaFrame.frameHeight,
+                                    child: AddressesFigmaFrame(
+                                      locations: state.locations,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
+            CustomBackButton(onPressed: () => Navigator.maybePop(context)),
           ],
         ),
       ),

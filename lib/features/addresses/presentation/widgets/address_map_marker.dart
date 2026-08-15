@@ -16,12 +16,7 @@ class AddressMapMarker extends StatelessWidget {
 
     return SizedBox(
       width: Spacing.addressesChooseLocationDesignWidth,
-      height:
-          Spacing.addressesChooseLocationBadgeHeight +
-          (Spacing.addressesChooseLocationPinTop -
-              Spacing.addressesChooseLocationBadgeTop -
-              Spacing.addressesChooseLocationBadgeHeight) +
-          Spacing.addressesChooseLocationPinSize,
+      height: Spacing.addressesChooseLocationMarkerHeight,
       child: Column(
         children: [
           Container(
@@ -61,12 +56,7 @@ class AddressMapMarker extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height:
-                Spacing.addressesChooseLocationPinTop -
-                Spacing.addressesChooseLocationBadgeTop -
-                Spacing.addressesChooseLocationBadgeHeight,
-          ),
+          const SizedBox(height: Spacing.addressesChooseLocationMarkerGap),
           SvgPicture.asset(
             Assets.addressesIconPin,
             width: Spacing.addressesChooseLocationPinSize,

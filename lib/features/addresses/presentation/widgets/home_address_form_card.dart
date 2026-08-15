@@ -148,7 +148,9 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                       ),
                       onTap: () => _showOptions<LocationGovernorateEntity>(
                         context: fieldContext,
+                        title: locale.addresses_governorate_label,
                         items: widget.governorates,
+                        selectedValue: widget.selectedGovernorate,
                         labelBuilder: (item) => item.nameForLanguage(
                           Localizations.localeOf(context).languageCode,
                         ),
@@ -172,7 +174,9 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                           ? null
                           : () => _showOptions<LocationAreaEntity>(
                               context: fieldContext,
+                              title: locale.addresses_area_label,
                               items: widget.areas,
+                              selectedValue: widget.selectedArea,
                               labelBuilder: (item) => item.nameForLanguage(
                                 Localizations.localeOf(context).languageCode,
                               ),
@@ -196,7 +200,9 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                           ? null
                           : () => _showOptions<LocationBlockEntity>(
                               context: fieldContext,
+                              title: locale.addresses_block_label,
                               items: widget.blocks,
+                              selectedValue: widget.selectedBlock,
                               labelBuilder: (item) => item.nameForLanguage(
                                 Localizations.localeOf(context).languageCode,
                               ),
@@ -266,51 +272,101 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
 
   Future<void> _showOptions<T>({
     required BuildContext context,
+    required String title,
     required List<T> items,
+    required T? selectedValue,
     required String Function(T item) labelBuilder,
     required ValueChanged<T> onSelected,
   }) async {
     if (items.isEmpty) return;
 
     final color = context.colorScheme;
-    final renderBox = context.findRenderObject() as RenderBox?;
-    final overlay =
-        Navigator.of(context).overlay?.context.findRenderObject() as RenderBox?;
-    if (renderBox == null || overlay == null) return;
-
-    final position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        renderBox.localToGlobal(Offset.zero, ancestor: overlay),
-        renderBox.localToGlobal(
-          renderBox.size.bottomRight(Offset.zero),
-          ancestor: overlay,
+    final selected = await showModalBottomSheet<T>(
+      context: context,
+      backgroundColor: color.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
         ),
       ),
-      Offset.zero & overlay.size,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.base,
+              vertical: Spacing.md,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: Spacing.xxxl,
+                    height: Spacing.xs,
+                    decoration: BoxDecoration(
+                      color: color.outlineVariant,
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Spacing.base),
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size18,
+                    color: color.primary,
+                  ),
+                ),
+                const SizedBox(height: Spacing.md),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: items.length,
+                    separatorBuilder: (_, _) => Divider(
+                      height: Spacing.border,
+                      thickness: Spacing.border,
+                      color: color.outlineVariant,
+                    ),
+                    itemBuilder: (_, index) {
+                      final item = items[index];
+                      final isSelected = item == selectedValue;
+
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          labelBuilder(item),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size16,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        trailing: isSelected
+                            ? Icon(
+                                Icons.check_rounded,
+                                color: color.primary,
+                                size: Spacing.iconMd,
+                              )
+                            : null,
+                        onTap: () => Navigator.of(sheetContext).pop(item),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
 
-    final selected = await showMenu<T>(
-      context: context,
-      position: position,
-      color: color.surface,
-      items: items
-          .map(
-            (item) => PopupMenuItem<T>(
-              value: item,
-              child: Text(
-                labelBuilder(item),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onSurface,
-                ),
-              ),
-            ),
-          )
-          .toList(),
-    );
+    if (!mounted) return;
 
     if (selected != null) {
       onSelected(selected);

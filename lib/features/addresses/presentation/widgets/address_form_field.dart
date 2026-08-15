@@ -37,30 +37,14 @@ class AddressFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final height = small
-        ? Spacing.addressesHomeFormSmallFieldHeight + Spacing.hairline
-        : Spacing.addressesHomeFormFieldHeight;
-    final iconBoxSize = small
-        ? Spacing.addressesHomeFormSmallIconBoxSize
-        : Spacing.addressesHomeFormIconBoxSize;
-    final iconSize = small
-        ? Spacing.addressesHomeFormSmallIconSize
-        : Spacing.addressesHomeFormIconSize;
+    final height = Spacing.addressesHomeFormCompactFieldHeight;
+    final iconBoxSize = Spacing.addressesHomeFormSmallIconBoxSize;
+    final iconSize = Spacing.addressesHomeFormSmallIconSize;
     final iconInset = small
         ? Spacing.addressesHomeFormSmallIconBoxInset
-        : Spacing.addressesHomeFormIconBoxInset;
-    final labelTop = small
-        ? Spacing.addressesHomeFormSmallLabelTop
-        : Spacing.addressesHomeFormLabelTop;
-    final hintTop = small
-        ? Spacing.addressesHomeFormSmallHintTop
-        : Spacing.addressesHomeFormHintTop;
-    final labelSize = small
-        ? Spacing.addressesHomeFormSmallLabelSize
-        : Spacing.addressesHomeFormLabelSize;
-    final hintSize = small
-        ? Spacing.addressesHomeFormSmallHintSize
-        : Spacing.addressesHomeFormHintSize;
+        : Spacing.sm;
+    final labelSize = small ? FontSize.size15 : FontSize.size16;
+    final hintSize = small ? FontSize.size17 : FontSize.size18;
     final optionalSize = small
         ? Spacing.addressesHomeFormSmallOptionalSize
         : Spacing.addressesHomeFormOptionalSize;
@@ -68,9 +52,6 @@ class AddressFormField extends StatelessWidget {
     final isInput = !showDropdown;
     final displayValue = value ?? hint;
     final hasValue = value != null && value!.isNotEmpty;
-    final textTopPadding = labelTop > iconInset
-        ? labelTop - iconInset
-        : Spacing.zero;
     final labelStyle = getSemiBoldStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: labelSize,
@@ -109,14 +90,9 @@ class AddressFormField extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        width: Spacing.addressesHomeFormFieldWidth,
+        width: double.infinity,
         height: height,
-        padding: EdgeInsetsDirectional.only(
-          start: iconInset,
-          end: iconInset,
-          top: iconInset,
-          bottom: iconInset,
-        ),
+        padding: EdgeInsetsDirectional.all(iconInset),
         decoration: BoxDecoration(
           color: color.surface,
           border: Border.all(
@@ -128,7 +104,7 @@ class AddressFormField extends StatelessWidget {
           ),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: iconBoxSize,
@@ -147,98 +123,95 @@ class AddressFormField extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: Spacing.addressesHomeFormFieldGap),
+            const SizedBox(width: Spacing.base),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: textTopPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            label,
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            strutStyle: StrutStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: labelSize,
-                              height: 1,
-                              forceStrutHeight: true,
-                            ),
-                            style: labelStyle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          label,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          strutStyle: StrutStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: labelSize,
+                            height: 1,
+                            forceStrutHeight: true,
                           ),
+                          style: labelStyle,
                         ),
-                        if (optionalText != null)
-                          Text(
-                            optionalText!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            strutStyle: StrutStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: optionalSize,
-                              height: 1,
-                              forceStrutHeight: true,
-                            ),
-                            style: optionalStyle,
+                      ),
+                      if (optionalText != null)
+                        Text(
+                          optionalText!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          strutStyle: StrutStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: optionalSize,
+                            height: 1,
+                            forceStrutHeight: true,
                           ),
-                      ],
-                    ),
-                    SizedBox(height: hintTop - labelTop - labelSize),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: isInput
-                              ? TextField(
-                                  controller: controller,
-                                  keyboardType: keyboardType,
-                                  textInputAction: textInputAction,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  cursorColor: color.primary,
-                                  strutStyle: textStrutStyle,
-                                  style: inputTextStyle,
-                                  decoration: InputDecoration(
-                                    hintText: hint,
-                                    hintStyle: inputHintStyle,
-                                    isCollapsed: true,
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.all(
-                                      Spacing.zero,
-                                    ),
-                                    filled: false,
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    focusedErrorBorder: InputBorder.none,
+                          style: optionalStyle,
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.sm),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: isInput
+                            ? TextField(
+                                controller: controller,
+                                keyboardType: keyboardType,
+                                textInputAction: textInputAction,
+                                textAlign: TextAlign.start,
+                                maxLines: 1,
+                                cursorColor: color.primary,
+                                strutStyle: textStrutStyle,
+                                style: inputTextStyle,
+                                decoration: InputDecoration(
+                                  hintText: hint,
+                                  hintStyle: inputHintStyle,
+                                  isCollapsed: true,
+                                  isDense: true,
+                                  contentPadding: const EdgeInsets.all(
+                                    Spacing.zero,
                                   ),
-                                )
-                              : Text(
-                                  displayValue,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  strutStyle: textStrutStyle,
-                                  style: displayTextStyle,
+                                  filled: false,
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  focusedErrorBorder: InputBorder.none,
                                 ),
+                              )
+                            : Text(
+                                displayValue,
+                                textAlign: TextAlign.start,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle: textStrutStyle,
+                                style: displayTextStyle,
+                              ),
+                      ),
+                      if (showDropdown)
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: Spacing.iconMd,
+                          color: color.onSurfaceVariant,
+                          semanticLabel: locale.addresses_choose_location_title,
                         ),
-                        if (showDropdown)
-                          Icon(
-                            Icons.keyboard_arrow_down_rounded,
-                            size: Spacing.addressesHomeFormSmallIconSize,
-                            color: color.onSurfaceVariant,
-                            semanticLabel:
-                                locale.addresses_choose_location_title,
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

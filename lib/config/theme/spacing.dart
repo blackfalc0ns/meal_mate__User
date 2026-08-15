@@ -666,6 +666,7 @@ class Spacing {
   static const double addressesMapRadius = 9.24;
   static const double addressesChooseLocationDesignWidth = 620.0;
   static const double addressesChooseLocationDesignHeight = 1343.0;
+  static const double addressesChooseLocationScreenTopGap = 52.0;
   static const double addressesChooseLocationGpsStart = 36.41;
   static const double addressesChooseLocationGpsTop = 43.03;
   static const double addressesChooseLocationGpsSize = 66.203;
@@ -678,6 +679,8 @@ class Spacing {
   static const double addressesChooseLocationBadgeHeight = 33.101;
   static const double addressesChooseLocationBadgeRadius = 8.275;
   static const double addressesChooseLocationBadgeIconSize = 24.0;
+  static const double addressesChooseLocationMarkerHeight = 97.647;
+  static const double addressesChooseLocationMarkerGap = 6.619;
   static const double addressesChooseLocationColumnStart = 26.48;
   static const double addressesChooseLocationColumnTop = 293.0;
   static const double addressesChooseLocationColumnGap = 26.481;
@@ -707,6 +710,7 @@ class Spacing {
   static const double addressesHomeFormSubtitleSize = 17.458;
   static const double addressesHomeFormFieldStart = 25.39;
   static const double addressesHomeFormFieldWidth = 517.384;
+  static const double addressesHomeFormCompactFieldHeight = 70.0;
   static const double addressesHomeFormFieldHeight = 100.831;
   static const double addressesHomeFormSmallFieldHeight = 63.483;
   static const double addressesHomeFormFieldRadius = 14.284;

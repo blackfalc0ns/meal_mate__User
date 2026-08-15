@@ -75,12 +75,8 @@ class AddressesFigmaFrame extends StatelessWidget {
                   Spacing.addressesChooseLocationPinTop -
                   Spacing.addressesChooseLocationPinSize,
             ),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: Spacing.addressesChooseLocationColumnStart,
-              ),
+            Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const LocationConfirmationCard(),
                   const SizedBox(
