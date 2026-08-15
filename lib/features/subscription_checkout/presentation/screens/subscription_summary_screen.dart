@@ -172,7 +172,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
       titleHighlight: initialPlan.titleHighlight,
       duration: '${summary.durationDays} ${locale.subscription_day}',
       mealsPerDay: initialPlan.mealsPerDay,
-      discountLabel: summary.tier,
+      discountLabel: summary.tierName(locale.localeName),
       subscribeLabel: initialPlan.subscribeLabel,
       price: _formatPrice(summary.finalPrice),
       currency: summary.currencyCode,

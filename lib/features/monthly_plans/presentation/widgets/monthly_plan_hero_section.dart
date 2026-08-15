@@ -10,12 +10,14 @@ class MonthlyPlanHeroSection extends StatelessWidget {
     super.key,
     required this.plan,
     required this.imageAsset,
+    this.imageUrl,
     this.durationSelector,
     required this.onBack,
   });
 
   final MonthlyPlanDetailsEntity plan;
   final String imageAsset;
+  final String? imageUrl;
   final Widget? durationSelector;
   final VoidCallback onBack;
 
@@ -37,6 +39,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
             children: [
               MonthlyPlanHeroBackground(
                 imageAsset: imageAsset,
+                imageUrl: imageUrl,
                 height: Spacing.monthlyPlanHeroHeight,
                 onBack: onBack,
               ),

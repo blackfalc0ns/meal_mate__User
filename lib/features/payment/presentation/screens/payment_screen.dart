@@ -122,6 +122,7 @@ class PaymentScreen extends StatelessWidget {
                           .toStringAsFixed(3),
                   totalPrice: paymentArgs.summary.finalPrice.toStringAsFixed(3),
                   imageAsset: Assets.monthlyPlanHero,
+                  imageUrl: paymentArgs.summary.imageUrl,
                   couponHint: l10n.payment_coupon_hint,
                 ),
               ),

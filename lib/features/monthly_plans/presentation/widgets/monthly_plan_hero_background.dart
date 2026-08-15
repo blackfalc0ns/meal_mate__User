@@ -10,11 +10,13 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
   const MonthlyPlanHeroBackground({
     super.key,
     required this.imageAsset,
+    this.imageUrl,
     required this.height,
     required this.onBack,
   });
 
   final String imageAsset;
+  final String? imageUrl;
   final double height;
   final VoidCallback onBack;
 
@@ -31,7 +33,7 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              MonthlyPlanHeroImage(imageAsset: imageAsset),
+              MonthlyPlanHeroImage(imageAsset: imageAsset, imageUrl: imageUrl),
               const MonthlyPlanHeroFade(),
               CustomBackButton(
                 onPressed: onBack,

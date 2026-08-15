@@ -77,12 +77,12 @@ class AppSubscriptionButton extends StatelessWidget {
                         height: Spacing.monthlyPlanSubscribeDividerHeight,
                         color: foregroundColor,
                       ),
-                      const Spacer(flex: 3),
-                      Icon(
-                        Icons.monetization_on_rounded,
-                        color: foregroundColor,
-                        size: Spacing.monthlyPlanSubscribeCoinSize,
-                      ),
+                      // const Spacer(flex: 3),
+                      // Icon(
+                      //   Icons.monetization_on_rounded,
+                      //   color: foregroundColor,
+                      //   size: Spacing.monthlyPlanSubscribeCoinSize,
+                      // ),
                       const SizedBox(width: Spacing.sm),
                       Text(
                         price,

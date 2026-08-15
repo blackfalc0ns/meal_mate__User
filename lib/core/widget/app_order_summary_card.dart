@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 
 class AppOrderSummaryCard extends StatelessWidget {
   const AppOrderSummaryCard({
@@ -14,6 +15,7 @@ class AppOrderSummaryCard extends StatelessWidget {
     required this.discountAmount,
     required this.totalPrice,
     required this.imageAsset,
+    this.imageUrl,
     this.summaryTitle,
     this.discountLabel,
     this.couponHint,
@@ -26,6 +28,7 @@ class AppOrderSummaryCard extends StatelessWidget {
   final String discountAmount;
   final String totalPrice;
   final String imageAsset;
+  final String? imageUrl;
   final String? summaryTitle;
   final String? discountLabel;
   final String? couponHint;
@@ -57,12 +60,21 @@ class AppOrderSummaryCard extends StatelessWidget {
               textDirection: TextDirection.ltr,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  imageAsset,
-                  width: 165,
-                  height: 130,
-                  fit: BoxFit.contain,
-                ),
+                imageUrl == null || imageUrl!.isEmpty
+                    ? Image.asset(
+                        imageAsset,
+                        width: 165,
+                        height: 130,
+                        fit: BoxFit.contain,
+                      )
+                    : AppCachedNetworkImage(
+                        imageUrl: imageUrl,
+                        width: 165,
+                        height: 130,
+                        fit: BoxFit.contain,
+                        semanticLabel: l10n.payment_order_summary_title,
+                        backgroundColor: AppColors.white,
+                      ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Padding(

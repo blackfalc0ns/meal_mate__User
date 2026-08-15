@@ -8,6 +8,7 @@ class SubscriptionSummaryResponseDto {
     this.programId,
     this.programNameAr,
     this.programNameEn,
+    this.programImageUrl,
     this.bundleId,
     this.bundleNameAr,
     this.bundleNameEn,
@@ -17,6 +18,8 @@ class SubscriptionSummaryResponseDto {
     this.restaurantNameEn,
     this.restaurantCount,
     this.tier,
+    this.tierNameAr,
+    this.tierNameEn,
     this.durationDays,
     this.startDate,
     this.endDate,
@@ -40,6 +43,7 @@ class SubscriptionSummaryResponseDto {
   final String? programId;
   final String? programNameAr;
   final String? programNameEn;
+  final String? programImageUrl;
   final String? bundleId;
   final String? bundleNameAr;
   final String? bundleNameEn;
@@ -49,6 +53,8 @@ class SubscriptionSummaryResponseDto {
   final String? restaurantNameEn;
   final int? restaurantCount;
   final String? tier;
+  final String? tierNameAr;
+  final String? tierNameEn;
   final int? durationDays;
   final String? startDate;
   final String? endDate;

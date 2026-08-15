@@ -3,6 +3,7 @@ class SubscriptionSummaryEntity {
     required this.programId,
     required this.programNameAr,
     required this.programNameEn,
+    this.programImageUrl,
     required this.bundleId,
     required this.bundleNameAr,
     required this.bundleNameEn,
@@ -12,6 +13,8 @@ class SubscriptionSummaryEntity {
     this.restaurantNameEn,
     required this.restaurantCount,
     required this.tier,
+    required this.tierNameAr,
+    required this.tierNameEn,
     required this.durationDays,
     required this.startDate,
     required this.endDate,
@@ -35,6 +38,7 @@ class SubscriptionSummaryEntity {
   final String programId;
   final String programNameAr;
   final String programNameEn;
+  final String? programImageUrl;
   final String bundleId;
   final String bundleNameAr;
   final String bundleNameEn;
@@ -44,6 +48,8 @@ class SubscriptionSummaryEntity {
   final String? restaurantNameEn;
   final int restaurantCount;
   final String tier;
+  final String tierNameAr;
+  final String tierNameEn;
   final int durationDays;
   final String startDate;
   final String endDate;
@@ -68,6 +74,11 @@ class SubscriptionSummaryEntity {
 
   String bundleName(String localeName) =>
       localeName == 'ar' ? bundleNameAr : bundleNameEn;
+
+  String tierName(String localeName) {
+    final localizedName = localeName == 'ar' ? tierNameAr : tierNameEn;
+    return localizedName.trim().isEmpty ? tier : localizedName;
+  }
 
   String? restaurantName(String localeName) =>
       localeName == 'ar' ? restaurantNameAr : restaurantNameEn;
