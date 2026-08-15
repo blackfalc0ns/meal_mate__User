@@ -24,8 +24,11 @@ class WalletSearchFilterRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(Spacing.walletActionRadius),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Icon(Icons.search_rounded, color: color.onSurfaceVariant),
+                const SizedBox(width: Spacing.sm),
+
                 Flexible(
                   child: Text(
                     locale.wallet_search_hint,
@@ -38,8 +41,6 @@ class WalletSearchFilterRow extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: Spacing.sm),
-                Icon(Icons.search_rounded, color: color.onSurfaceVariant),
               ],
             ),
           ),
