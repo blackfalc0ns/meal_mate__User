@@ -243,11 +243,35 @@
   "billing_plan_tier": "Platinum",
   "billing_active": "Active",
   "billing_renewal_date": "Next renewal: June 15, 2025",
+  "billing_renewal_date_value": "Next renewal: {date}",
+  "@billing_renewal_date_value": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "billing_days_remaining": "18 days remaining",
+  "billing_days_remaining_value": "{days} days remaining",
+  "@billing_days_remaining_value": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "billing_plan_usage": "Plan usage this month",
   "billing_plan_usage_value": "22 of 30 days",
   "billing_plan_usage_current": "22",
   "billing_plan_usage_remaining": "of 30 days",
+  "billing_plan_usage_remaining_value": "of {days} days",
+  "@billing_plan_usage_remaining_value": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "billing_renew": "Renew",
   "billing_freeze": "Freeze",
   "billing_upgrade_tier": "Upgrade tier",
@@ -257,6 +281,8 @@
   "billing_invoices": "Invoices",
   "billing_paid": "Paid",
   "billing_invoice_date": "May 15, 2025",
+  "billing_no_subscription_title": "No current subscription",
+  "billing_no_subscription_description": "Your subscription details will appear here once you subscribe.",
   "billing_manage_subscription": "Manage subscription",
   "billing_notice": "You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.",
   "profile_addresses": "Addresses",

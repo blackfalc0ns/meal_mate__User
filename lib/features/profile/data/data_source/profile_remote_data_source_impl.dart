@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/profile/data/data_source/profile_remote_
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 
 @Injectable(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -29,5 +30,27 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<void> deleteCustomerProfileImage() {
     return _apiServices.deleteCustomerProfileImage();
+  }
+
+  @override
+  Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription() {
+    return _apiServices.getCurrentCustomerSubscription();
+  }
+
+  @override
+  Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices() {
+    return _apiServices.getCustomerInvoices();
+  }
+
+  @override
+  Future<ProfileBillingPaymentMethodResponseDto>
+  getDefaultCustomerPaymentMethod() {
+    return _apiServices.getDefaultCustomerPaymentMethod();
+  }
+
+  @override
+  Future<ProfileBillingFreezePolicyResponseDto>
+  getCustomerSubscriptionFreezePolicy() {
+    return _apiServices.getCustomerSubscriptionFreezePolicy();
   }
 }

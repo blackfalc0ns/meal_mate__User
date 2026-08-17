@@ -1556,11 +1556,23 @@ abstract class AppLocalizations {
   /// **'Next renewal: June 15, 2025'**
   String get billing_renewal_date;
 
+  /// No description provided for @billing_renewal_date_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Next renewal: {date}'**
+  String billing_renewal_date_value(String date);
+
   /// No description provided for @billing_days_remaining.
   ///
   /// In en, this message translates to:
   /// **'18 days remaining'**
   String get billing_days_remaining;
+
+  /// No description provided for @billing_days_remaining_value.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days remaining'**
+  String billing_days_remaining_value(int days);
 
   /// No description provided for @billing_plan_usage.
   ///
@@ -1585,6 +1597,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'of 30 days'**
   String get billing_plan_usage_remaining;
+
+  /// No description provided for @billing_plan_usage_remaining_value.
+  ///
+  /// In en, this message translates to:
+  /// **'of {days} days'**
+  String billing_plan_usage_remaining_value(int days);
 
   /// No description provided for @billing_renew.
   ///
@@ -1639,6 +1657,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'May 15, 2025'**
   String get billing_invoice_date;
+
+  /// No description provided for @billing_no_subscription_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No current subscription'**
+  String get billing_no_subscription_title;
+
+  /// No description provided for @billing_no_subscription_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription details will appear here once you subscribe.'**
+  String get billing_no_subscription_description;
 
   /// No description provided for @billing_manage_subscription.
   ///

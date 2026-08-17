@@ -5,14 +5,23 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 
 class ProfileBillingPaymentCard extends StatelessWidget {
-  const ProfileBillingPaymentCard({super.key});
+  const ProfileBillingPaymentCard({required this.paymentMethod, super.key});
+
+  final ProfileBillingPaymentMethodEntity paymentMethod;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final cardNumber = paymentMethod.last4.isEmpty
+        ? paymentMethod.brand
+        : '••••  ••••  ••••  ${paymentMethod.last4}';
+    final expiry = paymentMethod.expiry.isEmpty
+        ? paymentMethod.gateway
+        : paymentMethod.expiry;
 
     return Container(
       height: Spacing.profileBillingPaymentHeight,
@@ -48,7 +57,6 @@ class ProfileBillingPaymentCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-
               Text(
                 locale.billing_default_payment_method,
                 style: getBoldStyle(
@@ -66,7 +74,7 @@ class ProfileBillingPaymentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '06/27',
+                    expiry,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
@@ -85,7 +93,7 @@ class ProfileBillingPaymentCard extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '••••  ••••  ••••  4582',
+                  cardNumber,
                   textDirection: TextDirection.ltr,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -7,15 +8,36 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/network_constants.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_action.dart';
 
 class ProfileBillingPlanCard extends StatelessWidget {
-  const ProfileBillingPlanCard({super.key});
+  const ProfileBillingPlanCard({required this.subscription, super.key});
+
+  final ProfileBillingSubscriptionEntity subscription;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isArabic = locale.localeName == 'ar';
+    final dateFormatter = intl.DateFormat.yMMMd(locale.localeName);
+    final nextRenewalDate = DateTime.tryParse(subscription.nextRenewalDate);
+    final renewalDateText = nextRenewalDate == null
+        ? subscription.nextRenewalDate
+        : dateFormatter.format(nextRenewalDate);
+    final progressValue = (subscription.progressPercentage / 100)
+        .clamp(0, 1)
+        .toDouble();
+    final bundleName = isArabic
+        ? subscription.bundleNameAr
+        : subscription.bundleNameEn;
+    final tierName = isArabic
+        ? subscription.tierNameAr
+        : subscription.tierNameEn;
+    final restaurantLogoUrl = _absoluteUrl(subscription.restaurant.logoUrl);
 
     return Container(
       height: Spacing.profileBillingPlanHeight,
@@ -35,51 +57,73 @@ class ProfileBillingPlanCard extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            top: -Spacing.lg,
-            left: -Spacing.md,
+            top: Spacing.xxl,
+            left: Spacing.xs,
             child: Image.asset(
               Assets.profileBillingPlanBottle,
-              width: Spacing.xxxl * 3 + Spacing.xxl,
+              width: Spacing.xxxl * 2,
               fit: BoxFit.contain,
             ),
           ),
           Positioned(
-            top: Spacing.xl + Spacing.xs,
-            right: Spacing.base,
-            child: SvgPicture.asset(
-              Assets.logo,
+            top: Spacing.md,
+            right: Spacing.sm,
+            child: Container(
               width: Spacing.iconMd,
               height: Spacing.iconMd,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: color.surface,
+                borderRadius: BorderRadius.circular(Spacing.radiusXs),
+              ),
+              child: AppCachedNetworkImage(
+                imageUrl: restaurantLogoUrl,
+                width: Spacing.iconSm,
+                height: Spacing.iconSm,
+                fit: BoxFit.contain,
+                semanticLabel: locale.profile_billing,
+                backgroundColor: color.surface,
+                errorWidget: SvgPicture.asset(
+                  Assets.logo,
+                  width: Spacing.iconSm,
+                  height: Spacing.iconSm,
+                ),
+              ),
             ),
           ),
           Positioned(
-            top: Spacing.xxl - Spacing.xs,
-            right: Spacing.xxxl,
+            top: Spacing.md,
+            left: Spacing.xxxl * 2 + Spacing.md,
+            right: Spacing.xxxl + Spacing.md,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  locale.billing_plan_name,
+                  bundleName.isEmpty ? locale.billing_plan_name : bundleName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size19,
+                    fontSize: FontSize.size15,
                     color: color.onSurface,
                   ),
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.xss),
                 Text(
-                  locale.billing_plan_tier,
+                  tierName.isEmpty ? locale.billing_plan_tier : tierName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size13,
+                    fontSize: FontSize.size12,
                     color: color.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: Spacing.md),
+                const SizedBox(height: Spacing.xs),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.xs,
-                    vertical: Spacing.xs,
+                    vertical: Spacing.xss,
                   ),
                   decoration: BoxDecoration(
                     color: color.primaryContainer.withValues(alpha: 0.45),
@@ -96,7 +140,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                       ),
                       const SizedBox(width: Spacing.xs),
                       Text(
-                        locale.billing_active,
+                        subscription.statusNameAr.isEmpty
+                            ? locale.billing_active
+                            : subscription.statusNameAr,
                         style: getMediumStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -106,17 +152,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: Spacing.xxxl * 2 + Spacing.lg,
-            right: Spacing.base,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                const SizedBox(height: Spacing.xs),
                 Row(
-                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: TextDirection.rtl,
                   children: [
                     SvgPicture.asset(
@@ -125,24 +163,30 @@ class ProfileBillingPlanCard extends StatelessWidget {
                       height: Spacing.iconSm,
                     ),
                     const SizedBox(width: Spacing.xs),
-                    Text(
-                      locale.billing_renewal_date,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
+                    Expanded(
+                      child: Text(
+                        locale.billing_renewal_date_value(renewalDateText),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: Spacing.sm),
+                const SizedBox(height: Spacing.xs),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: Spacing.sm),
+                  padding: const EdgeInsetsDirectional.only(start: Spacing.xl),
                   child: Text(
-                    locale.billing_days_remaining,
+                    locale.billing_days_remaining_value(
+                      subscription.remainingServiceDays,
+                    ),
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -153,7 +197,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
           Positioned(
             left: Spacing.base,
             right: Spacing.base,
-            bottom: Spacing.md,
+            bottom: Spacing.xl,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -166,7 +210,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                       locale.billing_plan_usage,
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size11,
                         color: color.onSurfaceVariant,
                       ),
                     ),
@@ -174,19 +218,21 @@ class ProfileBillingPlanCard extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: locale.billing_plan_usage_current,
+                            text: subscription.completedServiceDays.toString(),
                             style: getSemiBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size12,
+                              fontSize: FontSize.size11,
                               color: color.primary,
                             ),
                           ),
                           const TextSpan(text: ' '),
                           TextSpan(
-                            text: locale.billing_plan_usage_remaining,
+                            text: locale.billing_plan_usage_remaining_value(
+                              subscription.totalServiceDays,
+                            ),
                             style: getSemiBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size12,
+                              fontSize: FontSize.size11,
                               color: color.onSurfaceVariant,
                             ),
                           ),
@@ -200,13 +246,13 @@ class ProfileBillingPlanCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                   child: LinearProgressIndicator(
-                    value: .73,
+                    value: progressValue,
                     minHeight: Spacing.xss,
                     color: color.primary,
                     backgroundColor: color.surface,
                   ),
                 ),
-                const SizedBox(height: Spacing.md),
+                const SizedBox(height: Spacing.sm),
                 Row(
                   children: [
                     Expanded(
@@ -214,11 +260,14 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingUpgradeTier,
                         label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
-                        onTap: () =>
-                            context.pushNamed(AppRoutes.restaurantTierUpgrade),
+                        onTap: subscription.actions.canUpgrade
+                            ? () => context.pushNamed(
+                                AppRoutes.restaurantTierUpgrade,
+                              )
+                            : null,
                       ),
                     ),
-                    const SizedBox(width: Spacing.md),
+                    const SizedBox(width: Spacing.sm),
                     Expanded(
                       child: ProfileBillingAction(
                         iconAsset: Assets.profileBillingFreeze,
@@ -226,7 +275,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         actionColor: color.tertiary,
                       ),
                     ),
-                    const SizedBox(width: Spacing.md),
+                    const SizedBox(width: Spacing.sm),
                     Expanded(
                       child: ProfileBillingAction(
                         iconAsset: Assets.profileBillingRenew,
@@ -234,7 +283,7 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         actionColor: color.primary,
                       ),
                     ),
-                    const SizedBox(width: Spacing.md),
+                    const SizedBox(width: Spacing.sm),
                     Expanded(
                       child: ProfileBillingAction(
                         iconAsset: Assets.profileBillingCancel,
@@ -250,5 +299,15 @@ class ProfileBillingPlanCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _absoluteUrl(String url) {
+    if (url.isEmpty) {
+      return '';
+    }
+    if (url.startsWith('http')) {
+      return url;
+    }
+    return '${NetworkConstants.baseUrl}$url';
   }
 }

@@ -31,6 +31,7 @@ import 'package:meal_meat_user/features/profile/data/models/request/profile_imag
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
@@ -248,4 +249,18 @@ abstract class ApiServices {
   Future<void> getSubscriptionCalendar(
     @Path('subscriptionId') String subscriptionId,
   );
+
+  @GET(EndPoints.customerSubscriptionCurrent)
+  Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
+
+  @GET(EndPoints.customerInvoices)
+  Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices();
+
+  @GET(EndPoints.customerDefaultPaymentMethod)
+  Future<ProfileBillingPaymentMethodResponseDto>
+  getDefaultCustomerPaymentMethod();
+
+  @GET(EndPoints.customerSubscriptionFreezePolicy)
+  Future<ProfileBillingFreezePolicyResponseDto>
+  getCustomerSubscriptionFreezePolicy();
 }

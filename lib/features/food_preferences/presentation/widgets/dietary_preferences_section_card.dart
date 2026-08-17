@@ -101,44 +101,85 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(Spacing.dietaryChipRadius),
               onTap: () => _showOptionsBottomSheet(context),
-              child: Wrap(
-                spacing: choicesSpacing,
-                runSpacing: Spacing.xs,
-                children: [
-                  ..._visibleOptions.map(
-                    (option) => DietaryPreferencesChoiceChip(
-                      label: option.label,
-                      isSelected: selectedOptions.contains(option.code),
-                      onSelected: (_) => _showOptionsBottomSheet(context),
-                    ),
+              child: Container(
+                padding: const EdgeInsetsDirectional.only(
+                  start: Spacing.sm,
+                  end: Spacing.xs,
+                  top: Spacing.xs,
+                  bottom: Spacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: color.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(
+                    Spacing.dietaryChipRadius,
                   ),
-                  if (actionLabel != null)
-                    OutlinedButton.icon(
-                      onPressed: onActionPressed,
-                      icon: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: Spacing.xs,
-                      ),
-                      label: Text(actionLabel!),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(0, Spacing.dietaryChipHeight),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.sm,
-                        ),
-                        textStyle: getMediumStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.primary,
-                        ),
-                        side: BorderSide(color: color.primaryContainer),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            Spacing.dietaryChipRadius,
+                  border: Border.all(color: color.outlineVariant),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        spacing: choicesSpacing,
+                        runSpacing: Spacing.xs,
+                        children: [
+                          ..._visibleOptions.map(
+                            (option) => DietaryPreferencesChoiceChip(
+                              label: option.label,
+                              isSelected: selectedOptions.contains(option.code),
+                              onSelected: (_) =>
+                                  _showOptionsBottomSheet(context),
+                            ),
                           ),
-                        ),
+                          if (actionLabel != null)
+                            OutlinedButton.icon(
+                              onPressed: onActionPressed,
+                              icon: Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                size: Spacing.xs,
+                              ),
+                              label: Text(actionLabel!),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(
+                                  0,
+                                  Spacing.dietaryChipHeight,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Spacing.sm,
+                                ),
+                                textStyle: getMediumStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size11,
+                                  color: color.primary,
+                                ),
+                                side: BorderSide(color: color.primaryContainer),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.dietaryChipRadius,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                ],
+                    const SizedBox(width: Spacing.xs),
+                    Container(
+                      width: Spacing.lg,
+                      height: Spacing.lg,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: color.primaryContainer,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: Spacing.iconSm,
+                        color: color.primary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

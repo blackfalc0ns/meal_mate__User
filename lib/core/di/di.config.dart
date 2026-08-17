@@ -133,6 +133,8 @@ import '../../features/profile/domain/usecase/delete_customer_profile_image_usec
     as _i186;
 import '../../features/profile/domain/usecase/get_customer_profile_usecase.dart'
     as _i994;
+import '../../features/profile/domain/usecase/get_profile_billing_usecase.dart'
+    as _i768;
 import '../../features/profile/domain/usecase/update_customer_profile_image_usecase.dart'
     as _i399;
 import '../../features/profile/domain/usecase/update_customer_profile_usecase.dart'
@@ -458,6 +460,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i994.GetCustomerProfileUseCase>(
       () => _i994.GetCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
     );
+    gh.factory<_i768.GetProfileBillingUseCase>(
+      () => _i768.GetProfileBillingUseCase(gh<_i311.ProfileRepository>()),
+    );
     gh.factory<_i399.UpdateCustomerProfileImageUseCase>(
       () => _i399.UpdateCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -489,15 +494,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i101.GetSubscriptionTiersUseCase>(
       () => _i101.GetSubscriptionTiersUseCase(
         gh<_i986.SubscriptionPlanRepository>(),
-      ),
-    );
-    gh.factory<_i446.ProfileViewModel>(
-      () => _i446.ProfileViewModel(
-        gh<_i994.GetCustomerProfileUseCase>(),
-        gh<_i857.UpdateCustomerProfileUseCase>(),
-        gh<_i995.UploadFileUseCase>(),
-        gh<_i399.UpdateCustomerProfileImageUseCase>(),
-        gh<_i186.DeleteCustomerProfileImageUseCase>(),
       ),
     );
     gh.factory<_i898.AddCustomerAddressUseCase>(
@@ -534,6 +530,16 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+      ),
+    );
+    gh.factory<_i446.ProfileViewModel>(
+      () => _i446.ProfileViewModel(
+        gh<_i994.GetCustomerProfileUseCase>(),
+        gh<_i768.GetProfileBillingUseCase>(),
+        gh<_i857.UpdateCustomerProfileUseCase>(),
+        gh<_i995.UploadFileUseCase>(),
+        gh<_i399.UpdateCustomerProfileImageUseCase>(),
+        gh<_i186.DeleteCustomerProfileImageUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

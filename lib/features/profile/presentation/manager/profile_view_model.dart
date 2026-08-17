@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/profile/domain/entities/profile_image_re
 import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/delete_customer_profile_image_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_customer_profile_usecase.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/get_profile_billing_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/update_customer_profile_image_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/update_customer_profile_usecase.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
@@ -16,6 +17,7 @@ import 'package:meal_meat_user/features/profile/presentation/manager/profile_sta
 class ProfileViewModel extends Cubit<ProfileState> {
   ProfileViewModel(
     this._getCustomerProfileUseCase,
+    this._getProfileBillingUseCase,
     this._updateCustomerProfileUseCase,
     this._uploadFileUseCase,
     this._updateCustomerProfileImageUseCase,
@@ -23,6 +25,7 @@ class ProfileViewModel extends Cubit<ProfileState> {
   ) : super(const ProfileState());
 
   final GetCustomerProfileUseCase _getCustomerProfileUseCase;
+  final GetProfileBillingUseCase _getProfileBillingUseCase;
   final UpdateCustomerProfileUseCase _updateCustomerProfileUseCase;
   final UploadFileUseCase _uploadFileUseCase;
   final UpdateCustomerProfileImageUseCase _updateCustomerProfileImageUseCase;
@@ -32,6 +35,8 @@ class ProfileViewModel extends Cubit<ProfileState> {
     switch (event) {
       case GetCustomerProfileEvent():
         _getCustomerProfile();
+      case GetProfileBillingEvent():
+        _getProfileBilling();
       case UpdateCustomerProfileEvent():
         _updateCustomerProfile(event.request);
       case UploadFileEvent():
@@ -71,6 +76,43 @@ class ProfileViewModel extends Cubit<ProfileState> {
         emit(
           state.copyWith(
             profile: state.profile.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _getProfileBilling() async {
+    emit(
+      state.copyWith(
+        billing: state.billing.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _getProfileBillingUseCase();
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            billing: state.billing.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              data: result.data,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            billing: state.billing.copyWith(
               isLoading: false,
               isSuccess: false,
               failure: result.failure,

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 
 class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
-  const ProfileBillingInvoiceHistoryCard({super.key});
+  const ProfileBillingInvoiceHistoryCard({required this.invoices, super.key});
+
+  final List<ProfileBillingInvoiceEntity> invoices;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final visibleInvoices = invoices.take(3).toList();
+    final dateFormatter = DateFormat.yMMMd(locale.localeName);
 
     return Container(
       height: Spacing.profileBillingInvoicesHeight,
@@ -61,15 +67,25 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
           const SizedBox(height: Spacing.xs),
           Expanded(
             child: Column(
-              children: List.generate(3, (index) {
+              children: List.generate(visibleInvoices.length, (index) {
+                final invoice = visibleInvoices[index];
+                final issuedAt = DateTime.tryParse(invoice.issuedAtUtc);
+                final dateText = issuedAt == null
+                    ? invoice.issuedAtUtc
+                    : dateFormatter.format(issuedAt.toLocal());
+                final statusText = invoice.statusNameAr.isEmpty
+                    ? locale.billing_paid
+                    : invoice.statusNameAr;
+                final amountText =
+                    '${invoice.amount.toStringAsFixed(2)} ${invoice.currencyCode}';
+
                 return Expanded(
                   child: Column(
                     children: [
                       Row(
-                        textDirection: TextDirection.ltr,
                         children: [
                           Text(
-                            '\$49.99',
+                            amountText,
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
@@ -89,7 +105,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              locale.billing_paid,
+                              statusText,
                               style: getMediumStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size10,
@@ -99,7 +115,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            '2025-000123',
+                            invoice.displayNumber,
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
@@ -108,7 +124,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            locale.billing_invoice_date,
+                            dateText,
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
@@ -117,13 +133,14 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                           ),
                           const SizedBox(width: Spacing.xs),
                           Icon(
-                            Icons.chevron_left_rounded,
+                            Icons.chevron_right_rounded,
                             size: Spacing.iconSm,
                             color: color.onSurfaceVariant,
                           ),
                         ],
                       ),
-                      if (index != 2) Divider(color: color.outlineVariant),
+                      if (index != visibleInvoices.length - 1)
+                        Divider(color: color.outlineVariant),
                     ],
                   ),
                 );

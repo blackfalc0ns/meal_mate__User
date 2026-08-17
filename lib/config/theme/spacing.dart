@@ -632,13 +632,13 @@ class Spacing {
 
   // Profile billing Figma measurements.
   static const double profileBillingHorizontalPadding = 18.66;
-  static const double profileBillingPlanHeight = 315.25;
+  static const double profileBillingPlanHeight = 280.0;
   static const double profileBillingPaymentHeight = 90.0;
   static const double profileBillingInvoicesHeight = 145.0;
   static const double profileBillingNoticeHeight = 51.0;
   static const double profileBillingButtonHeight = 32.0;
   static const double profileBillingCardRadius = 20.5668;
-  static const double profileBillingActionCardHeight = 63.05;
+  static const double profileBillingActionCardHeight = 58.0;
 
   // Security and privacy Figma measurements.
   static const double profilePrivacyScreenHorizontalPadding = 26.09;

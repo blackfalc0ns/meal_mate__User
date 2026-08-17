@@ -30,7 +30,9 @@ class DietaryPreferencesLoadingSkeleton extends StatelessWidget {
               const SizedBox(height: Spacing.dietarySectionGap),
               ...List.generate(3, (index) {
                 return Padding(
-                  padding: EdgeInsets.only(bottom: Spacing.dietarySectionGap),
+                  padding: const EdgeInsets.only(
+                    bottom: Spacing.dietarySectionGap,
+                  ),
                   child: Container(
                     constraints: const BoxConstraints(
                       minHeight: Spacing.dietaryCardHeight,
@@ -58,44 +60,79 @@ class DietaryPreferencesLoadingSkeleton extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
-                        Align(
+                      children: [
+                        const Align(
                           alignment: AlignmentDirectional.topStart,
-                          child: ShimmerPlaceholder.rect(
-                            width: Spacing.avatarLg,
-                            height: Spacing.lg,
-                            borderRadius: Spacing.radiusSm,
-                          ),
-                        ),
-                        SizedBox(height: Spacing.base),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
+                              ShimmerPlaceholder.circle(size: Spacing.lg),
+                              SizedBox(width: Spacing.xss),
                               ShimmerPlaceholder.rect(
                                 width: Spacing.avatarLg,
-                                height: Spacing.dietaryChipHeight,
-                                borderRadius: Spacing.dietaryChipRadius,
-                              ),
-                              SizedBox(width: Spacing.sm),
-                              ShimmerPlaceholder.rect(
-                                width: Spacing.avatarLg,
-                                height: Spacing.dietaryChipHeight,
-                                borderRadius: Spacing.dietaryChipRadius,
-                              ),
-                              SizedBox(width: Spacing.sm),
-                              ShimmerPlaceholder.rect(
-                                width: Spacing.avatarLg,
-                                height: Spacing.dietaryChipHeight,
-                                borderRadius: Spacing.dietaryChipRadius,
-                              ),
-                              SizedBox(width: Spacing.sm),
-                              ShimmerPlaceholder.rect(
-                                width: Spacing.avatarLg,
-                                height: Spacing.dietaryChipHeight,
-                                borderRadius: Spacing.dietaryChipRadius,
+                                height: Spacing.lg,
+                                borderRadius: Spacing.radiusSm,
                               ),
                             ],
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.base),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            end: Spacing.dietaryCardInset,
+                            bottom: Spacing.sm,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.sm,
+                              vertical: Spacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: color.surfaceContainerLowest,
+                              borderRadius: BorderRadius.circular(
+                                Spacing.dietaryChipRadius,
+                              ),
+                              border: Border.all(color: color.outlineVariant),
+                            ),
+                            child: Row(
+                              children: [
+                                const Expanded(
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        ShimmerPlaceholder.rect(
+                                          width: Spacing.avatarLg,
+                                          height: Spacing.dietaryChipHeight,
+                                          borderRadius:
+                                              Spacing.dietaryChipRadius,
+                                        ),
+                                        SizedBox(width: Spacing.sm),
+                                        ShimmerPlaceholder.rect(
+                                          width: Spacing.avatarLg,
+                                          height: Spacing.dietaryChipHeight,
+                                          borderRadius:
+                                              Spacing.dietaryChipRadius,
+                                        ),
+                                        SizedBox(width: Spacing.sm),
+                                        ShimmerPlaceholder.rect(
+                                          width: Spacing.avatarLg,
+                                          height: Spacing.dietaryChipHeight,
+                                          borderRadius:
+                                              Spacing.dietaryChipRadius,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: Spacing.sm),
+                                Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: color.onSurfaceVariant,
+                                  size: Spacing.iconMd,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

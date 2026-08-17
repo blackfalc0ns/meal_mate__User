@@ -777,7 +777,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get billing_renewal_date => 'تاريخ التجديد القادم: 15 يونيو 2025';
 
   @override
+  String billing_renewal_date_value(String date) {
+    return 'تاريخ التجديد القادم: $date';
+  }
+
+  @override
   String get billing_days_remaining => 'متبقي 18 يوم';
+
+  @override
+  String billing_days_remaining_value(int days) {
+    return 'متبقي $days يوم';
+  }
 
   @override
   String get billing_plan_usage => 'استخدام الخطة هذا الشهر';
@@ -790,6 +800,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get billing_plan_usage_remaining => 'من 30 يوم';
+
+  @override
+  String billing_plan_usage_remaining_value(int days) {
+    return 'من $days يوم';
+  }
 
   @override
   String get billing_renew => 'تجديد';
@@ -817,6 +832,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get billing_invoice_date => '15 مايو 2025';
+
+  @override
+  String get billing_no_subscription_title => 'لا يوجد اشتراك حالي';
+
+  @override
+  String get billing_no_subscription_description =>
+      'ستظهر تفاصيل اشتراكك هنا بعد الاشتراك.';
 
   @override
   String get billing_manage_subscription => 'إدارة الاشتراك';

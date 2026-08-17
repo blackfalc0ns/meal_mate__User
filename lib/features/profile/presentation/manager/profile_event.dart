@@ -10,6 +10,10 @@ class GetCustomerProfileEvent extends ProfileEvent {
   const GetCustomerProfileEvent();
 }
 
+class GetProfileBillingEvent extends ProfileEvent {
+  const GetProfileBillingEvent();
+}
+
 class UpdateCustomerProfileEvent extends ProfileEvent {
   const UpdateCustomerProfileEvent(this.request);
 

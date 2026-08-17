@@ -794,7 +794,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billing_renewal_date => 'Next renewal: June 15, 2025';
 
   @override
+  String billing_renewal_date_value(String date) {
+    return 'Next renewal: $date';
+  }
+
+  @override
   String get billing_days_remaining => '18 days remaining';
+
+  @override
+  String billing_days_remaining_value(int days) {
+    return '$days days remaining';
+  }
 
   @override
   String get billing_plan_usage => 'Plan usage this month';
@@ -807,6 +817,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billing_plan_usage_remaining => 'of 30 days';
+
+  @override
+  String billing_plan_usage_remaining_value(int days) {
+    return 'of $days days';
+  }
 
   @override
   String get billing_renew => 'Renew';
@@ -834,6 +849,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billing_invoice_date => 'May 15, 2025';
+
+  @override
+  String get billing_no_subscription_title => 'No current subscription';
+
+  @override
+  String get billing_no_subscription_description =>
+      'Your subscription details will appear here once you subscribe.';
 
   @override
   String get billing_manage_subscription => 'Manage subscription';

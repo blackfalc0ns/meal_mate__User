@@ -243,11 +243,35 @@
   "billing_plan_tier": "بلاتينيوم",
   "billing_active": "نشط",
   "billing_renewal_date": "تاريخ التجديد القادم: 15 يونيو 2025",
+  "billing_renewal_date_value": "تاريخ التجديد القادم: {date}",
+  "@billing_renewal_date_value": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "billing_days_remaining": "متبقي 18 يوم",
+  "billing_days_remaining_value": "متبقي {days} يوم",
+  "@billing_days_remaining_value": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "billing_plan_usage": "استخدام الخطة هذا الشهر",
   "billing_plan_usage_value": "22 من 30 يوم",
   "billing_plan_usage_current": "22",
   "billing_plan_usage_remaining": "من 30 يوم",
+  "billing_plan_usage_remaining_value": "من {days} يوم",
+  "@billing_plan_usage_remaining_value": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "billing_renew": "تجديد",
   "billing_freeze": "تجميد",
   "billing_upgrade_tier": "ترقية التصنيف",
@@ -257,6 +281,8 @@
   "billing_invoices": "الفواتير",
   "billing_paid": "مدفوع",
   "billing_invoice_date": "15 مايو 2025",
+  "billing_no_subscription_title": "لا يوجد اشتراك حالي",
+  "billing_no_subscription_description": "ستظهر تفاصيل اشتراكك هنا بعد الاشتراك.",
   "billing_manage_subscription": "إدارة الاشتراك",
   "billing_notice": "يمكنك تجميد اشتراكك حتى 30 يوماً مرة واحدة كل 6 أشهر. عند الإلغاء، ستظل تتمتع بالمزايا حتى نهاية دورة الفوترة الحالية.",
   "profile_addresses": "العناوين",
