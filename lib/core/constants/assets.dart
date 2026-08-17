@@ -58,6 +58,8 @@ class Assets {
       '$_images/profile/profile_billing_renew.svg';
   static const String profileBillingFreeze =
       '$_images/profile/profile_billing_freeze.svg';
+  static const String profileBillingUpgradeTier =
+      '$_images/profile/profile_billing_upgrade_tier.svg';
   static const String profileBillingCancel =
       '$_images/profile/profile_billing_cancel.svg';
   static const String dietaryPreferencesHero =

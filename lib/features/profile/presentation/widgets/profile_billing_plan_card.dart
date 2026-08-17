@@ -209,8 +209,8 @@ class ProfileBillingPlanCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ProfileBillingAction(
-                        iconAsset: Assets.profileBillingRenew,
-                        label: locale.billing_renew,
+                        iconAsset: Assets.profileBillingUpgradeTier,
+                        label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
                       ),
                     ),
@@ -220,6 +220,14 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingFreeze,
                         label: locale.billing_freeze,
                         actionColor: color.tertiary,
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.md),
+                    Expanded(
+                      child: ProfileBillingAction(
+                        iconAsset: Assets.profileBillingRenew,
+                        label: locale.billing_renew,
+                        actionColor: color.primary,
                       ),
                     ),
                     const SizedBox(width: Spacing.md),

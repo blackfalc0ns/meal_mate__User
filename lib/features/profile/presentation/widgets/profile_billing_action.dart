@@ -48,6 +48,9 @@ class ProfileBillingAction extends StatelessWidget {
           const SizedBox(height: Spacing.xs),
           Text(
             label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
             textDirection: textDirection,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,

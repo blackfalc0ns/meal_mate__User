@@ -250,6 +250,7 @@
   "billing_plan_usage_remaining": "of 30 days",
   "billing_renew": "Renew",
   "billing_freeze": "Freeze",
+  "billing_upgrade_tier": "Upgrade tier",
   "billing_cancel": "Cancel",
   "billing_default_payment_method": "Default payment method",
   "billing_expiration_date": "Expiration date",

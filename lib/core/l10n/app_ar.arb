@@ -250,6 +250,7 @@
   "billing_plan_usage_remaining": "من 30 يوم",
   "billing_renew": "تجديد",
   "billing_freeze": "تجميد",
+  "billing_upgrade_tier": "ترقية التصنيف",
   "billing_cancel": "إلغاء",
   "billing_default_payment_method": "وسيلة الدفع الافتراضية",
   "billing_expiration_date": "تاريخ الانتهاء",

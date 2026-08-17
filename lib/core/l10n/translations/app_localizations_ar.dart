@@ -798,6 +798,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get billing_freeze => 'تجميد';
 
   @override
+  String get billing_upgrade_tier => 'ترقية التصنيف';
+
+  @override
   String get billing_cancel => 'إلغاء';
 
   @override

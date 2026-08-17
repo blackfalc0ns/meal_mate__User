@@ -1598,6 +1598,12 @@ abstract class AppLocalizations {
   /// **'Freeze'**
   String get billing_freeze;
 
+  /// No description provided for @billing_upgrade_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade tier'**
+  String get billing_upgrade_tier;
+
   /// No description provided for @billing_cancel.
   ///
   /// In en, this message translates to:

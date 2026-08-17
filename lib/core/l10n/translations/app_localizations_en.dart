@@ -815,6 +815,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billing_freeze => 'Freeze';
 
   @override
+  String get billing_upgrade_tier => 'Upgrade tier';
+
+  @override
   String get billing_cancel => 'Cancel';
 
   @override
