@@ -23,8 +23,10 @@ Use these variables throughout the widget.
 ## Colors
 
 * Always use `color`.
+❌ Avoid
 * Never use `Colors.*` or `Color(...)`.
 * Never hardcode colors.
+* Never AppColors.
 
 ## Localization
 

@@ -194,6 +194,12 @@ class Assets {
       '$_images/subscriptions/figma/package_meal_box.png';
   static const String subscriptionRestaurantStack =
       '$_images/subscriptions/figma/restaurant_stack.svg';
+  static const String restaurantTierSelect =
+      '$_images/subscriptions/figma/restaurant_tier_select-283803.png';
+  static const String restaurantTierPlus =
+      '$_images/subscriptions/figma/restaurant_tier_plus-283803.png';
+  static const String restaurantTierMax =
+      '$_images/subscriptions/figma/restaurant_tier_max-f25390.png';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
   static const String subscriptionFamilyPackagePreview =
       '$_images/subscriptions/figma/family_package_preview.png';

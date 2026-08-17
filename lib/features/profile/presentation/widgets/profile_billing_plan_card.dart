@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -212,6 +214,8 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingUpgradeTier,
                         label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
+                        onTap: () =>
+                            context.pushNamed(AppRoutes.restaurantTierUpgrade),
                       ),
                     ),
                     const SizedBox(width: Spacing.md),

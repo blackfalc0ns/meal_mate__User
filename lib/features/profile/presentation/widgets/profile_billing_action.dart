@@ -10,12 +10,14 @@ class ProfileBillingAction extends StatelessWidget {
     required this.iconAsset,
     required this.label,
     required this.actionColor,
+    this.onTap,
     super.key,
   });
 
   final String iconAsset;
   final String label;
   final Color actionColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,39 +28,43 @@ class ProfileBillingAction extends StatelessWidget {
         ? TextDirection.rtl
         : TextDirection.ltr;
 
-    return Container(
-      height: Spacing.profileBillingActionCardHeight,
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: Spacing.md,
-            backgroundColor: actionColor,
-            child: SvgPicture.asset(
-              iconAsset,
-              width: Spacing.iconSm,
-              height: Spacing.iconSm,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(Spacing.radiusMd),
+      child: Container(
+        height: Spacing.profileBillingActionCardHeight,
+        decoration: BoxDecoration(
+          color: color.surface,
+          borderRadius: BorderRadius.circular(Spacing.radiusMd),
+          border: Border.all(color: color.outlineVariant),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: Spacing.md,
+              backgroundColor: actionColor,
+              child: SvgPicture.asset(
+                iconAsset,
+                width: Spacing.iconSm,
+                height: Spacing.iconSm,
+              ),
             ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            label,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            textDirection: textDirection,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size9,
-              color: color.onSurface,
+            const SizedBox(height: Spacing.xs),
+            Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              textDirection: textDirection,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size9,
+                color: color.onSurface,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
