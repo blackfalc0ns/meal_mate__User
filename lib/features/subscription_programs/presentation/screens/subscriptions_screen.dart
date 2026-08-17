@@ -227,7 +227,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       return;
     }
 
-    context.pushNamed(AppRoutes.familyPlanDetails);
+    context.pushNamed(AppRoutes.familySubscriptionSetup);
   }
 
   String _titleForType(BuildContext context, SubscriptionTypeEntity type) {

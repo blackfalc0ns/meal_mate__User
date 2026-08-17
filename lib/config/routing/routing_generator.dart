@@ -28,6 +28,7 @@ import 'package:meal_meat_user/features/splash/presentation/screens/splash_scree
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/screens/family_subscription_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_program_setup_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
@@ -98,6 +99,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilySubscriptionSettingsScreen(),
+        );
+      case AppRoutes.familySubscriptionSetup:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilySubscriptionSetupScreen(),
         );
       case AppRoutes.familySubscriptionMembers:
         return _buildRoute(
