@@ -100,11 +100,9 @@ class RestaurantTierActionPanel extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.lg),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     color: buttonTextColor,
                     size: Spacing.iconMd,
-                    semanticLabel:
-                        locale.subscription_summary_restaurant_tier_label,
                   ),
                 ],
               ),

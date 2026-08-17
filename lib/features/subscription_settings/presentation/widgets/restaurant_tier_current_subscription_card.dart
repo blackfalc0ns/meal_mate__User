@@ -19,8 +19,8 @@ class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
     return Container(
       height: Spacing.restaurantTierPlanCardHeight,
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.xl,
-        vertical: Spacing.lg,
+        horizontal: Spacing.sm,
+        vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
         color: color.primaryContainer.withValues(alpha: 0.32),
@@ -77,6 +77,12 @@ class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Icon(
+                    Icons.calendar_month_rounded,
+                    color: color.primary,
+                    size: Spacing.iconSm,
+                  ),
+                  const SizedBox(width: Spacing.md),
                   Text.rich(
                     TextSpan(
                       children: [
@@ -100,20 +106,19 @@ class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
                       color: color.onSurfaceVariant,
                     ),
                   ),
-                  const SizedBox(width: Spacing.md),
-                  Icon(
-                    Icons.calendar_month_rounded,
-                    color: color.primary,
-                    size: Spacing.iconMd,
-                  ),
                 ],
               ),
             ],
           ),
           const Spacer(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              RestaurantTierBadge(
+                imageAsset: data.tiers.first.badgeAsset,
+                size: Spacing.restaurantTierSmallBadgeSize,
+              ),
+              const SizedBox(width: Spacing.sm),
               Text.rich(
                 TextSpan(
                   children: [
@@ -134,11 +139,6 @@ class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
                   fontSize: FontSize.size14,
                   color: color.primary,
                 ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              RestaurantTierBadge(
-                imageAsset: data.tiers.first.badgeAsset,
-                size: Spacing.restaurantTierSmallBadgeSize,
               ),
             ],
           ),

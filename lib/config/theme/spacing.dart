@@ -181,9 +181,9 @@ class Spacing {
   static const double subscriptionPackageSelectorHeight = 42.0;
   static const double restaurantTierDesignWidth = 522.0;
   static const double restaurantTierHorizontalPadding = 20.0;
-  static const double restaurantTierPlanCardHeight = 138.48;
-  static const double restaurantTierOptionCardHeight = 180.48;
-  static const double restaurantTierCurrentOptionHeight = 187.29;
+  static const double restaurantTierPlanCardHeight = 115.48;
+  static const double restaurantTierOptionCardHeight = 150.48;
+  static const double restaurantTierCurrentOptionHeight = 170.29;
   static const double restaurantTierCardRadius = 17.026;
   static const double restaurantTierBadgeSize = 53.35;
   static const double restaurantTierSmallBadgeSize = 34.05;
@@ -191,7 +191,7 @@ class Spacing {
   static const double restaurantTierLogoStripHeight = 41.06;
   static const double restaurantTierActionPanelHeight = 57.89;
   static const double restaurantTierInlineButtonHeight = 37.46;
-  static const double restaurantTierBottomButtonHeight = 45.4;
+  static const double restaurantTierBottomButtonHeight = 40.4;
   static const double restaurantTierCardsGap = 12.486;
   static const double subscriptionFamilyBannerHeight = 84.0;
   static const double subscriptionFamilyPreviewWidth = 98.32;

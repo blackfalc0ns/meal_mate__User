@@ -61,19 +61,121 @@ class RestaurantTierOptionCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: SizedBox(
         height: isCurrent
             ? Spacing.restaurantTierCurrentOptionHeight
             : Spacing.restaurantTierOptionCardHeight,
-        decoration: background,
-        clipBehavior: Clip.none,
-        child: Column(
+        child: Stack(
+          clipBehavior: Clip.none,
           children: [
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: Container(
+                height: isCurrent
+                    ? Spacing.restaurantTierCurrentOptionHeight
+                    : Spacing.restaurantTierOptionCardHeight,
+                decoration: background,
+                clipBehavior: Clip.none,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          start: Spacing.base,
+                          top: isCurrent ? Spacing.md : Spacing.xs,
+                          end: Spacing.base,
+                          bottom: Spacing.sm,
+                        ),
+                        child: Column(
+                          children: [
+                            if (isCurrent) ...[
+                              Align(
+                                alignment: AlignmentDirectional.topEnd,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Spacing.md,
+                                    vertical: Spacing.sm,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: color.primary,
+                                    borderRadius: BorderRadius.circular(
+                                      Spacing.radiusPill,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    actionText,
+                                    style: getSemiBoldStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size10,
+                                      color: color.onPrimary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            
+                            ],
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                RestaurantTierBadge(imageAsset: badgeAsset),
+                                const SizedBox(width: Spacing.sm),
+                                Text(
+                                  title,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size20,
+                                    color: titleColor,
+                                  ),
+                                ),
+                                const SizedBox(width: Spacing.xxl),
+                                const Expanded(
+                                  child: RestaurantTierLogoStrip(),
+                                ),
+                                const SizedBox(width: Spacing.sm),
+                                RestaurantTierCountBadge(
+                                  text: restaurantCount,
+                                  foregroundColor: countColor,
+                                  borderColor: countBorderColor,
+                                ),
+                              ],
+                            ),
+                           // const SizedBox(height: Spacing.sm),
+                            Text(
+                              description,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size11,
+                                color: descriptionColor,
+                              ),
+                            ),
+                            const Spacer(),
+                            RestaurantTierActionPanel(
+                              isCurrent: isCurrent,
+                              text: actionText,
+                              panelColor: actionPanelColor,
+                              panelBorderColor: actionPanelBorderColor,
+                              buttonColor: actionButtonColor,
+                              buttonTextColor: actionButtonTextColor,
+                              priceColor: priceColor,
+                              price: price,
+                              pricePeriod: pricePeriod,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             if (isSelected)
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: Transform.translate(
-                  offset: const Offset(Spacing.xs, -Spacing.xs),
+                  offset: const Offset(Spacing.xs, Spacing.zero),
                   child: Container(
                     width: Spacing.iconLg,
                     height: Spacing.iconLg,
@@ -90,88 +192,7 @@ class RestaurantTierOptionCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
-            else
-              const SizedBox(height: Spacing.base),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        RestaurantTierBadge(imageAsset: badgeAsset),
-                        const SizedBox(width: Spacing.sm),
-                        Text(
-                          title,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size20,
-                            color: titleColor,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        const Expanded(child: RestaurantTierLogoStrip()),
-                        const SizedBox(width: Spacing.sm),
-                        if (isCurrent)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.md,
-                              vertical: Spacing.sm,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.primary,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusPill,
-                              ),
-                            ),
-                            child: Text(
-                              actionText,
-                              style: getSemiBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.onPrimary,
-                              ),
-                            ),
-                          )
-                        else
-                          RestaurantTierCountBadge(
-                            text: restaurantCount,
-                            foregroundColor: countColor,
-                            borderColor: countBorderColor,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: Spacing.sm),
-                    Text(
-                      description,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: descriptionColor,
-                      ),
-                    ),
-                    const Spacer(),
-                    RestaurantTierActionPanel(
-                      isCurrent: isCurrent,
-                      text: actionText,
-                      panelColor: actionPanelColor,
-                      panelBorderColor: actionPanelBorderColor,
-                      buttonColor: actionButtonColor,
-                      buttonTextColor: actionButtonTextColor,
-                      priceColor: priceColor,
-                      price: price,
-                      pricePeriod: pricePeriod,
-                    ),
-                  ],
-                ),
               ),
-            ),
-            const SizedBox(height: Spacing.sm),
           ],
         ),
       ),
