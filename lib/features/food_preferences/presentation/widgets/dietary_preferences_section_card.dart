@@ -4,8 +4,8 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_choice_chip.dart';
-
-typedef DietaryPreferencesOption = ({String code, String label});
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_options_bottom_sheet.dart';
 
 class DietaryPreferencesSectionCard extends StatelessWidget {
   const DietaryPreferencesSectionCard({
@@ -20,6 +20,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
     required this.choicesSpacing,
     this.actionLabel,
     this.onActionPressed,
+    this.singleSelection = false,
     required this.iconColor,
   });
 
@@ -33,6 +34,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   final double choicesSpacing;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
+  final bool singleSelection;
   final Color iconColor;
 
   @override
@@ -90,30 +92,28 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                 headerTopInset -
                 Spacing.dietaryHeaderIconHeight,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ...options.map(
-                  (option) => Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      start: choicesSpacing,
-                      //choicesSpacing,
-                    ),
-                    child: DietaryPreferencesChoiceChip(
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: choicesSpacing,
+              end: Spacing.dietaryCardInset,
+              bottom: Spacing.sm,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(Spacing.dietaryChipRadius),
+              onTap: () => _showOptionsBottomSheet(context),
+              child: Wrap(
+                spacing: choicesSpacing,
+                runSpacing: Spacing.xs,
+                children: [
+                  ..._visibleOptions.map(
+                    (option) => DietaryPreferencesChoiceChip(
                       label: option.label,
                       isSelected: selectedOptions.contains(option.code),
-                      onSelected: (_) => onOptionSelected(option.code),
+                      onSelected: (_) => _showOptionsBottomSheet(context),
                     ),
                   ),
-                ),
-                if (actionLabel != null)
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(start: choicesSpacing),
-                    child: OutlinedButton.icon(
+                  if (actionLabel != null)
+                    OutlinedButton.icon(
                       onPressed: onActionPressed,
                       icon: Icon(
                         Icons.arrow_back_ios_new_rounded,
@@ -138,11 +138,42 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  List<DietaryPreferencesOption> get _visibleOptions {
+    final selected = options
+        .where((option) => selectedOptions.contains(option.code))
+        .toList();
+
+    return selected.isEmpty ? options.take(3).toList() : selected;
+  }
+
+  Future<void> _showOptionsBottomSheet(BuildContext context) {
+    final color = context.colorScheme;
+
+    return showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: color.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
+        ),
+      ),
+      builder: (_) => DietaryPreferencesOptionsBottomSheet(
+        title: title,
+        icon: icon,
+        iconColor: iconColor,
+        options: options,
+        selectedOptions: selectedOptions,
+        onOptionSelected: onOptionSelected,
+        singleSelection: singleSelection,
       ),
     );
   }

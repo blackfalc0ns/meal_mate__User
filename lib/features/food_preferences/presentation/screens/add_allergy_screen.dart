@@ -19,6 +19,7 @@ import 'package:meal_meat_user/features/food_preferences/presentation/manager/fo
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_common_list.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_option_tile.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_summary_card.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
 class AddAllergyScreen extends StatefulWidget {

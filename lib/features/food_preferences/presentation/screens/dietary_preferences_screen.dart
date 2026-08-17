@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/food_preferences/presentation/manager/fo
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_hero_banner.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_loading_skeleton.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_notes_section.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
 class DietaryPreferencesScreen extends StatefulWidget {
@@ -198,6 +199,7 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     selectedOptions: _diets,
                     onOptionSelected: (value) =>
                         _toggleSelection(_diets, value, single: true),
+                    singleSelection: true,
                     headerTopInset: Spacing.dietaryDietHeaderTopInset,
                     choicesTopInset: Spacing.dietaryDietChoicesTopInset,
                     choicesSpacing: Spacing.dietaryDietChoicesSpacing,
