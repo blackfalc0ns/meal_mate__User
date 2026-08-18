@@ -29,12 +29,12 @@ abstract class EndPoints {
   static const String customerAddress =
       '/api/v1/customers/me/addresses/{addressId}';
   static const String customerPassword = '/api/v1/customers/me/password';
-  static const String customerFoodPreferences =
-      '/api/v1/customers/me/food-preferences';
-  static const String customerFoodPreferencesCatalog =
-      '/api/v1/customers/me/food-preferences/catalog';
+  static const String customerFoodPreferencesDisliked =
+      '/api/v1/customers/me/food-preferences/disliked-ingredients';
   static const String customerFoodPreferencesAllergies =
       '/api/v1/customers/me/food-preferences/allergies';
+  static const String customerFoodPreferencesDietary =
+      '/api/v1/customers/me/food-preferences/dietary';
   static const String subscriptionTypes =
       '/api/v1/customer/subscription-flow/types';
   static const String subscriptionPrograms =

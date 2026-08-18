@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AddAllergyOptionTile extends StatelessWidget {
   const AddAllergyOptionTile({
     super.key,
     required this.label,
-    required this.iconAsset,
     required this.isSelected,
     required this.onTap,
   });
 
   final String label;
-  final String? iconAsset;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -26,7 +22,7 @@ class AddAllergyOptionTile extends StatelessWidget {
     final locale = context.localization;
 
     return Semantics(
-      label: label,
+      label: isSelected ? '$label ${locale.add_allergy_selected}' : label,
       selected: isSelected,
       child: InkWell(
         onTap: onTap,
@@ -47,20 +43,14 @@ class AddAllergyOptionTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              iconAsset == null
-                  ? Container(
-                      width: Spacing.lg,
-                      height: Spacing.lg,
-                      decoration: BoxDecoration(
-                        color: color.surfaceContainerHighest,
-                        shape: BoxShape.circle,
-                      ),
-                    )
-                  : SvgPicture.asset(
-                      iconAsset!,
-                      width: Spacing.lg,
-                      height: Spacing.lg,
-                    ),
+              Container(
+                width: Spacing.lg,
+                height: Spacing.lg,
+                decoration: BoxDecoration(
+                  color: color.surfaceContainerHighest,
+                  shape: BoxShape.circle,
+                ),
+              ),
               const SizedBox(width: Spacing.xs),
               Expanded(
                 child: Text(
@@ -75,11 +65,10 @@ class AddAllergyOptionTile extends StatelessWidget {
                 ),
               ),
               if (isSelected)
-                SvgPicture.asset(
-                  AssetsFake.addAllergySelected,
-                  width: Spacing.lg,
-                  height: Spacing.lg,
-                  semanticsLabel: locale.add_allergy_selected,
+                Icon(
+                  Icons.check_circle_rounded,
+                  size: Spacing.lg,
+                  color: color.primary,
                 ),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 
 class DietaryPreferencesOptionsBottomSheet extends StatefulWidget {
@@ -14,7 +15,6 @@ class DietaryPreferencesOptionsBottomSheet extends StatefulWidget {
     required this.options,
     required this.selectedOptions,
     required this.onOptionSelected,
-    required this.singleSelection,
   });
 
   final String title;
@@ -23,7 +23,6 @@ class DietaryPreferencesOptionsBottomSheet extends StatefulWidget {
   final List<DietaryPreferencesOption> options;
   final Set<String> selectedOptions;
   final ValueChanged<String> onOptionSelected;
-  final bool singleSelection;
 
   @override
   State<DietaryPreferencesOptionsBottomSheet> createState() =>
@@ -140,16 +139,24 @@ class _DietaryPreferencesOptionsBottomSheetState
   void _toggleOption(String code) {
     widget.onOptionSelected(code);
 
-    if (widget.singleSelection) {
-      Navigator.of(context).pop();
-      return;
-    }
-
     setState(() {
+      if (code == FoodPreferenceItemEntity.noneCode) {
+        _selectedOptions
+          ..clear()
+          ..add(FoodPreferenceItemEntity.noneCode);
+        return;
+      }
+
+      _selectedOptions.remove(FoodPreferenceItemEntity.noneCode);
+
       if (_selectedOptions.contains(code)) {
         _selectedOptions.remove(code);
       } else {
         _selectedOptions.add(code);
+      }
+
+      if (_selectedOptions.isEmpty) {
+        _selectedOptions.add(FoodPreferenceItemEntity.noneCode);
       }
     });
   }

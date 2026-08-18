@@ -23,10 +23,10 @@ import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_r
 import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_allergies_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_dietary_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_disliked_ingredients_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
-import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_request_dto.dart';
-import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
@@ -164,18 +164,40 @@ abstract class ApiServices {
     @Body() ChangeCustomerPasswordRequestDto request,
   );
 
-  @GET(EndPoints.customerFoodPreferences)
-  Future<FoodPreferencesResponseDto> getFoodPreferences();
+  @GET(EndPoints.customerFoodPreferencesDisliked)
+  Future<FoodPreferencesResponseDto> getFoodPreferencesDislikedIngredients(
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+    @Query('search') String? search,
+  );
 
-  @GET(EndPoints.customerFoodPreferencesCatalog)
-  Future<FoodPreferencesCatalogResponseDto> getFoodPreferencesCatalog();
+  @GET(EndPoints.customerFoodPreferencesAllergies)
+  Future<FoodPreferencesResponseDto> getFoodPreferencesAllergies(
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+    @Query('search') String? search,
+  );
 
-  @PUT(EndPoints.customerFoodPreferences)
-  Future<void> updateFoodPreferences(@Body() FoodPreferencesRequestDto request);
+  @GET(EndPoints.customerFoodPreferencesDietary)
+  Future<FoodPreferencesResponseDto> getFoodPreferencesDietary(
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+    @Query('search') String? search,
+  );
+
+  @PUT(EndPoints.customerFoodPreferencesDisliked)
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesDislikedIngredients(
+    @Body() FoodPreferencesDislikedIngredientsRequestDto request,
+  );
 
   @PUT(EndPoints.customerFoodPreferencesAllergies)
   Future<FoodPreferencesResponseDto> updateFoodPreferencesAllergies(
     @Body() FoodPreferencesAllergiesRequestDto request,
+  );
+
+  @PUT(EndPoints.customerFoodPreferencesDietary)
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesDietary(
+    @Body() FoodPreferencesDietaryRequestDto request,
   );
 
   @GET(EndPoints.subscriptionTypes)

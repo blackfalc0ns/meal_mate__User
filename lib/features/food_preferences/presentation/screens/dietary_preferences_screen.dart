@@ -11,7 +11,6 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
-import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
@@ -21,21 +20,8 @@ import 'package:meal_meat_user/features/food_preferences/presentation/widgets/di
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
-class DietaryPreferencesScreen extends StatefulWidget {
+class DietaryPreferencesScreen extends StatelessWidget {
   const DietaryPreferencesScreen({super.key});
-
-  @override
-  State<DietaryPreferencesScreen> createState() =>
-      _DietaryPreferencesScreenState();
-}
-
-class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
-  final Set<String> _diets = <String>{};
-  final Set<String> _dislikes = <String>{};
-  final Set<String> _allergies = <String>{};
-  bool _hasInitialSelections = false;
-  bool _hasAppliedRemotePreferences = false;
-  String? _notes;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +30,8 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
         ..doIntent(const GetFoodPreferencesEvent())
         ..doIntent(const GetFoodPreferencesCatalogEvent()),
       child: BlocListener<FoodPreferencesViewModel, FoodPreferencesState>(
-        listenWhen: (previous, current) =>
-            previous.preferences.data != current.preferences.data ||
-            previous.action != current.action,
+        listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
-          final preferences = state.preferences.data;
-          if (preferences != null && !_hasAppliedRemotePreferences) {
-            _applyPreferences(preferences);
-          }
-
           if (state.action.isSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
@@ -65,76 +44,9 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_hasInitialSelections) return;
-
-    final locale = context.localization;
-    _diets.add(locale.dietary_preferences_diet_balanced);
-    _hasInitialSelections = true;
-  }
-
-  void _applyPreferences(FoodPreferencesEntity preferences) {
-    setState(() {
-      _diets
-        ..clear()
-        ..addAll([
-          if (preferences.dietaryPattern != null) preferences.dietaryPattern!,
-        ]);
-      _dislikes
-        ..clear()
-        ..addAll(preferences.dislikedFoods.map((item) => item.code));
-      _allergies
-        ..clear()
-        ..addAll(preferences.allergies.map((item) => item.code));
-      _notes = preferences.notes;
-      _hasInitialSelections = true;
-      _hasAppliedRemotePreferences = true;
-    });
-  }
-
-  void _toggleSelection(
-    Set<String> values,
-    String value, {
-    bool single = false,
-  }) {
-    setState(() {
-      if (values.contains(value)) {
-        values.remove(value);
-      } else {
-        if (single) values.clear();
-        values.add(value);
-      }
-    });
-  }
-
   Widget _buildContent(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final dietOptions = [
-      (
-        code: locale.dietary_preferences_diet_balanced,
-        label: locale.dietary_preferences_diet_balanced,
-      ),
-      (
-        code: locale.dietary_preferences_diet_vegetarian,
-        label: locale.dietary_preferences_diet_vegetarian,
-      ),
-      (
-        code: locale.dietary_preferences_diet_vegan,
-        label: locale.dietary_preferences_diet_vegan,
-      ),
-      (
-        code: locale.dietary_preferences_diet_keto,
-        label: locale.dietary_preferences_diet_keto,
-      ),
-      (
-        code: locale.dietary_preferences_diet_high_protein,
-        label: locale.dietary_preferences_diet_high_protein,
-      ),
-    ];
-
     return Scaffold(
       appBar: CustomAppBar(
         title: locale.profile_dietary_preferences,
@@ -146,11 +58,13 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
         buildWhen: (previous, current) =>
             previous.preferences != current.preferences ||
             previous.catalog != current.catalog ||
-            previous.action != current.action,
+            previous.action != current.action ||
+            previous.selection != current.selection,
         builder: (context, state) {
           final preferencesState = state.preferences;
           final catalogState = state.catalog;
           final catalog = catalogState.data;
+          final selection = state.selection;
 
           if ((preferencesState.isLoading && preferencesState.data == null) ||
               (catalogState.isLoading && catalog == null)) {
@@ -170,6 +84,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
             );
           }
 
+          final dietOptions = _catalogOptions(
+            catalog?.dietaryPreferences ?? const [],
+            locale.localeName,
+          );
           final dislikeOptions = _catalogOptions(
             catalog?.ingredients ?? const [],
             locale.localeName,
@@ -196,10 +114,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     title: locale.dietary_preferences_diet_title,
                     icon: Icons.eco_rounded,
                     options: dietOptions,
-                    selectedOptions: _diets,
-                    onOptionSelected: (value) =>
-                        _toggleSelection(_diets, value, single: true),
-                    singleSelection: true,
+                    selectedOptions: selection.dietaryPreferences,
+                    onOptionSelected: (value) => context
+                        .read<FoodPreferencesViewModel>()
+                        .doIntent(ToggleDietaryPreferenceEvent(value)),
                     headerTopInset: Spacing.dietaryDietHeaderTopInset,
                     choicesTopInset: Spacing.dietaryDietChoicesTopInset,
                     choicesSpacing: Spacing.dietaryDietChoicesSpacing,
@@ -210,9 +128,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     title: locale.dietary_preferences_dislikes_title,
                     icon: Icons.cancel_rounded,
                     options: dislikeOptions,
-                    selectedOptions: _dislikes,
-                    onOptionSelected: (value) =>
-                        _toggleSelection(_dislikes, value),
+                    selectedOptions: selection.dislikedFoods,
+                    onOptionSelected: (value) => context
+                        .read<FoodPreferencesViewModel>()
+                        .doIntent(ToggleDislikedFoodEvent(value)),
                     headerTopInset: Spacing.dietaryDislikesHeaderTopInset,
                     choicesTopInset: Spacing.dietaryDislikesChoicesTopInset,
                     choicesSpacing: Spacing.dietaryDietChoicesSpacing,
@@ -223,9 +142,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                     title: locale.dietary_preferences_allergies_title,
                     icon: Icons.verified_user_rounded,
                     options: allergyOptions,
-                    selectedOptions: _allergies,
-                    onOptionSelected: (value) =>
-                        _toggleSelection(_allergies, value),
+                    selectedOptions: selection.allergies,
+                    onOptionSelected: (value) => context
+                        .read<FoodPreferencesViewModel>()
+                        .doIntent(ToggleAllergyPreferenceEvent(value)),
                     headerTopInset: Spacing.dietaryAllergiesHeaderTopInset,
                     choicesTopInset: Spacing.dietaryAllergiesChoicesTopInset,
                     choicesSpacing: Spacing.dietaryDietChoicesSpacing,
@@ -244,8 +164,10 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                   ),
                   const SizedBox(height: Spacing.dietarySectionGap),
                   DietaryPreferencesNotesSection(
-                    initialValue: _notes,
-                    onChanged: (value) => _notes = value,
+                    initialValue: selection.notes,
+                    onChanged: (value) => context
+                        .read<FoodPreferencesViewModel>()
+                        .doIntent(FoodPreferenceNotesChangedEvent(value)),
                   ),
                   const SizedBox(height: Spacing.dietarySectionGap),
                   CustomWarningWidget(
@@ -265,12 +187,9 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
                   const SizedBox(height: Spacing.sm),
                   AppButton.filled(
                     text: locale.dietary_preferences_save,
-                    onPressed: () =>
-                        context.read<FoodPreferencesViewModel>().doIntent(
-                          UpdateFoodPreferencesEvent(
-                            _buildPreferencesEntity(catalog),
-                          ),
-                        ),
+                    onPressed: () => context
+                        .read<FoodPreferencesViewModel>()
+                        .doIntent(const SaveFoodPreferencesEvent()),
                     isLoading: state.action.isLoading,
                     height: Spacing.dietarySaveButtonHeight,
                     borderRadius: Spacing.dietarySaveButtonRadius,
@@ -299,42 +218,6 @@ class _DietaryPreferencesScreenState extends State<DietaryPreferencesScreen> {
           ),
         )
         .where((item) => item.code.isNotEmpty && item.label.isNotEmpty)
-        .toList();
-  }
-
-  FoodPreferencesEntity _buildPreferencesEntity(
-    FoodPreferencesCatalogEntity? catalog,
-  ) {
-    return FoodPreferencesEntity(
-      dietaryPattern: _diets.isEmpty ? null : _diets.first,
-      allergies: _selectedCatalogItems(
-        selectedCodes: _allergies,
-        catalogItems: catalog?.allergens ?? const [],
-      ),
-      dislikedFoods: _selectedCatalogItems(
-        selectedCodes: _dislikes,
-        catalogItems: catalog?.ingredients ?? const [],
-      ),
-      notes: _notes,
-    );
-  }
-
-  List<FoodPreferenceItemEntity> _selectedCatalogItems({
-    required Set<String> selectedCodes,
-    required List<FoodPreferenceCatalogItemEntity> catalogItems,
-  }) {
-    final itemsByCode = {for (final item in catalogItems) item.code: item};
-
-    return selectedCodes
-        .map((code) => itemsByCode[code])
-        .nonNulls
-        .map(
-          (item) => FoodPreferenceItemEntity(
-            code: item.code,
-            nameAr: item.nameAr,
-            nameEn: item.nameEn,
-          ),
-        )
         .toList();
   }
 }

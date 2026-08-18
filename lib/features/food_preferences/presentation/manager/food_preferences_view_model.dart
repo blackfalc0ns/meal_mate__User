@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_usecase.dart';
@@ -30,10 +31,20 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
         _getFoodPreferences();
       case GetFoodPreferencesCatalogEvent():
         _getFoodPreferencesCatalog();
-      case UpdateFoodPreferencesEvent():
-        _updateFoodPreferences(event.preferences);
-      case UpdateFoodPreferencesAllergiesEvent():
-        _updateFoodPreferencesAllergies(event.allergies);
+      case ToggleDietaryPreferenceEvent():
+        _toggleDietaryPreference(event.code);
+      case ToggleDislikedFoodEvent():
+        _toggleDislikedFood(event.code);
+      case ToggleAllergyPreferenceEvent():
+        _toggleAllergyPreference(event.code);
+      case FoodPreferenceNotesChangedEvent():
+        _changeNotes(event.notes);
+      case FoodPreferenceAllergySearchChangedEvent():
+        _changeAllergySearchQuery(event.query);
+      case SaveFoodPreferencesEvent():
+        _updateFoodPreferences();
+      case SaveFoodPreferencesAllergiesEvent():
+        _updateFoodPreferencesAllergies();
     }
   }
 
@@ -52,6 +63,7 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final selection = _selectionFromPreferences(result.data);
         emit(
           state.copyWith(
             preferences: state.preferences.copyWith(
@@ -59,6 +71,7 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
               isSuccess: true,
               data: result.data,
             ),
+            selection: selection,
           ),
         );
       case ApiErrorResult():
@@ -111,18 +124,31 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
     }
   }
 
-  Future<void> _updateFoodPreferences(FoodPreferencesEntity preferences) async {
-    await _runAction(() => _updateFoodPreferencesUseCase(preferences));
+  Future<void> _updateFoodPreferences() async {
+    final catalog = state.catalog.data;
+    if (catalog == null) return;
+
+    await _runAction(
+      () => _updateFoodPreferencesUseCase(_buildPreferencesEntity(catalog)),
+    );
 
     if (state.action.isSuccess) {
       _getFoodPreferences();
     }
   }
 
-  Future<void> _updateFoodPreferencesAllergies(
-    List<FoodPreferenceItemEntity> allergies,
-  ) async {
-    await _runAction(() => _updateFoodPreferencesAllergiesUseCase(allergies));
+  Future<void> _updateFoodPreferencesAllergies() async {
+    final catalog = state.catalog.data;
+    if (catalog == null) return;
+
+    await _runAction(
+      () => _updateFoodPreferencesAllergiesUseCase(
+        _selectedCatalogItems(
+          selectedCodes: state.selection.activeAllergies,
+          catalogItems: catalog.allergens,
+        ),
+      ),
+    );
     if (state.action.isSuccess) {
       _getFoodPreferences();
     }
@@ -160,5 +186,136 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
           ),
         );
     }
+  }
+
+  void _toggleDietaryPreference(String code) {
+    emit(
+      state.copyWith(
+        selection: state.selection.copyWith(
+          dietaryPreferences: _toggleSelection(
+            state.selection.dietaryPreferences,
+            code,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _toggleDislikedFood(String code) {
+    emit(
+      state.copyWith(
+        selection: state.selection.copyWith(
+          dislikedFoods: _toggleSelection(state.selection.dislikedFoods, code),
+        ),
+      ),
+    );
+  }
+
+  void _toggleAllergyPreference(String code) {
+    emit(
+      state.copyWith(
+        selection: state.selection.copyWith(
+          allergies: _toggleSelection(state.selection.allergies, code),
+        ),
+      ),
+    );
+  }
+
+  void _changeNotes(String notes) {
+    emit(state.copyWith(selection: state.selection.copyWith(notes: notes)));
+  }
+
+  void _changeAllergySearchQuery(String query) {
+    emit(
+      state.copyWith(
+        selection: state.selection.copyWith(allergySearchQuery: query),
+      ),
+    );
+  }
+
+  FoodPreferencesSelectionState _selectionFromPreferences(
+    FoodPreferencesEntity preferences,
+  ) {
+    return state.selection.copyWith(
+      dietaryPreferences: _selectedCodesOrNone(preferences.dietaryPreferences),
+      dislikedFoods: _selectedCodesOrNone(preferences.dislikedFoods),
+      allergies: _selectedCodesOrNone(preferences.allergies),
+      notes: preferences.notes,
+    );
+  }
+
+  FoodPreferencesEntity _buildPreferencesEntity(
+    FoodPreferencesCatalogEntity catalog,
+  ) {
+    final selectedDiets = state.selection.activeDietaryPreferences.toList();
+
+    return FoodPreferencesEntity(
+      dietaryPattern: selectedDiets.isEmpty ? null : selectedDiets.first,
+      dietaryPreferences: _selectedCatalogItems(
+        selectedCodes: state.selection.activeDietaryPreferences,
+        catalogItems: catalog.dietaryPreferences,
+      ),
+      allergies: _selectedCatalogItems(
+        selectedCodes: state.selection.activeAllergies,
+        catalogItems: catalog.allergens,
+      ),
+      dislikedFoods: _selectedCatalogItems(
+        selectedCodes: state.selection.activeDislikedFoods,
+        catalogItems: catalog.ingredients,
+      ),
+      notes: state.selection.notes,
+    );
+  }
+
+  List<FoodPreferenceItemEntity> _selectedCatalogItems({
+    required Set<String> selectedCodes,
+    required List<FoodPreferenceCatalogItemEntity> catalogItems,
+  }) {
+    final itemsByCode = {for (final item in catalogItems) item.code: item};
+
+    return selectedCodes
+        .map((code) => itemsByCode[code])
+        .nonNulls
+        .map(
+          (item) => FoodPreferenceItemEntity(
+            code: item.code,
+            nameAr: item.nameAr,
+            nameEn: item.nameEn,
+          ),
+        )
+        .toList();
+  }
+
+  Set<String> _selectedCodesOrNone(List<FoodPreferenceItemEntity> items) {
+    final codes = items
+        .map((item) => item.code)
+        .where(
+          (code) =>
+              code.isNotEmpty && code != FoodPreferenceItemEntity.noneCode,
+        )
+        .toSet();
+
+    return codes.isEmpty
+        ? const <String>{FoodPreferenceItemEntity.noneCode}
+        : codes;
+  }
+
+  Set<String> _toggleSelection(Set<String> values, String code) {
+    if (code == FoodPreferenceItemEntity.noneCode) {
+      return const <String>{FoodPreferenceItemEntity.noneCode};
+    }
+
+    final updated = Set<String>.of(values)
+      ..remove(FoodPreferenceItemEntity.noneCode);
+
+    if (updated.contains(code)) {
+      updated.remove(code);
+    } else {
+      updated.add(code);
+    }
+
+    return updated.isEmpty
+        ? const <String>{FoodPreferenceItemEntity.noneCode}
+        : updated;
   }
 }

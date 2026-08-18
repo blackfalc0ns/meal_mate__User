@@ -5,15 +5,43 @@ part 'food_preferences_response_dto.g.dart';
 @JsonSerializable(createToJson: false)
 class FoodPreferencesResponseDto {
   const FoodPreferencesResponseDto({
+    this.noneOption,
     this.dietaryPattern,
+    this.dietaryPreferences,
+    this.ingredients,
+    this.allergens,
     this.allergies,
     this.dislikedFoods,
+    this.selectedCount,
+    this.eatsEverything,
+    this.hasNoAllergies,
+    this.hasNoDietaryRestriction,
+    this.page,
+    this.pageSize,
+    this.totalCount,
+    this.totalPages,
+    this.hasNextPage,
+    this.hasPreviousPage,
     this.notes,
   });
 
+  final FoodPreferenceItemResponseDto? noneOption;
   final String? dietaryPattern;
+  final List<FoodPreferenceItemResponseDto>? dietaryPreferences;
+  final List<FoodPreferenceItemResponseDto>? ingredients;
+  final List<FoodPreferenceItemResponseDto>? allergens;
   final List<FoodPreferenceItemResponseDto>? allergies;
   final List<FoodPreferenceItemResponseDto>? dislikedFoods;
+  final int? selectedCount;
+  final bool? eatsEverything;
+  final bool? hasNoAllergies;
+  final bool? hasNoDietaryRestriction;
+  final int? page;
+  final int? pageSize;
+  final int? totalCount;
+  final int? totalPages;
+  final bool? hasNextPage;
+  final bool? hasPreviousPage;
   final String? notes;
 
   factory FoodPreferencesResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -26,12 +54,18 @@ class FoodPreferenceItemResponseDto {
     this.code,
     this.nameAr,
     this.nameEn,
+    this.category,
+    this.allergenCodes,
+    this.isSelected,
     this.severity,
   });
 
   final String? code;
   final String? nameAr;
   final String? nameEn;
+  final String? category;
+  final List<String>? allergenCodes;
+  final bool? isSelected;
   final String? severity;
 
   factory FoodPreferenceItemResponseDto.fromJson(Map<String, dynamic> json) =>

@@ -12,37 +12,15 @@ import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
-import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
-import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_common_list.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_option_tile.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_summary_card.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
-import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
 
-class AddAllergyScreen extends StatefulWidget {
+class AddAllergyScreen extends StatelessWidget {
   const AddAllergyScreen({super.key});
-
-  @override
-  State<AddAllergyScreen> createState() => _AddAllergyScreenState();
-}
-
-class _AddAllergyScreenState extends State<AddAllergyScreen> {
-  final Set<String> _selectedAllergies = <String>{};
-  String _query = '';
-  bool _hasAppliedRemotePreferences = false;
-
-  void _toggleAllergy(String code) {
-    setState(() {
-      if (_selectedAllergies.contains(code)) {
-        _selectedAllergies.remove(code);
-      } else {
-        _selectedAllergies.add(code);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +32,8 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
         ..doIntent(const GetFoodPreferencesEvent())
         ..doIntent(const GetFoodPreferencesCatalogEvent()),
       child: BlocConsumer<FoodPreferencesViewModel, FoodPreferencesState>(
-        listenWhen: (previous, current) =>
-            previous.preferences.data != current.preferences.data ||
-            previous.action != current.action,
+        listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
-          final preferences = state.preferences.data;
-          if (preferences != null && !_hasAppliedRemotePreferences) {
-            setState(() {
-              _selectedAllergies
-                ..clear()
-                ..addAll(preferences.allergies.map((item) => item.code));
-              _hasAppliedRemotePreferences = true;
-            });
-          }
-
           if (state.action.failure != null) {
             CustomSnackbar.showError(
               context: context,
@@ -88,6 +54,7 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
           final preferencesState = state.preferences;
           final catalogState = state.catalog;
           final catalog = catalogState.data;
+          final selection = state.selection;
 
           return Scaffold(
             appBar: CustomAppBar(
@@ -125,11 +92,14 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                     locale.localeName,
                   );
                   final filteredGridOptions = gridOptions
-                      .where((option) => option.label.contains(_query))
+                      .where(
+                        (option) =>
+                            option.label.contains(selection.allergySearchQuery),
+                      )
                       .toList();
-                  final commonOptions = gridOptions.take(3).toList();
                   final selectedLabels = _selectedAllergyLabels(
                     catalog?.allergens ?? const [],
+                    selection.activeAllergies,
                     locale.localeName,
                   );
 
@@ -158,8 +128,13 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                         SizedBox(
                           height: Spacing.addAllergySearchHeight,
                           child: TextField(
-                            onChanged: (value) =>
-                                setState(() => _query = value),
+                            onChanged: (value) => context
+                                .read<FoodPreferencesViewModel>()
+                                .doIntent(
+                                  FoodPreferenceAllergySearchChangedEvent(
+                                    value,
+                                  ),
+                                ),
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
                               hintText: locale.add_allergy_search_hint,
@@ -207,19 +182,16 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                             final option = filteredGridOptions[index];
                             return AddAllergyOptionTile(
                               label: option.label,
-                              iconAsset: null,
-                              isSelected: _selectedAllergies.contains(
+                              isSelected: selection.allergies.contains(
                                 option.code,
                               ),
-                              onTap: () => _toggleAllergy(option.code),
+                              onTap: () => context
+                                  .read<FoodPreferencesViewModel>()
+                                  .doIntent(
+                                    ToggleAllergyPreferenceEvent(option.code),
+                                  ),
                             );
                           },
-                        ),
-                        const SizedBox(height: Spacing.addAllergySectionGap),
-                        AddAllergyCommonList(
-                          options: commonOptions,
-                          selectedOptions: _selectedAllergies,
-                          onToggle: _toggleAllergy,
                         ),
                         const SizedBox(height: Spacing.addAllergySectionGap),
                         CustomWarningWidget(
@@ -240,7 +212,11 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
                           text: locale.add_allergy_save,
                           onPressed: state.action.isLoading
                               ? null
-                              : () => _saveAllergies(context, catalog),
+                              : () => context
+                                    .read<FoodPreferencesViewModel>()
+                                    .doIntent(
+                                      const SaveFoodPreferencesAllergiesEvent(),
+                                    ),
                           isLoading: state.action.isLoading,
                           height: Spacing.addAllergyButtonHeight,
                           borderRadius: Spacing.addAllergyButtonRadius,
@@ -276,43 +252,16 @@ class _AddAllergyScreenState extends State<AddAllergyScreen> {
 
   List<String> _selectedAllergyLabels(
     List<FoodPreferenceCatalogItemEntity> items,
+    Set<String> selectedAllergies,
     String localeName,
   ) {
     final itemsByCode = {for (final item in items) item.code: item};
 
-    return _selectedAllergies
+    return selectedAllergies
         .map((code) => itemsByCode[code])
         .nonNulls
         .map((item) => localeName == 'ar' ? item.nameAr : item.nameEn)
         .where((label) => label.isNotEmpty)
-        .toList();
-  }
-
-  void _saveAllergies(
-    BuildContext context,
-    FoodPreferencesCatalogEntity? catalog,
-  ) {
-    final allergies = _selectedAllergyItems(catalog?.allergens ?? const []);
-    context.read<FoodPreferencesViewModel>().doIntent(
-      UpdateFoodPreferencesAllergiesEvent(allergies),
-    );
-  }
-
-  List<FoodPreferenceItemEntity> _selectedAllergyItems(
-    List<FoodPreferenceCatalogItemEntity> catalogItems,
-  ) {
-    final itemsByCode = {for (final item in catalogItems) item.code: item};
-
-    return _selectedAllergies
-        .map((code) => itemsByCode[code])
-        .nonNulls
-        .map(
-          (item) => FoodPreferenceItemEntity(
-            code: item.code,
-            nameAr: item.nameAr,
-            nameEn: item.nameEn,
-          ),
-        )
         .toList();
   }
 }

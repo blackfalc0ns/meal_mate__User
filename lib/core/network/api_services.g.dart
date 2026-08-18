@@ -614,16 +614,25 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<FoodPreferencesResponseDto> getFoodPreferences() async {
+  Future<FoodPreferencesResponseDto> getFoodPreferencesDislikedIngredients(
+    int page,
+    int pageSize,
+    String? search,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+      r'search': search,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<FoodPreferencesResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/customers/me/food-preferences',
+            '/api/v1/customers/me/food-preferences/disliked-ingredients',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -641,25 +650,34 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<FoodPreferencesCatalogResponseDto> getFoodPreferencesCatalog() async {
+  Future<FoodPreferencesResponseDto> getFoodPreferencesAllergies(
+    int page,
+    int pageSize,
+    String? search,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+      r'search': search,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<FoodPreferencesCatalogResponseDto>(
+    final _options = _setStreamType<FoodPreferencesResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/customers/me/food-preferences/catalog',
+            '/api/v1/customers/me/food-preferences/allergies',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late FoodPreferencesCatalogResponseDto _value;
+    late FoodPreferencesResponseDto _value;
     try {
-      _value = FoodPreferencesCatalogResponseDto.fromJson(_result.data!);
+      _value = FoodPreferencesResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -668,23 +686,69 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<void> updateFoodPreferences(FoodPreferencesRequestDto request) async {
+  Future<FoodPreferencesResponseDto> getFoodPreferencesDietary(
+    int page,
+    int pageSize,
+    String? search,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+      r'search': search,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
-    final _options = _setStreamType<void>(
-      Options(method: 'PUT', headers: _headers, extra: _extra)
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<FoodPreferencesResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/customers/me/food-preferences',
+            '/api/v1/customers/me/food-preferences/dietary',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late FoodPreferencesResponseDto _value;
+    try {
+      _value = FoodPreferencesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesDislikedIngredients(
+    FoodPreferencesDislikedIngredientsRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<FoodPreferencesResponseDto>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customers/me/food-preferences/disliked-ingredients',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late FoodPreferencesResponseDto _value;
+    try {
+      _value = FoodPreferencesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -701,6 +765,36 @@ class _ApiServices implements ApiServices {
           .compose(
             _dio.options,
             '/api/v1/customers/me/food-preferences/allergies',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late FoodPreferencesResponseDto _value;
+    try {
+      _value = FoodPreferencesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<FoodPreferencesResponseDto> updateFoodPreferencesDietary(
+    FoodPreferencesDietaryRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<FoodPreferencesResponseDto>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customers/me/food-preferences/dietary',
             queryParameters: queryParameters,
             data: _data,
           )

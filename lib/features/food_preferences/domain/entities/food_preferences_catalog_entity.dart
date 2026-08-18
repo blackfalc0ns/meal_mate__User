@@ -2,10 +2,12 @@ class FoodPreferencesCatalogEntity {
   const FoodPreferencesCatalogEntity({
     this.ingredients = const [],
     this.allergens = const [],
+    this.dietaryPreferences = const [],
   });
 
   final List<FoodPreferenceCatalogItemEntity> ingredients;
   final List<FoodPreferenceCatalogItemEntity> allergens;
+  final List<FoodPreferenceCatalogItemEntity> dietaryPreferences;
 }
 
 class FoodPreferenceCatalogItemEntity {

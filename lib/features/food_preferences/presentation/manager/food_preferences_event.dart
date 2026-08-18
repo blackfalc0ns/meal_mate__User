@@ -1,5 +1,3 @@
-import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
-
 sealed class FoodPreferencesEvent {
   const FoodPreferencesEvent();
 }
@@ -12,14 +10,40 @@ class GetFoodPreferencesCatalogEvent extends FoodPreferencesEvent {
   const GetFoodPreferencesCatalogEvent();
 }
 
-class UpdateFoodPreferencesEvent extends FoodPreferencesEvent {
-  const UpdateFoodPreferencesEvent(this.preferences);
+class ToggleDietaryPreferenceEvent extends FoodPreferencesEvent {
+  const ToggleDietaryPreferenceEvent(this.code);
 
-  final FoodPreferencesEntity preferences;
+  final String code;
 }
 
-class UpdateFoodPreferencesAllergiesEvent extends FoodPreferencesEvent {
-  const UpdateFoodPreferencesAllergiesEvent(this.allergies);
+class ToggleDislikedFoodEvent extends FoodPreferencesEvent {
+  const ToggleDislikedFoodEvent(this.code);
 
-  final List<FoodPreferenceItemEntity> allergies;
+  final String code;
+}
+
+class ToggleAllergyPreferenceEvent extends FoodPreferencesEvent {
+  const ToggleAllergyPreferenceEvent(this.code);
+
+  final String code;
+}
+
+class FoodPreferenceNotesChangedEvent extends FoodPreferencesEvent {
+  const FoodPreferenceNotesChangedEvent(this.notes);
+
+  final String notes;
+}
+
+class FoodPreferenceAllergySearchChangedEvent extends FoodPreferencesEvent {
+  const FoodPreferenceAllergySearchChangedEvent(this.query);
+
+  final String query;
+}
+
+class SaveFoodPreferencesEvent extends FoodPreferencesEvent {
+  const SaveFoodPreferencesEvent();
+}
+
+class SaveFoodPreferencesAllergiesEvent extends FoodPreferencesEvent {
+  const SaveFoodPreferencesAllergiesEvent();
 }

@@ -20,7 +20,6 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
     required this.choicesSpacing,
     this.actionLabel,
     this.onActionPressed,
-    this.singleSelection = false,
     required this.iconColor,
   });
 
@@ -34,7 +33,6 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   final double choicesSpacing;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
-  final bool singleSelection;
   final Color iconColor;
 
   @override
@@ -101,22 +99,10 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(Spacing.dietaryChipRadius),
               onTap: () => _showOptionsBottomSheet(context),
-              child: Container(
-                padding: const EdgeInsetsDirectional.only(
-                  start: Spacing.sm,
-                  end: Spacing.xs,
-                  top: Spacing.xs,
-                  bottom: Spacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: color.surfaceContainerLowest,
-                  borderRadius: BorderRadius.circular(
-                    Spacing.dietaryChipRadius,
-                  ),
-                  border: Border.all(color: color.outlineVariant),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Wrap(
@@ -163,10 +149,10 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: Spacing.xs),
+                    const SizedBox(width: Spacing.sm),
                     Container(
-                      width: Spacing.lg,
-                      height: Spacing.lg,
+                      width: Spacing.dietaryChipHeight,
+                      height: Spacing.dietaryChipHeight,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: color.primaryContainer,
@@ -174,7 +160,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        size: Spacing.iconSm,
+                        size: Spacing.lg,
                         color: color.primary,
                       ),
                     ),
@@ -214,7 +200,6 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
         options: options,
         selectedOptions: selectedOptions,
         onOptionSelected: onOptionSelected,
-        singleSelection: singleSelection,
       ),
     );
   }
