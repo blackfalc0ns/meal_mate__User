@@ -8,6 +8,8 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
+import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plans_state.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plans_view_model.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
@@ -19,7 +21,6 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_card.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_selection_summary_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
@@ -47,6 +48,7 @@ class _FamilyPackageDaysSetupScreenState
     extends State<FamilyPackageDaysSetupScreen> {
   int _selectedPackageIndex = 0;
   int _selectedDayIndex = 0;
+  int _selectedTierIndex = 1;
   bool _fridayDeliverySelected = true;
 
   @override
@@ -148,42 +150,29 @@ class _FamilyPackageDaysSetupScreenState
             ),
           );
 
-          final summary =
-              widget.summary ??
-              FamilySelectionSummaryData(
-                title: locale.family_subscription_summary,
-                rows: [
-                  FamilySelectionSummaryRowData(
-                    icon: FamilySelectionSummaryIcon.balance,
-                    label: locale.family_subscription_program_label,
-                    value: locale.family_program_balanced_title,
-                  ),
-                  FamilySelectionSummaryRowData(
-                    icon: FamilySelectionSummaryIcon.cutlery,
-                    label: locale.family_subscription_package_label,
-                    value: locale.family_package_two_meals_title,
-                  ),
-                  FamilySelectionSummaryRowData(
-                    icon: FamilySelectionSummaryIcon.calendar,
-                    label: locale.family_subscription_days_label,
-                    value: locale.family_days_30,
-                  ),
-                  FamilySelectionSummaryRowData(
-                    icon: FamilySelectionSummaryIcon.check,
-                    label: locale.family_friday_delivery_title,
-                    value:
-                        _fridayDeliverySelected
-                            ? locale.family_friday_delivery_added
-                            : '',
-                  ),
-                  FamilySelectionSummaryRowData(
-                    icon: FamilySelectionSummaryIcon.receipt,
-                    label: locale.family_total,
-                    value: '60.000',
-                    isPrice: true,
-                  ),
-                ],
-              );
+          final tierOptions = [
+            RestaurantPackageTierUiModel(
+              id: 'select',
+              title: locale.localeName == 'ar' ? 'سيلكت' : 'Select',
+              iconName: 'heart',
+              restaurantCount: 25,
+              restaurantLogoUrls: const [],
+            ),
+            RestaurantPackageTierUiModel(
+              id: 'plus',
+              title: locale.localeName == 'ar' ? 'بلس' : 'Plus',
+              iconName: 'crown',
+              restaurantCount: 50,
+              restaurantLogoUrls: const [],
+            ),
+            RestaurantPackageTierUiModel(
+              id: 'max',
+              title: locale.localeName == 'ar' ? 'ماكس' : 'Max',
+              iconName: 'diamond',
+              restaurantCount: 100,
+              restaurantLogoUrls: const [],
+            ),
+          ];
 
           return Scaffold(
             appBar: CustomAppBar(
@@ -291,7 +280,14 @@ class _FamilyPackageDaysSetupScreenState
                               ),
                         ),
                         const SizedBox(height: Spacing.lg),
-                        FamilySelectionSummaryCard(summary: summary),
+                        RestaurantPackageTiersSection(
+                          packages: tierOptions,
+                          selectedIndex: _selectedTierIndex,
+                          onSelected: (index) => setState(
+                            () => _selectedTierIndex = index,
+                          ),
+                          onBrowseRestaurants: (index) {},
+                        ),
                         const SizedBox(height: Spacing.lg),
                         const FamilyPaymentNoteCard(),
                         const SizedBox(height: Spacing.md),
@@ -316,3 +312,4 @@ class _FamilyPackageDaysSetupScreenState
     );
   }
 }
+
