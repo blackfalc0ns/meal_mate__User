@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meal_meat_user/core/services/language_interceptor.dart';
@@ -51,5 +52,10 @@ abstract class ExternalModules {
   @lazySingleton
   FlutterSecureStorage flutterSecureStorage() {
     return const FlutterSecureStorage();
+  }
+
+  @lazySingleton
+  LocalAuthentication provideLocalAuthentication() {
+    return LocalAuthentication();
   }
 }

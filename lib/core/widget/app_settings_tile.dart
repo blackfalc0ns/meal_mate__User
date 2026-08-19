@@ -13,6 +13,7 @@ class AppSettingsTile extends StatelessWidget {
     required this.showDivider,
     this.onTap,
     this.trailingIcon,
+    this.trailingWidget,
     this.height = Spacing.profileSettingsTileHeight,
   });
 
@@ -22,6 +23,7 @@ class AppSettingsTile extends StatelessWidget {
   final bool showDivider;
   final VoidCallback? onTap;
   final IconData? trailingIcon;
+  final Widget? trailingWidget;
   final double height;
 
   @override
@@ -90,11 +92,12 @@ class AppSettingsTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Icon(
-                      trailingIcon ?? Icons.chevron_right_rounded,
-                      color: color.onSurfaceVariant,
-                      size: Spacing.iconSm,
-                    ),
+                    trailingWidget ??
+                        Icon(
+                          trailingIcon ?? Icons.chevron_right_rounded,
+                          color: color.onSurfaceVariant,
+                          size: Spacing.iconSm,
+                        ),
                   ],
                 ),
               ),

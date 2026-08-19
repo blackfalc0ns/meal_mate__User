@@ -13,6 +13,7 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:local_auth/local_auth.dart' as _i152;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
@@ -58,6 +59,7 @@ import '../../features/auth/domain/usecase/reset_password_usecase.dart'
     as _i1029;
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
+import '../../features/auth/presentation/manager/biometric_cubit.dart' as _i280;
 import '../../features/change_password/data/data_source/change_password_remote_data_source.dart'
     as _i263;
 import '../../features/change_password/data/data_source/change_password_remote_data_source_impl.dart'
@@ -181,6 +183,7 @@ import '../../features/subscription_programs/presentation/manager/subscription_p
     as _i420;
 import '../../features/subscription_programs/presentation/manager/subscription_types_view_model.dart'
     as _i492;
+import '../biometric/biometric_service.dart' as _i43;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
 import '../network/external_modules.dart' as _i576;
@@ -218,6 +221,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => externalModules.flutterSecureStorage(),
     );
+    gh.lazySingleton<_i152.LocalAuthentication>(
+      () => externalModules.provideLocalAuthentication(),
+    );
     gh.lazySingleton<_i179.AppNavigatorService>(
       () => _i179.AppNavigatorService(),
     );
@@ -236,6 +242,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i148.DeviceIdService>(
       () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i43.BiometricService>(
+      () => _i43.BiometricService(
+        gh<_i152.LocalAuthentication>(),
+        gh<_i460.SharedPreferences>(),
+        gh<_i227.TokenService>(),
+      ),
+    );
+    gh.factory<_i280.BiometricCubit>(
+      () => _i280.BiometricCubit(gh<_i43.BiometricService>()),
     );
     gh.factory<_i32.LanguageInterceptor>(
       () => _i32.LanguageInterceptor(gh<_i819.LanguageService>()),

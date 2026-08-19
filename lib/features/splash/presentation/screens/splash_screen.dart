@@ -6,7 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/shared/constants/app_ui_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,10 +25,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer(AppUiConstants.splashDelay, () {
+    _timer = Timer(AppUiConstants.splashDelay, _handleStartupRouting);
+  }
+
+  Future<void> _handleStartupRouting() async {
+    if (!mounted) return;
+
+    final biometricService = getIt<BiometricService>();
+    if (biometricService.canRestoreSession()) {
+      final l10n = AppLocalizations.of(context);
+      final reason = l10n?.biometric_auth_reason ??
+          'Please authenticate to sign in to your account';
+      final result = await biometricService.authenticate(
+        localizedReason: reason,
+      );
+
       if (!mounted) return;
-      Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
-    });
+
+      if (result.isSuccess) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+        return;
+      }
+    }
+
+    if (!mounted) return;
+    Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
   }
 
   @override

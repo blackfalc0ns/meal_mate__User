@@ -3493,4 +3493,71 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wallet_card_expires_at => 'Expires';
+
+  @override
+  String get biometric_login_title => 'Biometric Sign-In';
+
+  @override
+  String get biometric_login_subtitle =>
+      'Use Face ID or Fingerprint for quick access';
+
+  @override
+  String get biometric_face_id => 'Face ID';
+
+  @override
+  String get biometric_fingerprint => 'Fingerprint';
+
+  @override
+  String get biometric_generic => 'Biometrics';
+
+  @override
+  String get biometric_enable_reason =>
+      'Please authenticate to enable biometric sign-in';
+
+  @override
+  String get biometric_auth_reason =>
+      'Please authenticate to sign in to your account';
+
+  @override
+  String get biometric_enabled_success =>
+      'Biometric sign-in enabled successfully';
+
+  @override
+  String get biometric_disabled_success => 'Biometric sign-in disabled';
+
+  @override
+  String get biometric_not_supported =>
+      'Biometrics are not supported on this device';
+
+  @override
+  String get biometric_not_enrolled =>
+      'No biometrics or Face ID enrolled on this device';
+
+  @override
+  String get biometric_locked_out =>
+      'Biometrics temporarily locked due to too many failed attempts';
+
+  @override
+  String get biometric_permanently_locked_out =>
+      'Biometrics permanently locked. Use device passcode.';
+
+  @override
+  String get biometric_failed =>
+      'Biometric authentication failed, please try again';
+
+  @override
+  String get biometric_prompt_enable_dialog_title => 'Enable Quick Sign-In';
+
+  @override
+  String get biometric_prompt_enable_dialog_body =>
+      'Would you like to enable Face ID / Fingerprint for quick login next time?';
+
+  @override
+  String get biometric_enable_button => 'Enable Now';
+
+  @override
+  String get biometric_skip_button => 'Later';
+
+  @override
+  String get biometric_quick_login => 'Biometric Sign-In';
 }

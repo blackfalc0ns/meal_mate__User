@@ -6,7 +6,10 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
@@ -21,6 +24,7 @@ import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_shel
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_password_field.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_phone_field.dart';
+import 'package:meal_meat_user/features/auth/presentation/widgets/biometric_prompt_sheet.dart';
 
 class AuthSignInPage extends StatefulWidget {
   const AuthSignInPage({super.key, required this.onNavigate});
@@ -35,6 +39,29 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _canUseBiometric = false;
+  BiometricTypeEnum _biometricType = BiometricTypeEnum.none;
+  bool _isBiometricAuthenticating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometrics();
+  }
+
+  Future<void> _checkBiometrics() async {
+    final biometricService = getIt<BiometricService>();
+    final canRestore = biometricService.canRestoreSession();
+    if (canRestore) {
+      final type = await biometricService.getPrimaryBiometricType();
+      if (mounted) {
+        setState(() {
+          _canUseBiometric = true;
+          _biometricType = type;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -57,9 +84,14 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
             context: context,
             message: l10n.auth_login_success,
           );
-          Navigator.of(
+          BiometricPromptSheet.showIfNeeded(
             context,
-          ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+            onComplete: () {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+            },
+          );
           return;
         }
 
@@ -121,12 +153,80 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                     colors: [Color(0xFF1D8134), Color(0xFF51C063)],
                   ),
                 ),
+                if (_canUseBiometric) ...[
+                  const SizedBox(height: Spacing.md),
+                  AppButton(
+                    variant: AppButtonVariant.outlined,
+                    text: _getBiometricButtonText(l10n),
+                    isLoading: _isBiometricAuthenticating,
+                    iconWidget: Icon(
+                      _getBiometricIcon(),
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
+                    onPressed: _handleBiometricLogin,
+                    color: AppColors.primary,
+                  ),
+                ],
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  IconData _getBiometricIcon() {
+    return _biometricType == BiometricTypeEnum.face
+        ? Icons.face_rounded
+        : Icons.fingerprint_rounded;
+  }
+
+  String _getBiometricButtonText(AppLocalizations l10n) {
+    if (_biometricType == BiometricTypeEnum.face) {
+      return '${l10n.biometric_quick_login} (${l10n.biometric_face_id})';
+    } else if (_biometricType == BiometricTypeEnum.fingerprint) {
+      return '${l10n.biometric_quick_login} (${l10n.biometric_fingerprint})';
+    }
+    return l10n.biometric_quick_login;
+  }
+
+  Future<void> _handleBiometricLogin() async {
+    setState(() {
+      _isBiometricAuthenticating = true;
+    });
+
+    final l10n = AppLocalizations.of(context)!;
+    final biometricService = getIt<BiometricService>();
+
+    final result = await biometricService.authenticate(
+      localizedReason: l10n.biometric_auth_reason,
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _isBiometricAuthenticating = false;
+    });
+
+    if (result.isSuccess) {
+      CustomSnackbar.showSuccess(
+        context: context,
+        message: l10n.auth_login_success,
+      );
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+    } else if (result.status != BiometricAuthStatus.canceled) {
+      final message = switch (result.status) {
+        BiometricAuthStatus.lockedOut => l10n.biometric_locked_out,
+        BiometricAuthStatus.permanentlyLockedOut =>
+          l10n.biometric_permanently_locked_out,
+        BiometricAuthStatus.notEnrolled => l10n.biometric_not_enrolled,
+        _ => l10n.biometric_failed,
+      };
+      CustomSnackbar.showError(context: context, message: message);
+    }
   }
 
   void _handleSubmit() {

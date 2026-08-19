@@ -6697,6 +6697,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expires'**
   String get wallet_card_expires_at;
+
+  /// No description provided for @biometric_login_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Sign-In'**
+  String get biometric_login_title;
+
+  /// No description provided for @biometric_login_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Face ID or Fingerprint for quick access'**
+  String get biometric_login_subtitle;
+
+  /// No description provided for @biometric_face_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Face ID'**
+  String get biometric_face_id;
+
+  /// No description provided for @biometric_fingerprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fingerprint'**
+  String get biometric_fingerprint;
+
+  /// No description provided for @biometric_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometrics'**
+  String get biometric_generic;
+
+  /// No description provided for @biometric_enable_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Please authenticate to enable biometric sign-in'**
+  String get biometric_enable_reason;
+
+  /// No description provided for @biometric_auth_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Please authenticate to sign in to your account'**
+  String get biometric_auth_reason;
+
+  /// No description provided for @biometric_enabled_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric sign-in enabled successfully'**
+  String get biometric_enabled_success;
+
+  /// No description provided for @biometric_disabled_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric sign-in disabled'**
+  String get biometric_disabled_success;
+
+  /// No description provided for @biometric_not_supported.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometrics are not supported on this device'**
+  String get biometric_not_supported;
+
+  /// No description provided for @biometric_not_enrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'No biometrics or Face ID enrolled on this device'**
+  String get biometric_not_enrolled;
+
+  /// No description provided for @biometric_locked_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometrics temporarily locked due to too many failed attempts'**
+  String get biometric_locked_out;
+
+  /// No description provided for @biometric_permanently_locked_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometrics permanently locked. Use device passcode.'**
+  String get biometric_permanently_locked_out;
+
+  /// No description provided for @biometric_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication failed, please try again'**
+  String get biometric_failed;
+
+  /// No description provided for @biometric_prompt_enable_dialog_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Quick Sign-In'**
+  String get biometric_prompt_enable_dialog_title;
+
+  /// No description provided for @biometric_prompt_enable_dialog_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to enable Face ID / Fingerprint for quick login next time?'**
+  String get biometric_prompt_enable_dialog_body;
+
+  /// No description provided for @biometric_enable_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Now'**
+  String get biometric_enable_button;
+
+  /// No description provided for @biometric_skip_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get biometric_skip_button;
+
+  /// No description provided for @biometric_quick_login.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Sign-In'**
+  String get biometric_quick_login;
 }
 
 class _AppLocalizationsDelegate

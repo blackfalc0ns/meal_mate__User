@@ -3449,4 +3449,70 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get wallet_card_expires_at => 'تنتهي في';
+
+  @override
+  String get biometric_login_title => 'تسجيل الدخول بالبصمة';
+
+  @override
+  String get biometric_login_subtitle =>
+      'استخدم البصمة أو Face ID لتسجيل الدخول السريع';
+
+  @override
+  String get biometric_face_id => 'Face ID';
+
+  @override
+  String get biometric_fingerprint => 'بصمة الإصبع';
+
+  @override
+  String get biometric_generic => 'القياسات الحيوية';
+
+  @override
+  String get biometric_enable_reason =>
+      'يرجى تأكيد هويتك لتفعيل تسجيل الدخول بالبصمة';
+
+  @override
+  String get biometric_auth_reason =>
+      'يرجى تأكيد هويتك لتسجيل الدخول إلى حسابك';
+
+  @override
+  String get biometric_enabled_success => 'تم تفعيل تسجيل الدخول بالبصمة بنجاح';
+
+  @override
+  String get biometric_disabled_success => 'تم تعطيل تسجيل الدخول بالبصمة';
+
+  @override
+  String get biometric_not_supported =>
+      'الجهاز لا يدعم المصادقة بالبصمة أو Face ID';
+
+  @override
+  String get biometric_not_enrolled =>
+      'لم يتم تسجيل أي بصمة أو Face ID على هذا الجهاز';
+
+  @override
+  String get biometric_locked_out =>
+      'تم قفل البصمة مؤقتًا بسبب تكرار المحاولات الفاشلة';
+
+  @override
+  String get biometric_permanently_locked_out =>
+      'تم قفل البصمة نهائيًا، يرجى فتح القفل برمز مرور الجهاز';
+
+  @override
+  String get biometric_failed =>
+      'فشلت المصادقة بالبصمة، يرجى المحاولة مرة أخرى';
+
+  @override
+  String get biometric_prompt_enable_dialog_title => 'تفعيل الدخول السريع';
+
+  @override
+  String get biometric_prompt_enable_dialog_body =>
+      'هل ترغب في تفعيل تسجيل الدخول بالبصمة / Face ID للدخول السريع مستقبلاً؟';
+
+  @override
+  String get biometric_enable_button => 'تفعيل الآن';
+
+  @override
+  String get biometric_skip_button => 'لاحقاً';
+
+  @override
+  String get biometric_quick_login => 'تسجيل الدخول بالبصمة';
 }

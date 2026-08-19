@@ -10,9 +10,10 @@ class AppSettingsSectionCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.items,
+    this.items = const [],
     required this.tileHeight,
     this.trailingIcon,
+    this.customTiles,
   });
 
   final String title;
@@ -20,6 +21,7 @@ class AppSettingsSectionCard extends StatelessWidget {
   final List<(IconData, String, String, VoidCallback?)> items;
   final double tileHeight;
   final IconData? trailingIcon;
+  final List<Widget>? customTiles;
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +81,21 @@ class AppSettingsSectionCard extends StatelessWidget {
             ),
           ),
           Divider(height: Spacing.hairline, color: color.outlineVariant),
-          ...List.generate(items.length, (index) {
-            final item = items[index];
-            return AppSettingsTile(
-              icon: item.$1,
-              title: item.$2,
-              subtitle: item.$3,
-              onTap: item.$4,
-              height: tileHeight,
-              showDivider: index != items.length - 1,
-              trailingIcon: trailingIcon,
-            );
-          }),
+          if (customTiles != null)
+            ...customTiles!
+          else
+            ...List.generate(items.length, (index) {
+              final item = items[index];
+              return AppSettingsTile(
+                icon: item.$1,
+                title: item.$2,
+                subtitle: item.$3,
+                onTap: item.$4,
+                height: tileHeight,
+                showDivider: index != items.length - 1,
+                trailingIcon: trailingIcon,
+              );
+            }),
         ],
       ),
     );
