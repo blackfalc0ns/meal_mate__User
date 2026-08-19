@@ -28,13 +28,11 @@ class SubscriptionSummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
     final summaryArgs = args;
 
     if (summaryArgs == null) {
       return Scaffold(
-        backgroundColor: color.surface,
         body: EmptyStateWidget(
           title: locale.subscription_summary_title,
           description: locale.subscription_program_subtitle,
@@ -61,9 +59,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
               final hasSummary = summary != null;
 
               return Scaffold(
-                backgroundColor: color.surface,
                 body: Semantics(
-                  label: locale.subscription_summary_title,
                   child: Stack(
                     children: [
                       CustomScrollView(
