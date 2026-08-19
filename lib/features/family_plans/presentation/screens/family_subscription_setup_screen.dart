@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_actions.dart';
@@ -12,7 +11,12 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 
 class FamilySubscriptionSetupScreen extends StatelessWidget {
-  const FamilySubscriptionSetupScreen({super.key});
+  const FamilySubscriptionSetupScreen({
+    super.key,
+    this.members = const [],
+  });
+
+  final List<FamilySetupMemberData> members;
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +76,7 @@ class FamilySubscriptionSetupScreen extends StatelessWidget {
                         icon: Icons.groups_2_rounded,
                       ),
                       SizedBox(height: Spacing.familySetupSectionGap * scale),
-                      FamilySetupMembersRow(
-                        members: [
-                          FamilySetupMemberData(
-                            name: locale.family_member_ahmed,
-                            imageAsset: AssetsFake.familyMemberAhmed,
-                          ),
-                          FamilySetupMemberData(
-                            name: locale.family_member_sarah,
-                            imageAsset: AssetsFake.familyMemberSarah,
-                          ),
-                        ],
-                      ),
+                      FamilySetupMembersRow(members: members),
                       SizedBox(height: Spacing.familySetupSectionGap * scale),
                       const FamilySetupFormCard(),
                       SizedBox(height: Spacing.familySetupSectionGap * scale),

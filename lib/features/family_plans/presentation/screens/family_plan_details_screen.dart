@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/family_plans/data/family_plan_fake_data_source.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_add_member_dialog.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_meals_table.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_members_strip.dart';
@@ -14,16 +14,20 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_plan_summary_card.dart';
 
 class FamilyPlanDetailsScreen extends StatelessWidget {
-  const FamilyPlanDetailsScreen({super.key, this.showBottomSpace = false});
+  const FamilyPlanDetailsScreen({
+    super.key,
+    this.plan,
+    this.showBottomSpace = false,
+  });
 
+  final FamilyPlanEntity? plan;
   final bool showBottomSpace;
-  static const _dataSource = FamilyPlanFakeDataSource();
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final plan = _dataSource.getPlan();
+    final currentPlan = plan;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -35,44 +39,49 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
               titleFontSize: FontSize.size18,
             ),
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.only(
-                      top: Spacing.xss,
-                      right: Spacing.lg,
-                      bottom: showBottomSpace ? 104 : Spacing.lg,
-                      left: Spacing.lg,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate.fixed([
-                        FamilyPlanHeroCard(plan: plan),
-                        const SizedBox(height: Spacing.xs),
-                        FamilyMembersStrip(
-                          members: plan.members,
-                          onAddTap: () => FamilyAddMemberDialog.show(context),
+              child: currentPlan == null
+                  ? const SizedBox.shrink()
+                  : CustomScrollView(
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.only(
+                            top: Spacing.xss,
+                            right: Spacing.lg,
+                            bottom: showBottomSpace ? 104 : Spacing.lg,
+                            left: Spacing.lg,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate.fixed([
+                              FamilyPlanHeroCard(plan: currentPlan),
+                              const SizedBox(height: Spacing.xs),
+                              FamilyMembersStrip(
+                                members: currentPlan.members,
+                                onAddTap: () =>
+                                    FamilyAddMemberDialog.show(context),
+                              ),
+                              const SizedBox(height: Spacing.md),
+                              FamilyPlanSummaryCard(
+                                stats: currentPlan.summaryStats,
+                              ),
+                              const SizedBox(height: Spacing.md),
+                              FamilyMealsTable(members: currentPlan.members),
+                              const SizedBox(height: Spacing.md),
+                              FamilyPlanPriceCard(plan: currentPlan),
+                              const SizedBox(height: Spacing.lg),
+                              AppButton(
+                                text: locale.family_confirm_plan,
+                                onPressed: () {},
+                                height: Spacing.compactButtonHeight,
+                                borderRadius: Spacing.buttonSmallRadius,
+                                gradient: AppColors.primaryGradient,
+                                fontSize: FontSize.size17,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ]),
+                          ),
                         ),
-                        const SizedBox(height: Spacing.md),
-                        FamilyPlanSummaryCard(stats: plan.summaryStats),
-                        const SizedBox(height: Spacing.md),
-                        FamilyMealsTable(members: plan.members),
-                        const SizedBox(height: Spacing.md),
-                        FamilyPlanPriceCard(plan: plan),
-                        const SizedBox(height: Spacing.lg),
-                        AppButton(
-                          text: locale.family_confirm_plan,
-                          onPressed: () {},
-                          height: Spacing.compactButtonHeight,
-                          borderRadius: Spacing.buttonSmallRadius,
-                          gradient: AppColors.primaryGradient,
-                          fontSize: FontSize.size17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ]),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

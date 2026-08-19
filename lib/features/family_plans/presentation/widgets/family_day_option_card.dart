@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/data/family_program_setup_fake_data.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 
 class FamilyDayOptionCard extends StatelessWidget {
   const FamilyDayOptionCard({
@@ -12,7 +12,7 @@ class FamilyDayOptionCard extends StatelessWidget {
     required this.onTap,
   });
 
-  final FamilyDayOptionFakeData option;
+  final FamilyDayOptionUiModel option;
   final VoidCallback onTap;
 
   @override

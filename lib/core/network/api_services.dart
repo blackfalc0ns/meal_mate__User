@@ -47,6 +47,15 @@ import 'package:meal_meat_user/features/subscription_checkout/data/models/respon
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/request/family_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/request/family_group_request_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/request/family_member_plan_request_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/request/family_member_request_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/response/family_checkout_response_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/response/family_group_response_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/response/family_metadata_response_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/response/family_payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/family_plans/data/models/response/family_summary_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
 
@@ -295,4 +304,52 @@ abstract class ApiServices {
   @GET(EndPoints.customerSubscriptionFreezePolicy)
   Future<ProfileBillingFreezePolicyResponseDto>
   getCustomerSubscriptionFreezePolicy();
+
+  @GET(EndPoints.familySubscriptionFlowMetadata)
+  Future<FamilyMetadataResponseDto> getFamilyMetadata();
+
+  @GET(EndPoints.familySubscriptionFlowCurrent)
+  Future<FamilyGroupResponseDto> getCurrentFamilyGroup();
+
+  @PUT(EndPoints.familySubscriptionFlowGroup)
+  Future<FamilyGroupResponseDto> updateFamilyGroup(
+    @Body() FamilyGroupRequestDto request,
+  );
+
+  @POST(EndPoints.familySubscriptionFlowMembers)
+  Future<FamilyGroupResponseDto> addFamilyMember(
+    @Body() FamilyMemberRequestDto request,
+  );
+
+  @PUT(EndPoints.familySubscriptionFlowMember)
+  Future<FamilyGroupResponseDto> updateFamilyMember(
+    @Path('memberId') String memberId,
+    @Body() FamilyMemberRequestDto request,
+  );
+
+  @DELETE(EndPoints.familySubscriptionFlowMember)
+  Future<FamilyGroupResponseDto> deleteFamilyMember(
+    @Path('memberId') String memberId,
+  );
+
+  @PUT(EndPoints.familySubscriptionFlowMemberPlan)
+  Future<FamilyGroupResponseDto> updateFamilyMemberPlan(
+    @Path('memberId') String memberId,
+    @Body() FamilyMemberPlanRequestDto request,
+  );
+
+  @GET(EndPoints.familySubscriptionFlowSummary)
+  Future<FamilySummaryResponseDto> getFamilySummary(
+    @Query('memberId') String? memberId,
+  );
+
+  @GET(EndPoints.familySubscriptionFlowPaymentMethods)
+  Future<List<FamilyPaymentMethodResponseDto>> getFamilyPaymentMethods(
+    @Query('amount') double amount,
+  );
+
+  @POST(EndPoints.familySubscriptionFlowCheckout)
+  Future<FamilyCheckoutResponseDto> checkoutFamilySubscription(
+    @Body() FamilyCheckoutRequestDto request,
+  );
 }

@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/data/family_program_setup_fake_data.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 
 class FamilyProgramCard extends StatelessWidget {
   const FamilyProgramCard({
@@ -15,7 +15,7 @@ class FamilyProgramCard extends StatelessWidget {
     required this.semanticPrefix,
   });
 
-  final FamilyProgramSetupProgramFakeData program;
+  final FamilyProgramUiModel program;
   final bool isSelected;
   final VoidCallback onTap;
   final Color borderColor;
@@ -96,12 +96,38 @@ class FamilyProgramCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
-                  Image.asset(
-                    program.imageAsset,
-                    width: Spacing.familyProgramImageSize,
-                    height: Spacing.familyProgramImageSize,
-                    fit: BoxFit.contain,
-                  ),
+                  if (program.imageAsset.startsWith('http'))
+                    Image.network(
+                      program.imageAsset,
+                      width: Spacing.familyProgramImageSize,
+                      height: Spacing.familyProgramImageSize,
+                      fit: BoxFit.contain,
+                      errorBuilder:
+                          (_, _, _) => Icon(
+                            Icons.restaurant_rounded,
+                            color: color.primary,
+                            size: Spacing.familyProgramImageSize,
+                          ),
+                    )
+                  else if (program.imageAsset.isNotEmpty)
+                    Image.asset(
+                      program.imageAsset,
+                      width: Spacing.familyProgramImageSize,
+                      height: Spacing.familyProgramImageSize,
+                      fit: BoxFit.contain,
+                      errorBuilder:
+                          (_, _, _) => Icon(
+                            Icons.restaurant_rounded,
+                            color: color.primary,
+                            size: Spacing.familyProgramImageSize,
+                          ),
+                    )
+                  else
+                    Icon(
+                      Icons.restaurant_rounded,
+                      color: color.primary,
+                      size: Spacing.familyProgramImageSize,
+                    ),
                 ],
               ),
             ),

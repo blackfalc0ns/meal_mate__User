@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/data/family_program_setup_fake_data.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_card.dart';
 
 class FamilyProgramMemberStrip extends StatelessWidget {
   const FamilyProgramMemberStrip({super.key, required this.members});
 
-  final List<FamilyProgramSetupMemberFakeData> members;
+  final List<FamilyProgramMemberUiModel> members;
 
   @override
   Widget build(BuildContext context) {
