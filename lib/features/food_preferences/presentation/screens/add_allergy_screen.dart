@@ -18,9 +18,12 @@ import 'package:meal_meat_user/features/food_preferences/presentation/manager/fo
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_option_tile.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_summary_card.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class AddAllergyScreen extends StatelessWidget {
-  const AddAllergyScreen({super.key});
+  const AddAllergyScreen({super.key, this.args});
+
+  final SubscriptionFlowArgs? args;
 
   @override
   Widget build(BuildContext context) {

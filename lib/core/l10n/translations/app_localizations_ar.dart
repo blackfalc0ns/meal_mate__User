@@ -1823,6 +1823,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_summary_restaurants => 'أكثر من 100 مطعم';
 
   @override
+  String get subscription_summary_no_restaurants_for_address =>
+      'لا يوجد مطعم يغطي عنوان التوصيل الحالي.';
+
+  @override
   String get subscription_summary_quality => 'مكونات عالية الجودة';
 
   @override

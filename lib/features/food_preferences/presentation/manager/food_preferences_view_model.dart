@@ -144,7 +144,7 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
     await _runAction(
       () => _updateFoodPreferencesAllergiesUseCase(
         _selectedCatalogItems(
-          selectedCodes: state.selection.activeAllergies,
+          selectedCodes: state.selection.allergies,
           catalogItems: catalog.allergens,
         ),
       ),
@@ -252,11 +252,11 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
     return FoodPreferencesEntity(
       dietaryPattern: selectedDiets.isEmpty ? null : selectedDiets.first,
       dietaryPreferences: _selectedCatalogItems(
-        selectedCodes: state.selection.activeDietaryPreferences,
+        selectedCodes: state.selection.dietaryPreferences,
         catalogItems: catalog.dietaryPreferences,
       ),
       allergies: _selectedCatalogItems(
-        selectedCodes: state.selection.activeAllergies,
+        selectedCodes: state.selection.allergies,
         catalogItems: catalog.allergens,
       ),
       dislikedFoods: _selectedCatalogItems(
@@ -274,7 +274,17 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
     final itemsByCode = {for (final item in catalogItems) item.code: item};
 
     return selectedCodes
-        .map((code) => itemsByCode[code])
+        .map(
+          (code) =>
+              itemsByCode[code] ??
+              (code == FoodPreferenceItemEntity.noneCode
+                  ? const FoodPreferenceCatalogItemEntity(
+                      code: FoodPreferenceItemEntity.noneCode,
+                      nameAr: '',
+                      nameEn: '',
+                    )
+                  : null),
+        )
         .nonNulls
         .map(
           (item) => FoodPreferenceItemEntity(

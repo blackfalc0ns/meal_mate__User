@@ -11,7 +11,7 @@ class FoodPreferencesAllergiesRequestDto {
       _$FoodPreferencesAllergiesRequestDtoToJson(this);
 }
 
-@JsonSerializable(createFactory: false)
+@JsonSerializable(createFactory: false, includeIfNull: false)
 class FoodPreferencesAllergyRequestDto {
   const FoodPreferencesAllergyRequestDto({required this.code, this.severity});
 

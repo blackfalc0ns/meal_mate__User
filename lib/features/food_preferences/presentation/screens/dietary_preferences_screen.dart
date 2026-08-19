@@ -19,9 +19,12 @@ import 'package:meal_meat_user/features/food_preferences/presentation/widgets/di
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_notes_section.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_section_card.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class DietaryPreferencesScreen extends StatelessWidget {
-  const DietaryPreferencesScreen({super.key});
+  const DietaryPreferencesScreen({super.key, this.args});
+
+  final SubscriptionFlowArgs? args;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,9 @@ class DietaryPreferencesScreen extends StatelessWidget {
               context: context,
               message: context.localization.dietary_preferences_update_success,
             );
+            if (args?.isSubscriptionSource == true) {
+              Navigator.of(context).pop(true);
+            }
           }
         },
         child: _buildContent(context),

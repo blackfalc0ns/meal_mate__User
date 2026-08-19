@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_value_tile.dart';
@@ -124,6 +125,93 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                       ),
                     ),
                 ],
+              ),
+            ),
+          ],
+          if (summary?.address != null) ...[
+            const SizedBox(height: Spacing.md),
+            _buildInfoSection(
+              context: context,
+              title: locale.profile_addresses,
+              child: Text(
+                summary!.address!.formattedAddress,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.inverseSurface,
+                ).copyWith(height: FontSize.size20 / FontSize.size14),
+              ),
+            ),
+          ],
+          if (summary?.restaurants.isNotEmpty == true) ...[
+            const SizedBox(height: Spacing.md),
+            _buildInfoSection(
+              context: context,
+              title: locale.home_restaurants,
+              child: Column(
+                children: [
+                  for (final restaurant in summary!.restaurants.take(4))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+                      child: Row(
+                        children: [
+                          ClipOval(
+                            child: SizedBox(
+                              width: Spacing.xl,
+                              height: Spacing.xl,
+                              child: restaurant.logoUrl == null
+                                  ? Icon(
+                                      Icons.restaurant_rounded,
+                                      color: color.primary,
+                                      size: Spacing.iconMd,
+                                    )
+                                  : AppCachedNetworkImage(
+                                      imageUrl: restaurant.logoUrl!,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.sm),
+                          Expanded(
+                            child: Text(
+                              restaurant.name(locale.localeName),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  getMediumStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size14,
+                                    color: color.inverseSurface,
+                                  ).copyWith(
+                                    height: FontSize.size20 / FontSize.size14,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+          if (summary?.canCheckout == false &&
+              summary?.checkoutBlockReason ==
+                  'subscription_flow.no_restaurants_for_address') ...[
+            const SizedBox(height: Spacing.md),
+            _buildInfoSection(
+              context: context,
+              title: locale.home_restaurants,
+              child: Text(
+                locale.subscription_summary_no_restaurants_for_address,
+                textAlign: TextAlign.center,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.error,
+                ).copyWith(height: FontSize.size20 / FontSize.size13),
               ),
             ),
           ],

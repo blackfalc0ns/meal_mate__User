@@ -23,8 +23,10 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/month
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_section.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_loading_skeleton.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_section.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_readiness_bottom_sheet.dart';
 
 class SubscriptionPlanDetailsScreen extends StatefulWidget {
   const SubscriptionPlanDetailsScreen({super.key, this.args});
@@ -66,7 +68,30 @@ class _SubscriptionPlanDetailsScreenState
             includeFriday: false,
           ),
         ),
-      child: BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
+      child: BlocConsumer<SubscriptionPlanViewModel, SubscriptionPlanState>(
+        listenWhen: (previous, current) =>
+            previous.readiness != current.readiness ||
+            previous.readinessFailure != current.readinessFailure,
+        listener: (context, state) {
+          final readiness = state.readiness;
+          if (readiness == null) return;
+
+          final plan = _buildPlan(context, state);
+          final request = _subscriptionRequest(state);
+          if (request == null) return;
+
+          if (readiness.shouldOpenSummary) {
+            _openSubscriptionSummary(
+              context,
+              request,
+              plan,
+              state.selectedTier,
+            );
+            return;
+          }
+
+          _showReadinessSheet(context, readiness, request);
+        },
         builder: (context, state) {
           final plan = _buildPlan(context, state);
           final selectedTier = state.selectedTier;
@@ -150,7 +175,7 @@ class _SubscriptionPlanDetailsScreenState
                         : '',
                     currency: canSubscribe ? selectedTier.currencyCode : '',
                     onPressed: canSubscribe
-                        ? () => _openSubscriptionSummary(context, state, plan)
+                        ? () => _checkReadiness(context, state)
                         : null,
                   ),
                 ),
@@ -354,33 +379,107 @@ class _SubscriptionPlanDetailsScreenState
     setState(() => _isRestaurantsView = true);
   }
 
-  void _openSubscriptionSummary(
-    BuildContext context,
-    SubscriptionPlanState state,
-    MonthlyPlanDetailsEntity plan,
-  ) {
+  void _checkReadiness(BuildContext context, SubscriptionPlanState state) {
     final args = widget.args!;
+    final request = _subscriptionRequest(state);
+
+    if (request == null) return;
+
+    context.read<SubscriptionPlanViewModel>().doIntent(
+      CheckSubscriptionReadinessEvent(
+        programId: args.program.programId,
+        bundleId: args.bundle.bundleId,
+        tier: request.tier,
+        durationDays: request.durationDays,
+        includeFriday: request.includeFriday,
+      ),
+    );
+  }
+
+  SubscriptionSummaryRequestEntity? _subscriptionRequest(
+    SubscriptionPlanState state,
+  ) {
+    final args = widget.args;
     final durationDays = state.selectedDurationDays;
     final selectedTier = state.selectedTier;
 
-    if (durationDays == null || selectedTier == null) return;
+    if (args == null || durationDays == null || selectedTier == null) {
+      return null;
+    }
 
+    return SubscriptionSummaryRequestEntity(
+      includeFriday: state.includeFriday,
+      durationDays: durationDays,
+      tier: selectedTier.tier,
+      bundleId: args.bundle.bundleId,
+      programId: args.program.programId,
+    );
+  }
+
+  void _openSubscriptionSummary(
+    BuildContext context,
+    SubscriptionSummaryRequestEntity request,
+    MonthlyPlanDetailsEntity plan,
+    SubscriptionTierEntity? selectedTier,
+  ) {
     context.pushNamed(
       AppRoutes.subscriptionSummary,
       arguments: SubscriptionSummaryArgs(
         initialPlan: plan,
-        restaurantId: selectedTier.restaurants.isEmpty
+        restaurantId: selectedTier == null || selectedTier.restaurants.isEmpty
             ? ''
             : selectedTier.restaurants.first.restaurantId,
-        request: SubscriptionSummaryRequestEntity(
-          includeFriday: state.includeFriday,
-          durationDays: durationDays,
-          tier: selectedTier.tier,
-          bundleId: args.bundle.bundleId,
-          programId: args.program.programId,
-        ),
+        request: request,
       ),
     );
+  }
+
+  Future<void> _showReadinessSheet(
+    BuildContext context,
+    SubscriptionReadinessEntity readiness,
+    SubscriptionSummaryRequestEntity request,
+  ) {
+    return showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (sheetContext) => SubscriptionReadinessBottomSheet(
+        readiness: readiness,
+        onItemPressed: (item) async {
+          Navigator.of(sheetContext).pop();
+          final updated = await _openReadinessItem(context, item, request);
+          if (updated == true && context.mounted) {
+            context.read<SubscriptionPlanViewModel>().doIntent(
+              CheckSubscriptionReadinessEvent(
+                programId: request.programId,
+                bundleId: request.bundleId,
+                tier: request.tier,
+                durationDays: request.durationDays,
+                includeFriday: request.includeFriday,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Future<Object?> _openReadinessItem(
+    BuildContext context,
+    SubscriptionReadinessItemEntity item,
+    SubscriptionSummaryRequestEntity request,
+  ) {
+    final args = SubscriptionFlowArgs(request: request);
+    final route = switch (item.actionScreen.toUpperCase()) {
+      'ADDRESS' => AppRoutes.addressChooseLocation,
+      'DIETARY_PREFERENCES' => AppRoutes.dietaryPreferences,
+      'ALLERGIES' => AppRoutes.addAllergy,
+      _ => null,
+    };
+
+    if (route == null) return Future<Object?>.value(false);
+
+    return Navigator.of(context).pushNamed(route, arguments: args);
   }
 
   MonthlyPlanDetailsEntity _buildPlan(

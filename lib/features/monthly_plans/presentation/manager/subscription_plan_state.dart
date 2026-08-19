@@ -2,12 +2,14 @@ import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class SubscriptionPlanState {
   const SubscriptionPlanState({
     this.isDurationsLoading = false,
     this.isTiersLoading = false,
     this.isBrowseRestaurantsLoading = false,
+    this.isReadinessLoading = false,
     this.isSuccess = false,
     this.includeFriday = false,
     this.durations = const [],
@@ -17,13 +19,16 @@ class SubscriptionPlanState {
     this.customDurationDays,
     this.browsedTierIndex,
     this.browseRestaurants = const [],
+    this.readiness,
     this.failure,
     this.browseRestaurantsFailure,
+    this.readinessFailure,
   });
 
   final bool isDurationsLoading;
   final bool isTiersLoading;
   final bool isBrowseRestaurantsLoading;
+  final bool isReadinessLoading;
   final bool isSuccess;
   final bool includeFriday;
   final List<SubscriptionDurationEntity> durations;
@@ -33,8 +38,10 @@ class SubscriptionPlanState {
   final int? customDurationDays;
   final int? browsedTierIndex;
   final List<SubscriptionTierRestaurantBrowseEntity> browseRestaurants;
+  final SubscriptionReadinessEntity? readiness;
   final Failure? failure;
   final Failure? browseRestaurantsFailure;
+  final Failure? readinessFailure;
 
   SubscriptionDurationEntity? get selectedDuration {
     final index = selectedDurationIndex;
@@ -100,6 +107,7 @@ class SubscriptionPlanState {
     bool? isDurationsLoading,
     bool? isTiersLoading,
     bool? isBrowseRestaurantsLoading,
+    bool? isReadinessLoading,
     bool? isSuccess,
     bool? includeFriday,
     List<SubscriptionDurationEntity>? durations,
@@ -109,21 +117,26 @@ class SubscriptionPlanState {
     int? customDurationDays,
     int? browsedTierIndex,
     List<SubscriptionTierRestaurantBrowseEntity>? browseRestaurants,
+    SubscriptionReadinessEntity? readiness,
     Failure? failure,
     Failure? browseRestaurantsFailure,
+    Failure? readinessFailure,
     bool clearSelectedDuration = false,
     bool clearSelectedTier = false,
     bool clearCustomDuration = false,
     bool clearBrowsedTier = false,
     bool clearBrowseRestaurants = false,
+    bool clearReadiness = false,
     bool clearFailure = false,
     bool clearBrowseRestaurantsFailure = false,
+    bool clearReadinessFailure = false,
   }) {
     return SubscriptionPlanState(
       isDurationsLoading: isDurationsLoading ?? this.isDurationsLoading,
       isTiersLoading: isTiersLoading ?? this.isTiersLoading,
       isBrowseRestaurantsLoading:
           isBrowseRestaurantsLoading ?? this.isBrowseRestaurantsLoading,
+      isReadinessLoading: isReadinessLoading ?? this.isReadinessLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       includeFriday: includeFriday ?? this.includeFriday,
       durations: durations ?? this.durations,
@@ -143,10 +156,14 @@ class SubscriptionPlanState {
       browseRestaurants: clearBrowseRestaurants
           ? const []
           : browseRestaurants ?? this.browseRestaurants,
+      readiness: clearReadiness ? null : readiness ?? this.readiness,
       failure: clearFailure ? null : failure ?? this.failure,
       browseRestaurantsFailure: clearBrowseRestaurantsFailure
           ? null
           : browseRestaurantsFailure ?? this.browseRestaurantsFailure,
+      readinessFailure: clearReadinessFailure
+          ? null
+          : readinessFailure ?? this.readinessFailure,
     );
   }
 }

@@ -149,6 +149,8 @@ import '../../features/subscription_checkout/data/repo/subscription_summary_repo
     as _i636;
 import '../../features/subscription_checkout/domain/repo/subscription_summary_repository.dart'
     as _i1060;
+import '../../features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart'
+    as _i462;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart'
     as _i926;
 import '../../features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart'
@@ -362,6 +364,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
       ),
     );
+    gh.factory<_i462.GetSubscriptionReadinessUseCase>(
+      () => _i462.GetSubscriptionReadinessUseCase(
+        gh<_i1060.SubscriptionSummaryRepository>(),
+      ),
+    );
     gh.factory<_i926.GetSubscriptionSummaryUseCase>(
       () => _i926.GetSubscriptionSummaryUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
@@ -496,6 +503,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i986.SubscriptionPlanRepository>(),
       ),
     );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i275.GetSubscriptionDurationsUseCase>(),
+        gh<_i101.GetSubscriptionTiersUseCase>(),
+        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i462.GetSubscriptionReadinessUseCase>(),
+      ),
+    );
     gh.factory<_i898.AddCustomerAddressUseCase>(
       () => _i898.AddCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
@@ -517,13 +532,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i895.CheckoutSubscriptionUseCase>(),
         gh<_i945.GetCustomerAddressesUseCase>(),
         gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
-      ),
-    );
-    gh.factory<_i527.SubscriptionPlanViewModel>(
-      () => _i527.SubscriptionPlanViewModel(
-        gh<_i275.GetSubscriptionDurationsUseCase>(),
-        gh<_i101.GetSubscriptionTiersUseCase>(),
-        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
       ),
     );
     gh.factory<_i420.SubscriptionProgramsViewModel>(

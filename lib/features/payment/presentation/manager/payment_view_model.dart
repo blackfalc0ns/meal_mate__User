@@ -128,8 +128,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
       tier: args.summaryRequest.tier,
       durationDays: args.summaryRequest.durationDays,
       startDate: _checkoutStartDate(args),
-      regionId: address?.regionId ?? '',
-      deliveryAddress: address?.addressLine ?? '',
+      regionId: args.summary.address?.regionId ?? address?.regionId ?? '',
+      deliveryAddress:
+          args.summary.address?.formattedAddress ?? address?.addressLine ?? '',
       callbackUrl: 'mealmate://payment/success',
       errorUrl: 'mealmate://payment/error',
       includeFriday: args.summaryRequest.includeFriday,

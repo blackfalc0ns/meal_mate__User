@@ -615,6 +615,7 @@
   "subscription_summary_includes_label": "يشمل اشتراكك",
   "subscription_summary_daily_meals": "4 وجبات يومياً (إفطار - غداء - عشاء - سناك)",
   "subscription_summary_restaurants": "أكثر من 100 مطعم",
+  "subscription_summary_no_restaurants_for_address": "لا يوجد مطعم يغطي عنوان التوصيل الحالي.",
   "subscription_summary_quality": "مكونات عالية الجودة",
   "subscription_summary_variety": "تنوع يومي في الوجبات",
   "subscription_summary_total_price_label": "السعر الإجمالي",

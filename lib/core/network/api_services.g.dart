@@ -1074,11 +1074,11 @@ class _ApiServices implements ApiServices {
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'IncludeFriday': includeFriday,
-      r'DurationDays': durationDays,
-      r'Tier': tier,
-      r'BundleId': bundleId,
-      r'ProgramId': programId,
+      r'includeFriday': includeFriday,
+      r'durationDays': durationDays,
+      r'tier': tier,
+      r'bundleId': bundleId,
+      r'programId': programId,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -1096,6 +1096,45 @@ class _ApiServices implements ApiServices {
     late SubscriptionSummaryResponseDto _value;
     try {
       _value = SubscriptionSummaryResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionReadinessResponseDto> getSubscriptionReadiness(
+    bool includeFriday,
+    int durationDays,
+    String tier,
+    String bundleId,
+    String programId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'includeFriday': includeFriday,
+      r'durationDays': durationDays,
+      r'tier': tier,
+      r'bundleId': bundleId,
+      r'programId': programId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionReadinessResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/readiness',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionReadinessResponseDto _value;
+    try {
+      _value = SubscriptionReadinessResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

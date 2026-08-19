@@ -6,6 +6,8 @@ import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscri
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart';
 
 @injectable
 class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
@@ -13,12 +15,14 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     this._getSubscriptionDurationsUseCase,
     this._getSubscriptionTiersUseCase,
     this._getSubscriptionTierRestaurantsUseCase,
+    this._getSubscriptionReadinessUseCase,
   ) : super(const SubscriptionPlanState());
 
   final GetSubscriptionDurationsUseCase _getSubscriptionDurationsUseCase;
   final GetSubscriptionTiersUseCase _getSubscriptionTiersUseCase;
   final GetSubscriptionTierRestaurantsUseCase
   _getSubscriptionTierRestaurantsUseCase;
+  final GetSubscriptionReadinessUseCase _getSubscriptionReadinessUseCase;
 
   void doIntent(SubscriptionPlanEvent event) {
     switch (event) {
@@ -54,6 +58,16 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
           programId: event.programId,
           bundleId: event.bundleId,
           tierIndex: event.tierIndex,
+        );
+      case CheckSubscriptionReadinessEvent():
+        _checkReadiness(
+          SubscriptionSummaryRequestEntity(
+            includeFriday: event.includeFriday,
+            durationDays: event.durationDays,
+            tier: event.tier,
+            bundleId: event.bundleId,
+            programId: event.programId,
+          ),
         );
     }
   }
@@ -278,6 +292,36 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
           state.copyWith(
             isBrowseRestaurantsLoading: false,
             browseRestaurantsFailure: result.failure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _checkReadiness(SubscriptionSummaryRequestEntity request) async {
+    emit(
+      state.copyWith(
+        isReadinessLoading: true,
+        clearReadiness: true,
+        clearReadinessFailure: true,
+      ),
+    );
+
+    final result = await _getSubscriptionReadinessUseCase(request);
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            isReadinessLoading: false,
+            readiness: result.data,
+            clearReadinessFailure: true,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isReadinessLoading: false,
+            readinessFailure: result.failure,
           ),
         );
     }

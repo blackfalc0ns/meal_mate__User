@@ -115,7 +115,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                             : AppSubscriptionButton(
                                 price: hasSummary ? plan.price : '',
                                 currency: hasSummary ? plan.currency : '',
-                                onPressed: hasSummary
+                                onPressed: hasSummary && summary.canCheckout
                                     ? () => context.pushNamed(
                                         AppRoutes.payment,
                                         arguments: PaymentArgs(
@@ -123,6 +123,9 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                           summaryRequest: summaryArgs.request,
                                           restaurantId:
                                               summary.restaurantId ??
+                                              _firstSummaryRestaurantId(
+                                                summary,
+                                              ) ??
                                               summaryArgs.restaurantId,
                                         ),
                                       )
@@ -198,7 +201,23 @@ class SubscriptionSummaryScreen extends StatelessWidget {
         ),
       ],
       filters: initialPlan.filters,
-      restaurants: initialPlan.restaurants,
+      restaurants: summary.restaurants
+          .map(
+            (restaurant) => MonthlyRestaurantPlanEntity(
+              programId: summary.programId,
+              bundleId: summary.bundleId,
+              restaurantId: restaurant.restaurantId,
+              name: restaurant.name(locale.localeName),
+              subtitle: restaurant.tier,
+              meals: '',
+              bundleMeals: '',
+              rating: '',
+              brandColor: Theme.of(context).colorScheme.primary,
+              classificationLogoUrls: const [],
+              logoUrl: restaurant.logoUrl,
+            ),
+          )
+          .toList(),
       meals: initialPlan.meals,
     );
   }
@@ -211,6 +230,14 @@ class SubscriptionSummaryScreen extends StatelessWidget {
   String? _selectedTierLogoUrl(MonthlyPlanDetailsEntity initialPlan) {
     for (final tier in initialPlan.packageTiers) {
       if (tier.title == initialPlan.discountLabel) return tier.logoUrl;
+    }
+
+    return null;
+  }
+
+  String? _firstSummaryRestaurantId(SubscriptionSummaryEntity summary) {
+    for (final restaurant in summary.restaurants) {
+      if (restaurant.restaurantId.isNotEmpty) return restaurant.restaurantId;
     }
 
     return null;

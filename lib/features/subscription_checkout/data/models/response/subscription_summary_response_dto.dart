@@ -32,6 +32,10 @@ class SubscriptionSummaryResponseDto {
     this.gatewayFee,
     this.finalPrice,
     this.currencyCode,
+    this.canCheckout,
+    this.checkoutBlockReason,
+    this.address,
+    this.restaurants,
     this.termsAcceptanceRequired,
     this.checkoutEndpoint,
     this.includeFriday,
@@ -67,6 +71,10 @@ class SubscriptionSummaryResponseDto {
   final double? gatewayFee;
   final double? finalPrice;
   final String? currencyCode;
+  final bool? canCheckout;
+  final String? checkoutBlockReason;
+  final SubscriptionSummaryAddressResponseDto? address;
+  final List<SubscriptionSummaryRestaurantResponseDto>? restaurants;
   final bool? termsAcceptanceRequired;
   final String? checkoutEndpoint;
   final bool? includeFriday;
@@ -76,6 +84,52 @@ class SubscriptionSummaryResponseDto {
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionSummaryAddressResponseDto {
+  const SubscriptionSummaryAddressResponseDto({
+    this.id,
+    this.label,
+    this.addressLine,
+    this.governorate,
+    this.area,
+    this.block,
+    this.regionId,
+  });
+
+  final String? id;
+  final String? label;
+  final String? addressLine;
+  final String? governorate;
+  final String? area;
+  final String? block;
+  final String? regionId;
+
+  factory SubscriptionSummaryAddressResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionSummaryAddressResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionSummaryRestaurantResponseDto {
+  const SubscriptionSummaryRestaurantResponseDto({
+    this.restaurantId,
+    this.nameAr,
+    this.nameEn,
+    this.logoUrl,
+    this.tier,
+  });
+
+  final String? restaurantId;
+  final String? nameAr;
+  final String? nameEn;
+  final String? logoUrl;
+  final String? tier;
+
+  factory SubscriptionSummaryRestaurantResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionSummaryRestaurantResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

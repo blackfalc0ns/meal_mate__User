@@ -9,9 +9,12 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class AddressChooseLocationScreen extends StatelessWidget {
-  const AddressChooseLocationScreen({super.key});
+  const AddressChooseLocationScreen({super.key, this.args});
+
+  final SubscriptionFlowArgs? args;
 
   @override
   Widget build(BuildContext context) {

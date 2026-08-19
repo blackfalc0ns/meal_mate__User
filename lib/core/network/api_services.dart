@@ -42,6 +42,7 @@ import 'package:meal_meat_user/features/payment/data/models/request/payment_chec
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
@@ -245,11 +246,20 @@ abstract class ApiServices {
 
   @GET(EndPoints.subscriptionSummary)
   Future<SubscriptionSummaryResponseDto> getSubscriptionSummary(
-    @Query('IncludeFriday') bool includeFriday,
-    @Query('DurationDays') int durationDays,
-    @Query('Tier') String tier,
-    @Query('BundleId') String bundleId,
-    @Query('ProgramId') String programId,
+    @Query('includeFriday') bool includeFriday,
+    @Query('durationDays') int durationDays,
+    @Query('tier') String tier,
+    @Query('bundleId') String bundleId,
+    @Query('programId') String programId,
+  );
+
+  @GET(EndPoints.subscriptionReadiness)
+  Future<SubscriptionReadinessResponseDto> getSubscriptionReadiness(
+    @Query('includeFriday') bool includeFriday,
+    @Query('durationDays') int durationDays,
+    @Query('tier') String tier,
+    @Query('bundleId') String bundleId,
+    @Query('programId') String programId,
   );
 
   @GET(EndPoints.paymentMethods)

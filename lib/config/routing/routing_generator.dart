@@ -34,6 +34,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscripti
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_restaurant_details_screen.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_summary_screen.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
@@ -245,17 +246,29 @@ class RouteGenerator {
       case AppRoutes.addresses:
         return _buildRoute(settings: settings, page: const AddressesScreen());
       case AppRoutes.addressChooseLocation:
+        final args = settings.arguments is SubscriptionFlowArgs
+            ? settings.arguments! as SubscriptionFlowArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const AddressChooseLocationScreen(),
+          page: AddressChooseLocationScreen(args: args),
         );
       case AppRoutes.dietaryPreferences:
+        final args = settings.arguments is SubscriptionFlowArgs
+            ? settings.arguments! as SubscriptionFlowArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const DietaryPreferencesScreen(),
+          page: DietaryPreferencesScreen(args: args),
         );
       case AppRoutes.addAllergy:
-        return _buildRoute(settings: settings, page: const AddAllergyScreen());
+        final args = settings.arguments is SubscriptionFlowArgs
+            ? settings.arguments! as SubscriptionFlowArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: AddAllergyScreen(args: args),
+        );
       case AppRoutes.healthGoals:
         return _buildRoute(settings: settings, page: const HealthGoalsScreen());
       case AppRoutes.profileBilling:

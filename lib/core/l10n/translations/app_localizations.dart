@@ -3542,6 +3542,12 @@ abstract class AppLocalizations {
   /// **'More than 100 restaurants'**
   String get subscription_summary_restaurants;
 
+  /// No description provided for @subscription_summary_no_restaurants_for_address.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants currently cover this delivery address.'**
+  String get subscription_summary_no_restaurants_for_address;
+
   /// No description provided for @subscription_summary_quality.
   ///
   /// In en, this message translates to:

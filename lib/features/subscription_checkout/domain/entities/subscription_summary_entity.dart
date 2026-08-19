@@ -27,6 +27,10 @@ class SubscriptionSummaryEntity {
     required this.gatewayFee,
     required this.finalPrice,
     required this.currencyCode,
+    required this.canCheckout,
+    this.checkoutBlockReason,
+    this.address,
+    required this.restaurants,
     required this.termsAcceptanceRequired,
     required this.checkoutEndpoint,
     required this.includeFriday,
@@ -62,6 +66,10 @@ class SubscriptionSummaryEntity {
   final double gatewayFee;
   final double finalPrice;
   final String currencyCode;
+  final bool canCheckout;
+  final String? checkoutBlockReason;
+  final SubscriptionSummaryAddressEntity? address;
+  final List<SubscriptionSummaryRestaurantEntity> restaurants;
   final bool termsAcceptanceRequired;
   final String checkoutEndpoint;
   final bool includeFriday;
@@ -82,6 +90,51 @@ class SubscriptionSummaryEntity {
 
   String? restaurantName(String localeName) =>
       localeName == 'ar' ? restaurantNameAr : restaurantNameEn;
+}
+
+class SubscriptionSummaryAddressEntity {
+  const SubscriptionSummaryAddressEntity({
+    required this.id,
+    required this.label,
+    required this.addressLine,
+    this.governorate,
+    this.area,
+    this.block,
+    this.regionId,
+  });
+
+  final String id;
+  final String label;
+  final String addressLine;
+  final String? governorate;
+  final String? area;
+  final String? block;
+  final String? regionId;
+
+  String get formattedAddress => [
+    addressLine,
+    governorate,
+    area,
+    block,
+  ].whereType<String>().where((value) => value.trim().isNotEmpty).join(' - ');
+}
+
+class SubscriptionSummaryRestaurantEntity {
+  const SubscriptionSummaryRestaurantEntity({
+    required this.restaurantId,
+    required this.nameAr,
+    required this.nameEn,
+    this.logoUrl,
+    required this.tier,
+  });
+
+  final String restaurantId;
+  final String nameAr;
+  final String nameEn;
+  final String? logoUrl;
+  final String tier;
+
+  String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 }
 
 class SubscriptionSummarySlotRequirementEntity {

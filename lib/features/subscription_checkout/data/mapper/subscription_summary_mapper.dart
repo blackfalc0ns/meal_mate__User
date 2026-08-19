@@ -1,5 +1,83 @@
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
+
+import '../models/response/subscription_readiness_response_dto.dart';
+
+extension SubscriptionReadinessResponseDtoMapper
+    on SubscriptionReadinessResponseDto {
+  SubscriptionReadinessEntity toEntity() {
+    return SubscriptionReadinessEntity(
+      isComplete: isComplete ?? false,
+      canOpenSummary: canOpenSummary ?? false,
+      canCheckout: canCheckout ?? false,
+      nextAction: nextAction ?? '',
+      warningAr: warningAr ?? '',
+      warningEn: warningEn ?? '',
+      checkoutBlockReason: checkoutBlockReason,
+      program: program?.toEntity(),
+      address: address?.toEntity(),
+      deliveringRestaurantCount: deliveringRestaurantCount ?? 0,
+      items: (items ?? const []).map((item) => item.toEntity()).toList(),
+      restaurants: (restaurants ?? const [])
+          .map((restaurant) => restaurant.toEntity())
+          .toList(),
+    );
+  }
+}
+
+extension SubscriptionReadinessProgramResponseDtoMapper
+    on SubscriptionReadinessProgramResponseDto {
+  SubscriptionReadinessProgramEntity toEntity() {
+    return SubscriptionReadinessProgramEntity(
+      programId: programId ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+    );
+  }
+}
+
+extension SubscriptionReadinessAddressResponseDtoMapper
+    on SubscriptionReadinessAddressResponseDto {
+  SubscriptionReadinessAddressEntity toEntity() {
+    return SubscriptionReadinessAddressEntity(
+      id: id ?? '',
+      label: label ?? '',
+      addressLine: addressLine ?? '',
+      governorate: governorate,
+      area: area,
+      block: block,
+      regionId: regionId,
+    );
+  }
+}
+
+extension SubscriptionReadinessItemResponseDtoMapper
+    on SubscriptionReadinessItemResponseDto {
+  SubscriptionReadinessItemEntity toEntity() {
+    return SubscriptionReadinessItemEntity(
+      code: code ?? '',
+      isComplete: isComplete ?? false,
+      titleAr: titleAr ?? '',
+      titleEn: titleEn ?? '',
+      actionScreen: actionScreen ?? code ?? '',
+      endpoint: endpoint,
+    );
+  }
+}
+
+extension SubscriptionReadinessRestaurantResponseDtoMapper
+    on SubscriptionReadinessRestaurantResponseDto {
+  SubscriptionReadinessRestaurantEntity toEntity() {
+    return SubscriptionReadinessRestaurantEntity(
+      restaurantId: restaurantId ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      logoUrl: logoUrl,
+      tier: tier ?? '',
+    );
+  }
+}
 
 extension SubscriptionSummaryResponseDtoMapper
     on SubscriptionSummaryResponseDto {
@@ -34,6 +112,12 @@ extension SubscriptionSummaryResponseDtoMapper
       gatewayFee: gatewayFee ?? 0,
       finalPrice: finalPrice ?? 0,
       currencyCode: currencyCode ?? '',
+      canCheckout: canCheckout ?? true,
+      checkoutBlockReason: checkoutBlockReason,
+      address: address?.toEntity(),
+      restaurants: (restaurants ?? const [])
+          .map((restaurant) => restaurant.toEntity())
+          .toList(),
       termsAcceptanceRequired: termsAcceptanceRequired ?? false,
       checkoutEndpoint: checkoutEndpoint ?? '',
       includeFriday: includeFriday ?? false,
@@ -46,6 +130,34 @@ extension SubscriptionSummaryResponseDtoMapper
             titleEn: '',
             items: [],
           ),
+    );
+  }
+}
+
+extension SubscriptionSummaryAddressResponseDtoMapper
+    on SubscriptionSummaryAddressResponseDto {
+  SubscriptionSummaryAddressEntity toEntity() {
+    return SubscriptionSummaryAddressEntity(
+      id: id ?? '',
+      label: label ?? '',
+      addressLine: addressLine ?? '',
+      governorate: governorate,
+      area: area,
+      block: block,
+      regionId: regionId,
+    );
+  }
+}
+
+extension SubscriptionSummaryRestaurantResponseDtoMapper
+    on SubscriptionSummaryRestaurantResponseDto {
+  SubscriptionSummaryRestaurantEntity toEntity() {
+    return SubscriptionSummaryRestaurantEntity(
+      restaurantId: restaurantId ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      logoUrl: logoUrl,
+      tier: tier ?? '',
     );
   }
 }
