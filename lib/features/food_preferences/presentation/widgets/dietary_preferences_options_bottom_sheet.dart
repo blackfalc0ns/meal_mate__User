@@ -60,29 +60,50 @@ class _DietaryPreferencesOptionsBottomSheetState
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
               ),
             ),
-            const SizedBox(height: Spacing.md),
-            Row(
-              mainAxisSize: MainAxisSize.min,
+            const SizedBox(height: Spacing.sm),
+            Stack(
+              alignment: Alignment.center,
               children: [
-                Icon(
-                  widget.icon,
-                  color: widget.iconColor,
-                  size: Spacing.iconMd,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: color.onSurfaceVariant,
+                      size: Spacing.iconMd,
+                    ),
+                    tooltip: locale.closeButtonTooltip,
+                  ),
                 ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  widget.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
-                    color: color.onSurface,
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        widget.icon,
+                        color: widget.iconColor,
+                        size: Spacing.iconMd,
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size14,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.lg),
+            const SizedBox(height: Spacing.md),
             Flexible(
               child: ListView.separated(
                 shrinkWrap: true,
@@ -120,16 +141,7 @@ class _DietaryPreferencesOptionsBottomSheetState
                 },
               ),
             ),
-            IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(
-                Icons.close_rounded,
-                color: color.primary,
-                size: Spacing.iconMd,
-              ),
-              tooltip: locale.closeButtonTooltip,
-            ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.md),
           ],
         ),
       ),

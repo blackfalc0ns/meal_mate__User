@@ -96,77 +96,82 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
               end: Spacing.dietaryCardInset,
               bottom: Spacing.sm,
             ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(Spacing.dietaryChipRadius),
-              onTap: () => _showOptionsBottomSheet(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        spacing: choicesSpacing,
-                        runSpacing: Spacing.xs,
-                        children: [
-                          ..._visibleOptions.map(
-                            (option) => DietaryPreferencesChoiceChip(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ..._visibleOptions.map(
+                          (option) => Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              end: choicesSpacing,
+                            ),
+                            child: DietaryPreferencesChoiceChip(
                               label: option.label,
                               isSelected: selectedOptions.contains(option.code),
                               onSelected: (_) =>
                                   _showOptionsBottomSheet(context),
                             ),
                           ),
-                          if (actionLabel != null)
-                            OutlinedButton.icon(
-                              onPressed: onActionPressed,
-                              icon: Icon(
-                                Icons.arrow_back_ios_new_rounded,
-                                size: Spacing.xs,
+                        ),
+                        if (actionLabel != null)
+                          OutlinedButton.icon(
+                            onPressed: onActionPressed,
+                            icon: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: Spacing.xs,
+                            ),
+                            label: Text(actionLabel!),
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(
+                                0,
+                                Spacing.dietaryChipHeight,
                               ),
-                              label: Text(actionLabel!),
-                              style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(
-                                  0,
-                                  Spacing.dietaryChipHeight,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: Spacing.sm,
-                                ),
-                                textStyle: getMediumStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size11,
-                                  color: color.primary,
-                                ),
-                                side: BorderSide(color: color.primaryContainer),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    Spacing.dietaryChipRadius,
-                                  ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.sm,
+                              ),
+                              textStyle: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size11,
+                                color: color.primary,
+                              ),
+                              side: BorderSide(color: color.primaryContainer),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.dietaryChipRadius,
                                 ),
                               ),
                             ),
-                        ],
-                      ),
+                          ),
+                      ],
                     ),
-                    const SizedBox(width: Spacing.sm),
-                    Container(
-                      width: Spacing.dietaryChipHeight,
-                      height: Spacing.dietaryChipHeight,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: color.primaryContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        size: Spacing.lg,
-                        color: color.primary,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(width: Spacing.xs),
+                InkWell(
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  onTap: () => _showOptionsBottomSheet(context),
+                  child: Container(
+                    width: Spacing.dietaryChipHeight,
+                    height: Spacing.dietaryChipHeight,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: color.primaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: Spacing.lg,
+                      color: color.primary,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
