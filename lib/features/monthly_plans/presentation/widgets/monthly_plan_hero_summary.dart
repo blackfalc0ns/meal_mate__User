@@ -17,64 +17,67 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
 
     return Semantics(
       label: locale.nav_subscription,
-      child: Column(
-        children: [
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              style:
-                  getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanHeroTitleSize,
-                    color: color.onSurface,
-                  ).copyWith(
-                    height:
-                        Spacing.monthlyPlanHeroTitleLineHeight /
-                        Spacing.monthlyPlanHeroTitleSize,
-                  ),
-              children: [
-                TextSpan(text: '${plan.titlePrefix} '),
-                TextSpan(
-                  text: plan.titleHighlight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FittedBox(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanHeroTitleSize,
-                    color: color.primary,
+                    fontSize: FontSize.size26,
+                    color: color.onSurface,
+                  ).copyWith(height: 1.25),
+                  children: [
+                    if (plan.titlePrefix.isNotEmpty)
+                      TextSpan(text: '${plan.titlePrefix} '),
+                    if (plan.titleHighlight.isNotEmpty)
+                      TextSpan(
+                        text: plan.titleHighlight,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size26,
+                          color: color.primary,
+                        ).copyWith(height: 1.25),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            if (plan.discountLabel.isNotEmpty) ...[
+              const SizedBox(height: Spacing.xs),
+              Container(
+                constraints: const BoxConstraints(
+                  minHeight: Spacing.monthlyPlanPromotionHeight,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.monthlyPlanPromotionPadding,
+                  vertical: Spacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: color.primary,
+                  borderRadius: BorderRadius.circular(
+                    Spacing.monthlyPlanPromotionRadius,
                   ),
                 ),
-              ],
-            ),
-          ),
-          if (plan.discountLabel.isNotEmpty) ...[
-            const SizedBox(height: Spacing.monthlyPlanPromotionGap),
-            Container(
-              constraints: const BoxConstraints(
-                minHeight: Spacing.monthlyPlanPromotionHeight,
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.monthlyPlanPromotionPadding,
-                vertical: Spacing.xs,
-              ),
-              decoration: BoxDecoration(
-                color: color.primary,
-                borderRadius: BorderRadius.circular(
-                  Spacing.monthlyPlanPromotionRadius,
+                child: Text(
+                  plan.discountLabel,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: Spacing.monthlyPlanPromotionTextSize,
+                    color: color.onPrimary,
+                  ),
                 ),
               ),
-              child: Text(
-                plan.discountLabel,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: getSemiBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: Spacing.monthlyPlanPromotionTextSize,
-                  color: color.onPrimary,
-                ),
-              ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

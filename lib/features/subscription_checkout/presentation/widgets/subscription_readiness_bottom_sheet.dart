@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 
 class SubscriptionReadinessBottomSheet extends StatelessWidget {
   const SubscriptionReadinessBottomSheet({
@@ -14,6 +16,37 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
 
   final SubscriptionReadinessEntity readiness;
   final ValueChanged<SubscriptionReadinessItemEntity> onItemPressed;
+
+  /// Display the readiness bottom sheet and handle navigation flow.
+  static Future<void> show({
+    required BuildContext context,
+    required SubscriptionReadinessEntity readiness,
+    required SubscriptionSummaryRequestEntity request,
+    required VoidCallback onRequirementFulfilled,
+  }) {
+    return context.showAppBottomSheet<void>(
+      builder: (sheetContext) => SubscriptionReadinessBottomSheet(
+        readiness: readiness,
+        onItemPressed: (item) async {
+          Navigator.of(sheetContext).pop();
+          final route = switch (item.actionScreen.toUpperCase()) {
+            'ADDRESS' => AppRoutes.addressChooseLocation,
+            'DIETARY_PREFERENCES' => AppRoutes.dietaryPreferences,
+            'ALLERGIES' => AppRoutes.addAllergy,
+            _ => null,
+          };
+          if (route == null) return;
+          final updated = await Navigator.of(context).pushNamed(
+            route,
+            arguments: SubscriptionFlowArgs(request: request),
+          );
+          if (updated == true && context.mounted) {
+            onRequirementFulfilled();
+          }
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,50 +5,31 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
-import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
-import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_details_content.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_duration_selector.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_loading_skeleton.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_section.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_loading_skeleton.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_section.dart';
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_readiness_bottom_sheet.dart';
 
-class SubscriptionPlanDetailsScreen extends StatefulWidget {
+class SubscriptionPlanDetailsScreen extends StatelessWidget {
   const SubscriptionPlanDetailsScreen({super.key, this.args});
 
   final SubscriptionPlanDetailsArgs? args;
 
   @override
-  State<SubscriptionPlanDetailsScreen> createState() =>
-      _SubscriptionPlanDetailsScreenState();
-}
-
-class _SubscriptionPlanDetailsScreenState
-    extends State<SubscriptionPlanDetailsScreen> {
-  bool _isRestaurantsView = false;
-
-  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final args = widget.args;
+    final detailsArgs = args;
 
-    if (args == null) {
+    if (detailsArgs == null) {
       return Scaffold(
         backgroundColor: color.surface,
         body: EmptyStateWidget(
@@ -63,8 +44,8 @@ class _SubscriptionPlanDetailsScreenState
       create: (_) => getIt<SubscriptionPlanViewModel>()
         ..doIntent(
           GetSubscriptionDurationsEvent(
-            programId: args.program.programId,
-            bundleId: args.bundle.bundleId,
+            programId: detailsArgs.program.programId,
+            bundleId: detailsArgs.bundle.bundleId,
             includeFriday: false,
           ),
         ),
@@ -76,24 +57,64 @@ class _SubscriptionPlanDetailsScreenState
           final readiness = state.readiness;
           if (readiness == null) return;
 
-          final plan = _buildPlan(context, state);
-          final request = _subscriptionRequest(state);
+          final request = state.toSummaryRequest(
+            programId: detailsArgs.program.programId,
+            bundleId: detailsArgs.bundle.bundleId,
+          );
           if (request == null) return;
 
+          final plan = state.toPlanDetails(
+            program: detailsArgs.program,
+            bundle: detailsArgs.bundle,
+            localeName: locale.localeName,
+            titlePrefix: locale.drawer_month_package,
+            dayLabel: locale.subscription_day,
+            subscribeLabel: locale.subscription_details_subscribe_now,
+            primaryColor: color.primary,
+          );
+
           if (readiness.shouldOpenSummary) {
-            _openSubscriptionSummary(
-              context,
-              request,
-              plan,
-              state.selectedTier,
+            final selectedTier = state.selectedTier;
+            context.pushNamed(
+              AppRoutes.subscriptionSummary,
+              arguments: SubscriptionSummaryArgs(
+                initialPlan: plan,
+                restaurantId:
+                    selectedTier == null || selectedTier.restaurants.isEmpty
+                    ? ''
+                    : selectedTier.restaurants.first.restaurantId,
+                request: request,
+              ),
             );
             return;
           }
 
-          _showReadinessSheet(context, readiness, request);
+          SubscriptionReadinessBottomSheet.show(
+            context: context,
+            readiness: readiness,
+            request: request,
+            onRequirementFulfilled: () =>
+                context.read<SubscriptionPlanViewModel>().doIntent(
+                  CheckSubscriptionReadinessEvent(
+                    programId: request.programId,
+                    bundleId: request.bundleId,
+                    tier: request.tier,
+                    durationDays: request.durationDays,
+                    includeFriday: request.includeFriday,
+                  ),
+                ),
+          );
         },
         builder: (context, state) {
-          final plan = _buildPlan(context, state);
+          final plan = state.toPlanDetails(
+            program: detailsArgs.program,
+            bundle: detailsArgs.bundle,
+            localeName: locale.localeName,
+            titlePrefix: locale.drawer_month_package,
+            dayLabel: locale.subscription_day,
+            subscribeLabel: locale.subscription_details_subscribe_now,
+            primaryColor: color.primary,
+          );
           final selectedTier = state.selectedTier;
           final canSubscribe =
               state.isSelectedDurationValid &&
@@ -111,14 +132,15 @@ class _SubscriptionPlanDetailsScreenState
                       child: MonthlyPlanHeroSection(
                         plan: plan,
                         imageAsset: Assets.monthlyPlanHero,
+                        imageUrl: null,
                         durationSelector: MonthlyPlanDurationSelector(
                           selectedIndex: state.selectedDurationIndex,
                           onSelected: (index) => context
                               .read<SubscriptionPlanViewModel>()
                               .doIntent(
                                 SelectSubscriptionDurationEvent(
-                                  programId: args.program.programId,
-                                  bundleId: args.bundle.bundleId,
+                                  programId: detailsArgs.program.programId,
+                                  bundleId: detailsArgs.bundle.bundleId,
                                   durationIndex: index,
                                 ),
                               ),
@@ -127,8 +149,8 @@ class _SubscriptionPlanDetailsScreenState
                               .read<SubscriptionPlanViewModel>()
                               .doIntent(
                                 ToggleSubscriptionFridayEvent(
-                                  programId: args.program.programId,
-                                  bundleId: args.bundle.bundleId,
+                                  programId: detailsArgs.program.programId,
+                                  bundleId: detailsArgs.bundle.bundleId,
                                   includeFriday: value,
                                 ),
                               ),
@@ -137,8 +159,8 @@ class _SubscriptionPlanDetailsScreenState
                               .read<SubscriptionPlanViewModel>()
                               .doIntent(
                                 UpdateCustomSubscriptionDurationEvent(
-                                  programId: args.program.programId,
-                                  bundleId: args.bundle.bundleId,
+                                  programId: detailsArgs.program.programId,
+                                  bundleId: detailsArgs.bundle.bundleId,
                                   durationDays: value,
                                 ),
                               ),
@@ -148,7 +170,7 @@ class _SubscriptionPlanDetailsScreenState
                               state.isDurationsLoading &&
                               state.durations.isEmpty,
                         ),
-                        onBack: _pop,
+                        onBack: () => Navigator.maybePop(context),
                       ),
                     ),
                     SliverPadding(
@@ -157,7 +179,12 @@ class _SubscriptionPlanDetailsScreenState
                         vertical: Spacing.screenV,
                       ),
                       sliver: SliverToBoxAdapter(
-                        child: _buildContent(context, state, plan),
+                        child: MonthlyPlanDetailsContent(
+                          state: state,
+                          plan: plan,
+                          programId: detailsArgs.program.programId,
+                          bundleId: detailsArgs.bundle.bundleId,
+                        ),
                       ),
                     ),
                     const SliverToBoxAdapter(
@@ -171,11 +198,26 @@ class _SubscriptionPlanDetailsScreenState
                   bottom: Spacing.monthlyPlanContentHorizontalPadding,
                   child: AppSubscriptionButton(
                     price: canSubscribe
-                        ? _formatPrice(selectedTier.totalPrice!)
+                        ? selectedTier.totalPrice!.formattedPrice
                         : '',
                     currency: canSubscribe ? selectedTier.currencyCode : '',
                     onPressed: canSubscribe
-                        ? () => _checkReadiness(context, state)
+                        ? () {
+                            final request = state.toSummaryRequest(
+                              programId: detailsArgs.program.programId,
+                              bundleId: detailsArgs.bundle.bundleId,
+                            );
+                            if (request == null) return;
+                            context.read<SubscriptionPlanViewModel>().doIntent(
+                              CheckSubscriptionReadinessEvent(
+                                programId: detailsArgs.program.programId,
+                                bundleId: detailsArgs.bundle.bundleId,
+                                tier: request.tier,
+                                durationDays: request.durationDays,
+                                includeFriday: request.includeFriday,
+                              ),
+                            );
+                          }
                         : null,
                   ),
                 ),
@@ -184,410 +226,6 @@ class _SubscriptionPlanDetailsScreenState
           );
         },
       ),
-    );
-  }
-
-  Widget _buildContent(
-    BuildContext context,
-    SubscriptionPlanState state,
-    MonthlyPlanDetailsEntity plan,
-  ) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-    final fridayUnavailableMessage = state.fridayUnavailableMessage(
-      locale.localeName,
-    );
-
-    if (state.isDurationsLoading && state.durations.isEmpty) {
-      return const MonthlyPlanPackagesLoadingSkeleton();
-    }
-
-    if (state.failure != null && state.durations.isEmpty) {
-      return ApiErrorWidget(
-        exception: state.failure!.exception,
-        onRetry: () {
-          final args = widget.args;
-          if (args == null) return;
-          context.read<SubscriptionPlanViewModel>().doIntent(
-            GetSubscriptionDurationsEvent(
-              programId: args.program.programId,
-              bundleId: args.bundle.bundleId,
-              includeFriday: state.includeFriday,
-            ),
-          );
-        },
-      );
-    }
-
-    if (state.isSuccess && state.durations.isEmpty) {
-      return EmptyStateWidget(
-        title: locale.subscription_duration_title,
-        description: locale.subscription_packages_empty_description,
-        icon: Icons.calendar_month_rounded,
-      );
-    }
-
-    if (state.isTiersLoading && state.tiers.isEmpty) {
-      return const MonthlyPlanPackagesLoadingSkeleton();
-    }
-
-    if (state.failure != null && state.tiers.isEmpty) {
-      return ApiErrorWidget(
-        exception: state.failure!.exception,
-        onRetry: () {
-          final args = widget.args;
-          final durationIndex = state.selectedDurationIndex;
-          if (args == null) return;
-          context.read<SubscriptionPlanViewModel>().doIntent(
-            durationIndex == null
-                ? GetSubscriptionDurationsEvent(
-                    programId: args.program.programId,
-                    bundleId: args.bundle.bundleId,
-                    includeFriday: state.includeFriday,
-                  )
-                : SelectSubscriptionDurationEvent(
-                    programId: args.program.programId,
-                    bundleId: args.bundle.bundleId,
-                    durationIndex: durationIndex,
-                  ),
-          );
-        },
-      );
-    }
-
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 360),
-      reverseDuration: const Duration(milliseconds: 220),
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) {
-        final slideAnimation = Tween<Offset>(
-          begin: const Offset(0, 0.08),
-          end: Offset.zero,
-        ).animate(animation);
-
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: slideAnimation,
-            child: RepaintBoundary(child: child),
-          ),
-        );
-      },
-      child: _isRestaurantsView
-          ? Column(
-              key: const ValueKey('restaurants-view'),
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: IconButton(
-                    onPressed: () => setState(() => _isRestaurantsView = false),
-                    icon: Icon(
-                      Icons.close_rounded,
-                      color: color.onSurface,
-                      size: Spacing.iconLg,
-                      semanticLabel: locale.go_back,
-                    ),
-                  ),
-                ),
-                _buildRestaurantsContent(context, state, plan),
-              ],
-            )
-          : Column(
-              key: const ValueKey('packages-view'),
-              children: [
-                if (fridayUnavailableMessage.isNotEmpty) ...[
-                  CustomWarningWidget(
-                    icon: Icons.warning_rounded,
-                    message: fridayUnavailableMessage,
-                    isWarning: true,
-                    maxMessageLines: 3,
-                  ),
-                  const SizedBox(height: Spacing.md),
-                ],
-                MonthlyPlanPackagesSection(
-                  packages: plan.packageTiers,
-                  selectedIndex: state.selectedTierIndex,
-                  onSelected: (index) => context
-                      .read<SubscriptionPlanViewModel>()
-                      .doIntent(SelectSubscriptionTierEvent(index)),
-                  onBrowseRestaurants: (index) =>
-                      _browseRestaurants(context, index),
-                ),
-              ],
-            ),
-    );
-  }
-
-  Widget _buildRestaurantsContent(
-    BuildContext context,
-    SubscriptionPlanState state,
-    MonthlyPlanDetailsEntity plan,
-  ) {
-    final locale = context.localization;
-    final args = widget.args;
-    final browsedTierIndex = state.browsedTierIndex;
-
-    if (state.isBrowseRestaurantsLoading && state.browseRestaurants.isEmpty) {
-      return const MonthlyPlanRestaurantsLoadingSkeleton();
-    }
-
-    if (state.browseRestaurantsFailure != null &&
-        state.browseRestaurants.isEmpty) {
-      return ApiErrorWidget(
-        exception: state.browseRestaurantsFailure!.exception,
-        onRetry: args == null || browsedTierIndex == null
-            ? null
-            : () => context.read<SubscriptionPlanViewModel>().doIntent(
-                BrowseSubscriptionTierRestaurantsEvent(
-                  programId: args.program.programId,
-                  bundleId: args.bundle.bundleId,
-                  tierIndex: browsedTierIndex,
-                ),
-              ),
-      );
-    }
-
-    if (state.browseRestaurants.isEmpty) {
-      return EmptyStateWidget(
-        title: locale.subscription_restaurant_categories_title,
-        description: locale.subscription_restaurant_categories_subtitle,
-        icon: Icons.restaurant_rounded,
-      );
-    }
-
-    return MonthlyPlanRestaurantsSection(
-      mode: SubscriptionPlanViewMode.grid,
-      restaurants: plan.restaurants,
-    );
-  }
-
-  void _browseRestaurants(BuildContext context, int tierIndex) {
-    final args = widget.args;
-    if (args == null) return;
-
-    context.read<SubscriptionPlanViewModel>()
-      ..doIntent(SelectSubscriptionTierEvent(tierIndex))
-      ..doIntent(
-        BrowseSubscriptionTierRestaurantsEvent(
-          programId: args.program.programId,
-          bundleId: args.bundle.bundleId,
-          tierIndex: tierIndex,
-        ),
-      );
-
-    setState(() => _isRestaurantsView = true);
-  }
-
-  void _checkReadiness(BuildContext context, SubscriptionPlanState state) {
-    final args = widget.args!;
-    final request = _subscriptionRequest(state);
-
-    if (request == null) return;
-
-    context.read<SubscriptionPlanViewModel>().doIntent(
-      CheckSubscriptionReadinessEvent(
-        programId: args.program.programId,
-        bundleId: args.bundle.bundleId,
-        tier: request.tier,
-        durationDays: request.durationDays,
-        includeFriday: request.includeFriday,
-      ),
-    );
-  }
-
-  SubscriptionSummaryRequestEntity? _subscriptionRequest(
-    SubscriptionPlanState state,
-  ) {
-    final args = widget.args;
-    final durationDays = state.selectedDurationDays;
-    final selectedTier = state.selectedTier;
-
-    if (args == null || durationDays == null || selectedTier == null) {
-      return null;
-    }
-
-    return SubscriptionSummaryRequestEntity(
-      includeFriday: state.includeFriday,
-      durationDays: durationDays,
-      tier: selectedTier.tier,
-      bundleId: args.bundle.bundleId,
-      programId: args.program.programId,
-    );
-  }
-
-  void _openSubscriptionSummary(
-    BuildContext context,
-    SubscriptionSummaryRequestEntity request,
-    MonthlyPlanDetailsEntity plan,
-    SubscriptionTierEntity? selectedTier,
-  ) {
-    context.pushNamed(
-      AppRoutes.subscriptionSummary,
-      arguments: SubscriptionSummaryArgs(
-        initialPlan: plan,
-        restaurantId: selectedTier == null || selectedTier.restaurants.isEmpty
-            ? ''
-            : selectedTier.restaurants.first.restaurantId,
-        request: request,
-      ),
-    );
-  }
-
-  Future<void> _showReadinessSheet(
-    BuildContext context,
-    SubscriptionReadinessEntity readiness,
-    SubscriptionSummaryRequestEntity request,
-  ) {
-    return showModalBottomSheet<void>(
-      context: context,
-      useSafeArea: true,
-      showDragHandle: true,
-      builder: (sheetContext) => SubscriptionReadinessBottomSheet(
-        readiness: readiness,
-        onItemPressed: (item) async {
-          Navigator.of(sheetContext).pop();
-          final updated = await _openReadinessItem(context, item, request);
-          if (updated == true && context.mounted) {
-            context.read<SubscriptionPlanViewModel>().doIntent(
-              CheckSubscriptionReadinessEvent(
-                programId: request.programId,
-                bundleId: request.bundleId,
-                tier: request.tier,
-                durationDays: request.durationDays,
-                includeFriday: request.includeFriday,
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  Future<Object?> _openReadinessItem(
-    BuildContext context,
-    SubscriptionReadinessItemEntity item,
-    SubscriptionSummaryRequestEntity request,
-  ) {
-    final args = SubscriptionFlowArgs(request: request);
-    final route = switch (item.actionScreen.toUpperCase()) {
-      'ADDRESS' => AppRoutes.addressChooseLocation,
-      'DIETARY_PREFERENCES' => AppRoutes.dietaryPreferences,
-      'ALLERGIES' => AppRoutes.addAllergy,
-      _ => null,
-    };
-
-    if (route == null) return Future<Object?>.value(false);
-
-    return Navigator.of(context).pushNamed(route, arguments: args);
-  }
-
-  MonthlyPlanDetailsEntity _buildPlan(
-    BuildContext context,
-    SubscriptionPlanState state,
-  ) {
-    final locale = context.localization;
-    final color = context.colorScheme;
-    final args = widget.args!;
-    final duration = state.selectedDuration;
-    final selectedTier = state.selectedTier;
-
-    return MonthlyPlanDetailsEntity(
-      titlePrefix: locale.subscription_month_package_prefix,
-      titleHighlight: locale.subscription_month_package_highlight,
-      duration: duration == null
-          ? ''
-          : state.selectedDurationDays == null
-          ? duration.name(locale.localeName)
-          : '${state.selectedDurationDays} ${locale.subscription_day}',
-      mealsPerDay: args.bundle.description(locale.localeName),
-      discountLabel: selectedTier?.name(locale.localeName) ?? '',
-      subscribeLabel: locale.subscription_details_subscribe_now,
-      price: selectedTier?.totalPrice == null
-          ? ''
-          : _formatPrice(selectedTier!.totalPrice!),
-      currency: selectedTier?.currencyCode ?? '',
-      heroImageAsset: Assets.monthlyPlanHero,
-      description: args.program.description(locale.localeName),
-      features: const [],
-      packageTiers: state.tiers
-          .map((tier) => tier.toPackageTier(locale.localeName))
-          .toList(),
-      filters: const [],
-      restaurants: state.browseRestaurants
-          .map(
-            (restaurant) => restaurant.toRestaurantPlan(
-              programId: args.program.programId,
-              bundleId: args.bundle.bundleId,
-              localeName: locale.localeName,
-              brandColor: color.primary,
-            ),
-          )
-          .toList(),
-      meals: const [],
-    );
-  }
-
-  String _formatPrice(double price) {
-    final fixed = price.toStringAsFixed(3);
-    return fixed.replaceFirst(RegExp(r'\.?0+$'), '');
-  }
-
-  void _pop() {
-    Navigator.maybePop(context);
-  }
-}
-
-extension on SubscriptionTierEntity {
-  MonthlyPackageTierEntity toPackageTier(String localeName) {
-    return MonthlyPackageTierEntity(
-      title: name(localeName),
-      subtitle: description(localeName),
-      price: totalPrice == null ? '' : totalPrice!.toStringAsFixed(3),
-      currency: currencyCode,
-      period: '',
-      bullets: const [],
-      iconName: switch (tier.toLowerCase()) {
-        'elite' => 'crown',
-        'platinum' => 'star',
-        _ => 'leaf',
-      },
-      logoUrl: logoUrl,
-      restaurantCount: restaurantCount,
-      restaurantLogoUrls: restaurants
-          .map((restaurant) => restaurant.logoUrl)
-          .toList(),
-      isPopular: isRecommended,
-    );
-  }
-}
-
-extension on SubscriptionTierRestaurantBrowseEntity {
-  MonthlyRestaurantPlanEntity toRestaurantPlan({
-    required String programId,
-    required String bundleId,
-    required String localeName,
-    required Color brandColor,
-  }) {
-    final restaurantName = name(localeName);
-
-    return MonthlyRestaurantPlanEntity(
-      programId: programId,
-      bundleId: bundleId,
-      restaurantId: restaurantId,
-      name: restaurantName,
-      subtitle: tierName(localeName),
-      meals: mealCount.toString(),
-      bundleMeals: bundleMealCount.toString(),
-      rating: rating == null ? '' : rating!.toStringAsFixed(1),
-      brandColor: brandColor,
-      classificationLogoUrls: classifications
-          .map((classification) => classification.logoUrl)
-          .toList(),
-      logoUrl: logoUrl,
-      initials: restaurantName.isEmpty
-          ? null
-          : restaurantName.characters.take(2).toString().toUpperCase(),
     );
   }
 }

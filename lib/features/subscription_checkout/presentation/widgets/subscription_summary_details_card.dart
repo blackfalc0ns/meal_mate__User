@@ -46,9 +46,11 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
             width: double.infinity,
             height: Spacing.subscriptionSummaryTopTileHeight,
             label: locale.subscription_summary_package_label,
-            value: plan.packageTiers.isEmpty
-                ? plan.mealsPerDay
-                : plan.packageTiers.first.title,
+            value: summary != null
+                ? summary!.bundleName(locale.localeName)
+                : (plan.packageTiers.isEmpty
+                    ? plan.mealsPerDay
+                    : plan.packageTiers.first.title),
             labelTop: Spacing.subscriptionSummaryTileLabelTop,
             valueTop: Spacing.subscriptionSummaryTileValueTop,
           ),
@@ -60,19 +62,24 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                   width: double.infinity,
                   height: Spacing.subscriptionSummaryTopTileHeight,
                   label: locale.subscription_summary_duration_label,
-                  value: plan.duration,
+                  value: summary != null
+                      ? '${summary!.durationDays} ${locale.subscription_day}'
+                      : plan.duration,
                   labelTop: Spacing.subscriptionSummaryTileLabelTop,
                   valueTop: Spacing.subscriptionSummaryTileValueTop,
                 ),
               ),
-              if (plan.discountLabel.isNotEmpty) ...[
+              if ((summary?.tierName(locale.localeName) ?? plan.discountLabel)
+                  .isNotEmpty) ...[
                 const SizedBox(width: Spacing.md),
                 Expanded(
                   child: SubscriptionSummaryValueTile(
                     width: double.infinity,
                     height: Spacing.subscriptionSummaryTopTileHeight,
                     label: locale.subscription_summary_restaurant_tier_label,
-                    value: plan.discountLabel,
+                    value: summary != null
+                        ? summary!.tierName(locale.localeName)
+                        : plan.discountLabel,
                     labelTop: Spacing.subscriptionSummaryClassificationLabelTop,
                     valueTop: Spacing.subscriptionSummaryClassificationValueTop,
                   ),

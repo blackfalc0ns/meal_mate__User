@@ -9,11 +9,9 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
@@ -28,11 +26,13 @@ class SubscriptionSummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final locale = context.localization;
     final summaryArgs = args;
 
     if (summaryArgs == null) {
       return Scaffold(
+        backgroundColor: color.surface,
         body: EmptyStateWidget(
           title: locale.subscription_summary_title,
           description: locale.subscription_program_subtitle,
@@ -51,15 +51,18 @@ class SubscriptionSummaryScreen extends StatelessWidget {
               final summary = state.summary;
               final plan = summary == null
                   ? summaryArgs.initialPlan
-                  : _buildSummaryPlan(
-                      context,
-                      summary,
-                      summaryArgs.initialPlan,
+                  : summary.toPlanDetails(
+                      localeName: locale.localeName,
+                      dayLabel: locale.subscription_day,
+                      primaryColor: color.primary,
+                      initialPlan: summaryArgs.initialPlan,
                     );
               final hasSummary = summary != null;
 
               return Scaffold(
+                backgroundColor: color.surface,
                 body: Semantics(
+                  label: locale.subscription_summary_title,
                   child: Stack(
                     children: [
                       CustomScrollView(
@@ -75,7 +78,11 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                   children: [
                                     MonthlyPlanHeroSection(
                                       plan: plan,
-                                      imageAsset: Assets.monthlyPlanHero,
+                                      imageAsset: plan.heroImageAsset.isNotEmpty
+                                          ? plan.heroImageAsset
+                                          : Assets.monthlyPlanHero,
+                                      imageUrl: summary?.imageUrl ??
+                                          summary?.programImageUrl,
                                       onBack: () => Navigator.maybePop(context),
                                     ),
                                     const SizedBox(height: Spacing.xl),
@@ -83,12 +90,27 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: Spacing.md,
                                       ),
-                                      child: _buildDetailsContent(
-                                        context,
-                                        state,
-                                        summaryArgs,
-                                        plan,
-                                      ),
+                                      child: state.isLoading && !hasSummary
+                                          ? const SubscriptionSummaryDetailsLoadingSkeleton()
+                                          : state.failure != null && !hasSummary
+                                              ? ApiErrorWidget(
+                                                  exception: state
+                                                      .failure!
+                                                      .exception,
+                                                  onRetry: () => context
+                                                      .read<
+                                                        SubscriptionSummaryViewModel
+                                                      >()
+                                                      .doIntent(
+                                                        GetSubscriptionSummaryEvent(
+                                                          summaryArgs.request,
+                                                        ),
+                                                      ),
+                                                )
+                                              : SubscriptionSummaryDetailsCard(
+                                                  plan: plan,
+                                                  summary: summary,
+                                                ),
                                     ),
                                     const SizedBox(
                                       height:
@@ -118,10 +140,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                           summary: summary,
                                           summaryRequest: summaryArgs.request,
                                           restaurantId:
-                                              summary.restaurantId ??
-                                              _firstSummaryRestaurantId(
-                                                summary,
-                                              ) ??
+                                              summary.firstRestaurantId ??
                                               summaryArgs.restaurantId,
                                         ),
                                       )
@@ -135,107 +154,5 @@ class SubscriptionSummaryScreen extends StatelessWidget {
             },
           ),
     );
-  }
-
-  Widget _buildDetailsContent(
-    BuildContext context,
-    SubscriptionSummaryState state,
-    SubscriptionSummaryArgs summaryArgs,
-    MonthlyPlanDetailsEntity plan,
-  ) {
-    if (state.isLoading && state.summary == null) {
-      return const SubscriptionSummaryDetailsLoadingSkeleton();
-    }
-
-    if (state.failure != null && state.summary == null) {
-      return ApiErrorWidget(
-        exception: state.failure!.exception,
-        onRetry: () => context.read<SubscriptionSummaryViewModel>().doIntent(
-          GetSubscriptionSummaryEvent(summaryArgs.request),
-        ),
-      );
-    }
-
-    return SubscriptionSummaryDetailsCard(plan: plan, summary: state.summary);
-  }
-
-  MonthlyPlanDetailsEntity _buildSummaryPlan(
-    BuildContext context,
-    SubscriptionSummaryEntity summary,
-    MonthlyPlanDetailsEntity initialPlan,
-  ) {
-    final locale = context.localization;
-
-    return MonthlyPlanDetailsEntity(
-      titlePrefix: initialPlan.titlePrefix,
-      titleHighlight: initialPlan.titleHighlight,
-      duration: '${summary.durationDays} ${locale.subscription_day}',
-      mealsPerDay: initialPlan.mealsPerDay,
-      discountLabel: summary.tierName(locale.localeName),
-      subscribeLabel: initialPlan.subscribeLabel,
-      price: _formatPrice(summary.finalPrice),
-      currency: summary.currencyCode,
-      heroImageAsset: initialPlan.heroImageAsset,
-      description: initialPlan.description,
-      features: initialPlan.features,
-      packageTiers: [
-        MonthlyPackageTierEntity(
-          title: summary.bundleName(locale.localeName),
-          subtitle: summary.programName(locale.localeName),
-          price: _formatPrice(summary.finalPrice),
-          currency: summary.currencyCode,
-          period: '',
-          bullets: const [],
-          iconName: switch (summary.tier.toLowerCase()) {
-            'elite' => 'crown',
-            'platinum' => 'star',
-            _ => 'leaf',
-          },
-          logoUrl: _selectedTierLogoUrl(initialPlan),
-          restaurantCount: summary.restaurantCount,
-          restaurantLogoUrls: const [],
-        ),
-      ],
-      filters: initialPlan.filters,
-      restaurants: summary.restaurants
-          .map(
-            (restaurant) => MonthlyRestaurantPlanEntity(
-              programId: summary.programId,
-              bundleId: summary.bundleId,
-              restaurantId: restaurant.restaurantId,
-              name: restaurant.name(locale.localeName),
-              subtitle: restaurant.tier,
-              meals: '',
-              bundleMeals: '',
-              rating: '',
-              brandColor: Theme.of(context).colorScheme.primary,
-              classificationLogoUrls: const [],
-              logoUrl: restaurant.logoUrl,
-            ),
-          )
-          .toList(),
-      meals: initialPlan.meals,
-    );
-  }
-
-  String _formatPrice(double price) {
-    final fixed = price.toStringAsFixed(3);
-    return fixed.replaceFirst(RegExp(r'\.?0+$'), '');
-  }
-
-  String? _selectedTierLogoUrl(MonthlyPlanDetailsEntity initialPlan) {
-    for (final tier in initialPlan.packageTiers) {
-      if (tier.title == initialPlan.discountLabel) return tier.logoUrl;
-    }
-
-    return null;
-  }
-
-  String? _firstSummaryRestaurantId(SubscriptionSummaryEntity summary) {
-    for (final restaurant in summary.restaurants) {
-      if (restaurant.restaurantId.isNotEmpty) return restaurant.restaurantId;
-    }
-
-    return null;
   }
 }
