@@ -47,35 +47,35 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                 ),
               ),
             ),
-            if (plan.discountLabel.isNotEmpty) ...[
-              const SizedBox(height: Spacing.xs),
-              Container(
-                constraints: const BoxConstraints(
-                  minHeight: Spacing.monthlyPlanPromotionHeight,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.monthlyPlanPromotionPadding,
-                  vertical: Spacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: color.primary,
-                  borderRadius: BorderRadius.circular(
-                    Spacing.monthlyPlanPromotionRadius,
-                  ),
-                ),
-                child: Text(
-                  plan.discountLabel,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: Spacing.monthlyPlanPromotionTextSize,
-                    color: color.onPrimary,
-                  ),
-                ),
-              ),
-            ],
+            // if (plan.discountLabel.isNotEmpty) ...[
+            //   const SizedBox(height: Spacing.xs),
+            //   Container(
+            //     constraints: const BoxConstraints(
+            //       minHeight: Spacing.monthlyPlanPromotionHeight,
+            //     ),
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: Spacing.monthlyPlanPromotionPadding,
+            //       vertical: Spacing.xs,
+            //     ),
+            //     decoration: BoxDecoration(
+            //       color: color.primary,
+            //       borderRadius: BorderRadius.circular(
+            //         Spacing.monthlyPlanPromotionRadius,
+            //       ),
+            //     ),
+            //     child: Text(
+            //       plan.discountLabel,
+            //       textAlign: TextAlign.center,
+            //       maxLines: 2,
+            //       overflow: TextOverflow.ellipsis,
+            //       style: getSemiBoldStyle(
+            //         fontFamily: FontConstant.alexandria,
+            //         fontSize: Spacing.monthlyPlanPromotionTextSize,
+            //         color: color.onPrimary,
+            //       ),
+            //     ),
+            //   ),
+            // ],
           ],
         ),
       ),

@@ -226,10 +226,14 @@ class _MonthlyPlanRestaurantsView extends StatelessWidget {
     final locale = context.localization;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Align(
           alignment: AlignmentDirectional.centerStart,
           child: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            visualDensity: VisualDensity.compact,
             onPressed: onClose,
             icon: Icon(
               Icons.close_rounded,
@@ -239,6 +243,7 @@ class _MonthlyPlanRestaurantsView extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: Spacing.xs),
         if (state.isBrowseRestaurantsLoading && state.browseRestaurants.isEmpty)
           const MonthlyPlanRestaurantsLoadingSkeleton()
         else if (state.browseRestaurantsFailure != null &&

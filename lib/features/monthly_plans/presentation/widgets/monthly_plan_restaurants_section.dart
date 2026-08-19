@@ -53,6 +53,7 @@ class _RestaurantsGrid extends StatelessWidget {
       key: const ValueKey('restaurants-grid'),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         mainAxisSpacing: Spacing.sm,

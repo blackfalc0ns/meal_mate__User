@@ -174,9 +174,11 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.screenH,
-                        vertical: Spacing.screenV,
+                      padding: const EdgeInsets.only(
+                        left: Spacing.screenH,
+                        right: Spacing.screenH,
+                        top: Spacing.xs,
+                        bottom: Spacing.screenV,
                       ),
                       sliver: SliverToBoxAdapter(
                         child: MonthlyPlanDetailsContent(

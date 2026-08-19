@@ -62,6 +62,12 @@ class SubscriptionPlanState {
     return tiers[index];
   }
 
+  SubscriptionTierEntity? get browsedTier {
+    final index = browsedTierIndex;
+    if (index == null || index < 0 || index >= tiers.length) return null;
+    return tiers[index];
+  }
+
   bool get canToggleFriday =>
       selectedDuration?.canToggleFriday ??
       durations.any((duration) => duration.canToggleFriday);
