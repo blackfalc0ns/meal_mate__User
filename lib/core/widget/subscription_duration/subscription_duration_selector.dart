@@ -43,6 +43,11 @@ class _SubscriptionDurationSelectorState
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    if (widget.isLoading) {
+      return const SubscriptionDurationSelectorSkeleton();
+    }
+
     final presetDurations = _presetDurations;
     final customDuration = _customDuration;
     final customIndex = customDuration == null
@@ -68,15 +73,13 @@ class _SubscriptionDurationSelectorState
               ),
             ],
           ),
-          child: widget.isLoading
-              ? const SubscriptionDurationSelectorSkeleton()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.sm,
-                    vertical: Spacing.sm,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.sm,
+              vertical: Spacing.sm,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
