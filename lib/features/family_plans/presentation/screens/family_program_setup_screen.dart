@@ -6,6 +6,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
@@ -20,59 +22,20 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
 
-class FamilyProgramSetupScreen extends StatefulWidget {
-  const FamilyProgramSetupScreen({
-    super.key,
-    this.members = const [],
-    this.selectedMember,
-    this.programs = const [],
-  });
+class FamilyProgramSetupScreen extends StatelessWidget {
+  const FamilyProgramSetupScreen({super.key});
 
-  final List<FamilyProgramMemberUiModel> members;
-  final FamilyProgramMemberDetailsUiModel? selectedMember;
-  final List<FamilyProgramUiModel> programs;
-
-  @override
-  State<FamilyProgramSetupScreen> createState() =>
-      _FamilyProgramSetupScreenState();
-}
-
-class _FamilyProgramSetupScreenState extends State<FamilyProgramSetupScreen> {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final displayedMembers =
-        widget.members.isNotEmpty
-            ? widget.members
-            : [
-              const FamilyProgramMemberUiModel(
-                name: 'Yahya',
-                imageAsset: '',
-                status: '',
-                isSelected: true,
-                isInProgress: true,
-              ),
-            ];
-
-    final activeMember =
-        widget.selectedMember ??
-        (displayedMembers.isNotEmpty
-            ? FamilyProgramMemberDetailsUiModel(
-              name: displayedMembers.first.name,
-              imageAsset: '',
-              age: '28',
-              gender: '',
-              goal: '',
-              activityLevel: '',
-            )
-            : null);
-
     return BlocProvider<FamilyPlanViewModel>(
       create: (_) => getIt<FamilyPlanViewModel>()
+        ..doIntent(const GetFamilySubscriptionCurrentEvent())
         ..doIntent(const GetFamilyProgramsEvent()),
       child: Scaffold(
+        backgroundColor: color.surface,
         appBar: CustomAppBar(
           showBackButton: true,
           titleWidget: Column(
@@ -99,107 +62,176 @@ class _FamilyProgramSetupScreenState extends State<FamilyProgramSetupScreen> {
         body: SafeArea(
           child: BlocBuilder<FamilyPlanViewModel, FamilyPlanState>(
             builder: (context, state) {
-              final displayedPrograms =
-                  state.programs
-                      .map(
-                        (p) => FamilyProgramUiModel(
-                          title: p.name(locale.localeName),
-                          description: p.description(locale.localeName),
-                          imageAsset:
-                              p.imageUrl != null && p.imageUrl!.isNotEmpty
-                                  ? p.imageUrl!
-                                  : p.fallbackImageAsset,
-                        ),
-                      )
-                      .toList();
+              if (state.isLoading &&
+                  state.programs.isEmpty &&
+                  state.members.isEmpty) {
+                return const Center(child: LoadingWidget());
+              }
 
-              return CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.familySetupHorizontalPadding,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate.fixed([
-                        const FamilySetupHeaderBadge(),
-                        const SizedBox(
-                          height: Spacing.familyProgramProgressTopGap,
-                        ),
-                        const FamilyProgramStepper(
-                          currentStep: 1,
-                          includeFamilyCreationStep: true,
-                        ),
-                        const SizedBox(
-                          height: Spacing.familyProgramMemberTopGap,
-                        ),
-                        if (displayedMembers.isNotEmpty)
-                          FamilyProgramMemberStrip(members: displayedMembers),
-                        const SizedBox(
-                          height: Spacing.familyProgramSummaryTopGap,
-                        ),
-                        if (activeMember != null)
-                          FamilyProgramSummaryCard(member: activeMember),
-                        const SizedBox(height: Spacing.familyProgramTitleTopGap),
-                        Text(
-                          locale.family_program_choose_title,
-                          textAlign: TextAlign.center,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: color.onSurface,
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.familyProgramGridTopGap),
-                        if (state.isLoading && state.programs.isEmpty)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: Spacing.xl,
-                            ),
-                            child: Center(child: LoadingWidget()),
-                          )
-                        else
-                          FamilyProgramGrid(
-                            programs: displayedPrograms,
-                            selectedIndex: state.selectedProgramIndex,
-                            onProgramSelected: (index) {
-                              context.read<FamilyPlanViewModel>().doIntent(
-                                    SelectFamilyProgramEvent(index),
-                                  );
-                            },
-                          ),
-                        const SizedBox(
-                          height: Spacing.familyProgramActionsTopGap,
-                        ),
-                        FamilyProgramActions(
-                          nextText: locale.family_next_package_days,
-                          nextIcon: Icons.calendar_month_rounded,
-                          onNextPressed: () {
-                            final programId = state.selectedProgram?.programId ??
-                                (state.programs.isNotEmpty &&
-                                        state.selectedProgramIndex <
-                                            state.programs.length
-                                    ? state
-                                        .programs[state.selectedProgramIndex]
-                                        .programId
-                                    : null);
-                            context.pushNamed(
-                              AppRoutes.familyPackageDaysSetup,
-                              arguments: programId,
-                            );
-                          },
-                        ),
-                        const SizedBox(height: Spacing.xxxl),
-                      ]),
-                    ),
-                  ),
-                ],
-              );
+              if (state.failure != null && state.programs.isEmpty) {
+                return ApiErrorWidget(
+                  exception: state.failure!.exception,
+                  onRetry: () {
+                    context
+                        .read<FamilyPlanViewModel>()
+                        .doIntent(const GetFamilyProgramsEvent());
+                    context
+                        .read<FamilyPlanViewModel>()
+                        .doIntent(const GetFamilySubscriptionCurrentEvent());
+                  },
+                );
+              }
+
+              return _buildContent(context, state);
             },
           ),
         ),
       ),
     );
   }
-}
 
+  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+    final members = state.members;
+    final selectedMember = state.selectedMember;
+
+    final displayedMembers = members.asMap().entries.map((entry) {
+      final index = entry.key;
+      final m = entry.value;
+      final isSelected = index == state.selectedMemberIndex;
+      return FamilyProgramMemberUiModel(
+        name: m.displayName,
+        imageAsset: '',
+        status: m.isReady
+            ? locale.family_member_completed
+            : locale.family_member_in_progress,
+        isSelected: isSelected,
+        isInProgress: !m.isReady,
+      );
+    }).toList();
+
+    final activeMemberDetails = selectedMember != null
+        ? FamilyProgramMemberDetailsUiModel(
+            name: selectedMember.displayName,
+            imageAsset: '',
+            age: '${selectedMember.ageYears} ${locale.family_year}',
+            gender: selectedMember.gender == 2
+                ? locale.family_gender_female
+                : locale.family_gender_male,
+            goal: selectedMember.relationshipCode,
+            activityLevel: selectedMember.isManager ? locale.family_owner : '',
+          )
+        : (members.isNotEmpty
+            ? FamilyProgramMemberDetailsUiModel(
+                name: members.first.displayName,
+                imageAsset: '',
+                age: '${members.first.ageYears} ${locale.family_year}',
+                gender: members.first.gender == 2
+                    ? locale.family_gender_female
+                    : locale.family_gender_male,
+                goal: members.first.relationshipCode,
+                activityLevel:
+                    members.first.isManager ? locale.family_owner : '',
+              )
+            : null);
+
+    final displayedPrograms = state.programs
+        .map(
+          (p) => FamilyProgramUiModel(
+            title: p.name(locale.localeName),
+            description: p.description(locale.localeName),
+            imageAsset: p.imageUrl != null && p.imageUrl!.isNotEmpty
+                ? p.imageUrl!
+                : p.fallbackImageAsset,
+            isSelected: state.selectedProgram?.programId == p.programId,
+          ),
+        )
+        .toList();
+
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.familySetupHorizontalPadding,
+          ),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              const FamilySetupHeaderBadge(),
+              const SizedBox(height: Spacing.familyProgramProgressTopGap),
+              const FamilyProgramStepper(
+                currentStep: 1,
+                includeFamilyCreationStep: true,
+              ),
+              const SizedBox(height: Spacing.familyProgramMemberTopGap),
+
+              // Scrollable Member Strip
+              if (displayedMembers.isNotEmpty) ...[
+                FamilyProgramMemberStrip(
+                  members: displayedMembers,
+                  onSelectMember: (index) {
+                    context
+                        .read<FamilyPlanViewModel>()
+                        .doIntent(SelectFamilyMemberEvent(index));
+                  },
+                ),
+                const SizedBox(height: Spacing.familyProgramSummaryTopGap),
+              ],
+
+              // Active Member Summary Card
+              if (activeMemberDetails != null) ...[
+                FamilyProgramSummaryCard(member: activeMemberDetails),
+                const SizedBox(height: Spacing.familyProgramTitleTopGap),
+              ],
+
+              Text(
+                locale.family_program_choose_title,
+                textAlign: TextAlign.center,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
+                ),
+              ),
+              const SizedBox(height: Spacing.familyProgramGridTopGap),
+
+              if (displayedPrograms.isEmpty)
+                EmptyStateWidget(
+                  title: locale.family_program_choose_title,
+                  description: locale.family_packages_selection_subtitle,
+                  icon: Icons.restaurant_menu_rounded,
+                )
+              else
+                FamilyProgramGrid(
+                  programs: displayedPrograms,
+                  selectedIndex: state.selectedProgramIndex,
+                  onProgramSelected: (index) {
+                    context
+                        .read<FamilyPlanViewModel>()
+                        .doIntent(SelectFamilyProgramEvent(index));
+                  },
+                ),
+
+              const SizedBox(height: Spacing.lg),
+              FamilyProgramActions(
+                nextText: locale.family_next_package_days,
+                nextIcon: Icons.arrow_forward_ios_rounded,
+                onNextPressed: () {
+                  final program = state.selectedProgram;
+                  if (program != null) {
+                    context.pushNamed(
+                      AppRoutes.familyPackageDaysSetup,
+                      arguments: program.programId,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: Spacing.xxxl),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
+}

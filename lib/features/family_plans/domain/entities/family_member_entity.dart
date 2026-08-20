@@ -32,5 +32,8 @@ class FamilyMemberEntity {
   });
 
   bool get isManager => role == 1 || isCurrentUser;
-  bool get isReady => setupStatus == 3;
+  bool get isReady =>
+      setupStatus == 2 ||
+      setupStatus == 3 ||
+      (programId != null && programId!.isNotEmpty);
 }

@@ -6,9 +6,9 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
@@ -30,13 +30,9 @@ class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({
     super.key,
     this.programId,
-    this.members = const [],
-    this.selectedMember,
   });
 
   final String? programId;
-  final List<FamilyProgramMemberUiModel> members;
-  final FamilyProgramMemberDetailsUiModel? selectedMember;
 
   @override
   State<FamilyPackageDaysSetupScreen> createState() =>
@@ -50,59 +46,10 @@ class _FamilyPackageDaysSetupScreenState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final displayedMembers =
-        widget.members.isNotEmpty
-            ? widget.members
-            : [
-              const FamilyProgramMemberUiModel(
-                name: 'Yahya',
-                imageAsset: '',
-                status: '',
-                isSelected: true,
-                isInProgress: true,
-              ),
-            ];
-
-    final activeMember =
-        widget.selectedMember ??
-        (displayedMembers.isNotEmpty
-            ? FamilyProgramMemberDetailsUiModel(
-              name: displayedMembers.first.name,
-              imageAsset: '',
-              age: '28',
-              gender: '',
-              goal: '',
-              activityLevel: '',
-            )
-            : null);
-
-    final tierOptions = [
-      RestaurantPackageTierUiModel(
-        id: 'select',
-        title: locale.localeName == 'ar' ? 'سيلكت' : 'Select',
-        iconName: 'heart',
-        restaurantCount: 25,
-        restaurantLogoUrls: const [],
-      ),
-      RestaurantPackageTierUiModel(
-        id: 'plus',
-        title: locale.localeName == 'ar' ? 'بلس' : 'Plus',
-        iconName: 'crown',
-        restaurantCount: 50,
-        restaurantLogoUrls: const [],
-      ),
-      RestaurantPackageTierUiModel(
-        id: 'max',
-        title: locale.localeName == 'ar' ? 'ماكس' : 'Max',
-        iconName: 'diamond',
-        restaurantCount: 100,
-        restaurantLogoUrls: const [],
-      ),
-    ];
-
     return BlocProvider<FamilyPlanViewModel>(
       create: (_) {
         final vm = getIt<FamilyPlanViewModel>();
+        vm.doIntent(const GetFamilySubscriptionCurrentEvent());
         if (widget.programId != null && widget.programId!.isNotEmpty) {
           vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
         } else {
@@ -111,6 +58,7 @@ class _FamilyPackageDaysSetupScreenState
         return vm;
       },
       child: Scaffold(
+        backgroundColor: color.surface,
         appBar: CustomAppBar(
           showBackButton: true,
           titleWidget: Column(
@@ -137,49 +85,91 @@ class _FamilyPackageDaysSetupScreenState
         body: SafeArea(
           child: BlocBuilder<FamilyPlanViewModel, FamilyPlanState>(
             builder: (context, state) {
-              final displayedPackages =
-                  state.bundles
-                      .map(
-                        (b) => FamilyPackageOptionUiModel(
-                          title: b.name(locale.localeName),
-                          description: b.description(locale.localeName),
-                          imageUrl: b.imageUrl,
-                        ),
-                      )
-                      .toList();
+              final members = state.members;
+              final selectedMember = state.selectedMember;
+
+              final displayedMembers = members.asMap().entries.map((entry) {
+                final index = entry.key;
+                final m = entry.value;
+                final isSelected = index == state.selectedMemberIndex;
+                return FamilyProgramMemberUiModel(
+                  name: m.displayName,
+                  imageAsset: '',
+                  status: m.isReady
+                      ? locale.family_member_completed
+                      : locale.family_member_in_progress,
+                  isSelected: isSelected,
+                  isInProgress: !m.isReady,
+                );
+              }).toList();
+
+              final activeMemberDetails = selectedMember != null
+                  ? FamilyProgramMemberDetailsUiModel(
+                      name: selectedMember.displayName,
+                      imageAsset: '',
+                      age: '${selectedMember.ageYears} ${locale.family_year}',
+                      gender: selectedMember.gender == 2
+                          ? locale.family_gender_female
+                          : locale.family_gender_male,
+                      goal: selectedMember.relationshipCode,
+                      activityLevel:
+                          selectedMember.isManager ? locale.family_owner : '',
+                    )
+                  : (members.isNotEmpty
+                      ? FamilyProgramMemberDetailsUiModel(
+                          name: members.first.displayName,
+                          imageAsset: '',
+                          age: '${members.first.ageYears} ${locale.family_year}',
+                          gender: members.first.gender == 2
+                              ? locale.family_gender_female
+                              : locale.family_gender_male,
+                          goal: members.first.relationshipCode,
+                          activityLevel: members.first.isManager
+                              ? locale.family_owner
+                              : '',
+                        )
+                      : null);
+
+              final displayedPackages = state.bundles
+                  .map(
+                    (b) => FamilyPackageOptionUiModel(
+                      title: b.name(locale.localeName),
+                      description: b.description(locale.localeName),
+                      imageUrl: b.imageUrl,
+                    ),
+                  )
+                  .toList();
 
               final selectedPackageOptions =
                   List<FamilyPackageOptionUiModel>.generate(
-                    displayedPackages.length,
-                    (index) => FamilyPackageOptionUiModel(
-                      title: displayedPackages[index].title,
-                      description: displayedPackages[index].description,
-                      imageUrl: displayedPackages[index].imageUrl,
-                      imageAsset: displayedPackages[index].imageAsset,
-                      isSelected: index == state.selectedBundleIndex,
-                    ),
-                  );
+                displayedPackages.length,
+                (index) => FamilyPackageOptionUiModel(
+                  title: displayedPackages[index].title,
+                  description: displayedPackages[index].description,
+                  imageUrl: displayedPackages[index].imageUrl,
+                  imageAsset: displayedPackages[index].imageAsset,
+                  isSelected: index == state.selectedBundleIndex,
+                ),
+              );
 
-              final displayedTiers = state.tiers.isNotEmpty
-                  ? state.tiers
-                      .map(
-                        (t) => RestaurantPackageTierUiModel(
-                          id: t.tier,
-                          title: t.name(locale.localeName),
-                          iconName: t.tier.toLowerCase().contains('max')
-                              ? 'diamond'
-                              : t.tier.toLowerCase().contains('plus')
-                                  ? 'crown'
-                                  : 'heart',
-                          restaurantCount: t.restaurantCount,
-                          restaurantLogoUrls: t.restaurants
-                              .map((r) => r.logoUrl)
-                              .where((url) => url != null && url.isNotEmpty)
-                              .toList(),
-                        ),
-                      )
-                      .toList()
-                  : tierOptions;
+              final displayedTiers = state.tiers
+                  .map(
+                    (t) => RestaurantPackageTierUiModel(
+                      id: t.tier,
+                      title: t.name(locale.localeName),
+                      iconName: t.tier.toLowerCase().contains('max')
+                          ? 'diamond'
+                          : t.tier.toLowerCase().contains('plus')
+                              ? 'crown'
+                              : 'heart',
+                      restaurantCount: t.restaurantCount,
+                      restaurantLogoUrls: t.restaurants
+                          .map((r) => r.logoUrl)
+                          .where((url) => url != null && url.isNotEmpty)
+                          .toList(),
+                    ),
+                  )
+                  .toList();
 
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -201,16 +191,30 @@ class _FamilyPackageDaysSetupScreenState
                         const SizedBox(
                           height: Spacing.familyProgramMemberTopGap,
                         ),
-                        if (displayedMembers.isNotEmpty)
-                          FamilyProgramMemberStrip(members: displayedMembers),
-                        const SizedBox(
-                          height: Spacing.familyProgramSummaryTopGap,
-                        ),
-                        if (activeMember != null)
-                          FamilyProgramSummaryCard(member: activeMember),
-                        const SizedBox(
-                          height: Spacing.familyPackageTitleTopGap,
-                        ),
+
+                        // Scrollable Member Strip
+                        if (displayedMembers.isNotEmpty) ...[
+                          FamilyProgramMemberStrip(
+                            members: displayedMembers,
+                            onSelectMember: (index) {
+                              context.read<FamilyPlanViewModel>().doIntent(
+                                    SelectFamilyMemberEvent(index),
+                                  );
+                            },
+                          ),
+                          const SizedBox(
+                            height: Spacing.familyProgramSummaryTopGap,
+                          ),
+                        ],
+
+                        // Active Member Summary Card
+                        if (activeMemberDetails != null) ...[
+                          FamilyProgramSummaryCard(member: activeMemberDetails),
+                          const SizedBox(
+                            height: Spacing.familyPackageTitleTopGap,
+                          ),
+                        ],
+
                         Text(
                           locale.family_package_choose_title,
                           style: getBoldStyle(
@@ -231,11 +235,10 @@ class _FamilyPackageDaysSetupScreenState
                         const SizedBox(
                           height: Spacing.familyPackageOptionsTopGap,
                         ),
+
                         if (state.isBundlesLoading && state.bundles.isEmpty)
                           const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: Spacing.lg,
-                            ),
+                            padding: EdgeInsets.symmetric(vertical: Spacing.lg),
                             child: Center(child: LoadingWidget()),
                           )
                         else if (selectedPackageOptions.isNotEmpty)
@@ -247,125 +250,43 @@ class _FamilyPackageDaysSetupScreenState
                                   );
                             },
                           ),
+
                         const SizedBox(height: Spacing.md),
+
                         if (state.isDurationsLoading && state.durations.isEmpty)
                           const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: Spacing.lg,
-                            ),
+                            padding: EdgeInsets.symmetric(vertical: Spacing.lg),
                             child: Center(child: LoadingWidget()),
                           )
                         else if (state.durations.isNotEmpty)
                           SubscriptionDurationSelector(
                             selectedIndex: state.selectedDurationIndex,
-                            onSelected: (index) => context
-                                .read<FamilyPlanViewModel>()
-                                .doIntent(
-                                  SelectFamilyDurationEvent(index),
-                                ),
+                            onSelected: (index) {
+                              context.read<FamilyPlanViewModel>().doIntent(
+                                    SelectFamilyDurationEvent(index),
+                                  );
+                            },
                             includesFriday: state.includeFriday,
-                            onFridayChanged: (value) => context
-                                .read<FamilyPlanViewModel>()
-                                .doIntent(
-                                  ToggleFamilyFridayEvent(value),
-                                ),
+                            onFridayChanged: (include) {
+                              context.read<FamilyPlanViewModel>().doIntent(
+                                    ToggleFamilyFridayEvent(include),
+                                  );
+                            },
                             customDurationDays: state.customDurationDays,
-                            onCustomDurationChanged: (value) => context
-                                .read<FamilyPlanViewModel>()
-                                .doIntent(
-                                  UpdateFamilyCustomDurationEvent(value),
-                                ),
+                            onCustomDurationChanged: (days) {
+                              context.read<FamilyPlanViewModel>().doIntent(
+                                    UpdateFamilyCustomDurationEvent(days),
+                                  );
+                            },
                             durations: state.durations,
                             isFridayEnabled: true,
                             isLoading: state.isDurationsLoading,
                           ),
-                        const SizedBox(height: Spacing.lg),
+
+                        const SizedBox(height: Spacing.md),
+
                         if (state.isRestaurantsView)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () => context
-                                        .read<FamilyPlanViewModel>()
-                                        .doIntent(
-                                          const CloseFamilyBrowseRestaurantsEvent(),
-                                        ),
-                                    icon: Icon(
-                                      Icons.close_rounded,
-                                      color: color.onSurface,
-                                      size: Spacing.iconLg,
-                                    ),
-                                  ),
-                                  Text(
-                                    locale.subscription_restaurant_categories_title,
-                                    style: getBoldStyle(
-                                      fontFamily: FontConstant.alexandria,
-                                      fontSize: FontSize.size14,
-                                      color: color.onSurface,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: Spacing.md),
-                              if (state.isBrowseRestaurantsLoading &&
-                                  state.browseRestaurants.isEmpty)
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: Spacing.xl,
-                                  ),
-                                  child: Center(child: LoadingWidget()),
-                                )
-                              else if (state.browseRestaurants.isEmpty)
-                                EmptyStateWidget(
-                                  title: locale
-                                      .subscription_restaurant_categories_title,
-                                  description: locale
-                                      .subscription_restaurant_categories_subtitle,
-                                  icon: Icons.restaurant_rounded,
-                                )
-                              else
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics:
-                                      const NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: Spacing.sm,
-                                    crossAxisSpacing: Spacing.sm,
-                                    childAspectRatio: 0.78,
-                                  ),
-                                  itemCount: state.browseRestaurants.length,
-                                  itemBuilder: (context, index) {
-                                    final restaurant =
-                                        state.browseRestaurants[index];
-                                    final bundle = state.selectedBundle;
-                                    final programId =
-                                        state.selectedProgram?.programId ??
-                                            bundle?.programId ??
-                                            '';
-                                    final planEntity =
-                                        restaurant.toRestaurantPlan(
-                                      programId: programId,
-                                      bundleId: bundle?.bundleId ?? '',
-                                      localeName: locale.localeName,
-                                      brandColor: color.primary,
-                                    );
-                                    return MonthlyRestaurantGridCard(
-                                      restaurant: planEntity,
-                                    );
-                                  },
-                                ),
-                              const SizedBox(height: Spacing.lg),
-                            ]
-                          )
+                          ..._buildBrowseRestaurantsView(context, state)
                         else ...[
                           RestaurantPackageTiersSection(
                             packages: displayedTiers,
@@ -387,10 +308,9 @@ class _FamilyPackageDaysSetupScreenState
                           FamilyProgramActions(
                             nextText: locale.family_next_payment,
                             nextIcon: Icons.credit_card_rounded,
-                            onNextPressed:
-                                () => context.pushNamed(
-                                  AppRoutes.familyPaymentSetup,
-                                ),
+                            onNextPressed: () {
+                              _savePlanAndProceed(context, state);
+                            },
                           ),
                         ],
                         const SizedBox(height: Spacing.xxxl),
@@ -404,5 +324,121 @@ class _FamilyPackageDaysSetupScreenState
         ),
       ),
     );
+  }
+
+  void _savePlanAndProceed(BuildContext context, FamilyPlanState state) {
+    final member = state.selectedMember ??
+        (state.members.isNotEmpty ? state.members.first : null);
+    final programId = widget.programId ??
+        state.selectedProgram?.programId ??
+        (state.programs.isNotEmpty ? state.programs.first.programId : '');
+    final bundle = state.selectedBundle;
+    final duration = state.selectedDuration;
+    final tier = state.selectedTier;
+
+    if (member != null &&
+        programId.isNotEmpty &&
+        bundle != null &&
+        duration != null &&
+        tier != null) {
+      final tierInt = int.tryParse(tier.tier) ?? 1;
+      context.read<FamilyPlanViewModel>().doIntent(
+            SaveFamilyMemberPlanEvent(
+              memberId: member.memberId,
+              programId: programId,
+              bundleId: bundle.bundleId,
+              tier: tierInt,
+              durationDays: duration.durationDays ?? 0,
+              includeFriday: state.includeFriday,
+            ),
+          );
+    }
+
+    final hasUnreadyMembers = state.members.any(
+      (m) => m.memberId != member?.memberId && !m.isReady,
+    );
+
+    if (hasUnreadyMembers) {
+      final nextIndex = state.members.indexWhere(
+        (m) => m.memberId != member?.memberId && !m.isReady,
+      );
+      if (nextIndex != -1) {
+        context
+            .read<FamilyPlanViewModel>()
+            .doIntent(SelectFamilyMemberEvent(nextIndex));
+      }
+      Navigator.maybePop(context);
+    } else {
+      context.pushNamed(AppRoutes.familyPaymentSetup);
+    }
+  }
+
+  List<Widget> _buildBrowseRestaurantsView(
+    BuildContext context,
+    FamilyPlanState state,
+  ) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+    final bundle = state.selectedBundle;
+
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            locale.calendar_browse_restaurants,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size14,
+              color: color.onSurface,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () => context
+                .read<FamilyPlanViewModel>()
+                .doIntent(const CloseFamilyBrowseRestaurantsEvent()),
+          ),
+        ],
+      ),
+      const SizedBox(height: Spacing.md),
+      if (state.isBrowseRestaurantsLoading)
+        const Center(child: LoadingWidget())
+      else if (state.browseRestaurants.isEmpty)
+        EmptyStateWidget(
+          title: locale.family_packages_empty,
+          description: '',
+          icon: Icons.storefront_rounded,
+        )
+      else
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: Spacing.sm,
+            mainAxisSpacing: Spacing.sm,
+            childAspectRatio: 0.8,
+          ),
+          itemCount: state.browseRestaurants.length,
+          itemBuilder: (context, index) {
+            final restaurant = state.browseRestaurants[index];
+            final programId = widget.programId ??
+                state.selectedProgram?.programId ??
+                bundle?.programId ??
+                '';
+            final planEntity = restaurant.toRestaurantPlan(
+              programId: programId,
+              bundleId: bundle?.bundleId ?? '',
+              localeName: locale.localeName,
+              brandColor: color.primary,
+            );
+            return MonthlyRestaurantGridCard(
+              restaurant: planEntity,
+            );
+          },
+        ),
+      const SizedBox(height: Spacing.lg),
+    ];
   }
 }

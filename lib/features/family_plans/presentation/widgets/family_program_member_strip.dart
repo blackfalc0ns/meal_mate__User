@@ -5,9 +5,14 @@ import 'package:meal_meat_user/features/family_plans/presentation/models/family_
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_card.dart';
 
 class FamilyProgramMemberStrip extends StatelessWidget {
-  const FamilyProgramMemberStrip({super.key, required this.members});
+  const FamilyProgramMemberStrip({
+    super.key,
+    required this.members,
+    this.onSelectMember,
+  });
 
   final List<FamilyProgramMemberUiModel> members;
+  final ValueChanged<int>? onSelectMember;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,10 @@ class FamilyProgramMemberStrip extends StatelessWidget {
               const SizedBox(width: Spacing.familyProgramMemberGap),
           itemBuilder: (context, index) => SizedBox(
             width: Spacing.familyProgramMemberCardWidth,
-            child: FamilyProgramMemberCard(member: members[index]),
+            child: FamilyProgramMemberCard(
+              member: members[index],
+              onTap: () => onSelectMember?.call(index),
+            ),
           ),
         ),
       ),

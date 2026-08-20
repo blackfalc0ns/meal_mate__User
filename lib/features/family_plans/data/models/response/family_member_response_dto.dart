@@ -53,10 +53,26 @@ class FamilyMemberResponseDto {
     int parseSetupStatus(dynamic val) {
       if (val is int) return val;
       if (val is String) {
-        if (val.toLowerCase() == 'completed' || val == '2') return 2;
-        return 1;
+        final lower = val.toLowerCase();
+        if (lower == 'completed' || val == '3') return 3;
+        if (lower == 'inprogress' || val == '2') return 2;
+        if (lower == 'notstarted' || val == '1') return 1;
+        return 2;
       }
       return 1;
+    }
+
+    int? parseTier(dynamic val) {
+      if (val == null) return null;
+      if (val is num) return val.toInt();
+      if (val is String) {
+        final lower = val.toLowerCase();
+        if (lower == 'basic' || lower == 'select' || lower == '1') return 1;
+        if (lower == 'plus' || lower == '2') return 2;
+        if (lower == 'max' || lower == '3') return 3;
+        return int.tryParse(val);
+      }
+      return null;
     }
 
     int? parseNullableInt(dynamic val) {
@@ -77,7 +93,7 @@ class FamilyMemberResponseDto {
       setupStatus: parseSetupStatus(json['setupStatus']),
       programId: json['programId'] as String?,
       bundleId: json['bundleId'] as String?,
-      selectedTier: parseNullableInt(json['selectedTier']),
+      selectedTier: parseTier(json['selectedTier']),
       durationDays: parseNullableInt(json['durationDays']),
       includeFriday: json['includeFriday'] as bool? ?? false,
       isCurrentUser: json['isCurrentUser'] as bool? ?? false,
