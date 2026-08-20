@@ -40,52 +40,40 @@ class RestaurantPackageTiersSection extends StatelessWidget {
             child: SizedBox(
               width: cardWidth,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: SizedBox(
-                      width: Spacing.monthlyPlanPackagesHeaderWidth,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.grid_view_rounded,
-                            size: Spacing.iconLg,
-                            color: color.primary,
-                          ),
-                          const SizedBox(width: Spacing.md),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  locale.subscription_restaurant_categories_title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end,
-                                  style: getBoldStyle(
-                                    fontFamily: FontConstant.alexandria,
-                                    fontSize: FontSize.size18,
-                                    color: color.onSurface,
-                                  ),
-                                ),
-                                const SizedBox(height: Spacing.xs),
-                                Text(
-                                  locale.subscription_restaurant_categories_subtitle,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end,
-                                  style: getMediumStyle(
-                                    fontFamily: FontConstant.alexandria,
-                                    fontSize: FontSize.size12,
-                                    color: color.onSurfaceVariant,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        locale.subscription_restaurant_categories_title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size20,
+                          color: color.onSurface,
+                        ),
                       ),
+                      const SizedBox(width: Spacing.sm),
+                      Icon(
+                        Icons.grid_view_rounded,
+                        size: Spacing.iconMd,
+                        color: color.primary,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Text(
+                    locale.subscription_restaurant_categories_subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: Spacing.lg),

@@ -21,7 +21,8 @@ class RestaurantTierLogosRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final visibleLogoUrls = logoUrls.take(3).toList();
+    final visibleLogoUrls = logoUrls.take(4).toList();
+    final borderColor = color.primary;
 
     return Semantics(
       label: locale.calendar_browse_restaurants,
@@ -39,44 +40,69 @@ class RestaurantTierLogosRow extends StatelessWidget {
                   color: color.surface,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isFeatured ? color.secondary : color.primary,
-                    width: Spacing.hairline,
+                    color: borderColor,
+                    width: Spacing.border,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.shadow.withValues(alpha: 0.08),
+                      blurRadius: Spacing.xs,
+                      offset: const Offset(0, Spacing.hairline),
+                    ),
+                  ],
                 ),
                 child: Text(
                   countLabel,
                   maxLines: 1,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size8,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ).copyWith(height: 1),
                 ),
               ),
-            for (final logoUrl in visibleLogoUrls) ...[
-              const SizedBox(width: Spacing.monthlyPlanRestaurantLogoGap),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isFeatured ? color.secondary : color.primary,
-                    width: Spacing.hairline,
-                  ),
+            for (var i = 0; i < visibleLogoUrls.length; i++)
+              Transform.translate(
+                offset: Offset(
+                  (countLabel.isNotEmpty ? (i + 1) : i) *
+                      Spacing.monthlyPlanRestaurantLogoOverlap,
+                  0,
                 ),
-                child: AppCachedNetworkImage(
-                  imageUrl: logoUrl,
+                child: Container(
                   width: Spacing.monthlyPlanRestaurantLogoSize,
                   height: Spacing.monthlyPlanRestaurantLogoSize,
-                  shape: BoxShape.circle,
-                  semanticLabel: locale.calendar_browse_restaurants,
-                  errorWidget: Icon(
-                    Icons.restaurant_rounded,
-                    size: FontSize.size14,
-                    color: color.primary,
+                  decoration: BoxDecoration(
+                    color: color.surface,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: borderColor,
+                      width: Spacing.border,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: color.shadow.withValues(alpha: 0.08),
+                        blurRadius: Spacing.xs,
+                        offset: const Offset(0, Spacing.hairline),
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: AppCachedNetworkImage(
+                      imageUrl: visibleLogoUrls[i],
+                      width: Spacing.monthlyPlanRestaurantLogoSize,
+                      height: Spacing.monthlyPlanRestaurantLogoSize,
+                      shape: BoxShape.circle,
+                      fit: BoxFit.contain,
+                      semanticLabel: locale.calendar_browse_restaurants,
+                      errorWidget: Icon(
+                        Icons.restaurant_rounded,
+                        size: FontSize.size14,
+                        color: color.primary,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
           ],
         ),
       ),
