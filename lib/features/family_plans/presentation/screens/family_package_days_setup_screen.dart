@@ -8,6 +8,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
@@ -23,6 +24,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_restaurant_grid_card.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({
@@ -158,6 +160,27 @@ class _FamilyPackageDaysSetupScreenState
                     ),
                   );
 
+              final displayedTiers = state.tiers.isNotEmpty
+                  ? state.tiers
+                      .map(
+                        (t) => RestaurantPackageTierUiModel(
+                          id: t.tier,
+                          title: t.name(locale.localeName),
+                          iconName: t.tier.toLowerCase().contains('max')
+                              ? 'diamond'
+                              : t.tier.toLowerCase().contains('plus')
+                                  ? 'crown'
+                                  : 'heart',
+                          restaurantCount: t.restaurantCount,
+                          restaurantLogoUrls: t.restaurants
+                              .map((r) => r.logoUrl)
+                              .where((url) => url != null && url.isNotEmpty)
+                              .toList(),
+                        ),
+                      )
+                      .toList()
+                  : tierOptions;
+
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
@@ -257,27 +280,119 @@ class _FamilyPackageDaysSetupScreenState
                             isLoading: state.isDurationsLoading,
                           ),
                         const SizedBox(height: Spacing.lg),
-                        RestaurantPackageTiersSection(
-                          packages: tierOptions,
-                          selectedIndex: state.selectedTierIndex,
-                          onSelected: (index) => context
-                              .read<FamilyPlanViewModel>()
-                              .doIntent(
-                                SelectFamilyTierEvent(index),
+                        if (state.isRestaurantsView)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () => context
+                                        .read<FamilyPlanViewModel>()
+                                        .doIntent(
+                                          const CloseFamilyBrowseRestaurantsEvent(),
+                                        ),
+                                    icon: Icon(
+                                      Icons.close_rounded,
+                                      color: color.onSurface,
+                                      size: Spacing.iconLg,
+                                    ),
+                                  ),
+                                  Text(
+                                    locale.subscription_restaurant_categories_title,
+                                    style: getBoldStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size14,
+                                      color: color.onSurface,
+                                    ),
+                                  ),
+                                ],
                               ),
-                          onBrowseRestaurants: (index) {},
-                        ),
-                        const SizedBox(height: Spacing.lg),
-                        const FamilyPaymentNoteCard(),
-                        const SizedBox(height: Spacing.md),
-                        FamilyProgramActions(
-                          nextText: locale.family_next_payment,
-                          nextIcon: Icons.credit_card_rounded,
-                          onNextPressed:
-                              () => context.pushNamed(
-                                AppRoutes.familyPaymentSetup,
-                              ),
-                        ),
+                              const SizedBox(height: Spacing.md),
+                              if (state.isBrowseRestaurantsLoading &&
+                                  state.browseRestaurants.isEmpty)
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: Spacing.xl,
+                                  ),
+                                  child: Center(child: LoadingWidget()),
+                                )
+                              else if (state.browseRestaurants.isEmpty)
+                                EmptyStateWidget(
+                                  title: locale
+                                      .subscription_restaurant_categories_title,
+                                  description: locale
+                                      .subscription_restaurant_categories_subtitle,
+                                  icon: Icons.restaurant_rounded,
+                                )
+                              else
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics:
+                                      const NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.zero,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    mainAxisSpacing: Spacing.sm,
+                                    crossAxisSpacing: Spacing.sm,
+                                    childAspectRatio: 0.78,
+                                  ),
+                                  itemCount: state.browseRestaurants.length,
+                                  itemBuilder: (context, index) {
+                                    final restaurant =
+                                        state.browseRestaurants[index];
+                                    final bundle = state.selectedBundle;
+                                    final programId =
+                                        state.selectedProgram?.programId ??
+                                            bundle?.programId ??
+                                            '';
+                                    final planEntity =
+                                        restaurant.toRestaurantPlan(
+                                      programId: programId,
+                                      bundleId: bundle?.bundleId ?? '',
+                                      localeName: locale.localeName,
+                                      brandColor: color.primary,
+                                    );
+                                    return MonthlyRestaurantGridCard(
+                                      restaurant: planEntity,
+                                    );
+                                  },
+                                ),
+                              const SizedBox(height: Spacing.lg),
+                            ]
+                          )
+                        else ...[
+                          RestaurantPackageTiersSection(
+                            packages: displayedTiers,
+                            selectedIndex: state.selectedTierIndex,
+                            onSelected: (index) => context
+                                .read<FamilyPlanViewModel>()
+                                .doIntent(
+                                  SelectFamilyTierEvent(index),
+                                ),
+                            onBrowseRestaurants: (index) => context
+                                .read<FamilyPlanViewModel>()
+                                .doIntent(
+                                  BrowseFamilyTierRestaurantsEvent(index),
+                                ),
+                          ),
+                          const SizedBox(height: Spacing.lg),
+                          const FamilyPaymentNoteCard(),
+                          const SizedBox(height: Spacing.md),
+                          FamilyProgramActions(
+                            nextText: locale.family_next_payment,
+                            nextIcon: Icons.credit_card_rounded,
+                            onNextPressed:
+                                () => context.pushNamed(
+                                  AppRoutes.familyPaymentSetup,
+                                ),
+                          ),
+                        ],
                         const SizedBox(height: Spacing.xxxl),
                       ]),
                     ),

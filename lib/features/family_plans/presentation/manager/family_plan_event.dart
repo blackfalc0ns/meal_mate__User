@@ -60,6 +60,16 @@ class SelectFamilyTierEvent extends FamilyPlanEvent {
   final int tierIndex;
 }
 
+class BrowseFamilyTierRestaurantsEvent extends FamilyPlanEvent {
+  const BrowseFamilyTierRestaurantsEvent(this.tierIndex);
+
+  final int tierIndex;
+}
+
+class CloseFamilyBrowseRestaurantsEvent extends FamilyPlanEvent {
+  const CloseFamilyBrowseRestaurantsEvent();
+}
+
 class SelectFamilyMemberEvent extends FamilyPlanEvent {
   const SelectFamilyMemberEvent(this.memberIndex);
 

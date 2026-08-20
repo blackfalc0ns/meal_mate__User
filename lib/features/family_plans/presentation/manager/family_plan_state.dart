@@ -2,6 +2,8 @@ import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 
 class FamilyPlanState {
   const FamilyPlanState({
@@ -16,7 +18,14 @@ class FamilyPlanState {
     this.selectedDurationIndex = 2,
     this.customDurationDays,
     this.includeFriday = false,
+    this.isTiersLoading = false,
+    this.tiers = const [],
     this.selectedTierIndex = 1,
+    this.isBrowseRestaurantsLoading = false,
+    this.browseRestaurants = const [],
+    this.browsedTierIndex,
+    this.isRestaurantsView = false,
+    this.browseRestaurantsFailure,
     this.selectedMemberIndex = 0,
     this.failure,
   });
@@ -35,12 +44,24 @@ class FamilyPlanState {
   final int? customDurationDays;
   final bool includeFriday;
 
-  final int selectedTierIndex;
+  final bool isTiersLoading;
+  final List<SubscriptionTierEntity> tiers;
+  final int? selectedTierIndex;
+
+  final bool isBrowseRestaurantsLoading;
+  final List<SubscriptionTierRestaurantBrowseEntity> browseRestaurants;
+  final int? browsedTierIndex;
+  final bool isRestaurantsView;
+  final Failure? browseRestaurantsFailure;
+
   final int selectedMemberIndex;
   final Failure? failure;
 
   bool get isLoading =>
-      isProgramsLoading || isBundlesLoading || isDurationsLoading;
+      isProgramsLoading ||
+      isBundlesLoading ||
+      isDurationsLoading ||
+      isTiersLoading;
 
   SubscriptionProgramEntity? get selectedProgram =>
       programs.isNotEmpty && selectedProgramIndex < programs.length
@@ -58,6 +79,18 @@ class FamilyPlanState {
     return durations[index];
   }
 
+  int? get selectedDurationDays {
+    final duration = selectedDuration;
+    if (duration == null) return customDurationDays;
+    return duration.isCustom ? customDurationDays : duration.durationDays;
+  }
+
+  SubscriptionTierEntity? get selectedTier {
+    final index = selectedTierIndex;
+    if (index == null || index < 0 || index >= tiers.length) return null;
+    return tiers[index];
+  }
+
   FamilyPlanState copyWith({
     bool? isProgramsLoading,
     List<SubscriptionProgramEntity>? programs,
@@ -70,10 +103,19 @@ class FamilyPlanState {
     int? selectedDurationIndex,
     int? customDurationDays,
     bool? includeFriday,
+    bool? isTiersLoading,
+    List<SubscriptionTierEntity>? tiers,
     int? selectedTierIndex,
+    bool? isBrowseRestaurantsLoading,
+    List<SubscriptionTierRestaurantBrowseEntity>? browseRestaurants,
+    int? browsedTierIndex,
+    bool? isRestaurantsView,
+    Failure? browseRestaurantsFailure,
     int? selectedMemberIndex,
     Failure? failure,
     bool clearFailure = false,
+    bool clearBrowseRestaurants = false,
+    bool clearBrowseRestaurantsFailure = false,
   }) {
     return FamilyPlanState(
       isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
@@ -89,7 +131,21 @@ class FamilyPlanState {
           selectedDurationIndex ?? this.selectedDurationIndex,
       customDurationDays: customDurationDays ?? this.customDurationDays,
       includeFriday: includeFriday ?? this.includeFriday,
+      isTiersLoading: isTiersLoading ?? this.isTiersLoading,
+      tiers: tiers ?? this.tiers,
       selectedTierIndex: selectedTierIndex ?? this.selectedTierIndex,
+      isBrowseRestaurantsLoading:
+          isBrowseRestaurantsLoading ?? this.isBrowseRestaurantsLoading,
+      browseRestaurants:
+          clearBrowseRestaurants
+              ? const []
+              : (browseRestaurants ?? this.browseRestaurants),
+      browsedTierIndex: browsedTierIndex ?? this.browsedTierIndex,
+      isRestaurantsView: isRestaurantsView ?? this.isRestaurantsView,
+      browseRestaurantsFailure:
+          clearBrowseRestaurantsFailure
+              ? null
+              : (browseRestaurantsFailure ?? this.browseRestaurantsFailure),
       selectedMemberIndex:
           selectedMemberIndex ?? this.selectedMemberIndex,
       failure: clearFailure ? null : (failure ?? this.failure),

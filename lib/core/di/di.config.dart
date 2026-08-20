@@ -537,13 +537,6 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
     );
-    gh.factory<_i967.FamilyPlanViewModel>(
-      () => _i967.FamilyPlanViewModel(
-        gh<_i178.GetSubscriptionProgramsUseCase>(),
-        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-        gh<_i809.GetSubscriptionDurationsUseCase>(),
-      ),
-    );
     gh.factory<_i247.GetSubscriptionTypesUseCase>(
       () => _i247.GetSubscriptionTypesUseCase(
         gh<_i866.SubscriptionTypesRepository>(),
@@ -662,6 +655,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(
       () => _i851.SubscriptionRestaurantDetailsViewModel(
         gh<_i837.GetSubscriptionRestaurantDetailsUseCase>(),
+      ),
+    );
+    gh.factory<_i967.FamilyPlanViewModel>(
+      () => _i967.FamilyPlanViewModel(
+        gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+        gh<_i809.GetSubscriptionDurationsUseCase>(),
+        gh<_i101.GetSubscriptionTiersUseCase>(),
+        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
       ),
     );
     return this;
