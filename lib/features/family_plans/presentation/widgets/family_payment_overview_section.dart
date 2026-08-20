@@ -3,13 +3,13 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_meals_table.dart';
 
 class FamilyPaymentOverviewSection extends StatelessWidget {
   const FamilyPaymentOverviewSection({super.key, required this.members});
 
-  final List<FamilyMemberEntity> members;
+  final List<FamilyPlanMemberUiModel> members;
 
   @override
   Widget build(BuildContext context) {

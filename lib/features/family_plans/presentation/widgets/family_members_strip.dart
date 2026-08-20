@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 
 class FamilyMembersStrip extends StatelessWidget {
   const FamilyMembersStrip({
@@ -12,7 +12,7 @@ class FamilyMembersStrip extends StatelessWidget {
     required this.onAddTap,
   });
 
-  final List<FamilyMemberEntity> members;
+  final List<FamilyPlanMemberUiModel> members;
   final VoidCallback onAddTap;
 
   @override
@@ -95,7 +95,7 @@ class _AddMemberCard extends StatelessWidget {
 class _MemberCard extends StatelessWidget {
   const _MemberCard({required this.member});
 
-  final FamilyMemberEntity member;
+  final FamilyPlanMemberUiModel member;
 
   @override
   Widget build(BuildContext context) {

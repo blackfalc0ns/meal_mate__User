@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_activity_selector.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_field.dart';
 
 class FamilySetupFormCard extends StatelessWidget {
@@ -61,15 +60,6 @@ class FamilySetupFormCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.familySetupFormFieldGap),
-          FamilySetupField(
-            label: locale.family_nutrition_goal,
-            hint: locale.family_nutrition_goal_hint,
-            icon: Icons.track_changes_rounded,
-            trailing: Icons.keyboard_arrow_down_rounded,
-          ),
-          const SizedBox(height: Spacing.familySetupFormFieldGap),
-          const FamilySetupActivitySelector(),
         ],
       ),
     );

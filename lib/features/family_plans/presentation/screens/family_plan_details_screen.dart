@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_add_member_dialog.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_meals_table.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_members_strip.dart';
@@ -20,7 +20,7 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
     this.showBottomSpace = false,
   });
 
-  final FamilyPlanEntity? plan;
+  final FamilyPlanDetailsUiModel? plan;
   final bool showBottomSpace;
 
   @override

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum FamilyPackageOptionIcon {
   cutlery,
   appleCutlery,
@@ -152,4 +154,66 @@ class FamilyPaymentMethodUiModel {
   bool get isSelected => selected;
   String get name => label;
   String get logoAsset => imageAsset;
+}
+
+class FamilySummaryStatUiModel {
+  const FamilySummaryStatUiModel({
+    required this.iconName,
+    required this.value,
+    required this.label,
+  });
+
+  final String iconName;
+  final String value;
+  final String label;
+}
+
+class FamilyPlanDetailsPriceRowUiModel {
+  const FamilyPlanDetailsPriceRowUiModel({
+    required this.label,
+    required this.value,
+  });
+
+  final String label;
+  final String value;
+}
+
+class FamilyPlanMemberUiModel {
+  const FamilyPlanMemberUiModel({
+    required this.name,
+    required this.imageAsset,
+    this.isOwner = false,
+    this.detailLines = const [],
+    this.actionLabel = '',
+    this.mealChecks = const [],
+    this.mealsCount = '',
+    this.badgeColor,
+    this.badgeTextColor,
+  });
+
+  final String name;
+  final String imageAsset;
+  final bool isOwner;
+  final List<String> detailLines;
+  final String actionLabel;
+  final List<bool> mealChecks;
+  final String mealsCount;
+  final Color? badgeColor;
+  final Color? badgeTextColor;
+}
+
+class FamilyPlanDetailsUiModel {
+  const FamilyPlanDetailsUiModel({
+    required this.members,
+    required this.summaryStats,
+    required this.priceRows,
+    required this.totalLabel,
+    required this.totalPrice,
+  });
+
+  final List<FamilyPlanMemberUiModel> members;
+  final List<FamilySummaryStatUiModel> summaryStats;
+  final List<FamilyPlanDetailsPriceRowUiModel> priceRows;
+  final String totalLabel;
+  final String totalPrice;
 }

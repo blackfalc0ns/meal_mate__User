@@ -30,7 +30,6 @@ class FamilyAddMemberDialog extends StatefulWidget {
 }
 
 class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
-  int _activityIndex = 0;
   int _mealsIndex = 1;
 
   @override
@@ -134,26 +133,6 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                             ),
                           ),
                         ],
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      _LabeledField(
-                        icon: Icons.track_changes_rounded,
-                        label: l10n.family_nutrition_goal,
-                        hint: l10n.family_nutrition_goal_hint,
-                        trailing: Icons.keyboard_arrow_down_rounded,
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      _ChoiceSection(
-                        label: l10n.family_activity_level,
-                        icon: Icons.directions_walk_rounded,
-                        choices: [
-                          l10n.family_activity_low,
-                          l10n.family_activity_medium,
-                          l10n.family_activity_high,
-                        ],
-                        selectedIndex: _activityIndex,
-                        onChanged: (index) =>
-                            setState(() => _activityIndex = index),
                       ),
                       const SizedBox(height: Spacing.sm),
                       _ChoiceSection(

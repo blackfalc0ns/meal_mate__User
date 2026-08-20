@@ -3,12 +3,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/family_plans/domain/entities/family_plan_entity.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 
 class FamilyPlanSummaryCard extends StatelessWidget {
   const FamilyPlanSummaryCard({super.key, required this.stats});
 
-  final List<FamilySummaryStatEntity> stats;
+  final List<FamilySummaryStatUiModel> stats;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class FamilyPlanSummaryCard extends StatelessWidget {
 class _SummaryStat extends StatelessWidget {
   const _SummaryStat({required this.stat});
 
-  final FamilySummaryStatEntity stat;
+  final FamilySummaryStatUiModel stat;
 
   @override
   Widget build(BuildContext context) {

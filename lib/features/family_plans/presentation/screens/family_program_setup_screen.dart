@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plans_event.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plans_state.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plans_view_model.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_actions.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_grid.dart';
@@ -43,164 +38,142 @@ class _FamilyProgramSetupScreenState extends State<FamilyProgramSetupScreen> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final langCode = Localizations.localeOf(context).languageCode;
 
-    return BlocProvider<FamilyPlansViewModel>(
-      create:
-          (_) =>
-              getIt<FamilyPlansViewModel>()
-                ..doIntent(const GetFamilySubscriptionProgramsEvent())
-                ..doIntent(const GetCurrentFamilyGroupEvent()),
-      child: BlocBuilder<FamilyPlansViewModel, FamilyPlansState>(
-        builder: (context, state) {
-          final displayedPrograms =
-              widget.programs.isNotEmpty
-                  ? widget.programs
-                  : (state.programs ?? const [])
-                      .map(
-                        (p) => FamilyProgramUiModel(
-                          title: p.name(langCode),
-                          description: p.description(langCode),
-                          imageAsset:
-                              p.imageUrl?.isNotEmpty == true
-                                  ? p.imageUrl!
-                                  : p.fallbackImageAsset,
-                        ),
-                      )
-                      .toList();
+    final displayedPrograms =
+        widget.programs.isNotEmpty
+            ? widget.programs
+            : [
+              FamilyProgramUiModel(
+                title: locale.family_program_balanced_title,
+                description: locale.family_program_balanced_description,
+                imageAsset: '',
+              ),
+              FamilyProgramUiModel(
+                title: locale.family_program_weight_loss_title,
+                description: locale.family_program_weight_loss_description,
+                imageAsset: '',
+              ),
+              FamilyProgramUiModel(
+                title: locale.family_program_muscle_title,
+                description: locale.family_program_muscle_description,
+                imageAsset: '',
+              ),
+            ];
 
-          final displayedMembers =
-              widget.members.isNotEmpty
-                  ? widget.members
-                  : (state.currentGroup?.members ?? const []).asMap().entries.map((
-                    entry,
-                  ) {
-                    final index = entry.key;
-                    final m = entry.value;
-                    return FamilyProgramMemberUiModel(
-                      name: m.displayName,
-                      imageAsset: '',
-                      status: m.isReady ? locale.family_member_completed : '',
-                      isSelected: index == 0,
-                      isInProgress: index == 0,
-                    );
-                  }).toList();
+    final displayedMembers =
+        widget.members.isNotEmpty
+            ? widget.members
+            : [
+              FamilyProgramMemberUiModel(
+                name: 'Yahya',
+                imageAsset: '',
+                status: '',
+                isSelected: true,
+                isInProgress: true,
+              ),
+            ];
 
-          final activeMember =
-              widget.selectedMember ??
-              (state.currentGroup != null &&
-                      state.currentGroup!.members.isNotEmpty
-                  ? FamilyProgramMemberDetailsUiModel(
-                    name: state.currentGroup!.members.first.displayName,
-                    imageAsset: '',
-                    age: '${state.currentGroup!.members.first.ageYears}',
-                    gender: state.currentGroup!.members.first.gender.name,
-                    goal:
-                        state.currentGroup!.members.first.nutritionalGoalCode,
-                    activityLevel:
-                        state.currentGroup!.members.first.activityLevel.name,
-                  )
-                  : null);
+    final activeMember =
+        widget.selectedMember ??
+        (displayedMembers.isNotEmpty
+            ? FamilyProgramMemberDetailsUiModel(
+              name: displayedMembers.first.name,
+              imageAsset: '',
+              age: '28',
+              gender: '',
+              goal: '',
+              activityLevel: '',
+            )
+            : null);
 
-          return Scaffold(
-            appBar: CustomAppBar(
-              showBackButton: true,
-              titleWidget: Column(
-                children: [
+    return Scaffold(
+      appBar: CustomAppBar(
+        showBackButton: true,
+        titleWidget: Column(
+          children: [
+            Text(
+              locale.family_setup_title,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size13,
+                color: color.onSurface,
+              ),
+            ),
+            Text(
+              locale.family_setup_subtitle,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size9,
+                color: color.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.familySetupHorizontalPadding,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  FamilySetupHeaderBadge(),
+                  const SizedBox(
+                    height: Spacing.familyProgramProgressTopGap,
+                  ),
+                  const FamilyProgramStepper(
+                    currentStep: 1,
+                    includeFamilyCreationStep: true,
+                  ),
+                  const SizedBox(
+                    height: Spacing.familyProgramMemberTopGap,
+                  ),
+                  if (displayedMembers.isNotEmpty)
+                    FamilyProgramMemberStrip(members: displayedMembers),
+                  const SizedBox(
+                    height: Spacing.familyProgramSummaryTopGap,
+                  ),
+                  if (activeMember != null)
+                    FamilyProgramSummaryCard(member: activeMember),
+                  const SizedBox(height: Spacing.familyProgramTitleTopGap),
                   Text(
-                    locale.family_setup_title,
+                    locale.family_program_choose_title,
+                    textAlign: TextAlign.center,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
+                      fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
                   ),
-                  Text(
-                    locale.family_setup_subtitle,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.onSurfaceVariant,
-                    ),
+                  const SizedBox(height: Spacing.familyProgramGridTopGap),
+                  FamilyProgramGrid(
+                    programs: displayedPrograms,
+                    selectedIndex: _selectedProgramIndex,
+                    onProgramSelected:
+                        (index) => setState(
+                          () => _selectedProgramIndex = index,
+                        ),
                   ),
-                ],
+                  const SizedBox(
+                    height: Spacing.familyProgramActionsTopGap,
+                  ),
+                  FamilyProgramActions(
+                    nextText: locale.family_next_package_days,
+                    nextIcon: Icons.calendar_month_rounded,
+                    onNextPressed:
+                        () => context.pushNamed(
+                          AppRoutes.familyPackageDaysSetup,
+                        ),
+                  ),
+                  const SizedBox(height: Spacing.xxxl),
+                ]),
               ),
             ),
-            body: SafeArea(
-              child: CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.familySetupHorizontalPadding,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate.fixed([
-                        FamilySetupHeaderBadge(),
-                        const SizedBox(
-                          height: Spacing.familyProgramProgressTopGap,
-                        ),
-                        const FamilyProgramStepper(
-                          currentStep: 1,
-                          includeFamilyCreationStep: true,
-                        ),
-                        const SizedBox(
-                          height: Spacing.familyProgramMemberTopGap,
-                        ),
-                        if (displayedMembers.isNotEmpty)
-                          FamilyProgramMemberStrip(members: displayedMembers),
-                        const SizedBox(
-                          height: Spacing.familyProgramSummaryTopGap,
-                        ),
-                        if (activeMember != null)
-                          FamilyProgramSummaryCard(member: activeMember),
-                        const SizedBox(height: Spacing.familyProgramTitleTopGap),
-                        Text(
-                          locale.family_program_choose_title,
-                          textAlign: TextAlign.center,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: color.onSurface,
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.familyProgramGridTopGap),
-                        if (state.isProgramsLoading && displayedPrograms.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(Spacing.xl),
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        else
-                          FamilyProgramGrid(
-                            programs: displayedPrograms,
-                            selectedIndex: _selectedProgramIndex,
-                            onProgramSelected:
-                                (index) => setState(
-                                  () => _selectedProgramIndex = index,
-                                ),
-                          ),
-                        const SizedBox(
-                          height: Spacing.familyProgramActionsTopGap,
-                        ),
-                        FamilyProgramActions(
-                          nextText: locale.family_next_package_days,
-                          nextIcon: Icons.calendar_month_rounded,
-                          onNextPressed:
-                              () => context.pushNamed(
-                                AppRoutes.familyPackageDaysSetup,
-                              ),
-                        ),
-                        const SizedBox(height: Spacing.xxxl),
-                      ]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
