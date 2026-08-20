@@ -20,19 +20,18 @@ class FamilyPackageOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final selected = option.isSelected;
+    final cardBorderRadius = BorderRadius.circular(
+      Spacing.familyProgramCardRadius,
+    );
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(Spacing.familyProgramCardRadius),
+      borderRadius: cardBorderRadius,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Container(
             height: Spacing.familyPackageOptionHeight,
-            // padding: const EdgeInsets.symmetric(
-            //   horizontal: Spacing.sm,
-            //   vertical: Spacing.sm,
-            // ),
             decoration: BoxDecoration(
               color: color.surface,
               border: Border.all(
@@ -41,55 +40,67 @@ class FamilyPackageOptionCard extends StatelessWidget {
                     ? Spacing.familySelectedBorderWidth
                     : Spacing.border,
               ),
-              borderRadius: BorderRadius.circular(
-                Spacing.familyProgramCardRadius,
-              ),
+              borderRadius: cardBorderRadius,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 40,
-                  child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                Spacing.familyProgramCardRadius - 1,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 72,
                     child: AppCachedNetworkImage(
                       imageUrl: option.imageUrl,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.contain,
-                      backgroundColor: color.surface.withValues(alpha: 0),
+                      width: double.infinity,
+                      height: 72,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                const SizedBox(height: Spacing.xss),
-                Text(
-                  option.title,
-                  maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onSurface,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
+                        vertical: Spacing.xs,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            option.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: Spacing.xss),
+                          Text(
+                            option.description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size8,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: Spacing.xss),
-                Text(
-                  option.description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           if (selected)
             PositionedDirectional(
-              top: -Spacing.md,
+              top: -Spacing.sm,
               end: -Spacing.xs,
               child: CircleAvatar(
                 radius: Spacing.sm,

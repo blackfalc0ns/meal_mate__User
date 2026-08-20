@@ -104,7 +104,7 @@ class FamilyProgramCard extends StatelessWidget {
                       imageUrl: program.imageAsset,
                       width: Spacing.familyProgramImageSize,
                       height: Spacing.familyProgramImageSize,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                       semanticLabel: program.title,
                     )
                   else if (program.imageAsset.isNotEmpty)
@@ -113,12 +113,11 @@ class FamilyProgramCard extends StatelessWidget {
                       width: Spacing.familyProgramImageSize,
                       height: Spacing.familyProgramImageSize,
                       fit: BoxFit.contain,
-                      errorBuilder:
-                          (_, _, _) => Icon(
-                            Icons.restaurant_rounded,
-                            color: color.primary,
-                            size: Spacing.familyProgramImageSize,
-                          ),
+                      errorBuilder: (_, _, _) => Icon(
+                        Icons.restaurant_rounded,
+                        color: color.primary,
+                        size: Spacing.familyProgramImageSize,
+                      ),
                     )
                   else
                     Icon(

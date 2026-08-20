@@ -31,7 +31,6 @@ class AppCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
     final url = _resolveUrl(imageUrl);
 
@@ -50,10 +49,12 @@ class AppCachedNetworkImage extends StatelessWidget {
             errorBuilder: (context, error, stackTrace) => _buildError(context),
           );
 
-    final imageContent = ColoredBox(
-      color: backgroundColor ?? color.surfaceContainerHighest,
-      child: SizedBox(width: width, height: height, child: child),
-    );
+    final imageContent = backgroundColor != null
+        ? ColoredBox(
+            color: backgroundColor!,
+            child: SizedBox(width: width, height: height, child: child),
+          )
+        : SizedBox(width: width, height: height, child: child);
 
     return shape == BoxShape.circle
         ? ClipOval(child: imageContent)
