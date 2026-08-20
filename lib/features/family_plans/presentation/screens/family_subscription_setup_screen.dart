@@ -11,7 +11,6 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/family_plans/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_plans/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
@@ -19,6 +18,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/manager/family
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_add_member_dialog.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_subscription_setup_loading_skeleton.dart';
 
 class FamilySubscriptionSetupScreen extends StatefulWidget {
   const FamilySubscriptionSetupScreen({
@@ -133,7 +133,7 @@ class _FamilySubscriptionSetupScreenState
             },
             builder: (context, state) {
               if (state.isCurrentFlowLoading && state.currentFlow == null) {
-                return const Center(child: LoadingWidget());
+                return const FamilySubscriptionSetupLoadingSkeleton();
               }
 
               if (state.failure != null && state.currentFlow == null) {

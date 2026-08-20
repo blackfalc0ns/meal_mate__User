@@ -11,10 +11,10 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_selection_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_size_package_list.dart';
 
 class FamilyPackageSelectionScreen extends StatelessWidget {
@@ -58,7 +58,7 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
           child: BlocBuilder<FamilyPlanViewModel, FamilyPlanState>(
             builder: (context, state) {
               if (state.isPackagesLoading && state.packages.isEmpty) {
-                return _buildLoadingSkeleton(context);
+                return const FamilyPackageSelectionLoadingSkeleton();
               }
 
               if (state.failure != null && state.packages.isEmpty) {
@@ -148,44 +148,6 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
               color: color.onPrimary,
               size: Spacing.iconMd,
             ),
-          ),
-          const SizedBox(height: Spacing.base),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingSkeleton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: Spacing.md),
-          const ShimmerPlaceholder.rect(
-            height: Spacing.xl,
-            borderRadius: Spacing.radiusSm,
-          ),
-          const SizedBox(height: Spacing.xs),
-          const ShimmerPlaceholder.rect(
-            height: Spacing.base,
-            borderRadius: Spacing.radiusSm,
-          ),
-          const SizedBox(height: Spacing.lg),
-          Expanded(
-            child: ListView.separated(
-              itemCount: 3,
-              separatorBuilder: (_, _) => const SizedBox(height: Spacing.sm),
-              itemBuilder: (_, _) => const ShimmerPlaceholder.rect(
-                height: 80,
-                borderRadius: Spacing.radiusLg,
-              ),
-            ),
-          ),
-          const SizedBox(height: Spacing.md),
-          const ShimmerPlaceholder.rect(
-            height: Spacing.buttonHeight,
-            borderRadius: Spacing.radiusPill,
           ),
           const SizedBox(height: Spacing.base),
         ],

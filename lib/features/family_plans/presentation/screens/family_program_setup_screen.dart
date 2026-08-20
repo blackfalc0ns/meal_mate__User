@@ -10,7 +10,6 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
@@ -18,6 +17,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/models/family_
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_actions.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_grid.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_strip.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
@@ -65,7 +65,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
               if (state.isLoading &&
                   state.programs.isEmpty &&
                   state.members.isEmpty) {
-                return const Center(child: LoadingWidget());
+                return const FamilyProgramSetupLoadingSkeleton();
               }
 
               if (state.failure != null && state.programs.isEmpty) {

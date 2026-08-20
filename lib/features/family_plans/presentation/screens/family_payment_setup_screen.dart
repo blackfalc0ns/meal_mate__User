@@ -9,7 +9,6 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
@@ -19,6 +18,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_methods_section.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_overview_section.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_price_details_card.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
@@ -74,7 +74,7 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
             },
             builder: (context, state) {
               if (state.isSummaryLoading && state.summary == null) {
-                return const Center(child: LoadingWidget());
+                return const FamilyPaymentSetupLoadingSkeleton();
               }
 
               if (state.failure != null && state.summary == null) {

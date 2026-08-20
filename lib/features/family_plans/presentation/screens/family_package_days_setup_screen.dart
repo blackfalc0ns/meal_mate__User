@@ -9,15 +9,18 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
+import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_browse_restaurants_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_days_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_options_grid.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_options_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_note_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_actions.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_strip.dart';
@@ -82,6 +85,12 @@ class _FamilyPackageDaysSetupScreenState
         body: SafeArea(
           child: BlocBuilder<FamilyPlanViewModel, FamilyPlanState>(
             builder: (context, state) {
+              if ((state.isLoading || state.isCurrentFlowLoading) &&
+                  state.bundles.isEmpty &&
+                  state.members.isEmpty) {
+                return const FamilyPackageDaysSetupLoadingSkeleton();
+              }
+
               final members = state.members;
               final selectedMember = state.selectedMember;
 
@@ -233,10 +242,7 @@ class _FamilyPackageDaysSetupScreenState
                         ),
 
                         if (state.isBundlesLoading && state.bundles.isEmpty)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: Spacing.lg),
-                            child: Center(child: LoadingWidget()),
-                          )
+                          const FamilyPackageOptionsLoadingSkeleton()
                         else if (selectedPackageOptions.isNotEmpty)
                           FamilyPackageOptionsGrid(
                             options: selectedPackageOptions,
@@ -250,10 +256,7 @@ class _FamilyPackageDaysSetupScreenState
                         const SizedBox(height: Spacing.md),
 
                         if (state.isDurationsLoading && state.durations.isEmpty)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: Spacing.lg),
-                            child: Center(child: LoadingWidget()),
-                          )
+                          const SubscriptionDurationSelectorSkeleton()
                         else if (state.durations.isNotEmpty)
                           SubscriptionDurationSelector(
                             selectedIndex: state.selectedDurationIndex,
@@ -398,7 +401,7 @@ class _FamilyPackageDaysSetupScreenState
       ),
       const SizedBox(height: Spacing.md),
       if (state.isBrowseRestaurantsLoading)
-        const Center(child: LoadingWidget())
+        const FamilyBrowseRestaurantsLoadingSkeleton()
       else if (state.browseRestaurants.isEmpty)
         EmptyStateWidget(
           title: locale.family_packages_empty,
