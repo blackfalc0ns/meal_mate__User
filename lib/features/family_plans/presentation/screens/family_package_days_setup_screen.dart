@@ -9,7 +9,6 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector_skeleton.dart';
@@ -26,8 +25,8 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_card.dart';
+import 'package:meal_meat_user/core/widget/restaurant_plan/subscription_restaurants_grid.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_setup_header_badge.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_restaurant_grid_card.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({super.key, this.programId});
@@ -158,22 +157,7 @@ class _FamilyPackageDaysSetupScreenState
                   );
 
               final displayedTiers = state.tiers
-                  .map(
-                    (t) => RestaurantPackageTierUiModel(
-                      id: t.tier,
-                      title: t.name(locale.localeName),
-                      iconName: t.tier.toLowerCase().contains('max')
-                          ? 'diamond'
-                          : t.tier.toLowerCase().contains('plus')
-                          ? 'crown'
-                          : 'heart',
-                      restaurantCount: t.restaurantCount,
-                      restaurantLogoUrls: t.restaurants
-                          .map((r) => r.logoUrl)
-                          .where((url) => url != null && url.isNotEmpty)
-                          .toList(),
-                    ),
-                  )
+                  .map((t) => t.toTierUiModel(locale.localeName))
                   .toList();
 
               return CustomScrollView(
@@ -185,7 +169,9 @@ class _FamilyPackageDaysSetupScreenState
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate.fixed([
-                        const FamilySetupHeaderBadge(),
+                        FamilySetupHeaderBadge(
+                          title: state.currentFlow?.name,
+                        ),
                         const SizedBox(
                           height: Spacing.familyProgramProgressTopGap,
                         ),
@@ -203,7 +189,7 @@ class _FamilyPackageDaysSetupScreenState
                             members: displayedMembers,
                             onSelectMember: (index) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                SelectFamilyMemberEvent(index),
+                                SelectFamilyMemberPackageDaysEvent(index),
                               );
                             },
                           ),
@@ -377,7 +363,22 @@ class _FamilyPackageDaysSetupScreenState
   ) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final bundle = state.selectedBundle;
+    final member = state.selectedMember;
+    final programId = widget.programId ??
+        state.selectedProgram?.programId ??
+        member?.programId ??
+        (state.programs.isNotEmpty ? state.programs.first.programId : '');
+
+    var bundle = state.selectedBundle;
+    if (bundle == null && member?.bundleId != null) {
+      for (final b in state.bundles) {
+        if (b.bundleId == member!.bundleId) {
+          bundle = b;
+          break;
+        }
+      }
+    }
+    bundle ??= state.bundles.isNotEmpty ? state.bundles.first : null;
 
     return [
       Row(
@@ -409,31 +410,17 @@ class _FamilyPackageDaysSetupScreenState
           icon: Icons.storefront_rounded,
         )
       else
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: Spacing.sm,
-            mainAxisSpacing: Spacing.sm,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: state.browseRestaurants.length,
-          itemBuilder: (context, index) {
-            final restaurant = state.browseRestaurants[index];
-            final programId =
-                widget.programId ??
-                state.selectedProgram?.programId ??
-                bundle?.programId ??
-                '';
-            final planEntity = restaurant.toRestaurantPlan(
+        SubscriptionRestaurantsGrid(
+          crossAxisCount: 3,
+          childAspectRatio: 0.78,
+          restaurants: state.browseRestaurants.map((restaurant) {
+            return restaurant.toRestaurantPlan(
               programId: programId,
               bundleId: bundle?.bundleId ?? '',
               localeName: locale.localeName,
               brandColor: color.primary,
             );
-            return MonthlyRestaurantGridCard(restaurant: planEntity);
-          },
+          }).toList(),
         ),
       const SizedBox(height: Spacing.lg),
     ];

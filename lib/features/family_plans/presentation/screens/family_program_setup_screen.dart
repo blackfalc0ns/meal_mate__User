@@ -167,7 +167,9 @@ class FamilyProgramSetupScreen extends StatelessWidget {
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
-              const FamilySetupHeaderBadge(),
+              FamilySetupHeaderBadge(
+                title: state.currentFlow?.name,
+              ),
               const SizedBox(height: Spacing.familyProgramProgressTopGap),
               const FamilyProgramStepper(
                 currentStep: 1,

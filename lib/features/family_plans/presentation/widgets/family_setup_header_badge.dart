@@ -5,12 +5,23 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilySetupHeaderBadge extends StatelessWidget {
-  const FamilySetupHeaderBadge({super.key});
+  const FamilySetupHeaderBadge({
+    super.key,
+    this.title,
+    this.icon,
+  });
+
+  final String? title;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final displayTitle = (title != null && title!.trim().isNotEmpty)
+        ? title!.trim()
+        : locale.family_name;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -35,10 +46,14 @@ class FamilySetupHeaderBadge extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.group_rounded, size: Spacing.md, color: color.primary),
+              Icon(
+                icon ?? Icons.group_rounded,
+                size: Spacing.md,
+                color: color.primary,
+              ),
               const SizedBox(width: Spacing.xs),
               Text(
-                locale.family_header_badge,
+                displayTitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: getBoldStyle(

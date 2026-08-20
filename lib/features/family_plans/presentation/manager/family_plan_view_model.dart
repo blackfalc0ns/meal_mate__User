@@ -17,8 +17,9 @@ import 'package:meal_meat_user/features/family_plans/domain/usecase/get_family_s
 import 'package:meal_meat_user/features/family_plans/domain/usecase/get_family_summary_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_group_usecase.dart';
-import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_member_usecase.dart';
+import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/family_plans/domain/entities/family_member_entity.dart';
+import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 
@@ -127,6 +128,8 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         emit(state.copyWith(isRestaurantsView: false));
       case SelectFamilyMemberEvent():
         _selectMember(event.memberIndex);
+      case SelectFamilyMemberPackageDaysEvent():
+        _selectMemberInPackageDays(event.memberIndex);
       case SaveFamilyMemberPlanEvent():
         _saveMemberPlan(
           memberId: event.memberId,
@@ -186,7 +189,6 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
               : flow.members.first;
           if (member.programId != null && member.programId!.isNotEmpty) {
             _selectProgramById(member.programId!);
-            _loadMemberBundlesAndSelections(member);
           }
         }
       case ApiErrorResult():
@@ -362,6 +364,32 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectMember(int index) {
+    if (index < 0 || index >= state.members.length) return;
+    final member = state.members[index];
+
+    int? progIdx;
+    if (member.programId != null &&
+        member.programId!.isNotEmpty &&
+        state.programs.isNotEmpty) {
+      final found = state.programs.indexWhere(
+        (p) => p.programId == member.programId,
+      );
+      if (found != -1) {
+        progIdx = found;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        selectedMemberIndex: index,
+        selectedProgramIndex: progIdx ?? state.selectedProgramIndex,
+        includeFriday: member.includeFriday,
+        customDurationDays: member.durationDays,
+      ),
+    );
+  }
+
+  void _selectMemberInPackageDays(int index) {
     if (index < 0 || index >= state.members.length) return;
     final member = state.members[index];
 
@@ -700,15 +728,28 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _browseTierRestaurants(int tierIndex) async {
-    final selectedTier = state.tiers.length > tierIndex
+    final selectedTier = (tierIndex >= 0 && tierIndex < state.tiers.length)
         ? state.tiers[tierIndex]
         : null;
-    final selectedProgram = state.selectedProgram;
-    final selectedBundle = state.selectedBundle;
+    if (selectedTier == null) return;
 
-    if (selectedTier == null ||
-        selectedProgram == null ||
-        selectedBundle == null) {
+    final member = state.selectedMember;
+    final programId = state.selectedProgram?.programId ??
+        member?.programId ??
+        (state.programs.isNotEmpty ? state.programs.first.programId : '');
+
+    SubscriptionBundleEntity? bundle = state.selectedBundle;
+    if (bundle == null && member?.bundleId != null) {
+      for (final b in state.bundles) {
+        if (b.bundleId == member!.bundleId) {
+          bundle = b;
+          break;
+        }
+      }
+    }
+    bundle ??= state.bundles.isNotEmpty ? state.bundles.first : null;
+
+    if (programId.isEmpty || bundle == null) {
       return;
     }
 
@@ -724,11 +765,12 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
 
     final restaurantIds = selectedTier.restaurants
         .map((r) => r.restaurantId)
+        .where((id) => id.isNotEmpty)
         .toList();
 
     final result = await _getSubscriptionTierRestaurantsUseCase(
-      programId: selectedProgram.programId,
-      bundleId: selectedBundle.bundleId,
+      programId: programId,
+      bundleId: bundle.bundleId,
       tier: selectedTier.tier,
       restaurantIds: restaurantIds,
     );

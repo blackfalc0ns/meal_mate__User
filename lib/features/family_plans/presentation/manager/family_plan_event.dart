@@ -148,6 +148,12 @@ class SelectFamilyMemberEvent extends FamilyPlanEvent {
   final int memberIndex;
 }
 
+class SelectFamilyMemberPackageDaysEvent extends FamilyPlanEvent {
+  const SelectFamilyMemberPackageDaysEvent(this.memberIndex);
+
+  final int memberIndex;
+}
+
 class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
   const SaveFamilyMemberPlanEvent({
     required this.memberId,
