@@ -1201,5 +1201,59 @@
   "biometric_prompt_enable_dialog_body": "هل ترغب في تفعيل تسجيل الدخول بالبصمة / Face ID للدخول السريع مستقبلاً؟",
   "biometric_enable_button": "تفعيل الآن",
   "biometric_skip_button": "لاحقاً",
-  "biometric_quick_login": "تسجيل الدخول بالبصمة"
+  "biometric_quick_login": "تسجيل الدخول بالبصمة",
+  "family_packages_selection_title": "اختر باقة العائلة",
+  "family_packages_selection_subtitle": "اختر باقة الحجم المناسبة لعدد أفراد عائلتك للاستفادة من الخصم",
+  "family_package_members_range": "من {min} إلى {max} أفراد",
+  "@family_package_members_range": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_package_discount_badge": "خصم {discount}",
+  "@family_package_discount_badge": {
+    "placeholders": {
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "family_package_select_button": "اختيار الباقة",
+  "family_package_continue_button": "متابعة إعداد العائلة",
+  "family_members_count_indicator": "{current} / {max} أفراد",
+  "@family_members_count_indicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_members_count_label": "أفراد العائلة",
+  "family_members_max_reached": "وصلت الحد الأقصى لأفراد هذه الباقة",
+  "family_members_min_warning": "يرجى إضافة {min} أفراد على الأقل لتفعيل خصم هذه الباقة والدفع",
+  "@family_members_min_warning": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "family_step_package_selection": "باقة الحجم",
+  "family_gender_male": "ذكر",
+  "family_gender_female": "أنثى",
+  "family_address_select": "عنوان التوصيل",
+  "family_address_select_hint": "اختر عنوان التوصيل",
+  "family_tier_basic": "بيزك",
+  "family_tier_platinum": "بلاتينيوم",
+  "family_tier_elite": "إيليت",
+  "family_change_package": "تغيير الباقة",
+  "family_packages_empty": "لا توجد باقات عائلية متاحة حالياً"
 }

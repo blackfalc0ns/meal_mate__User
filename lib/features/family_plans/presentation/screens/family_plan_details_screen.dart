@@ -56,7 +56,7 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
                               FamilyMembersStrip(
                                 members: currentPlan.members,
                                 onAddTap: () =>
-                                    FamilyAddMemberDialog.show(context),
+                                    FamilyAddMemberDialog.show(context: context),
                               ),
                               const SizedBox(height: Spacing.md),
                               FamilyPlanSummaryCard(

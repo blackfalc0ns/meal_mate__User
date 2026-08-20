@@ -1114,4 +1114,5 @@ class Spacing {
   static const double walletFilterRadius = 15.0;
   static const double walletSearchHeight = 54.0;
   static const double walletTransactionGroupRadius = 19.0;
+  static const double familyPackageCardImageSize = 48.0;
 }

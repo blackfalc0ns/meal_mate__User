@@ -1201,5 +1201,59 @@
   "biometric_prompt_enable_dialog_body": "Would you like to enable Face ID / Fingerprint for quick login next time?",
   "biometric_enable_button": "Enable Now",
   "biometric_skip_button": "Later",
-  "biometric_quick_login": "Biometric Sign-In"
+  "biometric_quick_login": "Biometric Sign-In",
+  "family_packages_selection_title": "Choose Family Package",
+  "family_packages_selection_subtitle": "Select the suitable size package for your family members to get the discount",
+  "family_package_members_range": "From {min} to {max} members",
+  "@family_package_members_range": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_package_discount_badge": "{discount} discount",
+  "@family_package_discount_badge": {
+    "placeholders": {
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "family_package_select_button": "Select Package",
+  "family_package_continue_button": "Continue Family Setup",
+  "family_members_count_indicator": "{current} / {max} members",
+  "@family_members_count_indicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_members_count_label": "Family Members",
+  "family_members_max_reached": "Maximum members limit reached for this package",
+  "family_members_min_warning": "Please add at least {min} members to activate this package discount and proceed to checkout",
+  "@family_members_min_warning": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "family_step_package_selection": "Size Package",
+  "family_gender_male": "Male",
+  "family_gender_female": "Female",
+  "family_address_select": "Delivery Address",
+  "family_address_select_hint": "Select delivery address",
+  "family_tier_basic": "Basic",
+  "family_tier_platinum": "Platinum",
+  "family_tier_elite": "Elite",
+  "family_change_package": "Change Package",
+  "family_packages_empty": "No family packages available at the moment"
 }

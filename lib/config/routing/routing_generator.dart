@@ -26,6 +26,8 @@ import 'package:meal_meat_user/features/profile/presentation/screens/health_goal
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_size_package_entity.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_selection_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/screens/family_subscription_setup_screen.dart';
@@ -107,10 +109,20 @@ class RouteGenerator {
           settings: settings,
           page: const RestaurantTierUpgradeScreen(),
         );
-      case AppRoutes.familySubscriptionSetup:
+      case AppRoutes.familyPackageSelection:
         return _buildRoute(
           settings: settings,
-          page: const FamilySubscriptionSetupScreen(),
+          page: const FamilyPackageSelectionScreen(),
+        );
+      case AppRoutes.familySubscriptionSetup:
+        final selectedPackage = settings.arguments is FamilySizePackageEntity
+            ? settings.arguments! as FamilySizePackageEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: FamilySubscriptionSetupScreen(
+            selectedPackage: selectedPackage,
+          ),
         );
       case AppRoutes.familySubscriptionMembers:
         return _buildRoute(

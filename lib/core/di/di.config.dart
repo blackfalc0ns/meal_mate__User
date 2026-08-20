@@ -70,6 +70,40 @@ import '../../features/change_password/domain/repo/change_password_repository.da
     as _i229;
 import '../../features/change_password/domain/usecase/change_customer_password_usecase.dart'
     as _i845;
+import '../../features/family_plans/data/data_source/family_subscription_remote_data_source.dart'
+    as _i63;
+import '../../features/family_plans/data/data_source/family_subscription_remote_data_source_impl.dart'
+    as _i896;
+import '../../features/family_plans/data/repo/family_subscription_repository_impl.dart'
+    as _i385;
+import '../../features/family_plans/domain/repo/family_subscription_repository.dart'
+    as _i58;
+import '../../features/family_plans/domain/usecase/add_family_member_usecase.dart'
+    as _i191;
+import '../../features/family_plans/domain/usecase/checkout_family_subscription_usecase.dart'
+    as _i98;
+import '../../features/family_plans/domain/usecase/delete_family_member_usecase.dart'
+    as _i62;
+import '../../features/family_plans/domain/usecase/get_family_flow_current_usecase.dart'
+    as _i285;
+import '../../features/family_plans/domain/usecase/get_family_payment_methods_usecase.dart'
+    as _i833;
+import '../../features/family_plans/domain/usecase/get_family_program_bundles_usecase.dart'
+    as _i1015;
+import '../../features/family_plans/domain/usecase/get_family_programs_usecase.dart'
+    as _i52;
+import '../../features/family_plans/domain/usecase/get_family_relationships_usecase.dart'
+    as _i956;
+import '../../features/family_plans/domain/usecase/get_family_size_packages_usecase.dart'
+    as _i689;
+import '../../features/family_plans/domain/usecase/get_family_summary_usecase.dart'
+    as _i515;
+import '../../features/family_plans/domain/usecase/save_family_member_plan_usecase.dart'
+    as _i353;
+import '../../features/family_plans/domain/usecase/update_family_group_usecase.dart'
+    as _i229;
+import '../../features/family_plans/domain/usecase/update_family_member_usecase.dart'
+    as _i728;
 import '../../features/family_plans/presentation/manager/family_plan_view_model.dart'
     as _i967;
 import '../../features/food_preferences/data/data_source/food_preferences_remote_data_source.dart'
@@ -415,6 +449,10 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i253.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i63.FamilySubscriptionRemoteDataSource>(
+      () =>
+          _i896.FamilySubscriptionRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i726.GetSubscriptionTierRestaurantsUseCase>(
       () => _i726.GetSubscriptionTierRestaurantsUseCase(
         gh<_i317.SubscriptionTierRepository>(),
@@ -555,13 +593,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i978.SubscriptionPackagesRemoteDataSource>(),
       ),
     );
-    gh.factory<_i967.FamilyPlanViewModel>(
-      () => _i967.FamilyPlanViewModel(
-        gh<_i178.GetSubscriptionProgramsUseCase>(),
-        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-        gh<_i809.GetSubscriptionDurationsUseCase>(),
-        gh<_i766.GetSubscriptionTiersUseCase>(),
-        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+    gh.factory<_i58.FamilySubscriptionRepository>(
+      () => _i385.FamilySubscriptionRepositoryImpl(
+        gh<_i63.FamilySubscriptionRemoteDataSource>(),
       ),
     );
     gh.factory<_i866.SubscriptionTypesRepository>(
@@ -572,6 +606,70 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i556.AddressesRepository>(
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
+    );
+    gh.factory<_i191.AddFamilyMemberUseCase>(
+      () =>
+          _i191.AddFamilyMemberUseCase(gh<_i58.FamilySubscriptionRepository>()),
+    );
+    gh.factory<_i98.CheckoutFamilySubscriptionUseCase>(
+      () => _i98.CheckoutFamilySubscriptionUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i62.DeleteFamilyMemberUseCase>(
+      () => _i62.DeleteFamilyMemberUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i285.GetFamilyFlowCurrentUseCase>(
+      () => _i285.GetFamilyFlowCurrentUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i833.GetFamilyPaymentMethodsUseCase>(
+      () => _i833.GetFamilyPaymentMethodsUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i1015.GetFamilyProgramBundlesUseCase>(
+      () => _i1015.GetFamilyProgramBundlesUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i52.GetFamilyProgramsUseCase>(
+      () => _i52.GetFamilyProgramsUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i956.GetFamilyRelationshipsUseCase>(
+      () => _i956.GetFamilyRelationshipsUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i689.GetFamilySizePackagesUseCase>(
+      () => _i689.GetFamilySizePackagesUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i515.GetFamilySummaryUseCase>(
+      () => _i515.GetFamilySummaryUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i353.SaveFamilyMemberPlanUseCase>(
+      () => _i353.SaveFamilyMemberPlanUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i229.UpdateFamilyGroupUseCase>(
+      () => _i229.UpdateFamilyGroupUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
+    );
+    gh.factory<_i728.UpdateFamilyMemberUseCase>(
+      () => _i728.UpdateFamilyMemberUseCase(
+        gh<_i58.FamilySubscriptionRepository>(),
+      ),
     );
     gh.factory<_i247.GetSubscriptionTypesUseCase>(
       () => _i247.GetSubscriptionTypesUseCase(
@@ -644,6 +742,27 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
+    );
+    gh.factory<_i967.FamilyPlanViewModel>(
+      () => _i967.FamilyPlanViewModel(
+        gh<_i689.GetFamilySizePackagesUseCase>(),
+        gh<_i285.GetFamilyFlowCurrentUseCase>(),
+        gh<_i229.UpdateFamilyGroupUseCase>(),
+        gh<_i956.GetFamilyRelationshipsUseCase>(),
+        gh<_i191.AddFamilyMemberUseCase>(),
+        gh<_i728.UpdateFamilyMemberUseCase>(),
+        gh<_i62.DeleteFamilyMemberUseCase>(),
+        gh<_i52.GetFamilyProgramsUseCase>(),
+        gh<_i1015.GetFamilyProgramBundlesUseCase>(),
+        gh<_i809.GetSubscriptionDurationsUseCase>(),
+        gh<_i766.GetSubscriptionTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i353.SaveFamilyMemberPlanUseCase>(),
+        gh<_i515.GetFamilySummaryUseCase>(),
+        gh<_i833.GetFamilyPaymentMethodsUseCase>(),
+        gh<_i98.CheckoutFamilySubscriptionUseCase>(),
+        gh<_i945.GetCustomerAddressesUseCase>(),
+      ),
     );
     gh.factory<_i502.PaymentViewModel>(
       () => _i502.PaymentViewModel(

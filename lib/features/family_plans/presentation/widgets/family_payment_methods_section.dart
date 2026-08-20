@@ -7,9 +7,14 @@ import 'package:meal_meat_user/features/family_plans/presentation/models/family_
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_method_card.dart';
 
 class FamilyPaymentMethodsSection extends StatelessWidget {
-  const FamilyPaymentMethodsSection({super.key, required this.methods});
+  const FamilyPaymentMethodsSection({
+    super.key,
+    required this.methods,
+    this.onSelectMethod,
+  });
 
   final List<FamilyPaymentMethodUiModel> methods;
+  final ValueChanged<int>? onSelectMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +35,14 @@ class FamilyPaymentMethodsSection extends StatelessWidget {
         const SizedBox(height: Spacing.sm),
         Row(
           children: [
-            for (final method in methods) ...[
-              Expanded(child: FamilyPaymentMethodCard(method: method)),
-              if (method != methods.last) const SizedBox(width: Spacing.md),
+            for (int i = 0; i < methods.length; i++) ...[
+              Expanded(
+                child: FamilyPaymentMethodCard(
+                  method: methods[i],
+                  onTap: () => onSelectMethod?.call(i),
+                ),
+              ),
+              if (i < methods.length - 1) const SizedBox(width: Spacing.md),
             ],
           ],
         ),

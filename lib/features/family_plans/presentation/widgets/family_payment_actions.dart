@@ -5,7 +5,16 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class FamilyPaymentActions extends StatelessWidget {
-  const FamilyPaymentActions({super.key});
+  const FamilyPaymentActions({
+    super.key,
+    this.canCheckout = true,
+    this.isLoading = false,
+    this.onConfirmPayment,
+  });
+
+  final bool canCheckout;
+  final bool isLoading;
+  final VoidCallback? onConfirmPayment;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class FamilyPaymentActions extends StatelessWidget {
           width: Spacing.familyProgramNextButtonWidth,
           child: AppButton.filled(
             text: locale.family_confirm_payment,
-            onPressed: () {},
+            onPressed: canCheckout && !isLoading ? onConfirmPayment : null,
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,

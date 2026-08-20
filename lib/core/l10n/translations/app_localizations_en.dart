@@ -3560,4 +3560,75 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get biometric_quick_login => 'Biometric Sign-In';
+
+  @override
+  String get family_packages_selection_title => 'Choose Family Package';
+
+  @override
+  String get family_packages_selection_subtitle =>
+      'Select the suitable size package for your family members to get the discount';
+
+  @override
+  String family_package_members_range(int min, int max) {
+    return 'From $min to $max members';
+  }
+
+  @override
+  String family_package_discount_badge(String discount) {
+    return '$discount discount';
+  }
+
+  @override
+  String get family_package_select_button => 'Select Package';
+
+  @override
+  String get family_package_continue_button => 'Continue Family Setup';
+
+  @override
+  String family_members_count_indicator(int current, int max) {
+    return '$current / $max members';
+  }
+
+  @override
+  String get family_members_count_label => 'Family Members';
+
+  @override
+  String get family_members_max_reached =>
+      'Maximum members limit reached for this package';
+
+  @override
+  String family_members_min_warning(int min) {
+    return 'Please add at least $min members to activate this package discount and proceed to checkout';
+  }
+
+  @override
+  String get family_step_package_selection => 'Size Package';
+
+  @override
+  String get family_gender_male => 'Male';
+
+  @override
+  String get family_gender_female => 'Female';
+
+  @override
+  String get family_address_select => 'Delivery Address';
+
+  @override
+  String get family_address_select_hint => 'Select delivery address';
+
+  @override
+  String get family_tier_basic => 'Basic';
+
+  @override
+  String get family_tier_platinum => 'Platinum';
+
+  @override
+  String get family_tier_elite => 'Elite';
+
+  @override
+  String get family_change_package => 'Change Package';
+
+  @override
+  String get family_packages_empty =>
+      'No family packages available at the moment';
 }

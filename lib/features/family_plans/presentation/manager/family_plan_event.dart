@@ -1,5 +1,77 @@
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_size_package_entity.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
+
 sealed class FamilyPlanEvent {
   const FamilyPlanEvent();
+}
+
+class GetFamilySizePackagesEvent extends FamilyPlanEvent {
+  const GetFamilySizePackagesEvent();
+}
+
+class SelectFamilySizePackageEvent extends FamilyPlanEvent {
+  const SelectFamilySizePackageEvent(this.package);
+
+  final FamilySizePackageEntity package;
+}
+
+class GetFamilySubscriptionCurrentEvent extends FamilyPlanEvent {
+  const GetFamilySubscriptionCurrentEvent();
+}
+
+class UpdateFamilyGroupEvent extends FamilyPlanEvent {
+  const UpdateFamilyGroupEvent({required this.name, this.familyPackageId});
+
+  final String name;
+  final String? familyPackageId;
+}
+
+class GetFamilyRelationshipsEvent extends FamilyPlanEvent {
+  const GetFamilyRelationshipsEvent();
+}
+
+class GetFamilyAddressesEvent extends FamilyPlanEvent {
+  const GetFamilyAddressesEvent();
+}
+
+class AddFamilyMemberEvent extends FamilyPlanEvent {
+  const AddFamilyMemberEvent({
+    required this.displayName,
+    required this.relationshipCode,
+    required this.gender,
+    required this.ageYears,
+    this.deliveryAddressId,
+  });
+
+  final String displayName;
+  final String relationshipCode;
+  final int gender;
+  final int ageYears;
+  final String? deliveryAddressId;
+}
+
+class UpdateFamilyMemberEvent extends FamilyPlanEvent {
+  const UpdateFamilyMemberEvent({
+    required this.memberId,
+    required this.displayName,
+    required this.relationshipCode,
+    required this.gender,
+    required this.ageYears,
+    this.deliveryAddressId,
+  });
+
+  final String memberId;
+  final String displayName;
+  final String relationshipCode;
+  final int gender;
+  final int ageYears;
+  final String? deliveryAddressId;
+}
+
+class DeleteFamilyMemberEvent extends FamilyPlanEvent {
+  const DeleteFamilyMemberEvent(this.memberId);
+
+  final String memberId;
 }
 
 class GetFamilyProgramsEvent extends FamilyPlanEvent {
@@ -74,4 +146,50 @@ class SelectFamilyMemberEvent extends FamilyPlanEvent {
   const SelectFamilyMemberEvent(this.memberIndex);
 
   final int memberIndex;
+}
+
+class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
+  const SaveFamilyMemberPlanEvent({
+    required this.memberId,
+    required this.programId,
+    required this.bundleId,
+    required this.tier,
+    required this.durationDays,
+    required this.includeFriday,
+  });
+
+  final String memberId;
+  final String programId;
+  final String bundleId;
+  final int tier;
+  final int durationDays;
+  final bool includeFriday;
+}
+
+class GetFamilySummaryEvent extends FamilyPlanEvent {
+  const GetFamilySummaryEvent();
+}
+
+class GetFamilyPaymentMethodsEvent extends FamilyPlanEvent {
+  const GetFamilyPaymentMethodsEvent(this.amount);
+
+  final double amount;
+}
+
+class SelectFamilyPaymentMethodEvent extends FamilyPlanEvent {
+  const SelectFamilyPaymentMethodEvent(this.paymentMethod);
+
+  final PaymentMethodEntity paymentMethod;
+}
+
+class CheckoutFamilySubscriptionEvent extends FamilyPlanEvent {
+  const CheckoutFamilySubscriptionEvent({
+    required this.callbackUrl,
+    required this.errorUrl,
+    required this.paymentMethodId,
+  });
+
+  final String callbackUrl;
+  final String errorUrl;
+  final int paymentMethodId;
 }

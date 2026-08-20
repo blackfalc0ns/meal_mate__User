@@ -3515,4 +3515,73 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get biometric_quick_login => 'تسجيل الدخول بالبصمة';
+
+  @override
+  String get family_packages_selection_title => 'اختر باقة العائلة';
+
+  @override
+  String get family_packages_selection_subtitle =>
+      'اختر باقة الحجم المناسبة لعدد أفراد عائلتك للاستفادة من الخصم';
+
+  @override
+  String family_package_members_range(int min, int max) {
+    return 'من $min إلى $max أفراد';
+  }
+
+  @override
+  String family_package_discount_badge(String discount) {
+    return 'خصم $discount';
+  }
+
+  @override
+  String get family_package_select_button => 'اختيار الباقة';
+
+  @override
+  String get family_package_continue_button => 'متابعة إعداد العائلة';
+
+  @override
+  String family_members_count_indicator(int current, int max) {
+    return '$current / $max أفراد';
+  }
+
+  @override
+  String get family_members_count_label => 'أفراد العائلة';
+
+  @override
+  String get family_members_max_reached => 'وصلت الحد الأقصى لأفراد هذه الباقة';
+
+  @override
+  String family_members_min_warning(int min) {
+    return 'يرجى إضافة $min أفراد على الأقل لتفعيل خصم هذه الباقة والدفع';
+  }
+
+  @override
+  String get family_step_package_selection => 'باقة الحجم';
+
+  @override
+  String get family_gender_male => 'ذكر';
+
+  @override
+  String get family_gender_female => 'أنثى';
+
+  @override
+  String get family_address_select => 'عنوان التوصيل';
+
+  @override
+  String get family_address_select_hint => 'اختر عنوان التوصيل';
+
+  @override
+  String get family_tier_basic => 'بيزك';
+
+  @override
+  String get family_tier_platinum => 'بلاتينيوم';
+
+  @override
+  String get family_tier_elite => 'إيليت';
+
+  @override
+  String get family_change_package => 'تغيير الباقة';
+
+  @override
+  String get family_packages_empty => 'لا توجد باقات عائلية متاحة حالياً';
 }

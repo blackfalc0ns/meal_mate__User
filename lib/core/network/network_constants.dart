@@ -68,6 +68,14 @@ abstract class EndPoints {
       '/api/v1/customer/payment-methods/default';
   static const String customerSubscriptionFreezePolicy =
       '/api/v1/customer/subscriptions/freeze-policy';
+  static const String familySubscriptionFlowPackages =
+      '/api/v1/customer/family-subscription-flow/packages';
+  static const String familySubscriptionFlowRelationships =
+      '/api/v1/customer/family-subscription-flow/relationships';
+  static const String familySubscriptionFlowPrograms =
+      '/api/v1/customer/family-subscription-flow/programs';
+  static const String familySubscriptionFlowProgramBundles =
+      '/api/v1/customer/family-subscription-flow/programs/{programId}/bundles';
   static const String familySubscriptionFlowMetadata =
       '/api/v1/customer/family-subscription-flow/metadata';
   static const String familySubscriptionFlowCurrent =

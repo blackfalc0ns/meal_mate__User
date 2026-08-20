@@ -6811,6 +6811,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Biometric Sign-In'**
   String get biometric_quick_login;
+
+  /// No description provided for @family_packages_selection_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Family Package'**
+  String get family_packages_selection_title;
+
+  /// No description provided for @family_packages_selection_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the suitable size package for your family members to get the discount'**
+  String get family_packages_selection_subtitle;
+
+  /// No description provided for @family_package_members_range.
+  ///
+  /// In en, this message translates to:
+  /// **'From {min} to {max} members'**
+  String family_package_members_range(int min, int max);
+
+  /// No description provided for @family_package_discount_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'{discount} discount'**
+  String family_package_discount_badge(String discount);
+
+  /// No description provided for @family_package_select_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Package'**
+  String get family_package_select_button;
+
+  /// No description provided for @family_package_continue_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Family Setup'**
+  String get family_package_continue_button;
+
+  /// No description provided for @family_members_count_indicator.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {max} members'**
+  String family_members_count_indicator(int current, int max);
+
+  /// No description provided for @family_members_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Members'**
+  String get family_members_count_label;
+
+  /// No description provided for @family_members_max_reached.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum members limit reached for this package'**
+  String get family_members_max_reached;
+
+  /// No description provided for @family_members_min_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least {min} members to activate this package discount and proceed to checkout'**
+  String family_members_min_warning(int min);
+
+  /// No description provided for @family_step_package_selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Size Package'**
+  String get family_step_package_selection;
+
+  /// No description provided for @family_gender_male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get family_gender_male;
+
+  /// No description provided for @family_gender_female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get family_gender_female;
+
+  /// No description provided for @family_address_select.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Address'**
+  String get family_address_select;
+
+  /// No description provided for @family_address_select_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select delivery address'**
+  String get family_address_select_hint;
+
+  /// No description provided for @family_tier_basic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get family_tier_basic;
+
+  /// No description provided for @family_tier_platinum.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum'**
+  String get family_tier_platinum;
+
+  /// No description provided for @family_tier_elite.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite'**
+  String get family_tier_elite;
+
+  /// No description provided for @family_change_package.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Package'**
+  String get family_change_package;
+
+  /// No description provided for @family_packages_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No family packages available at the moment'**
+  String get family_packages_empty;
 }
 
 class _AppLocalizationsDelegate

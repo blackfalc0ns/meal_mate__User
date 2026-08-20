@@ -1,17 +1,49 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_member_entity.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_relationship_entity.dart';
 
 class FamilyAddMemberDialog extends StatefulWidget {
-  const FamilyAddMemberDialog({super.key});
+  const FamilyAddMemberDialog({
+    super.key,
+    this.member,
+    this.relationships = const [],
+    this.addresses = const [],
+    this.onSubmit,
+  });
 
-  static Future<void> show(BuildContext context) {
+  final FamilyMemberEntity? member;
+  final List<FamilyRelationshipEntity> relationships;
+  final List<CustomerAddressEntity> addresses;
+  final void Function({
+    required String displayName,
+    required String relationshipCode,
+    required int gender,
+    required int ageYears,
+    String? deliveryAddressId,
+  })? onSubmit;
+
+  static Future<void> show({
+    required BuildContext context,
+    FamilyMemberEntity? member,
+    List<FamilyRelationshipEntity> relationships = const [],
+    List<CustomerAddressEntity> addresses = const [],
+    void Function({
+      required String displayName,
+      required String relationshipCode,
+      required int gender,
+      required int ageYears,
+      String? deliveryAddressId,
+    })? onSubmit,
+  }) {
     final color = context.colorScheme;
 
     return showModalBottomSheet<void>(
@@ -20,7 +52,12 @@ class FamilyAddMemberDialog extends StatefulWidget {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: color.surface.withValues(alpha: 0),
-      builder: (_) => const FamilyAddMemberDialog(),
+      builder: (_) => FamilyAddMemberDialog(
+        member: member,
+        relationships: relationships,
+        addresses: addresses,
+        onSubmit: onSubmit,
+      ),
     );
   }
 
@@ -29,14 +66,74 @@ class FamilyAddMemberDialog extends StatefulWidget {
 }
 
 class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
-  int _mealsIndex = 1;
+  late final TextEditingController _nameController;
+  late final TextEditingController _ageController;
+  String? _selectedRelationshipCode;
+  String? _selectedAddressId;
+  int _gender = 1; // 1 Male, 2 Female
+
+  @override
+  void initState() {
+    super.initState();
+    final member = widget.member;
+    _nameController = TextEditingController(text: member?.displayName ?? '');
+    _ageController = TextEditingController(
+      text: member != null && member.ageYears > 0
+          ? member.ageYears.toString()
+          : '',
+    );
+    _gender = member?.gender ?? 1;
+
+    final availableRelationships = widget.relationships
+        .where((r) => r.forDependents)
+        .toList();
+
+    _selectedRelationshipCode = member?.relationshipCode.isNotEmpty == true
+        ? member!.relationshipCode
+        : (availableRelationships.isNotEmpty
+            ? availableRelationships.first.code
+            : 'other');
+
+    _selectedAddressId = member?.deliveryAddressId ??
+        (widget.addresses.isNotEmpty ? widget.addresses.first.addressId : null);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _ageController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit() {
+    final name = _nameController.text.trim();
+    final age = int.tryParse(_ageController.text.trim()) ?? 0;
+    final relCode = _selectedRelationshipCode ?? 'other';
+
+    if (name.isEmpty || age < 1 || age > 120) {
+      return;
+    }
+
+    widget.onSubmit?.call(
+      displayName: name,
+      relationshipCode: relCode,
+      gender: _gender,
+      ageYears: age,
+      deliveryAddressId: _selectedAddressId,
+    );
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
     final color = context.colorScheme;
     final screenHeight = MediaQuery.sizeOf(context).height;
-    final panelHeight = math.min(640.0, screenHeight - 24);
+    final panelHeight = math.min(680.0, screenHeight - 24);
+    final availableRelationships = widget.relationships
+        .where((r) => r.forDependents)
+        .toList();
 
     return Align(
       alignment: Alignment.bottomCenter,
@@ -44,42 +141,39 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
         height: panelHeight,
         decoration: BoxDecoration(
           color: color.surface,
-          borderRadius: BorderRadius.circular(23),
+          borderRadius: BorderRadius.circular(Spacing.bottomSheetRadius),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
           child: Column(
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: Spacing.sm),
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor: color.surfaceContainerHighest,
-                        child: Icon(
-                          Icons.close_rounded,
-                          size: 14,
-                          color: color.onSurface,
-                        ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: CircleAvatar(
+                      radius: 12,
+                      backgroundColor: color.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 14,
+                        color: color.onSurface,
                       ),
                     ),
                   ),
-                  const Spacer(),
                 ],
               ),
               Icon(
                 Icons.person_add_alt_1_rounded,
                 color: color.primary,
-                size: 54,
+                size: 48,
               ),
               const SizedBox(height: Spacing.xss),
               Text(
-                l10n.family_add_member,
+                widget.member == null
+                    ? l10n.family_add_member
+                    : l10n.family_edit_member,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   color: color.onSurface,
@@ -96,71 +190,226 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                   fontSize: FontSize.size10,
                 ),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               Expanded(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: Spacing.sm),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _LabeledField(
-                        icon: Icons.person_outline_rounded,
-                        label: l10n.family_full_name,
+                      // Full name
+                      Text(
+                        l10n.family_full_name,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      AppTextField(
+                        controller: _nameController,
                         hint: l10n.family_full_name_hint,
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      Row(
-                        textDirection: TextDirection.rtl,
-                        children: [
-                          Expanded(
-                            child: _LabeledField(
-                              icon: Icons.groups_2_outlined,
-                              label: l10n.family_relation,
-                              hint: l10n.family_relation_hint,
-                              compact: true,
-                              trailing: Icons.keyboard_arrow_down_rounded,
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.lg),
-                          Expanded(
-                            child: _LabeledField(
-                              icon: Icons.calendar_month_outlined,
-                              label: l10n.family_age,
-                              hint: l10n.family_age_hint,
-                              compact: true,
-                              suffix: l10n.family_year,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      _ChoiceSection(
-                        label: l10n.family_daily_meals_count,
-                        icon: Icons.restaurant_rounded,
-                        choices: [
-                          l10n.family_meals_3,
-                          l10n.family_meals_4,
-                          l10n.family_meals_5,
-                        ],
-                        selectedIndex: _mealsIndex,
-                        onChanged: (index) =>
-                            setState(() => _mealsIndex = index),
+                        prefixIcon: Icon(
+                          Icons.person_outline_rounded,
+                          color: color.onSurfaceVariant,
+                          size: Spacing.iconSm,
+                        ),
                       ),
                       const SizedBox(height: Spacing.md),
-                      _InfoHint(),
+
+                      // Relationship and Age
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.family_relation,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size11,
+                                    color: color.onSurface,
+                                  ),
+                                ),
+                                const SizedBox(height: Spacing.xs),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Spacing.sm,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: color.surfaceContainerLow,
+                                    borderRadius: BorderRadius.circular(
+                                      Spacing.radiusMd,
+                                    ),
+                                    border: Border.all(
+                                      color: color.outlineVariant,
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      value: _selectedRelationshipCode,
+                                      dropdownColor: color.surface,
+                                      items: availableRelationships.map((r) {
+                                        return DropdownMenuItem<String>(
+                                          value: r.code,
+                                          child: Text(
+                                            r.name(l10n.localeName),
+                                            style: getRegularStyle(
+                                              fontFamily:
+                                                  FontConstant.alexandria,
+                                              fontSize: FontSize.size11,
+                                              color: color.onSurface,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (val) {
+                                        if (val != null) {
+                                          setState(
+                                            () => _selectedRelationshipCode =
+                                                val,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.sm),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.family_age,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size11,
+                                    color: color.onSurface,
+                                  ),
+                                ),
+                                const SizedBox(height: Spacing.xs),
+                                AppTextField(
+                                  controller: _ageController,
+                                  hint: l10n.family_age_hint,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  prefixIcon: Icon(
+                                    Icons.calendar_month_outlined,
+                                    color: color.onSurfaceVariant,
+                                    size: Spacing.iconSm,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Spacing.md),
+
+                      // Gender
+                      Text(
+                        l10n.family_relation,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _GenderOption(
+                              label: l10n.family_gender_male,
+                              isSelected: _gender == 1,
+                              onTap: () => setState(() => _gender = 1),
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.sm),
+                          Expanded(
+                            child: _GenderOption(
+                              label: l10n.family_gender_female,
+                              isSelected: _gender == 2,
+                              onTap: () => setState(() => _gender = 2),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Spacing.md),
+
+                      // Delivery address
+                      if (widget.addresses.isNotEmpty) ...[
+                        Text(
+                          l10n.family_address_select,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.xs),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.sm,
+                          ),
+                          decoration: BoxDecoration(
+                            color: color.surfaceContainerLow,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusMd,
+                            ),
+                            border: Border.all(color: color.outlineVariant),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: _selectedAddressId,
+                              dropdownColor: color.surface,
+                              items: widget.addresses.map((a) {
+                                final title = a.label.isNotEmpty
+                                    ? a.label
+                                    : a.addressLine;
+                                return DropdownMenuItem<String>(
+                                  value: a.addressId,
+                                  child: Text(
+                                    title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: getRegularStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size11,
+                                      color: color.onSurface,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                setState(() => _selectedAddressId = val);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: Spacing.xs),
-              AppButton(
-                text: l10n.family_add_member_button,
-                onPressed: () => Navigator.pop(context),
-                height: Spacing.compactButtonHeight,
-                borderRadius: Spacing.buttonSmallRadius,
-                color: color.primary,
-                fontSize: FontSize.size17,
-                fontWeight: FontWeight.w600,
+              const SizedBox(height: Spacing.sm),
+              AppButton.filled(
+                text: widget.member == null
+                    ? l10n.family_add_member_button
+                    : l10n.profile_personal_info_save,
+                onPressed: _handleSubmit,
+                borderRadius: Spacing.radiusPill,
+                textColor: color.onPrimary,
+                fontSize: FontSize.size13,
               ),
               const SizedBox(height: Spacing.xs),
               TextButton(
@@ -170,10 +419,11 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                   style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
                     color: color.onSurface,
-                    fontSize: FontSize.size14,
+                    fontSize: FontSize.size12,
                   ),
                 ),
               ),
+              const SizedBox(height: Spacing.xs),
             ],
           ),
         ),
@@ -182,222 +432,44 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   }
 }
 
-class _LabeledField extends StatelessWidget {
-  const _LabeledField({
-    required this.icon,
+class _GenderOption extends StatelessWidget {
+  const _GenderOption({
     required this.label,
-    required this.hint,
-    this.compact = false,
-    this.trailing,
-    this.suffix,
-  });
-
-  final IconData icon;
-  final String label;
-  final String hint;
-  final bool compact;
-  final IconData? trailing;
-  final String? suffix;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = context.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Row(
-          textDirection: TextDirection.rtl,
-          children: [
-            Icon(icon, size: 12, color: color.onSurface),
-            const SizedBox(width: Spacing.xs),
-            Text(
-              label,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                color: color.onSurface,
-                fontSize: FontSize.size10,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: Spacing.xss),
-        SizedBox(
-          height: 32,
-          child: AppTextField(
-            textAlign: TextAlign.right,
-            hint: hint,
-            borderRadius: 10,
-            borderColor: color.outlineVariant,
-
-            contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
-            hintStyle: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              color: color.onSurfaceVariant,
-              fontSize: FontSize.size10,
-            ),
-            textStyle: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              color: color.onSurface,
-              fontSize: FontSize.size10,
-            ),
-            suffixIcon: trailing == null ? null : Icon(trailing, size: 18),
-            prefixIcon: suffix == null
-                ? null
-                : Container(
-                    width: 37,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(Spacing.border),
-                    decoration: BoxDecoration(
-                      color: color.outlineVariant,
-                      borderRadius: const BorderRadiusDirectional.horizontal(
-                        start: Radius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      suffix!,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        color: color.onSurface,
-                        fontSize: FontSize.size10,
-                      ),
-                    ),
-                  ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ChoiceSection extends StatelessWidget {
-  const _ChoiceSection({
-    required this.label,
-    required this.icon,
-    required this.choices,
-    required this.selectedIndex,
-    required this.onChanged,
+    required this.isSelected,
+    required this.onTap,
   });
 
   final String label;
-  final IconData icon;
-  final List<String> choices;
-  final int selectedIndex;
-  final ValueChanged<int> onChanged;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Row(
-          textDirection: TextDirection.rtl,
-          children: [
-            Icon(icon, size: 12, color: color.onSurface),
-            const SizedBox(width: Spacing.xs),
-            Text(
-              label,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                color: color.onSurface,
-                fontSize: FontSize.size10,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: Spacing.xss),
-        Row(
-          textDirection: TextDirection.rtl,
-          children: List.generate(choices.length, (index) {
-            final selected = index == selectedIndex;
-            return Expanded(
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: index == 0 ? 0 : Spacing.sm,
-                ),
-                child: OutlinedButton(
-                  onPressed: () => onChanged(index),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(0, 32),
-                    side: BorderSide(
-                      color: selected ? color.primary : color.outlineVariant,
-                    ),
-                    backgroundColor: selected
-                        ? color.surfaceContainerHighest
-                        : color.surface,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    ),
-                  ),
-                  child: Text(
-                    choices[index],
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      color: color.onSurface,
-                      fontSize: FontSize.size10,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
-  }
-}
-
-class _InfoHint extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.localization;
-    final color = context.colorScheme;
-
-    return Container(
-      height: 43,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
-      decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(Spacing.radiusSm),
-      ),
-      child: Row(
-        textDirection: TextDirection.rtl,
-        children: [
-          Icon(
-            Icons.lightbulb_outline_rounded,
-            size: 24,
-            color: color.onSurface,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? color.primary.withValues(alpha: 0.08)
+              : color.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(Spacing.radiusMd),
+          border: Border.all(
+            color: isSelected ? color.primary : color.outlineVariant,
+            width: isSelected ? 1.5 : 1.0,
           ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.family_info,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    color: color.onSurface,
-                    fontSize: FontSize.size10,
-                  ),
-                ),
-                Text(
-                  l10n.family_info_message,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    color: color.onSurfaceVariant,
-                    fontSize: FontSize.size10,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        child: Text(
+          label,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size11,
+            color: isSelected ? color.primary : color.onSurface,
           ),
-        ],
+        ),
       ),
     );
   }
