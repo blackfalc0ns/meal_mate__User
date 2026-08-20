@@ -60,16 +60,14 @@ class FamilyProgramMemberDetailsUiModel {
     required this.imageAsset,
     required this.age,
     required this.gender,
-    required this.goal,
-    required this.activityLevel,
+    this.roleLabel = '',
   });
 
   final String name;
   final String imageAsset;
   final String age;
   final String gender;
-  final String goal;
-  final String activityLevel;
+  final String roleLabel;
 }
 
 class FamilyProgramUiModel {

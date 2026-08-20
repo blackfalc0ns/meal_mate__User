@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/family_plans/domain/usecase/get_family_s
 import 'package:meal_meat_user/features/family_plans/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_group_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_member_usecase.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
 
@@ -119,13 +120,13 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
       case ToggleFamilyFridayEvent():
         _toggleFriday(event.includeFriday);
       case SelectFamilyTierEvent():
-        emit(state.copyWith(selectedTierIndex: event.tierIndex));
+        _selectTier(event.tierIndex);
       case BrowseFamilyTierRestaurantsEvent():
         _browseTierRestaurants(event.tierIndex);
       case CloseFamilyBrowseRestaurantsEvent():
         emit(state.copyWith(isRestaurantsView: false));
       case SelectFamilyMemberEvent():
-        emit(state.copyWith(selectedMemberIndex: event.memberIndex));
+        _selectMember(event.memberIndex);
       case SaveFamilyMemberPlanEvent():
         _saveMemberPlan(
           memberId: event.memberId,
@@ -174,13 +175,33 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
+        final flow = result.data;
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
+          state.copyWith(isCurrentFlowLoading: false, currentFlow: flow),
         );
+        if (flow.members.isNotEmpty) {
+          final member = (state.selectedMemberIndex >= 0 &&
+                  state.selectedMemberIndex < flow.members.length)
+              ? flow.members[state.selectedMemberIndex]
+              : flow.members.first;
+          if (member.programId != null && member.programId!.isNotEmpty) {
+            _selectProgramById(member.programId!);
+            _loadMemberBundlesAndSelections(member);
+          }
+        }
       case ApiErrorResult():
         emit(
           state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
         );
+    }
+  }
+
+  void _selectProgramById(String programId) {
+    if (state.programs.isNotEmpty) {
+      final idx = state.programs.indexWhere((p) => p.programId == programId);
+      if (idx != -1) {
+        emit(state.copyWith(selectedProgramIndex: idx));
+      }
     }
   }
 
@@ -304,7 +325,23 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         final programs = result.data
             .where((p) => p.programId.isNotEmpty)
             .toList();
-        emit(state.copyWith(isProgramsLoading: false, programs: programs));
+        int progIdx = 0;
+        final selectedMember = state.selectedMember;
+        if (selectedMember?.programId != null) {
+          final found = programs.indexWhere(
+            (p) => p.programId == selectedMember!.programId,
+          );
+          if (found != -1) {
+            progIdx = found;
+          }
+        }
+        emit(
+          state.copyWith(
+            isProgramsLoading: false,
+            programs: programs,
+            selectedProgramIndex: progIdx,
+          ),
+        );
       case ApiErrorResult():
         emit(state.copyWith(isProgramsLoading: false, failure: result.failure));
     }
@@ -312,16 +349,171 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
 
   void _selectProgram(int index) {
     emit(state.copyWith(selectedProgramIndex: index));
+    final member = state.selectedMember;
+    if (member != null && state.programs.length > index) {
+      final program = state.programs[index];
+      _saveMemberPlan(
+        memberId: member.memberId,
+        programId: program.programId,
+      );
+    }
   }
+
+  void _selectMember(int index) {
+    if (index < 0 || index >= state.members.length) return;
+    final member = state.members[index];
+
+    int? progIdx;
+    if (member.programId != null &&
+        member.programId!.isNotEmpty &&
+        state.programs.isNotEmpty) {
+      final found = state.programs.indexWhere(
+        (p) => p.programId == member.programId,
+      );
+      if (found != -1) {
+        progIdx = found;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        selectedMemberIndex: index,
+        selectedProgramIndex: progIdx ?? state.selectedProgramIndex,
+        includeFriday: member.includeFriday,
+        customDurationDays: member.durationDays,
+      ),
+    );
+
+    if (member.programId != null && member.programId!.isNotEmpty) {
+      _loadMemberBundlesAndSelections(member);
+    }
+  }
+
+  Future<void> _loadMemberBundlesAndSelections(FamilyMemberEntity member) async {
+    final programId = member.programId;
+    if (programId == null || programId.isEmpty) return;
+
+    emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
+    final result = await _getFamilyProgramBundlesUseCase(programId);
+    switch (result) {
+      case ApiSuccessResult():
+        final bundles =
+            result.data.where((b) => b.bundleId.isNotEmpty).toList();
+        int bundleIdx = 0;
+        if (member.bundleId != null && member.bundleId!.isNotEmpty) {
+          final foundIdx =
+              bundles.indexWhere((b) => b.bundleId == member.bundleId);
+          if (foundIdx != -1) {
+            bundleIdx = foundIdx;
+          }
+        }
+
+        emit(
+          state.copyWith(
+            isBundlesLoading: false,
+            bundles: bundles,
+            selectedBundleIndex: bundleIdx,
+          ),
+        );
+
+        if (bundles.isNotEmpty) {
+          final selectedBundle = bundles[bundleIdx];
+          await _getDurationsAndTiersForMember(
+            programId: programId,
+            bundleId: selectedBundle.bundleId,
+            member: member,
+          );
+        }
+      case ApiErrorResult():
+        emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
+    }
+  }
+
+  Future<void> _getDurationsAndTiersForMember({
+    required String programId,
+    required String bundleId,
+    required FamilyMemberEntity member,
+  }) async {
+    emit(
+      state.copyWith(
+        isDurationsLoading: true,
+        isTiersLoading: true,
+        clearFailure: true,
+      ),
+    );
+
+    final durationsResult = await _getSubscriptionDurationsUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      includeFriday: member.includeFriday,
+    );
+
+    final tiersResult = await _getSubscriptionTiersUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      durationDays: null,
+      includeFriday: member.includeFriday,
+    );
+
+    final durations = durationsResult is ApiSuccessResult
+        ? (durationsResult as ApiSuccessResult).data
+        : state.durations;
+
+    final tiers = tiersResult is ApiSuccessResult
+        ? (tiersResult as ApiSuccessResult).data
+        : state.tiers;
+
+    int? durationIdx;
+    if (member.durationDays != null) {
+      final foundDurIdx =
+          durations.indexWhere((d) => d.durationDays == member.durationDays);
+      if (foundDurIdx != -1) {
+        durationIdx = foundDurIdx;
+      }
+    }
+
+    int? tierIdx;
+    if (member.selectedTier != null) {
+      final foundTierIdx = tiers.indexWhere((t) {
+        final tNum = int.tryParse(t.tier) ??
+            (t.nameEn.toLowerCase().contains('elite')
+                ? 3
+                : t.nameEn.toLowerCase().contains('plat')
+                    ? 2
+                    : 1);
+        return tNum == member.selectedTier;
+      });
+      if (foundTierIdx != -1) {
+        tierIdx = foundTierIdx;
+      } else if (member.selectedTier! >= 1 &&
+          member.selectedTier! <= tiers.length) {
+        tierIdx = member.selectedTier! - 1;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        isDurationsLoading: false,
+        isTiersLoading: false,
+        durations: durations,
+        tiers: tiers,
+        selectedDurationIndex: durationIdx ?? state.selectedDurationIndex,
+        selectedTierIndex: tierIdx ?? state.selectedTierIndex,
+        includeFriday: member.includeFriday,
+        customDurationDays: member.durationDays,
+      ),
+    );
+  }
+
+
 
   Future<void> _getBundles(String programId) async {
     emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
     final result = await _getFamilyProgramBundlesUseCase(programId);
     switch (result) {
       case ApiSuccessResult():
-        final bundles = result.data
-            .where((b) => b.bundleId.isNotEmpty)
-            .toList();
+        final bundles =
+            result.data.where((b) => b.bundleId.isNotEmpty).toList();
         emit(state.copyWith(isBundlesLoading: false, bundles: bundles));
         if (bundles.isNotEmpty) {
           _getDurations(
@@ -337,12 +529,21 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
 
   void _selectBundle(int index) {
     emit(state.copyWith(selectedBundleIndex: index));
-    final selectedProgram = state.selectedProgram;
+    final member = state.selectedMember;
     final bundle = state.bundles.length > index ? state.bundles[index] : null;
+    final selectedProgram = state.selectedProgram;
 
-    if (selectedProgram != null && bundle != null) {
+    if (member != null && bundle != null) {
+      _saveMemberPlan(
+        memberId: member.memberId,
+        bundleId: bundle.bundleId,
+      );
+    }
+
+    final progId = selectedProgram?.programId ?? member?.programId;
+    if (progId != null && bundle != null) {
       _getDurations(
-        programId: selectedProgram.programId,
+        programId: progId,
         bundleId: bundle.bundleId,
         includeFriday: state.includeFriday,
       );
@@ -395,22 +596,67 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
 
   void _selectDuration(int index) {
     emit(state.copyWith(selectedDurationIndex: index));
+    final member = state.selectedMember;
+    final duration =
+        state.durations.length > index ? state.durations[index] : null;
+    if (member != null &&
+        duration != null &&
+        !duration.isCustom &&
+        duration.durationDays != null) {
+      _saveMemberPlan(
+        memberId: member.memberId,
+        durationDays: duration.durationDays,
+        includeFriday: state.includeFriday,
+      );
+    }
   }
 
   void _updateCustomDuration(int days) {
     emit(state.copyWith(customDurationDays: days));
+    final member = state.selectedMember;
+    if (member != null && days > 0) {
+      _saveMemberPlan(
+        memberId: member.memberId,
+        durationDays: days,
+        includeFriday: state.includeFriday,
+      );
+    }
   }
 
   void _toggleFriday(bool include) {
     emit(state.copyWith(includeFriday: include));
+    final member = state.selectedMember;
+    final days = state.selectedDurationDays;
+    if (member != null && days != null && days > 0) {
+      _saveMemberPlan(
+        memberId: member.memberId,
+        durationDays: days,
+        includeFriday: include,
+      );
+    }
+
     final selectedProgram = state.selectedProgram;
     final selectedBundle = state.selectedBundle;
+    final progId = selectedProgram?.programId ?? member?.programId;
 
-    if (selectedProgram != null && selectedBundle != null) {
+    if (progId != null && selectedBundle != null) {
       _getDurations(
-        programId: selectedProgram.programId,
+        programId: progId,
         bundleId: selectedBundle.bundleId,
         includeFriday: include,
+      );
+    }
+  }
+
+  void _selectTier(int tierIndex) {
+    emit(state.copyWith(selectedTierIndex: tierIndex));
+    final member = state.selectedMember;
+    if (member != null && state.tiers.length > tierIndex) {
+      final tier = state.tiers[tierIndex];
+      final tierInt = int.tryParse(tier.tier) ?? (tierIndex + 1);
+      _saveMemberPlan(
+        memberId: member.memberId,
+        tier: tierInt,
       );
     }
   }
@@ -468,13 +714,12 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
 
   Future<void> _saveMemberPlan({
     required String memberId,
-    required String programId,
-    required String bundleId,
-    required int tier,
-    required int durationDays,
-    required bool includeFriday,
+    String? programId,
+    String? bundleId,
+    int? tier,
+    int? durationDays,
+    bool? includeFriday,
   }) async {
-    emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _saveFamilyMemberPlanUseCase(
       memberId: memberId,
       programId: programId,
@@ -486,11 +731,14 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
+          state.copyWith(
+            currentFlow: result.data,
+            clearFailure: true,
+          ),
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+          state.copyWith(failure: result.failure),
         );
     }
   }

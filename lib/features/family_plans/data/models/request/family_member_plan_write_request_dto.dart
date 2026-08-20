@@ -1,23 +1,25 @@
 class FamilyMemberPlanWriteRequestDto {
-  final String programId;
-  final String bundleId;
-  final int tier;
-  final int durationDays;
-  final bool includeFriday;
+  final String? programId;
+  final String? bundleId;
+  final int? tier;
+  final int? durationDays;
+  final bool? includeFriday;
 
   FamilyMemberPlanWriteRequestDto({
-    required this.programId,
-    required this.bundleId,
-    required this.tier,
-    required this.durationDays,
-    required this.includeFriday,
+    this.programId,
+    this.bundleId,
+    this.tier,
+    this.durationDays,
+    this.includeFriday,
   });
 
-  Map<String, dynamic> toJson() => {
-        'programId': programId,
-        'bundleId': bundleId,
-        'tier': tier,
-        'durationDays': durationDays,
-        'includeFriday': includeFriday,
-      };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    if (programId != null) map['programId'] = programId;
+    if (bundleId != null) map['bundleId'] = bundleId;
+    if (tier != null) map['tier'] = tier;
+    if (durationDays != null) map['durationDays'] = durationDays;
+    if (includeFriday != null) map['includeFriday'] = includeFriday;
+    return map;
+  }
 }

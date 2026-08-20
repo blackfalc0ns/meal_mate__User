@@ -151,19 +151,19 @@ class SelectFamilyMemberEvent extends FamilyPlanEvent {
 class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
   const SaveFamilyMemberPlanEvent({
     required this.memberId,
-    required this.programId,
-    required this.bundleId,
-    required this.tier,
-    required this.durationDays,
-    required this.includeFriday,
+    this.programId,
+    this.bundleId,
+    this.tier,
+    this.durationDays,
+    this.includeFriday,
   });
 
   final String memberId;
-  final String programId;
-  final String bundleId;
-  final int tier;
-  final int durationDays;
-  final bool includeFriday;
+  final String? programId;
+  final String? bundleId;
+  final int? tier;
+  final int? durationDays;
+  final bool? includeFriday;
 }
 
 class GetFamilySummaryEvent extends FamilyPlanEvent {

@@ -100,44 +100,45 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
     final summary = state.summary;
     final members = state.members;
 
-    final displayedMembers = members
-        .map(
-          (m) => FamilyProgramMemberUiModel(
-            name: m.displayName,
-            imageAsset: '',
-            status: m.isReady
-                ? locale.family_member_completed
-                : locale.family_member_in_progress,
-            isSelected: false,
-            isInProgress: !m.isReady,
-          ),
-        )
-        .toList();
+    final displayedMembers = members.asMap().entries.map((entry) {
+      final index = entry.key;
+      final m = entry.value;
+      final isSelected = index == state.selectedMemberIndex;
+      final isReady = m.setupStatus == 3;
+      return FamilyProgramMemberUiModel(
+        name: m.displayName,
+        imageAsset: '',
+        status: isReady
+            ? locale.family_member_completed
+            : locale.family_member_in_progress,
+        isSelected: isSelected,
+        isInProgress: !isReady,
+      );
+    }).toList();
 
     final selectedMember = state.selectedMember;
     final activeMemberDetails = selectedMember != null
         ? FamilyProgramMemberDetailsUiModel(
             name: selectedMember.displayName,
             imageAsset: '',
-            age: '${selectedMember.ageYears}',
+            age: '${selectedMember.ageYears} ${locale.family_year}',
             gender: selectedMember.gender == 2
                 ? locale.family_gender_female
                 : locale.family_gender_male,
-            goal: '',
-            activityLevel: '',
+            roleLabel: selectedMember.isManager ? locale.family_owner : '',
           )
         : (members.isNotEmpty
-              ? FamilyProgramMemberDetailsUiModel(
-                  name: members.first.displayName,
-                  imageAsset: '',
-                  age: '${members.first.ageYears}',
-                  gender: members.first.gender == 2
-                      ? locale.family_gender_female
-                      : locale.family_gender_male,
-                  goal: '',
-                  activityLevel: '',
-                )
-              : null);
+            ? FamilyProgramMemberDetailsUiModel(
+                name: members.first.displayName,
+                imageAsset: '',
+                age: '${members.first.ageYears} ${locale.family_year}',
+                gender: members.first.gender == 2
+                    ? locale.family_gender_female
+                    : locale.family_gender_male,
+                roleLabel:
+                    members.first.isManager ? locale.family_owner : '',
+              )
+            : null);
 
     final selectionSummary = summary != null
         ? FamilySelectionSummaryData(
@@ -219,7 +220,14 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
               ),
               const SizedBox(height: Spacing.familyProgramMemberTopGap),
               if (displayedMembers.isNotEmpty)
-                FamilyProgramMemberStrip(members: displayedMembers),
+                FamilyProgramMemberStrip(
+                  members: displayedMembers,
+                  onSelectMember: (index) {
+                    context
+                        .read<FamilyPlanViewModel>()
+                        .doIntent(SelectFamilyMemberEvent(index));
+                  },
+                ),
               const SizedBox(height: Spacing.md),
               Text(
                 locale.family_payment_confirm_title,

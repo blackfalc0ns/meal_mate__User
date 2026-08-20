@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_summary_metric.dart';
 
 class FamilyProgramSummaryCard extends StatelessWidget {
   const FamilyProgramSummaryCard({super.key, required this.member});
@@ -14,7 +13,6 @@ class FamilyProgramSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       height: Spacing.familyProgramSummaryHeight,
@@ -116,23 +114,26 @@ class FamilyProgramSummaryCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: Spacing.xs),
-          FamilyProgramSummaryMetric(
-            value: member.goal,
-            label: locale.family_selected_member_goal_label,
-            icon: Icons.balance_rounded,
-          ),
-          const SizedBox(width: Spacing.xs),
-          SizedBox(
-            height: Spacing.familyProgramSummaryDividerHeight,
-            child: VerticalDivider(color: color.outlineVariant),
-          ),
-          const SizedBox(width: Spacing.xs),
-          FamilyProgramSummaryMetric(
-            value: member.activityLevel,
-            label: locale.family_activity_level,
-            icon: Icons.directions_run_rounded,
-          ),
+          if (member.roleLabel.isNotEmpty) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.sm,
+                vertical: Spacing.xss,
+              ),
+              decoration: BoxDecoration(
+                color: color.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              ),
+              child: Text(
+                member.roleLabel,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size10,
+                  color: color.primary,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

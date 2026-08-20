@@ -37,11 +37,11 @@ abstract class FamilySubscriptionRepository {
   );
   Future<ApiResult<FamilyFlowCurrentEntity>> saveFamilyMemberPlan({
     required String memberId,
-    required String programId,
-    required String bundleId,
-    required int tier,
-    required int durationDays,
-    required bool includeFriday,
+    String? programId,
+    String? bundleId,
+    int? tier,
+    int? durationDays,
+    bool? includeFriday,
   });
   Future<ApiResult<FamilySummaryEntity>> getFamilySummary();
   Future<ApiResult<List<PaymentMethodEntity>>> getFamilyPaymentMethods(

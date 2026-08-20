@@ -19,8 +19,8 @@ class FamilyProgramMemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final statusColor = member.isInProgress
-        ? color.primary
-        : color.onSurfaceVariant;
+        ? color.onSurfaceVariant
+        : color.primary;
 
     return Semantics(
       button: true,
@@ -95,23 +95,33 @@ class FamilyProgramMemberCard extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          width: Spacing.xs,
-                          height: Spacing.xs,
-                          decoration: BoxDecoration(
-                            color: statusColor,
-                            shape: BoxShape.circle,
+                        if (!member.isInProgress) ...[
+                          Icon(
+                            Icons.check_circle_rounded,
+                            size: Spacing.iconSm,
+                            color: color.primary,
                           ),
-                        ),
+                        ] else ...[
+                          Container(
+                            width: Spacing.xs,
+                            height: Spacing.xs,
+                            decoration: BoxDecoration(
+                              color: statusColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ],
                         const SizedBox(width: Spacing.xs),
-                        Text(
-                          member.status,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getSemiBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
-                            color: statusColor,
+                        Flexible(
+                          child: Text(
+                            member.status,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size9,
+                              color: statusColor,
+                            ),
                           ),
                         ),
                       ],

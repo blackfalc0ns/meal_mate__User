@@ -100,14 +100,15 @@ class FamilyProgramSetupScreen extends StatelessWidget {
       final index = entry.key;
       final m = entry.value;
       final isSelected = index == state.selectedMemberIndex;
+      final hasProgram = m.programId != null && m.programId!.isNotEmpty;
       return FamilyProgramMemberUiModel(
         name: m.displayName,
         imageAsset: '',
-        status: m.isReady
+        status: hasProgram
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,
-        isInProgress: !m.isReady,
+        isInProgress: !hasProgram,
       );
     }).toList();
 
@@ -119,8 +120,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
             gender: selectedMember.gender == 2
                 ? locale.family_gender_female
                 : locale.family_gender_male,
-            goal: selectedMember.relationshipCode,
-            activityLevel: selectedMember.isManager ? locale.family_owner : '',
+            roleLabel: selectedMember.isManager ? locale.family_owner : '',
           )
         : (members.isNotEmpty
             ? FamilyProgramMemberDetailsUiModel(
@@ -130,21 +130,30 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                 gender: members.first.gender == 2
                     ? locale.family_gender_female
                     : locale.family_gender_male,
-                goal: members.first.relationshipCode,
-                activityLevel:
+                roleLabel:
                     members.first.isManager ? locale.family_owner : '',
               )
             : null);
 
+    final selectedProgramId = selectedMember?.programId;
+    final selectedProgIndex = selectedProgramId != null && selectedProgramId.isNotEmpty
+        ? state.programs.indexWhere((p) => p.programId == selectedProgramId)
+        : state.selectedProgramIndex;
+
+    final effectiveProgIndex = selectedProgIndex != -1 ? selectedProgIndex : state.selectedProgramIndex;
+
     final displayedPrograms = state.programs
+        .asMap()
+        .entries
         .map(
-          (p) => FamilyProgramUiModel(
-            title: p.name(locale.localeName),
-            description: p.description(locale.localeName),
-            imageAsset: p.imageUrl != null && p.imageUrl!.isNotEmpty
-                ? p.imageUrl!
-                : p.fallbackImageAsset,
-            isSelected: state.selectedProgram?.programId == p.programId,
+          (entry) => FamilyProgramUiModel(
+            title: entry.value.name(locale.localeName),
+            description: entry.value.description(locale.localeName),
+            imageAsset: entry.value.imageUrl != null &&
+                    entry.value.imageUrl!.isNotEmpty
+                ? entry.value.imageUrl!
+                : entry.value.fallbackImageAsset,
+            isSelected: entry.key == effectiveProgIndex,
           ),
         )
         .toList();
@@ -205,7 +214,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
               else
                 FamilyProgramGrid(
                   programs: displayedPrograms,
-                  selectedIndex: state.selectedProgramIndex,
+                  selectedIndex: effectiveProgIndex,
                   onProgramSelected: (index) {
                     context
                         .read<FamilyPlanViewModel>()
@@ -218,13 +227,21 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                 nextText: locale.family_next_package_days,
                 nextIcon: Icons.arrow_forward_ios_rounded,
                 onNextPressed: () {
-                  final program = state.selectedProgram;
-                  if (program != null) {
-                    context.pushNamed(
-                      AppRoutes.familyPackageDaysSetup,
-                      arguments: program.programId,
-                    );
+                  final unreadyIndex = state.members.indexWhere(
+                    (m) => m.programId == null || m.programId!.isEmpty,
+                  );
+                  if (unreadyIndex != -1) {
+                    context.read<FamilyPlanViewModel>().doIntent(
+                          SelectFamilyMemberEvent(unreadyIndex),
+                        );
+                    return;
                   }
+                  final firstProgramId = state.members.firstOrNull?.programId ??
+                      state.selectedProgram?.programId;
+                  context.pushNamed(
+                    AppRoutes.familyPackageDaysSetup,
+                    arguments: firstProgramId,
+                  );
                 },
               ),
               const SizedBox(height: Spacing.xxxl),

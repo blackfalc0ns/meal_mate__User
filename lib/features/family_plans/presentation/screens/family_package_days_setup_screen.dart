@@ -27,10 +27,7 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_restaurant_grid_card.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
-  const FamilyPackageDaysSetupScreen({
-    super.key,
-    this.programId,
-  });
+  const FamilyPackageDaysSetupScreen({super.key, this.programId});
 
   final String? programId;
 
@@ -111,24 +108,23 @@ class _FamilyPackageDaysSetupScreenState
                       gender: selectedMember.gender == 2
                           ? locale.family_gender_female
                           : locale.family_gender_male,
-                      goal: selectedMember.relationshipCode,
-                      activityLevel:
+                      roleLabel:
                           selectedMember.isManager ? locale.family_owner : '',
                     )
                   : (members.isNotEmpty
-                      ? FamilyProgramMemberDetailsUiModel(
-                          name: members.first.displayName,
-                          imageAsset: '',
-                          age: '${members.first.ageYears} ${locale.family_year}',
-                          gender: members.first.gender == 2
-                              ? locale.family_gender_female
-                              : locale.family_gender_male,
-                          goal: members.first.relationshipCode,
-                          activityLevel: members.first.isManager
-                              ? locale.family_owner
-                              : '',
-                        )
-                      : null);
+                        ? FamilyProgramMemberDetailsUiModel(
+                            name: members.first.displayName,
+                            imageAsset: '',
+                            age:
+                                '${members.first.ageYears} ${locale.family_year}',
+                            gender: members.first.gender == 2
+                                ? locale.family_gender_female
+                                : locale.family_gender_male,
+                            roleLabel: members.first.isManager
+                                ? locale.family_owner
+                                : '',
+                          )
+                        : null);
 
               final displayedPackages = state.bundles
                   .map(
@@ -142,15 +138,15 @@ class _FamilyPackageDaysSetupScreenState
 
               final selectedPackageOptions =
                   List<FamilyPackageOptionUiModel>.generate(
-                displayedPackages.length,
-                (index) => FamilyPackageOptionUiModel(
-                  title: displayedPackages[index].title,
-                  description: displayedPackages[index].description,
-                  imageUrl: displayedPackages[index].imageUrl,
-                  imageAsset: displayedPackages[index].imageAsset,
-                  isSelected: index == state.selectedBundleIndex,
-                ),
-              );
+                    displayedPackages.length,
+                    (index) => FamilyPackageOptionUiModel(
+                      title: displayedPackages[index].title,
+                      description: displayedPackages[index].description,
+                      imageUrl: displayedPackages[index].imageUrl,
+                      imageAsset: displayedPackages[index].imageAsset,
+                      isSelected: index == state.selectedBundleIndex,
+                    ),
+                  );
 
               final displayedTiers = state.tiers
                   .map(
@@ -160,8 +156,8 @@ class _FamilyPackageDaysSetupScreenState
                       iconName: t.tier.toLowerCase().contains('max')
                           ? 'diamond'
                           : t.tier.toLowerCase().contains('plus')
-                              ? 'crown'
-                              : 'heart',
+                          ? 'crown'
+                          : 'heart',
                       restaurantCount: t.restaurantCount,
                       restaurantLogoUrls: t.restaurants
                           .map((r) => r.logoUrl)
@@ -198,8 +194,8 @@ class _FamilyPackageDaysSetupScreenState
                             members: displayedMembers,
                             onSelectMember: (index) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                    SelectFamilyMemberEvent(index),
-                                  );
+                                SelectFamilyMemberEvent(index),
+                              );
                             },
                           ),
                           const SizedBox(
@@ -246,8 +242,8 @@ class _FamilyPackageDaysSetupScreenState
                             options: selectedPackageOptions,
                             onOptionSelected: (index) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                    SelectFamilyBundleEvent(index),
-                                  );
+                                SelectFamilyBundleEvent(index),
+                              );
                             },
                           ),
 
@@ -263,20 +259,20 @@ class _FamilyPackageDaysSetupScreenState
                             selectedIndex: state.selectedDurationIndex,
                             onSelected: (index) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                    SelectFamilyDurationEvent(index),
-                                  );
+                                SelectFamilyDurationEvent(index),
+                              );
                             },
                             includesFriday: state.includeFriday,
                             onFridayChanged: (include) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                    ToggleFamilyFridayEvent(include),
-                                  );
+                                ToggleFamilyFridayEvent(include),
+                              );
                             },
                             customDurationDays: state.customDurationDays,
                             onCustomDurationChanged: (days) {
                               context.read<FamilyPlanViewModel>().doIntent(
-                                    UpdateFamilyCustomDurationEvent(days),
-                                  );
+                                UpdateFamilyCustomDurationEvent(days),
+                              );
                             },
                             durations: state.durations,
                             isFridayEnabled: true,
@@ -293,12 +289,9 @@ class _FamilyPackageDaysSetupScreenState
                             selectedIndex: state.selectedTierIndex,
                             onSelected: (index) => context
                                 .read<FamilyPlanViewModel>()
-                                .doIntent(
-                                  SelectFamilyTierEvent(index),
-                                ),
-                            onBrowseRestaurants: (index) => context
-                                .read<FamilyPlanViewModel>()
-                                .doIntent(
+                                .doIntent(SelectFamilyTierEvent(index)),
+                            onBrowseRestaurants: (index) =>
+                                context.read<FamilyPlanViewModel>().doIntent(
                                   BrowseFamilyTierRestaurantsEvent(index),
                                 ),
                           ),
@@ -327,9 +320,11 @@ class _FamilyPackageDaysSetupScreenState
   }
 
   void _savePlanAndProceed(BuildContext context, FamilyPlanState state) {
-    final member = state.selectedMember ??
+    final member =
+        state.selectedMember ??
         (state.members.isNotEmpty ? state.members.first : null);
-    final programId = widget.programId ??
+    final programId =
+        widget.programId ??
         state.selectedProgram?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : '');
     final bundle = state.selectedBundle;
@@ -343,15 +338,15 @@ class _FamilyPackageDaysSetupScreenState
         tier != null) {
       final tierInt = int.tryParse(tier.tier) ?? 1;
       context.read<FamilyPlanViewModel>().doIntent(
-            SaveFamilyMemberPlanEvent(
-              memberId: member.memberId,
-              programId: programId,
-              bundleId: bundle.bundleId,
-              tier: tierInt,
-              durationDays: duration.durationDays ?? 0,
-              includeFriday: state.includeFriday,
-            ),
-          );
+        SaveFamilyMemberPlanEvent(
+          memberId: member.memberId,
+          programId: programId,
+          bundleId: bundle.bundleId,
+          tier: tierInt,
+          durationDays: duration.durationDays ?? 0,
+          includeFriday: state.includeFriday,
+        ),
+      );
     }
 
     final hasUnreadyMembers = state.members.any(
@@ -363,9 +358,9 @@ class _FamilyPackageDaysSetupScreenState
         (m) => m.memberId != member?.memberId && !m.isReady,
       );
       if (nextIndex != -1) {
-        context
-            .read<FamilyPlanViewModel>()
-            .doIntent(SelectFamilyMemberEvent(nextIndex));
+        context.read<FamilyPlanViewModel>().doIntent(
+          SelectFamilyMemberEvent(nextIndex),
+        );
       }
       Navigator.maybePop(context);
     } else {
@@ -395,9 +390,9 @@ class _FamilyPackageDaysSetupScreenState
           ),
           IconButton(
             icon: const Icon(Icons.close_rounded),
-            onPressed: () => context
-                .read<FamilyPlanViewModel>()
-                .doIntent(const CloseFamilyBrowseRestaurantsEvent()),
+            onPressed: () => context.read<FamilyPlanViewModel>().doIntent(
+              const CloseFamilyBrowseRestaurantsEvent(),
+            ),
           ),
         ],
       ),
@@ -423,7 +418,8 @@ class _FamilyPackageDaysSetupScreenState
           itemCount: state.browseRestaurants.length,
           itemBuilder: (context, index) {
             final restaurant = state.browseRestaurants[index];
-            final programId = widget.programId ??
+            final programId =
+                widget.programId ??
                 state.selectedProgram?.programId ??
                 bundle?.programId ??
                 '';
@@ -433,9 +429,7 @@ class _FamilyPackageDaysSetupScreenState
               localeName: locale.localeName,
               brandColor: color.primary,
             );
-            return MonthlyRestaurantGridCard(
-              restaurant: planEntity,
-            );
+            return MonthlyRestaurantGridCard(restaurant: planEntity);
           },
         ),
       const SizedBox(height: Spacing.lg),
