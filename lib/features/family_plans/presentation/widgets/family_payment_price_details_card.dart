@@ -29,7 +29,6 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
       ),
       child: Column(
-        spacing: Spacing.xs,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Align(
@@ -50,8 +49,11 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.xs),
-          for (final row in details.rows) FamilyPaymentPriceRow(row: row),
-          const SizedBox(height: Spacing.md),
+          for (final row in details.rows) ...[
+            FamilyPaymentPriceRow(row: row),
+            const SizedBox(height: Spacing.xs),
+          ],
+          const SizedBox(height: Spacing.xs),
           Container(
             padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
             decoration: BoxDecoration(
@@ -70,21 +72,8 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: Spacing.xs),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(text: details.totalValue),
-                      TextSpan(
-                        text: ' ${locale.currency}',
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size13,
-                          color: color.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-
+                Text(
+                  details.totalValue,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,

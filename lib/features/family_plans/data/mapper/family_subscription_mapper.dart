@@ -76,19 +76,59 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
   }
 }
 
-extension FamilyMemberPlanSummaryDtoMapper on FamilyMemberPlanSummaryDto {
-  FamilyMemberPlanSummaryEntity toEntity() {
-    return FamilyMemberPlanSummaryEntity(
+extension FamilySummaryMemberDtoMapper on FamilySummaryMemberDto {
+  FamilySummaryMemberEntity toEntity() {
+    return FamilySummaryMemberEntity(
       memberId: memberId,
       displayName: displayName,
+      isManager: isManager,
+      setupStatus: setupStatus,
+      isReady: isReady,
+      roleAr: roleAr,
+    );
+  }
+}
+
+extension FamilySelectedMemberSummaryDtoMapper on FamilySelectedMemberSummaryDto {
+  FamilySelectedMemberSummaryEntity toEntity() {
+    return FamilySelectedMemberSummaryEntity(
+      memberId: memberId,
+      displayName: displayName,
+      isManager: isManager,
+      roleAr: roleAr,
+      setupStatus: setupStatus,
+      isReady: isReady,
       programNameAr: programNameAr,
       programNameEn: programNameEn,
       bundleNameAr: bundleNameAr,
       bundleNameEn: bundleNameEn,
-      tier: tier,
       durationDays: durationDays,
+      durationLabelAr: durationLabelAr,
+      selectedTier: selectedTier,
+      tierNameAr: tierNameAr,
       includeFriday: includeFriday,
-      price: price,
+      breakfast: breakfast,
+      lunch: lunch,
+      snack: snack,
+      dinner: dinner,
+      mealsPerDay: mealsPerDay,
+      memberPrice: memberPrice,
+    );
+  }
+}
+
+extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
+  FamilyMealOverviewEntity toEntity() {
+    return FamilyMealOverviewEntity(
+      memberId: memberId,
+      displayName: displayName,
+      breakfast: breakfast,
+      lunch: lunch,
+      snack: snack,
+      dinner: dinner,
+      mealsPerDay: mealsPerDay,
+      isReady: isReady,
+      isManager: isManager,
     );
   }
 }
@@ -100,9 +140,12 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       familyDiscountPercent: familyDiscountPercent,
       familyDiscountAmount: familyDiscountAmount,
       finalPrice: finalPrice,
+      currencyCode: currencyCode,
       canCheckout: canCheckout,
       checkoutBlockReason: checkoutBlockReason,
       members: members.map((m) => m.toEntity()).toList(),
+      selectedMember: selectedMember?.toEntity(),
+      mealOverview: mealOverview.map((m) => m.toEntity()).toList(),
     );
   }
 }

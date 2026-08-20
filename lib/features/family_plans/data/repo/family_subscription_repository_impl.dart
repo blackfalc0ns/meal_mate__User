@@ -165,9 +165,9 @@ class FamilySubscriptionRepositoryImpl implements FamilySubscriptionRepository {
   }
 
   @override
-  Future<ApiResult<FamilySummaryEntity>> getFamilySummary() {
+  Future<ApiResult<FamilySummaryEntity>> getFamilySummary({String? memberId}) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getFamilySummary();
+      final response = await _remoteDataSource.getFamilySummary(memberId: memberId);
       return response.toEntity();
     });
   }

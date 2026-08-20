@@ -350,7 +350,9 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.familySubscriptionFlowSummary)
-  Future<FamilySummaryResponseDto> getFamilySummary();
+  Future<FamilySummaryResponseDto> getFamilySummary({
+    @Query('memberId') String? memberId,
+  });
 
   @GET(EndPoints.familySubscriptionFlowPaymentMethods)
   Future<List<PaymentMethodResponseDto>> getFamilyPaymentMethods(

@@ -137,7 +137,7 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
           includeFriday: event.includeFriday,
         );
       case GetFamilySummaryEvent():
-        _getFamilySummary();
+        _getFamilySummary(memberId: event.memberId);
       case GetFamilyPaymentMethodsEvent():
         _getFamilyPaymentMethods();
       case SelectFamilyPaymentMethodEvent():
@@ -781,12 +781,27 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     }
   }
 
-  Future<void> _getFamilySummary() async {
-    emit(state.copyWith(isSummaryLoading: true, clearFailure: true));
-    final result = await _getFamilySummaryUseCase();
+  Future<void> _getFamilySummary({String? memberId}) async {
+    emit(
+      state.copyWith(
+        isSummaryLoading: true,
+        selectedSummaryMemberId: memberId ?? state.selectedSummaryMemberId,
+        clearFailure: true,
+      ),
+    );
+    final result = await _getFamilySummaryUseCase(memberId: memberId);
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(isSummaryLoading: false, summary: result.data));
+        final summary = result.data;
+        final activeMemberId =
+            memberId ?? summary.selectedMember?.memberId ?? state.selectedSummaryMemberId;
+        emit(
+          state.copyWith(
+            isSummaryLoading: false,
+            summary: summary,
+            selectedSummaryMemberId: activeMemberId,
+          ),
+        );
         _getFamilyPaymentMethods();
       case ApiErrorResult():
         emit(state.copyWith(isSummaryLoading: false, failure: result.failure));

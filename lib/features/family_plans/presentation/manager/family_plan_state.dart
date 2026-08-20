@@ -43,6 +43,7 @@ class FamilyPlanState {
     this.isRestaurantsView = false,
     this.browseRestaurantsFailure,
     this.selectedMemberIndex = 0,
+    this.selectedSummaryMemberId,
     this.isSummaryLoading = false,
     this.summary,
     this.isPaymentMethodsLoading = false,
@@ -91,6 +92,7 @@ class FamilyPlanState {
   final Failure? browseRestaurantsFailure;
 
   final int selectedMemberIndex;
+  final String? selectedSummaryMemberId;
 
   final bool isSummaryLoading;
   final FamilySummaryEntity? summary;
@@ -199,6 +201,7 @@ class FamilyPlanState {
     bool? isRestaurantsView,
     Failure? browseRestaurantsFailure,
     int? selectedMemberIndex,
+    String? selectedSummaryMemberId,
     bool? isSummaryLoading,
     FamilySummaryEntity? summary,
     bool? isPaymentMethodsLoading,
@@ -257,6 +260,8 @@ class FamilyPlanState {
           : (browseRestaurantsFailure ?? this.browseRestaurantsFailure),
       selectedMemberIndex:
           selectedMemberIndex ?? this.selectedMemberIndex,
+      selectedSummaryMemberId:
+          selectedSummaryMemberId ?? this.selectedSummaryMemberId,
       isSummaryLoading: isSummaryLoading ?? this.isSummaryLoading,
       summary: summary ?? this.summary,
       isPaymentMethodsLoading:

@@ -1,26 +1,66 @@
-class FamilyMemberPlanSummaryEntity {
+class FamilySummaryMemberEntity {
   final String memberId;
   final String displayName;
+  final bool isManager;
+  final int setupStatus;
+  final bool isReady;
+  final String? roleAr;
+
+  const FamilySummaryMemberEntity({
+    required this.memberId,
+    required this.displayName,
+    this.isManager = false,
+    this.setupStatus = 0,
+    this.isReady = false,
+    this.roleAr,
+  });
+}
+
+class FamilySelectedMemberSummaryEntity {
+  final String memberId;
+  final String displayName;
+  final bool isManager;
+  final String? roleAr;
+  final int setupStatus;
+  final bool isReady;
   final String? programNameAr;
   final String? programNameEn;
   final String? bundleNameAr;
   final String? bundleNameEn;
-  final int? tier;
   final int? durationDays;
+  final String? durationLabelAr;
+  final int? selectedTier;
+  final String? tierNameAr;
   final bool includeFriday;
-  final double price;
+  final bool breakfast;
+  final bool lunch;
+  final bool snack;
+  final bool dinner;
+  final int mealsPerDay;
+  final double memberPrice;
 
-  const FamilyMemberPlanSummaryEntity({
+  const FamilySelectedMemberSummaryEntity({
     required this.memberId,
     required this.displayName,
+    this.isManager = false,
+    this.roleAr,
+    this.setupStatus = 0,
+    this.isReady = false,
     this.programNameAr,
     this.programNameEn,
     this.bundleNameAr,
     this.bundleNameEn,
-    this.tier,
     this.durationDays,
-    required this.includeFriday,
-    required this.price,
+    this.durationLabelAr,
+    this.selectedTier,
+    this.tierNameAr,
+    this.includeFriday = false,
+    this.breakfast = false,
+    this.lunch = false,
+    this.snack = false,
+    this.dinner = false,
+    this.mealsPerDay = 0,
+    this.memberPrice = 0.0,
   });
 
   String programName(String languageCode) {
@@ -38,6 +78,69 @@ class FamilyMemberPlanSummaryEntity {
     }
     return bundleNameAr ?? bundleNameEn ?? '';
   }
+
+  String durationText(String languageCode) {
+    if (durationLabelAr != null && durationLabelAr!.isNotEmpty) {
+      return durationLabelAr!;
+    }
+    if (durationDays != null && durationDays! > 0) {
+      return languageCode.toLowerCase().startsWith('en')
+          ? '$durationDays Days'
+          : '$durationDays يوم';
+    }
+    return '';
+  }
+
+  String tierText(String languageCode) {
+    if (tierNameAr != null && tierNameAr!.isNotEmpty) {
+      return tierNameAr!;
+    }
+    if (selectedTier != null) {
+      switch (selectedTier) {
+        case 1:
+          return languageCode.toLowerCase().startsWith('en')
+              ? 'Basic'
+              : 'أساسي';
+        case 2:
+          return languageCode.toLowerCase().startsWith('en')
+              ? 'Platinum'
+              : 'بلاتينيوم';
+        case 3:
+          return languageCode.toLowerCase().startsWith('en')
+              ? 'Elite'
+              : 'إيليت';
+        default:
+          return 'Tier $selectedTier';
+      }
+    }
+    return '';
+  }
+}
+
+class FamilyMealOverviewEntity {
+  final String memberId;
+  final String displayName;
+  final bool breakfast;
+  final bool lunch;
+  final bool snack;
+  final bool dinner;
+  final int mealsPerDay;
+  final bool isReady;
+  final bool isManager;
+
+  const FamilyMealOverviewEntity({
+    required this.memberId,
+    required this.displayName,
+    this.breakfast = false,
+    this.lunch = false,
+    this.snack = false,
+    this.dinner = false,
+    this.mealsPerDay = 0,
+    this.isReady = false,
+    this.isManager = false,
+  });
+
+  List<bool> get mealChecks => [breakfast, lunch, snack, dinner];
 }
 
 class FamilySummaryEntity {
@@ -45,18 +148,24 @@ class FamilySummaryEntity {
   final double familyDiscountPercent;
   final double familyDiscountAmount;
   final double finalPrice;
+  final String currencyCode;
   final bool canCheckout;
   final String? checkoutBlockReason;
-  final List<FamilyMemberPlanSummaryEntity> members;
+  final List<FamilySummaryMemberEntity> members;
+  final FamilySelectedMemberSummaryEntity? selectedMember;
+  final List<FamilyMealOverviewEntity> mealOverview;
 
   const FamilySummaryEntity({
     required this.subtotal,
     required this.familyDiscountPercent,
     required this.familyDiscountAmount,
     required this.finalPrice,
+    this.currencyCode = 'KWD',
     required this.canCheckout,
     this.checkoutBlockReason,
     this.members = const [],
+    this.selectedMember,
+    this.mealOverview = const [],
   });
 
   String get discountLabel {

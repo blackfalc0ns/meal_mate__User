@@ -34,7 +34,7 @@ abstract class FamilySubscriptionRemoteDataSource {
     String memberId,
     FamilyMemberPlanWriteRequestDto request,
   );
-  Future<FamilySummaryResponseDto> getFamilySummary();
+  Future<FamilySummaryResponseDto> getFamilySummary({String? memberId});
   Future<List<PaymentMethodResponseDto>> getFamilyPaymentMethods(double amount);
   Future<PaymentCheckoutResponseDto> checkoutFamilySubscription(
     FamilyCheckoutRequestDto request,

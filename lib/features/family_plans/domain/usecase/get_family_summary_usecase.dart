@@ -9,7 +9,7 @@ class GetFamilySummaryUseCase {
 
   final FamilySubscriptionRepository _repository;
 
-  Future<ApiResult<FamilySummaryEntity>> call() {
-    return _repository.getFamilySummary();
+  Future<ApiResult<FamilySummaryEntity>> call({String? memberId}) {
+    return _repository.getFamilySummary(memberId: memberId);
   }
 }

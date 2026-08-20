@@ -167,7 +167,8 @@ class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
 }
 
 class GetFamilySummaryEvent extends FamilyPlanEvent {
-  const GetFamilySummaryEvent();
+  final String? memberId;
+  const GetFamilySummaryEvent({this.memberId});
 }
 
 class GetFamilyPaymentMethodsEvent extends FamilyPlanEvent {

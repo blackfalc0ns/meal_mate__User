@@ -43,7 +43,7 @@ abstract class FamilySubscriptionRepository {
     int? durationDays,
     bool? includeFriday,
   });
-  Future<ApiResult<FamilySummaryEntity>> getFamilySummary();
+  Future<ApiResult<FamilySummaryEntity>> getFamilySummary({String? memberId});
   Future<ApiResult<List<PaymentMethodEntity>>> getFamilyPaymentMethods(
     double amount,
   );

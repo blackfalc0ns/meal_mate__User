@@ -1684,9 +1684,10 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<FamilySummaryResponseDto> getFamilySummary() async {
+  Future<FamilySummaryResponseDto> getFamilySummary({String? memberId}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'memberId': memberId};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<FamilySummaryResponseDto>(

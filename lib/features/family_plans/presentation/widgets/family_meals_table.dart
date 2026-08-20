@@ -37,13 +37,14 @@ class FamilyMealsTable extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.restaurant_rounded, size: 12),
+              Icon(Icons.restaurant_rounded, size: Spacing.iconSm, color: color.primary),
               const SizedBox(width: Spacing.xss),
               Text(
                 l10n.family_meals_each_member,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size12,
+                  color: color.onSurface,
                 ),
               ),
             ],
@@ -70,7 +71,7 @@ class _MemberTableRow extends StatelessWidget {
     final color = context.colorScheme;
 
     return SizedBox(
-      height: 26,
+      height: 28,
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
@@ -79,8 +80,8 @@ class _MemberTableRow extends StatelessWidget {
             Expanded(
               child: Icon(
                 checked ? Icons.check_rounded : Icons.remove_rounded,
-                color: color.primary,
-                size: 18,
+                color: checked ? color.primary : color.onSurfaceVariant,
+                size: 16,
               ),
             ),
           Expanded(
@@ -88,10 +89,10 @@ class _MemberTableRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.xss,
-                  vertical: Spacing.xs,
+                  vertical: 2,
                 ),
                 decoration: BoxDecoration(
-                  color: member.badgeColor,
+                  color: member.badgeColor ?? color.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(Spacing.radiusXs),
                 ),
                 child: Text(
@@ -99,7 +100,7 @@ class _MemberTableRow extends StatelessWidget {
                   maxLines: 1,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    color: member.badgeTextColor,
+                    color: member.badgeTextColor ?? color.primary,
                     fontSize: FontSize.size9,
                   ),
                 ),
@@ -134,7 +135,7 @@ class _TableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 17,
+      height: 20,
       child: Row(
         textDirection: TextDirection.rtl,
         children: cells
@@ -153,6 +154,7 @@ class _TableCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     return Expanded(
       child: Text(
         text,
@@ -162,11 +164,13 @@ class _TableCell extends StatelessWidget {
         style: isHeader
             ? getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
+                fontSize: FontSize.size10,
+                color: color.onSurface,
               )
             : getMediumStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size8,
+                color: color.onSurfaceVariant,
               ),
       ),
     );
@@ -180,14 +184,23 @@ class _MemberNameCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Expanded(
       child: Row(
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 6,
-            backgroundImage: AssetImage(member.imageAsset),
+          ClipOval(
+            child: member.imageAsset.isNotEmpty
+                ? Image.asset(
+                    member.imageAsset,
+                    width: 14,
+                    height: 14,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => _fallbackAvatar(context),
+                  )
+                : _fallbackAvatar(context),
           ),
           const SizedBox(width: Spacing.xss),
           Flexible(
@@ -195,14 +208,29 @@ class _MemberNameCell extends StatelessWidget {
               member.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
+                fontSize: FontSize.size10,
+                color: color.onSurface,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _fallbackAvatar(BuildContext context) {
+    final color = context.colorScheme;
+    return Container(
+      width: 14,
+      height: 14,
+      color: color.primary.withValues(alpha: 0.15),
+      child: Icon(
+        Icons.person_rounded,
+        color: color.primary,
+        size: 10,
       ),
     );
   }

@@ -84,8 +84,8 @@ class FamilySubscriptionRemoteDataSourceImpl
   }
 
   @override
-  Future<FamilySummaryResponseDto> getFamilySummary() {
-    return _apiServices.getFamilySummary();
+  Future<FamilySummaryResponseDto> getFamilySummary({String? memberId}) {
+    return _apiServices.getFamilySummary(memberId: memberId);
   }
 
   @override

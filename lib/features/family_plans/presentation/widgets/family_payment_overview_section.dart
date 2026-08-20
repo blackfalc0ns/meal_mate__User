@@ -24,10 +24,10 @@ class FamilyPaymentOverviewSection extends StatelessWidget {
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
-            color: color.primary,
+            color: color.onSurface,
           ),
         ),
-        const SizedBox(height: Spacing.xxl),
+        const SizedBox(height: Spacing.sm),
         FamilyMealsTable(members: members),
       ],
     );

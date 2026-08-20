@@ -19,7 +19,6 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -39,15 +38,17 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipOval(
-                child: Image.asset(
-                  member.imageAsset,
-                  width: Spacing.familyProgramSummaryAvatarSize,
-                  height: Spacing.familyProgramSummaryAvatarSize,
-                  fit: BoxFit.cover,
-                ),
+                child: member.imageAsset.isNotEmpty
+                    ? Image.asset(
+                        member.imageAsset,
+                        width: Spacing.familyProgramSummaryAvatarSize,
+                        height: Spacing.familyProgramSummaryAvatarSize,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => _buildDefaultAvatar(context),
+                      )
+                    : _buildDefaultAvatar(context),
               ),
               const SizedBox(width: Spacing.md),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,26 +60,28 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
                       color: color.onSurface,
                     ),
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.group_rounded,
-                        color: color.primary,
-                        size: Spacing.iconSm,
-                      ),
-                      const SizedBox(width: Spacing.xs),
-                      Text(
-                        locale.family_primary_member,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size9,
-                          color: color.onSurface,
+                  if (member.roleLabel.isNotEmpty) ...[
+                    const SizedBox(height: Spacing.xs),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.group_rounded,
+                          color: color.primary,
+                          size: Spacing.iconSm,
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          member.roleLabel,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size9,
+                            color: color.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
               Expanded(
@@ -99,6 +102,20 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           for (final row in summary.rows) FamilyPaymentSummaryRow(row: row),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultAvatar(BuildContext context) {
+    final color = context.colorScheme;
+    return Container(
+      width: Spacing.familyProgramSummaryAvatarSize,
+      height: Spacing.familyProgramSummaryAvatarSize,
+      color: color.primary.withValues(alpha: 0.12),
+      child: Icon(
+        Icons.person_rounded,
+        color: color.primary,
+        size: Spacing.iconSm,
       ),
     );
   }
