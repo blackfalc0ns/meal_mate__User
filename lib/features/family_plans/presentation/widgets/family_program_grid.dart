@@ -13,7 +13,7 @@ class FamilyProgramGrid extends StatelessWidget {
   });
 
   final List<FamilyProgramUiModel> programs;
-  final int selectedIndex;
+  final int? selectedIndex;
   final ValueChanged<int> onProgramSelected;
 
   @override

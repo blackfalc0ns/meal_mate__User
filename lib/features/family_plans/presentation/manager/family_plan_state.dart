@@ -25,18 +25,18 @@ class FamilyPlanState {
     this.addresses = const [],
     this.isProgramsLoading = false,
     this.programs = const [],
-    this.selectedProgramIndex = 0,
+    this.selectedProgramIndex,
     this.isBundlesLoading = false,
     this.bundles = const [],
-    this.selectedBundleIndex = 0,
+    this.selectedBundleIndex,
     this.isDurationsLoading = false,
     this.durations = const [],
-    this.selectedDurationIndex = 2,
+    this.selectedDurationIndex,
     this.customDurationDays,
     this.includeFriday = false,
     this.isTiersLoading = false,
     this.tiers = const [],
-    this.selectedTierIndex = 1,
+    this.selectedTierIndex,
     this.isBrowseRestaurantsLoading = false,
     this.browseRestaurants = const [],
     this.browsedTierIndex,
@@ -68,11 +68,11 @@ class FamilyPlanState {
 
   final bool isProgramsLoading;
   final List<SubscriptionProgramEntity> programs;
-  final int selectedProgramIndex;
+  final int? selectedProgramIndex;
 
   final bool isBundlesLoading;
   final List<SubscriptionBundleEntity> bundles;
-  final int selectedBundleIndex;
+  final int? selectedBundleIndex;
 
   final bool isDurationsLoading;
   final List<SubscriptionDurationEntity> durations;
@@ -127,21 +127,25 @@ class FamilyPlanState {
 
   FamilyMemberEntity? get selectedMember {
     final list = members;
-    if (list.isEmpty || selectedMemberIndex < 0 || selectedMemberIndex >= list.length) {
+    if (list.isEmpty ||
+        selectedMemberIndex < 0 ||
+        selectedMemberIndex >= list.length) {
       return null;
     }
     return list[selectedMemberIndex];
   }
 
-  SubscriptionProgramEntity? get selectedProgram =>
-      programs.isNotEmpty && selectedProgramIndex < programs.length
-          ? programs[selectedProgramIndex]
-          : null;
+  SubscriptionProgramEntity? get selectedProgram {
+    final index = selectedProgramIndex;
+    if (index == null || index < 0 || index >= programs.length) return null;
+    return programs[index];
+  }
 
-  SubscriptionBundleEntity? get selectedBundle =>
-      bundles.isNotEmpty && selectedBundleIndex < bundles.length
-          ? bundles[selectedBundleIndex]
-          : null;
+  SubscriptionBundleEntity? get selectedBundle {
+    final index = selectedBundleIndex;
+    if (index == null || index < 0 || index >= bundles.length) return null;
+    return bundles[index];
+  }
 
   SubscriptionDurationEntity? get selectedDuration {
     final index = selectedDurationIndex;
@@ -174,17 +178,21 @@ class FamilyPlanState {
     bool? isProgramsLoading,
     List<SubscriptionProgramEntity>? programs,
     int? selectedProgramIndex,
+    bool clearSelectedProgram = false,
     bool? isBundlesLoading,
     List<SubscriptionBundleEntity>? bundles,
     int? selectedBundleIndex,
+    bool clearSelectedBundle = false,
     bool? isDurationsLoading,
     List<SubscriptionDurationEntity>? durations,
     int? selectedDurationIndex,
+    bool clearSelectedDuration = false,
     int? customDurationDays,
     bool? includeFriday,
     bool? isTiersLoading,
     List<SubscriptionTierEntity>? tiers,
     int? selectedTierIndex,
+    bool clearSelectedTier = false,
     bool? isBrowseRestaurantsLoading,
     List<SubscriptionTierRestaurantBrowseEntity>? browseRestaurants,
     int? browsedTierIndex,
@@ -217,20 +225,26 @@ class FamilyPlanState {
       addresses: addresses ?? this.addresses,
       isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
       programs: programs ?? this.programs,
-      selectedProgramIndex:
-          selectedProgramIndex ?? this.selectedProgramIndex,
+      selectedProgramIndex: clearSelectedProgram
+          ? null
+          : (selectedProgramIndex ?? this.selectedProgramIndex),
       isBundlesLoading: isBundlesLoading ?? this.isBundlesLoading,
       bundles: bundles ?? this.bundles,
-      selectedBundleIndex: selectedBundleIndex ?? this.selectedBundleIndex,
+      selectedBundleIndex: clearSelectedBundle
+          ? null
+          : (selectedBundleIndex ?? this.selectedBundleIndex),
       isDurationsLoading: isDurationsLoading ?? this.isDurationsLoading,
       durations: durations ?? this.durations,
-      selectedDurationIndex:
-          selectedDurationIndex ?? this.selectedDurationIndex,
+      selectedDurationIndex: clearSelectedDuration
+          ? null
+          : (selectedDurationIndex ?? this.selectedDurationIndex),
       customDurationDays: customDurationDays ?? this.customDurationDays,
       includeFriday: includeFriday ?? this.includeFriday,
       isTiersLoading: isTiersLoading ?? this.isTiersLoading,
       tiers: tiers ?? this.tiers,
-      selectedTierIndex: selectedTierIndex ?? this.selectedTierIndex,
+      selectedTierIndex: clearSelectedTier
+          ? null
+          : (selectedTierIndex ?? this.selectedTierIndex),
       isBrowseRestaurantsLoading:
           isBrowseRestaurantsLoading ?? this.isBrowseRestaurantsLoading,
       browseRestaurants: clearBrowseRestaurants

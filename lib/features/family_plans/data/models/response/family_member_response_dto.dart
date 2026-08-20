@@ -66,10 +66,15 @@ class FamilyMemberResponseDto {
       if (val == null) return null;
       if (val is num) return val.toInt();
       if (val is String) {
-        final lower = val.toLowerCase();
+        final lower = val.toLowerCase().trim();
         if (lower == 'basic' || lower == 'select' || lower == '1') return 1;
-        if (lower == 'plus' || lower == '2') return 2;
-        if (lower == 'max' || lower == '3') return 3;
+        if (lower == 'platinum' ||
+            lower == 'plat' ||
+            lower == 'plus' ||
+            lower == '2') {
+          return 2;
+        }
+        if (lower == 'elite' || lower == 'max' || lower == '3') return 3;
         return int.tryParse(val);
       }
       return null;

@@ -325,11 +325,12 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         final programs = result.data
             .where((p) => p.programId.isNotEmpty)
             .toList();
-        int progIdx = 0;
+        int? progIdx;
         final selectedMember = state.selectedMember;
-        if (selectedMember?.programId != null) {
+        if (selectedMember?.programId != null &&
+            selectedMember!.programId!.isNotEmpty) {
           final found = programs.indexWhere(
-            (p) => p.programId == selectedMember!.programId,
+            (p) => p.programId == selectedMember.programId,
           );
           if (found != -1) {
             progIdx = found;
@@ -340,6 +341,7 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
             isProgramsLoading: false,
             programs: programs,
             selectedProgramIndex: progIdx,
+            clearSelectedProgram: progIdx == null,
           ),
         );
       case ApiErrorResult():
@@ -384,14 +386,16 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
       ),
     );
 
-    if (member.programId != null && member.programId!.isNotEmpty) {
-      _loadMemberBundlesAndSelections(member);
-    }
+    _loadMemberBundlesAndSelections(member);
   }
 
   Future<void> _loadMemberBundlesAndSelections(FamilyMemberEntity member) async {
-    final programId = member.programId;
-    if (programId == null || programId.isEmpty) return;
+    final programId = member.programId ??
+        state.selectedProgram?.programId ??
+        (state.programs.isNotEmpty ? state.programs.first.programId : null);
+    if (programId == null || programId.isEmpty) {
+      return;
+    }
 
     emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
     final result = await _getFamilyProgramBundlesUseCase(programId);
@@ -406,6 +410,12 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
           if (foundIdx != -1) {
             bundleIdx = foundIdx;
           }
+        } else if (bundles.isNotEmpty) {
+          // If member has no bundle selected yet, select & save first bundle
+          _saveMemberPlan(
+            memberId: member.memberId,
+            bundleId: bundles.first.bundleId,
+          );
         }
 
         emit(
@@ -451,7 +461,7 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     final tiersResult = await _getSubscriptionTiersUseCase(
       programId: programId,
       bundleId: bundleId,
-      durationDays: null,
+      durationDays: member.durationDays,
       includeFriday: member.includeFriday,
     );
 
@@ -463,24 +473,24 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         ? (tiersResult as ApiSuccessResult).data
         : state.tiers;
 
-    int? durationIdx;
+    int durationIdx = 0;
     if (member.durationDays != null) {
       final foundDurIdx =
           durations.indexWhere((d) => d.durationDays == member.durationDays);
       if (foundDurIdx != -1) {
         durationIdx = foundDurIdx;
       }
+    } else if (durations.isNotEmpty) {
+      final defaultIdx = durations.indexWhere((d) => d.durationDays == 26);
+      if (defaultIdx != -1) {
+        durationIdx = defaultIdx;
+      }
     }
 
-    int? tierIdx;
+    int tierIdx = 0;
     if (member.selectedTier != null) {
       final foundTierIdx = tiers.indexWhere((t) {
-        final tNum = int.tryParse(t.tier) ??
-            (t.nameEn.toLowerCase().contains('elite')
-                ? 3
-                : t.nameEn.toLowerCase().contains('plat')
-                    ? 2
-                    : 1);
+        final tNum = _parseTierToInt(t.tier, t.nameEn) ?? (tiers.indexOf(t) + 1);
         return tNum == member.selectedTier;
       });
       if (foundTierIdx != -1) {
@@ -497,15 +507,42 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         isTiersLoading: false,
         durations: durations,
         tiers: tiers,
-        selectedDurationIndex: durationIdx ?? state.selectedDurationIndex,
-        selectedTierIndex: tierIdx ?? state.selectedTierIndex,
+        selectedDurationIndex: durationIdx,
+        selectedTierIndex: tierIdx,
         includeFriday: member.includeFriday,
         customDurationDays: member.durationDays,
       ),
     );
   }
 
-
+  int? _parseTierToInt(String tierStr, [String? nameEn]) {
+    final direct = int.tryParse(tierStr);
+    if (direct != null) return direct;
+    final lower = tierStr.toLowerCase().trim();
+    final name = (nameEn ?? '').toLowerCase().trim();
+    if (lower == 'basic' ||
+        lower == 'select' ||
+        lower == '1' ||
+        name.contains('basic')) {
+      return 1;
+    }
+    if (lower == 'platinum' ||
+        lower == 'plat' ||
+        lower == 'plus' ||
+        lower == '2' ||
+        name.contains('plat') ||
+        name.contains('plus')) {
+      return 2;
+    }
+    if (lower == 'elite' ||
+        lower == 'max' ||
+        lower == '3' ||
+        name.contains('elite') ||
+        name.contains('max')) {
+      return 3;
+    }
+    return null;
+  }
 
   Future<void> _getBundles(String programId) async {
     emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
@@ -653,7 +690,8 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     final member = state.selectedMember;
     if (member != null && state.tiers.length > tierIndex) {
       final tier = state.tiers[tierIndex];
-      final tierInt = int.tryParse(tier.tier) ?? (tierIndex + 1);
+      final tierInt =
+          _parseTierToInt(tier.tier, tier.nameEn) ?? (tierIndex + 1);
       _saveMemberPlan(
         memberId: member.memberId,
         tier: tierInt,

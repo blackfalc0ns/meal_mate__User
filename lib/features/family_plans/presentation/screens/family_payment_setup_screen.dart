@@ -128,17 +128,16 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
             roleLabel: selectedMember.isManager ? locale.family_owner : '',
           )
         : (members.isNotEmpty
-            ? FamilyProgramMemberDetailsUiModel(
-                name: members.first.displayName,
-                imageAsset: '',
-                age: '${members.first.ageYears} ${locale.family_year}',
-                gender: members.first.gender == 2
-                    ? locale.family_gender_female
-                    : locale.family_gender_male,
-                roleLabel:
-                    members.first.isManager ? locale.family_owner : '',
-              )
-            : null);
+              ? FamilyProgramMemberDetailsUiModel(
+                  name: members.first.displayName,
+                  imageAsset: '',
+                  age: '${members.first.ageYears} ${locale.family_year}',
+                  gender: members.first.gender == 2
+                      ? locale.family_gender_female
+                      : locale.family_gender_male,
+                  roleLabel: members.first.isManager ? locale.family_owner : '',
+                )
+              : null);
 
     final selectionSummary = summary != null
         ? FamilySelectionSummaryData(
@@ -223,9 +222,9 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
                 FamilyProgramMemberStrip(
                   members: displayedMembers,
                   onSelectMember: (index) {
-                    context
-                        .read<FamilyPlanViewModel>()
-                        .doIntent(SelectFamilyMemberEvent(index));
+                    context.read<FamilyPlanViewModel>().doIntent(
+                      SelectFamilyMemberEvent(index),
+                    );
                   },
                 ),
               const SizedBox(height: Spacing.md),
