@@ -34,7 +34,7 @@ import 'package:meal_meat_user/features/profile/data/models/response/customer_pr
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
-import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_duration/data/models/response/subscription_duration_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
@@ -44,8 +44,8 @@ import 'package:meal_meat_user/features/payment/data/models/response/payment_met
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';

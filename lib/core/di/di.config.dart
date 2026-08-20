@@ -194,6 +194,36 @@ import '../services/language_service.dart' as _i819;
 import '../services/retry_interceptor.dart' as _i844;
 import '../services/token_interceptor.dart' as _i1056;
 import '../services/token_service.dart' as _i227;
+import '../subscription_duration/data/data_source/subscription_duration_remote_data_source.dart'
+    as _i286;
+import '../subscription_duration/data/data_source/subscription_duration_remote_data_source_impl.dart'
+    as _i866;
+import '../subscription_duration/data/repo/subscription_duration_repository_impl.dart'
+    as _i593;
+import '../subscription_duration/domain/repo/subscription_duration_repository.dart'
+    as _i395;
+import '../subscription_duration/domain/usecase/get_subscription_durations_usecase.dart'
+    as _i809;
+import '../subscription_packages/data/data_source/subscription_packages_remote_data_source.dart'
+    as _i978;
+import '../subscription_packages/data/data_source/subscription_packages_remote_data_source_impl.dart'
+    as _i461;
+import '../subscription_packages/data/repo/subscription_packages_repository_impl.dart'
+    as _i384;
+import '../subscription_packages/domain/repo/subscription_packages_repository.dart'
+    as _i678;
+import '../subscription_packages/domain/usecase/get_subscription_packages_usecase.dart'
+    as _i537;
+import '../subscription_programs/data/data_source/subscription_programs_remote_data_source.dart'
+    as _i573;
+import '../subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart'
+    as _i829;
+import '../subscription_programs/data/repo/subscription_programs_repository_impl.dart'
+    as _i995;
+import '../subscription_programs/domain/repo/subscription_programs_repository.dart'
+    as _i1047;
+import '../subscription_programs/domain/usecase/get_subscription_programs_usecase.dart'
+    as _i314;
 import '../upload_file/data/data_source/upload_file_remote_data_source.dart'
     as _i99;
 import '../upload_file/data/data_source/upload_file_remote_data_source_impl.dart'
@@ -269,6 +299,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.factory<_i286.SubscriptionDurationRemoteDataSource>(
+      () => _i866.SubscriptionDurationRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i961.FoodPreferencesRemoteDataSource>(
       () => _i194.FoodPreferencesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -294,6 +329,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1060.SubscriptionSummaryRepository>(
       () => _i636.SubscriptionSummaryRepositoryImpl(
         gh<_i155.SubscriptionSummaryRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i395.SubscriptionDurationRepository>(
+      () => _i593.SubscriptionDurationRepositoryImpl(
+        gh<_i286.SubscriptionDurationRemoteDataSource>(),
       ),
     );
     gh.factory<_i996.PaymentRepository>(
@@ -356,14 +396,29 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i253.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i978.SubscriptionPackagesRemoteDataSource>(
+      () => _i461.SubscriptionPackagesRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i62.FoodPreferencesRepository>(
       () => _i1070.FoodPreferencesRepositoryImpl(
         gh<_i961.FoodPreferencesRemoteDataSource>(),
       ),
     );
+    gh.factory<_i573.SubscriptionProgramsRemoteDataSource>(
+      () => _i829.SubscriptionProgramsRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i845.ChangeCustomerPasswordUseCase>(
       () => _i845.ChangeCustomerPasswordUseCase(
         gh<_i229.ChangePasswordRepository>(),
+      ),
+    );
+    gh.factory<_i809.GetSubscriptionDurationsUseCase>(
+      () => _i809.GetSubscriptionDurationsUseCase(
+        gh<_i395.SubscriptionDurationRepository>(),
       ),
     );
     gh.factory<_i892.AuthViewModel>(
@@ -426,6 +481,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i311.ProfileRepository>(
       () => _i1015.ProfileRepositoryImpl(gh<_i998.ProfileRemoteDataSource>()),
     );
+    gh.factory<_i1047.SubscriptionProgramsRepository>(
+      () => _i995.SubscriptionProgramsRepositoryImpl(
+        gh<_i573.SubscriptionProgramsRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i422.UploadFileRepository>(
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
@@ -459,6 +519,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i356.SubscriptionSummaryViewModel>(
       () => _i356.SubscriptionSummaryViewModel(
         gh<_i926.GetSubscriptionSummaryUseCase>(),
+      ),
+    );
+    gh.factory<_i678.SubscriptionPackagesRepository>(
+      () => _i384.SubscriptionPackagesRepositoryImpl(
+        gh<_i978.SubscriptionPackagesRemoteDataSource>(),
       ),
     );
     gh.factory<_i866.SubscriptionTypesRepository>(
@@ -517,6 +582,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i101.GetSubscriptionTiersUseCase>(
       () => _i101.GetSubscriptionTiersUseCase(
         gh<_i986.SubscriptionPlanRepository>(),
+      ),
+    );
+    gh.factory<_i314.GetSubscriptionProgramsUseCase>(
+      () => _i314.GetSubscriptionProgramsUseCase(
+        gh<_i1047.SubscriptionProgramsRepository>(),
+      ),
+    );
+    gh.factory<_i537.GetSubscriptionPackagesUseCase>(
+      () => _i537.GetSubscriptionPackagesUseCase(
+        gh<_i678.SubscriptionPackagesRepository>(),
       ),
     );
     gh.factory<_i527.SubscriptionPlanViewModel>(

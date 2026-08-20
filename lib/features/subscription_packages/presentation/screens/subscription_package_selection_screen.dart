@@ -12,7 +12,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_state.dart';

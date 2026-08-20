@@ -8,12 +8,12 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
+import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_details_content.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_duration_selector.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_readiness_bottom_sheet.dart';
@@ -133,7 +133,7 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                         plan: plan,
                         imageAsset: Assets.monthlyPlanHero,
                         imageUrl: null,
-                        durationSelector: MonthlyPlanDurationSelector(
+                        durationSelector: SubscriptionDurationSelector(
                           selectedIndex: state.selectedDurationIndex,
                           onSelected: (index) => context
                               .read<SubscriptionPlanViewModel>()
