@@ -179,17 +179,28 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         final flow = result.data;
+        final selectedIndex = (state.selectedMemberIndex >= 0 &&
+                state.selectedMemberIndex < flow.members.length)
+            ? state.selectedMemberIndex
+            : 0;
+        final member =
+            flow.members.isNotEmpty ? flow.members[selectedIndex] : null;
+
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: flow),
+          state.copyWith(
+            isCurrentFlowLoading: false,
+            currentFlow: flow,
+            selectedMemberIndex: selectedIndex,
+            includeFriday: member?.includeFriday ?? state.includeFriday,
+            customDurationDays: member?.durationDays ?? state.customDurationDays,
+          ),
         );
-        if (flow.members.isNotEmpty) {
-          final member = (state.selectedMemberIndex >= 0 &&
-                  state.selectedMemberIndex < flow.members.length)
-              ? flow.members[state.selectedMemberIndex]
-              : flow.members.first;
+
+        if (member != null) {
           if (member.programId != null && member.programId!.isNotEmpty) {
             _selectProgramById(member.programId!);
           }
+          await _loadMemberBundlesAndSelections(member);
         }
       case ApiErrorResult():
         emit(
