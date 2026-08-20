@@ -27,14 +27,30 @@ class FamilyProgramSummaryCard extends StatelessWidget {
       child: Row(
         children: [
           ClipOval(
-            child: Image.asset(
-              member.imageAsset,
-              width: Spacing.familyProgramSummaryAvatarSize,
-              height: Spacing.familyProgramSummaryAvatarSize,
-              fit: BoxFit.cover,
-            ),
+            child: member.imageAsset.isNotEmpty
+                ? Image.asset(
+                    member.imageAsset,
+                    width: Spacing.familyProgramSummaryAvatarSize,
+                    height: Spacing.familyProgramSummaryAvatarSize,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => Icon(
+                      Icons.person_rounded,
+                      color: color.primary,
+                      size: Spacing.familyProgramSummaryAvatarSize,
+                    ),
+                  )
+                : Container(
+                    width: Spacing.familyProgramSummaryAvatarSize,
+                    height: Spacing.familyProgramSummaryAvatarSize,
+                    color: color.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.person_rounded,
+                      color: color.primary,
+                      size: Spacing.iconMd,
+                    ),
+                  ),
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.xs),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -42,13 +58,15 @@ class FamilyProgramSummaryCard extends StatelessWidget {
               children: [
                 Text(
                   member.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,
                     color: color.onSurface,
                   ),
                 ),
-                const SizedBox(height: Spacing.sm),
+                const SizedBox(height: Spacing.xs),
                 Row(
                   children: [
                     Icon(
@@ -56,50 +74,60 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                       size: Spacing.iconSm,
                       color: color.primary,
                     ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      member.age,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
+                    const SizedBox(width: Spacing.xss),
+                    Flexible(
+                      child: Text(
+                        member.age,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: Spacing.md),
-                    Container(
-                      width: Spacing.xss,
-                      height: Spacing.xss,
-                      decoration: BoxDecoration(
-                        color: color.primary,
-                        shape: BoxShape.circle,
+                    if (member.gender.isNotEmpty) ...[
+                      const SizedBox(width: Spacing.xs),
+                      Container(
+                        width: Spacing.xss,
+                        height: Spacing.xss,
+                        decoration: BoxDecoration(
+                          color: color.primary,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: Spacing.md),
-                    Text(
-                      member.gender,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
+                      const SizedBox(width: Spacing.xs),
+                      Flexible(
+                        child: Text(
+                          member.gender,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],
             ),
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.xs),
           FamilyProgramSummaryMetric(
             value: member.goal,
             label: locale.family_selected_member_goal_label,
             icon: Icons.balance_rounded,
           ),
-          const SizedBox(width: Spacing.sm),
+          const SizedBox(width: Spacing.xs),
           SizedBox(
             height: Spacing.familyProgramSummaryDividerHeight,
             child: VerticalDivider(color: color.outlineVariant),
           ),
-          const SizedBox(width: Spacing.sm),
+          const SizedBox(width: Spacing.xs),
           FamilyProgramSummaryMetric(
             value: member.activityLevel,
             label: locale.family_activity_level,

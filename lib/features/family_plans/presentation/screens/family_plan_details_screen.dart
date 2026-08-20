@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -73,7 +72,7 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
                                 onPressed: () {},
                                 height: Spacing.compactButtonHeight,
                                 borderRadius: Spacing.buttonSmallRadius,
-                                gradient: AppColors.primaryGradient,
+                                color: color.primary,
                                 fontSize: FontSize.size17,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -89,3 +88,4 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
     );
   }
 }
+

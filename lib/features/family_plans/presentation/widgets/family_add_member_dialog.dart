@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -20,7 +19,7 @@ class FamilyAddMemberDialog extends StatefulWidget {
       barrierColor: color.scrim,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: color.surface.withValues(alpha: 0),
       builder: (_) => const FamilyAddMemberDialog(),
     );
   }
@@ -159,7 +158,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                 onPressed: () => Navigator.pop(context),
                 height: Spacing.compactButtonHeight,
                 borderRadius: Spacing.buttonSmallRadius,
-                gradient: AppColors.primaryGradient,
+                color: color.primary,
                 fontSize: FontSize.size17,
                 fontWeight: FontWeight.w600,
               ),

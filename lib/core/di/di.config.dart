@@ -70,6 +70,8 @@ import '../../features/change_password/domain/repo/change_password_repository.da
     as _i229;
 import '../../features/change_password/domain/usecase/change_customer_password_usecase.dart'
     as _i845;
+import '../../features/family_plans/presentation/manager/family_plan_view_model.dart'
+    as _i967;
 import '../../features/food_preferences/data/data_source/food_preferences_remote_data_source.dart'
     as _i961;
 import '../../features/food_preferences/data/data_source/food_preferences_remote_data_source_impl.dart'
@@ -534,6 +536,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i556.AddressesRepository>(
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
+    );
+    gh.factory<_i967.FamilyPlanViewModel>(
+      () => _i967.FamilyPlanViewModel(
+        gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+        gh<_i809.GetSubscriptionDurationsUseCase>(),
+      ),
     );
     gh.factory<_i247.GetSubscriptionTypesUseCase>(
       () => _i247.GetSubscriptionTypesUseCase(

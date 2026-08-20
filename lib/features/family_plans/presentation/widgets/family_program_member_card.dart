@@ -33,12 +33,28 @@ class FamilyProgramMemberCard extends StatelessWidget {
       child: Row(
         children: [
           ClipOval(
-            child: Image.asset(
-              member.imageAsset,
-              width: Spacing.familyProgramMemberAvatarSize,
-              height: Spacing.familyProgramMemberAvatarSize,
-              fit: BoxFit.cover,
-            ),
+            child: member.imageAsset.isNotEmpty
+                ? Image.asset(
+                    member.imageAsset,
+                    width: Spacing.familyProgramMemberAvatarSize,
+                    height: Spacing.familyProgramMemberAvatarSize,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => Icon(
+                      Icons.person_rounded,
+                      color: color.primary,
+                      size: Spacing.familyProgramMemberAvatarSize,
+                    ),
+                  )
+                : Container(
+                    width: Spacing.familyProgramMemberAvatarSize,
+                    height: Spacing.familyProgramMemberAvatarSize,
+                    color: color.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.person_rounded,
+                      color: color.primary,
+                      size: Spacing.iconSm,
+                    ),
+                  ),
           ),
           const SizedBox(width: Spacing.xs),
           Flexible(

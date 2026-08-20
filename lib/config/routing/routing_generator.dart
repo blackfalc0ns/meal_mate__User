@@ -138,9 +138,11 @@ class RouteGenerator {
           page: const FamilyProgramSetupScreen(),
         );
       case AppRoutes.familyPackageDaysSetup:
+        final programId =
+            settings.arguments is String ? settings.arguments as String : null;
         return _buildRoute(
           settings: settings,
-          page: const FamilyPackageDaysSetupScreen(),
+          page: FamilyPackageDaysSetupScreen(programId: programId),
         );
       case AppRoutes.familyPaymentSetup:
         return _buildRoute(

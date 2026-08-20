@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
 
 class FamilyProgramCard extends StatelessWidget {
@@ -28,37 +29,39 @@ class FamilyProgramCard extends StatelessWidget {
     return Material(
       color: color.surface.withValues(alpha: 0),
       borderRadius: BorderRadius.circular(
-        isSelected
-            ? Spacing.familyProgramCardSelectedRadius
-            : Spacing.familyProgramCardRadius,
+        Spacing.familyProgramCardSelectedRadius,
       ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(
-          isSelected
-              ? Spacing.familyProgramCardSelectedRadius
-              : Spacing.familyProgramCardRadius,
+          Spacing.familyProgramCardSelectedRadius,
         ),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Container(
               height: Spacing.familyProgramCardHeight,
-              padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.md,
+                vertical: Spacing.xs,
+              ),
               decoration: BoxDecoration(
-                color: color.surface,
-                border: Border.all(
-                  color: isSelected ? borderColor : color.outlineVariant,
-                ),
+                color: isSelected
+                    ? color.primaryContainer.withValues(alpha: 0.12)
+                    : color.surface,
                 borderRadius: BorderRadius.circular(
-                  isSelected
-                      ? Spacing.familyProgramCardSelectedRadius
-                      : Spacing.familyProgramCardRadius,
+                  Spacing.familyProgramCardSelectedRadius,
+                ),
+                border: Border.all(
+                  color: isSelected ? color.primary : borderColor,
+                  width: isSelected
+                      ? Spacing.familySelectedBorderWidth
+                      : Spacing.border,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.10),
-                    blurRadius: Spacing.xs,
+                    color: color.shadow.withValues(alpha: 0.04),
+                    blurRadius: Spacing.md,
                     offset: const Offset(0, Spacing.xs),
                   ),
                 ],
@@ -67,8 +70,8 @@ class FamilyProgramCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           program.title,
@@ -76,7 +79,7 @@ class FamilyProgramCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
+                            fontSize: FontSize.size11,
                             color: color.onSurface,
                           ),
                         ),
@@ -97,17 +100,12 @@ class FamilyProgramCard extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.sm),
                   if (program.imageAsset.startsWith('http'))
-                    Image.network(
-                      program.imageAsset,
+                    AppCachedNetworkImage(
+                      imageUrl: program.imageAsset,
                       width: Spacing.familyProgramImageSize,
                       height: Spacing.familyProgramImageSize,
                       fit: BoxFit.contain,
-                      errorBuilder:
-                          (_, _, _) => Icon(
-                            Icons.restaurant_rounded,
-                            color: color.primary,
-                            size: Spacing.familyProgramImageSize,
-                          ),
+                      semanticLabel: program.title,
                     )
                   else if (program.imageAsset.isNotEmpty)
                     Image.asset(

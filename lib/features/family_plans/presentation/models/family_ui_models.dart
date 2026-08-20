@@ -90,13 +90,17 @@ class FamilyPackageOptionUiModel {
   const FamilyPackageOptionUiModel({
     required this.title,
     required this.description,
-    required this.icon,
+    this.icon = FamilyPackageOptionIcon.appleCutlery,
+    this.imageUrl,
+    this.imageAsset = '',
     this.isSelected = false,
   });
 
   final String title;
   final String description;
   final FamilyPackageOptionIcon icon;
+  final String? imageUrl;
+  final String imageAsset;
   final bool isSelected;
 }
 

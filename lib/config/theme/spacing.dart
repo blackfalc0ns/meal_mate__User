@@ -261,7 +261,7 @@ class Spacing {
   static const double familyProgramBottomNavGap = 230.0;
   static const double familyPackageTitleTopGap = 18.0;
   static const double familyPackageOptionsTopGap = 14.0;
-  static const double familyPackageOptionHeight = 112.0;
+  static const double familyPackageOptionHeight = 150.0;
   static const double familyPackageOptionIconRadius = 16.0;
   static const double familyDayOptionHeight = 28.0;
   static const double familyFridayCardHeight = 40.0;

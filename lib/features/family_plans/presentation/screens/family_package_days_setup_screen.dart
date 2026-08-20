@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tiers_section.dart';
+import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_state.dart';
+import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_view_model.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_day_options_row.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_friday_delivery_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_options_grid.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_payment_note_card.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_program_actions.dart';
@@ -22,18 +27,14 @@ import 'package:meal_meat_user/features/family_plans/presentation/widgets/family
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({
     super.key,
+    this.programId,
     this.members = const [],
     this.selectedMember,
-    this.packageOptions = const [],
-    this.dayOptions = const [],
-    this.summary,
   });
 
+  final String? programId;
   final List<FamilyProgramMemberUiModel> members;
   final FamilyProgramMemberDetailsUiModel? selectedMember;
-  final List<FamilyPackageOptionUiModel> packageOptions;
-  final List<FamilyDayOptionUiModel> dayOptions;
-  final FamilySelectionSummaryData? summary;
 
   @override
   State<FamilyPackageDaysSetupScreen> createState() =>
@@ -42,11 +43,6 @@ class FamilyPackageDaysSetupScreen extends StatefulWidget {
 
 class _FamilyPackageDaysSetupScreenState
     extends State<FamilyPackageDaysSetupScreen> {
-  int _selectedPackageIndex = 0;
-  int _selectedDayIndex = 0;
-  int _selectedTierIndex = 1;
-  bool _fridayDeliverySelected = true;
-
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -56,7 +52,7 @@ class _FamilyPackageDaysSetupScreenState
         widget.members.isNotEmpty
             ? widget.members
             : [
-              FamilyProgramMemberUiModel(
+              const FamilyProgramMemberUiModel(
                 name: 'Yahya',
                 imageAsset: '',
                 status: '',
@@ -77,54 +73,6 @@ class _FamilyPackageDaysSetupScreenState
               activityLevel: '',
             )
             : null);
-
-    final packageOptions =
-        widget.packageOptions.isNotEmpty
-            ? widget.packageOptions
-            : [
-              FamilyPackageOptionUiModel(
-                title: locale.family_subscription_package_value,
-                description: locale.subscription_summary_daily_meals,
-                icon: FamilyPackageOptionIcon.appleCutlery,
-              ),
-              FamilyPackageOptionUiModel(
-                title: locale.family_package_three_meals_title,
-                description: locale.family_package_three_meals_description,
-                icon: FamilyPackageOptionIcon.cutlery,
-              ),
-              FamilyPackageOptionUiModel(
-                title: locale.family_package_two_meals_title,
-                description: locale.family_package_two_meals_description,
-                icon: FamilyPackageOptionIcon.cutlery,
-              ),
-            ];
-
-    final selectedPackageOptions = List<FamilyPackageOptionUiModel>.generate(
-      packageOptions.length,
-      (index) => FamilyPackageOptionUiModel(
-        title: packageOptions[index].title,
-        description: packageOptions[index].description,
-        icon: packageOptions[index].icon,
-        isSelected: index == _selectedPackageIndex,
-      ),
-    );
-
-    final effectiveDayOptions =
-        widget.dayOptions.isNotEmpty
-            ? widget.dayOptions
-            : [
-              FamilyDayOptionUiModel(label: locale.family_days_7),
-              FamilyDayOptionUiModel(label: locale.family_days_14),
-              FamilyDayOptionUiModel(label: locale.family_days_30),
-            ];
-
-    final selectedDayOptions = List<FamilyDayOptionUiModel>.generate(
-      effectiveDayOptions.length,
-      (index) => FamilyDayOptionUiModel(
-        label: effectiveDayOptions[index].label,
-        isSelected: index == _selectedDayIndex,
-      ),
-    );
 
     final tierOptions = [
       RestaurantPackageTierUiModel(
@@ -150,139 +98,196 @@ class _FamilyPackageDaysSetupScreenState
       ),
     ];
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        showBackButton: true,
-        titleWidget: Column(
-          children: [
-            Text(
-              locale.family_setup_title,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size13,
-                color: color.onSurface,
+    return BlocProvider<FamilyPlanViewModel>(
+      create: (_) {
+        final vm = getIt<FamilyPlanViewModel>();
+        if (widget.programId != null && widget.programId!.isNotEmpty) {
+          vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
+        } else {
+          vm.doIntent(const GetFamilyProgramsEvent());
+        }
+        return vm;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+          showBackButton: true,
+          titleWidget: Column(
+            children: [
+              Text(
+                locale.family_setup_title,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.onSurface,
+                ),
               ),
-            ),
-            Text(
-              locale.family_setup_subtitle,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
-                color: color.onSurfaceVariant,
+              Text(
+                locale.family_setup_subtitle,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size9,
+                  color: color.onSurfaceVariant,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.familySetupHorizontalPadding,
-              ),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate.fixed([
-                  FamilySetupHeaderBadge(),
-                  const SizedBox(
-                    height: Spacing.familyProgramProgressTopGap,
-                  ),
-                  const FamilyProgramStepper(
-                    currentStep: 2,
-                    includeFamilyCreationStep: true,
-                  ),
-                  const SizedBox(
-                    height: Spacing.familyProgramMemberTopGap,
-                  ),
-                  if (displayedMembers.isNotEmpty)
-                    FamilyProgramMemberStrip(members: displayedMembers),
-                  const SizedBox(
-                    height: Spacing.familyProgramSummaryTopGap,
-                  ),
-                  if (activeMember != null)
-                    FamilyProgramSummaryCard(member: activeMember),
-                  const SizedBox(height: Spacing.familyPackageTitleTopGap),
-                  Text(
-                    locale.family_package_choose_title,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onSurface,
+        body: SafeArea(
+          child: BlocBuilder<FamilyPlanViewModel, FamilyPlanState>(
+            builder: (context, state) {
+              final displayedPackages =
+                  state.bundles
+                      .map(
+                        (b) => FamilyPackageOptionUiModel(
+                          title: b.name(locale.localeName),
+                          description: b.description(locale.localeName),
+                          imageUrl: b.imageUrl,
+                        ),
+                      )
+                      .toList();
+
+              final selectedPackageOptions =
+                  List<FamilyPackageOptionUiModel>.generate(
+                    displayedPackages.length,
+                    (index) => FamilyPackageOptionUiModel(
+                      title: displayedPackages[index].title,
+                      description: displayedPackages[index].description,
+                      imageUrl: displayedPackages[index].imageUrl,
+                      imageAsset: displayedPackages[index].imageAsset,
+                      isSelected: index == state.selectedBundleIndex,
+                    ),
+                  );
+
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.familySetupHorizontalPadding,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate.fixed([
+                        const FamilySetupHeaderBadge(),
+                        const SizedBox(
+                          height: Spacing.familyProgramProgressTopGap,
+                        ),
+                        const FamilyProgramStepper(
+                          currentStep: 2,
+                          includeFamilyCreationStep: true,
+                        ),
+                        const SizedBox(
+                          height: Spacing.familyProgramMemberTopGap,
+                        ),
+                        if (displayedMembers.isNotEmpty)
+                          FamilyProgramMemberStrip(members: displayedMembers),
+                        const SizedBox(
+                          height: Spacing.familyProgramSummaryTopGap,
+                        ),
+                        if (activeMember != null)
+                          FamilyProgramSummaryCard(member: activeMember),
+                        const SizedBox(
+                          height: Spacing.familyPackageTitleTopGap,
+                        ),
+                        Text(
+                          locale.family_package_choose_title,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size12,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.xs),
+                        Text(
+                          locale.family_package_choose_subtitle,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: Spacing.familyPackageOptionsTopGap,
+                        ),
+                        if (state.isBundlesLoading && state.bundles.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: Spacing.lg,
+                            ),
+                            child: Center(child: LoadingWidget()),
+                          )
+                        else if (selectedPackageOptions.isNotEmpty)
+                          FamilyPackageOptionsGrid(
+                            options: selectedPackageOptions,
+                            onOptionSelected: (index) {
+                              context.read<FamilyPlanViewModel>().doIntent(
+                                    SelectFamilyBundleEvent(index),
+                                  );
+                            },
+                          ),
+                        const SizedBox(height: Spacing.md),
+                        if (state.isDurationsLoading && state.durations.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: Spacing.lg,
+                            ),
+                            child: Center(child: LoadingWidget()),
+                          )
+                        else if (state.durations.isNotEmpty)
+                          SubscriptionDurationSelector(
+                            selectedIndex: state.selectedDurationIndex,
+                            onSelected: (index) => context
+                                .read<FamilyPlanViewModel>()
+                                .doIntent(
+                                  SelectFamilyDurationEvent(index),
+                                ),
+                            includesFriday: state.includeFriday,
+                            onFridayChanged: (value) => context
+                                .read<FamilyPlanViewModel>()
+                                .doIntent(
+                                  ToggleFamilyFridayEvent(value),
+                                ),
+                            customDurationDays: state.customDurationDays,
+                            onCustomDurationChanged: (value) => context
+                                .read<FamilyPlanViewModel>()
+                                .doIntent(
+                                  UpdateFamilyCustomDurationEvent(value),
+                                ),
+                            durations: state.durations,
+                            isFridayEnabled: true,
+                            isLoading: state.isDurationsLoading,
+                          ),
+                        const SizedBox(height: Spacing.lg),
+                        RestaurantPackageTiersSection(
+                          packages: tierOptions,
+                          selectedIndex: state.selectedTierIndex,
+                          onSelected: (index) => context
+                              .read<FamilyPlanViewModel>()
+                              .doIntent(
+                                SelectFamilyTierEvent(index),
+                              ),
+                          onBrowseRestaurants: (index) {},
+                        ),
+                        const SizedBox(height: Spacing.lg),
+                        const FamilyPaymentNoteCard(),
+                        const SizedBox(height: Spacing.md),
+                        FamilyProgramActions(
+                          nextText: locale.family_next_payment,
+                          nextIcon: Icons.credit_card_rounded,
+                          onNextPressed:
+                              () => context.pushNamed(
+                                AppRoutes.familyPaymentSetup,
+                              ),
+                        ),
+                        const SizedBox(height: Spacing.xxxl),
+                      ]),
                     ),
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  Text(
-                    locale.family_package_choose_subtitle,
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: Spacing.familyPackageOptionsTopGap,
-                  ),
-                  FamilyPackageOptionsGrid(
-                    options: selectedPackageOptions,
-                    onOptionSelected:
-                        (index) => setState(
-                          () => _selectedPackageIndex = index,
-                        ),
-                  ),
-                  const SizedBox(height: Spacing.md),
-                  Text(
-                    locale.family_days_choose_title,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.base),
-                  FamilyDayOptionsRow(
-                    options: selectedDayOptions,
-                    onOptionSelected:
-                        (index) => setState(
-                          () => _selectedDayIndex = index,
-                        ),
-                  ),
-                  const SizedBox(height: Spacing.lg),
-                  FamilyFridayDeliveryCard(
-                    selected: _fridayDeliverySelected,
-                    onChanged:
-                        (selected) => setState(
-                          () => _fridayDeliverySelected = selected,
-                        ),
-                  ),
-                  const SizedBox(height: Spacing.lg),
-                  RestaurantPackageTiersSection(
-                    packages: tierOptions,
-                    selectedIndex: _selectedTierIndex,
-                    onSelected: (index) => setState(
-                      () => _selectedTierIndex = index,
-                    ),
-                    onBrowseRestaurants: (index) {},
-                  ),
-                  const SizedBox(height: Spacing.lg),
-                  const FamilyPaymentNoteCard(),
-                  const SizedBox(height: Spacing.md),
-                  FamilyProgramActions(
-                    nextText: locale.family_next_payment,
-                    nextIcon: Icons.credit_card_rounded,
-                    onNextPressed:
-                        () => context.pushNamed(
-                          AppRoutes.familyPaymentSetup,
-                        ),
-                  ),
-                  const SizedBox(height: Spacing.xxxl),
-                ]),
-              ),
-            ),
-          ],
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
-

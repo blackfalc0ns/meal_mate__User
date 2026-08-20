@@ -3,8 +3,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/widgets/family_package_option_icon.dart';
 
 class FamilyPackageOptionCard extends StatelessWidget {
   const FamilyPackageOptionCard({
@@ -29,10 +29,10 @@ class FamilyPackageOptionCard extends StatelessWidget {
         children: [
           Container(
             height: Spacing.familyPackageOptionHeight,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.sm,
-            ),
+            // padding: const EdgeInsets.symmetric(
+            //   horizontal: Spacing.sm,
+            //   vertical: Spacing.sm,
+            // ),
             decoration: BoxDecoration(
               color: color.surface,
               border: Border.all(
@@ -48,21 +48,23 @@ class FamilyPackageOptionCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (option.icon == FamilyPackageOptionIcon.appleCutlery)
-                      FamilyPackageOptionIconView(icon: Icons.apple_rounded),
-                    if (option.icon == FamilyPackageOptionIcon.appleCutlery)
-                      const SizedBox(width: Spacing.xs),
-                    FamilyPackageOptionIconView(icon: Icons.restaurant_rounded),
-                  ],
+                SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: AppCachedNetworkImage(
+                      imageUrl: option.imageUrl,
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.contain,
+                      backgroundColor: color.surface.withValues(alpha: 0),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: Spacing.xss),
                 Text(
                   option.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
