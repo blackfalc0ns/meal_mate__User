@@ -102,10 +102,6 @@ import '../../features/monthly_plans/domain/usecase/get_subscription_durations_u
     as _i275;
 import '../../features/monthly_plans/domain/usecase/get_subscription_restaurant_details_usecase.dart'
     as _i837;
-import '../../features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
-    as _i903;
-import '../../features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart'
-    as _i101;
 import '../../features/monthly_plans/presentation/manager/subscription_plan_view_model.dart'
     as _i527;
 import '../../features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart'
@@ -226,6 +222,18 @@ import '../subscription_programs/domain/repo/subscription_programs_repository.da
     as _i1047;
 import '../subscription_programs/domain/usecase/get_subscription_programs_usecase.dart'
     as _i314;
+import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source.dart'
+    as _i1038;
+import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source_impl.dart'
+    as _i1039;
+import '../subscription_tiers/data/repo/subscription_tier_repository_impl.dart'
+    as _i897;
+import '../subscription_tiers/domain/repo/subscription_tier_repository.dart'
+    as _i317;
+import '../subscription_tiers/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
+    as _i726;
+import '../subscription_tiers/domain/usecase/get_subscription_tiers_usecase.dart'
+    as _i766;
 import '../upload_file/data/data_source/upload_file_remote_data_source.dart'
     as _i99;
 import '../upload_file/data/data_source/upload_file_remote_data_source_impl.dart'
@@ -328,9 +336,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i263.ChangePasswordRemoteDataSource>(),
       ),
     );
+    gh.factory<_i1038.SubscriptionTierRemoteDataSource>(
+      () =>
+          _i1039.SubscriptionTierRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i1060.SubscriptionSummaryRepository>(
       () => _i636.SubscriptionSummaryRepositoryImpl(
         gh<_i155.SubscriptionSummaryRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i317.SubscriptionTierRepository>(
+      () => _i897.SubscriptionTierRepositoryImpl(
+        gh<_i1038.SubscriptionTierRemoteDataSource>(),
       ),
     );
     gh.factory<_i395.SubscriptionDurationRepository>(
@@ -397,6 +414,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1021.SubscriptionTypesRemoteDataSource>(
       () =>
           _i253.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i726.GetSubscriptionTierRestaurantsUseCase>(
+      () => _i726.GetSubscriptionTierRestaurantsUseCase(
+        gh<_i317.SubscriptionTierRepository>(),
+      ),
+    );
+    gh.factory<_i766.GetSubscriptionTiersUseCase>(
+      () => _i766.GetSubscriptionTiersUseCase(
+        gh<_i317.SubscriptionTierRepository>(),
+      ),
     );
     gh.factory<_i978.SubscriptionPackagesRemoteDataSource>(
       () => _i461.SubscriptionPackagesRemoteDataSourceImpl(
@@ -528,6 +555,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i978.SubscriptionPackagesRemoteDataSource>(),
       ),
     );
+    gh.factory<_i967.FamilyPlanViewModel>(
+      () => _i967.FamilyPlanViewModel(
+        gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+        gh<_i809.GetSubscriptionDurationsUseCase>(),
+        gh<_i766.GetSubscriptionTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+      ),
+    );
     gh.factory<_i866.SubscriptionTypesRepository>(
       () => _i715.SubscriptionTypesRepositoryImpl(
         gh<_i1021.SubscriptionTypesRemoteDataSource>(),
@@ -566,6 +602,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i247.GetSubscriptionTypesUseCase>(),
       ),
     );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i809.GetSubscriptionDurationsUseCase>(),
+        gh<_i766.GetSubscriptionTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i462.GetSubscriptionReadinessUseCase>(),
+      ),
+    );
     gh.factory<_i275.GetSubscriptionDurationsUseCase>(
       () => _i275.GetSubscriptionDurationsUseCase(
         gh<_i986.SubscriptionPlanRepository>(),
@@ -573,16 +617,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i837.GetSubscriptionRestaurantDetailsUseCase>(
       () => _i837.GetSubscriptionRestaurantDetailsUseCase(
-        gh<_i986.SubscriptionPlanRepository>(),
-      ),
-    );
-    gh.factory<_i903.GetSubscriptionTierRestaurantsUseCase>(
-      () => _i903.GetSubscriptionTierRestaurantsUseCase(
-        gh<_i986.SubscriptionPlanRepository>(),
-      ),
-    );
-    gh.factory<_i101.GetSubscriptionTiersUseCase>(
-      () => _i101.GetSubscriptionTiersUseCase(
         gh<_i986.SubscriptionPlanRepository>(),
       ),
     );
@@ -594,14 +628,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i537.GetSubscriptionPackagesUseCase>(
       () => _i537.GetSubscriptionPackagesUseCase(
         gh<_i678.SubscriptionPackagesRepository>(),
-      ),
-    );
-    gh.factory<_i527.SubscriptionPlanViewModel>(
-      () => _i527.SubscriptionPlanViewModel(
-        gh<_i275.GetSubscriptionDurationsUseCase>(),
-        gh<_i101.GetSubscriptionTiersUseCase>(),
-        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i462.GetSubscriptionReadinessUseCase>(),
       ),
     );
     gh.factory<_i898.AddCustomerAddressUseCase>(
@@ -655,15 +681,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(
       () => _i851.SubscriptionRestaurantDetailsViewModel(
         gh<_i837.GetSubscriptionRestaurantDetailsUseCase>(),
-      ),
-    );
-    gh.factory<_i967.FamilyPlanViewModel>(
-      () => _i967.FamilyPlanViewModel(
-        gh<_i178.GetSubscriptionProgramsUseCase>(),
-        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-        gh<_i809.GetSubscriptionDurationsUseCase>(),
-        gh<_i101.GetSubscriptionTiersUseCase>(),
-        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
       ),
     );
     return this;
