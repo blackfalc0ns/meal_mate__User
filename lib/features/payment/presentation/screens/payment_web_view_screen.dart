@@ -5,6 +5,7 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
@@ -39,9 +40,17 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (_) => setState(() => _isPageLoading = true),
+          onPageStarted: (url) {
+            setState(() => _isPageLoading = true);
+            _checkUrl(url);
+          },
           onPageFinished: (_) => setState(() => _isPageLoading = false),
           onNavigationRequest: _handleNavigationRequest,
+          onUrlChange: (change) {
+            if (change.url != null) {
+              _checkUrl(change.url!);
+            }
+          },
         ),
       )
       ..loadRequest(Uri.parse(paymentUrl));
@@ -121,6 +130,17 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     );
   }
 
+  void _checkUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return;
+
+    if (_isBackendPaymentCallback(uri)) {
+      _handleBackendPaymentCallback(uri);
+    } else if (uri.scheme == 'mealmate') {
+      _handleAppPaymentCallback(uri);
+    }
+  }
+
   NavigationDecision _handleNavigationRequest(NavigationRequest request) {
     final uri = Uri.tryParse(request.url);
     if (uri == null) {
@@ -132,23 +152,24 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       return NavigationDecision.prevent;
     }
 
-    if (uri.scheme != 'mealmate' || uri.host != 'payment') {
-      return NavigationDecision.navigate;
+    if (uri.scheme == 'mealmate') {
+      return _handleAppPaymentCallback(uri);
     }
 
-    return _handleAppPaymentCallback(uri);
+    return NavigationDecision.navigate;
   }
 
   bool _isBackendPaymentCallback(Uri uri) {
-    return uri.host == 'maelmate.runasp.net' &&
+    final baseHost = Uri.tryParse(NetworkConstants.baseUrl)?.host;
+    return (uri.host == baseHost ||
+            uri.host == 'maelmate.runasp.net' ||
+            uri.host.contains('trycloudflare.com')) &&
         uri.path.contains('/api/v1/payments/myfatoorah');
   }
 
   void _handleBackendPaymentCallback(Uri uri) {
     final target = Uri.tryParse(uri.queryParameters['to'] ?? '');
-    if (target != null &&
-        target.scheme == 'mealmate' &&
-        target.host == 'payment') {
+    if (target != null && target.scheme == 'mealmate') {
       _handleAppPaymentCallback(target);
       return;
     }
@@ -157,16 +178,20 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   }
 
   NavigationDecision _handleAppPaymentCallback(Uri uri) {
-    if (uri.path == '/success') {
+    final path = uri.path.toLowerCase();
+    final host = uri.host.toLowerCase();
+
+    if (path.contains('success') || host.contains('success')) {
       _verifyPayment();
       return NavigationDecision.prevent;
     }
 
-    if (uri.path == '/error') {
+    if (path.contains('error') || host.contains('error')) {
       _verifyPayment();
       return NavigationDecision.prevent;
     }
 
+    _verifyPayment();
     return NavigationDecision.prevent;
   }
 
@@ -174,8 +199,14 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     if (_hasStartedVerification) return;
     _hasStartedVerification = true;
 
-    _viewModel.doIntent(
-      VerifyPaymentFulfillmentEvent(widget.args?.checkout.subscriptionId ?? ''),
-    );
+    final subscriptionId = widget.args?.checkout.subscriptionId ?? '';
+    if (subscriptionId.isNotEmpty) {
+      _viewModel.doIntent(VerifyPaymentFulfillmentEvent(subscriptionId));
+    } else {
+      // Fallback navigation if subscriptionId is absent
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoutes.paymentSuccess, (route) => false);
+    }
   }
 }

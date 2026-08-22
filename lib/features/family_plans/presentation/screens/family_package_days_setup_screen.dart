@@ -152,7 +152,8 @@ class _FamilyPackageDaysSetupScreenState
                       description: displayedPackages[index].description,
                       imageUrl: displayedPackages[index].imageUrl,
                       imageAsset: displayedPackages[index].imageAsset,
-                      isSelected: index == state.selectedBundleIndex,
+                      isSelected: state.selectedBundleIndex != null &&
+                          index == state.selectedBundleIndex,
                     ),
                   );
 
@@ -315,15 +316,18 @@ class _FamilyPackageDaysSetupScreenState
     final programId =
         widget.programId ??
         state.selectedProgram?.programId ??
+        member?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : '');
     final bundle = state.selectedBundle;
     final duration = state.selectedDuration;
+    final durationDays = duration?.durationDays ?? state.customDurationDays;
     final tier = state.selectedTier;
 
     if (member != null &&
         programId.isNotEmpty &&
         bundle != null &&
-        duration != null &&
+        durationDays != null &&
+        durationDays > 0 &&
         tier != null) {
       final tierInt = int.tryParse(tier.tier) ?? 1;
       context.read<FamilyPlanViewModel>().doIntent(
@@ -332,7 +336,7 @@ class _FamilyPackageDaysSetupScreenState
           programId: programId,
           bundleId: bundle.bundleId,
           tier: tierInt,
-          durationDays: duration.durationDays ?? 0,
+          durationDays: durationDays,
           includeFriday: state.includeFriday,
         ),
       );

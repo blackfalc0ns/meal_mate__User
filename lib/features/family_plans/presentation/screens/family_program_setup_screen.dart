@@ -136,11 +136,14 @@ class FamilyProgramSetupScreen extends StatelessWidget {
             : null);
 
     final selectedProgramId = selectedMember?.programId;
-    final selectedProgIndex = selectedProgramId != null && selectedProgramId.isNotEmpty
-        ? state.programs.indexWhere((p) => p.programId == selectedProgramId)
-        : state.selectedProgramIndex;
-
-    final effectiveProgIndex = selectedProgIndex != -1 ? selectedProgIndex : state.selectedProgramIndex;
+    final int? effectiveProgIndex;
+    if (selectedProgramId != null && selectedProgramId.isNotEmpty) {
+      final found =
+          state.programs.indexWhere((p) => p.programId == selectedProgramId);
+      effectiveProgIndex = found != -1 ? found : null;
+    } else {
+      effectiveProgIndex = state.selectedProgramIndex;
+    }
 
     final displayedPrograms = state.programs
         .asMap()
@@ -153,7 +156,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                     entry.value.imageUrl!.isNotEmpty
                 ? entry.value.imageUrl!
                 : entry.value.fallbackImageAsset,
-            isSelected: entry.key == effectiveProgIndex,
+            isSelected: effectiveProgIndex != null &&
+                entry.key == effectiveProgIndex,
           ),
         )
         .toList();

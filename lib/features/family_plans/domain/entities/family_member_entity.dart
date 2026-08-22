@@ -32,8 +32,52 @@ class FamilyMemberEntity {
   });
 
   bool get isManager => role == 1 || isCurrentUser;
-  bool get isReady =>
-      setupStatus == 2 ||
-      setupStatus == 3 ||
-      (programId != null && programId!.isNotEmpty);
+  bool get hasProgram => programId != null && programId!.isNotEmpty;
+  bool get isPlanCompleted =>
+      hasProgram &&
+      (bundleId != null && bundleId!.isNotEmpty) &&
+      selectedTier != null &&
+      (durationDays != null && durationDays! > 0);
+
+  bool get isReady => setupStatus == 3 || isPlanCompleted;
+
+  FamilyMemberEntity copyWith({
+    String? memberId,
+    int? role,
+    String? displayName,
+    String? relationshipCode,
+    int? gender,
+    int? ageYears,
+    String? deliveryAddressId,
+    int? setupStatus,
+    String? programId,
+    String? bundleId,
+    int? selectedTier,
+    int? durationDays,
+    bool? includeFriday,
+    bool? isCurrentUser,
+    bool clearProgramId = false,
+    bool clearBundleId = false,
+    bool clearSelectedTier = false,
+    bool clearDurationDays = false,
+  }) {
+    return FamilyMemberEntity(
+      memberId: memberId ?? this.memberId,
+      role: role ?? this.role,
+      displayName: displayName ?? this.displayName,
+      relationshipCode: relationshipCode ?? this.relationshipCode,
+      gender: gender ?? this.gender,
+      ageYears: ageYears ?? this.ageYears,
+      deliveryAddressId: deliveryAddressId ?? this.deliveryAddressId,
+      setupStatus: setupStatus ?? this.setupStatus,
+      programId: clearProgramId ? null : (programId ?? this.programId),
+      bundleId: clearBundleId ? null : (bundleId ?? this.bundleId),
+      selectedTier:
+          clearSelectedTier ? null : (selectedTier ?? this.selectedTier),
+      durationDays:
+          clearDurationDays ? null : (durationDays ?? this.durationDays),
+      includeFriday: includeFriday ?? this.includeFriday,
+      isCurrentUser: isCurrentUser ?? this.isCurrentUser,
+    );
+  }
 }

@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/family_plans/domain/usecase/get_family_s
 import 'package:meal_meat_user/features/family_plans/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_group_usecase.dart';
 import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_plans/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_plans/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_plans/domain/usecase/update_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_plans/presentation/manager/family_plan_event.dart';
@@ -197,9 +198,7 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         );
 
         if (member != null) {
-          if (member.programId != null && member.programId!.isNotEmpty) {
-            _selectProgramById(member.programId!);
-          }
+          _selectProgramById(member.programId);
           await _loadMemberBundlesAndSelections(member);
         }
       case ApiErrorResult():
@@ -209,11 +208,17 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     }
   }
 
-  void _selectProgramById(String programId) {
+  void _selectProgramById(String? programId) {
+    if (programId == null || programId.isEmpty) {
+      emit(state.copyWith(clearSelectedProgram: true));
+      return;
+    }
     if (state.programs.isNotEmpty) {
       final idx = state.programs.indexWhere((p) => p.programId == programId);
       if (idx != -1) {
         emit(state.copyWith(selectedProgramIndex: idx));
+      } else {
+        emit(state.copyWith(clearSelectedProgram: true));
       }
     }
   }
@@ -335,9 +340,8 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyProgramsUseCase();
     switch (result) {
       case ApiSuccessResult():
-        final programs = result.data
-            .where((p) => p.programId.isNotEmpty)
-            .toList();
+        final programs =
+            result.data.where((p) => p.programId.isNotEmpty).toList();
         int? progIdx;
         final selectedMember = state.selectedMember;
         if (selectedMember?.programId != null &&
@@ -363,10 +367,23 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectProgram(int index) {
-    emit(state.copyWith(selectedProgramIndex: index));
+    final program =
+        state.programs.length > index ? state.programs[index] : null;
+    if (program == null) return;
+
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      programId: program.programId,
+    );
+
+    emit(
+      state.copyWith(
+        selectedProgramIndex: index,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
     final member = state.selectedMember;
-    if (member != null && state.programs.length > index) {
-      final program = state.programs[index];
+    if (member != null) {
       _saveMemberPlan(
         memberId: member.memberId,
         programId: program.programId,
@@ -393,7 +410,8 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     emit(
       state.copyWith(
         selectedMemberIndex: index,
-        selectedProgramIndex: progIdx ?? state.selectedProgramIndex,
+        selectedProgramIndex: progIdx,
+        clearSelectedProgram: progIdx == null,
         includeFriday: member.includeFriday,
         customDurationDays: member.durationDays,
       ),
@@ -419,9 +437,14 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     emit(
       state.copyWith(
         selectedMemberIndex: index,
-        selectedProgramIndex: progIdx ?? state.selectedProgramIndex,
-        includeFriday: member.includeFriday,
+        selectedProgramIndex: progIdx,
+        clearSelectedProgram: progIdx == null,
+        clearSelectedBundle: true,
+        clearSelectedDuration: true,
+        clearSelectedTier: true,
         customDurationDays: member.durationDays,
+        includeFriday: member.includeFriday,
+        isRestaurantsView: false,
       ),
     );
 
@@ -433,6 +456,13 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         state.selectedProgram?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : null);
     if (programId == null || programId.isEmpty) {
+      emit(
+        state.copyWith(
+          clearSelectedBundle: true,
+          clearSelectedDuration: true,
+          clearSelectedTier: true,
+        ),
+      );
       return;
     }
 
@@ -442,19 +472,14 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
       case ApiSuccessResult():
         final bundles =
             result.data.where((b) => b.bundleId.isNotEmpty).toList();
-        int bundleIdx = 0;
+
+        int? bundleIdx;
         if (member.bundleId != null && member.bundleId!.isNotEmpty) {
           final foundIdx =
               bundles.indexWhere((b) => b.bundleId == member.bundleId);
           if (foundIdx != -1) {
             bundleIdx = foundIdx;
           }
-        } else if (bundles.isNotEmpty) {
-          // If member has no bundle selected yet, select & save first bundle
-          _saveMemberPlan(
-            memberId: member.memberId,
-            bundleId: bundles.first.bundleId,
-          );
         }
 
         emit(
@@ -462,19 +487,38 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
             isBundlesLoading: false,
             bundles: bundles,
             selectedBundleIndex: bundleIdx,
+            clearSelectedBundle: bundleIdx == null,
           ),
         );
 
         if (bundles.isNotEmpty) {
-          final selectedBundle = bundles[bundleIdx];
+          final targetBundle =
+              bundleIdx != null ? bundles[bundleIdx] : bundles.first;
           await _getDurationsAndTiersForMember(
             programId: programId,
-            bundleId: selectedBundle.bundleId,
+            bundleId: targetBundle.bundleId,
             member: member,
+          );
+        } else {
+          emit(
+            state.copyWith(
+              isDurationsLoading: false,
+              isTiersLoading: false,
+              clearSelectedDuration: true,
+              clearSelectedTier: true,
+            ),
           );
         }
       case ApiErrorResult():
-        emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
+        emit(
+          state.copyWith(
+            isBundlesLoading: false,
+            clearSelectedBundle: true,
+            clearSelectedDuration: true,
+            clearSelectedTier: true,
+            failure: result.failure,
+          ),
+        );
     }
   }
 
@@ -512,24 +556,20 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         ? (tiersResult as ApiSuccessResult).data
         : state.tiers;
 
-    int durationIdx = 0;
+    int? durationIdx;
     if (member.durationDays != null) {
       final foundDurIdx =
           durations.indexWhere((d) => d.durationDays == member.durationDays);
       if (foundDurIdx != -1) {
         durationIdx = foundDurIdx;
       }
-    } else if (durations.isNotEmpty) {
-      final defaultIdx = durations.indexWhere((d) => d.durationDays == 26);
-      if (defaultIdx != -1) {
-        durationIdx = defaultIdx;
-      }
     }
 
-    int tierIdx = 0;
+    int? tierIdx;
     if (member.selectedTier != null) {
       final foundTierIdx = tiers.indexWhere((t) {
-        final tNum = _parseTierToInt(t.tier, t.nameEn) ?? (tiers.indexOf(t) + 1);
+        final tNum =
+            _parseTierToInt(t.tier, t.nameEn) ?? (tiers.indexOf(t) + 1);
         return tNum == member.selectedTier;
       });
       if (foundTierIdx != -1) {
@@ -547,7 +587,9 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         durations: durations,
         tiers: tiers,
         selectedDurationIndex: durationIdx,
+        clearSelectedDuration: durationIdx == null,
         selectedTierIndex: tierIdx,
+        clearSelectedTier: tierIdx == null,
         includeFriday: member.includeFriday,
         customDurationDays: member.durationDays,
       ),
@@ -590,34 +632,46 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
       case ApiSuccessResult():
         final bundles =
             result.data.where((b) => b.bundleId.isNotEmpty).toList();
-        emit(state.copyWith(isBundlesLoading: false, bundles: bundles));
-        if (bundles.isNotEmpty) {
-          _getDurations(
-            programId: programId,
-            bundleId: bundles.first.bundleId,
-            includeFriday: state.includeFriday,
-          );
-        }
+        emit(
+          state.copyWith(
+            isBundlesLoading: false,
+            bundles: bundles,
+            clearSelectedBundle: true,
+            clearSelectedDuration: true,
+            clearSelectedTier: true,
+          ),
+        );
       case ApiErrorResult():
         emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
     }
   }
 
   void _selectBundle(int index) {
-    emit(state.copyWith(selectedBundleIndex: index));
-    final member = state.selectedMember;
     final bundle = state.bundles.length > index ? state.bundles[index] : null;
-    final selectedProgram = state.selectedProgram;
+    if (bundle == null) return;
 
-    if (member != null && bundle != null) {
+    final member = state.selectedMember;
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      bundleId: bundle.bundleId,
+    );
+
+    emit(
+      state.copyWith(
+        selectedBundleIndex: index,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
+    if (member != null) {
       _saveMemberPlan(
         memberId: member.memberId,
         bundleId: bundle.bundleId,
       );
     }
 
+    final selectedProgram = state.selectedProgram;
     final progId = selectedProgram?.programId ?? member?.programId;
-    if (progId != null && bundle != null) {
+    if (progId != null) {
       _getDurations(
         programId: progId,
         bundleId: bundle.bundleId,
@@ -648,7 +702,7 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
     final tiersResult = await _getSubscriptionTiersUseCase(
       programId: programId,
       bundleId: bundleId,
-      durationDays: null,
+      durationDays: state.selectedDurationDays,
       includeFriday: includeFriday,
     );
 
@@ -660,35 +714,85 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
         ? (tiersResult as ApiSuccessResult).data
         : state.tiers;
 
+    final member = state.selectedMember;
+    int? durIdx = state.selectedDurationIndex;
+    if (durIdx != null && durIdx >= durations.length) {
+      durIdx = null;
+    } else if (durIdx == null && member?.durationDays != null) {
+      final days = member!.durationDays;
+      final f = durations.indexWhere((d) => d.durationDays == days);
+      if (f != -1) durIdx = f;
+    }
+
+    int? tierIdx = state.selectedTierIndex;
+    if (tierIdx != null && tierIdx >= tiers.length) {
+      tierIdx = null;
+    } else if (tierIdx == null && member?.selectedTier != null) {
+      final selectedTier = member!.selectedTier;
+      final f = tiers.indexWhere((t) {
+        final tNum =
+            _parseTierToInt(t.tier, t.nameEn) ?? (tiers.indexOf(t) + 1);
+        return tNum == selectedTier;
+      });
+      if (f != -1) tierIdx = f;
+    }
+
     emit(
       state.copyWith(
         isDurationsLoading: false,
         isTiersLoading: false,
         durations: durations,
         tiers: tiers,
+        selectedDurationIndex: durIdx,
+        clearSelectedDuration: durIdx == null,
+        selectedTierIndex: tierIdx,
+        clearSelectedTier: tierIdx == null,
       ),
     );
   }
 
   void _selectDuration(int index) {
-    emit(state.copyWith(selectedDurationIndex: index));
-    final member = state.selectedMember;
     final duration =
         state.durations.length > index ? state.durations[index] : null;
-    if (member != null &&
-        duration != null &&
-        !duration.isCustom &&
-        duration.durationDays != null) {
+    if (duration == null) return;
+
+    final days = duration.durationDays;
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      durationDays: days,
+      includeFriday: state.includeFriday,
+    );
+
+    emit(
+      state.copyWith(
+        selectedDurationIndex: index,
+        customDurationDays: days,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
+    final member = state.selectedMember;
+    if (member != null && !duration.isCustom && days != null) {
       _saveMemberPlan(
         memberId: member.memberId,
-        durationDays: duration.durationDays,
+        durationDays: days,
         includeFriday: state.includeFriday,
       );
     }
   }
 
   void _updateCustomDuration(int days) {
-    emit(state.copyWith(customDurationDays: days));
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      durationDays: days,
+      includeFriday: state.includeFriday,
+    );
+
+    emit(
+      state.copyWith(
+        customDurationDays: days,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
     final member = state.selectedMember;
     if (member != null && days > 0) {
       _saveMemberPlan(
@@ -700,7 +804,17 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _toggleFriday(bool include) {
-    emit(state.copyWith(includeFriday: include));
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      includeFriday: include,
+    );
+
+    emit(
+      state.copyWith(
+        includeFriday: include,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
     final member = state.selectedMember;
     final days = state.selectedDurationDays;
     if (member != null && days != null && days > 0) {
@@ -725,17 +839,57 @@ class FamilyPlanViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectTier(int tierIndex) {
-    emit(state.copyWith(selectedTierIndex: tierIndex));
+    final tier = state.tiers.length > tierIndex ? state.tiers[tierIndex] : null;
+    if (tier == null) return;
+
+    final tierInt =
+        _parseTierToInt(tier.tier, tier.nameEn) ?? (tierIndex + 1);
+
+    final updatedFlow = _updateLocalMemberInCurrentFlow(
+      selectedTier: tierInt,
+    );
+
+    emit(
+      state.copyWith(
+        selectedTierIndex: tierIndex,
+        currentFlow: updatedFlow ?? state.currentFlow,
+      ),
+    );
+
     final member = state.selectedMember;
-    if (member != null && state.tiers.length > tierIndex) {
-      final tier = state.tiers[tierIndex];
-      final tierInt =
-          _parseTierToInt(tier.tier, tier.nameEn) ?? (tierIndex + 1);
+    if (member != null) {
       _saveMemberPlan(
         memberId: member.memberId,
         tier: tierInt,
       );
     }
+  }
+
+  FamilyFlowCurrentEntity? _updateLocalMemberInCurrentFlow({
+    String? programId,
+    String? bundleId,
+    int? selectedTier,
+    int? durationDays,
+    bool? includeFriday,
+  }) {
+    final flow = state.currentFlow;
+    if (flow == null || state.members.isEmpty) return null;
+    final idx = state.selectedMemberIndex;
+    if (idx < 0 || idx >= flow.members.length) return null;
+
+    final member = flow.members[idx];
+    final updatedMember = member.copyWith(
+      programId: programId ?? member.programId,
+      bundleId: bundleId ?? member.bundleId,
+      selectedTier: selectedTier ?? member.selectedTier,
+      durationDays: durationDays ?? member.durationDays,
+      includeFriday: includeFriday ?? member.includeFriday,
+    );
+
+    final updatedMembers = List<FamilyMemberEntity>.from(flow.members);
+    updatedMembers[idx] = updatedMember;
+
+    return flow.copyWith(members: updatedMembers);
   }
 
   Future<void> _browseTierRestaurants(int tierIndex) async {

@@ -36,4 +36,33 @@ class FamilyFlowCurrentEntity {
         ? packageNameAr!
         : (packageNameEn ?? '');
   }
+
+  FamilyFlowCurrentEntity copyWith({
+    String? familyGroupId,
+    String? name,
+    int? status,
+    String? selectedFamilyPackageId,
+    String? packageNameAr,
+    String? packageNameEn,
+    int? minMembers,
+    int? maxMembers,
+    double? discountPercent,
+    int? currentStep,
+    List<FamilyMemberEntity>? members,
+  }) {
+    return FamilyFlowCurrentEntity(
+      familyGroupId: familyGroupId ?? this.familyGroupId,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      selectedFamilyPackageId:
+          selectedFamilyPackageId ?? this.selectedFamilyPackageId,
+      packageNameAr: packageNameAr ?? this.packageNameAr,
+      packageNameEn: packageNameEn ?? this.packageNameEn,
+      minMembers: minMembers ?? this.minMembers,
+      maxMembers: maxMembers ?? this.maxMembers,
+      discountPercent: discountPercent ?? this.discountPercent,
+      currentStep: currentStep ?? this.currentStep,
+      members: members ?? this.members,
+    );
+  }
 }

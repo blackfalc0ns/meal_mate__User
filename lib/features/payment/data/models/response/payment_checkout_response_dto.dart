@@ -6,6 +6,8 @@ part 'payment_checkout_response_dto.g.dart';
 class PaymentCheckoutResponseDto {
   const PaymentCheckoutResponseDto({
     this.subscriptionId,
+    this.paymentAnchorSubscriptionId,
+    this.familyGroupId,
     this.paymentUrl,
     this.holdExpiresAtUtc,
     this.finalPrice,
@@ -15,6 +17,8 @@ class PaymentCheckoutResponseDto {
   });
 
   final String? subscriptionId;
+  final String? paymentAnchorSubscriptionId;
+  final String? familyGroupId;
   final String? paymentUrl;
   final String? holdExpiresAtUtc;
   final double? finalPrice;
