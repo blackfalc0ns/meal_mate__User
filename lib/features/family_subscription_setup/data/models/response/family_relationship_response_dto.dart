@@ -1,33 +1,23 @@
-class FamilyRelationshipResponseDto {
-  final String code;
-  final String nameAr;
-  final String nameEn;
-  final bool forDependents;
-  final bool isPrimary;
+import 'package:json_annotation/json_annotation.dart';
 
-  FamilyRelationshipResponseDto({
-    required this.code,
-    required this.nameAr,
-    required this.nameEn,
-    required this.forDependents,
-    required this.isPrimary,
+part 'family_relationship_response_dto.g.dart';
+
+@JsonSerializable(createToJson: false)
+class FamilyRelationshipResponseDto {
+  const FamilyRelationshipResponseDto({
+    this.code,
+    this.nameAr,
+    this.nameEn,
+    this.forDependents,
+    this.isPrimary,
   });
 
-  factory FamilyRelationshipResponseDto.fromJson(Map<String, dynamic> json) {
-    return FamilyRelationshipResponseDto(
-      code: json['code'] as String? ?? '',
-      nameAr: json['nameAr'] as String? ?? '',
-      nameEn: json['nameEn'] as String? ?? '',
-      forDependents: json['forDependents'] as bool? ?? false,
-      isPrimary: json['isPrimary'] as bool? ?? false,
-    );
-  }
+  final String? code;
+  final String? nameAr;
+  final String? nameEn;
+  final bool? forDependents;
+  final bool? isPrimary;
 
-  Map<String, dynamic> toJson() => {
-    'code': code,
-    'nameAr': nameAr,
-    'nameEn': nameEn,
-    'forDependents': forDependents,
-    'isPrimary': isPrimary,
-  };
+  factory FamilyRelationshipResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyRelationshipResponseDtoFromJson(json);
 }

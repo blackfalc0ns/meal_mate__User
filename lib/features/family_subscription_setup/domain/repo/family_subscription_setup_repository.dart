@@ -5,6 +5,10 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 abstract class FamilySubscriptionSetupRepository {
   Future<ApiResult<List<FamilyRelationshipEntity>>> getFamilyRelationships();
   Future<ApiResult<FamilyFlowCurrentEntity>> getFamilySubscriptionCurrent();
+  Future<ApiResult<FamilyFlowCurrentEntity>> convertFromIndividual({
+    String? name,
+    String? familyPackageId,
+  });
   Future<ApiResult<FamilyFlowCurrentEntity>> updateFamilyGroup({
     required String name,
     String? familyPackageId,

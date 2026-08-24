@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/data_source/family_subscription_setup_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/mapper/family_subscription_setup_mapper.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
@@ -27,6 +28,22 @@ class FamilySubscriptionSetupRepositoryImpl
   Future<ApiResult<FamilyFlowCurrentEntity>> getFamilySubscriptionCurrent() {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getFamilySubscriptionCurrent();
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<FamilyFlowCurrentEntity>> convertFromIndividual({
+    String? name,
+    String? familyPackageId,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.convertFromIndividual(
+        FamilyConvertFromIndividualRequestDto(
+          name: name,
+          familyPackageId: familyPackageId,
+        ),
+      );
       return response.toEntity();
     });
   }

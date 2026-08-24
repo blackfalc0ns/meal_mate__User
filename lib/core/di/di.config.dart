@@ -251,6 +251,8 @@ import '../../features/subscription_types/data/repo/subscription_types_repositor
     as _i555;
 import '../../features/subscription_types/domain/repo/subscription_types_repository.dart'
     as _i655;
+import '../../features/subscription_types/domain/usecase/convert_from_individual_usecase.dart'
+    as _i427;
 import '../../features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart'
     as _i377;
 import '../../features/subscription_types/domain/usecase/get_subscription_types_usecase.dart'
@@ -746,6 +748,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
+    gh.factory<_i427.ConvertFromIndividualUseCase>(
+      () => _i427.ConvertFromIndividualUseCase(
+        gh<_i925.FamilySubscriptionSetupRepository>(),
+      ),
+    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -822,6 +829,13 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i577.GetFamilyProgramsUseCase(gh<_i964.FamilyProgramsRepository>()),
     );
+    gh.factory<_i62.SubscriptionTypesViewModel>(
+      () => _i62.SubscriptionTypesViewModel(
+        gh<_i999.GetSubscriptionTypesUseCase>(),
+        gh<_i377.GetSubscriptionConversionOptionsUseCase>(),
+        gh<_i427.ConvertFromIndividualUseCase>(),
+      ),
+    );
     gh.factory<_i597.FamilyPackageDaysViewModel>(
       () => _i597.FamilyPackageDaysViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -845,12 +859,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-      ),
-    );
-    gh.factory<_i62.SubscriptionTypesViewModel>(
-      () => _i62.SubscriptionTypesViewModel(
-        gh<_i999.GetSubscriptionTypesUseCase>(),
-        gh<_i377.GetSubscriptionConversionOptionsUseCase>(),
       ),
     );
     gh.factory<_i693.FamilySubscriptionSetupViewModel>(

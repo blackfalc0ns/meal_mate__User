@@ -48,6 +48,7 @@ import 'package:meal_meat_user/core/subscription_packages/data/models/response/s
 import 'package:meal_meat_user/core/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
@@ -55,6 +56,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_relationship_response_dto.dart';
 import 'package:meal_meat_user/features/family_packages/data/models/response/family_size_package_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_conversion_options_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -214,7 +216,13 @@ abstract class ApiServices {
   Future<List<SubscriptionTypeResponseDto>> getSubscriptionTypes();
 
   @GET(EndPoints.subscriptionConversionOptions)
-  Future<void> getSubscriptionConversionOptions();
+  Future<SubscriptionConversionOptionsResponseDto>
+  getSubscriptionConversionOptions();
+
+  @POST(EndPoints.convertFromIndividual)
+  Future<FamilyFlowCurrentResponseDto> convertFromIndividual(
+    @Body() FamilyConvertFromIndividualRequestDto request,
+  );
 
   @GET(EndPoints.subscriptionPrograms)
   Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();

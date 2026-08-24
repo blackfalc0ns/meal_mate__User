@@ -1751,6 +1751,37 @@ class AppLocalizationsAr extends AppLocalizations {
       'بعد اختيار نوع الاشتراك ستنتقل إلى الخطوة التالية';
 
   @override
+  String get subscription_conversion_title => 'اختر طريقة التحويل';
+
+  @override
+  String get subscription_conversion_subtitle =>
+      'يمكن تحويل اشتراكك الفردي الحالي قبل بدء إعداد اشتراك العائلة.';
+
+  @override
+  String get subscription_conversion_create_family_manager =>
+      'أعمل عائلة وأبقى مدير';
+
+  @override
+  String get subscription_conversion_create_family_manager_subtitle =>
+      'حوّل اشتراكك الحالي ثم أكمل إعداد أفراد العائلة.';
+
+  @override
+  String get subscription_conversion_change_individual_plan =>
+      'أغيّر خطتي الفردية';
+
+  @override
+  String get subscription_conversion_coming_soon => 'قريبًا';
+
+  @override
+  String get subscription_conversion_unavailable => 'هذا الخيار غير متاح الآن.';
+
+  @override
+  String get subscription_conversion_option_available => 'خيار متاح';
+
+  @override
+  String get subscription_conversion_option_unavailable => 'خيار غير متاح';
+
+  @override
   String get subscription_details_view_mode => 'طريقة العرض';
 
   @override

@@ -3,6 +3,7 @@ abstract class AppRoutes {
   static const String search = '/search';
   static const String offers = '/offers';
   static const String subscriptions = '/subscriptions';
+  static const String conversionOptions = '/conversion-options';
   static const String subscriptionProgramSelection =
       '/subscription-program-selection';
   static const String subscriptionPackageSelection =

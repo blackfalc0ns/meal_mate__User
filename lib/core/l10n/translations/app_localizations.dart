@@ -3404,6 +3404,60 @@ abstract class AppLocalizations {
   /// **'After choosing the subscription type, you will move to the next step'**
   String get subscription_type_notice_label;
 
+  /// No description provided for @subscription_conversion_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose conversion option'**
+  String get subscription_conversion_title;
+
+  /// No description provided for @subscription_conversion_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current individual subscription can be converted before starting the family flow.'**
+  String get subscription_conversion_subtitle;
+
+  /// No description provided for @subscription_conversion_create_family_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a family and become manager'**
+  String get subscription_conversion_create_family_manager;
+
+  /// No description provided for @subscription_conversion_create_family_manager_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert your current subscription and continue setting up family members.'**
+  String get subscription_conversion_create_family_manager_subtitle;
+
+  /// No description provided for @subscription_conversion_change_individual_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Change my individual plan'**
+  String get subscription_conversion_change_individual_plan;
+
+  /// No description provided for @subscription_conversion_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get subscription_conversion_coming_soon;
+
+  /// No description provided for @subscription_conversion_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This option is not available now.'**
+  String get subscription_conversion_unavailable;
+
+  /// No description provided for @subscription_conversion_option_available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available option'**
+  String get subscription_conversion_option_available;
+
+  /// No description provided for @subscription_conversion_option_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable option'**
+  String get subscription_conversion_option_unavailable;
+
   /// No description provided for @subscription_details_view_mode.
   ///
   /// In en, this message translates to:

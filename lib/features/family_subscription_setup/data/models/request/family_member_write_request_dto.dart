@@ -1,11 +1,10 @@
-class FamilyMemberWriteRequestDto {
-  final String displayName;
-  final String relationshipCode;
-  final int gender;
-  final int ageYears;
-  final String? deliveryAddressId;
+import 'package:json_annotation/json_annotation.dart';
 
-  FamilyMemberWriteRequestDto({
+part 'family_member_write_request_dto.g.dart';
+
+@JsonSerializable(createFactory: false, includeIfNull: false)
+class FamilyMemberWriteRequestDto {
+  const FamilyMemberWriteRequestDto({
     required this.displayName,
     required this.relationshipCode,
     required this.gender,
@@ -13,16 +12,11 @@ class FamilyMemberWriteRequestDto {
     this.deliveryAddressId,
   });
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{
-      'displayName': displayName,
-      'relationshipCode': relationshipCode,
-      'gender': gender,
-      'ageYears': ageYears,
-    };
-    if (deliveryAddressId != null && deliveryAddressId!.trim().isNotEmpty) {
-      map['deliveryAddressId'] = deliveryAddressId;
-    }
-    return map;
-  }
+  final String displayName;
+  final String relationshipCode;
+  final int gender;
+  final int ageYears;
+  final String? deliveryAddressId;
+
+  Map<String, dynamic> toJson() => _$FamilyMemberWriteRequestDtoToJson(this);
 }

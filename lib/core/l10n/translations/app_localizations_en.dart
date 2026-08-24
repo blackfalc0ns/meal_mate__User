@@ -1776,6 +1776,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'After choosing the subscription type, you will move to the next step';
 
   @override
+  String get subscription_conversion_title => 'Choose conversion option';
+
+  @override
+  String get subscription_conversion_subtitle =>
+      'Your current individual subscription can be converted before starting the family flow.';
+
+  @override
+  String get subscription_conversion_create_family_manager =>
+      'Create a family and become manager';
+
+  @override
+  String get subscription_conversion_create_family_manager_subtitle =>
+      'Convert your current subscription and continue setting up family members.';
+
+  @override
+  String get subscription_conversion_change_individual_plan =>
+      'Change my individual plan';
+
+  @override
+  String get subscription_conversion_coming_soon => 'Coming soon';
+
+  @override
+  String get subscription_conversion_unavailable =>
+      'This option is not available now.';
+
+  @override
+  String get subscription_conversion_option_available => 'Available option';
+
+  @override
+  String get subscription_conversion_option_unavailable => 'Unavailable option';
+
+  @override
   String get subscription_details_view_mode => 'View mode';
 
   @override

@@ -1,49 +1,41 @@
-class FamilySizePackageResponseDto {
-  final String id;
-  final String nameAr;
-  final String nameEn;
-  final int minMembers;
-  final int maxMembers;
-  final double discountPercent;
-  final int sortOrder;
-  final String? imageStorageKey;
-  final String? imageUrl;
+import 'package:json_annotation/json_annotation.dart';
 
-  FamilySizePackageResponseDto({
-    required this.id,
-    required this.nameAr,
-    required this.nameEn,
-    required this.minMembers,
-    required this.maxMembers,
-    required this.discountPercent,
-    required this.sortOrder,
+part 'family_size_package_response_dto.g.dart';
+
+@JsonSerializable(createToJson: false)
+class FamilySizePackageResponseDto {
+  const FamilySizePackageResponseDto({
+    this.id,
+    this.nameAr,
+    this.nameEn,
+    this.minMembers,
+    this.maxMembers,
+    this.discountPercent,
+    this.sortOrder,
     this.imageStorageKey,
     this.imageUrl,
   });
 
-  factory FamilySizePackageResponseDto.fromJson(Map<String, dynamic> json) {
-    return FamilySizePackageResponseDto(
-      id: json['id'] as String? ?? '',
-      nameAr: json['nameAr'] as String? ?? '',
-      nameEn: json['nameEn'] as String? ?? '',
-      minMembers: json['minMembers'] as int? ?? 1,
-      maxMembers: json['maxMembers'] as int? ?? 1,
-      discountPercent: (json['discountPercent'] as num?)?.toDouble() ?? 0.0,
-      sortOrder: json['sortOrder'] as int? ?? 0,
-      imageStorageKey: json['imageStorageKey'] as String?,
-      imageUrl: json['imageUrl'] as String?,
-    );
-  }
+  final String? id;
+  final String? nameAr;
+  final String? nameEn;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? minMembers;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? maxMembers;
+  final double? discountPercent;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? sortOrder;
+  final String? imageStorageKey;
+  final String? imageUrl;
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'nameAr': nameAr,
-    'nameEn': nameEn,
-    'minMembers': minMembers,
-    'maxMembers': maxMembers,
-    'discountPercent': discountPercent,
-    'sortOrder': sortOrder,
-    'imageStorageKey': imageStorageKey,
-    'imageUrl': imageUrl,
-  };
+  factory FamilySizePackageResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilySizePackageResponseDtoFromJson(json);
+}
+
+int? _nullableIntFromJson(dynamic value) {
+  if (value == null) return null;
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
 }

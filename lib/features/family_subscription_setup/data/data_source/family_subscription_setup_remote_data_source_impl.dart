@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/data_source/family_subscription_setup_remote_data_source.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_flow_current_response_dto.dart';
@@ -21,6 +22,13 @@ class FamilySubscriptionSetupRemoteDataSourceImpl
   @override
   Future<FamilyFlowCurrentResponseDto> getFamilySubscriptionCurrent() {
     return _apiServices.getFamilySubscriptionCurrent();
+  }
+
+  @override
+  Future<FamilyFlowCurrentResponseDto> convertFromIndividual(
+    FamilyConvertFromIndividualRequestDto request,
+  ) {
+    return _apiServices.convertFromIndividual(request);
   }
 
   @override

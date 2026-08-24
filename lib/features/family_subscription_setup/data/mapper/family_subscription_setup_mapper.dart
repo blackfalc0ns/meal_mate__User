@@ -8,11 +8,11 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 extension FamilyRelationshipResponseDtoMapper on FamilyRelationshipResponseDto {
   FamilyRelationshipEntity toEntity() {
     return FamilyRelationshipEntity(
-      code: code,
-      nameAr: nameAr,
-      nameEn: nameEn,
-      forDependents: forDependents,
-      isPrimary: isPrimary,
+      code: code ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      forDependents: forDependents ?? false,
+      isPrimary: isPrimary ?? false,
     );
   }
 }
@@ -20,20 +20,20 @@ extension FamilyRelationshipResponseDtoMapper on FamilyRelationshipResponseDto {
 extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
   FamilyMemberEntity toEntity() {
     return FamilyMemberEntity(
-      memberId: memberId,
-      role: role,
-      displayName: displayName,
-      relationshipCode: relationshipCode,
-      gender: gender,
-      ageYears: ageYears,
+      memberId: memberId ?? '',
+      role: role ?? 2,
+      displayName: displayName ?? '',
+      relationshipCode: relationshipCode ?? '',
+      gender: gender ?? 1,
+      ageYears: ageYears ?? 0,
       deliveryAddressId: deliveryAddressId,
-      setupStatus: setupStatus,
+      setupStatus: setupStatus ?? 1,
       programId: programId,
       bundleId: bundleId,
       selectedTier: selectedTier,
       durationDays: durationDays,
-      includeFriday: includeFriday,
-      isCurrentUser: isCurrentUser,
+      includeFriday: includeFriday ?? false,
+      isCurrentUser: isCurrentUser ?? false,
     );
   }
 }
@@ -51,7 +51,7 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
       maxMembers: maxMembers,
       discountPercent: discountPercent,
       currentStep: currentStep,
-      members: members.map((member) => member.toEntity()).toList(),
+      members: members?.map((member) => member.toEntity()).toList() ?? const [],
     );
   }
 }

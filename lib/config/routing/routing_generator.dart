@@ -43,6 +43,8 @@ import 'package:meal_meat_user/features/subscription_packages/presentation/scree
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/subscriptions_screen.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/screens/conversion_options_page.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
@@ -66,6 +68,18 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const SubscriptionsScreen(),
+        );
+      case AppRoutes.conversionOptions:
+        final options = settings.arguments is ConversionOptionsModel
+            ? settings.arguments! as ConversionOptionsModel
+            : const ConversionOptionsModel(
+                subscriptionId: '',
+                status: '',
+                options: [],
+              );
+        return _buildRoute(
+          settings: settings,
+          page: ConversionOptionsPage(options: options),
         );
       case AppRoutes.subscriptionProgramSelection:
         return _buildRoute(

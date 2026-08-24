@@ -39,6 +39,8 @@ abstract class EndPoints {
       '/api/v1/customer/subscription-flow/types';
   static const String subscriptionConversionOptions =
       '/api/v1/customer/subscriptions/current/conversion-options';
+  static const String convertFromIndividual =
+      '/api/v1/customer/family-subscription-flow/convert-from-individual';
   static const String subscriptionPrograms =
       '/api/v1/customer/subscription-flow/programs';
   static const String subscriptionProgramBundles =

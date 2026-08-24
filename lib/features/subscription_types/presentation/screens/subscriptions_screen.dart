@@ -59,7 +59,13 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                       previous.conversionFailure != current.conversionFailure,
                   listener: (context, state) {
                     if (state.isConversionSuccess) {
-                      context.pushNamed(AppRoutes.familyPackageSelection);
+                      final conversionOptions = state.conversionOptions;
+                      if (conversionOptions != null) {
+                        context.pushNamed(
+                          AppRoutes.conversionOptions,
+                          arguments: conversionOptions,
+                        );
+                      }
                       return;
                     }
 

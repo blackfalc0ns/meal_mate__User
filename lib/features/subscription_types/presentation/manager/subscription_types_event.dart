@@ -9,3 +9,7 @@ class GetSubscriptionTypesEvent extends SubscriptionTypesEvent {
 class GetSubscriptionConversionOptionsEvent extends SubscriptionTypesEvent {
   const GetSubscriptionConversionOptionsEvent();
 }
+
+class ConvertFromIndividualEvent extends SubscriptionTypesEvent {
+  const ConvertFromIndividualEvent();
+}

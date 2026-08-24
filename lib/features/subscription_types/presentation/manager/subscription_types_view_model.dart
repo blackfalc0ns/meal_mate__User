@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/usecase/convert_from_individual_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_types_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_event.dart';
@@ -11,11 +12,13 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
   SubscriptionTypesViewModel(
     this._getSubscriptionTypesUseCase,
     this._getSubscriptionConversionOptionsUseCase,
+    this._convertFromIndividualUseCase,
   ) : super(const SubscriptionTypesState());
 
   final GetSubscriptionTypesUseCase _getSubscriptionTypesUseCase;
   final GetSubscriptionConversionOptionsUseCase
   _getSubscriptionConversionOptionsUseCase;
+  final ConvertFromIndividualUseCase _convertFromIndividualUseCase;
 
   void doIntent(SubscriptionTypesEvent event) {
     switch (event) {
@@ -23,6 +26,8 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
         _getSubscriptionTypes();
       case GetSubscriptionConversionOptionsEvent():
         _getSubscriptionConversionOptions();
+      case ConvertFromIndividualEvent():
+        _convertFromIndividual();
     }
   }
 
@@ -32,6 +37,7 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
         isLoading: true,
         isSuccess: false,
         isConversionSuccess: false,
+        isConvertFromIndividualSuccess: false,
         clearFailure: true,
       ),
     );
@@ -63,6 +69,7 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
       state.copyWith(
         isConversionLoading: true,
         isConversionSuccess: false,
+        isConvertFromIndividualSuccess: false,
         clearConversionFailure: true,
       ),
     );
@@ -72,7 +79,11 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isConversionLoading: false, isConversionSuccess: true),
+          state.copyWith(
+            isConversionLoading: false,
+            isConversionSuccess: true,
+            conversionOptions: result.data,
+          ),
         );
       case ApiErrorResult():
         emit(
@@ -80,6 +91,37 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
             isConversionLoading: false,
             isConversionSuccess: false,
             conversionFailure: result.failure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _convertFromIndividual() async {
+    emit(
+      state.copyWith(
+        isConvertFromIndividualLoading: true,
+        isConvertFromIndividualSuccess: false,
+        clearConvertFromIndividualFailure: true,
+      ),
+    );
+
+    final result = await _convertFromIndividualUseCase();
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            isConvertFromIndividualLoading: false,
+            isConvertFromIndividualSuccess: true,
+            convertedFamilyFlow: result.data,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isConvertFromIndividualLoading: false,
+            isConvertFromIndividualSuccess: false,
+            convertFromIndividualFailure: result.failure,
           ),
         );
     }

@@ -4,11 +4,11 @@ import 'package:meal_meat_user/features/family_checkout/domain/entities/family_s
 extension FamilySummaryMemberDtoMapper on FamilySummaryMemberDto {
   FamilySummaryMemberEntity toEntity() {
     return FamilySummaryMemberEntity(
-      memberId: memberId,
-      displayName: displayName,
-      isManager: isManager,
-      setupStatus: setupStatus,
-      isReady: isReady,
+      memberId: memberId ?? '',
+      displayName: displayName ?? '',
+      isManager: isManager ?? false,
+      setupStatus: setupStatus ?? 0,
+      isReady: isReady ?? (setupStatus == 3),
       roleAr: roleAr,
     );
   }
@@ -18,12 +18,12 @@ extension FamilySelectedMemberSummaryDtoMapper
     on FamilySelectedMemberSummaryDto {
   FamilySelectedMemberSummaryEntity toEntity() {
     return FamilySelectedMemberSummaryEntity(
-      memberId: memberId,
-      displayName: displayName,
-      isManager: isManager,
+      memberId: memberId ?? '',
+      displayName: displayName ?? '',
+      isManager: isManager ?? false,
       roleAr: roleAr,
-      setupStatus: setupStatus,
-      isReady: isReady,
+      setupStatus: setupStatus ?? 0,
+      isReady: isReady ?? (setupStatus == 3),
       programNameAr: programNameAr,
       programNameEn: programNameEn,
       bundleNameAr: bundleNameAr,
@@ -32,13 +32,13 @@ extension FamilySelectedMemberSummaryDtoMapper
       durationLabelAr: durationLabelAr,
       selectedTier: selectedTier,
       tierNameAr: tierNameAr,
-      includeFriday: includeFriday,
-      breakfast: breakfast,
-      lunch: lunch,
-      snack: snack,
-      dinner: dinner,
-      mealsPerDay: mealsPerDay,
-      memberPrice: memberPrice,
+      includeFriday: includeFriday ?? false,
+      breakfast: breakfast ?? false,
+      lunch: lunch ?? false,
+      snack: snack ?? false,
+      dinner: dinner ?? false,
+      mealsPerDay: mealsPerDay ?? 0,
+      memberPrice: memberPrice ?? 0.0,
     );
   }
 }
@@ -46,15 +46,15 @@ extension FamilySelectedMemberSummaryDtoMapper
 extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
   FamilyMealOverviewEntity toEntity() {
     return FamilyMealOverviewEntity(
-      memberId: memberId,
-      displayName: displayName,
-      breakfast: breakfast,
-      lunch: lunch,
-      snack: snack,
-      dinner: dinner,
-      mealsPerDay: mealsPerDay,
-      isReady: isReady,
-      isManager: isManager,
+      memberId: memberId ?? '',
+      displayName: displayName ?? '',
+      breakfast: breakfast ?? false,
+      lunch: lunch ?? false,
+      snack: snack ?? false,
+      dinner: dinner ?? false,
+      mealsPerDay: mealsPerDay ?? 0,
+      isReady: isReady ?? false,
+      isManager: isManager ?? false,
     );
   }
 }
@@ -62,16 +62,17 @@ extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
 extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
   FamilySummaryEntity toEntity() {
     return FamilySummaryEntity(
-      subtotal: subtotal,
-      familyDiscountPercent: familyDiscountPercent,
-      familyDiscountAmount: familyDiscountAmount,
-      finalPrice: finalPrice,
-      currencyCode: currencyCode,
-      canCheckout: canCheckout,
+      subtotal: subtotal ?? 0.0,
+      familyDiscountPercent: familyDiscountPercent ?? 0.0,
+      familyDiscountAmount: familyDiscountAmount ?? 0.0,
+      finalPrice: finalPrice ?? 0.0,
+      currencyCode: currencyCode ?? 'KWD',
+      canCheckout: canCheckout ?? false,
       checkoutBlockReason: checkoutBlockReason,
-      members: members.map((member) => member.toEntity()).toList(),
+      members: members?.map((member) => member.toEntity()).toList() ?? const [],
       selectedMember: selectedMember?.toEntity(),
-      mealOverview: mealOverview.map((meal) => meal.toEntity()).toList(),
+      mealOverview:
+          mealOverview?.map((meal) => meal.toEntity()).toList() ?? const [],
     );
   }
 }
