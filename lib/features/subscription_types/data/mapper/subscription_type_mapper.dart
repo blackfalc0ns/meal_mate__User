@@ -1,6 +1,6 @@
 import 'package:meal_meat_user/core/constants/assets.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
+import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';
 
 extension SubscriptionTypeResponseDtoMapper on SubscriptionTypeResponseDto {
   SubscriptionTypeEntity toEntity() {
@@ -15,6 +15,9 @@ extension SubscriptionTypeResponseDtoMapper on SubscriptionTypeResponseDto {
       maxMembers: maxMembers ?? 0,
       isAvailable: isAvailable ?? false,
       membersConfiguredAfterPayment: membersConfiguredAfterPayment ?? false,
+      disabledReason: disabledReason,
+      requiresConversion: requiresConversion ?? false,
+      conversionEndpoint: conversionEndpoint,
       imageAsset: _imageAssetForCode(normalizedCode),
     );
   }

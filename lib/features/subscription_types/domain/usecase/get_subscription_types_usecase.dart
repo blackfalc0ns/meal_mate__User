@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/repo/subscription_types_repository.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/repo/subscription_types_repository.dart';
 
 @injectable
 class GetSubscriptionTypesUseCase {

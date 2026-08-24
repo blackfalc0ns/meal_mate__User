@@ -233,28 +233,30 @@ import '../../features/subscription_programs/data/data_source/subscription_progr
     as _i96;
 import '../../features/subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart'
     as _i905;
-import '../../features/subscription_programs/data/data_source/subscription_types_remote_data_source.dart'
-    as _i1021;
-import '../../features/subscription_programs/data/data_source/subscription_types_remote_data_source_impl.dart'
-    as _i253;
 import '../../features/subscription_programs/data/repo/subscription_programs_repository_impl.dart'
     as _i1010;
-import '../../features/subscription_programs/data/repo/subscription_types_repository_impl.dart'
-    as _i715;
 import '../../features/subscription_programs/domain/repo/subscription_programs_repository.dart'
     as _i650;
-import '../../features/subscription_programs/domain/repo/subscription_types_repository.dart'
-    as _i866;
 import '../../features/subscription_programs/domain/usecase/get_subscription_program_bundles_usecase.dart'
     as _i718;
 import '../../features/subscription_programs/domain/usecase/get_subscription_programs_usecase.dart'
     as _i178;
-import '../../features/subscription_programs/domain/usecase/get_subscription_types_usecase.dart'
-    as _i247;
 import '../../features/subscription_programs/presentation/manager/subscription_programs_view_model.dart'
     as _i420;
-import '../../features/subscription_programs/presentation/manager/subscription_types_view_model.dart'
-    as _i492;
+import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source.dart'
+    as _i735;
+import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source_impl.dart'
+    as _i200;
+import '../../features/subscription_types/data/repo/subscription_types_repository_impl.dart'
+    as _i555;
+import '../../features/subscription_types/domain/repo/subscription_types_repository.dart'
+    as _i655;
+import '../../features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart'
+    as _i377;
+import '../../features/subscription_types/domain/usecase/get_subscription_types_usecase.dart'
+    as _i999;
+import '../../features/subscription_types/presentation/manager/subscription_types_view_model.dart'
+    as _i62;
 import '../biometric/biometric_service.dart' as _i43;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
@@ -471,6 +473,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i408.GetFamilySummaryUseCase>(
       () => _i408.GetFamilySummaryUseCase(gh<_i802.FamilyCheckoutRepository>()),
     );
+    gh.factory<_i735.SubscriptionTypesRemoteDataSource>(
+      () =>
+          _i200.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i755.SubscriptionPlanRemoteDataSource>(
       () => _i509.SubscriptionPlanRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -517,10 +523,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i737.AddressesRemoteDataSource>(
       () => _i380.AddressesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
-    );
-    gh.factory<_i1021.SubscriptionTypesRemoteDataSource>(
-      () =>
-          _i253.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i306.FamilyPackageDaysRepository>(
       () => _i471.FamilyPackageDaysRepositoryImpl(
@@ -644,6 +646,11 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
     );
+    gh.factory<_i655.SubscriptionTypesRepository>(
+      () => _i555.SubscriptionTypesRepositoryImpl(
+        gh<_i735.SubscriptionTypesRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i420.FoodPreferencesViewModel>(
       () => _i420.FoodPreferencesViewModel(
         gh<_i608.GetFoodPreferencesUseCase>(),
@@ -660,6 +667,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i178.GetSubscriptionProgramsUseCase>(
       () => _i178.GetSubscriptionProgramsUseCase(
         gh<_i650.SubscriptionProgramsRepository>(),
+      ),
+    );
+    gh.factory<_i377.GetSubscriptionConversionOptionsUseCase>(
+      () => _i377.GetSubscriptionConversionOptionsUseCase(
+        gh<_i655.SubscriptionTypesRepository>(),
+      ),
+    );
+    gh.factory<_i999.GetSubscriptionTypesUseCase>(
+      () => _i999.GetSubscriptionTypesUseCase(
+        gh<_i655.SubscriptionTypesRepository>(),
       ),
     );
     gh.factory<_i995.UploadFileUseCase>(
@@ -693,11 +710,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i600.SaveFamilyMemberPlanUseCase>(
       () => _i600.SaveFamilyMemberPlanUseCase(
         gh<_i306.FamilyPackageDaysRepository>(),
-      ),
-    );
-    gh.factory<_i866.SubscriptionTypesRepository>(
-      () => _i715.SubscriptionTypesRepositoryImpl(
-        gh<_i1021.SubscriptionTypesRemoteDataSource>(),
       ),
     );
     gh.factory<_i556.AddressesRepository>(
@@ -734,11 +746,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
-    gh.factory<_i247.GetSubscriptionTypesUseCase>(
-      () => _i247.GetSubscriptionTypesUseCase(
-        gh<_i866.SubscriptionTypesRepository>(),
-      ),
-    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -757,11 +764,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i857.UpdateCustomerProfileUseCase>(
       () => _i857.UpdateCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
-    );
-    gh.factory<_i492.SubscriptionTypesViewModel>(
-      () => _i492.SubscriptionTypesViewModel(
-        gh<_i247.GetSubscriptionTypesUseCase>(),
-      ),
     );
     gh.factory<_i527.SubscriptionPlanViewModel>(
       () => _i527.SubscriptionPlanViewModel(
@@ -843,6 +845,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+      ),
+    );
+    gh.factory<_i62.SubscriptionTypesViewModel>(
+      () => _i62.SubscriptionTypesViewModel(
+        gh<_i999.GetSubscriptionTypesUseCase>(),
+        gh<_i377.GetSubscriptionConversionOptionsUseCase>(),
       ),
     );
     gh.factory<_i693.FamilySubscriptionSetupViewModel>(

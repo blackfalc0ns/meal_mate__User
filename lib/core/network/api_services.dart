@@ -46,7 +46,7 @@ import 'package:meal_meat_user/features/subscription_checkout/data/models/respon
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_programs/data/models/response/subscription_program_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_type_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
@@ -212,6 +212,9 @@ abstract class ApiServices {
 
   @GET(EndPoints.subscriptionTypes)
   Future<List<SubscriptionTypeResponseDto>> getSubscriptionTypes();
+
+  @GET(EndPoints.subscriptionConversionOptions)
+  Future<void> getSubscriptionConversionOptions();
 
   @GET(EndPoints.subscriptionPrograms)
   Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();

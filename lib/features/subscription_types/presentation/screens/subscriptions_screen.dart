@@ -11,13 +11,14 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_types_event.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_types_state.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_types_view_model.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_card.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_notice.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_types_loading_skeleton.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_event.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_state.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_view_model.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_type_card.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_type_notice.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_types_loading_skeleton.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
@@ -48,7 +49,28 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           body: SafeArea(
             bottom: false,
             child:
-                BlocBuilder<SubscriptionTypesViewModel, SubscriptionTypesState>(
+                BlocConsumer<
+                  SubscriptionTypesViewModel,
+                  SubscriptionTypesState
+                >(
+                  listenWhen: (previous, current) =>
+                      previous.isConversionSuccess !=
+                          current.isConversionSuccess ||
+                      previous.conversionFailure != current.conversionFailure,
+                  listener: (context, state) {
+                    if (state.isConversionSuccess) {
+                      context.pushNamed(AppRoutes.familyPackageSelection);
+                      return;
+                    }
+
+                    final message = state.conversionFailure?.errorMessage;
+                    if (message != null && message.isNotEmpty) {
+                      CustomSnackbar.showError(
+                        context: context,
+                        message: message,
+                      );
+                    }
+                  },
                   builder: (context, state) {
                     if (state.isLoading && state.types.isEmpty) {
                       return SubscriptionTypesLoadingSkeleton(
@@ -73,7 +95,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                       );
                     }
 
-                    return _buildSubscriptionTypesContent(context, state.types);
+                    return _buildSubscriptionTypesContent(context, state);
                   },
                 ),
           ),
@@ -84,10 +106,16 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
   Widget _buildSubscriptionTypesContent(
     BuildContext context,
-    List<SubscriptionTypeEntity> types,
+    SubscriptionTypesState state,
   ) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final types = state.types;
+    final selectedTypeIndex = _selectedTypeIndex;
+    final selectedType =
+        selectedTypeIndex != null && selectedTypeIndex < types.length
+        ? types[selectedTypeIndex]
+        : null;
 
     return Stack(
       children: [
@@ -165,9 +193,13 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                   const SizedBox(height: Spacing.md),
                   AppButton.filled(
                     text: locale.family_next_program,
-                    onPressed: _selectedTypeIndex == null
+                    isLoading: state.isConversionLoading,
+                    onPressed:
+                        selectedType == null ||
+                            !selectedType.isAvailable ||
+                            state.isConversionLoading
                         ? null
-                        : () => _openSelectedSubscription(types),
+                        : () => _openSelectedSubscription(context, types),
                     borderRadius: Spacing.radiusPill,
                     textColor: color.onPrimary,
                     fontSize: FontSize.size12,
@@ -202,7 +234,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           features: _featuresForType(context, type),
           icons: _iconsForType(type),
           isSelected: _selectedTypeIndex == index,
-          onTap: () => _selectSubscriptionType(index),
+          onTap: type.isAvailable ? () => _selectSubscriptionType(index) : null,
         ),
       );
 
@@ -218,12 +250,25 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     setState(() => _selectedTypeIndex = index);
   }
 
-  void _openSelectedSubscription(List<SubscriptionTypeEntity> types) {
+  void _openSelectedSubscription(
+    BuildContext context,
+    List<SubscriptionTypeEntity> types,
+  ) {
     final selectedTypeIndex = _selectedTypeIndex;
     if (selectedTypeIndex == null || selectedTypeIndex >= types.length) return;
 
-    if (!types[selectedTypeIndex].isFamily) {
+    final selectedType = types[selectedTypeIndex];
+    if (!selectedType.isAvailable) return;
+
+    if (!selectedType.isFamily) {
       context.pushNamed(AppRoutes.subscriptionProgramSelection);
+      return;
+    }
+
+    if (selectedType.requiresConversion) {
+      context.read<SubscriptionTypesViewModel>().doIntent(
+        const GetSubscriptionConversionOptionsEvent(),
+      );
       return;
     }
 
@@ -245,6 +290,13 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     SubscriptionTypeEntity type,
   ) {
     final locale = context.localization;
+    if (!type.isAvailable) {
+      final disabledReason = type.disabledReason;
+      if (disabledReason != null && disabledReason.isNotEmpty) {
+        return disabledReason;
+      }
+    }
+
     final description = type.description(locale.localeName);
     if (description.isNotEmpty) return description;
 

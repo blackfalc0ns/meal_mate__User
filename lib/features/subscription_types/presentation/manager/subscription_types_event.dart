@@ -5,3 +5,7 @@ sealed class SubscriptionTypesEvent {
 class GetSubscriptionTypesEvent extends SubscriptionTypesEvent {
   const GetSubscriptionTypesEvent();
 }
+
+class GetSubscriptionConversionOptionsEvent extends SubscriptionTypesEvent {
+  const GetSubscriptionConversionOptionsEvent();
+}

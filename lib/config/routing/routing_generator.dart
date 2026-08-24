@@ -42,7 +42,7 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/scree
 import 'package:meal_meat_user/features/subscription_packages/presentation/screens/subscription_package_selection_screen.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscription_program_selection_screen.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/screens/subscriptions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';

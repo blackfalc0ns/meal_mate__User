@@ -3,8 +3,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_type_feature_item.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_type_feature_item.dart';
 
 class SubscriptionTypeCard extends StatelessWidget {
   const SubscriptionTypeCard({
@@ -24,7 +24,7 @@ class SubscriptionTypeCard extends StatelessWidget {
   final List<String> features;
   final List<IconData> icons;
   final bool isSelected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,14 @@ class SubscriptionTypeCard extends StatelessWidget {
     final locale = context.localization;
     final textDirection = Directionality.of(context);
     final accentColor = type.isFamily ? color.secondary : color.primary;
+    final isEnabled = type.isAvailable;
     final dividerColor = type.isFamily
         ? color.outlineVariant
         : color.surface.withValues(alpha: 0.86);
 
     return Semantics(
       button: true,
+      enabled: isEnabled,
       label: title,
       child: Material(
         color: color.surface.withValues(alpha: 0),
@@ -45,7 +47,7 @@ class SubscriptionTypeCard extends StatelessWidget {
           Spacing.subscriptionProgramCardRadius,
         ),
         child: InkWell(
-          onTap: onTap,
+          onTap: isEnabled ? onTap : null,
           borderRadius: BorderRadius.circular(
             Spacing.subscriptionProgramCardRadius,
           ),
@@ -283,6 +285,17 @@ class SubscriptionTypeCard extends StatelessWidget {
                             ],
                           ),
                         ),
+                        if (!isEnabled)
+                          Positioned.fill(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: color.surface.withValues(alpha: 0.56),
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.subscriptionProgramCardRadius,
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),

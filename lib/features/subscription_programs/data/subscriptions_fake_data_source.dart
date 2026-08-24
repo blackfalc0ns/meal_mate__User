@@ -1,36 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_plan_entity.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_type_entity.dart';
 
 class SubscriptionsFakeDataSource {
   const SubscriptionsFakeDataSource();
-
-  List<SubscriptionTypeEntity> getSubscriptionTypes() => const [
-    SubscriptionTypeEntity(
-      code: 'INDIVIDUAL',
-      nameAr: '',
-      nameEn: '',
-      descriptionAr: '',
-      descriptionEn: '',
-      maxMembers: 1,
-      isAvailable: true,
-      membersConfiguredAfterPayment: false,
-      imageAsset: Assets.subscriptionTypeIndividualProduct,
-    ),
-    SubscriptionTypeEntity(
-      code: 'FAMILY',
-      nameAr: '',
-      nameEn: '',
-      descriptionAr: '',
-      descriptionEn: '',
-      maxMembers: 4,
-      isAvailable: true,
-      membersConfiguredAfterPayment: true,
-      imageAsset: Assets.subscriptionTypeFamilyProduct,
-    ),
-  ];
 
   static const String _mealsPerDay = '4 وجبات يومياً';
   static const String _description = 'وجبات صحية ومتوازنة';

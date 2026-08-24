@@ -11,7 +11,7 @@ import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart'
 import 'package:meal_meat_user/features/home/presentation/screens/home_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_screen.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/screens/subscriptions_screen.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/screens/subscriptions_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
   const AppShellScreen({super.key});
