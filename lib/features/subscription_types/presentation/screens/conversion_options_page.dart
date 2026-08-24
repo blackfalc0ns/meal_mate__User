@@ -17,26 +17,10 @@ import 'package:meal_meat_user/features/subscription_types/presentation/manager/
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_view_model.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/widgets/conversion_option_card.dart';
 
-class ConversionOptionsPage extends StatefulWidget {
+class ConversionOptionsPage extends StatelessWidget {
   const ConversionOptionsPage({super.key, required this.options});
 
   final ConversionOptionsModel options;
-
-  @override
-  State<ConversionOptionsPage> createState() => _ConversionOptionsPageState();
-}
-
-class _ConversionOptionsPageState extends State<ConversionOptionsPage> {
-  ConversionOptionModel? _selectedOption;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedOption =
-        widget.options.convertToFamilyManagerOption?.available == true
-        ? widget.options.convertToFamilyManagerOption
-        : null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +28,10 @@ class _ConversionOptionsPageState extends State<ConversionOptionsPage> {
     final locale = context.localization;
 
     return BlocProvider<SubscriptionTypesViewModel>(
-      create: (_) => getIt<SubscriptionTypesViewModel>(),
+      create: (_) =>
+          getIt<SubscriptionTypesViewModel>()
+            ..doIntent(InitializeConversionOptionSelectionEvent(options)),
       child: Scaffold(
-        backgroundColor: color.surface,
         appBar: CustomAppBar(
           showBackButton: true,
           title: locale.subscription_conversion_title,
@@ -76,6 +61,8 @@ class _ConversionOptionsPageState extends State<ConversionOptionsPage> {
                   }
                 },
                 builder: (context, state) {
+                  final selectedOption = state.selectedConversionOption;
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Spacing.screenH,
@@ -96,20 +83,22 @@ class _ConversionOptionsPageState extends State<ConversionOptionsPage> {
                         Expanded(
                           child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: widget.options.options.length,
+                            itemCount: options.options.length,
                             separatorBuilder: (_, _) =>
                                 const SizedBox(height: Spacing.sm),
                             itemBuilder: (context, index) {
-                              final option = widget.options.options[index];
+                              final option = options.options[index];
                               return ConversionOptionCard(
                                 option: option,
                                 title: _titleForOption(context, option),
                                 subtitle: _subtitleForOption(context, option),
                                 icon: _iconForOption(option),
-                                isSelected:
-                                    _selectedOption?.code == option.code,
-                                onTap: () =>
-                                    setState(() => _selectedOption = option),
+                                isSelected: selectedOption?.code == option.code,
+                                onTap: () => context
+                                    .read<SubscriptionTypesViewModel>()
+                                    .doIntent(
+                                      SelectConversionOptionEvent(option),
+                                    ),
                               );
                             },
                           ),
@@ -119,7 +108,7 @@ class _ConversionOptionsPageState extends State<ConversionOptionsPage> {
                           text: locale.family_package_continue_button,
                           isLoading: state.isConvertFromIndividualLoading,
                           onPressed:
-                              _selectedOption == null ||
+                              selectedOption == null ||
                                   state.isConvertFromIndividualLoading
                               ? null
                               : () => context

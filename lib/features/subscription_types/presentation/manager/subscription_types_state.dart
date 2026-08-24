@@ -13,6 +13,7 @@ class SubscriptionTypesState {
     this.isSuccess = false,
     this.types = const [],
     this.conversionOptions,
+    this.selectedConversionOption,
     this.convertedFamilyFlow,
     this.failure,
     this.conversionFailure,
@@ -27,6 +28,7 @@ class SubscriptionTypesState {
   final bool isSuccess;
   final List<SubscriptionTypeEntity> types;
   final ConversionOptionsModel? conversionOptions;
+  final ConversionOptionModel? selectedConversionOption;
   final FamilyFlowCurrentEntity? convertedFamilyFlow;
   final Failure? failure;
   final Failure? conversionFailure;
@@ -41,6 +43,7 @@ class SubscriptionTypesState {
     bool? isSuccess,
     List<SubscriptionTypeEntity>? types,
     ConversionOptionsModel? conversionOptions,
+    ConversionOptionModel? selectedConversionOption,
     FamilyFlowCurrentEntity? convertedFamilyFlow,
     Failure? failure,
     Failure? conversionFailure,
@@ -48,6 +51,7 @@ class SubscriptionTypesState {
     bool clearFailure = false,
     bool clearConversionFailure = false,
     bool clearConvertFromIndividualFailure = false,
+    bool clearSelectedConversionOption = false,
   }) {
     return SubscriptionTypesState(
       isLoading: isLoading ?? this.isLoading,
@@ -60,6 +64,9 @@ class SubscriptionTypesState {
       isSuccess: isSuccess ?? this.isSuccess,
       types: types ?? this.types,
       conversionOptions: conversionOptions ?? this.conversionOptions,
+      selectedConversionOption: clearSelectedConversionOption
+          ? null
+          : selectedConversionOption ?? this.selectedConversionOption,
       convertedFamilyFlow: convertedFamilyFlow ?? this.convertedFamilyFlow,
       failure: clearFailure ? null : failure ?? this.failure,
       conversionFailure: clearConversionFailure

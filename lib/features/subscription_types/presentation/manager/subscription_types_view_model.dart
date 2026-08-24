@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/convert_from_individual_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_types_usecase.dart';
@@ -28,7 +29,29 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
         _getSubscriptionConversionOptions();
       case ConvertFromIndividualEvent():
         _convertFromIndividual();
+      case InitializeConversionOptionSelectionEvent():
+        _initializeConversionOptionSelection(event.options);
+      case SelectConversionOptionEvent():
+        _selectConversionOption(event.option);
     }
+  }
+
+  void _initializeConversionOptionSelection(ConversionOptionsModel options) {
+    final defaultOption =
+        options.convertToFamilyManagerOption?.available == true
+        ? options.convertToFamilyManagerOption
+        : null;
+
+    emit(
+      state.copyWith(
+        selectedConversionOption: defaultOption,
+        clearSelectedConversionOption: defaultOption == null,
+      ),
+    );
+  }
+
+  void _selectConversionOption(ConversionOptionModel option) {
+    emit(state.copyWith(selectedConversionOption: option));
   }
 
   Future<void> _getSubscriptionTypes() async {
