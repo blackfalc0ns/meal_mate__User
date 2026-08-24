@@ -1,0 +1,10 @@
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+
+abstract class FamilyProgramsRepository {
+  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms();
+  Future<ApiResult<List<SubscriptionBundleEntity>>> getFamilyProgramBundles(
+    String programId,
+  );
+}

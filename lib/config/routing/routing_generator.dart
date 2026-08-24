@@ -26,12 +26,12 @@ import 'package:meal_meat_user/features/profile/presentation/screens/health_goal
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
-import 'package:meal_meat_user/features/family_plans/domain/entities/family_size_package_entity.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_selection_screen.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_package_days_setup_screen.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_payment_setup_screen.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_subscription_setup_screen.dart';
-import 'package:meal_meat_user/features/family_plans/presentation/screens/family_program_setup_screen.dart';
+import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
+import 'package:meal_meat_user/features/family_packages/presentation/screens/family_package_selection_screen.dart';
+import 'package:meal_meat_user/features/family_package_days/presentation/screens/family_package_days_setup_screen.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/screens/family_payment_setup_screen.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/screens/family_subscription_setup_screen.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/screens/family_program_setup_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
@@ -120,9 +120,7 @@ class RouteGenerator {
             : null;
         return _buildRoute(
           settings: settings,
-          page: FamilySubscriptionSetupScreen(
-            selectedPackage: selectedPackage,
-          ),
+          page: FamilySubscriptionSetupScreen(selectedPackage: selectedPackage),
         );
       case AppRoutes.familySubscriptionMembers:
         return _buildRoute(
@@ -150,8 +148,9 @@ class RouteGenerator {
           page: const FamilyProgramSetupScreen(),
         );
       case AppRoutes.familyPackageDaysSetup:
-        final programId =
-            settings.arguments is String ? settings.arguments as String : null;
+        final programId = settings.arguments is String
+            ? settings.arguments as String
+            : null;
         return _buildRoute(
           settings: settings,
           page: FamilyPackageDaysSetupScreen(programId: programId),
