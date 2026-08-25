@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 
@@ -11,6 +12,7 @@ abstract interface class CalendarRepository {
 
   Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
     required String subscriptionId,
+    required String date,
     required String localeName,
   });
 
@@ -23,13 +25,14 @@ abstract interface class CalendarRepository {
   Future<ApiResult<CalendarAvailableMealsEntity>> getAvailableMeals({
     required String subscriptionId,
     required String date,
+    required String restaurantId,
     required String localeName,
   });
 
   Future<ApiResult<void>> saveDayMeals({
     required String subscriptionId,
     required String date,
-    required List<String> mealIds,
+    required List<CalendarMealEntity> meals,
   });
 
   Future<ApiResult<void>> autoSelect({

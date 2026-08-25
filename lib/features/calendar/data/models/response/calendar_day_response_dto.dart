@@ -88,6 +88,7 @@ class CalendarRestaurantResponseDto {
     this.logoUrl,
     this.imageUrl,
     this.mealCount,
+    this.safeMealCount,
     this.deliveryDuration,
     this.deliveryWindow,
     this.maxUsageCount,
@@ -108,6 +109,7 @@ class CalendarRestaurantResponseDto {
   final String? logoUrl;
   final String? imageUrl;
   final int? mealCount;
+  final int? safeMealCount;
   final String? deliveryDuration;
   final String? deliveryWindow;
   final int? maxUsageCount;

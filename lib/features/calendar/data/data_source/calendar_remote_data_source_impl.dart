@@ -19,13 +19,59 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
-  Future<List<CalendarRestaurantResponseDto>> getRestaurants(
-    String subscriptionId,
-  ) async {
-    final response = await _apiServices.getSubscriptionCalendarRestaurants(
+  Future<List<CalendarRestaurantResponseDto>> getRestaurants({
+    required String subscriptionId,
+    required String date,
+  }) async {
+    final response = await _apiServices.getSubscriptionCalendarDayRestaurants(
+      subscriptionId,
+      date,
+    );
+    final dayRestaurants = response.restaurants ?? const [];
+    if (dayRestaurants.isEmpty) return dayRestaurants;
+
+    final poolResponse = await _apiServices.getSubscriptionCalendarRestaurants(
       subscriptionId,
     );
-    return response.restaurants ?? const [];
+    final poolLogos = <String, String>{};
+    for (final restaurant in poolResponse.restaurants ?? const []) {
+      final id = restaurant.restaurantId ?? restaurant.id;
+      final logo = restaurant.logoUrl ?? restaurant.imageUrl;
+      if (id == null || id.isEmpty || logo == null || logo.isEmpty) continue;
+      poolLogos[id] = logo;
+    }
+    if (poolLogos.isEmpty) return dayRestaurants;
+
+    return dayRestaurants.map((restaurant) {
+      if (restaurant.logoUrl?.isNotEmpty == true ||
+          restaurant.imageUrl?.isNotEmpty == true) {
+        return restaurant;
+      }
+      final id = restaurant.restaurantId ?? restaurant.id;
+      final logo = id == null ? null : poolLogos[id];
+      if (logo == null || logo.isEmpty) return restaurant;
+      return CalendarRestaurantResponseDto(
+        id: restaurant.id,
+        restaurantId: restaurant.restaurantId,
+        name: restaurant.name,
+        nameAr: restaurant.nameAr,
+        nameEn: restaurant.nameEn,
+        description: restaurant.description,
+        descriptionAr: restaurant.descriptionAr,
+        descriptionEn: restaurant.descriptionEn,
+        category: restaurant.category,
+        categoryAr: restaurant.categoryAr,
+        categoryEn: restaurant.categoryEn,
+        rating: restaurant.rating,
+        logoUrl: logo,
+        imageUrl: restaurant.imageUrl,
+        mealCount: restaurant.mealCount,
+        safeMealCount: restaurant.safeMealCount,
+        deliveryDuration: restaurant.deliveryDuration,
+        deliveryWindow: restaurant.deliveryWindow,
+        maxUsageCount: restaurant.maxUsageCount,
+      );
+    }).toList();
   }
 
   @override
@@ -45,10 +91,12 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   Future<CalendarAvailableMealsResponseDto> getAvailableMeals({
     required String subscriptionId,
     required String date,
+    required String restaurantId,
   }) {
-    return _apiServices.getSubscriptionCalendarAvailableMeals(
+    return _apiServices.getSubscriptionCalendarRestaurantMeals(
       subscriptionId,
       date,
+      restaurantId,
     );
   }
 

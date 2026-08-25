@@ -7,6 +7,9 @@ import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
@@ -53,7 +56,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
         _loadRestaurants(event.localeName);
       case SelectCalendarRestaurantEvent():
         _selectRestaurant(
-          restaurantId: event.restaurant.id,
+          restaurant: event.restaurant,
           localeName: event.localeName,
         );
       case LoadCalendarAvailableMealsEvent():
@@ -72,7 +75,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
     required String localeName,
     bool retryWithCurrentOnNotFound = true,
   }) async {
-    final resolvedSubscriptionId = await _resolveCurrentSubscriptionId();
+    final resolvedSubscriptionId = subscriptionId?.trim().isNotEmpty == true
+        ? subscriptionId!.trim()
+        : await _resolveCurrentSubscriptionId();
     if (resolvedSubscriptionId == null) return;
     if (resolvedSubscriptionId.isEmpty) {
       emit(
@@ -115,6 +120,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
             days: days,
             selectedDate: selectedDate,
             isCalendarLoading: false,
+            clearRestaurants: true,
             clearCalendarFailure: true,
           ),
         );
@@ -140,12 +146,15 @@ class CalendarViewModel extends Cubit<CalendarState> {
   }
 
   Future<void> _loadRestaurants(String localeName) async {
-    if (state.subscriptionId.isEmpty || state.restaurants.isNotEmpty) return;
+    final day = state.selectedDay;
+    final date = _dateParam(day);
+    if (state.subscriptionId.isEmpty || date.isEmpty) return;
     emit(
       state.copyWith(isRestaurantsLoading: true, clearRestaurantsFailure: true),
     );
     final result = await _getRestaurantsUseCase(
       subscriptionId: state.subscriptionId,
+      date: date,
       localeName: localeName,
     );
     if (isClosed) return;
@@ -170,7 +179,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
   }
 
   Future<void> _selectRestaurant({
-    required String restaurantId,
+    required CalendarRestaurantOptionEntity restaurant,
     required String localeName,
   }) async {
     final day = state.selectedDay;
@@ -178,7 +187,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
     if (day == null ||
         !day.isEditable ||
         date.isEmpty ||
-        restaurantId.isEmpty) {
+        restaurant.id.isEmpty) {
       return;
     }
 
@@ -194,13 +203,17 @@ class CalendarViewModel extends Cubit<CalendarState> {
     final result = await _setDayRestaurantUseCase(
       subscriptionId: state.subscriptionId,
       date: date,
-      restaurantId: restaurantId,
+      restaurantId: restaurant.id,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
-        await _loadAvailableMeals(localeName);
+        await _loadAvailableMeals(
+          localeName,
+          restaurantId: restaurant.id,
+          selectedRestaurant: restaurant,
+        );
       case ApiErrorResult():
         emit(
           state.copyWith(
@@ -211,10 +224,21 @@ class CalendarViewModel extends Cubit<CalendarState> {
     }
   }
 
-  Future<void> _loadAvailableMeals(String localeName) async {
+  Future<void> _loadAvailableMeals(
+    String localeName, {
+    String? restaurantId,
+    CalendarRestaurantOptionEntity? selectedRestaurant,
+  }) async {
     final day = state.selectedDay;
     final date = _dateParam(day);
-    if (day == null || !day.isEditable || date.isEmpty) return;
+    final resolvedRestaurantId = restaurantId ?? day?.restaurantId;
+    if (day == null ||
+        !day.isEditable ||
+        date.isEmpty ||
+        resolvedRestaurantId == null ||
+        resolvedRestaurantId.isEmpty) {
+      return;
+    }
 
     emit(
       state.copyWith(
@@ -226,16 +250,21 @@ class CalendarViewModel extends Cubit<CalendarState> {
     final result = await _getAvailableMealsUseCase(
       subscriptionId: state.subscriptionId,
       date: date,
+      restaurantId: resolvedRestaurantId,
       localeName: localeName,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
+        final availableMeals = _withRestaurantFallback(
+          result.data,
+          selectedRestaurant,
+        );
         emit(
           state.copyWith(
             isAvailableMealsLoading: false,
-            availableMeals: result.data,
+            availableMeals: availableMeals,
             localSelectedMealIds: day.selectedMealIds,
             clearAvailableMealsFailure: true,
           ),
@@ -256,6 +285,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
       state.copyWith(
         selectedDate: day.date,
         localSelectedMealIds: day.selectedMealIds,
+        clearRestaurants: true,
         clearAvailableMeals: true,
         clearAvailableMealsFailure: true,
         clearSaveFailure: true,
@@ -294,18 +324,42 @@ class CalendarViewModel extends Cubit<CalendarState> {
   Future<void> _saveMeals(String localeName) async {
     final day = state.selectedDay;
     final date = _dateParam(day);
-    if (day == null || date.isEmpty || !state.canSaveMeals) return;
+    final available = state.availableMeals;
+    if (day == null ||
+        available == null ||
+        date.isEmpty ||
+        !state.canSaveMeals) {
+      return;
+    }
+    final selectedMeals = available.meals
+        .where((meal) => state.localSelectedMealIds.contains(meal.id))
+        .toList();
+    if (selectedMeals.length != state.localSelectedMealIds.length) return;
 
     emit(state.copyWith(isSaving: true, clearSaveFailure: true));
     final result = await _saveDayMealsUseCase(
       subscriptionId: state.subscriptionId,
       date: date,
-      mealIds: state.localSelectedMealIds,
+      meals: selectedMeals,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
+        final completeResult = await _autoSelectDayUseCase(
+          subscriptionId: state.subscriptionId,
+          date: date,
+        );
+        if (isClosed) return;
+        if (completeResult case ApiErrorResult()) {
+          emit(
+            state.copyWith(
+              isSaving: false,
+              saveFailure: completeResult.failure,
+            ),
+          );
+          return;
+        }
         emit(
           state.copyWith(
             isSaving: false,
@@ -398,5 +452,50 @@ class CalendarViewModel extends Cubit<CalendarState> {
     final date = day?.date;
     if (date == null) return '';
     return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  CalendarAvailableMealsEntity _withRestaurantFallback(
+    CalendarAvailableMealsEntity availableMeals,
+    CalendarRestaurantOptionEntity? selectedRestaurant,
+  ) {
+    final fallback =
+        selectedRestaurant ??
+        _restaurantOptionById(
+          availableMeals.restaurant?.id ?? state.selectedDay?.restaurantId,
+        );
+    if (fallback == null) return availableMeals;
+
+    final restaurant = availableMeals.restaurant;
+    if (restaurant != null && restaurant.logoUrl?.isNotEmpty == true) {
+      return availableMeals;
+    }
+
+    return CalendarAvailableMealsEntity(
+      restaurant: CalendarRestaurantEntity(
+        id: restaurant?.id.isNotEmpty == true ? restaurant!.id : fallback.id,
+        logoUrl: restaurant?.logoUrl?.isNotEmpty == true
+            ? restaurant!.logoUrl
+            : fallback.logoUrl,
+        maxUsageCount: restaurant?.maxUsageCount ?? fallback.maxUsageCount,
+        name: restaurant?.name.isNotEmpty == true
+            ? restaurant!.name
+            : fallback.name,
+        category: restaurant?.category ?? '',
+        rating: restaurant?.rating.isNotEmpty == true
+            ? restaurant!.rating
+            : fallback.rating,
+        deliveryDuration: restaurant?.deliveryDuration ?? '',
+        deliveryWindow: restaurant?.deliveryWindow ?? '',
+      ),
+      meals: availableMeals.meals,
+      slotRequirements: availableMeals.slotRequirements,
+    );
+  }
+
+  CalendarRestaurantOptionEntity? _restaurantOptionById(String? restaurantId) {
+    if (restaurantId == null || restaurantId.isEmpty) return null;
+    return state.restaurants
+        .where((restaurant) => restaurant.id == restaurantId)
+        .firstOrNull;
   }
 }

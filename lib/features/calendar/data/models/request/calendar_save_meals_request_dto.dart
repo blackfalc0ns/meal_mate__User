@@ -4,9 +4,10 @@ part 'calendar_save_meals_request_dto.g.dart';
 
 @JsonSerializable()
 class CalendarSaveMealsRequestDto {
-  const CalendarSaveMealsRequestDto({required this.mealIds});
+  const CalendarSaveMealsRequestDto({required this.mealId, required this.slot});
 
-  final List<String> mealIds;
+  final String mealId;
+  final String slot;
 
   factory CalendarSaveMealsRequestDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarSaveMealsRequestDtoFromJson(json);

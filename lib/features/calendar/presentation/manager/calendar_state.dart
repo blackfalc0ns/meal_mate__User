@@ -147,6 +147,7 @@ class CalendarState {
     Failure? availableMealsFailure,
     Failure? saveFailure,
     bool? hasNoSubscription,
+    bool clearRestaurants = false,
     bool clearAvailableMeals = false,
     bool clearCalendarFailure = false,
     bool clearRestaurantsFailure = false,
@@ -157,7 +158,9 @@ class CalendarState {
       subscriptionId: subscriptionId ?? this.subscriptionId,
       calendar: calendar ?? this.calendar,
       days: days ?? this.days,
-      restaurants: restaurants ?? this.restaurants,
+      restaurants: clearRestaurants
+          ? const []
+          : restaurants ?? this.restaurants,
       availableMeals: clearAvailableMeals
           ? null
           : availableMeals ?? this.availableMeals,

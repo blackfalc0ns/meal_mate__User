@@ -7,9 +7,10 @@ import 'package:meal_meat_user/features/calendar/data/models/response/calendar_r
 abstract interface class CalendarRemoteDataSource {
   Future<CalendarResponseDto> getCalendar(String subscriptionId);
 
-  Future<List<CalendarRestaurantResponseDto>> getRestaurants(
-    String subscriptionId,
-  );
+  Future<List<CalendarRestaurantResponseDto>> getRestaurants({
+    required String subscriptionId,
+    required String date,
+  });
 
   Future<void> setDayRestaurant({
     required String subscriptionId,
@@ -20,6 +21,7 @@ abstract interface class CalendarRemoteDataSource {
   Future<CalendarAvailableMealsResponseDto> getAvailableMeals({
     required String subscriptionId,
     required String date,
+    required String restaurantId,
   });
 
   Future<void> saveDayMeals({

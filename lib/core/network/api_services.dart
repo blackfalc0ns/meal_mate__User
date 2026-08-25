@@ -316,11 +316,25 @@ abstract class ApiServices {
     @Path('subscriptionId') String subscriptionId,
   );
 
+  @GET(EndPoints.subscriptionCalendarDayRestaurants)
+  Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarDayRestaurants(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+  );
+
   @POST(EndPoints.subscriptionCalendarDayRestaurant)
   Future<void> setSubscriptionCalendarDayRestaurant(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
     @Body() CalendarSetRestaurantRequestDto request,
+  );
+
+  @GET(EndPoints.subscriptionCalendarRestaurantMeals)
+  Future<CalendarAvailableMealsResponseDto>
+  getSubscriptionCalendarRestaurantMeals(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+    @Path('restaurantId') String restaurantId,
   );
 
   @GET(EndPoints.subscriptionCalendarAvailableMeals)

@@ -110,7 +110,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         en: descriptionEn,
         fallback: description,
       ),
-      mealCount: mealCount ?? 0,
+      mealCount: safeMealCount ?? mealCount ?? 0,
       rating: rating?.toString() ?? '',
       logoType: CalendarRestaurantLogoType.healthyBowl,
     );
@@ -242,9 +242,9 @@ extension CalendarSetRestaurantRequestMapper on String {
   }
 }
 
-extension CalendarMealIdsRequestMapper on List<String> {
+extension CalendarMealRequestMapper on CalendarMealEntity {
   CalendarSaveMealsRequestDto toSaveMealsDto() {
-    return CalendarSaveMealsRequestDto(mealIds: this);
+    return CalendarSaveMealsRequestDto(mealId: id, slot: slot.toLowerCase());
   }
 }
 

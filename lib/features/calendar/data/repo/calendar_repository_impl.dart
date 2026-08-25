@@ -3,6 +3,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/data/data_source/calendar_remote_data_source.dart';
 import 'package:meal_meat_user/features/calendar/data/mapper/calendar_mapper.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
@@ -30,10 +31,14 @@ class CalendarRepositoryImpl implements CalendarRepository {
   @override
   Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
     required String subscriptionId,
+    required String date,
     required String localeName,
   }) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getRestaurants(subscriptionId);
+      final response = await _remoteDataSource.getRestaurants(
+        subscriptionId: subscriptionId,
+        date: date,
+      );
       return response
           .map((restaurant) => restaurant.toOptionEntity(localeName))
           .where((restaurant) => restaurant.id.isNotEmpty)
@@ -60,12 +65,14 @@ class CalendarRepositoryImpl implements CalendarRepository {
   Future<ApiResult<CalendarAvailableMealsEntity>> getAvailableMeals({
     required String subscriptionId,
     required String date,
+    required String restaurantId,
     required String localeName,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getAvailableMeals(
         subscriptionId: subscriptionId,
         date: date,
+        restaurantId: restaurantId,
       );
       return response.toEntity(localeName);
     });
@@ -75,14 +82,16 @@ class CalendarRepositoryImpl implements CalendarRepository {
   Future<ApiResult<void>> saveDayMeals({
     required String subscriptionId,
     required String date,
-    required List<String> mealIds,
+    required List<CalendarMealEntity> meals,
   }) {
-    return safeApiCall(() {
-      return _remoteDataSource.saveDayMeals(
-        subscriptionId: subscriptionId,
-        date: date,
-        request: mealIds.toSaveMealsDto(),
-      );
+    return safeApiCall(() async {
+      for (final meal in meals) {
+        await _remoteDataSource.saveDayMeals(
+          subscriptionId: subscriptionId,
+          date: date,
+          request: meal.toSaveMealsDto(),
+        );
+      }
     });
   }
 

@@ -12,11 +12,13 @@ class GetCalendarAvailableMealsUseCase {
   Future<ApiResult<CalendarAvailableMealsEntity>> call({
     required String subscriptionId,
     required String date,
+    required String restaurantId,
     required String localeName,
   }) {
     return _repository.getAvailableMeals(
       subscriptionId: subscriptionId,
       date: date,
+      restaurantId: restaurantId,
       localeName: localeName,
     );
   }

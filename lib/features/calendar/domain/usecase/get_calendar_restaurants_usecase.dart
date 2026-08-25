@@ -11,10 +11,12 @@ class GetCalendarRestaurantsUseCase {
 
   Future<ApiResult<List<CalendarRestaurantOptionEntity>>> call({
     required String subscriptionId,
+    required String date,
     required String localeName,
   }) {
     return _repository.getRestaurants(
       subscriptionId: subscriptionId,
+      date: date,
       localeName: localeName,
     );
   }
