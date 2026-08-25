@@ -68,3 +68,7 @@ class DeleteFamilyMemberEvent extends FamilyPlanEvent {
 
   final String memberId;
 }
+
+class AbandonFamilyDraftEvent extends FamilyPlanEvent {
+  const AbandonFamilyDraftEvent();
+}

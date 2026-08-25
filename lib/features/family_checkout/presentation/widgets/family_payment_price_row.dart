@@ -41,14 +41,15 @@ class FamilyPaymentPriceRow extends StatelessWidget {
                   color: valueColor,
                 ),
               ),
-              TextSpan(
-                text: ' ${locale.currency}',
-                style: valueStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: valueColor,
+              if (row.showCurrency)
+                TextSpan(
+                  text: ' ${locale.currency}',
+                  style: valueStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size9,
+                    color: valueColor,
+                  ),
                 ),
-              ),
             ],
           ),
 

@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:intl/intl.dart';
 
 typedef CalendarMealPickerOption = ({
   String title,
@@ -20,21 +21,6 @@ typedef CalendarMealPickerOption = ({
 
 class CalendarFakeDataSource {
   const CalendarFakeDataSource();
-
-  static const _monthNames = [
-    'يناير',
-    'فبراير',
-    'مارس',
-    'أبريل',
-    'مايو',
-    'يونيو',
-    'يوليو',
-    'أغسطس',
-    'سبتمبر',
-    'أكتوبر',
-    'نوفمبر',
-    'ديسمبر',
-  ];
 
   static const _weekdayNames = [
     'الإثنين',
@@ -121,8 +107,11 @@ class CalendarFakeDataSource {
     ),
   ];
 
-  String getMonthTitle(DateTime month) {
-    return '${_monthNames[month.month - 1]} ${month.year}';
+  String getMonthTitle({
+    required DateTime month,
+    required AppLocalizations locale,
+  }) {
+    return DateFormat.yMMMM(locale.localeName).format(month);
   }
 
   CalendarRestaurantEntity getRestaurant() => const CalendarRestaurantEntity(

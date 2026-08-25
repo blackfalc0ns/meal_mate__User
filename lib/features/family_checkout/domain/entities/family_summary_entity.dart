@@ -151,6 +151,10 @@ class FamilySummaryEntity {
   final String currencyCode;
   final bool canCheckout;
   final String? checkoutBlockReason;
+  final bool managerPrepaid;
+  final String? managerSubscriptionId;
+  final int newMembersCount;
+  final double newMembersSubtotal;
   final List<FamilySummaryMemberEntity> members;
   final FamilySelectedMemberSummaryEntity? selectedMember;
   final List<FamilyMealOverviewEntity> mealOverview;
@@ -163,6 +167,10 @@ class FamilySummaryEntity {
     this.currencyCode = 'KWD',
     required this.canCheckout,
     this.checkoutBlockReason,
+    this.managerPrepaid = false,
+    this.managerSubscriptionId,
+    this.newMembersCount = 0,
+    this.newMembersSubtotal = 0.0,
     this.members = const [],
     this.selectedMember,
     this.mealOverview = const [],

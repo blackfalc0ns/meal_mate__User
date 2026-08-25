@@ -102,12 +102,14 @@ class FamilyPaymentPriceRowUiModel {
     required this.value,
     this.isDiscount = false,
     this.isStrong = false,
+    this.showCurrency = true,
   });
 
   final String label;
   final String value;
   final bool isDiscount;
   final bool isStrong;
+  final bool showCurrency;
 }
 
 class FamilyPaymentPriceDetailsUiModel {

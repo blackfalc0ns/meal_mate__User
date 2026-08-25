@@ -2386,6 +2386,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_price_duration_total => 'إجمالي المدة';
 
   @override
+  String get family_new_members_subtotal => 'إجمالي الأعضاء الجدد';
+
+  @override
   String get family_price_discount => 'خصم العائلة (10%)';
 
   @override

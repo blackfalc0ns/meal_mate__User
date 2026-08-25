@@ -26,10 +26,18 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   static const _dataSource = CalendarFakeDataSource();
 
-  DateTime _focusedMonth = DateTime(2026, 9);
-  DateTime _selectedDate = DateTime(2026, 9, 25);
+  late DateTime _focusedMonth;
+  late DateTime _selectedDate;
   CalendarRestaurantEntity? _restaurant = _dataSource.getRestaurant();
   bool _isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final today = _dateOnly(DateTime.now());
+    _focusedMonth = DateTime(today.year, today.month);
+    _selectedDate = today;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +136,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
             CalendarPickerPanel(
-              monthTitle: _dataSource.getMonthTitle(_focusedMonth),
+              monthTitle: _dataSource.getMonthTitle(
+                month: _focusedMonth,
+                locale: locale,
+              ),
               days: days,
               isExpanded: _isExpanded,
               onToggleExpanded: () {
@@ -175,11 +186,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _changeMonth(int direction) {
     setState(() {
-      _focusedMonth = DateTime(
+      final nextMonth = DateTime(
         _focusedMonth.year,
         _focusedMonth.month + direction,
       );
-      _selectedDate = DateTime(_focusedMonth.year, _focusedMonth.month, 25);
+      _focusedMonth = nextMonth;
+      _selectedDate = DateTime(
+        nextMonth.year,
+        nextMonth.month,
+        _selectedDate.day.clamp(1, _daysInMonth(nextMonth)),
+      );
     });
   }
 
@@ -218,5 +234,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     setState(() {
       _restaurant = _dataSource.getRestaurantFromOption(selectedRestaurant);
     });
+  }
+
+  DateTime _dateOnly(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
+  int _daysInMonth(DateTime month) {
+    return DateTime(month.year, month.month + 1, 0).day;
   }
 }

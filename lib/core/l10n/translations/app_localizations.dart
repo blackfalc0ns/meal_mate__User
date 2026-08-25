@@ -4616,6 +4616,12 @@ abstract class AppLocalizations {
   /// **'Total duration'**
   String get family_price_duration_total;
 
+  /// No description provided for @family_new_members_subtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'New members subtotal'**
+  String get family_new_members_subtotal;
+
   /// No description provided for @family_price_discount.
   ///
   /// In en, this message translates to:

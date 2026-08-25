@@ -32,6 +32,11 @@ class FamilySubscriptionSetupRemoteDataSourceImpl
   }
 
   @override
+  Future<void> abandonFamilyDraft() {
+    return _apiServices.abandonFamilyDraft();
+  }
+
+  @override
   Future<FamilyFlowCurrentResponseDto> updateFamilyGroup(
     FamilyGroupWriteRequestDto request,
   ) {

@@ -10,6 +10,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_state.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_program_bundles_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_programs_usecase.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
@@ -35,7 +36,13 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   _getSubscriptionTierRestaurantsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
 
+  void _emit(FamilyPlanState state) {
+    if (isClosed) return;
+    emit(state);
+  }
+
   void doIntent(FamilyPlanEvent event) {
+    if (isClosed) return;
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
         _getFamilySubscriptionCurrent();
@@ -56,7 +63,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       case BrowseFamilyTierRestaurantsEvent():
         _browseTierRestaurants(event.tierIndex);
       case CloseFamilyBrowseRestaurantsEvent():
-        emit(state.copyWith(isRestaurantsView: false));
+        _emit(state.copyWith(isRestaurantsView: false));
       case SelectFamilyMemberEvent():
         _selectMember(event.memberIndex);
       case SelectFamilyMemberPackageDaysEvent():
@@ -74,11 +81,13 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilySubscriptionCurrent() async {
-    emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
+    _emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _getFamilyFlowCurrentUseCase();
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
         final flow = result.data;
+        _syncConvertedDraftFlag(flow);
         final selectedIndex =
             (state.selectedMemberIndex >= 0 &&
                 state.selectedMemberIndex < flow.members.length)
@@ -87,7 +96,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         final member = flow.members.isNotEmpty
             ? flow.members[selectedIndex]
             : null;
-        emit(
+        _emit(
           state.copyWith(
             isCurrentFlowLoading: false,
             currentFlow: flow,
@@ -99,34 +108,38 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         );
         if (member != null) await _loadMemberBundlesAndSelections(member);
       case ApiErrorResult():
-        emit(
+        _emit(
           state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
         );
     }
   }
 
   Future<void> _getPrograms() async {
-    emit(state.copyWith(isProgramsLoading: true, clearFailure: true));
+    _emit(state.copyWith(isProgramsLoading: true, clearFailure: true));
     final result = await _getFamilyProgramsUseCase();
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
-        emit(
+        _emit(
           state.copyWith(
             isProgramsLoading: false,
             programs: result.data.where((p) => p.programId.isNotEmpty).toList(),
           ),
         );
       case ApiErrorResult():
-        emit(state.copyWith(isProgramsLoading: false, failure: result.failure));
+        _emit(
+          state.copyWith(isProgramsLoading: false, failure: result.failure),
+        );
     }
   }
 
   Future<void> _getBundles(String programId) async {
-    emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
+    _emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
     final result = await _getFamilyProgramBundlesUseCase(programId);
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
-        emit(
+        _emit(
           state.copyWith(
             isBundlesLoading: false,
             bundles: result.data.where((b) => b.bundleId.isNotEmpty).toList(),
@@ -136,19 +149,19 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
           ),
         );
       case ApiErrorResult():
-        emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
+        _emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
     }
   }
 
   void _selectMember(int index) {
     if (index < 0 || index >= state.members.length) return;
-    emit(state.copyWith(selectedMemberIndex: index));
+    _emit(state.copyWith(selectedMemberIndex: index));
   }
 
   void _selectMemberInPackageDays(int index) {
     if (index < 0 || index >= state.members.length) return;
     final member = state.members[index];
-    emit(
+    _emit(
       state.copyWith(
         selectedMemberIndex: index,
         clearSelectedBundle: true,
@@ -170,8 +183,9 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         state.selectedProgram?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : null);
     if (programId == null || programId.isEmpty) return;
-    emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
+    _emit(state.copyWith(isBundlesLoading: true, clearFailure: true));
     final result = await _getFamilyProgramBundlesUseCase(programId);
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
         final bundles = result.data
@@ -184,7 +198,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
           );
           if (foundIdx != -1) bundleIdx = foundIdx;
         }
-        emit(
+        _emit(
           state.copyWith(
             isBundlesLoading: false,
             bundles: bundles,
@@ -203,7 +217,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
           );
         }
       case ApiErrorResult():
-        emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
+        _emit(state.copyWith(isBundlesLoading: false, failure: result.failure));
     }
   }
 
@@ -212,24 +226,29 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     required String bundleId,
     required FamilyMemberEntity member,
   }) async {
-    emit(
+    final shouldLoadDurations = state.durations.isEmpty;
+    _emit(
       state.copyWith(
-        isDurationsLoading: true,
+        isDurationsLoading: shouldLoadDurations,
         isTiersLoading: true,
         clearFailure: true,
       ),
     );
-    final durationsResult = await _getSubscriptionDurationsUseCase(
-      programId: programId,
-      bundleId: bundleId,
-      includeFriday: member.includeFriday,
-    );
+    final durationsResult = shouldLoadDurations
+        ? await _getSubscriptionDurationsUseCase(
+            programId: programId,
+            bundleId: bundleId,
+            includeFriday: member.includeFriday,
+          )
+        : null;
+    if (isClosed) return;
     final tiersResult = await _getSubscriptionTiersUseCase(
       programId: programId,
       bundleId: bundleId,
       durationDays: member.durationDays,
       includeFriday: member.includeFriday,
     );
+    if (isClosed) return;
     final durations = durationsResult is ApiSuccessResult
         ? (durationsResult as ApiSuccessResult).data
         : state.durations;
@@ -248,7 +267,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       );
       if (foundTierIdx != -1) tierIdx = foundTierIdx;
     }
-    emit(
+    _emit(
       state.copyWith(
         isDurationsLoading: false,
         isTiersLoading: false,
@@ -296,13 +315,14 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectBundle(int index) {
+    if (state.isSelectedManagerPlanLocked) return;
     final bundle = state.bundles.length > index ? state.bundles[index] : null;
     if (bundle == null) return;
     final member = state.selectedMember;
     final updatedFlow = _updateLocalMemberInCurrentFlow(
       bundleId: bundle.bundleId,
     );
-    emit(
+    _emit(
       state.copyWith(
         selectedBundleIndex: index,
         currentFlow: updatedFlow ?? state.currentFlow,
@@ -326,7 +346,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     required String bundleId,
     required bool includeFriday,
   }) async {
-    emit(
+    _emit(
       state.copyWith(
         isDurationsLoading: true,
         isTiersLoading: true,
@@ -338,13 +358,15 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       bundleId: bundleId,
       includeFriday: includeFriday,
     );
+    if (isClosed) return;
     final tiersResult = await _getSubscriptionTiersUseCase(
       programId: programId,
       bundleId: bundleId,
       durationDays: state.selectedDurationDays,
       includeFriday: includeFriday,
     );
-    emit(
+    if (isClosed) return;
+    _emit(
       state.copyWith(
         isDurationsLoading: false,
         isTiersLoading: false,
@@ -359,6 +381,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectDuration(int index) {
+    if (state.isSelectedManagerPlanLocked) return;
     final duration = state.durations.length > index
         ? state.durations[index]
         : null;
@@ -368,7 +391,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       durationDays: days,
       includeFriday: state.includeFriday,
     );
-    emit(
+    _emit(
       state.copyWith(
         selectedDurationIndex: index,
         customDurationDays: days,
@@ -386,11 +409,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _updateCustomDuration(int days) {
+    if (state.isSelectedManagerPlanLocked) return;
     final updatedFlow = _updateLocalMemberInCurrentFlow(
       durationDays: days,
       includeFriday: state.includeFriday,
     );
-    emit(
+    _emit(
       state.copyWith(
         customDurationDays: days,
         currentFlow: updatedFlow ?? state.currentFlow,
@@ -407,8 +431,9 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _toggleFriday(bool include) {
+    if (state.isSelectedManagerPlanLocked) return;
     final updatedFlow = _updateLocalMemberInCurrentFlow(includeFriday: include);
-    emit(
+    _emit(
       state.copyWith(
         includeFriday: include,
         currentFlow: updatedFlow ?? state.currentFlow,
@@ -435,11 +460,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectTier(int tierIndex) {
+    if (state.isSelectedManagerPlanLocked) return;
     final tier = state.tiers.length > tierIndex ? state.tiers[tierIndex] : null;
     if (tier == null) return;
     final tierInt = _parseTierToInt(tier.tier, tier.nameEn) ?? (tierIndex + 1);
     final updatedFlow = _updateLocalMemberInCurrentFlow(selectedTier: tierInt);
-    emit(
+    _emit(
       state.copyWith(
         selectedTierIndex: tierIndex,
         currentFlow: updatedFlow ?? state.currentFlow,
@@ -474,6 +500,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _browseTierRestaurants(int tierIndex) async {
+    if (state.isSelectedManagerPlanLocked) return;
     final selectedTier = (tierIndex >= 0 && tierIndex < state.tiers.length)
         ? state.tiers[tierIndex]
         : null;
@@ -491,7 +518,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     }
     bundle ??= state.bundles.isNotEmpty ? state.bundles.first : null;
     if (programId.isEmpty || bundle == null) return;
-    emit(
+    _emit(
       state.copyWith(
         isBrowseRestaurantsLoading: true,
         isRestaurantsView: true,
@@ -510,16 +537,17 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       tier: selectedTier.tier,
       restaurantIds: restaurantIds,
     );
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
-        emit(
+        _emit(
           state.copyWith(
             isBrowseRestaurantsLoading: false,
             browseRestaurants: result.data,
           ),
         );
       case ApiErrorResult():
-        emit(
+        _emit(
           state.copyWith(
             isBrowseRestaurantsLoading: false,
             browseRestaurantsFailure: result.failure,
@@ -536,6 +564,11 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     int? durationDays,
     bool? includeFriday,
   }) async {
+    final member = state.members
+        .where((item) => item.memberId == memberId)
+        .firstOrNull;
+    if (state.isConvertedFamilyDraft && member?.isManager == true) return;
+
     final result = await _saveFamilyMemberPlanUseCase(
       memberId: memberId,
       programId: programId,
@@ -544,11 +577,23 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       durationDays: durationDays,
       includeFriday: includeFriday,
     );
+    if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(currentFlow: result.data, clearFailure: true));
+        _syncConvertedDraftFlag(result.data);
+        _emit(state.copyWith(currentFlow: result.data, clearFailure: true));
       case ApiErrorResult():
-        emit(state.copyWith(failure: result.failure));
+        _emit(state.copyWith(failure: result.failure));
+    }
+  }
+
+  void _syncConvertedDraftFlag(FamilyFlowCurrentEntity flow) {
+    if (flow.status == 2) {
+      FamilyConversionDraftSession.clearConvertedFamilyDraft();
+      return;
+    }
+    if (flow.managerPrepaid) {
+      FamilyConversionDraftSession.markConvertedFamilyDraft();
     }
   }
 }

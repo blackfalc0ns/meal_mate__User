@@ -50,20 +50,29 @@ class FamilyPaymentPriceSection extends StatelessWidget {
       totalValue: '${data.finalPrice.toStringAsFixed(3)} $currency',
       rows: [
         FamilyPaymentPriceRowUiModel(
-          label: locale.family_price_duration_total,
-          value: '${data.subtotal.toStringAsFixed(3)} $currency',
+          label: data.managerPrepaid
+              ? locale.family_new_members_subtotal
+              : locale.family_price_duration_total,
+          value: (data.managerPrepaid ? data.newMembersSubtotal : data.subtotal)
+              .toStringAsFixed(3),
         ),
+        if (data.managerPrepaid)
+          FamilyPaymentPriceRowUiModel(
+            label: locale.family_primary_member,
+            value: locale.billing_paid,
+            showCurrency: false,
+          ),
         if (data.familyDiscountAmount > 0)
           FamilyPaymentPriceRowUiModel(
             label: discountPercentInt > 0
                 ? locale.family_package_discount_badge('$discountPercentInt%')
                 : locale.family_price_discount,
-            value: '-${data.familyDiscountAmount.toStringAsFixed(3)} $currency',
+            value: '-${data.familyDiscountAmount.toStringAsFixed(3)}',
             isDiscount: true,
           ),
         FamilyPaymentPriceRowUiModel(
           label: locale.family_total,
-          value: '${data.finalPrice.toStringAsFixed(3)} $currency',
+          value: data.finalPrice.toStringAsFixed(3),
           isStrong: true,
         ),
       ],

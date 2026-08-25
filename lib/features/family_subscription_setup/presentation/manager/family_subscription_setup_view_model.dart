@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/add_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/delete_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
@@ -20,6 +22,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     this._addFamilyMemberUseCase,
     this._updateFamilyMemberUseCase,
     this._deleteFamilyMemberUseCase,
+    this._abandonFamilyDraftUseCase,
     this._getCustomerAddressesUseCase,
   ) : super(const FamilyPlanState());
 
@@ -29,6 +32,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   final AddFamilyMemberUseCase _addFamilyMemberUseCase;
   final UpdateFamilyMemberUseCase _updateFamilyMemberUseCase;
   final DeleteFamilyMemberUseCase _deleteFamilyMemberUseCase;
+  final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
 
   void doIntent(FamilyPlanEvent event) {
@@ -65,6 +69,8 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
         );
       case DeleteFamilyMemberEvent():
         _deleteFamilyMember(event.memberId);
+      case AbandonFamilyDraftEvent():
+        _abandonFamilyDraft();
     }
   }
 
@@ -73,6 +79,11 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
+        if (result.data.status == 2) {
+          FamilyConversionDraftSession.clearConvertedFamilyDraft();
+        } else if (result.data.managerPrepaid) {
+          FamilyConversionDraftSession.markConvertedFamilyDraft();
+        }
         emit(
           state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
         );
@@ -191,6 +202,36 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
       case ApiErrorResult():
         emit(
           state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+        );
+    }
+  }
+
+  Future<void> _abandonFamilyDraft() async {
+    emit(
+      state.copyWith(
+        isAbandonDraftLoading: true,
+        isAbandonDraftSuccess: false,
+        clearFailure: true,
+      ),
+    );
+    final result = await _abandonFamilyDraftUseCase();
+    switch (result) {
+      case ApiSuccessResult():
+        FamilyConversionDraftSession.clearConvertedFamilyDraft();
+        emit(
+          state.copyWith(
+            isAbandonDraftLoading: false,
+            isAbandonDraftSuccess: true,
+            clearCurrentFlow: true,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isAbandonDraftLoading: false,
+            isAbandonDraftSuccess: false,
+            failure: result.failure,
+          ),
         );
     }
   }

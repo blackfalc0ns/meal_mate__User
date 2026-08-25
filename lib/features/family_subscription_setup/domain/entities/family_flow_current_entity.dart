@@ -11,6 +11,7 @@ class FamilyFlowCurrentEntity {
   final int? maxMembers;
   final double? discountPercent;
   final int? currentStep;
+  final bool managerPrepaid;
   final List<FamilyMemberEntity> members;
 
   const FamilyFlowCurrentEntity({
@@ -24,6 +25,7 @@ class FamilyFlowCurrentEntity {
     this.maxMembers,
     this.discountPercent,
     this.currentStep,
+    this.managerPrepaid = false,
     this.members = const [],
   });
 
@@ -48,6 +50,7 @@ class FamilyFlowCurrentEntity {
     int? maxMembers,
     double? discountPercent,
     int? currentStep,
+    bool? managerPrepaid,
     List<FamilyMemberEntity>? members,
   }) {
     return FamilyFlowCurrentEntity(
@@ -62,6 +65,7 @@ class FamilyFlowCurrentEntity {
       maxMembers: maxMembers ?? this.maxMembers,
       discountPercent: discountPercent ?? this.discountPercent,
       currentStep: currentStep ?? this.currentStep,
+      managerPrepaid: managerPrepaid ?? this.managerPrepaid,
       members: members ?? this.members,
     );
   }

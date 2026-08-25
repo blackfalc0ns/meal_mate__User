@@ -41,15 +41,18 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
 
     return Column(
       children: [
-        RestaurantPackageTiersSection(
-          packages: displayedTiers,
-          selectedIndex: state.selectedTierIndex,
-          onSelected: (index) => context
-              .read<FamilyPackageDaysViewModel>()
-              .doIntent(SelectFamilyTierEvent(index)),
-          onBrowseRestaurants: (index) => context
-              .read<FamilyPackageDaysViewModel>()
-              .doIntent(BrowseFamilyTierRestaurantsEvent(index)),
+        AbsorbPointer(
+          absorbing: state.isSelectedManagerPlanLocked,
+          child: RestaurantPackageTiersSection(
+            packages: displayedTiers,
+            selectedIndex: state.selectedTierIndex,
+            onSelected: (index) => context
+                .read<FamilyPackageDaysViewModel>()
+                .doIntent(SelectFamilyTierEvent(index)),
+            onBrowseRestaurants: (index) => context
+                .read<FamilyPackageDaysViewModel>()
+                .doIntent(BrowseFamilyTierRestaurantsEvent(index)),
+          ),
         ),
         const SizedBox(height: Spacing.lg),
         const FamilyPaymentNoteCard(),

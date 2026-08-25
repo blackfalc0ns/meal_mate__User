@@ -51,6 +51,7 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
       maxMembers: maxMembers,
       discountPercent: discountPercent,
       currentStep: currentStep,
+      managerPrepaid: managerPrepaid ?? false,
       members: members?.map((member) => member.toEntity()).toList() ?? const [],
     );
   }

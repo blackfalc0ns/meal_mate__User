@@ -103,6 +103,7 @@ class _FamilyPackageDaysSetupScreenState
     final tier = state.selectedTier;
 
     if (member != null &&
+        !state.isSelectedManagerPlanLocked &&
         programId.isNotEmpty &&
         bundle != null &&
         durationDays != null &&

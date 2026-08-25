@@ -16,6 +16,7 @@ class FamilyFlowCurrentResponseDto {
     this.maxMembers,
     this.discountPercent,
     this.currentStep,
+    this.managerPrepaid,
     this.members,
   });
 
@@ -33,6 +34,7 @@ class FamilyFlowCurrentResponseDto {
   final double? discountPercent;
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? currentStep;
+  final bool? managerPrepaid;
   final List<FamilyMemberResponseDto>? members;
 
   factory FamilyFlowCurrentResponseDto.fromJson(Map<String, dynamic> json) =>

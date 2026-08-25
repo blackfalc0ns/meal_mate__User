@@ -2,6 +2,7 @@ part of 'calendar_picker_panel.dart';
 
 class CalendarScrollableDayStrip extends StatefulWidget {
   const CalendarScrollableDayStrip({
+    super.key,
     required this.controller,
     required this.days,
     required this.onDaySelected,

@@ -3,6 +3,7 @@ import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscr
 import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
@@ -136,6 +137,13 @@ class FamilyPlanState {
     }
     return list[selectedMemberIndex];
   }
+
+  bool get isConvertedFamilyDraft =>
+      currentFlow?.managerPrepaid == true ||
+      FamilyConversionDraftSession.isConvertedFamilyDraft;
+
+  bool get isSelectedManagerPlanLocked =>
+      isConvertedFamilyDraft && selectedMember?.isManager == true;
 
   SubscriptionProgramEntity? get selectedProgram {
     final index = selectedProgramIndex;

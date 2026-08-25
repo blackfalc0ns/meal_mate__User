@@ -224,6 +224,9 @@ abstract class ApiServices {
     @Body() FamilyConvertFromIndividualRequestDto request,
   );
 
+  @POST(EndPoints.familySubscriptionFlowAbandonDraft)
+  Future<void> abandonFamilyDraft();
+
   @GET(EndPoints.subscriptionPrograms)
   Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();
 

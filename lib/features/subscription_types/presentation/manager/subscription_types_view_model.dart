@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/subscription_types/domain/entities/conve
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/convert_from_individual_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_types_usecase.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_event.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_state.dart';
 
@@ -69,6 +70,7 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
 
     switch (result) {
       case ApiSuccessResult():
+        FamilyConversionDraftSession.markConvertedFamilyDraft();
         emit(
           state.copyWith(
             isLoading: false,
@@ -120,6 +122,12 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
   }
 
   Future<void> _convertFromIndividual() async {
+    final selectedOption = state.selectedConversionOption;
+    if (selectedOption?.isConvertToFamilyManager != true ||
+        selectedOption?.available != true) {
+      return;
+    }
+
     emit(
       state.copyWith(
         isConvertFromIndividualLoading: true,

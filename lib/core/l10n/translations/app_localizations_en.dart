@@ -2418,6 +2418,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_price_duration_total => 'Total duration';
 
   @override
+  String get family_new_members_subtotal => 'New members subtotal';
+
+  @override
   String get family_price_discount => 'Family discount (10%)';
 
   @override

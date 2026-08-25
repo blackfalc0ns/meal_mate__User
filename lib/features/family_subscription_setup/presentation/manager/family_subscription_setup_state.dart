@@ -50,6 +50,8 @@ class FamilyPlanState {
     this.paymentMethods = const [],
     this.selectedPaymentMethod,
     this.isCheckoutLoading = false,
+    this.isAbandonDraftLoading = false,
+    this.isAbandonDraftSuccess = false,
     this.checkoutResult,
     this.failure,
   });
@@ -102,6 +104,8 @@ class FamilyPlanState {
   final PaymentMethodEntity? selectedPaymentMethod;
 
   final bool isCheckoutLoading;
+  final bool isAbandonDraftLoading;
+  final bool isAbandonDraftSuccess;
   final PaymentCheckoutEntity? checkoutResult;
 
   final Failure? failure;
@@ -114,7 +118,8 @@ class FamilyPlanState {
       isDurationsLoading ||
       isTiersLoading ||
       isSummaryLoading ||
-      isCheckoutLoading;
+      isCheckoutLoading ||
+      isAbandonDraftLoading;
 
   int get maxMembers =>
       selectedPackage?.maxMembers ?? currentFlow?.maxMembers ?? 6;
@@ -208,9 +213,12 @@ class FamilyPlanState {
     List<PaymentMethodEntity>? paymentMethods,
     PaymentMethodEntity? selectedPaymentMethod,
     bool? isCheckoutLoading,
+    bool? isAbandonDraftLoading,
+    bool? isAbandonDraftSuccess,
     PaymentCheckoutEntity? checkoutResult,
     Failure? failure,
     bool clearFailure = false,
+    bool clearCurrentFlow = false,
     bool clearBrowseRestaurants = false,
     bool clearBrowseRestaurantsFailure = false,
     bool clearCheckoutResult = false,
@@ -220,7 +228,7 @@ class FamilyPlanState {
       packages: packages ?? this.packages,
       selectedPackage: selectedPackage ?? this.selectedPackage,
       isCurrentFlowLoading: isCurrentFlowLoading ?? this.isCurrentFlowLoading,
-      currentFlow: currentFlow ?? this.currentFlow,
+      currentFlow: clearCurrentFlow ? null : (currentFlow ?? this.currentFlow),
       isRelationshipsLoading:
           isRelationshipsLoading ?? this.isRelationshipsLoading,
       relationships: relationships ?? this.relationships,
@@ -269,6 +277,10 @@ class FamilyPlanState {
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       isCheckoutLoading: isCheckoutLoading ?? this.isCheckoutLoading,
+      isAbandonDraftLoading:
+          isAbandonDraftLoading ?? this.isAbandonDraftLoading,
+      isAbandonDraftSuccess:
+          isAbandonDraftSuccess ?? this.isAbandonDraftSuccess,
       checkoutResult: clearCheckoutResult
           ? null
           : (checkoutResult ?? this.checkoutResult),

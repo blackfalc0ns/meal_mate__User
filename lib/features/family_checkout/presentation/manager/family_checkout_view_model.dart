@@ -6,6 +6,7 @@ import 'package:meal_meat_user/features/family_checkout/domain/usecase/get_famil
 import 'package:meal_meat_user/features/family_checkout/domain/usecase/get_family_summary_usecase.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_event.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
@@ -44,6 +45,11 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
+        if (result.data.status == 2) {
+          FamilyConversionDraftSession.clearConvertedFamilyDraft();
+        } else if (result.data.managerPrepaid) {
+          FamilyConversionDraftSession.markConvertedFamilyDraft();
+        }
         emit(
           state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
         );
@@ -66,6 +72,9 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         final summary = result.data;
+        if (summary.managerPrepaid) {
+          FamilyConversionDraftSession.markConvertedFamilyDraft();
+        }
         final activeMemberId =
             memberId ??
             summary.selectedMember?.memberId ??

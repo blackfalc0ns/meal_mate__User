@@ -9,6 +9,7 @@ abstract class FamilySubscriptionSetupRepository {
     String? name,
     String? familyPackageId,
   });
+  Future<ApiResult<void>> abandonFamilyDraft();
   Future<ApiResult<FamilyFlowCurrentEntity>> updateFamilyGroup({
     required String name,
     String? familyPackageId,

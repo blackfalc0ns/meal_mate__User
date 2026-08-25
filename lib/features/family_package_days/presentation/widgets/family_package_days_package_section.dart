@@ -67,13 +67,16 @@ class FamilyPackageDaysPackageSection extends StatelessWidget {
         if (state.isBundlesLoading && state.bundles.isEmpty)
           const FamilyPackageOptionsLoadingSkeleton()
         else if (selectedPackageOptions.isNotEmpty)
-          FamilyPackageOptionsGrid(
-            options: selectedPackageOptions,
-            onOptionSelected: (index) {
-              context.read<FamilyPackageDaysViewModel>().doIntent(
-                SelectFamilyBundleEvent(index),
-              );
-            },
+          AbsorbPointer(
+            absorbing: state.isSelectedManagerPlanLocked,
+            child: FamilyPackageOptionsGrid(
+              options: selectedPackageOptions,
+              onOptionSelected: (index) {
+                context.read<FamilyPackageDaysViewModel>().doIntent(
+                  SelectFamilyBundleEvent(index),
+                );
+              },
+            ),
           ),
       ],
     );

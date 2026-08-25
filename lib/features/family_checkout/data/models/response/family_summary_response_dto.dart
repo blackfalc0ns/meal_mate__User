@@ -124,18 +124,32 @@ class FamilySummaryResponseDto {
     this.currencyCode,
     this.canCheckout,
     this.checkoutBlockReason,
+    this.managerPrepaid,
+    this.managerSubscriptionId,
+    this.newMembersCount,
+    this.newMembersSubtotal,
     this.members,
     this.selectedMember,
     this.mealOverview,
   });
 
+  @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? subtotal;
+  @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? familyDiscountPercent;
+  @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? familyDiscountAmount;
+  @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? finalPrice;
   final String? currencyCode;
   final bool? canCheckout;
   final String? checkoutBlockReason;
+  final bool? managerPrepaid;
+  final String? managerSubscriptionId;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? newMembersCount;
+  @JsonKey(fromJson: _nullableDoubleFromJson)
+  final double? newMembersSubtotal;
   final List<FamilySummaryMemberDto>? members;
   final FamilySelectedMemberSummaryDto? selectedMember;
   final List<FamilyMealOverviewDto>? mealOverview;
@@ -160,6 +174,13 @@ int? _nullableIntFromJson(dynamic value) {
   if (value == null) return null;
   if (value is num) return value.toInt();
   if (value is String) return int.tryParse(value);
+  return null;
+}
+
+double? _nullableDoubleFromJson(dynamic value) {
+  if (value == null) return null;
+  if (value is num) return value.toDouble();
+  if (value is String) return double.tryParse(value);
   return null;
 }
 

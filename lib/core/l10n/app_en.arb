@@ -808,6 +808,7 @@
   "family_subscription_package_value": "4 meals + snack",
   "family_subscription_days_value": "7 days a week",
   "family_price_duration_total": "Total duration",
+  "family_new_members_subtotal": "New members subtotal",
   "family_price_discount": "Family discount (10%)",
   "family_price_tax_total": "Total including tax (15%)",
   "family_monthly_total_label": "Monthly total (4 weeks)",

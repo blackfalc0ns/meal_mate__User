@@ -27,6 +27,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
             locale: locale,
             languageCode: languageCode,
             currency: _currency(context, summary),
+            managerPrepaid: summary?.managerPrepaid ?? false,
             selectedMemberSummary: selectedMemberSummary,
           );
 
@@ -90,6 +91,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     required dynamic locale,
     required String languageCode,
     required String currency,
+    required bool managerPrepaid,
     required FamilySelectedMemberSummaryEntity selectedMemberSummary,
   }) {
     final rows = <FamilySelectionSummaryRowData>[];
@@ -145,6 +147,15 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
           label: locale.family_weekly_price,
           value:
               '${selectedMemberSummary.memberPrice.toStringAsFixed(3)} $currency',
+          isPrice: true,
+        ),
+      );
+    } else if (managerPrepaid && selectedMemberSummary.isManager) {
+      rows.add(
+        FamilySelectionSummaryRowData(
+          icon: FamilySelectionSummaryIcon.receipt,
+          label: locale.family_weekly_price,
+          value: locale.billing_paid,
           isPrice: true,
         ),
       );

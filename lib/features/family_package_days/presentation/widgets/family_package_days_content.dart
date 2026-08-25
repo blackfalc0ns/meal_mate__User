@@ -47,7 +47,7 @@ class FamilyPackageDaysContent extends StatelessWidget {
               FamilyPackageDaysMemberSection(state: state),
               FamilyPackageDaysPackageSection(state: state),
               const SizedBox(height: Spacing.md),
-              FamilyPackageDaysDurationSection(state: state),
+              const FamilyPackageDaysDurationSection(),
               const SizedBox(height: Spacing.md),
               FamilyPackageDaysPlanSection(
                 state: state,

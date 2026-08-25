@@ -69,6 +69,10 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       currencyCode: currencyCode ?? 'KWD',
       canCheckout: canCheckout ?? false,
       checkoutBlockReason: checkoutBlockReason,
+      managerPrepaid: managerPrepaid ?? false,
+      managerSubscriptionId: managerSubscriptionId,
+      newMembersCount: newMembersCount ?? 0,
+      newMembersSubtotal: newMembersSubtotal ?? 0.0,
       members: members?.map((member) => member.toEntity()).toList() ?? const [],
       selectedMember: selectedMember?.toEntity(),
       mealOverview:

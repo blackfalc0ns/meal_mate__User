@@ -808,6 +808,7 @@
   "family_subscription_package_value": "4 وجبات + سناك",
   "family_subscription_days_value": "7 أيام في الأسبوع",
   "family_price_duration_total": "إجمالي المدة",
+  "family_new_members_subtotal": "إجمالي الأعضاء الجدد",
   "family_price_discount": "خصم العائلة (10%)",
   "family_price_tax_total": "الإجمالي شامل الضريبة (15)",
   "family_monthly_total_label": "الإجمالي الشهري (4 أسابيع)",

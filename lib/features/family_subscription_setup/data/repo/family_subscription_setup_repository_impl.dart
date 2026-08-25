@@ -49,6 +49,13 @@ class FamilySubscriptionSetupRepositoryImpl
   }
 
   @override
+  Future<ApiResult<void>> abandonFamilyDraft() {
+    return safeApiCall(() async {
+      await _remoteDataSource.abandonFamilyDraft();
+    });
+  }
+
+  @override
   Future<ApiResult<FamilyFlowCurrentEntity>> updateFamilyGroup({
     required String name,
     String? familyPackageId,

@@ -132,6 +132,8 @@ import '../../features/family_subscription_setup/data/repo/family_subscription_s
     as _i922;
 import '../../features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart'
     as _i925;
+import '../../features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart'
+    as _i873;
 import '../../features/family_subscription_setup/domain/usecase/add_family_member_usecase.dart'
     as _i843;
 import '../../features/family_subscription_setup/domain/usecase/delete_family_member_usecase.dart'
@@ -718,6 +720,11 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
     );
+    gh.factory<_i873.AbandonFamilyDraftUseCase>(
+      () => _i873.AbandonFamilyDraftUseCase(
+        gh<_i925.FamilySubscriptionSetupRepository>(),
+      ),
+    );
     gh.factory<_i843.AddFamilyMemberUseCase>(
       () => _i843.AddFamilyMemberUseCase(
         gh<_i925.FamilySubscriptionSetupRepository>(),
@@ -847,6 +854,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
       ),
     );
+    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
+      () => _i693.FamilySubscriptionSetupViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i482.UpdateFamilyGroupUseCase>(),
+        gh<_i804.GetFamilyRelationshipsUseCase>(),
+        gh<_i843.AddFamilyMemberUseCase>(),
+        gh<_i237.UpdateFamilyMemberUseCase>(),
+        gh<_i880.DeleteFamilyMemberUseCase>(),
+        gh<_i873.AbandonFamilyDraftUseCase>(),
+        gh<_i945.GetCustomerAddressesUseCase>(),
+      ),
+    );
     gh.factory<_i502.PaymentViewModel>(
       () => _i502.PaymentViewModel(
         gh<_i365.GetPaymentMethodsUseCase>(),
@@ -859,17 +878,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-      ),
-    );
-    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
-      () => _i693.FamilySubscriptionSetupViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i482.UpdateFamilyGroupUseCase>(),
-        gh<_i804.GetFamilyRelationshipsUseCase>(),
-        gh<_i843.AddFamilyMemberUseCase>(),
-        gh<_i237.UpdateFamilyMemberUseCase>(),
-        gh<_i880.DeleteFamilyMemberUseCase>(),
-        gh<_i945.GetCustomerAddressesUseCase>(),
       ),
     );
     gh.factory<_i665.FamilyCheckoutViewModel>(

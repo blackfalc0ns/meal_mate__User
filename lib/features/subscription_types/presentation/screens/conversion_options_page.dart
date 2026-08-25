@@ -10,7 +10,6 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_event.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_state.dart';
@@ -47,7 +46,9 @@ class ConversionOptionsPage extends StatelessWidget {
                         current.convertFromIndividualFailure,
                 listener: (context, state) {
                   if (state.isConvertFromIndividualSuccess) {
-                    _openFamilyDraftStep(context, state.convertedFamilyFlow);
+                    context.pushReplacementNamed(
+                      AppRoutes.familySubscriptionSetup,
+                    );
                     return;
                   }
 
@@ -109,6 +110,7 @@ class ConversionOptionsPage extends StatelessWidget {
                           isLoading: state.isConvertFromIndividualLoading,
                           onPressed:
                               selectedOption == null ||
+                                  !selectedOption.isConvertToFamilyManager ||
                                   state.isConvertFromIndividualLoading
                               ? null
                               : () => context
@@ -175,41 +177,5 @@ class ConversionOptionsPage extends StatelessWidget {
   IconData _iconForOption(ConversionOptionModel option) {
     if (option.isConvertToFamilyManager) return Icons.groups_2_rounded;
     return Icons.person_rounded;
-  }
-
-  void _openFamilyDraftStep(
-    BuildContext context,
-    FamilyFlowCurrentEntity? currentFlow,
-  ) {
-    final currentStep = currentFlow?.currentStep ?? 0;
-
-    if (currentStep <= 0) {
-      context.pushReplacementNamed(AppRoutes.familySubscriptionSetup);
-      return;
-    }
-
-    if (currentStep == 1) {
-      context.pushReplacementNamed(AppRoutes.familyProgramSetup);
-      return;
-    }
-
-    if (currentStep == 2) {
-      context.pushReplacementNamed(
-        AppRoutes.familyPackageDaysSetup,
-        arguments: _firstConfiguredProgramId(currentFlow),
-      );
-      return;
-    }
-
-    context.pushReplacementNamed(AppRoutes.familyPaymentSetup);
-  }
-
-  String? _firstConfiguredProgramId(FamilyFlowCurrentEntity? currentFlow) {
-    final members = currentFlow?.members ?? const [];
-    for (final member in members) {
-      final programId = member.programId;
-      if (programId != null && programId.isNotEmpty) return programId;
-    }
-    return null;
   }
 }

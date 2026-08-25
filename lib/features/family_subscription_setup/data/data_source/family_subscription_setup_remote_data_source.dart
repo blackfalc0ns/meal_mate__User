@@ -10,6 +10,7 @@ abstract class FamilySubscriptionSetupRemoteDataSource {
   Future<FamilyFlowCurrentResponseDto> convertFromIndividual(
     FamilyConvertFromIndividualRequestDto request,
   );
+  Future<void> abandonFamilyDraft();
   Future<FamilyFlowCurrentResponseDto> updateFamilyGroup(
     FamilyGroupWriteRequestDto request,
   );

@@ -8,9 +8,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_view_model.dart';
 
 class FamilyPackageDaysDurationSection extends StatelessWidget {
-  const FamilyPackageDaysDurationSection({super.key, required this.state});
-
-  final FamilyPlanState state;
+  const FamilyPackageDaysDurationSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,36 +17,51 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
     color.surface;
     locale.localeName;
 
-    if (state.isDurationsLoading && state.durations.isEmpty) {
-      return const SubscriptionDurationSelectorSkeleton();
-    }
+    return BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
+      buildWhen: (previous, current) =>
+          previous.isDurationsLoading != current.isDurationsLoading ||
+          previous.durations != current.durations ||
+          previous.selectedDurationIndex != current.selectedDurationIndex ||
+          previous.customDurationDays != current.customDurationDays ||
+          previous.includeFriday != current.includeFriday ||
+          previous.isSelectedManagerPlanLocked !=
+              current.isSelectedManagerPlanLocked,
+      builder: (context, state) {
+        if (state.isDurationsLoading && state.durations.isEmpty) {
+          return const SubscriptionDurationSelectorSkeleton();
+        }
 
-    if (state.durations.isEmpty) {
-      return const SizedBox.shrink();
-    }
+        if (state.durations.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-    return SubscriptionDurationSelector(
-      selectedIndex: state.selectedDurationIndex,
-      onSelected: (index) {
-        context.read<FamilyPackageDaysViewModel>().doIntent(
-          SelectFamilyDurationEvent(index),
+        return AbsorbPointer(
+          absorbing: state.isSelectedManagerPlanLocked,
+          child: SubscriptionDurationSelector(
+            selectedIndex: state.selectedDurationIndex,
+            onSelected: (index) {
+              context.read<FamilyPackageDaysViewModel>().doIntent(
+                SelectFamilyDurationEvent(index),
+              );
+            },
+            includesFriday: state.includeFriday,
+            onFridayChanged: (include) {
+              context.read<FamilyPackageDaysViewModel>().doIntent(
+                ToggleFamilyFridayEvent(include),
+              );
+            },
+            customDurationDays: state.customDurationDays,
+            onCustomDurationChanged: (days) {
+              context.read<FamilyPackageDaysViewModel>().doIntent(
+                UpdateFamilyCustomDurationEvent(days),
+              );
+            },
+            durations: state.durations,
+            isFridayEnabled: true,
+            isLoading: state.isDurationsLoading && state.durations.isEmpty,
+          ),
         );
       },
-      includesFriday: state.includeFriday,
-      onFridayChanged: (include) {
-        context.read<FamilyPackageDaysViewModel>().doIntent(
-          ToggleFamilyFridayEvent(include),
-        );
-      },
-      customDurationDays: state.customDurationDays,
-      onCustomDurationChanged: (days) {
-        context.read<FamilyPackageDaysViewModel>().doIntent(
-          UpdateFamilyCustomDurationEvent(days),
-        );
-      },
-      durations: state.durations,
-      isFridayEnabled: true,
-      isLoading: state.isDurationsLoading,
     );
   }
 }
