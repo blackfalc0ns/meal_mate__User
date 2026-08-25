@@ -32,7 +32,8 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
   }
 
   @override
-  Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>> getTierRestaurants({
+  Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>>
+  getTierRestaurants({
     required String programId,
     required String bundleId,
     required String tier,

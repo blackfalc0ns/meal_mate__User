@@ -1567,6 +1567,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get payment_success_button => 'Back to Home';
 
   @override
+  String get payment_calendar_preparing =>
+      'Preparing your subscription days...';
+
+  @override
   String get subscription_screen_title => 'Plans and subscriptions';
 
   @override
@@ -2945,6 +2949,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendar_pick_restaurant_second => 'restaurant';
+
+  @override
+  String get calendar_done => 'Done';
 
   @override
   String get meal_details_optional_notes_title => 'Optional notes';

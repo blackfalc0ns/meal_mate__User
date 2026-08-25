@@ -1,5 +1,9 @@
 class CalendarRestaurantOptionEntity {
   const CalendarRestaurantOptionEntity({
+    this.id = '',
+    this.logoUrl,
+    this.maxUsageCount,
+    this.isUsageLimitReached = false,
     required this.name,
     required this.description,
     required this.mealCount,
@@ -7,6 +11,10 @@ class CalendarRestaurantOptionEntity {
     required this.logoType,
   });
 
+  final String id;
+  final String? logoUrl;
+  final int? maxUsageCount;
+  final bool isUsageLimitReached;
   final String name;
   final String description;
   final int mealCount;

@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/data_source/payment_remote_data_source.dart';
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
@@ -34,7 +35,7 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
   }
 
   @override
-  Future<void> getSubscriptionCalendar(String subscriptionId) {
+  Future<CalendarResponseDto> getSubscriptionCalendar(String subscriptionId) {
     return _apiServices.getSubscriptionCalendar(subscriptionId);
   }
 }

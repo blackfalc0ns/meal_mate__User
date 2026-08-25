@@ -67,6 +67,16 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/payment';
   static const String subscriptionCalendar =
       '/api/v1/customer/subscriptions/{subscriptionId}/calendar';
+  static const String subscriptionCalendarRestaurants =
+      '/api/v1/customer/subscriptions/{subscriptionId}/restaurants';
+  static const String subscriptionCalendarDayRestaurant =
+      '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/restaurant';
+  static const String subscriptionCalendarAvailableMeals =
+      '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/meals/available';
+  static const String subscriptionCalendarDayMeals =
+      '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/meals';
+  static const String subscriptionCalendarAutoSelect =
+      '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/auto-select';
   static const String customerSubscriptionCurrent =
       '/api/v1/customer/subscriptions/current';
   static const String customerInvoices = '/api/v1/customer/invoices';

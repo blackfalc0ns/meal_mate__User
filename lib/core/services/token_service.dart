@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 
@@ -70,5 +71,6 @@ class TokenService {
     await deleteToken();
     await deleteRefreshToken();
     await deleteCurrentUserId();
+    await _sharedPreferences.remove(StorageKeys.currentSubscriptionId);
   }
 }

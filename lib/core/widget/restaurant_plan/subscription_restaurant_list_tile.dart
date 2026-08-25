@@ -75,11 +75,7 @@ class SubscriptionRestaurantListTile extends StatelessWidget {
                   const SizedBox(height: 3),
                   Row(
                     children: [
-                      Icon(
-                        Icons.star_rounded,
-                        size: 12,
-                        color: color.primary,
-                      ),
+                      Icon(Icons.star_rounded, size: 12, color: color.primary),
                       const SizedBox(width: 2),
                       Text(
                         restaurant.rating,

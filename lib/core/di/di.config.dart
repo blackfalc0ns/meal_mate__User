@@ -60,6 +60,27 @@ import '../../features/auth/domain/usecase/reset_password_usecase.dart'
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
 import '../../features/auth/presentation/manager/biometric_cubit.dart' as _i280;
+import '../../features/calendar/data/data_source/calendar_remote_data_source.dart'
+    as _i583;
+import '../../features/calendar/data/data_source/calendar_remote_data_source_impl.dart'
+    as _i970;
+import '../../features/calendar/data/repo/calendar_repository_impl.dart'
+    as _i787;
+import '../../features/calendar/domain/repo/calendar_repository.dart' as _i333;
+import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart'
+    as _i147;
+import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart'
+    as _i389;
+import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart'
+    as _i389;
+import '../../features/calendar/domain/usecase/get_calendar_usecase.dart'
+    as _i200;
+import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart'
+    as _i896;
+import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart'
+    as _i133;
+import '../../features/calendar/presentation/manager/calendar_view_model.dart'
+    as _i127;
 import '../../features/change_password/data/data_source/change_password_remote_data_source.dart'
     as _i263;
 import '../../features/change_password/data/data_source/change_password_remote_data_source_impl.dart'
@@ -207,6 +228,8 @@ import '../../features/profile/data/repo/profile_repository_impl.dart'
 import '../../features/profile/domain/repo/profile_repository.dart' as _i311;
 import '../../features/profile/domain/usecase/delete_customer_profile_image_usecase.dart'
     as _i186;
+import '../../features/profile/domain/usecase/get_current_customer_subscription_usecase.dart'
+    as _i750;
 import '../../features/profile/domain/usecase/get_customer_profile_usecase.dart'
     as _i994;
 import '../../features/profile/domain/usecase/get_profile_billing_usecase.dart'
@@ -453,15 +476,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i714.FamilyCheckoutRemoteDataSource>(),
       ),
     );
+    gh.factory<_i650.SubscriptionProgramsRepository>(
+      () => _i1010.SubscriptionProgramsRepositoryImpl(
+        gh<_i96.SubscriptionProgramsRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i2.AuthRepository>(
       () => _i607.AuthRepositoryImpl(
         gh<_i182.AuthRemoteDataSource>(),
         gh<_i227.TokenService>(),
-      ),
-    );
-    gh.factory<_i650.SubscriptionProgramsRepository>(
-      () => _i1010.SubscriptionProgramsRepositoryImpl(
-        gh<_i96.SubscriptionProgramsRemoteDataSource>(),
+        gh<_i42.SharedPrefHelper>(),
       ),
     );
     gh.factory<_i856.CheckoutFamilySubscriptionUseCase>(
@@ -488,6 +512,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i60.FamilySubscriptionSetupRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
       ),
+    );
+    gh.factory<_i583.CalendarRemoteDataSource>(
+      () => _i970.CalendarRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i99.UploadFileRemoteDataSource>(
       () => _i963.UploadFileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -574,20 +601,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i809.GetSubscriptionDurationsUseCase>(
       () => _i809.GetSubscriptionDurationsUseCase(
         gh<_i395.SubscriptionDurationRepository>(),
-      ),
-    );
-    gh.factory<_i892.AuthViewModel>(
-      () => _i892.AuthViewModel(
-        gh<_i911.LoginUseCase>(),
-        gh<_i769.RegisterUseCase>(),
-        gh<_i171.GetCallingCodesUseCase>(),
-        gh<_i918.VerifyPhoneUseCase>(),
-        gh<_i621.ResendPhoneOtpUseCase>(),
-        gh<_i749.ForgotPasswordUseCase>(),
-        gh<_i1029.ResetPasswordUseCase>(),
-        gh<_i610.ResendPasswordOtpUseCase>(),
-        gh<_i501.RefreshTokenUseCase>(),
-        gh<_i757.LogoutUseCase>(),
       ),
     );
     gh.factory<_i462.GetSubscriptionReadinessUseCase>(
@@ -686,6 +699,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i995.UploadFileUseCase>(
       () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
     );
+    gh.factory<_i333.CalendarRepository>(
+      () => _i787.CalendarRepositoryImpl(gh<_i583.CalendarRemoteDataSource>()),
+    );
     gh.factory<_i986.SubscriptionPlanRepository>(
       () => _i738.SubscriptionPlanRepositoryImpl(
         gh<_i755.SubscriptionPlanRemoteDataSource>(),
@@ -760,16 +776,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
-    gh.factory<_i502.PaymentViewModel>(
-      () => _i502.PaymentViewModel(
-        gh<_i365.GetPaymentMethodsUseCase>(),
-        gh<_i895.CheckoutSubscriptionUseCase>(),
-        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
-        gh<_i182.GetSubscriptionCalendarUseCase>(),
-      ),
-    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i750.GetCurrentCustomerSubscriptionUseCase>(
+      () => _i750.GetCurrentCustomerSubscriptionUseCase(
         gh<_i311.ProfileRepository>(),
       ),
     );
@@ -874,6 +887,37 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i945.GetCustomerAddressesUseCase>(),
       ),
     );
+    gh.factory<_i502.PaymentViewModel>(
+      () => _i502.PaymentViewModel(
+        gh<_i365.GetPaymentMethodsUseCase>(),
+        gh<_i895.CheckoutSubscriptionUseCase>(),
+        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
+        gh<_i182.GetSubscriptionCalendarUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+      ),
+    );
+    gh.factory<_i147.AutoSelectCalendarDayUseCase>(
+      () => _i147.AutoSelectCalendarDayUseCase(gh<_i333.CalendarRepository>()),
+    );
+    gh.factory<_i389.GetCalendarAvailableMealsUseCase>(
+      () => _i389.GetCalendarAvailableMealsUseCase(
+        gh<_i333.CalendarRepository>(),
+      ),
+    );
+    gh.factory<_i389.GetCalendarRestaurantsUseCase>(
+      () => _i389.GetCalendarRestaurantsUseCase(gh<_i333.CalendarRepository>()),
+    );
+    gh.factory<_i200.GetCalendarUseCase>(
+      () => _i200.GetCalendarUseCase(gh<_i333.CalendarRepository>()),
+    );
+    gh.factory<_i896.SaveCalendarDayMealsUseCase>(
+      () => _i896.SaveCalendarDayMealsUseCase(gh<_i333.CalendarRepository>()),
+    );
+    gh.factory<_i133.SetCalendarDayRestaurantUseCase>(
+      () =>
+          _i133.SetCalendarDayRestaurantUseCase(gh<_i333.CalendarRepository>()),
+    );
     gh.factory<_i420.SubscriptionProgramsViewModel>(
       () => _i420.SubscriptionProgramsViewModel(
         gh<_i178.GetSubscriptionProgramsUseCase>(),
@@ -886,6 +930,34 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i408.GetFamilySummaryUseCase>(),
         gh<_i605.GetFamilyPaymentMethodsUseCase>(),
         gh<_i856.CheckoutFamilySubscriptionUseCase>(),
+      ),
+    );
+    gh.factory<_i892.AuthViewModel>(
+      () => _i892.AuthViewModel(
+        gh<_i911.LoginUseCase>(),
+        gh<_i769.RegisterUseCase>(),
+        gh<_i171.GetCallingCodesUseCase>(),
+        gh<_i918.VerifyPhoneUseCase>(),
+        gh<_i621.ResendPhoneOtpUseCase>(),
+        gh<_i749.ForgotPasswordUseCase>(),
+        gh<_i1029.ResetPasswordUseCase>(),
+        gh<_i610.ResendPasswordOtpUseCase>(),
+        gh<_i501.RefreshTokenUseCase>(),
+        gh<_i757.LogoutUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+      ),
+    );
+    gh.factory<_i127.CalendarViewModel>(
+      () => _i127.CalendarViewModel(
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
       ),
     );
     gh.factory<_i446.ProfileViewModel>(

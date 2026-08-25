@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
@@ -85,20 +88,13 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
             previous.isFulfillmentSuccess != current.isFulfillmentSuccess ||
-            previous.isCalendarSuccess != current.isCalendarSuccess ||
             previous.isPaymentFailed != current.isPaymentFailed,
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
-            _viewModel.doIntent(
-              PollSubscriptionCalendarEvent(args.checkout.subscriptionId),
-            );
-            return;
-          }
-
-          if (state.isCalendarSuccess) {
             Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.paymentSuccess,
+              AppRoutes.home,
               (route) => false,
+              arguments: 1,
             );
             return;
           }
@@ -137,7 +133,26 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
                     state.isCalendarLoading)
                   ColoredBox(
                     color: color.surface.withValues(alpha: 0.72),
-                    child: const Center(child: CircularProgressIndicator()),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const CircularProgressIndicator(),
+                          if (state.isCalendarLoading) ...[
+                            const SizedBox(height: Spacing.md),
+                            Text(
+                              locale.payment_calendar_preparing,
+                              textAlign: TextAlign.center,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size14,
+                                color: color.onSurface,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -204,7 +219,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     }
 
     if (path.contains('error') || host.contains('error')) {
-      _verifyPayment();
+      _markPaymentFailed();
       return NavigationDecision.prevent;
     }
 
@@ -222,5 +237,11 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     } else {
       _viewModel.doIntent(const MarkPaymentFailedEvent());
     }
+  }
+
+  void _markPaymentFailed() {
+    if (_hasStartedVerification) return;
+    _hasStartedVerification = true;
+    _viewModel.doIntent(const MarkPaymentFailedEvent());
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 part 'calendar_restaurant_search_field.dart';
 part 'calendar_restaurant_option_card.dart';

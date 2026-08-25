@@ -17,5 +17,8 @@ abstract interface class ProfileRepository {
 
   Future<ApiResult<void>> deleteCustomerProfileImage();
 
+  Future<ApiResult<ProfileBillingCurrentEntity>>
+  getCurrentCustomerSubscription();
+
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling();
 }

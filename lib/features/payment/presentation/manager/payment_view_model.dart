@@ -2,7 +2,11 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/constants/keys.dart';
+import 'package:meal_meat_user/core/helpers/shared_pref.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
@@ -11,6 +15,7 @@ import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
 class PaymentViewModel extends Cubit<PaymentState> {
@@ -19,6 +24,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
     this._checkoutSubscriptionUseCase,
     this._getSubscriptionPaymentStatusUseCase,
     this._getSubscriptionCalendarUseCase,
+    this._getCurrentCustomerSubscriptionUseCase,
+    this._sharedPrefHelper,
   ) : super(const PaymentState());
 
   final GetPaymentMethodsUseCase _getPaymentMethodsUseCase;
@@ -26,6 +33,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
   final GetSubscriptionPaymentStatusUseCase
   _getSubscriptionPaymentStatusUseCase;
   final GetSubscriptionCalendarUseCase _getSubscriptionCalendarUseCase;
+  final GetCurrentCustomerSubscriptionUseCase
+  _getCurrentCustomerSubscriptionUseCase;
+  final SharedPrefHelper _sharedPrefHelper;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -62,6 +72,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
         clearFulfillmentFailure: true,
         clearCalendarFailure: true,
         clearCheckout: true,
+        clearPendingSubscriptionId: true,
       ),
     );
 
@@ -121,6 +132,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
         clearCheckoutFailure: true,
         clearFulfillmentFailure: true,
         clearCalendarFailure: true,
+        clearPendingSubscriptionId: true,
       ),
     );
 
@@ -136,6 +148,21 @@ class PaymentViewModel extends Cubit<PaymentState> {
           ),
         );
       case ApiErrorResult():
+        final pendingSubscriptionId = _pendingSubscriptionIdFromFailure(
+          result.failure,
+        );
+        if (pendingSubscriptionId != null && pendingSubscriptionId.isNotEmpty) {
+          emit(
+            state.copyWith(
+              isCheckoutLoading: false,
+              pendingSubscriptionId: pendingSubscriptionId,
+              clearCheckoutFailure: true,
+            ),
+          );
+          await _verifyFulfillment(pendingSubscriptionId);
+          return;
+        }
+
         emit(
           state.copyWith(
             isCheckoutLoading: false,
@@ -160,17 +187,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       ),
     );
 
-    for (final delay in const [
-      Duration.zero,
-      Duration(seconds: 2),
-      Duration(seconds: 4),
-      Duration(seconds: 8),
-      Duration(seconds: 8),
-      Duration(seconds: 8),
-      Duration(seconds: 10),
-      Duration(seconds: 10),
-      Duration(seconds: 10),
-    ]) {
+    for (final delay in _pollingBackoff()) {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
@@ -180,6 +197,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       switch (result) {
         case ApiSuccessResult():
           if (_isPaymentPaid(result.data)) {
+            await _syncCurrentSubscriptionCache();
             emit(
               state.copyWith(
                 isFulfillmentLoading: false,
@@ -228,8 +246,31 @@ class PaymentViewModel extends Cubit<PaymentState> {
     return paymentStatus.isFailed;
   }
 
+  Future<void> _syncCurrentSubscriptionCache() async {
+    final result = await _getCurrentCustomerSubscriptionUseCase();
+    switch (result) {
+      case ApiSuccessResult():
+        final subscriptionId = result.data.subscription?.subscriptionId ?? '';
+        if (subscriptionId.isEmpty) {
+          await _sharedPrefHelper.removeData(
+            key: StorageKeys.currentSubscriptionId,
+          );
+          return;
+        }
+        await _sharedPrefHelper.saveData(
+          key: StorageKeys.currentSubscriptionId,
+          val: subscriptionId,
+        );
+      case ApiErrorResult():
+        await _sharedPrefHelper.removeData(
+          key: StorageKeys.currentSubscriptionId,
+        );
+    }
+  }
+
   Future<void> _pollCalendar(String subscriptionId) async {
     if (subscriptionId.isEmpty) return;
+    if (state.isCalendarLoading || state.isCalendarSuccess) return;
 
     emit(
       state.copyWith(
@@ -239,17 +280,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
       ),
     );
 
-    for (final delay in const [
-      Duration.zero,
-      Duration(seconds: 2),
-      Duration(seconds: 4),
-      Duration(seconds: 8),
-      Duration(seconds: 8),
-      Duration(seconds: 8),
-      Duration(seconds: 10),
-      Duration(seconds: 10),
-      Duration(seconds: 10),
-    ]) {
+    Failure? lastFailure;
+    for (final delay in _pollingBackoff()) {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
@@ -258,6 +290,10 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
       switch (result) {
         case ApiSuccessResult():
+          await _sharedPrefHelper.saveData(
+            key: StorageKeys.currentSubscriptionId,
+            val: subscriptionId,
+          );
           emit(
             state.copyWith(
               isCalendarLoading: false,
@@ -267,7 +303,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
           );
           return;
         case ApiErrorResult():
-          if (delay == const Duration(seconds: 10)) {
+          lastFailure = result.failure;
+          if (!_isCalendarFulfillmentNotReady(result.failure) &&
+              !_isRetryableCalendarFailure(result.failure)) {
             emit(
               state.copyWith(
                 isCalendarLoading: false,
@@ -280,7 +318,49 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
-    emit(state.copyWith(isCalendarLoading: false));
+    emit(
+      state.copyWith(isCalendarLoading: false, calendarFailure: lastFailure),
+    );
+  }
+
+  Iterable<Duration> _pollingBackoff() sync* {
+    yield Duration.zero;
+    yield const Duration(seconds: 2);
+    yield const Duration(seconds: 5);
+    var elapsed = 7;
+    while (elapsed < 120) {
+      yield const Duration(seconds: 10);
+      elapsed += 10;
+    }
+  }
+
+  bool _isCalendarFulfillmentNotReady(Failure failure) {
+    return failure.code == 'calendar.fulfillment_not_ready' ||
+        failure.exception.backendErrorCode == 'calendar.fulfillment_not_ready';
+  }
+
+  bool _isRetryableCalendarFailure(Failure failure) {
+    final type = failure.exception.errorType;
+    return type == ApiErrorType.conflict ||
+        type == ApiErrorType.serverError ||
+        type == ApiErrorType.internalServerError ||
+        type == ApiErrorType.badGateway ||
+        type == ApiErrorType.serviceUnavailable ||
+        type == ApiErrorType.gatewayTimeout ||
+        type == ApiErrorType.connectionTimeout ||
+        type == ApiErrorType.receiveTimeout ||
+        type == ApiErrorType.sendTimeout ||
+        type == ApiErrorType.requestTimeout;
+  }
+
+  String? _pendingSubscriptionIdFromFailure(Failure failure) {
+    if (failure.code != 'checkout.existing_subscription') return null;
+    final response = failure.exception.response;
+    if (response is Map) {
+      final value = response['subscriptionId'];
+      if (value is String && value.isNotEmpty) return value;
+    }
+    return null;
   }
 
   String _generateCorrelationId() {

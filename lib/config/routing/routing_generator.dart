@@ -60,7 +60,13 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.home:
-        return _buildRoute(settings: settings, page: const AppShellScreen());
+        final initialTabIndex = settings.arguments is int
+            ? settings.arguments! as int
+            : 0;
+        return _buildRoute(
+          settings: settings,
+          page: AppShellScreen(initialTabIndex: initialTabIndex),
+        );
       case AppRoutes.search:
         return _buildRoute(settings: settings, page: const SearchScreen());
       case AppRoutes.offers:
@@ -181,7 +187,13 @@ class RouteGenerator {
           page: const FamilyPaymentSetupScreen(),
         );
       case AppRoutes.calendar:
-        return _buildRoute(settings: settings, page: const CalendarScreen());
+        final subscriptionId = settings.arguments is String
+            ? settings.arguments! as String
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: CalendarScreen(subscriptionId: subscriptionId),
+        );
       case AppRoutes.mealDetails:
         final meal = settings.arguments is MealDetailsEntity
             ? settings.arguments! as MealDetailsEntity

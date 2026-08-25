@@ -6,7 +6,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 class CalendarRestaurantPickCard extends StatelessWidget {
   const CalendarRestaurantPickCard({super.key, required this.onTap});
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

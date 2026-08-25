@@ -4,10 +4,7 @@ import 'package:meal_meat_user/core/widget/restaurant_plan/subscription_restaura
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 
 class SubscriptionRestaurantsList extends StatelessWidget {
-  const SubscriptionRestaurantsList({
-    super.key,
-    required this.restaurants,
-  });
+  const SubscriptionRestaurantsList({super.key, required this.restaurants});
 
   final List<MonthlyRestaurantPlanEntity> restaurants;
 

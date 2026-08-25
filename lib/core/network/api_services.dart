@@ -38,6 +38,11 @@ import 'package:meal_meat_user/core/subscription_duration/data/models/response/s
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/request/calendar_save_meals_request_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/request/calendar_set_restaurant_request_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_available_meals_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
@@ -302,8 +307,40 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.subscriptionCalendar)
-  Future<void> getSubscriptionCalendar(
+  Future<CalendarResponseDto> getSubscriptionCalendar(
     @Path('subscriptionId') String subscriptionId,
+  );
+
+  @GET(EndPoints.subscriptionCalendarRestaurants)
+  Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarRestaurants(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @POST(EndPoints.subscriptionCalendarDayRestaurant)
+  Future<void> setSubscriptionCalendarDayRestaurant(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+    @Body() CalendarSetRestaurantRequestDto request,
+  );
+
+  @GET(EndPoints.subscriptionCalendarAvailableMeals)
+  Future<CalendarAvailableMealsResponseDto>
+  getSubscriptionCalendarAvailableMeals(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+  );
+
+  @POST(EndPoints.subscriptionCalendarDayMeals)
+  Future<void> saveSubscriptionCalendarDayMeals(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+    @Body() CalendarSaveMealsRequestDto request,
+  );
+
+  @POST(EndPoints.subscriptionCalendarAutoSelect)
+  Future<void> autoSelectSubscriptionCalendarDay(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
   );
 
   @GET(EndPoints.customerSubscriptionCurrent)

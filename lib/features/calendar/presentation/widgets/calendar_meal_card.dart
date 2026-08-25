@@ -1,13 +1,12 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 part 'calendar_meal_details.dart';
 part 'calendar_meal_type_badge.dart';
 part 'calendar_nutrition_row.dart';
@@ -15,9 +14,16 @@ part 'calendar_nutrition_item.dart';
 part 'calendar_ingredient_chip.dart';
 
 class CalendarMealCard extends StatelessWidget {
-  const CalendarMealCard({super.key, required this.meal});
+  const CalendarMealCard({
+    super.key,
+    required this.meal,
+    required this.onChangeMeal,
+    this.readOnly = false,
+  });
 
   final CalendarMealEntity meal;
+  final VoidCallback onChangeMeal;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +36,7 @@ class CalendarMealCard extends StatelessWidget {
           SizedBox(
             height: 114,
             child: InkWell(
-              onTap: () => Navigator.of(
-                context,
-              ).pushNamed(AppRoutes.mealDetails, arguments: meal),
+              onTap: null,
               borderRadius: BorderRadius.circular(15),
               child: Container(
                 padding: const EdgeInsetsDirectional.only(
@@ -58,12 +62,20 @@ class CalendarMealCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        meal.imageAsset,
-                        width: 83,
-                        height: 96,
-                        fit: BoxFit.cover,
-                      ),
+                      child: meal.imageUrl == null || meal.imageUrl!.isEmpty
+                          ? Image.asset(
+                              Assets.calendarMealPickerHero,
+                              width: 83,
+                              height: 96,
+                              fit: BoxFit.cover,
+                            )
+                          : AppCachedNetworkImage(
+                              imageUrl: meal.imageUrl,
+                              width: 83,
+                              height: 96,
+                              fit: BoxFit.cover,
+                              semanticLabel: meal.title,
+                            ),
                     ),
                     const SizedBox(width: Spacing.lg),
                     Expanded(
@@ -78,48 +90,32 @@ class CalendarMealCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.sm),
-          SizedBox(
-            height: 25,
-            width: double.infinity,
-            child: OpenContainer<void>(
-              closedElevation: 0,
-              openElevation: 0,
-              closedColor: color.surface.withValues(alpha: 0),
-              middleColor: color.surface,
-              openColor: color.surface,
-              closedShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              openShape: const RoundedRectangleBorder(),
-              transitionDuration: const Duration(milliseconds: 560),
-              transitionType: ContainerTransitionType.fadeThrough,
-              tappable: false,
-              openBuilder: (context, _) => const CalendarMealPickerSheet(),
-              closedBuilder: (context, openContainer) {
-                return FilledButton.icon(
-                  onPressed: openContainer,
-                  icon: const Icon(Icons.edit_rounded, size: 13),
-                  label: Text(locale.calendar_change_meal),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: color.primary,
-                    foregroundColor: color.onPrimary,
-                    padding: EdgeInsets.zero,
-                    textStyle: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onPrimary,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    minimumSize: Size.zero,
-                    fixedSize: const Size.fromHeight(25),
+          if (!readOnly)
+            SizedBox(
+              height: 25,
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: onChangeMeal,
+                icon: const Icon(Icons.edit_rounded, size: 13),
+                label: Text(locale.calendar_change_meal),
+                style: FilledButton.styleFrom(
+                  backgroundColor: color.primary,
+                  foregroundColor: color.onPrimary,
+                  padding: EdgeInsets.zero,
+                  textStyle: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size12,
+                    color: color.onPrimary,
                   ),
-                );
-              },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  minimumSize: Size.zero,
+                  fixedSize: const Size.fromHeight(25),
+                ),
+              ),
             ),
-          ),
         ],
       ),
     );

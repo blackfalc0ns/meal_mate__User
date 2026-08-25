@@ -1,5 +1,10 @@
 class CalendarMealEntity {
   const CalendarMealEntity({
+    this.id = '',
+    this.slot = '',
+    this.imageUrl,
+    this.blockReason,
+    this.selected = false,
     required this.mealType,
     required this.title,
     required this.time,
@@ -12,6 +17,11 @@ class CalendarMealEntity {
     required this.actionLabel,
   });
 
+  final String id;
+  final String slot;
+  final String? imageUrl;
+  final String? blockReason;
+  final bool selected;
   final String mealType;
   final String title;
   final String time;

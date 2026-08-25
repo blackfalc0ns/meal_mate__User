@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
@@ -16,5 +17,5 @@ abstract interface class PaymentRemoteDataSource {
     String subscriptionId,
   );
 
-  Future<void> getSubscriptionCalendar(String subscriptionId);
+  Future<CalendarResponseDto> getSubscriptionCalendar(String subscriptionId);
 }

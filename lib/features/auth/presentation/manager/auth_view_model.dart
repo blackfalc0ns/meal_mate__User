@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/constants/keys.dart';
+import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
@@ -23,6 +25,7 @@ import 'package:meal_meat_user/features/auth/domain/usecase/reset_password_useca
 import 'package:meal_meat_user/features/auth/domain/usecase/verify_phone_usecase.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
 class AuthViewModel extends Cubit<AuthState> {
@@ -37,6 +40,8 @@ class AuthViewModel extends Cubit<AuthState> {
     this._resendPasswordOtpUseCase,
     this._refreshTokenUseCase,
     this._logoutUseCase,
+    this._getCurrentCustomerSubscriptionUseCase,
+    this._sharedPrefHelper,
   ) : super(const AuthState());
 
   final LoginUseCase _loginUseCase;
@@ -49,6 +54,9 @@ class AuthViewModel extends Cubit<AuthState> {
   final ResendPasswordOtpUseCase _resendPasswordOtpUseCase;
   final RefreshTokenUseCase _refreshTokenUseCase;
   final LogoutUseCase _logoutUseCase;
+  final GetCurrentCustomerSubscriptionUseCase
+  _getCurrentCustomerSubscriptionUseCase;
+  final SharedPrefHelper _sharedPrefHelper;
 
   void doIntent(AuthEvent event) {
     switch (event) {
@@ -105,6 +113,7 @@ class AuthViewModel extends Cubit<AuthState> {
 
     switch (result) {
       case ApiSuccessResult():
+        await _syncCurrentSubscriptionCache();
         emit(
           state.copyWith(
             login: state.login.copyWith(
@@ -231,6 +240,7 @@ class AuthViewModel extends Cubit<AuthState> {
 
     switch (result) {
       case ApiSuccessResult():
+        await _syncCurrentSubscriptionCache();
         emit(
           state.copyWith(
             verifyPhone: state.verifyPhone.copyWith(
@@ -496,6 +506,28 @@ class AuthViewModel extends Cubit<AuthState> {
               failure: result.failure,
             ),
           ),
+        );
+    }
+  }
+
+  Future<void> _syncCurrentSubscriptionCache() async {
+    final result = await _getCurrentCustomerSubscriptionUseCase();
+    switch (result) {
+      case ApiSuccessResult():
+        final subscriptionId = result.data.subscription?.subscriptionId ?? '';
+        if (subscriptionId.isEmpty) {
+          await _sharedPrefHelper.removeData(
+            key: StorageKeys.currentSubscriptionId,
+          );
+          return;
+        }
+        await _sharedPrefHelper.saveData(
+          key: StorageKeys.currentSubscriptionId,
+          val: subscriptionId,
+        );
+      case ApiErrorResult():
+        await _sharedPrefHelper.removeData(
+          key: StorageKeys.currentSubscriptionId,
         );
     }
   }

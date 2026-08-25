@@ -10,7 +10,8 @@ abstract class SubscriptionTierRepository {
     required bool includeFriday,
   });
 
-  Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>> getTierRestaurants({
+  Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>>
+  getTierRestaurants({
     required String programId,
     required String bundleId,
     required String tier,

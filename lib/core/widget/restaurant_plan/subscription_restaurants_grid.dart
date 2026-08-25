@@ -30,9 +30,7 @@ class SubscriptionRestaurantsGrid extends StatelessWidget {
       ),
       itemCount: restaurants.length,
       itemBuilder: (context, index) {
-        return SubscriptionRestaurantGridCard(
-          restaurant: restaurants[index],
-        );
+        return SubscriptionRestaurantGridCard(restaurant: restaurants[index]);
       },
     );
   }

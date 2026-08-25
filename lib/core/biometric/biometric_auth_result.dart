@@ -10,27 +10,18 @@ enum BiometricAuthStatus {
   error,
 }
 
-enum BiometricTypeEnum {
-  face,
-  fingerprint,
-  iris,
-  generic,
-  none,
-}
+enum BiometricTypeEnum { face, fingerprint, iris, generic, none }
 
 class BiometricAuthResult {
-  const BiometricAuthResult({
-    required this.status,
-    this.errorMessage,
-  });
+  const BiometricAuthResult({required this.status, this.errorMessage});
 
   const BiometricAuthResult.success()
-      : status = BiometricAuthStatus.success,
-        errorMessage = null;
+    : status = BiometricAuthStatus.success,
+      errorMessage = null;
 
   const BiometricAuthResult.canceled()
-      : status = BiometricAuthStatus.canceled,
-        errorMessage = null;
+    : status = BiometricAuthStatus.canceled,
+      errorMessage = null;
 
   const BiometricAuthResult.failure(this.status, [this.errorMessage]);
 

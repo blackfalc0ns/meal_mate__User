@@ -14,12 +14,16 @@ import 'package:meal_meat_user/features/profile/presentation/screens/profile_scr
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/subscriptions_screen.dart';
 
 class AppShellScreen extends StatelessWidget {
-  const AppShellScreen({super.key});
+  const AppShellScreen({super.key, this.initialTabIndex = 0});
+
+  final int initialTabIndex;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeCubit>(
-      create: (_) => HomeCubit(const HomeFakeDataSource())..loadHome(),
+      create: (_) => HomeCubit(const HomeFakeDataSource())
+        ..loadHome()
+        ..selectTab(initialTabIndex),
       child: const _AppShellView(),
     );
   }

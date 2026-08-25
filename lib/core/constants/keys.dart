@@ -23,6 +23,7 @@ class StorageKeys {
   static const String cacheExpiry = 'cache_expiry';
   static const String homeBannersCache = 'home_banners_cache';
   static const String homeCategoriesCache = 'home_categories_cache';
+  static const String currentSubscriptionId = 'current_subscription_id';
 }
 
 /// Miscellaneous constant keys (intent extras, route args, etc.)

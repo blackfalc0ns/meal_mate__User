@@ -1,4 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/constants/keys.dart';
+import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
@@ -35,10 +37,15 @@ import 'package:meal_meat_user/features/auth/domain/repo/auth_repository.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this._remoteDataSource, this._tokenService);
+  AuthRepositoryImpl(
+    this._remoteDataSource,
+    this._tokenService,
+    this._sharedPrefHelper,
+  );
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
+  final SharedPrefHelper _sharedPrefHelper;
 
   @override
   Future<ApiResult<LoginEntity>> login(LoginRequestEntity request) {
@@ -46,6 +53,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.login(request.toDto());
       final entity = response.toEntity();
 
+      await _clearSubscriptionCache();
       await _saveAuthSession(
         accessToken: entity.accessToken,
         refreshToken: entity.refreshToken,
@@ -72,6 +80,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.verifyPhone(request.toDto());
       final entity = response.toEntity();
 
+      await _clearSubscriptionCache();
       await _saveAuthSession(
         accessToken: entity.accessToken,
         refreshToken: entity.refreshToken,
@@ -145,8 +154,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<ApiResult<LogoutEntity>> logout(LogoutRequestEntity request) {
     return safeApiCall(() async {
-      await _remoteDataSource.logout(request.toDto());
-      await _tokenService.clearTokens();
+      try {
+        await _remoteDataSource.logout(request.toDto());
+      } finally {
+        await _tokenService.clearTokens();
+        await _clearSubscriptionCache();
+      }
 
       return const LogoutEntity(isLoggedOut: true);
     });
@@ -170,5 +183,9 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     await _tokenService.saveRefreshToken(refreshToken);
     await _tokenService.saveCurrentUserId(userId);
+  }
+
+  Future<void> _clearSubscriptionCache() async {
+    await _sharedPrefHelper.removeData(key: StorageKeys.currentSubscriptionId);
   }
 }

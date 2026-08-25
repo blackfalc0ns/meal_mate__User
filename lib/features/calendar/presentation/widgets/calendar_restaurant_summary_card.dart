@@ -16,12 +16,12 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
     super.key,
     required this.restaurant,
     required this.meals,
-    required this.onMorePressed,
+    this.onMorePressed,
   });
 
   final CalendarRestaurantEntity restaurant;
   final List<CalendarMealEntity> meals;
-  final VoidCallback onMorePressed;
+  final VoidCallback? onMorePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
       height: Spacing.calendarRestaurantSummaryHeight,
       padding: const EdgeInsetsDirectional.only(
         top: Spacing.sm,
-         start: Spacing.sm,
-         end: Spacing.sm,
+        start: Spacing.sm,
+        end: Spacing.sm,
         bottom: Spacing.sm,
       ),
       decoration: BoxDecoration(
@@ -82,10 +82,8 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.calendarRestaurantSummaryNutritionGap),
           CalendarRestaurantNutritionRow(meals: meals),
-       //   const Spacer(),
-       SizedBox(
-            height: Spacing.md,
-          ),
+          //   const Spacer(),
+          SizedBox(height: Spacing.md),
           AppButton(
             text: locale.calendar_change_restaurant,
             onPressed: onMorePressed,

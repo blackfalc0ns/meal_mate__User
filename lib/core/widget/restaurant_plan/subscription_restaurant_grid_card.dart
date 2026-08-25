@@ -10,10 +10,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_pl
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 
 class SubscriptionRestaurantGridCard extends StatelessWidget {
-  const SubscriptionRestaurantGridCard({
-    super.key,
-    required this.restaurant,
-  });
+  const SubscriptionRestaurantGridCard({super.key, required this.restaurant});
 
   final MonthlyRestaurantPlanEntity restaurant;
 

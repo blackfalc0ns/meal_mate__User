@@ -25,7 +25,6 @@ class CalendarSourceSection extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Row(
-          
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: _cards(context),
           ),

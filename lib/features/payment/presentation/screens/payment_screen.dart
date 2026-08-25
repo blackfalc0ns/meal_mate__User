@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -45,8 +47,18 @@ class PaymentScreen extends StatelessWidget {
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
             previous.checkout != current.checkout ||
-            previous.checkoutFailure != current.checkoutFailure,
-        listener: (context, state) async {
+            previous.checkoutFailure != current.checkoutFailure ||
+            previous.isFulfillmentSuccess != current.isFulfillmentSuccess,
+        listener: (context, state) {
+          if (state.isFulfillmentSuccess) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRoutes.home,
+              (route) => false,
+              arguments: 1,
+            );
+            return;
+          }
+
           final checkout = state.checkout;
           if (checkout != null && checkout.paymentUrl.isNotEmpty) {
             Navigator.of(context).pushNamed(
@@ -58,10 +70,12 @@ class PaymentScreen extends StatelessWidget {
 
           final checkoutFailure = state.checkoutFailure;
           if (checkoutFailure != null) {
-            await _handleCheckoutFailure(
-              context,
-              paymentArgs,
-              checkoutFailure.code,
+            unawaited(
+              _handleCheckoutFailure(
+                context,
+                paymentArgs,
+                checkoutFailure.code,
+              ),
             );
           }
         },
@@ -71,7 +85,10 @@ class PaymentScreen extends StatelessWidget {
             body: _buildBody(context, paymentArgs, state),
             bottomNavigationBar: PaymentFooter(
               totalAmount: paymentArgs.summary.finalPrice,
-              isLoading: state.isCheckoutLoading,
+              isLoading:
+                  state.isCheckoutLoading ||
+                  state.isFulfillmentLoading ||
+                  state.isCalendarLoading,
               onPayNow: _canPayNow(state)
                   ? () => _handlePayNow(context, paymentArgs, state)
                   : null,
@@ -148,7 +165,9 @@ class PaymentScreen extends StatelessWidget {
                     .read<PaymentViewModel>()
                     .doIntent(SelectPaymentMethodEvent(method)),
               ),
-              if (state.checkoutFailure != null)
+              if (state.checkoutFailure != null &&
+                  state.checkoutFailure!.code !=
+                      'checkout.existing_subscription')
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.base,

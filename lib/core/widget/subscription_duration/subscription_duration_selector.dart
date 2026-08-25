@@ -80,122 +80,113 @@ class _SubscriptionDurationSelectorState
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.calendar_month_outlined,
+                      color: color.primary,
+                      size: Spacing.lg,
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    Text(
+                      locale.subscription_duration_title,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size14,
+                        color: color.onSurface,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: Spacing.xs),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.calendar_month_outlined,
-                            color: color.primary,
-                            size: Spacing.lg,
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Text(
-                            locale.subscription_duration_title,
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size14,
-                              color: color.onSurface,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            for (
-                              var index = 0;
-                              index < presetDurations.length;
-                              index++
-                            ) ...[
-                              if (index > 0) const SizedBox(width: Spacing.sm),
-                              _option(
-                                label: presetDurations[index].name(
-                                  locale.localeName,
-                                ),
-                                days: presetDurations[index].totalServiceDays,
-                                index: widget.durations.indexOf(
-                                  presetDurations[index],
-                                ),
-                              ),
-                            ],
-                            const Spacer(),
-                            if (customDuration != null && customIndex != null)
-                              SubscriptionCustomDurationInput(
-                                label: customDuration.name(locale.localeName),
-                                isSelected: widget.selectedIndex == customIndex,
-                                value: _customDurationValue(customDuration),
-                                minDays: customDuration.minDays!,
-                                maxDays: customDuration.maxDays!,
-                                errorText: _customDurationError(customDuration),
-                                onTap: () => _selectCustomDuration(
-                                  customIndex,
-                                  customDuration,
-                                ),
-                                onIncrement: _nextCustomDuration(
-                                  customIndex,
-                                  customDuration,
-                                ),
-                                onDecrement: _previousCustomDuration(
-                                  customIndex,
-                                  customDuration,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      Center(
-                        child: InkWell(
-                          onTap: widget.isFridayEnabled
-                              ? () => widget.onFridayChanged(
-                                  !widget.includesFriday,
-                                )
-                              : null,
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusPill,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 220),
-                                switchInCurve: Curves.easeOutBack,
-                                switchOutCurve: Curves.easeIn,
-                                transitionBuilder: (child, animation) =>
-                                    FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    ),
-                                child: Icon(
-                                  widget.includesFriday
-                                      ? Icons.check_circle_rounded
-                                      : Icons.radio_button_unchecked_rounded,
-                                  key: ValueKey(widget.includesFriday),
-                                  color: widget.includesFriday
-                                      ? color.primary
-                                      : color.outline,
-                                  size: Spacing.monthlyPlanDurationControlSize,
-                                ),
-                              ),
-                              const SizedBox(width: Spacing.xs),
-                              Text(
-                                locale.subscription_add_friday,
-                                style: getSemiBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size11,
-                                  color: color.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
+                      for (
+                        var index = 0;
+                        index < presetDurations.length;
+                        index++
+                      ) ...[
+                        if (index > 0) const SizedBox(width: Spacing.sm),
+                        _option(
+                          label: presetDurations[index].name(locale.localeName),
+                          days: presetDurations[index].totalServiceDays,
+                          index: widget.durations.indexOf(
+                            presetDurations[index],
                           ),
                         ),
-                      ),
+                      ],
+                      const Spacer(),
+                      if (customDuration != null && customIndex != null)
+                        SubscriptionCustomDurationInput(
+                          label: customDuration.name(locale.localeName),
+                          isSelected: widget.selectedIndex == customIndex,
+                          value: _customDurationValue(customDuration),
+                          minDays: customDuration.minDays!,
+                          maxDays: customDuration.maxDays!,
+                          errorText: _customDurationError(customDuration),
+                          onTap: () => _selectCustomDuration(
+                            customIndex,
+                            customDuration,
+                          ),
+                          onIncrement: _nextCustomDuration(
+                            customIndex,
+                            customDuration,
+                          ),
+                          onDecrement: _previousCustomDuration(
+                            customIndex,
+                            customDuration,
+                          ),
+                        ),
                     ],
                   ),
                 ),
+                Center(
+                  child: InkWell(
+                    onTap: widget.isFridayEnabled
+                        ? () => widget.onFridayChanged(!widget.includesFriday)
+                        : null,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 220),
+                          switchInCurve: Curves.easeOutBack,
+                          switchOutCurve: Curves.easeIn,
+                          transitionBuilder: (child, animation) =>
+                              FadeTransition(opacity: animation, child: child),
+                          child: Icon(
+                            widget.includesFriday
+                                ? Icons.check_circle_rounded
+                                : Icons.radio_button_unchecked_rounded,
+                            key: ValueKey(widget.includesFriday),
+                            color: widget.includesFriday
+                                ? color.primary
+                                : color.outline,
+                            size: Spacing.monthlyPlanDurationControlSize,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          locale.subscription_add_friday,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

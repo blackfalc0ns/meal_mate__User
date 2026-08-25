@@ -1547,6 +1547,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get payment_success_button => 'العودة للرئيسية';
 
   @override
+  String get payment_calendar_preparing => 'جاري تجهيز أيام اشتراكك...';
+
+  @override
   String get subscription_screen_title => 'الباقات والاشتراكات';
 
   @override
@@ -2901,6 +2904,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get calendar_pick_restaurant_second => 'مطعم';
+
+  @override
+  String get calendar_done => 'تم';
 
   @override
   String get meal_details_optional_notes_title => 'ملاحظات اختيارية';

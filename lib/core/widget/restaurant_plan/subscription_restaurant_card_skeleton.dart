@@ -30,21 +30,11 @@ class SubscriptionRestaurantCardSkeleton extends StatelessWidget {
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          ShimmerPlaceholder.circle(
-            size: Spacing.iconXl,
-          ),
+          ShimmerPlaceholder.circle(size: Spacing.iconXl),
           SizedBox(height: Spacing.xs),
-          ShimmerPlaceholder.rect(
-            width: 54,
-            height: 12,
-            borderRadius: 4,
-          ),
+          ShimmerPlaceholder.rect(width: 54, height: 12, borderRadius: 4),
           SizedBox(height: Spacing.xs),
-          ShimmerPlaceholder.rect(
-            width: 38,
-            height: 9,
-            borderRadius: 3,
-          ),
+          ShimmerPlaceholder.rect(width: 38, height: 9, borderRadius: 3),
           Spacer(),
           ShimmerPlaceholder.rect(
             width: double.infinity,

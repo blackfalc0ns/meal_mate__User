@@ -13,6 +13,7 @@ class PaymentState {
     this.methods = const [],
     this.selectedMethod,
     this.checkout,
+    this.pendingSubscriptionId,
     this.paymentStatus,
     this.methodsFailure,
     this.checkoutFailure,
@@ -30,6 +31,7 @@ class PaymentState {
   final List<PaymentMethodEntity> methods;
   final PaymentMethodEntity? selectedMethod;
   final PaymentCheckoutEntity? checkout;
+  final String? pendingSubscriptionId;
   final PaymentStatusEntity? paymentStatus;
   final Failure? methodsFailure;
   final Failure? checkoutFailure;
@@ -51,6 +53,7 @@ class PaymentState {
     List<PaymentMethodEntity>? methods,
     PaymentMethodEntity? selectedMethod,
     PaymentCheckoutEntity? checkout,
+    String? pendingSubscriptionId,
     PaymentStatusEntity? paymentStatus,
     Failure? methodsFailure,
     Failure? checkoutFailure,
@@ -58,6 +61,7 @@ class PaymentState {
     Failure? calendarFailure,
     bool clearSelectedMethod = false,
     bool clearCheckout = false,
+    bool clearPendingSubscriptionId = false,
     bool clearPaymentStatus = false,
     bool clearMethodsFailure = false,
     bool clearCheckoutFailure = false,
@@ -77,6 +81,9 @@ class PaymentState {
           ? null
           : selectedMethod ?? this.selectedMethod,
       checkout: clearCheckout ? null : checkout ?? this.checkout,
+      pendingSubscriptionId: clearPendingSubscriptionId
+          ? null
+          : pendingSubscriptionId ?? this.pendingSubscriptionId,
       paymentStatus: clearPaymentStatus
           ? null
           : paymentStatus ?? this.paymentStatus,

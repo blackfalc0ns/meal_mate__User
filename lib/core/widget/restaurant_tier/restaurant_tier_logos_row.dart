@@ -39,10 +39,7 @@ class RestaurantTierLogosRow extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: color.surface,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: borderColor,
-                    width: Spacing.border,
-                  ),
+                  border: Border.all(color: borderColor, width: Spacing.border),
                   boxShadow: [
                     BoxShadow(
                       color: color.shadow.withValues(alpha: 0.08),

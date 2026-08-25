@@ -72,8 +72,8 @@ class SubscriptionTierEntity {
     final icon = lower.contains('max') || lower.contains('elite')
         ? 'diamond'
         : lower.contains('plus')
-            ? 'crown'
-            : 'heart';
+        ? 'crown'
+        : 'heart';
 
     return RestaurantPackageTierUiModel(
       id: tier,

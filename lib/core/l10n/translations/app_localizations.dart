@@ -3026,6 +3026,12 @@ abstract class AppLocalizations {
   /// **'Back to Home'**
   String get payment_success_button;
 
+  /// No description provided for @payment_calendar_preparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your subscription days...'**
+  String get payment_calendar_preparing;
+
   /// No description provided for @subscription_screen_title.
   ///
   /// In en, this message translates to:
@@ -5617,6 +5623,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'restaurant'**
   String get calendar_pick_restaurant_second;
+
+  /// No description provided for @calendar_done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get calendar_done;
 
   /// No description provided for @meal_details_optional_notes_title.
   ///

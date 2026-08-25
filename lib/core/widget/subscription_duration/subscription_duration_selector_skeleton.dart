@@ -80,4 +80,3 @@ class SubscriptionDurationSelectorSkeleton extends StatelessWidget {
     );
   }
 }
-

@@ -49,6 +49,15 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<ApiResult<ProfileBillingCurrentEntity>>
+  getCurrentCustomerSubscription() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getCurrentCustomerSubscription();
+      return response.toEntity();
+    });
+  }
+
+  @override
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling() {
     return safeApiCall(() async {
       final (current, invoices, paymentMethod, freezePolicy) = await (

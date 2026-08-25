@@ -47,8 +47,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
 
   @override
   Future<ApiResult<void>> getSubscriptionCalendar(String subscriptionId) {
-    return safeApiCall(() {
-      return _remoteDataSource.getSubscriptionCalendar(subscriptionId);
+    return safeApiCall(() async {
+      await _remoteDataSource.getSubscriptionCalendar(subscriptionId);
     });
   }
 }
