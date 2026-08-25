@@ -187,6 +187,18 @@ import '../../features/food_preferences/domain/usecase/update_food_preferences_u
     as _i635;
 import '../../features/food_preferences/presentation/manager/food_preferences_view_model.dart'
     as _i420;
+import '../../features/meal_details/data/data_source/meal_details_remote_data_source.dart'
+    as _i557;
+import '../../features/meal_details/data/data_source/meal_details_remote_data_source_impl.dart'
+    as _i90;
+import '../../features/meal_details/data/repo/meal_details_repository_impl.dart'
+    as _i49;
+import '../../features/meal_details/domain/repo/meal_details_repository.dart'
+    as _i62;
+import '../../features/meal_details/domain/usecase/get_subscription_meal_details_usecase.dart'
+    as _i832;
+import '../../features/meal_details/presentation/manager/meal_details_view_model.dart'
+    as _i293;
 import '../../features/monthly_plans/data/data_source/subscription_plan_remote_data_source.dart'
     as _i755;
 import '../../features/monthly_plans/data/data_source/subscription_plan_remote_data_source_impl.dart'
@@ -505,6 +517,9 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i200.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i557.MealDetailsRemoteDataSource>(
+      () => _i90.MealDetailsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i755.SubscriptionPlanRemoteDataSource>(
       () => _i509.SubscriptionPlanRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -659,6 +674,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i573.SubscriptionProgramsRemoteDataSource>(),
       ),
     );
+    gh.factory<_i62.MealDetailsRepository>(
+      () => _i49.MealDetailsRepositoryImpl(
+        gh<_i557.MealDetailsRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i422.UploadFileRepository>(
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
@@ -799,6 +819,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i857.UpdateCustomerProfileUseCase>(
       () => _i857.UpdateCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i832.GetSubscriptionMealDetailsUseCase>(
+      () => _i832.GetSubscriptionMealDetailsUseCase(
+        gh<_i62.MealDetailsRepository>(),
+      ),
     );
     gh.factory<_i527.SubscriptionPlanViewModel>(
       () => _i527.SubscriptionPlanViewModel(
@@ -968,6 +993,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i995.UploadFileUseCase>(),
         gh<_i399.UpdateCustomerProfileImageUseCase>(),
         gh<_i186.DeleteCustomerProfileImageUseCase>(),
+      ),
+    );
+    gh.factory<_i293.MealDetailsViewModel>(
+      () => _i293.MealDetailsViewModel(
+        gh<_i832.GetSubscriptionMealDetailsUseCase>(),
       ),
     );
     gh.factory<_i524.AddressesViewModel>(

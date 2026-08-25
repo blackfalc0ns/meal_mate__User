@@ -16,6 +16,10 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
 
   final SubscriptionRestaurantDetailsArgs? args;
 
+  void _onBackPressed(BuildContext context) {
+    Navigator.maybePop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -50,7 +54,7 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
             builder: (context, state) {
               if (state.isLoading && state.details == null) {
                 return SubscriptionRestaurantDetailsLoadingSkeleton(
-                  onBack: () => Navigator.maybePop(context),
+                  onBack: () => _onBackPressed(context),
                 );
               }
 
@@ -94,7 +98,11 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
                     details.logoUrl ?? detailsArgs.restaurantLogoUrl,
                 restaurantInitials: detailsArgs.restaurantInitials,
                 restaurantRating: detailsArgs.restaurantRating,
+                programId: detailsArgs.programId,
+                bundleId: detailsArgs.bundleId,
+                restaurantId: detailsArgs.restaurantId,
                 details: details,
+                onBackPressed: () => _onBackPressed(context),
               );
             },
           ),

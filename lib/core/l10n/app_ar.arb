@@ -998,6 +998,7 @@
   "calendar_pick_restaurant_first": "اختيار ",
   "calendar_pick_restaurant_second": "مطعم",
   "calendar_done": "تم",
+  "calendar_meals_save_success": "تمت إضافة الوجبة بنجاح.",
   "meal_details_optional_notes_title": "ملاحظات اختيارية",
   "meal_details_optional_notes_hint": "مثال: بدون بصل، بدون ثوم، زيادة خضار...",
   "meal_details_select_meal_button": "اختيار هذه الوجبة",

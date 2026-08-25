@@ -18,6 +18,7 @@ class CalendarState {
     this.isRestaurantsLoading = false,
     this.isAvailableMealsLoading = false,
     this.isSaving = false,
+    this.saveSuccessCount = 0,
     this.calendarFailure,
     this.restaurantsFailure,
     this.availableMealsFailure,
@@ -36,6 +37,7 @@ class CalendarState {
   final bool isRestaurantsLoading;
   final bool isAvailableMealsLoading;
   final bool isSaving;
+  final int saveSuccessCount;
   final Failure? calendarFailure;
   final Failure? restaurantsFailure;
   final Failure? availableMealsFailure;
@@ -142,6 +144,7 @@ class CalendarState {
     bool? isRestaurantsLoading,
     bool? isAvailableMealsLoading,
     bool? isSaving,
+    int? saveSuccessCount,
     Failure? calendarFailure,
     Failure? restaurantsFailure,
     Failure? availableMealsFailure,
@@ -171,6 +174,7 @@ class CalendarState {
       isAvailableMealsLoading:
           isAvailableMealsLoading ?? this.isAvailableMealsLoading,
       isSaving: isSaving ?? this.isSaving,
+      saveSuccessCount: saveSuccessCount ?? this.saveSuccessCount,
       calendarFailure: clearCalendarFailure
           ? null
           : calendarFailure ?? this.calendarFailure,

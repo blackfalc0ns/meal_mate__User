@@ -131,6 +131,8 @@ class CalendarMealResponseDto {
     this.title,
     this.description,
     this.slot,
+    this.slotNameAr,
+    this.slotNameEn,
     this.mealType,
     this.time,
     this.calories,
@@ -151,6 +153,8 @@ class CalendarMealResponseDto {
   final String? title;
   final String? description;
   final String? slot;
+  final String? slotNameAr;
+  final String? slotNameEn;
   final String? mealType;
   final String? time;
   final int? calories;
@@ -194,9 +198,16 @@ class CalendarIngredientResponseDto {
 
 @JsonSerializable()
 class CalendarSlotRequirementResponseDto {
-  const CalendarSlotRequirementResponseDto({this.slot, this.count});
+  const CalendarSlotRequirementResponseDto({
+    this.slot,
+    this.slotNameAr,
+    this.slotNameEn,
+    this.count,
+  });
 
   final String? slot;
+  final String? slotNameAr;
+  final String? slotNameEn;
   final int? count;
 
   factory CalendarSlotRequirementResponseDto.fromJson(

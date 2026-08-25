@@ -23,9 +23,15 @@ class CalendarAvailableMealsEntity {
 class CalendarSlotRequirementEntity {
   const CalendarSlotRequirementEntity({
     required this.slot,
+    required this.slotNameAr,
+    required this.slotNameEn,
     required this.count,
   });
 
   final String slot;
+  final String slotNameAr;
+  final String slotNameEn;
   final int count;
+
+  String name(String localeName) => localeName == 'ar' ? slotNameAr : slotNameEn;
 }

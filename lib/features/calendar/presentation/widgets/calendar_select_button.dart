@@ -1,7 +1,11 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarSelectButton extends StatelessWidget {
-  const CalendarSelectButton({required this.selected, this.enabled = true});
+  const CalendarSelectButton({
+    super.key,
+    required this.selected,
+    this.enabled = true,
+  });
 
   final bool selected;
   final bool enabled;
@@ -10,7 +14,9 @@ class CalendarSelectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
       width: 22,
       height: 20,
       decoration: BoxDecoration(

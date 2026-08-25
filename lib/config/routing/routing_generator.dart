@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_scre
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
+import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition_details_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -198,9 +199,12 @@ class RouteGenerator {
         final meal = settings.arguments is MealDetailsEntity
             ? settings.arguments! as MealDetailsEntity
             : null;
+        final args = settings.arguments is SubscriptionMealDetailsArgs
+            ? settings.arguments! as SubscriptionMealDetailsArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: MealDetailsScreen(meal: meal),
+          page: MealDetailsScreen(meal: meal, args: args),
         );
       case AppRoutes.nutritionDetails:
         return _buildRoute(

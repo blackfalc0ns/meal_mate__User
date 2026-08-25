@@ -139,7 +139,12 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
       imageUrl: imageUrl,
       blockReason: blockReason,
       selected: (isSelected ?? false) || selectedIds.contains(resolvedId),
-      mealType: slot ?? mealType ?? '',
+      mealType: _localized(
+        localeName,
+        ar: slotNameAr,
+        en: slotNameEn,
+        fallback: mealType ?? slot,
+      ),
       title: _localized(
         localeName,
         ar: nameAr,
@@ -161,7 +166,12 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
 extension CalendarSlotRequirementResponseDtoMapper
     on CalendarSlotRequirementResponseDto {
   CalendarSlotRequirementEntity toEntity() {
-    return CalendarSlotRequirementEntity(slot: slot ?? '', count: count ?? 0);
+    return CalendarSlotRequirementEntity(
+      slot: slot ?? '',
+      slotNameAr: slotNameAr ?? '',
+      slotNameEn: slotNameEn ?? slotNameAr ?? '',
+      count: count ?? 0,
+    );
   }
 }
 
@@ -169,7 +179,9 @@ extension CalendarAvailableMealsResponseDtoMapper
     on CalendarAvailableMealsResponseDto {
   CalendarAvailableMealsEntity toEntity(String localeName) {
     return CalendarAvailableMealsEntity(
-      restaurant: restaurant?.toRestaurantEntity(localeName),
+      restaurant:
+          restaurant?.toRestaurantEntity(localeName) ??
+          _flatRestaurantEntity(localeName),
       meals: (meals ?? const [])
           .map((meal) => meal.toMealEntity(localeName, const []))
           .where((meal) => meal.id.isNotEmpty)
@@ -181,6 +193,24 @@ extension CalendarAvailableMealsResponseDtoMapper
                 requirement.slot.isNotEmpty && requirement.count > 0,
           )
           .toList(),
+    );
+  }
+
+  CalendarRestaurantEntity? _flatRestaurantEntity(String localeName) {
+    if ((restaurantId == null || restaurantId!.isEmpty) &&
+        (nameAr == null || nameAr!.isEmpty) &&
+        (nameEn == null || nameEn!.isEmpty)) {
+      return null;
+    }
+
+    return CalendarRestaurantEntity(
+      id: restaurantId ?? '',
+      logoUrl: logoUrl,
+      name: _localized(localeName, ar: nameAr, en: nameEn, fallback: nameEn),
+      category: '',
+      rating: '',
+      deliveryDuration: '',
+      deliveryWindow: '',
     );
   }
 }

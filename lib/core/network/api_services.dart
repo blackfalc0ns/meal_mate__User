@@ -30,6 +30,7 @@ import 'package:meal_meat_user/features/addresses/data/models/response/region_ca
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/meal_details/data/models/response/subscription_meal_details_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
@@ -270,6 +271,14 @@ abstract class ApiServices {
     @Path('programId') String programId,
     @Path('bundleId') String bundleId,
     @Path('restaurantId') String restaurantId,
+  );
+
+  @GET(EndPoints.subscriptionMealDetails)
+  Future<SubscriptionMealDetailsResponseDto> getSubscriptionMealDetails(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId,
+    @Path('restaurantId') String restaurantId,
+    @Path('mealId') String mealId,
   );
 
   @GET(EndPoints.subscriptionSummary)

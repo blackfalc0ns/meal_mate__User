@@ -2909,6 +2909,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_done => 'تم';
 
   @override
+  String get calendar_meals_save_success => 'تمت إضافة الوجبة بنجاح.';
+
+  @override
   String get meal_details_optional_notes_title => 'ملاحظات اختيارية';
 
   @override

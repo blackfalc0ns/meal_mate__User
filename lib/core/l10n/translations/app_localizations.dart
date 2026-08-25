@@ -5630,6 +5630,12 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get calendar_done;
 
+  /// No description provided for @calendar_meals_save_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal added successfully.'**
+  String get calendar_meals_save_success;
+
   /// No description provided for @meal_details_optional_notes_title.
   ///
   /// In en, this message translates to:

@@ -2954,6 +2954,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_done => 'Done';
 
   @override
+  String get calendar_meals_save_success => 'Meal added successfully.';
+
+  @override
   String get meal_details_optional_notes_title => 'Optional notes';
 
   @override

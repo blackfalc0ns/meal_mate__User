@@ -4,13 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
@@ -41,7 +47,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late DateTime _focusedMonth;
   bool _isExpanded = false;
   bool _mealSheetOpen = false;
+  bool _suppressMealSheetAutoOpen = false;
   bool _didLoad = false;
+  int _handledSaveSuccessCount = 0;
 
   @override
   void initState() {
@@ -80,7 +88,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: BlocConsumer<CalendarViewModel, CalendarState>(
         listenWhen: (previous, current) =>
             previous.availableMeals != current.availableMeals ||
-            previous.isSaving != current.isSaving,
+            previous.isAvailableMealsLoading !=
+                current.isAvailableMealsLoading ||
+            previous.isSaving != current.isSaving ||
+            previous.saveSuccessCount != current.saveSuccessCount,
         listener: _handleStateSideEffects,
         builder: (context, state) {
           final selectedDate = state.selectedDate;
@@ -218,11 +229,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   CalendarMealCard(
                     meal: meal,
                     readOnly: readOnly,
-                    onChangeMeal: () => _viewModel.doIntent(
-                      LoadCalendarAvailableMealsEvent(
-                        localeName: locale.localeName,
-                      ),
-                    ),
+                    onTap: () => _openMealDetails(context, meal, restaurant),
+                    onChangeMeal: () {
+                      _suppressMealSheetAutoOpen = false;
+                      _viewModel.doIntent(
+                        LoadCalendarAvailableMealsEvent(
+                          localeName: locale.localeName,
+                        ),
+                      );
+                      _openMealPicker(context);
+                    },
                   ),
                   const SizedBox(height: Spacing.md),
                 ],
@@ -235,7 +251,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _handleStateSideEffects(BuildContext context, CalendarState state) {
-    if (state.availableMeals != null && !_mealSheetOpen) {
+    if (state.availableMeals != null &&
+        !_mealSheetOpen &&
+        !_suppressMealSheetAutoOpen) {
       _openMealPicker(context);
     }
 
@@ -243,6 +261,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         !state.isSaving &&
         state.saveFailure == null &&
         state.availableMeals == null) {
+      if (state.saveSuccessCount != _handledSaveSuccessCount) {
+        _handledSaveSuccessCount = state.saveSuccessCount;
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: context.localization.calendar_meals_save_success,
+        );
+      }
       Navigator.of(context).maybePop();
       _mealSheetOpen = false;
     }
@@ -264,11 +289,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
               value: _viewModel,
               child: BlocBuilder<CalendarViewModel, CalendarState>(
                 builder: (context, sheetState) {
-                  if (sheetState.isRestaurantsLoading &&
-                      !sheetState.hasRestaurantPool) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
                   final failure = sheetState.restaurantsFailure;
                   if (failure != null && !sheetState.hasRestaurantPool) {
                     return ApiErrorWidget(
@@ -283,6 +303,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                   return CalendarRestaurantPickerSheet(
                     restaurants: sheetState.restaurantsWithUsageLimits(),
+                    isLoading: sheetState.isRestaurantsLoading,
                     onRestaurantSelected: (restaurant) {
                       Navigator.pop(sheetContext, restaurant);
                     },
@@ -295,12 +316,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     if (selectedRestaurant == null || !mounted) return;
 
+    _suppressMealSheetAutoOpen = false;
     _viewModel.doIntent(
       SelectCalendarRestaurantEvent(
         restaurant: selectedRestaurant,
         localeName: locale.localeName,
       ),
     );
+    _openMealPicker(this.context);
   }
 
   Future<void> _openMealPicker(BuildContext context) async {
@@ -335,6 +358,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   );
                 },
                 canSave: state.canSaveMeals,
+                isLoading: state.isAvailableMealsLoading,
                 isSaving: state.isSaving,
                 failure: state.availableMealsFailure ?? state.saveFailure,
               );
@@ -344,6 +368,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       },
     );
     _mealSheetOpen = false;
+    if (_viewModel.state.isAvailableMealsLoading ||
+        _viewModel.state.availableMeals != null) {
+      _suppressMealSheetAutoOpen = true;
+    }
   }
 
   void _changeMonth(int direction) {
@@ -415,6 +443,140 @@ class _CalendarScreenState extends State<CalendarScreen> {
         a.year == b.year &&
         a.month == b.month &&
         a.day == b.day;
+  }
+
+  void _openMealDetails(
+    BuildContext context,
+    CalendarMealEntity meal,
+    CalendarRestaurantEntity? restaurant,
+  ) {
+    final locale = context.localization;
+    final restaurantName = restaurant?.name.isNotEmpty == true
+        ? restaurant!.name
+        : locale.calendar_restaurant_name;
+
+    final proteinG = _parseNullableInt(meal.protein);
+    final carbsG = _parseNullableInt(meal.carbs);
+    final fatG = _parseNullableInt(meal.fat);
+
+    Navigator.of(context).pushNamed(
+      AppRoutes.mealDetails,
+      arguments: MealDetailsEntity(
+        title: meal.title,
+        description: locale.search_meal_description,
+        restaurantName: restaurantName,
+        restaurantLogo: _initials(restaurantName),
+        restaurantLogoUrl: restaurant?.logoUrl,
+        headerImageUrl: meal.imageUrl,
+        ratingTitle: locale.localeName == 'ar'
+            ? 'تقييم المطعم'
+            : 'Restaurant rating',
+        ratingValue: restaurant?.rating ?? '',
+        programLabel: locale.localeName == 'ar' ? 'نوع الوجبة' : 'Meal type',
+        programValue: meal.mealType,
+        deliveryLabel: locale.localeName == 'ar'
+            ? 'وقت التوصيل'
+            : 'Delivery time',
+        deliveryValue: restaurant?.deliveryWindow ?? '',
+        ingredientsTitle: locale.calendar_ingredients,
+        ingredients: meal.ingredients
+            .map(
+              (ingredient) => MealDetailsIngredientEntity(
+                label: ingredient,
+                asset: Assets.calendarMealPickerHero,
+              ),
+            )
+            .where((ingredient) => ingredient.label.isNotEmpty)
+            .toList(),
+        nutritionTitle: locale.localeName == 'ar'
+            ? 'القيم الغذائية'
+            : 'Nutrition facts',
+        nutritionItems: [
+          MealDetailsNutritionEntity(
+            value: _gramValue(null, locale.localeName),
+            label: locale.localeName == 'ar' ? 'ألياف' : 'Fiber',
+            type: MealDetailsNutritionType.fiber,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(proteinG, locale.localeName),
+            label: locale.calendar_protein,
+            type: MealDetailsNutritionType.protein,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(carbsG, locale.localeName),
+            label: locale.calendar_carbs,
+            type: MealDetailsNutritionType.carbs,
+          ),
+          MealDetailsNutritionEntity(
+            value: _gramValue(fatG, locale.localeName),
+            label: locale.calendar_fat,
+            type: MealDetailsNutritionType.fat,
+          ),
+          MealDetailsNutritionEntity(
+            value: meal.calories.isNotEmpty ? meal.calories : '-',
+            label: locale.calendar_calories,
+            type: MealDetailsNutritionType.calories,
+          ),
+        ],
+        macroDistributionTitle: locale.localeName == 'ar'
+            ? 'توزيع العناصر الغذائية'
+            : 'Macro distribution',
+        macroItems: _macroItems(proteinG, carbsG, fatG, locale.localeName, locale),
+        allergensTitle: locale.localeName == 'ar'
+            ? 'مسببات الحساسية'
+            : 'Allergens',
+        allergens: const [],
+      ),
+    );
+  }
+
+  List<MealDetailsMacroEntity> _macroItems(
+    int? proteinG,
+    int? carbsG,
+    int? fatG,
+    String localeName,
+    AppLocalizations locale,
+  ) {
+    final fatCalories = (fatG ?? 0) * 9;
+    final proteinCalories = (proteinG ?? 0) * 4;
+    final carbsCalories = (carbsG ?? 0) * 4;
+    final total = fatCalories + proteinCalories + carbsCalories;
+
+    return [
+      MealDetailsMacroEntity(
+        percent: _percent(fatCalories, total),
+        label: locale.calendar_fat,
+        value: _gramValue(fatG, localeName),
+        type: MealDetailsNutritionType.fat,
+      ),
+      MealDetailsMacroEntity(
+        percent: _percent(proteinCalories, total),
+        label: locale.calendar_protein,
+        value: _gramValue(proteinG, localeName),
+        type: MealDetailsNutritionType.protein,
+      ),
+      MealDetailsMacroEntity(
+        percent: _percent(carbsCalories, total),
+        label: locale.calendar_carbs,
+        value: _gramValue(carbsG, localeName),
+        type: MealDetailsNutritionType.carbs,
+      ),
+    ];
+  }
+
+  String _percent(int value, int total) {
+    if (total == 0) return '-';
+    return '%${((value / total) * 100).round()}';
+  }
+
+  String _gramValue(int? value, String localeName) {
+    if (value == null) return '-';
+    return localeName == 'ar' ? '$value جم' : '${value}g';
+  }
+
+  int? _parseNullableInt(String value) {
+    if (value.isEmpty) return null;
+    return int.tryParse(value.replaceAll(RegExp(r'[^0-9]'), ''));
   }
 
   String _initials(String value) {

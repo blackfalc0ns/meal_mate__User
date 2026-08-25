@@ -1,10 +1,16 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealOptionCard extends StatelessWidget {
-  const CalendarMealOptionCard({super.key, required this.option, this.onTap});
+  const CalendarMealOptionCard({
+    super.key,
+    required this.option,
+    this.onTap,
+    this.onDetailsTap,
+  });
 
   final CalendarMealPickerOption option;
   final VoidCallback? onTap;
+  final VoidCallback? onDetailsTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +24,27 @@ class CalendarMealOptionCard extends StatelessWidget {
         horizontal: Spacing.lg,
         vertical: Spacing.xs,
       ),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: isBlocked ? null : onTap,
-        child: SizedBox(
-          width: 317,
-          height: isBlocked ? 126 : 105,
-          child: Opacity(
-            opacity: isBlocked ? 0.58 : 1,
-            child: Row(
-              textDirection: TextDirection.ltr,
-              children: [
-                CalendarSelectButton(
+      child: SizedBox(
+        width: 317,
+        height: isBlocked ? 126 : 105,
+        child: Opacity(
+          opacity: isBlocked ? 0.58 : 1,
+          child: Row(
+            textDirection: TextDirection.ltr,
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: isBlocked ? null : onTap,
+                child: CalendarSelectButton(
                   selected: option.selected,
                   enabled: !isBlocked,
                 ),
-                const SizedBox(width: Spacing.lg),
-                Expanded(
+              ),
+              const SizedBox(width: Spacing.lg),
+              Expanded(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: onDetailsTap ?? (isBlocked ? null : onTap),
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: Column(
@@ -86,8 +96,12 @@ class CalendarMealOptionCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: Spacing.xss),
-                ClipRRect(
+              ),
+              const SizedBox(width: Spacing.xss),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: onDetailsTap ?? (isBlocked ? null : onTap),
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.6),
                   child: option.imageUrl == null || option.imageUrl!.isEmpty
                       ? Image.asset(
@@ -104,8 +118,8 @@ class CalendarMealOptionCard extends StatelessWidget {
                           semanticLabel: option.title,
                         ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

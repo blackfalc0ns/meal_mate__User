@@ -998,6 +998,7 @@
   "calendar_pick_restaurant_first": "Choose ",
   "calendar_pick_restaurant_second": "restaurant",
   "calendar_done": "Done",
+  "calendar_meals_save_success": "Meal added successfully.",
   "meal_details_optional_notes_title": "Optional notes",
   "meal_details_optional_notes_hint": "Example: no onion, no garlic, extra vegetables...",
   "meal_details_select_meal_button": "Select this meal",

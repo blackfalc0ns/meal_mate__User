@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 part 'calendar_restaurant_search_field.dart';
 part 'calendar_restaurant_option_card.dart';
@@ -13,16 +14,19 @@ part 'calendar_restaurant_copy.dart';
 part 'calendar_restaurant_picker_logo.dart';
 part 'calendar_circle_text_logo.dart';
 part 'calendar_image_circle_logo.dart';
+part 'calendar_restaurant_picker_loading_skeleton.dart';
 
 class CalendarRestaurantPickerSheet extends StatelessWidget {
   const CalendarRestaurantPickerSheet({
     super.key,
     required this.restaurants,
     required this.onRestaurantSelected,
+    this.isLoading = false,
   });
 
   final List<CalendarRestaurantOptionEntity> restaurants;
   final ValueChanged<CalendarRestaurantOptionEntity> onRestaurantSelected;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -125,18 +129,20 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
               left: 19,
               right: 20,
               bottom: 24,
-              child: ListView.separated(
-                padding: EdgeInsets.zero,
-                itemCount: restaurants.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 9.2),
-                itemBuilder: (context, index) {
-                  final restaurant = restaurants[index];
-                  return CalendarRestaurantOptionCard(
-                    restaurant: restaurant,
-                    onTap: () => onRestaurantSelected(restaurant),
-                  );
-                },
-              ),
+              child: isLoading
+                  ? const CalendarRestaurantPickerLoadingSkeleton()
+                  : ListView.separated(
+                      padding: EdgeInsets.zero,
+                      itemCount: restaurants.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 9.2),
+                      itemBuilder: (context, index) {
+                        final restaurant = restaurants[index];
+                        return CalendarRestaurantOptionCard(
+                          restaurant: restaurant,
+                          onTap: () => onRestaurantSelected(restaurant),
+                        );
+                      },
+                    ),
             ),
           ],
         ),

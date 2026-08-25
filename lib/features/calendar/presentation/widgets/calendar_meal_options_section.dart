@@ -7,12 +7,14 @@ class CalendarMealOptionsSection extends StatelessWidget {
     required this.tabIndex,
     required this.options,
     this.onOptionSelected,
+    this.onOptionDetailsSelected,
   });
 
   final String mealType;
   final int tabIndex;
   final List<CalendarMealPickerOption> options;
   final ValueChanged<int>? onOptionSelected;
+  final ValueChanged<int>? onOptionDetailsSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,9 @@ class CalendarMealOptionsSection extends StatelessWidget {
               onTap: onOptionSelected == null
                   ? null
                   : () => onOptionSelected!(index),
+              onDetailsTap: onOptionDetailsSelected == null
+                  ? null
+                  : () => onOptionDetailsSelected!(index),
             ),
             if (index != options.length - 1) const CalendarDividerLine(),
           ],

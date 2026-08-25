@@ -18,11 +18,13 @@ class CalendarMealCard extends StatelessWidget {
     super.key,
     required this.meal,
     required this.onChangeMeal,
+    this.onTap,
     this.readOnly = false,
   });
 
   final CalendarMealEntity meal;
   final VoidCallback onChangeMeal;
+  final VoidCallback? onTap;
   final bool readOnly;
 
   @override
@@ -36,7 +38,7 @@ class CalendarMealCard extends StatelessWidget {
           SizedBox(
             height: 114,
             child: InkWell(
-              onTap: null,
+              onTap: onTap,
               borderRadius: BorderRadius.circular(15),
               child: Container(
                 padding: const EdgeInsetsDirectional.only(
