@@ -5,14 +5,11 @@ part 'payment_checkout_request_dto.g.dart';
 @JsonSerializable(createFactory: false)
 class PaymentCheckoutRequestDto {
   const PaymentCheckoutRequestDto({
-    required this.restaurantId,
     required this.programId,
     required this.bundleId,
     required this.tier,
     required this.durationDays,
     required this.startDate,
-    required this.regionId,
-    required this.deliveryAddress,
     required this.callbackUrl,
     required this.errorUrl,
     required this.includeFriday,
@@ -20,14 +17,11 @@ class PaymentCheckoutRequestDto {
     required this.correlationId,
   });
 
-  final String restaurantId;
   final String programId;
   final String bundleId;
   final String tier;
   final int durationDays;
   final String startDate;
-  final String regionId;
-  final String deliveryAddress;
   final String callbackUrl;
   final String errorUrl;
   final bool includeFriday;

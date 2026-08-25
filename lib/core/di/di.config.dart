@@ -760,6 +760,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
+    gh.factory<_i502.PaymentViewModel>(
+      () => _i502.PaymentViewModel(
+        gh<_i365.GetPaymentMethodsUseCase>(),
+        gh<_i895.CheckoutSubscriptionUseCase>(),
+        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
+        gh<_i182.GetSubscriptionCalendarUseCase>(),
+      ),
+    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -864,14 +872,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i880.DeleteFamilyMemberUseCase>(),
         gh<_i873.AbandonFamilyDraftUseCase>(),
         gh<_i945.GetCustomerAddressesUseCase>(),
-      ),
-    );
-    gh.factory<_i502.PaymentViewModel>(
-      () => _i502.PaymentViewModel(
-        gh<_i365.GetPaymentMethodsUseCase>(),
-        gh<_i895.CheckoutSubscriptionUseCase>(),
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
       ),
     );
     gh.factory<_i420.SubscriptionProgramsViewModel>(

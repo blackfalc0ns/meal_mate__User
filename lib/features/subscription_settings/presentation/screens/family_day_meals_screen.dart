@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/calendar/data/calendar_fake_data_source.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/family_day_details_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_header.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
@@ -25,7 +23,6 @@ class FamilyDayMealsScreen extends StatefulWidget {
 
 class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
   static const _dataSource = FamilyDayDetailsFakeDataSource();
-  static const _calendarDataSource = CalendarFakeDataSource();
 
   DateTime _selectedDate = DateTime(2024, 5, 26);
 
@@ -75,7 +72,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                 for (final meal in details.meals) ...[
                   FamilyDayMealCard(
                     meal: meal,
-                    onEditPressed: _openMealEditFlow,
+                    onEditPressed: _openRestaurants,
                   ),
                   const SizedBox(height: Spacing.familyDayMealListGap),
                 ],
@@ -121,48 +118,12 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
     });
   }
 
-  Future<void> _openMealEditFlow() async {
-    final selectedRestaurant =
-        await showModalBottomSheet<CalendarRestaurantOptionEntity>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: context.colorScheme.surface,
-          builder: (sheetContext) {
-            return CalendarRestaurantPickerSheet(
-              restaurants: _calendarDataSource.getRestaurantOptions(),
-              onRestaurantSelected: (restaurant) {
-                Navigator.pop(sheetContext, restaurant);
-              },
-            );
-          },
-        );
-
-    if (selectedRestaurant == null || !mounted) {
-      return;
-    }
-
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => CalendarMealPickerSheet(
-          restaurantName: selectedRestaurant.name,
-          restaurantInitials: _restaurantInitials(selectedRestaurant.name),
-        ),
-      ),
-    );
+  void _openRestaurants() {
+    context.pushNamed(AppRoutes.familyRestaurants);
   }
 
   String _formatDate(BuildContext context, DateTime date) {
     final locale = context.localization;
     return DateFormat.yMMMMEEEEd(locale.localeName).format(date);
-  }
-
-  String _restaurantInitials(String name) {
-    return name
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((part) => part.isNotEmpty)
-        .take(2)
-        .map((part) => part.characters.first)
-        .join();
   }
 }

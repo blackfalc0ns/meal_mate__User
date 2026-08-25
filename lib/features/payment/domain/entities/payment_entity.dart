@@ -48,14 +48,11 @@ class PaymentMethodEntity {
 
 class PaymentCheckoutRequestEntity {
   const PaymentCheckoutRequestEntity({
-    required this.restaurantId,
     required this.programId,
     required this.bundleId,
     required this.tier,
     required this.durationDays,
     required this.startDate,
-    required this.regionId,
-    required this.deliveryAddress,
     required this.callbackUrl,
     required this.errorUrl,
     required this.includeFriday,
@@ -63,14 +60,11 @@ class PaymentCheckoutRequestEntity {
     required this.correlationId,
   });
 
-  final String restaurantId;
   final String programId;
   final String bundleId;
   final String tier;
   final int durationDays;
   final String startDate;
-  final String regionId;
-  final String deliveryAddress;
   final String callbackUrl;
   final String errorUrl;
   final bool includeFriday;
@@ -78,14 +72,11 @@ class PaymentCheckoutRequestEntity {
   final String correlationId;
 
   bool get isComplete =>
-      restaurantId.isNotEmpty &&
       programId.isNotEmpty &&
       bundleId.isNotEmpty &&
       tier.isNotEmpty &&
       durationDays > 0 &&
       startDate.isNotEmpty &&
-      regionId.isNotEmpty &&
-      deliveryAddress.isNotEmpty &&
       callbackUrl.isNotEmpty &&
       errorUrl.isNotEmpty &&
       paymentMethodId > 0 &&
@@ -97,6 +88,8 @@ class PaymentCheckoutEntity {
     required this.subscriptionId,
     required this.paymentUrl,
     required this.holdExpiresAtUtc,
+    required this.chosenStartDate,
+    required this.startDate,
     required this.finalPrice,
     required this.priceSnapshotId,
     required this.restaurantPoolSnapshotId,
@@ -106,6 +99,8 @@ class PaymentCheckoutEntity {
   final String subscriptionId;
   final String paymentUrl;
   final String holdExpiresAtUtc;
+  final String chosenStartDate;
+  final String startDate;
   final double finalPrice;
   final String priceSnapshotId;
   final String restaurantPoolSnapshotId;

@@ -61,6 +61,7 @@ flutter:
     - assets/images/fake/profile/
     - assets/images/fake/meal_details/
     - assets/images/fake/offers/
+    - assets/images/fake/family_restaurants/
     - assets/images/fake/subscriptions/
     - assets/animations/
     - assets/images/home/figma/

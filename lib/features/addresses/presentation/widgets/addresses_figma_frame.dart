@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
@@ -206,6 +207,14 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       if (isHome) unit,
     ]);
 
+    if (area == null) {
+      CustomSnackbar.showError(
+        context: context,
+        message: locale.addresses_area_required,
+      );
+      return;
+    }
+
     context.read<AddressesViewModel>().doIntent(
       AddCustomerAddressEvent(
         CustomerAddressRequestEntity(
@@ -213,7 +222,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
           addressLine: addressLine.isEmpty
               ? locale.addresses_home_address_title
               : addressLine,
-          regionId: block?.id ?? area?.id ?? governorate?.id,
+          regionId: area.id,
           governorate: governorateCode,
           area: areaCode,
           block: blockCode,

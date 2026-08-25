@@ -3,9 +3,15 @@ part 'food_preferences_allergies_request_dto.g.dart';
 
 @JsonSerializable(createFactory: false, explicitToJson: true)
 class FoodPreferencesAllergiesRequestDto {
-  const FoodPreferencesAllergiesRequestDto({required this.allergies});
+  const FoodPreferencesAllergiesRequestDto({
+    required this.allergies,
+    required this.confirmed,
+    required this.noneSelected,
+  });
 
   final List<FoodPreferencesAllergyRequestDto> allergies;
+  final bool confirmed;
+  final bool noneSelected;
 
   Map<String, dynamic> toJson() =>
       _$FoodPreferencesAllergiesRequestDtoToJson(this);

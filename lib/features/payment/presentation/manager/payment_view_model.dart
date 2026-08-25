@@ -3,12 +3,11 @@ import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
@@ -18,15 +17,15 @@ class PaymentViewModel extends Cubit<PaymentState> {
   PaymentViewModel(
     this._getPaymentMethodsUseCase,
     this._checkoutSubscriptionUseCase,
-    this._getCustomerAddressesUseCase,
     this._getSubscriptionPaymentStatusUseCase,
+    this._getSubscriptionCalendarUseCase,
   ) : super(const PaymentState());
 
   final GetPaymentMethodsUseCase _getPaymentMethodsUseCase;
   final CheckoutSubscriptionUseCase _checkoutSubscriptionUseCase;
-  final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
   final GetSubscriptionPaymentStatusUseCase
   _getSubscriptionPaymentStatusUseCase;
+  final GetSubscriptionCalendarUseCase _getSubscriptionCalendarUseCase;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -35,7 +34,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       case SelectPaymentMethodEvent():
         emit(state.copyWith(selectedMethod: event.method));
       case CheckoutPaymentEvent():
-        _checkout(args: event.args, address: event.address);
+        _checkout(event.args);
       case VerifyPaymentFulfillmentEvent():
         _verifyFulfillment(event.subscriptionId);
       case MarkPaymentFailedEvent():
@@ -43,9 +42,13 @@ class PaymentViewModel extends Cubit<PaymentState> {
           state.copyWith(
             isPaymentFailed: true,
             isFulfillmentLoading: false,
+            isCalendarLoading: false,
             isFulfillmentSuccess: false,
+            isCalendarSuccess: false,
           ),
         );
+      case PollSubscriptionCalendarEvent():
+        _pollCalendar(event.subscriptionId);
     }
   }
 
@@ -53,12 +56,11 @@ class PaymentViewModel extends Cubit<PaymentState> {
     emit(
       state.copyWith(
         isMethodsLoading: true,
-        isAddressesLoading: true,
         clearSelectedMethod: true,
-        clearDefaultAddress: true,
         clearMethodsFailure: true,
-        clearAddressesFailure: true,
         clearCheckoutFailure: true,
+        clearFulfillmentFailure: true,
+        clearCalendarFailure: true,
         clearCheckout: true,
       ),
     );
@@ -66,7 +68,6 @@ class PaymentViewModel extends Cubit<PaymentState> {
     final methodsResult = await _getPaymentMethodsUseCase(
       amount: args.summary.finalPrice,
     );
-    final addressesResult = await _getCustomerAddressesUseCase();
 
     switch (methodsResult) {
       case ApiSuccessResult():
@@ -94,43 +95,18 @@ class PaymentViewModel extends Cubit<PaymentState> {
           ),
         );
     }
-
-    switch (addressesResult) {
-      case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            isAddressesLoading: false,
-            defaultAddress: _defaultAddress(addressesResult.data),
-            clearAddressesFailure: true,
-          ),
-        );
-      case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isAddressesLoading: false,
-            addressesFailure: addressesResult.failure,
-          ),
-        );
-    }
   }
 
-  Future<void> _checkout({
-    required PaymentArgs args,
-    required CustomerAddressEntity? address,
-  }) async {
+  Future<void> _checkout(PaymentArgs args) async {
     final selectedMethod = state.selectedMethod;
     if (selectedMethod == null) return;
 
     final request = PaymentCheckoutRequestEntity(
-      restaurantId: args.restaurantId,
       programId: args.summaryRequest.programId,
       bundleId: args.summaryRequest.bundleId,
       tier: args.summaryRequest.tier,
       durationDays: args.summaryRequest.durationDays,
-      startDate: _checkoutStartDate(args),
-      regionId: args.summary.address?.regionId ?? address?.regionId ?? '',
-      deliveryAddress:
-          args.summary.address?.formattedAddress ?? address?.addressLine ?? '',
+      startDate: args.summaryRequest.startDate,
       callbackUrl: 'mealmate://payment/success',
       errorUrl: 'mealmate://payment/error',
       includeFriday: args.summaryRequest.includeFriday,
@@ -143,6 +119,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
         isCheckoutLoading: true,
         clearCheckout: true,
         clearCheckoutFailure: true,
+        clearFulfillmentFailure: true,
+        clearCalendarFailure: true,
       ),
     );
 
@@ -167,15 +145,6 @@ class PaymentViewModel extends Cubit<PaymentState> {
     }
   }
 
-  CustomerAddressEntity? _defaultAddress(
-    List<CustomerAddressEntity> addresses,
-  ) {
-    for (final address in addresses) {
-      if (address.isDefault) return address;
-    }
-    return addresses.isEmpty ? null : addresses.first;
-  }
-
   Future<void> _verifyFulfillment(String subscriptionId) async {
     if (subscriptionId.isEmpty) return;
 
@@ -183,8 +152,11 @@ class PaymentViewModel extends Cubit<PaymentState> {
       state.copyWith(
         isFulfillmentLoading: true,
         isFulfillmentSuccess: false,
+        isCalendarLoading: false,
+        isCalendarSuccess: false,
         isPaymentFailed: false,
         clearFulfillmentFailure: true,
+        clearCalendarFailure: true,
       ),
     );
 
@@ -213,6 +185,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                 isFulfillmentLoading: false,
                 isFulfillmentSuccess: true,
                 isPaymentFailed: false,
+                paymentStatus: result.data,
                 clearFulfillmentFailure: true,
               ),
             );
@@ -225,6 +198,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                 isFulfillmentLoading: false,
                 isFulfillmentSuccess: false,
                 isPaymentFailed: true,
+                paymentStatus: result.data,
                 clearFulfillmentFailure: true,
               ),
             );
@@ -247,16 +221,66 @@ class PaymentViewModel extends Cubit<PaymentState> {
   }
 
   bool _isPaymentPaid(PaymentStatusEntity paymentStatus) {
-    return paymentStatus.isPaid ||
-        paymentStatus.paymentStatus.toLowerCase() == 'paid';
+    return paymentStatus.isPaid;
   }
 
   bool _isPaymentFailed(PaymentStatusEntity paymentStatus) {
-    final status = paymentStatus.paymentStatus.toLowerCase();
-    return paymentStatus.isFailed ||
-        status == 'failed' ||
-        status == 'canceled' ||
-        status == 'cancelled';
+    return paymentStatus.isFailed;
+  }
+
+  Future<void> _pollCalendar(String subscriptionId) async {
+    if (subscriptionId.isEmpty) return;
+
+    emit(
+      state.copyWith(
+        isCalendarLoading: true,
+        isCalendarSuccess: false,
+        clearCalendarFailure: true,
+      ),
+    );
+
+    for (final delay in const [
+      Duration.zero,
+      Duration(seconds: 2),
+      Duration(seconds: 4),
+      Duration(seconds: 8),
+      Duration(seconds: 8),
+      Duration(seconds: 8),
+      Duration(seconds: 10),
+      Duration(seconds: 10),
+      Duration(seconds: 10),
+    ]) {
+      if (delay != Duration.zero) {
+        await Future<void>.delayed(delay);
+      }
+
+      final result = await _getSubscriptionCalendarUseCase(subscriptionId);
+
+      switch (result) {
+        case ApiSuccessResult():
+          emit(
+            state.copyWith(
+              isCalendarLoading: false,
+              isCalendarSuccess: true,
+              clearCalendarFailure: true,
+            ),
+          );
+          return;
+        case ApiErrorResult():
+          if (delay == const Duration(seconds: 10)) {
+            emit(
+              state.copyWith(
+                isCalendarLoading: false,
+                calendarFailure: result.failure,
+              ),
+            );
+            return;
+          }
+          continue;
+      }
+    }
+
+    emit(state.copyWith(isCalendarLoading: false));
   }
 
   String _generateCorrelationId() {
@@ -274,12 +298,5 @@ class PaymentViewModel extends Cubit<PaymentState> {
         '${chars.substring(12, 16)}-'
         '${chars.substring(16, 20)}-'
         '${chars.substring(20)}';
-  }
-
-  String _checkoutStartDate(PaymentArgs args) {
-    if (args.summary.startDate.isNotEmpty) return args.summary.startDate;
-    return args.summary.serviceDates.isEmpty
-        ? ''
-        : args.summary.serviceDates.first;
   }
 }

@@ -10,6 +10,8 @@ class PaymentCheckoutResponseDto {
     this.familyGroupId,
     this.paymentUrl,
     this.holdExpiresAtUtc,
+    this.chosenStartDate,
+    this.startDate,
     this.finalPrice,
     this.priceSnapshotId,
     this.restaurantPoolSnapshotId,
@@ -21,6 +23,8 @@ class PaymentCheckoutResponseDto {
   final String? familyGroupId;
   final String? paymentUrl;
   final String? holdExpiresAtUtc;
+  final String? chosenStartDate;
+  final String? startDate;
   final double? finalPrice;
   final String? priceSnapshotId;
   final String? restaurantPoolSnapshotId;

@@ -39,14 +39,11 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
 extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
   PaymentCheckoutRequestDto toDto() {
     return PaymentCheckoutRequestDto(
-      restaurantId: restaurantId,
       programId: programId,
       bundleId: bundleId,
       tier: tier,
       durationDays: durationDays,
       startDate: startDate,
-      regionId: regionId,
-      deliveryAddress: deliveryAddress,
       callbackUrl: callbackUrl,
       errorUrl: errorUrl,
       includeFriday: includeFriday,
@@ -59,12 +56,15 @@ extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
 extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
   PaymentCheckoutEntity toEntity() {
     return PaymentCheckoutEntity(
-      subscriptionId: (subscriptionId?.isNotEmpty == true
+      subscriptionId:
+          (subscriptionId?.isNotEmpty == true
               ? subscriptionId
               : paymentAnchorSubscriptionId) ??
           '',
       paymentUrl: paymentUrl ?? '',
       holdExpiresAtUtc: holdExpiresAtUtc ?? '',
+      chosenStartDate: chosenStartDate ?? '',
+      startDate: startDate ?? '',
       finalPrice: finalPrice ?? 0,
       priceSnapshotId: priceSnapshotId ?? '',
       restaurantPoolSnapshotId: restaurantPoolSnapshotId ?? '',

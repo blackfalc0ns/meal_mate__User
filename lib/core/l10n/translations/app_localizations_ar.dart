@@ -943,6 +943,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addresses_area_hint => 'اختر المنطقة';
 
   @override
+  String get addresses_area_required => 'اختر المنطقة من القائمة.';
+
+  @override
   String get addresses_block_label => 'القطعة';
 
   @override
@@ -1858,6 +1861,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا يوجد مطعم يغطي عنوان التوصيل الحالي.';
 
   @override
+  String get subscription_no_restaurants_for_area => 'لا تتوفر مطاعم لمنطقتك.';
+
+  @override
+  String get subscription_change_address => 'تغيير العنوان';
+
+  @override
   String get subscription_summary_quality => 'مكونات عالية الجودة';
 
   @override
@@ -1865,6 +1874,178 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscription_summary_total_price_label => 'السعر الإجمالي';
+
+  @override
+  String get subscription_start_date_picker_label => 'يبدأ الاشتراك من';
+
+  @override
+  String get subscription_chosen_start_date_label => 'يوم البداية/الدفع';
+
+  @override
+  String get subscription_first_delivery_date_label => 'أول يوم توصيل';
+
+  @override
+  String get subscription_restaurant_repetition_label => 'تكرار المطعم';
+
+  @override
+  String subscription_restaurant_repetition_message(int limit) {
+    return 'يمكنك اختيار نفس المطعم حتى $limit يوم خلال الاشتراك.';
+  }
+
+  @override
+  String get subscription_payment_confirmation_title => 'تأكيد تواريخ الاشتراك';
+
+  @override
+  String get subscription_continue_to_payment => 'المتابعة للدفع';
+
+  @override
+  String get checkout_start_date_required => 'اختر تاريخ بداية الاشتراك.';
+
+  @override
+  String get checkout_start_date_invalid =>
+      'التاريخ المختار في الماضي. اختر تاريخًا آخر.';
+
+  @override
+  String get subscription_flow_profile_incomplete =>
+      'أكمل بيانات ملفك الشخصي قبل الدفع.';
+
+  @override
+  String get checkout_address_required => 'أضف عنوان توصيل قبل الدفع.';
+
+  @override
+  String get checkout_allergies_required => 'أكد تفضيلات الحساسية قبل الدفع.';
+
+  @override
+  String get checkout_dietary_preferences_required =>
+      'أكد التفضيلات الغذائية قبل الدفع.';
+
+  @override
+  String get checkout_existing_subscription => 'لديك اشتراك فردي نشط بالفعل.';
+
+  @override
+  String get checkout_restaurant_not_eligible =>
+      'هذا العنوان غير مغطى من المطاعم المختارة. غيّر العنوان أو المنطقة.';
+
+  @override
+  String get checkout_redirect_url_not_allowed =>
+      'رابط الرجوع من الدفع غير مسموح. حاول مرة أخرى لاحقًا.';
+
+  @override
+  String get family_restaurants_date_label => 'الإثنين 26 مايو';
+
+  @override
+  String get family_restaurants_search_hint => 'ابحث عن مطعم أو وجبة';
+
+  @override
+  String get family_restaurants_title_prefix => 'اختر المطاعم';
+
+  @override
+  String get family_restaurants_subtitle =>
+      'تم ترشيح هذه المطاعم بناءً على هدفك وتفضيلاتك';
+
+  @override
+  String get family_restaurants_summary_selected_meals_value => '4';
+
+  @override
+  String get family_restaurants_summary_selected_meals_total => '/2';
+
+  @override
+  String get family_restaurants_summary_selected_meals_label => 'مختارة';
+
+  @override
+  String get family_restaurants_summary_daily_meals_value => '4';
+
+  @override
+  String get family_restaurants_summary_daily_meals_label => 'وجبات يومياً';
+
+  @override
+  String get family_restaurants_summary_calories_value => '1500';
+
+  @override
+  String get family_restaurants_summary_calories_label => 'سعرة يومياً';
+
+  @override
+  String get family_restaurants_filter_balanced => 'متوازن';
+
+  @override
+  String get family_restaurants_filter_dinner => 'عشاء';
+
+  @override
+  String get family_restaurants_filter_lunch => 'غداء';
+
+  @override
+  String get family_restaurants_filter_breakfast => 'فطور';
+
+  @override
+  String get family_restaurants_filter_high_protein => 'عالي البروتين';
+
+  @override
+  String get family_restaurants_filter_all => 'الكل';
+
+  @override
+  String get family_restaurants_diet_house => 'دايت هاوس';
+
+  @override
+  String get family_restaurants_card_subtitle => 'وجبات دايت لذيذة ومتكاملة';
+
+  @override
+  String get family_restaurants_logo_diet_house_line1 => 'DIET';
+
+  @override
+  String get family_restaurants_logo_diet_house_line2 => 'HOUSE';
+
+  @override
+  String get family_restaurants_rating_diet_house => '4.7';
+
+  @override
+  String get family_restaurants_browse_meals => 'استعرض الوجبات';
+
+  @override
+  String get family_restaurants_healthy_bowl => 'هيلثي بول';
+
+  @override
+  String get family_restaurants_logo_healthy_bowl_line1 => 'HEALTHY';
+
+  @override
+  String get family_restaurants_logo_healthy_bowl_line2 => 'BOWL';
+
+  @override
+  String get family_restaurants_rating_healthy_bowl => '4.6';
+
+  @override
+  String get family_restaurants_protein_kitchen => 'بروتين كيتشن';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line1 => 'THE';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line2 => 'PROTEIN';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line3 => 'KITCHEN';
+
+  @override
+  String get family_restaurants_rating_protein_kitchen => '4.3';
+
+  @override
+  String get family_restaurants_salad_station => 'سلاد ستيشن';
+
+  @override
+  String get family_restaurants_logo_salad_station_line1 => 'SALAD';
+
+  @override
+  String get family_restaurants_logo_salad_station_line2 => 'STATION';
+
+  @override
+  String get family_restaurants_rating_salad_station => '4.6';
+
+  @override
+  String get family_restaurants_assurance_title =>
+      'كل التوصيات تراعي تفضيلاتك وحساسياتك';
+
+  @override
+  String get family_restaurants_assurance_subtitle =>
+      'اختر من بين هذه المطاعم مطمئناً، جميع الوجبات مناسبة لك وتدعم هدفك الصحي';
 
   @override
   String get family_details_title => 'تفاصيل الباقة العائلية';
@@ -3618,4 +3799,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_packages_empty => 'لا توجد باقات عائلية متاحة حالياً';
+
+  @override
+  String get family_restaurants_member_ahmed => 'أحمد';
+
+  @override
+  String family_restaurants_title(String memberName) {
+    return 'مطاعم $memberName';
+  }
+
+  @override
+  String family_restaurants_suitable_title(String memberName) {
+    return 'مطاعم مناسبة لـ$memberName';
+  }
 }

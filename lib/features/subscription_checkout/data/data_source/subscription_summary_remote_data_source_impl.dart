@@ -22,6 +22,7 @@ class SubscriptionSummaryRemoteDataSourceImpl
       request.tier,
       request.bundleId,
       request.programId,
+      request.startDate,
     );
   }
 

@@ -1856,6 +1856,12 @@ abstract class AppLocalizations {
   /// **'Choose area'**
   String get addresses_area_hint;
 
+  /// No description provided for @addresses_area_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose an area from the list.'**
+  String get addresses_area_required;
+
   /// No description provided for @addresses_block_label.
   ///
   /// In en, this message translates to:
@@ -3602,6 +3608,18 @@ abstract class AppLocalizations {
   /// **'No restaurants currently cover this delivery address.'**
   String get subscription_summary_no_restaurants_for_address;
 
+  /// No description provided for @subscription_no_restaurants_for_area.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants are available for your area.'**
+  String get subscription_no_restaurants_for_area;
+
+  /// No description provided for @subscription_change_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Change address'**
+  String get subscription_change_address;
+
   /// No description provided for @subscription_summary_quality.
   ///
   /// In en, this message translates to:
@@ -3619,6 +3637,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total price'**
   String get subscription_summary_total_price_label;
+
+  /// No description provided for @subscription_start_date_picker_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription starts from'**
+  String get subscription_start_date_picker_label;
+
+  /// No description provided for @subscription_chosen_start_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Start/payment day'**
+  String get subscription_chosen_start_date_label;
+
+  /// No description provided for @subscription_first_delivery_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'First delivery day'**
+  String get subscription_first_delivery_date_label;
+
+  /// No description provided for @subscription_restaurant_repetition_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant repetition'**
+  String get subscription_restaurant_repetition_label;
+
+  /// No description provided for @subscription_restaurant_repetition_message.
+  ///
+  /// In en, this message translates to:
+  /// **'You can choose the same restaurant for up to {limit} days during the subscription.'**
+  String subscription_restaurant_repetition_message(int limit);
+
+  /// No description provided for @subscription_payment_confirmation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm subscription dates'**
+  String get subscription_payment_confirmation_title;
+
+  /// No description provided for @subscription_continue_to_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to payment'**
+  String get subscription_continue_to_payment;
+
+  /// No description provided for @checkout_start_date_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a subscription start date.'**
+  String get checkout_start_date_required;
+
+  /// No description provided for @checkout_start_date_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected date is in the past. Please choose another date.'**
+  String get checkout_start_date_invalid;
+
+  /// No description provided for @subscription_flow_profile_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete your profile before checkout.'**
+  String get subscription_flow_profile_incomplete;
+
+  /// No description provided for @checkout_address_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add a delivery address before checkout.'**
+  String get checkout_address_required;
+
+  /// No description provided for @checkout_allergies_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your allergy preferences before checkout.'**
+  String get checkout_allergies_required;
+
+  /// No description provided for @checkout_dietary_preferences_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your dietary preferences before checkout.'**
+  String get checkout_dietary_preferences_required;
+
+  /// No description provided for @checkout_existing_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have an active individual subscription.'**
+  String get checkout_existing_subscription;
+
+  /// No description provided for @checkout_restaurant_not_eligible.
+  ///
+  /// In en, this message translates to:
+  /// **'This address is not covered by the selected restaurants. Please change your address or area.'**
+  String get checkout_restaurant_not_eligible;
+
+  /// No description provided for @checkout_redirect_url_not_allowed.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment return link is not allowed. Please try again later.'**
+  String get checkout_redirect_url_not_allowed;
+
+  /// No description provided for @family_restaurants_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday, May 26'**
+  String get family_restaurants_date_label;
+
+  /// No description provided for @family_restaurants_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a restaurant or meal'**
+  String get family_restaurants_search_hint;
+
+  /// No description provided for @family_restaurants_title_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose restaurants'**
+  String get family_restaurants_title_prefix;
+
+  /// No description provided for @family_restaurants_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'These restaurants were recommended based on your goal and preferences'**
+  String get family_restaurants_subtitle;
+
+  /// No description provided for @family_restaurants_summary_selected_meals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'4'**
+  String get family_restaurants_summary_selected_meals_value;
+
+  /// No description provided for @family_restaurants_summary_selected_meals_total.
+  ///
+  /// In en, this message translates to:
+  /// **'/2'**
+  String get family_restaurants_summary_selected_meals_total;
+
+  /// No description provided for @family_restaurants_summary_selected_meals_label.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get family_restaurants_summary_selected_meals_label;
+
+  /// No description provided for @family_restaurants_summary_daily_meals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'4'**
+  String get family_restaurants_summary_daily_meals_value;
+
+  /// No description provided for @family_restaurants_summary_daily_meals_label.
+  ///
+  /// In en, this message translates to:
+  /// **'daily meals'**
+  String get family_restaurants_summary_daily_meals_label;
+
+  /// No description provided for @family_restaurants_summary_calories_value.
+  ///
+  /// In en, this message translates to:
+  /// **'1500'**
+  String get family_restaurants_summary_calories_value;
+
+  /// No description provided for @family_restaurants_summary_calories_label.
+  ///
+  /// In en, this message translates to:
+  /// **'calories daily'**
+  String get family_restaurants_summary_calories_label;
+
+  /// No description provided for @family_restaurants_filter_balanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get family_restaurants_filter_balanced;
+
+  /// No description provided for @family_restaurants_filter_dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get family_restaurants_filter_dinner;
+
+  /// No description provided for @family_restaurants_filter_lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get family_restaurants_filter_lunch;
+
+  /// No description provided for @family_restaurants_filter_breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get family_restaurants_filter_breakfast;
+
+  /// No description provided for @family_restaurants_filter_high_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'High protein'**
+  String get family_restaurants_filter_high_protein;
+
+  /// No description provided for @family_restaurants_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get family_restaurants_filter_all;
+
+  /// No description provided for @family_restaurants_diet_house.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet House'**
+  String get family_restaurants_diet_house;
+
+  /// No description provided for @family_restaurants_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delicious and complete diet meals'**
+  String get family_restaurants_card_subtitle;
+
+  /// No description provided for @family_restaurants_logo_diet_house_line1.
+  ///
+  /// In en, this message translates to:
+  /// **'DIET'**
+  String get family_restaurants_logo_diet_house_line1;
+
+  /// No description provided for @family_restaurants_logo_diet_house_line2.
+  ///
+  /// In en, this message translates to:
+  /// **'HOUSE'**
+  String get family_restaurants_logo_diet_house_line2;
+
+  /// No description provided for @family_restaurants_rating_diet_house.
+  ///
+  /// In en, this message translates to:
+  /// **'4.7'**
+  String get family_restaurants_rating_diet_house;
+
+  /// No description provided for @family_restaurants_browse_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse meals'**
+  String get family_restaurants_browse_meals;
+
+  /// No description provided for @family_restaurants_healthy_bowl.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy Bowl'**
+  String get family_restaurants_healthy_bowl;
+
+  /// No description provided for @family_restaurants_logo_healthy_bowl_line1.
+  ///
+  /// In en, this message translates to:
+  /// **'HEALTHY'**
+  String get family_restaurants_logo_healthy_bowl_line1;
+
+  /// No description provided for @family_restaurants_logo_healthy_bowl_line2.
+  ///
+  /// In en, this message translates to:
+  /// **'BOWL'**
+  String get family_restaurants_logo_healthy_bowl_line2;
+
+  /// No description provided for @family_restaurants_rating_healthy_bowl.
+  ///
+  /// In en, this message translates to:
+  /// **'4.6'**
+  String get family_restaurants_rating_healthy_bowl;
+
+  /// No description provided for @family_restaurants_protein_kitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein Kitchen'**
+  String get family_restaurants_protein_kitchen;
+
+  /// No description provided for @family_restaurants_logo_protein_kitchen_line1.
+  ///
+  /// In en, this message translates to:
+  /// **'THE'**
+  String get family_restaurants_logo_protein_kitchen_line1;
+
+  /// No description provided for @family_restaurants_logo_protein_kitchen_line2.
+  ///
+  /// In en, this message translates to:
+  /// **'PROTEIN'**
+  String get family_restaurants_logo_protein_kitchen_line2;
+
+  /// No description provided for @family_restaurants_logo_protein_kitchen_line3.
+  ///
+  /// In en, this message translates to:
+  /// **'KITCHEN'**
+  String get family_restaurants_logo_protein_kitchen_line3;
+
+  /// No description provided for @family_restaurants_rating_protein_kitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'4.3'**
+  String get family_restaurants_rating_protein_kitchen;
+
+  /// No description provided for @family_restaurants_salad_station.
+  ///
+  /// In en, this message translates to:
+  /// **'Salad Station'**
+  String get family_restaurants_salad_station;
+
+  /// No description provided for @family_restaurants_logo_salad_station_line1.
+  ///
+  /// In en, this message translates to:
+  /// **'SALAD'**
+  String get family_restaurants_logo_salad_station_line1;
+
+  /// No description provided for @family_restaurants_logo_salad_station_line2.
+  ///
+  /// In en, this message translates to:
+  /// **'STATION'**
+  String get family_restaurants_logo_salad_station_line2;
+
+  /// No description provided for @family_restaurants_rating_salad_station.
+  ///
+  /// In en, this message translates to:
+  /// **'4.6'**
+  String get family_restaurants_rating_salad_station;
+
+  /// No description provided for @family_restaurants_assurance_title.
+  ///
+  /// In en, this message translates to:
+  /// **'All recommendations respect your preferences and allergies'**
+  String get family_restaurants_assurance_title;
+
+  /// No description provided for @family_restaurants_assurance_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose confidently. All meals are suitable and support your health goal'**
+  String get family_restaurants_assurance_subtitle;
 
   /// No description provided for @family_details_title.
   ///
@@ -6991,6 +7333,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No family packages available at the moment'**
   String get family_packages_empty;
+
+  /// No description provided for @family_restaurants_member_ahmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed'**
+  String get family_restaurants_member_ahmed;
+
+  /// No description provided for @family_restaurants_title.
+  ///
+  /// In en, this message translates to:
+  /// **'{memberName}\'s restaurants'**
+  String family_restaurants_title(String memberName);
+
+  /// No description provided for @family_restaurants_suitable_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants suitable for {memberName}'**
+  String family_restaurants_suitable_title(String memberName);
 }
 
 class _AppLocalizationsDelegate

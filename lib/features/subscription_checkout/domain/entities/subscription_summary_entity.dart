@@ -20,9 +20,11 @@ class SubscriptionSummaryEntity {
     required this.tierNameAr,
     required this.tierNameEn,
     required this.durationDays,
+    required this.chosenStartDate,
     required this.startDate,
     required this.endDate,
     required this.serviceDates,
+    this.restaurantRepetition,
     required this.slotRequirements,
     required this.basePrice,
     required this.campaignDiscount,
@@ -59,9 +61,11 @@ class SubscriptionSummaryEntity {
   final String tierNameAr;
   final String tierNameEn;
   final int durationDays;
+  final String chosenStartDate;
   final String startDate;
   final String endDate;
   final List<String> serviceDates;
+  final SubscriptionSummaryRestaurantRepetitionEntity? restaurantRepetition;
   final List<SubscriptionSummarySlotRequirementEntity> slotRequirements;
   final double basePrice;
   final double campaignDiscount;
@@ -126,9 +130,9 @@ class SubscriptionSummaryEntity {
       duration: '$durationDays $dayLabel',
       mealsPerDay: slotRequirements.isNotEmpty
           ? slotRequirements
-              .where((r) => r.count > 0)
-              .map((r) => '${r.count} ${r.name(localeName)}')
-              .join(' + ')
+                .where((r) => r.count > 0)
+                .map((r) => '${r.count} ${r.name(localeName)}')
+                .join(' + ')
           : initialPlan.mealsPerDay,
       discountLabel: tierName(localeName),
       subscribeLabel: initialPlan.subscribeLabel,
@@ -138,9 +142,11 @@ class SubscriptionSummaryEntity {
       description: initialPlan.description,
       features: includesList.isNotEmpty
           ? includesList
-              .map((text) =>
-                  MonthlyPlanFeatureEntity(title: text, iconName: 'check'))
-              .toList()
+                .map(
+                  (text) =>
+                      MonthlyPlanFeatureEntity(title: text, iconName: 'check'),
+                )
+                .toList()
           : initialPlan.features,
       packageTiers: [
         MonthlyPackageTierEntity(
@@ -180,6 +186,18 @@ class SubscriptionSummaryEntity {
       meals: initialPlan.meals,
     );
   }
+}
+
+class SubscriptionSummaryRestaurantRepetitionEntity {
+  const SubscriptionSummaryRestaurantRepetitionEntity({
+    required this.limit,
+    required this.restaurantCount,
+    required this.durationDays,
+  });
+
+  final int limit;
+  final int restaurantCount;
+  final int durationDays;
 }
 
 class SubscriptionSummaryAddressEntity {

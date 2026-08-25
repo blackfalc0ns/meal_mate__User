@@ -161,13 +161,21 @@ extension FoodPreferencesEntityMapper on FoodPreferencesEntity {
 extension FoodPreferencesAllergiesEntityMapper
     on List<FoodPreferenceItemEntity> {
   FoodPreferencesAllergiesRequestDto toAllergiesDto() {
+    final selectedAllergies = where(
+      (item) => item.code != FoodPreferenceItemEntity.noneCode,
+    ).toList();
+
     return FoodPreferencesAllergiesRequestDto(
-      allergies: map(
-        (item) => FoodPreferencesAllergyRequestDto(
-          code: item.code,
-          severity: item.severity,
-        ),
-      ).toList(),
+      allergies: selectedAllergies
+          .map(
+            (item) => FoodPreferencesAllergyRequestDto(
+              code: item.code,
+              severity: item.severity,
+            ),
+          )
+          .toList(),
+      confirmed: true,
+      noneSelected: selectedAllergies.isEmpty,
     );
   }
 }
@@ -182,13 +190,21 @@ extension FoodPreferencesDislikedIngredientsEntityMapper
 
   FoodPreferencesDietaryRequestDto toDietaryDto() {
     final fallbackDietaryPattern = dietaryPattern;
+    final selectedCodes = dietaryPreferences
+        .map((item) => item.code)
+        .where((code) => code != FoodPreferenceItemEntity.noneCode)
+        .toList();
+    final dietaryPreferenceCodes = selectedCodes.isEmpty
+        ? fallbackDietaryPattern == null ||
+                  fallbackDietaryPattern == FoodPreferenceItemEntity.noneCode
+              ? const <String>[]
+              : [fallbackDietaryPattern]
+        : selectedCodes;
 
     return FoodPreferencesDietaryRequestDto(
-      dietaryPreferenceCodes: dietaryPreferences.isEmpty
-          ? fallbackDietaryPattern == null
-                ? const []
-                : [fallbackDietaryPattern]
-          : dietaryPreferences.map((item) => item.code).toList(),
+      dietaryPreferenceCodes: dietaryPreferenceCodes,
+      confirmed: true,
+      noneSelected: dietaryPreferenceCodes.isEmpty,
     );
   }
 }

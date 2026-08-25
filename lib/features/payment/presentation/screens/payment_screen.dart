@@ -16,6 +16,7 @@ import 'package:meal_meat_user/features/payment/presentation/manager/payment_vie
 import 'package:meal_meat_user/features/payment/presentation/widgets/payment_footer.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/payment_loading_skeleton.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/payment_method_selector.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key, this.args});
@@ -43,13 +44,24 @@ class PaymentScreen extends StatelessWidget {
           getIt<PaymentViewModel>()..doIntent(LoadPaymentEvent(paymentArgs)),
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
-            previous.checkout != current.checkout,
-        listener: (context, state) {
+            previous.checkout != current.checkout ||
+            previous.checkoutFailure != current.checkoutFailure,
+        listener: (context, state) async {
           final checkout = state.checkout;
           if (checkout != null && checkout.paymentUrl.isNotEmpty) {
             Navigator.of(context).pushNamed(
               AppRoutes.paymentWebView,
               arguments: PaymentWebViewArgs(checkout: checkout),
+            );
+            return;
+          }
+
+          final checkoutFailure = state.checkoutFailure;
+          if (checkoutFailure != null) {
+            await _handleCheckoutFailure(
+              context,
+              paymentArgs,
+              checkoutFailure.code,
             );
           }
         },
@@ -60,7 +72,9 @@ class PaymentScreen extends StatelessWidget {
             bottomNavigationBar: PaymentFooter(
               totalAmount: paymentArgs.summary.finalPrice,
               isLoading: state.isCheckoutLoading,
-              onPayNow: () => _handlePayNow(context, paymentArgs, state),
+              onPayNow: _canPayNow(state)
+                  ? () => _handlePayNow(context, paymentArgs, state)
+                  : null,
             ),
           );
         },
@@ -145,10 +159,7 @@ class PaymentScreen extends StatelessWidget {
                     onRetry: state.isCheckoutLoading
                         ? null
                         : () => context.read<PaymentViewModel>().doIntent(
-                            CheckoutPaymentEvent(
-                              args: paymentArgs,
-                              address: state.defaultAddress,
-                            ),
+                            CheckoutPaymentEvent(paymentArgs),
                           ),
                   ),
                 ),
@@ -167,8 +178,44 @@ class PaymentScreen extends StatelessWidget {
   ) {
     if (state.isCheckoutLoading) return;
 
-    context.read<PaymentViewModel>().doIntent(
-      CheckoutPaymentEvent(args: args, address: state.defaultAddress),
+    context.read<PaymentViewModel>().doIntent(CheckoutPaymentEvent(args));
+  }
+
+  bool _canPayNow(PaymentState state) {
+    if (state.checkoutFailure?.code == 'checkout.existing_subscription') {
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> _handleCheckoutFailure(
+    BuildContext context,
+    PaymentArgs args,
+    String code,
+  ) async {
+    final route = switch (code) {
+      'checkout.address_required' => AppRoutes.addressChooseLocation,
+      'checkout.allergies_required' => AppRoutes.addAllergy,
+      'checkout.dietary_preferences_required' => AppRoutes.dietaryPreferences,
+      'restaurant.not_eligible' => AppRoutes.addressChooseLocation,
+      'subscription_flow.no_restaurants_for_address' =>
+        AppRoutes.addressChooseLocation,
+      'checkout.no_restaurants_for_address' => AppRoutes.addressChooseLocation,
+      _ => null,
+    };
+
+    if (route == null) {
+      return;
+    }
+
+    final updated = await Navigator.of(context).pushNamed(
+      route,
+      arguments: SubscriptionFlowArgs(request: args.summaryRequest),
     );
+
+    if (updated == true && context.mounted) {
+      context.read<PaymentViewModel>().doIntent(CheckoutPaymentEvent(args));
+    }
   }
 }

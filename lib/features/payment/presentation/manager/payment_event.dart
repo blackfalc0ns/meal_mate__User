@@ -1,4 +1,3 @@
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
@@ -19,14 +18,19 @@ class SelectPaymentMethodEvent extends PaymentEvent {
 }
 
 class CheckoutPaymentEvent extends PaymentEvent {
-  const CheckoutPaymentEvent({required this.args, required this.address});
+  const CheckoutPaymentEvent(this.args);
 
   final PaymentArgs args;
-  final CustomerAddressEntity? address;
 }
 
 class VerifyPaymentFulfillmentEvent extends PaymentEvent {
   const VerifyPaymentFulfillmentEvent(this.subscriptionId);
+
+  final String subscriptionId;
+}
+
+class PollSubscriptionCalendarEvent extends PaymentEvent {
+  const PollSubscriptionCalendarEvent(this.subscriptionId);
 
   final String subscriptionId;
 }

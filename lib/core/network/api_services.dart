@@ -274,6 +274,7 @@ abstract class ApiServices {
     @Query('tier') String tier,
     @Query('bundleId') String bundleId,
     @Query('programId') String programId,
+    @Query('startDate') String startDate,
   );
 
   @GET(EndPoints.subscriptionReadiness)

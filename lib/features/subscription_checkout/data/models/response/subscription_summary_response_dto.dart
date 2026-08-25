@@ -21,9 +21,11 @@ class SubscriptionSummaryResponseDto {
     this.tierNameAr,
     this.tierNameEn,
     this.durationDays,
+    this.chosenStartDate,
     this.startDate,
     this.endDate,
     this.serviceDates,
+    this.restaurantRepetition,
     this.slotRequirements,
     this.basePrice,
     this.campaignDiscount,
@@ -60,9 +62,12 @@ class SubscriptionSummaryResponseDto {
   final String? tierNameAr;
   final String? tierNameEn;
   final int? durationDays;
+  final String? chosenStartDate;
   final String? startDate;
   final String? endDate;
   final List<String>? serviceDates;
+  final SubscriptionSummaryRestaurantRepetitionResponseDto?
+  restaurantRepetition;
   final List<SubscriptionSummarySlotRequirementResponseDto>? slotRequirements;
   final double? basePrice;
   final double? campaignDiscount;
@@ -84,6 +89,23 @@ class SubscriptionSummaryResponseDto {
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionSummaryRestaurantRepetitionResponseDto {
+  const SubscriptionSummaryRestaurantRepetitionResponseDto({
+    this.limit,
+    this.restaurantCount,
+    this.durationDays,
+  });
+
+  final int? limit;
+  final int? restaurantCount;
+  final int? durationDays;
+
+  factory SubscriptionSummaryRestaurantRepetitionResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionSummaryRestaurantRepetitionResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

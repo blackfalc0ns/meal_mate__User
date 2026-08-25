@@ -50,6 +50,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
@@ -150,6 +151,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyDayMealsScreen(),
+        );
+      case AppRoutes.familyRestaurants:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyRestaurantsScreen(),
         );
       case AppRoutes.familyMemberPermissions:
         return _buildRoute(

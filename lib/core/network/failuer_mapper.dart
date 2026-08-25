@@ -78,6 +78,26 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.location_permission_denied;
     case 'location_permission_denied_forever':
       return locale.location_permission_denied_forever;
+    case 'checkout.start_date_required':
+      return locale.checkout_start_date_required;
+    case 'checkout.start_date_invalid':
+      return locale.checkout_start_date_invalid;
+    case 'subscription_flow.profile_incomplete':
+      return locale.subscription_flow_profile_incomplete;
+    case 'checkout.address_required':
+      return locale.checkout_address_required;
+    case 'checkout.allergies_required':
+      return locale.checkout_allergies_required;
+    case 'checkout.dietary_preferences_required':
+      return locale.checkout_dietary_preferences_required;
+    case 'checkout.existing_subscription':
+      return locale.checkout_existing_subscription;
+    case 'restaurant.not_eligible':
+    case 'subscription_flow.no_restaurants_for_address':
+    case 'checkout.no_restaurants_for_address':
+      return locale.checkout_restaurant_not_eligible;
+    case 'checkout.redirect_url_not_allowed':
+      return locale.checkout_redirect_url_not_allowed;
     case 'error_server':
       return locale.error_server;
     default:

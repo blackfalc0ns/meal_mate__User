@@ -2,16 +2,17 @@
 
 ## General
 
-* Follow the existing project architecture.
-* Modify only the requested files.
-* Do not create unnecessary files or folders.
-* Reuse existing widgets before creating new ones.
-* Do not change the project structure unless explicitly requested.
-* Do not add new packages unless explicitly requested.
+- Follow the existing project architecture.
+- Modify only the requested files.
+- Do not create unnecessary files or folders.
+- Reuse existing widgets before creating new ones.
+- Do not change the project structure unless explicitly requested.
+- Do not add new packages unless explicitly requested.
+- Do not add business logic when only UI implementation is requested.
 
-## Context
+## Build Context
 
-At the beginning of every `build` method, always declare:
+At the beginning of every `build` method, declare:
 
 ```dart
 final color = context.colorScheme;
@@ -20,19 +21,26 @@ final locale = context.localization;
 
 Use these variables throughout the widget.
 
+Do not declare either variable when it is genuinely unused in that specific `build` method. Never keep unused variables only to satisfy a convention.
+
 ## Colors
 
-* Always use `color`.
-❌ Avoid
-* Never use `Colors.*` or `Color(...)`.
-* Never hardcode colors.
-* Never AppColors.
+- Always obtain UI colors from `color`.
+- Never use `Colors.*`.
+- Never use `Color(...)` or hexadecimal color literals inside UI files.
+- Never hardcode colors.
+- Never use `AppColors` directly inside widgets.
+- If a required semantic color is missing, report that a new theme color is required instead of inventing or hardcoding one.
 
 ## Localization
 
-* Always use `locale`.
-* Never hardcode user-facing text.
-* If a localization key is missing, mention that a new key is required instead of hardcoding text.
+- Always obtain user-facing text from `locale`.
+- Never hardcode user-facing text.
+- If a localization key is missing, report that a new localization key is required instead of hardcoding a fallback.
+- The implementation must support every locale configured in the application, not only Arabic and English.
+- Never write locale checks such as `languageCode == 'ar'` to control layout direction.
+- Never maintain manual lists of RTL or LTR languages.
+- Layout direction must come from Flutter's inherited `Directionality` and the application's localization configuration.
 
 ## Text Styles
 
@@ -42,9 +50,10 @@ Always use the existing styles from:
 lib/config/theme/styles_manager.dart
 ```
 
-* Never create a new `TextStyle`.
-* Use `copyWith()` only when needed.
-* If a required style is missing, add it to `styles_manager.dart`.
+- Never create a new `TextStyle` directly inside a widget.
+- Use `copyWith()` only when the design requires a supported variation.
+- Do not use `copyWith()` to recreate a style that should already exist in the style manager.
+- If a required style is missing, add it to `styles_manager.dart` only when that file is within the requested scope. Otherwise, stop and report the missing style.
 
 ## Spacing
 
@@ -53,27 +62,31 @@ Always use spacing values from:
 ```text
 lib/config/theme/spacing.dart
 ```
+
+- Never hardcode spacing values.
+- Use existing spacing constants for `Padding`, `SizedBox`, `Gap`, margins, and `EdgeInsets`.
+- Do not introduce a new spacing constant unless the exact value is confirmed from Figma and no existing constant matches it.
+
 ## EdgeInsets
 
-* Prefer `EdgeInsets.symmetric()` whenever possible.
-* Use `EdgeInsetsDirectional.only()` when the padding is related to `start` or `end`.
-* Use `EdgeInsets.only()` only when the padding must remain physically fixed to `top`, `bottom`, `left`, or `right` in both RTL and LTR.
-* Use `EdgeInsets.all()` when all sides have the same value.
-* Avoid `EdgeInsets.fromLTRB()` unless it is the only correct option for the design.
-* Keep padding values consistent by using the spacing constants from:
+- Use `EdgeInsets.symmetric()` when opposite sides have equal values.
+- Use `EdgeInsetsDirectional.only()` when spacing is related to `start` or `end`.
+- Use `EdgeInsets.only()` only when spacing is physically fixed to `top`, `bottom`, `left`, or `right` in both LTR and RTL.
+- Use `EdgeInsets.all()` when all sides have the same value.
+- Avoid `EdgeInsets.fromLTRB()` unless it is the only correct representation of the Figma design.
+- Keep every padding value consistent with `lib/config/theme/spacing.dart`.
 
-```text
-lib/config/theme/spacing.dart
-```
-
-Examples:
-
-✅ Preferred
+Preferred:
 
 ```dart
 EdgeInsets.symmetric(
   horizontal: Spacing.md,
   vertical: Spacing.sm,
+)
+
+EdgeInsetsDirectional.only(
+  start: Spacing.md,
+  end: Spacing.sm,
 )
 
 EdgeInsets.only(
@@ -84,7 +97,7 @@ EdgeInsets.only(
 EdgeInsets.all(Spacing.md)
 ```
 
-❌ Avoid
+Avoid:
 
 ```dart
 EdgeInsets.fromLTRB(
@@ -95,180 +108,203 @@ EdgeInsets.fromLTRB(
 )
 ```
 
-
-* Never hardcode spacing values.
-* Use the existing spacing constants for `Padding`, `SizedBox`, `Gap`, and `EdgeInsets`.
-
 ## Widget Files
 
-* Every custom widget must be placed in its own separate file.
-* Keep exactly one widget class per file.
-* This rule applies to both public and private widgets.
-* Never create private widgets inside another widget file.
-* Never create widgets such as `_Header`, `_Card`, `_Item`, `_Tile`, `_Button`, `_Logo`, or `_MetaChip` inside another widget file.
-* Even if a widget is used only once, it must still be placed in its own file.
-* Place widgets inside the appropriate `widgets/` folder for the current feature.
-* The parent screen or parent widget file should only compose and organize child widgets.
-* Reuse existing widgets before creating new ones.
-* Do not duplicate existing widgets.
+- Every custom widget must be placed in its own separate file.
+- Keep exactly one widget class per file.
+- This rule applies to public and private widgets.
+- Never create private widget classes such as `_Header`, `_Card`, `_Item`, `_Tile`, `_Button`, `_Logo`, or `_MetaChip` inside another widget file.
+- Even if a widget is used only once, place it in its own file.
+- Place feature-specific widgets inside the appropriate `widgets/` folder.
+- The parent screen or parent widget should only compose and organize child widgets.
+- Reuse existing widgets before creating new widgets.
+- Do not duplicate an existing widget.
+- Do not extract simple layout fragments into separate widgets unless they are actual custom UI components. Normal Flutter widgets such as `Row`, `Column`, `Padding`, `Expanded`, `Flexible`, `Spacer`, and `Wrap` may be composed directly in the parent.
+
+## Row and Column
+
+- Use `Row` and `Column` normally when they are the simplest correct implementation.
+- Do not replace a straightforward `Row` or `Column` with `Stack`, `Wrap`, `LayoutBuilder`, `CustomMultiChildLayout`, or another complex layout without a real design requirement.
+- Use `Expanded`, `Flexible`, and `Spacer` only when they express the required layout behavior.
+- Do not add `Expanded` or `Flexible` automatically when the child does not need to share or constrain available space.
+- Do not reverse `Row.children` manually for any language.
+- Do not change `mainAxisAlignment` or child order based on a locale code.
+- Allow Flutter's inherited text direction and directional properties to handle locale direction.
+
+## Constraints and Sizing
+
+- Do not use `ConstrainedBox`, `BoxConstraints`, `SizedBox` with fixed dimensions, or `LayoutBuilder` without a demonstrated layout requirement.
+- Do not add constraints defensively or only to silence an overflow without understanding its cause.
+- Prefer natural child sizing and standard `Row`/`Column` layout.
+- Use `Expanded`, `Flexible`, or `Wrap` when content should adapt to available space.
+- Fixed width or height is allowed only when Figma explicitly defines it or the component requires it, such as an icon, avatar, or fixed control.
+- Never guess `minWidth`, `maxWidth`, `minHeight`, or `maxHeight` values.
+- Avoid deeply nested sizing widgets that do not change the final layout.
 
 ## Responsive UI
 
-* Build responsive layouts.
-* Avoid fixed widths and heights unless required.
-* Use `Expanded`, `Flexible`, `Spacer`, `Wrap`, `LayoutBuilder`, and `MediaQuery` when appropriate.
+- Build responsive layouts that preserve the Figma design across supported screen sizes.
+- Avoid fixed screen-level widths and heights unless Figma explicitly requires them.
+- Prefer `Row`, `Column`, `Expanded`, `Flexible`, `Spacer`, and `Wrap` for normal responsive composition.
+- Use `LayoutBuilder` only when the layout must react to the parent's actual constraints.
+- Use `MediaQuery.sizeOf(context)` only when the layout genuinely depends on the screen size.
+- Do not read the complete `MediaQuery.of(context)` object when only size or padding is needed.
+- Do not introduce arbitrary breakpoints. Use only existing project breakpoints or exact breakpoints defined by the design.
 
-## UI Rules
+## RTL and LTR
 
-- The Figma design is the single source of truth.
-- Never redesign or improve the UI unless I explicitly ask.
-- If you cannot complete a task, stop and ask me before continuing.
-- Never guess values.
-- Never swap left and right manually.
+The application supports multiple languages. Direction must never be inferred from a specific language.
 
-## RTL / LTR Rules
+- Use the direction supplied by `Directionality.of(context)` when direction must be inspected.
+- Prefer directional Flutter APIs such as:
+  - `EdgeInsetsDirectional`
+  - `AlignmentDirectional`
+  - `BorderRadiusDirectional`
+  - `PositionedDirectional`
+  - `TextAlign.start`
+  - `TextAlign.end`
+- Use `start` and `end` for logical placement.
+- Use physical `left` and `right` only when the Figma design requires the element to remain on the same physical side in every text direction.
+- Never check the language code to decide RTL or LTR.
+- Never force `TextDirection` unless explicitly requested by the design or required for isolated content with a known direction.
+- Never reverse a `Row`, list, or collection manually based on locale.
+- Never mirror assets manually unless Figma explicitly specifies that the asset itself must mirror.
+- The same implementation must work with all configured RTL and LTR locales.
+- Judge the final rendered result in both directions. Directional APIs are preferred, but the final rendering must remain faithful to Figma.
 
-The application supports both RTL and LTR.
+## Rebuild Performance
 
-- Arabic → RTL.
-- English → LTR.
+- Use `const` constructors and `const` widget instances whenever all arguments are compile-time constants.
+- Keep state as close as possible to the smallest widget that needs it.
+- Do not call `setState()` for values that have not changed.
+- Do not rebuild an entire screen when only a small section depends on changing state.
+- With Bloc/Cubit, use existing `BlocSelector`, `buildWhen`, or equivalent project patterns to rebuild only the affected UI.
+- With other state-management solutions, use the project's existing selective-listening mechanism rather than watching the entire state unnecessarily.
+- Do not introduce a new state-management approach.
+- Do not perform calculations, sorting, filtering, parsing, object creation, or data transformation repeatedly inside `build` when the result can be prepared outside it safely.
+- Do not create controllers, focus nodes, animations, streams, futures, keys, or notifiers inside `build`.
+- Dispose of owned controllers, focus nodes, animations, and listeners correctly.
+- Avoid unnecessary wrapper widgets that do not affect layout, semantics, styling, or behavior.
+- Do not use performance optimizations blindly. Apply them only when they preserve correctness and follow the existing architecture.
 
-Always use Flutter directional widgets:
-- EdgeInsetsDirectional
-- AlignmentDirectional
-- BorderRadiusDirectional
-- PositionedDirectional
+## UI Implementation Rules
 
-Respect Directionality.of(context).
-
-Never hardcode left/right.
-Never mirror the UI manually.
-The same code must work correctly for both Arabic and English.
-Never think in terms of "left/right code".
-Think in terms of the final rendered result.
-
-The rendered UI must match the Figma exactly.
-If using Directional APIs would place an element on the opposite side, use the correct implementation that preserves the visual position.
+- Figma is the single source of truth.
+- Never redesign, improve, simplify, or reinterpret the UI unless explicitly requested.
+- Never add behavior or business logic that is not shown or requested.
+- Never swap physical sides manually.
+- Never guess any design value.
+- If a required detail cannot be verified, stop and ask for the missing information before implementing that part.
 
 ## Code Quality
 
-* Use `const` whenever possible.
-* Keep widgets small and readable.
-* Remove unused imports.
-* Remove unused variables.
-* Remove unused methods.
-* Do not add unnecessary comments.
-* Do not add placeholder or dummy code.
-* Do not create helper methods that have no functional purpose.
-* Do not add new packages unless requested.
+- Use `const` whenever possible.
+- Keep widgets small and readable.
+- Remove unused imports.
+- Remove unused variables.
+- Remove unused methods.
+- Remove unused classes.
+- Do not add unnecessary comments.
+- Do not add placeholder or dummy code.
+- Do not create helper methods without a functional purpose.
+- Do not add new packages unless explicitly requested.
+- Preserve the project's naming conventions, folder structure, architecture, and state-management patterns.
+- Run the existing formatter and relevant analyzer or tests after implementation when available.
 
 ## Before Creating Anything
 
-Always check whether the project already contains:
+Always inspect the project for an existing:
 
-* A reusable widget
-* A text style
-* A spacing constant
-* A localization key
-* An asset
-* A helper or extension
+- Reusable widget
+- Text style
+- Spacing constant
+- Localization key
+- Theme color
+- Asset
+- Helper or extension
+- Responsive utility or breakpoint
+- Existing state-management selector or optimization pattern
 
 Reuse existing code whenever possible.
 
 ## Fake Data Models
 
-* Any image that will later come from the backend must be represented as a field inside the corresponding model/entity.
-* The image path must be stored in the fake data source as part of the model, not inside the UI.
-* Store the asset path using `AssetsFake`.
-* Widgets must always read the image from the model.
-* Never hardcode asset paths inside widgets.
+- Any image that will later come from the backend must be a field in the corresponding model or entity.
+- Store the image asset path in the fake data source as part of the model.
+- Store fake asset paths using `AssetsFake`.
+- Widgets must read the image path from the model.
+- Never hardcode asset paths directly inside widgets.
+- If the model does not contain an image field, add one only when the model file is within the requested scope. Otherwise, stop and report the required model change.
 
 Example:
 
 ```dart
 HomeMealEntity(
-  title: '...',
+  title: locale.homeMealTitle,
   imageAsset: AssetsFake.homeOatmeal,
 )
-```
 
-```dart
 HomeCategoryEntity(
-  title: '...',
+  title: locale.homeCategoryTitle,
   imageAsset: AssetsFake.homeBurger,
 )
 ```
 
-And in the UI:
+In the UI:
 
 ```dart
 Image.asset(meal.imageAsset)
 ```
 
-Never do:
+Never do this directly inside a widget:
 
 ```dart
 Image.asset(AssetsFake.homeOatmeal)
 ```
 
-directly inside a widget.
-
-If a model does not already contain an image field, add one instead of passing the asset separately.
-
-
-## Never
-
-* Hardcode colors.
-* Hardcode user-facing text.
-* Hardcode spacing.
-* Create duplicate widgets.
-* Change the project architecture.
-* Add business logic when only UI is requested.
-* Modify unrelated files.
-* Create fake or placeholder code just to satisfy these rules.
-* Leave unused imports, variables, methods, or classes in the final code.
-- Never create a widget inside another widget file, even if it 
-is used only once.
-* Never hardcode `left` or `right` when `start` or `end` is intended.
-* Never force a `TextDirection` unless explicitly requested.
-* Never reverse a `Row` manually based on the locale.
-
-
-# Figma Rules
+## Figma Rules
 
 - Figma is the single source of truth.
 - Implement the design exactly as it appears in Figma.
-- Never redesign, improve, or reinterpret the UI.
-- Always inspect the Figma node before implementing.
-- Never guess measurements, colors, typography, spacing, or sizes.
-- Use the exact values from Figma for spacing, padding, margins, dimensions, border radius, colors, typography, shadows, and icon sizes.
-- Never adjust spacing or alignment manually to "look better".
-- Never change the widget hierarchy unless explicitly requested.
-- If any detail is unclear, inspect the Figma properties instead of making assumptions.
-- The final Flutter UI must match the Figma design as closely as possible, pixel by pixel.
-- If the implementation differs from Figma, Figma is always correct.
+- Always inspect the exact Figma node before implementing.
+- Never implement from a screenshot when the Figma node is available.
+- Never guess measurements, colors, typography, spacing, dimensions, border radii, shadows, or icon sizes.
+- Use the exact verified values from Figma and map them to the project's existing theme, styles, spacing, and assets.
+- Never adjust spacing or alignment manually to make it look better.
+- Never change the intended widget hierarchy or interaction behavior unless explicitly requested.
+- If any detail is unclear, inspect the Figma properties instead of assuming.
+- The final Flutter UI must match Figma as closely as possible, pixel by pixel.
+- If the implementation differs from Figma, Figma is correct.
+- If an exact Figma value conflicts with the existing design tokens, stop and report the conflict instead of hardcoding a value.
+- Do not override verified Figma typography with an arbitrary minimum font size. If readability is a concern, report it and ask before changing the design.
 
-- Do not use screenshots as the source of truth.
-- Always inspect the Figma file and its nodes before implementing.
-- Never estimate values from images when they are available in Figma.
-- Avoid font sizes that are difficult to read. Use reasonable minimum font sizes for body text and labels unless there is a compelling design reason not to.
+## Validation Before Completion
 
-# CRITICAL RULE:
+Before reporting completion:
 
-If you fail to complete any step, you MUST ask me before doing anything else.
+- Confirm that the requested Figma node was inspected.
+- Confirm that only requested files were modified.
+- Confirm that existing widgets, styles, spacing, colors, localization keys, and assets were checked first.
+- Confirm that no user-facing text, colors, spacing, asset paths, or unverified dimensions were hardcoded.
+- Confirm that the UI works with inherited RTL and LTR direction without language-specific checks.
+- Confirm that no child collection is manually reversed for localization.
+- Confirm that unnecessary constraints and layout wrappers were not added.
+- Confirm that rebuild scope is limited appropriately.
+- Confirm that there are no unused imports, variables, methods, or classes.
+- Run formatting, analysis, and relevant tests when available.
 
-Do NOT:
+## Critical Stop Rule
+
+If any required step cannot be completed, stop and ask before continuing.
+
+Do not:
+
 - Assume values.
 - Invent implementations.
 - Redesign the UI.
-- Skip any requirement.
-- Continue with a workaround without my approval.
+- Skip a requirement.
+- Continue with a workaround without approval.
+- Claim that Figma was inspected when it was not accessible.
+- Claim pixel-perfect completion without validating the rendered result.
 
-Instead, stop, explain the issue, and ask me exactly what you need.
-
-
-
-
-
-
-
+Explain the exact blocker and ask for the specific information or access required.

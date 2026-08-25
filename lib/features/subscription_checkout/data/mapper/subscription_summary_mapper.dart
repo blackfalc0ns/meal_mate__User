@@ -99,9 +99,11 @@ extension SubscriptionSummaryResponseDtoMapper
       tierNameAr: tierNameAr ?? '',
       tierNameEn: tierNameEn ?? '',
       durationDays: durationDays ?? 0,
+      chosenStartDate: chosenStartDate ?? '',
       startDate: startDate ?? '',
       endDate: endDate ?? '',
       serviceDates: serviceDates ?? const [],
+      restaurantRepetition: restaurantRepetition?.toEntity(),
       slotRequirements: (slotRequirements ?? const [])
           .map((requirement) => requirement.toEntity())
           .toList(),
@@ -130,6 +132,17 @@ extension SubscriptionSummaryResponseDtoMapper
             titleEn: '',
             items: [],
           ),
+    );
+  }
+}
+
+extension SubscriptionSummaryRestaurantRepetitionResponseDtoMapper
+    on SubscriptionSummaryRestaurantRepetitionResponseDto {
+  SubscriptionSummaryRestaurantRepetitionEntity toEntity() {
+    return SubscriptionSummaryRestaurantRepetitionEntity(
+      limit: limit ?? 0,
+      restaurantCount: restaurantCount ?? 0,
+      durationDays: durationDays ?? 0,
     );
   }
 }

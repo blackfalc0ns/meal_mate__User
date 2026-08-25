@@ -53,9 +53,12 @@ class ApiErrorWidget extends StatelessWidget {
         return ServerErrorWidget(
           serverErrorType: exception.errorType,
           statusCode: exception.statusCode,
-          serverMessage: ErrorMessagePresenter.tryGetUserFacingBackendMessage(
-            exception,
-          ),
+          serverMessage:
+              ErrorMessagePresenter.localizedBackendCodeMessage(
+                context,
+                exception,
+              ) ??
+              ErrorMessagePresenter.tryGetUserFacingBackendMessage(exception),
           onRetry: onRetry,
           onContactSupport: onContactSupport,
         );
@@ -81,9 +84,12 @@ class ApiErrorWidget extends StatelessWidget {
         return ClientErrorWidget(
           clientErrorType: exception.errorType,
           statusCode: exception.statusCode,
-          serverMessage: ErrorMessagePresenter.tryGetUserFacingBackendMessage(
-            exception,
-          ),
+          serverMessage:
+              ErrorMessagePresenter.localizedBackendCodeMessage(
+                context,
+                exception,
+              ) ??
+              ErrorMessagePresenter.tryGetUserFacingBackendMessage(exception),
           onRetry: onRetry,
           onGoBack: onGoBack,
         );
@@ -97,9 +103,12 @@ class ApiErrorWidget extends StatelessWidget {
       case ApiErrorType.locationPermissionDeniedForever:
         return GenericErrorWidget(
           errorType: exception.errorType,
-          serverMessage: ErrorMessagePresenter.tryGetUserFacingBackendMessage(
-            exception,
-          ),
+          serverMessage:
+              ErrorMessagePresenter.localizedBackendCodeMessage(
+                context,
+                exception,
+              ) ??
+              ErrorMessagePresenter.tryGetUserFacingBackendMessage(exception),
           onRetry: onRetry,
           onGoBack: onGoBack,
         );

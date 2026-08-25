@@ -12,10 +12,12 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
     super.key,
     required this.readiness,
     required this.onItemPressed,
+    required this.onAddressPressed,
   });
 
   final SubscriptionReadinessEntity readiness;
   final ValueChanged<SubscriptionReadinessItemEntity> onItemPressed;
+  final VoidCallback onAddressPressed;
 
   /// Display the readiness bottom sheet and handle navigation flow.
   static Future<void> show({
@@ -27,6 +29,16 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
     return context.showAppBottomSheet<void>(
       builder: (sheetContext) => SubscriptionReadinessBottomSheet(
         readiness: readiness,
+        onAddressPressed: () async {
+          Navigator.of(sheetContext).pop();
+          final updated = await Navigator.of(context).pushNamed(
+            AppRoutes.addressChooseLocation,
+            arguments: SubscriptionFlowArgs(request: request),
+          );
+          if (updated == true && context.mounted) {
+            onRequirementFulfilled();
+          }
+        },
         onItemPressed: (item) async {
           Navigator.of(sheetContext).pop();
           final route = switch (item.actionScreen.toUpperCase()) {
@@ -36,10 +48,9 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
             _ => null,
           };
           if (route == null) return;
-          final updated = await Navigator.of(context).pushNamed(
-            route,
-            arguments: SubscriptionFlowArgs(request: request),
-          );
+          final updated = await Navigator.of(
+            context,
+          ).pushNamed(route, arguments: SubscriptionFlowArgs(request: request));
           if (updated == true && context.mounted) {
             onRequirementFulfilled();
           }
@@ -53,7 +64,16 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final items = readiness.incompleteItems;
-    final warning = readiness.warning(locale.localeName).trim();
+    final hasRestaurantBlock = _hasRestaurantBlock(readiness);
+    final hasAddressItem = items.any(
+      (item) => item.actionScreen.toUpperCase() == 'ADDRESS',
+    );
+    final readinessWarning = readiness.warning(locale.localeName).trim();
+    final warning = readinessWarning.isNotEmpty
+        ? readinessWarning
+        : hasRestaurantBlock
+        ? locale.subscription_no_restaurants_for_area
+        : '';
 
     return SafeArea(
       child: Padding(
@@ -98,9 +118,39 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
                 onTap: () => onItemPressed(item),
               ),
             ],
+            if (hasRestaurantBlock && !hasAddressItem)
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.sm,
+                ),
+                title: Text(
+                  locale.subscription_change_address,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size14,
+                    color: color.onSurface,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: color.primary,
+                  size: Spacing.iconSm,
+                ),
+                onTap: onAddressPressed,
+              ),
           ],
         ),
       ),
     );
+  }
+
+  bool _hasRestaurantBlock(SubscriptionReadinessEntity readiness) {
+    final reason = readiness.checkoutBlockReason?.toLowerCase();
+
+    return (!readiness.canCheckout &&
+            readiness.deliveringRestaurantCount == 0) ||
+        reason == 'restaurant.not_eligible' ||
+        reason == 'subscription_flow.no_restaurants_for_address' ||
+        reason == 'checkout.no_restaurants_for_address';
   }
 }

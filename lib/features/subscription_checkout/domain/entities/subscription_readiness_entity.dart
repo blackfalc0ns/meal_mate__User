@@ -33,7 +33,7 @@ class SubscriptionReadinessEntity {
       localeName == 'ar' ? warningAr : warningEn;
 
   bool get shouldOpenSummary =>
-      canOpenSummary || isComplete || nextAction.toUpperCase() == 'SUMMARY';
+      canOpenSummary || nextAction.toUpperCase() == 'SUMMARY';
 
   List<SubscriptionReadinessItemEntity> get incompleteItems =>
       items.where((item) => !item.isComplete).toList();

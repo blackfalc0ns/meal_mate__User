@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_details_content.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_readiness_bottom_sheet.dart';
 
@@ -73,7 +74,8 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
             primaryColor: color.primary,
           );
 
-          if (readiness.shouldOpenSummary) {
+          if (readiness.shouldOpenSummary &&
+              !_hasRestaurantCoverageBlock(readiness)) {
             final selectedTier = state.selectedTier;
             context.pushNamed(
               AppRoutes.subscriptionSummary,
@@ -229,5 +231,15 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  bool _hasRestaurantCoverageBlock(SubscriptionReadinessEntity readiness) {
+    final reason = readiness.checkoutBlockReason?.toLowerCase();
+
+    return (!readiness.canCheckout &&
+            readiness.deliveringRestaurantCount == 0) ||
+        reason == 'restaurant.not_eligible' ||
+        reason == 'subscription_flow.no_restaurants_for_address' ||
+        reason == 'checkout.no_restaurants_for_address';
   }
 }

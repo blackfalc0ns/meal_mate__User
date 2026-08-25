@@ -314,6 +314,7 @@
   "addresses_governorate_hint": "Choose governorate",
   "addresses_area_label": "Area",
   "addresses_area_hint": "Choose area",
+  "addresses_area_required": "Please choose an area from the list.",
   "addresses_block_label": "Block",
   "addresses_block_hint": "Choose block",
   "addresses_street_label": "Street",
@@ -625,9 +626,72 @@
   "subscription_summary_daily_meals": "4 meals daily (breakfast - lunch - dinner - snack)",
   "subscription_summary_restaurants": "More than 100 restaurants",
   "subscription_summary_no_restaurants_for_address": "No restaurants currently cover this delivery address.",
+  "subscription_no_restaurants_for_area": "No restaurants are available for your area.",
+  "subscription_change_address": "Change address",
   "subscription_summary_quality": "High-quality ingredients",
   "subscription_summary_variety": "Daily meal variety",
   "subscription_summary_total_price_label": "Total price",
+  "subscription_start_date_picker_label": "Subscription starts from",
+  "subscription_chosen_start_date_label": "Start/payment day",
+  "subscription_first_delivery_date_label": "First delivery day",
+  "subscription_restaurant_repetition_label": "Restaurant repetition",
+  "subscription_restaurant_repetition_message": "You can choose the same restaurant for up to {limit} days during the subscription.",
+  "@subscription_restaurant_repetition_message": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "subscription_payment_confirmation_title": "Confirm subscription dates",
+  "subscription_continue_to_payment": "Continue to payment",
+  "checkout_start_date_required": "Please choose a subscription start date.",
+  "checkout_start_date_invalid": "The selected date is in the past. Please choose another date.",
+  "subscription_flow_profile_incomplete": "Please complete your profile before checkout.",
+  "checkout_address_required": "Please add a delivery address before checkout.",
+  "checkout_allergies_required": "Please confirm your allergy preferences before checkout.",
+  "checkout_dietary_preferences_required": "Please confirm your dietary preferences before checkout.",
+  "checkout_existing_subscription": "You already have an active individual subscription.",
+  "checkout_restaurant_not_eligible": "This address is not covered by the selected restaurants. Please change your address or area.",
+  "checkout_redirect_url_not_allowed": "The payment return link is not allowed. Please try again later.",
+  "family_restaurants_date_label": "Monday, May 26",
+  "family_restaurants_search_hint": "Search for a restaurant or meal",
+  "family_restaurants_title_prefix": "Choose restaurants",
+  "family_restaurants_subtitle": "These restaurants were recommended based on your goal and preferences",
+  "family_restaurants_summary_selected_meals_value": "4",
+  "family_restaurants_summary_selected_meals_total": "/2",
+  "family_restaurants_summary_selected_meals_label": "selected",
+  "family_restaurants_summary_daily_meals_value": "4",
+  "family_restaurants_summary_daily_meals_label": "daily meals",
+  "family_restaurants_summary_calories_value": "1500",
+  "family_restaurants_summary_calories_label": "calories daily",
+  "family_restaurants_filter_balanced": "Balanced",
+  "family_restaurants_filter_dinner": "Dinner",
+  "family_restaurants_filter_lunch": "Lunch",
+  "family_restaurants_filter_breakfast": "Breakfast",
+  "family_restaurants_filter_high_protein": "High protein",
+  "family_restaurants_filter_all": "All",
+  "family_restaurants_diet_house": "Diet House",
+  "family_restaurants_card_subtitle": "Delicious and complete diet meals",
+  "family_restaurants_logo_diet_house_line1": "DIET",
+  "family_restaurants_logo_diet_house_line2": "HOUSE",
+  "family_restaurants_rating_diet_house": "4.7",
+  "family_restaurants_browse_meals": "Browse meals",
+  "family_restaurants_healthy_bowl": "Healthy Bowl",
+  "family_restaurants_logo_healthy_bowl_line1": "HEALTHY",
+  "family_restaurants_logo_healthy_bowl_line2": "BOWL",
+  "family_restaurants_rating_healthy_bowl": "4.6",
+  "family_restaurants_protein_kitchen": "Protein Kitchen",
+  "family_restaurants_logo_protein_kitchen_line1": "THE",
+  "family_restaurants_logo_protein_kitchen_line2": "PROTEIN",
+  "family_restaurants_logo_protein_kitchen_line3": "KITCHEN",
+  "family_restaurants_rating_protein_kitchen": "4.3",
+  "family_restaurants_salad_station": "Salad Station",
+  "family_restaurants_logo_salad_station_line1": "SALAD",
+  "family_restaurants_logo_salad_station_line2": "STATION",
+  "family_restaurants_rating_salad_station": "4.6",
+  "family_restaurants_assurance_title": "All recommendations respect your preferences and allergies",
+  "family_restaurants_assurance_subtitle": "Choose confidently. All meals are suitable and support your health goal",
   "family_details_title": "Family plan details",
   "family_plan_title": "Family plan",
   "family_plan_subtitle": "Complete plan for up to 6 members",
@@ -1265,5 +1329,22 @@
   "family_tier_platinum": "Platinum",
   "family_tier_elite": "Elite",
   "family_change_package": "Change Package",
-  "family_packages_empty": "No family packages available at the moment"
+  "family_packages_empty": "No family packages available at the moment",
+  "family_restaurants_member_ahmed": "Ahmed",
+  "family_restaurants_title": "{memberName}'s restaurants",
+  "@family_restaurants_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_restaurants_suitable_title": "Restaurants suitable for {memberName}",
+  "@family_restaurants_suitable_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  }
 }

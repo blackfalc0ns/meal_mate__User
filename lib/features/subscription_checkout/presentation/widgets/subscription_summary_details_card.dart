@@ -13,10 +13,12 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
     super.key,
     required this.plan,
     required this.summary,
+    required this.selectedStartDate,
   });
 
   final MonthlyPlanDetailsEntity plan;
   final SubscriptionSummaryEntity? summary;
+  final String selectedStartDate;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,8 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
             value: summary != null
                 ? summary!.bundleName(locale.localeName)
                 : (plan.packageTiers.isEmpty
-                    ? plan.mealsPerDay
-                    : plan.packageTiers.first.title),
+                      ? plan.mealsPerDay
+                      : plan.packageTiers.first.title),
             labelTop: Spacing.subscriptionSummaryTileLabelTop,
             valueTop: Spacing.subscriptionSummaryTileValueTop,
           ),
@@ -87,6 +89,54 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               ],
             ],
           ),
+          if (_chosenStartDate.isNotEmpty || _firstDeliveryDate.isNotEmpty) ...[
+            const SizedBox(height: Spacing.md),
+            Row(
+              children: [
+                Expanded(
+                  child: SubscriptionSummaryValueTile(
+                    width: double.infinity,
+                    height: Spacing.subscriptionSummaryTopTileHeight,
+                    label: locale.subscription_chosen_start_date_label,
+                    value: _chosenStartDate,
+                    labelTop: Spacing.subscriptionSummaryTileLabelTop,
+                    valueTop: Spacing.subscriptionSummaryTileValueTop,
+                  ),
+                ),
+                if (_firstDeliveryDate.isNotEmpty) ...[
+                  const SizedBox(width: Spacing.md),
+                  Expanded(
+                    child: SubscriptionSummaryValueTile(
+                      width: double.infinity,
+                      height: Spacing.subscriptionSummaryTopTileHeight,
+                      label: locale.subscription_first_delivery_date_label,
+                      value: _firstDeliveryDate,
+                      labelTop: Spacing.subscriptionSummaryTileLabelTop,
+                      valueTop: Spacing.subscriptionSummaryTileValueTop,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
+          if ((summary?.restaurantRepetition?.limit ?? 0) > 0) ...[
+            const SizedBox(height: Spacing.md),
+            _buildInfoSection(
+              context: context,
+              title: locale.subscription_restaurant_repetition_label,
+              child: Text(
+                locale.subscription_restaurant_repetition_message(
+                  summary!.restaurantRepetition!.limit,
+                ),
+                textAlign: TextAlign.center,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.inverseSurface,
+                ).copyWith(height: FontSize.size20 / FontSize.size13),
+              ),
+            ),
+          ],
           if (includeItems.isNotEmpty) ...[
             const SizedBox(height: Spacing.md),
             _buildInfoSection(
@@ -263,6 +313,13 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
       ),
     );
   }
+
+  String get _chosenStartDate {
+    final fromSummary = summary?.chosenStartDate.trim() ?? '';
+    return fromSummary.isEmpty ? selectedStartDate : fromSummary;
+  }
+
+  String get _firstDeliveryDate => summary?.startDate.trim() ?? '';
 
   String _buildIncludeTitle(
     SubscriptionSummaryEntity? summary,

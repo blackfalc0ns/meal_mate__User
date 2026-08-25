@@ -14,12 +14,35 @@ class ErrorMessagePresenter {
     BuildContext context,
     ApiException exception,
   ) {
+    final backendCodeMessage = localizedBackendCodeMessage(context, exception);
+    if (backendCodeMessage != null) {
+      return backendCodeMessage;
+    }
+
     final backendMessage = tryGetUserFacingBackendMessage(exception);
     if (backendMessage != null) {
       return backendMessage;
     }
 
     return mapFailureMessage(context, exception.errorType.translationKey);
+  }
+
+  static String? localizedBackendCodeMessage(
+    BuildContext context,
+    ApiException exception,
+  ) {
+    for (final code in [exception.backendErrorCode, exception.message]) {
+      if (code == null || code.trim().isEmpty) {
+        continue;
+      }
+      final trimmedCode = code.trim();
+      final message = mapFailureMessage(context, trimmedCode);
+      if (message != trimmedCode) {
+        return message;
+      }
+    }
+
+    return null;
   }
 
   static String? tryGetUserFacingBackendMessage(ApiException exception) {

@@ -960,6 +960,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addresses_area_hint => 'Choose area';
 
   @override
+  String get addresses_area_required => 'Please choose an area from the list.';
+
+  @override
   String get addresses_block_label => 'Block';
 
   @override
@@ -1885,6 +1888,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'No restaurants currently cover this delivery address.';
 
   @override
+  String get subscription_no_restaurants_for_area =>
+      'No restaurants are available for your area.';
+
+  @override
+  String get subscription_change_address => 'Change address';
+
+  @override
   String get subscription_summary_quality => 'High-quality ingredients';
 
   @override
@@ -1892,6 +1902,186 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscription_summary_total_price_label => 'Total price';
+
+  @override
+  String get subscription_start_date_picker_label => 'Subscription starts from';
+
+  @override
+  String get subscription_chosen_start_date_label => 'Start/payment day';
+
+  @override
+  String get subscription_first_delivery_date_label => 'First delivery day';
+
+  @override
+  String get subscription_restaurant_repetition_label =>
+      'Restaurant repetition';
+
+  @override
+  String subscription_restaurant_repetition_message(int limit) {
+    return 'You can choose the same restaurant for up to $limit days during the subscription.';
+  }
+
+  @override
+  String get subscription_payment_confirmation_title =>
+      'Confirm subscription dates';
+
+  @override
+  String get subscription_continue_to_payment => 'Continue to payment';
+
+  @override
+  String get checkout_start_date_required =>
+      'Please choose a subscription start date.';
+
+  @override
+  String get checkout_start_date_invalid =>
+      'The selected date is in the past. Please choose another date.';
+
+  @override
+  String get subscription_flow_profile_incomplete =>
+      'Please complete your profile before checkout.';
+
+  @override
+  String get checkout_address_required =>
+      'Please add a delivery address before checkout.';
+
+  @override
+  String get checkout_allergies_required =>
+      'Please confirm your allergy preferences before checkout.';
+
+  @override
+  String get checkout_dietary_preferences_required =>
+      'Please confirm your dietary preferences before checkout.';
+
+  @override
+  String get checkout_existing_subscription =>
+      'You already have an active individual subscription.';
+
+  @override
+  String get checkout_restaurant_not_eligible =>
+      'This address is not covered by the selected restaurants. Please change your address or area.';
+
+  @override
+  String get checkout_redirect_url_not_allowed =>
+      'The payment return link is not allowed. Please try again later.';
+
+  @override
+  String get family_restaurants_date_label => 'Monday, May 26';
+
+  @override
+  String get family_restaurants_search_hint =>
+      'Search for a restaurant or meal';
+
+  @override
+  String get family_restaurants_title_prefix => 'Choose restaurants';
+
+  @override
+  String get family_restaurants_subtitle =>
+      'These restaurants were recommended based on your goal and preferences';
+
+  @override
+  String get family_restaurants_summary_selected_meals_value => '4';
+
+  @override
+  String get family_restaurants_summary_selected_meals_total => '/2';
+
+  @override
+  String get family_restaurants_summary_selected_meals_label => 'selected';
+
+  @override
+  String get family_restaurants_summary_daily_meals_value => '4';
+
+  @override
+  String get family_restaurants_summary_daily_meals_label => 'daily meals';
+
+  @override
+  String get family_restaurants_summary_calories_value => '1500';
+
+  @override
+  String get family_restaurants_summary_calories_label => 'calories daily';
+
+  @override
+  String get family_restaurants_filter_balanced => 'Balanced';
+
+  @override
+  String get family_restaurants_filter_dinner => 'Dinner';
+
+  @override
+  String get family_restaurants_filter_lunch => 'Lunch';
+
+  @override
+  String get family_restaurants_filter_breakfast => 'Breakfast';
+
+  @override
+  String get family_restaurants_filter_high_protein => 'High protein';
+
+  @override
+  String get family_restaurants_filter_all => 'All';
+
+  @override
+  String get family_restaurants_diet_house => 'Diet House';
+
+  @override
+  String get family_restaurants_card_subtitle =>
+      'Delicious and complete diet meals';
+
+  @override
+  String get family_restaurants_logo_diet_house_line1 => 'DIET';
+
+  @override
+  String get family_restaurants_logo_diet_house_line2 => 'HOUSE';
+
+  @override
+  String get family_restaurants_rating_diet_house => '4.7';
+
+  @override
+  String get family_restaurants_browse_meals => 'Browse meals';
+
+  @override
+  String get family_restaurants_healthy_bowl => 'Healthy Bowl';
+
+  @override
+  String get family_restaurants_logo_healthy_bowl_line1 => 'HEALTHY';
+
+  @override
+  String get family_restaurants_logo_healthy_bowl_line2 => 'BOWL';
+
+  @override
+  String get family_restaurants_rating_healthy_bowl => '4.6';
+
+  @override
+  String get family_restaurants_protein_kitchen => 'Protein Kitchen';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line1 => 'THE';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line2 => 'PROTEIN';
+
+  @override
+  String get family_restaurants_logo_protein_kitchen_line3 => 'KITCHEN';
+
+  @override
+  String get family_restaurants_rating_protein_kitchen => '4.3';
+
+  @override
+  String get family_restaurants_salad_station => 'Salad Station';
+
+  @override
+  String get family_restaurants_logo_salad_station_line1 => 'SALAD';
+
+  @override
+  String get family_restaurants_logo_salad_station_line2 => 'STATION';
+
+  @override
+  String get family_restaurants_rating_salad_station => '4.6';
+
+  @override
+  String get family_restaurants_assurance_title =>
+      'All recommendations respect your preferences and allergies';
+
+  @override
+  String get family_restaurants_assurance_subtitle =>
+      'Choose confidently. All meals are suitable and support your health goal';
 
   @override
   String get family_details_title => 'Family plan details';
@@ -3666,4 +3856,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get family_packages_empty =>
       'No family packages available at the moment';
+
+  @override
+  String get family_restaurants_member_ahmed => 'Ahmed';
+
+  @override
+  String family_restaurants_title(String memberName) {
+    return '$memberName\'s restaurants';
+  }
+
+  @override
+  String family_restaurants_suitable_title(String memberName) {
+    return 'Restaurants suitable for $memberName';
+  }
 }

@@ -1148,6 +1148,7 @@ class _ApiServices implements ApiServices {
     String tier,
     String bundleId,
     String programId,
+    String startDate,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1156,6 +1157,7 @@ class _ApiServices implements ApiServices {
       r'tier': tier,
       r'bundleId': bundleId,
       r'programId': programId,
+      r'startDate': startDate,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

@@ -140,6 +140,14 @@ class AssetsFake {
       'assets/images/fake/subscriptions/family_payment_apple_pay.svg';
   static const String familyPaymentMada =
       'assets/images/fake/subscriptions/family_payment_mada.svg';
+  static const String familyDietHouseMeal =
+      'assets/images/fake/family_restaurants/family_diet_house_meal-7371b2.png';
+  static const String familyHealthyBowlMeal =
+      'assets/images/fake/family_restaurants/family_healthy_bowl_meal-750b68.png';
+  static const String familyProteinKitchenMeal =
+      'assets/images/fake/family_restaurants/family_protein_kitchen_meal-72f14e.png';
+  static const String familySaladStationMeal =
+      'assets/images/fake/family_restaurants/family_salad_station_meal-4e2e82.png';
   static const String monthlyPackageBox =
       'assets/images/fake/subscriptions/monthly_package_box.png';
   static const String subscriptionProgramBalanced =

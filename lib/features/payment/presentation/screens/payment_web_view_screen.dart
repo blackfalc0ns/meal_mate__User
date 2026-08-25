@@ -85,9 +85,17 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
             previous.isFulfillmentSuccess != current.isFulfillmentSuccess ||
+            previous.isCalendarSuccess != current.isCalendarSuccess ||
             previous.isPaymentFailed != current.isPaymentFailed,
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
+            _viewModel.doIntent(
+              PollSubscriptionCalendarEvent(args.checkout.subscriptionId),
+            );
+            return;
+          }
+
+          if (state.isCalendarSuccess) {
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRoutes.paymentSuccess,
               (route) => false,
@@ -100,13 +108,20 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
           }
         },
         builder: (context, state) {
-          if (state.fulfillmentFailure != null) {
+          final failure = state.fulfillmentFailure ?? state.calendarFailure;
+          if (failure != null) {
             return Scaffold(
               appBar: CustomAppBar(title: locale.payment_title),
               body: ApiErrorWidget(
-                exception: state.fulfillmentFailure!.exception,
+                exception: failure.exception,
                 onRetry: () => _viewModel.doIntent(
-                  VerifyPaymentFulfillmentEvent(args.checkout.subscriptionId),
+                  state.isFulfillmentSuccess
+                      ? PollSubscriptionCalendarEvent(
+                          args.checkout.subscriptionId,
+                        )
+                      : VerifyPaymentFulfillmentEvent(
+                          args.checkout.subscriptionId,
+                        ),
                 ),
               ),
             );
@@ -117,7 +132,9 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             body: Stack(
               children: [
                 WebViewWidget(controller: controller),
-                if (_isPageLoading || state.isFulfillmentLoading)
+                if (_isPageLoading ||
+                    state.isFulfillmentLoading ||
+                    state.isCalendarLoading)
                   ColoredBox(
                     color: color.surface.withValues(alpha: 0.72),
                     child: const Center(child: CircularProgressIndicator()),
@@ -203,10 +220,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     if (subscriptionId.isNotEmpty) {
       _viewModel.doIntent(VerifyPaymentFulfillmentEvent(subscriptionId));
     } else {
-      // Fallback navigation if subscriptionId is absent
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(AppRoutes.paymentSuccess, (route) => false);
+      _viewModel.doIntent(const MarkPaymentFailedEvent());
     }
   }
 }
