@@ -1,8 +1,13 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarSourceSection extends StatelessWidget {
-  const CalendarSourceSection({super.key, this.origins = const []});
+  const CalendarSourceSection({
+    super.key,
+    this.coreIngredients = const [],
+    this.origins = const [],
+  });
 
+  final List<CalendarCoreIngredientEntity> coreIngredients;
   final List<SubscriptionRestaurantIngredientOriginEntity> origins;
 
   @override
@@ -10,7 +15,11 @@ class CalendarSourceSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    if (origins.isEmpty) return const SizedBox.shrink();
+    if (coreIngredients.isEmpty && origins.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final cards = _cards(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
@@ -27,9 +36,16 @@ class CalendarSourceSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.xs),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _cards(context),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (var index = 0; index < cards.length; index++) ...[
+                  if (index > 0) const SizedBox(width: Spacing.base),
+                  cards[index],
+                ],
+              ],
+            ),
           ),
         ],
       ),
@@ -38,8 +54,18 @@ class CalendarSourceSection extends StatelessWidget {
 
   List<Widget> _cards(BuildContext context) {
     final locale = context.localization;
-    if (origins.isEmpty) {
-      return const [];
+    if (coreIngredients.isNotEmpty) {
+      return coreIngredients.map((ingredient) {
+        return CalendarSourceCard(
+          icon: Icons.eco_rounded,
+          iconUrl: ingredient.iconUrl,
+          title: ingredient.name,
+          subtitle: ingredient.isLocal
+              ? locale.calendar_fresh_local
+              : locale.calendar_imported,
+          country: _countryLabel(ingredient),
+        );
+      }).toList();
     }
 
     final ordered = [...origins]
@@ -52,14 +78,23 @@ class CalendarSourceSection extends StatelessWidget {
         );
       });
 
-    return ordered.take(4).map((origin) {
+    return ordered.map((origin) {
       return CalendarSourceCard(
         icon: _iconFor(origin.category),
+        iconUrl: origin.iconUrl,
         title: origin.name(locale.localeName),
         subtitle: origin.source(locale.localeName),
         country: origin.originCountryName(locale.localeName),
       );
     }).toList();
+  }
+
+  String _countryLabel(CalendarCoreIngredientEntity ingredient) {
+    final country = ingredient.originCountryName;
+    final flag = ingredient.flagEmoji;
+    if (flag == null || flag.isEmpty) return country;
+    if (country.isEmpty) return flag;
+    return '$flag $country';
   }
 
   IconData _iconFor(String category) {

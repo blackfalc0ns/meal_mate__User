@@ -47,7 +47,7 @@ typedef CalendarMealPickerOption = ({
   String protein,
   String carbs,
   String fat,
-  List<String> ingredients,
+  List<CalendarMealIngredientEntity> ingredients,
   bool selected,
   String? blockReason,
 });
@@ -226,6 +226,8 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                             const CalendarMealPickerRestaurantDescription(),
                             const CalendarDividerLine(),
                             CalendarSourceSection(
+                              coreIngredients:
+                                  availableMeals?.coreIngredients ?? const [],
                               origins: details?.ingredientOrigins ?? const [],
                             ),
                             const SizedBox(height: Spacing.base),
@@ -417,12 +419,16 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
   ) {
     return group.meals.map((meal) {
       final ingredients = meal.ingredients
-          .map((ingredient) => ingredient.name(localeName))
-          .where((name) => name.isNotEmpty)
+          .map(
+            (ingredient) => CalendarMealIngredientEntity(
+              label: ingredient.name(localeName),
+              asset: _ingredientAsset(ingredient.category),
+              iconUrl: ingredient.iconUrl,
+            ),
+          )
+          .where((ingredient) => ingredient.label.isNotEmpty)
           .toList();
-      final visibleIngredients = ingredients.length > 4
-          ? [...ingredients.take(4), moreLabel]
-          : ingredients;
+      final visibleIngredients = _visibleIngredients(ingredients, moreLabel);
 
       return (
         id: meal.mealId,
@@ -449,13 +455,10 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     return meals
         .where((meal) => meal.slot.toLowerCase() == slot.toLowerCase())
         .map((meal) {
-          final ingredientLabels = meal.ingredients
-              .map((ingredient) => ingredient.label)
-              .where((ingredient) => ingredient.isNotEmpty)
-              .toList();
-          final visibleIngredients = ingredientLabels.length > 4
-              ? [...ingredientLabels.take(4), moreLabel]
-              : ingredientLabels;
+          final visibleIngredients = _visibleIngredients(
+            meal.ingredients,
+            moreLabel,
+          );
 
           return (
             id: meal.id,
@@ -468,7 +471,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
             carbs: meal.carbs,
             fat: meal.fat,
             ingredients: visibleIngredients,
-            selected: widget.selectedMealIds.contains(meal.id),
+            selected: widget.selectedMealIds.contains(meal.id) || meal.selected,
             blockReason: meal.blockReason,
           );
         })
@@ -519,6 +522,20 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
 
   String _ingredientAsset(String category) {
     return Assets.calendarMealPickerHero;
+  }
+
+  List<CalendarMealIngredientEntity> _visibleIngredients(
+    List<CalendarMealIngredientEntity> ingredients,
+    String moreLabel,
+  ) {
+    if (ingredients.length <= 4) return ingredients;
+    return [
+      ...ingredients.take(4),
+      CalendarMealIngredientEntity(
+        label: moreLabel,
+        asset: Assets.calendarMealPickerHero,
+      ),
+    ];
   }
 
   void _openMealDetailsForCalendarMeal(CalendarMealEntity meal) {

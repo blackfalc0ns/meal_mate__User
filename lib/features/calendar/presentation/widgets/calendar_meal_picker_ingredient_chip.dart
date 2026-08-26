@@ -1,9 +1,14 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealPickerIngredientChip extends StatelessWidget {
-  const CalendarMealPickerIngredientChip({super.key, required this.label});
+  const CalendarMealPickerIngredientChip({
+    super.key,
+    required this.label,
+    this.iconUrl,
+  });
 
   final String label;
+  final String? iconUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,16 @@ class CalendarMealPickerIngredientChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!isMore) ...[
-            Icon(_iconFor(label, locale), color: color.primary, size: 10),
+            if (iconUrl == null || iconUrl!.isEmpty)
+              Icon(_iconFor(label, locale), color: color.primary, size: 10)
+            else
+              AppCachedNetworkImage(
+                imageUrl: iconUrl,
+                width: 10,
+                height: 10,
+                fit: BoxFit.contain,
+                semanticLabel: label,
+              ),
             const SizedBox(width: 3.35),
           ],
           Text(

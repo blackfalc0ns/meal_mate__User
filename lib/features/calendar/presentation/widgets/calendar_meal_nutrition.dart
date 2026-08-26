@@ -43,17 +43,15 @@ class CalendarMealPickerNutrition extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 1),
-          FittedBox(
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
-                color: color.onSurface.withValues(alpha: 0.62),
-              ).copyWith(height: 1),
-            ),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size9,
+              color: color.onSurface.withValues(alpha: 0.62),
+            )
           ),
         ],
       ),

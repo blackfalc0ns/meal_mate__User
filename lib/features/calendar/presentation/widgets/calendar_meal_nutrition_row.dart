@@ -33,7 +33,7 @@ class CalendarMealPickerNutritionRow extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 25,
+      height: 30,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

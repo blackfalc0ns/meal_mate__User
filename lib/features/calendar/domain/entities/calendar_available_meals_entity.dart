@@ -6,11 +6,13 @@ class CalendarAvailableMealsEntity {
     required this.restaurant,
     required this.meals,
     required this.slotRequirements,
+    this.coreIngredients = const [],
   });
 
   final CalendarRestaurantEntity? restaurant;
   final List<CalendarMealEntity> meals;
   final List<CalendarSlotRequirementEntity> slotRequirements;
+  final List<CalendarCoreIngredientEntity> coreIngredients;
 
   int get requiredMealsCount {
     return slotRequirements.fold<int>(
@@ -18,6 +20,26 @@ class CalendarAvailableMealsEntity {
       (total, requirement) => total + requirement.count,
     );
   }
+}
+
+class CalendarCoreIngredientEntity {
+  const CalendarCoreIngredientEntity({
+    required this.id,
+    required this.name,
+    required this.iconUrl,
+    required this.isLocal,
+    required this.originCountryCode,
+    required this.originCountryName,
+    required this.flagEmoji,
+  });
+
+  final String id;
+  final String name;
+  final String? iconUrl;
+  final bool isLocal;
+  final String originCountryCode;
+  final String originCountryName;
+  final String? flagEmoji;
 }
 
 class CalendarSlotRequirementEntity {
@@ -33,5 +55,6 @@ class CalendarSlotRequirementEntity {
   final String slotNameEn;
   final int count;
 
-  String name(String localeName) => localeName == 'ar' ? slotNameAr : slotNameEn;
+  String name(String localeName) =>
+      localeName == 'ar' ? slotNameAr : slotNameEn;
 }

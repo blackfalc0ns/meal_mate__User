@@ -4,12 +4,14 @@ class CalendarSourceCard extends StatelessWidget {
   const CalendarSourceCard({
     super.key,
     required this.icon,
+    this.iconUrl,
     required this.title,
     required this.subtitle,
     required this.country,
   });
 
   final IconData icon;
+  final String? iconUrl;
   final String title;
   final String subtitle;
   final String country;
@@ -32,26 +34,34 @@ class CalendarSourceCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, size: Spacing.iconMd - Spacing.xs, color: color.primary),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            title,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
-              color: color.primary,
-            ).copyWith(height: 1),
+          if (iconUrl == null || iconUrl!.isEmpty)
+            Icon(icon, size: Spacing.iconMd - Spacing.xs, color: color.primary)
+          else
+            AppCachedNetworkImage(
+              imageUrl: iconUrl,
+              width: Spacing.iconMd - Spacing.xs,
+              height: Spacing.iconMd - Spacing.xs,
+              fit: BoxFit.contain,
+              semanticLabel: title,
+            ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: color.primary,
+                  ).copyWith(height: 1),
+                ),
+               
+              ],
+            ),
           ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            subtitle,
-            style: getMediumStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
-              color: color.onSurface,
-            ).copyWith(height: 1),
-          ),
-          const Spacer(),
           Container(
             height: Spacing.base,
             padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),

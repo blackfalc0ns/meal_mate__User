@@ -243,12 +243,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       onTap: () => _openMealDetails(context, meal, restaurant),
                       onChangeMeal: () {
                         _suppressMealSheetAutoOpen = false;
+                        _openMealPicker(context);
                         _viewModel.doIntent(
                           LoadCalendarAvailableMealsEvent(
                             localeName: locale.localeName,
                           ),
                         );
-                        _openMealPicker(context);
                       },
                     ),
                     const SizedBox(height: Spacing.md),
@@ -270,16 +270,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
 
     if (_mealSheetOpen &&
+        state.saveSuccessCount != _handledSaveSuccessCount &&
         !state.isSaving &&
         state.saveFailure == null &&
         state.availableMeals == null) {
-      if (state.saveSuccessCount != _handledSaveSuccessCount) {
-        _handledSaveSuccessCount = state.saveSuccessCount;
-        CustomSnackbar.showSuccess(
-          context: context,
-          message: context.localization.calendar_meals_save_success,
-        );
-      }
+      _handledSaveSuccessCount = state.saveSuccessCount;
+      CustomSnackbar.showSuccess(
+        context: context,
+        message: context.localization.calendar_meals_save_success,
+      );
       _closeMealPickerRoute();
     }
   }

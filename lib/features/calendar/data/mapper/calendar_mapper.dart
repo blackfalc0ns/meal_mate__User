@@ -196,12 +196,13 @@ extension CalendarSlotRequirementResponseDtoMapper
 extension CalendarAvailableMealsResponseDtoMapper
     on CalendarAvailableMealsResponseDto {
   CalendarAvailableMealsEntity toEntity(String localeName) {
+    final selectedIds = selectedMealIds ?? const [];
     return CalendarAvailableMealsEntity(
       restaurant:
           restaurant?.toRestaurantEntity(localeName) ??
           _flatRestaurantEntity(localeName),
       meals: (meals ?? const [])
-          .map((meal) => meal.toMealEntity(localeName, const []))
+          .map((meal) => meal.toMealEntity(localeName, selectedIds))
           .where((meal) => meal.id.isNotEmpty)
           .toList(),
       slotRequirements: (slotRequirements ?? const [])
@@ -210,6 +211,10 @@ extension CalendarAvailableMealsResponseDtoMapper
             (requirement) =>
                 requirement.slot.isNotEmpty && requirement.count > 0,
           )
+          .toList(),
+      coreIngredients: (coreIngredients ?? const [])
+          .map((ingredient) => ingredient.toEntity(localeName))
+          .where((ingredient) => ingredient.name.isNotEmpty)
           .toList(),
     );
   }
@@ -229,6 +234,26 @@ extension CalendarAvailableMealsResponseDtoMapper
       rating: '',
       deliveryDuration: '',
       deliveryWindow: '',
+    );
+  }
+}
+
+extension CalendarCoreIngredientResponseDtoMapper
+    on CalendarCoreIngredientResponseDto {
+  CalendarCoreIngredientEntity toEntity(String localeName) {
+    return CalendarCoreIngredientEntity(
+      id: id ?? '',
+      name: _localized(localeName, ar: nameAr, en: nameEn, fallback: name),
+      iconUrl: iconUrl,
+      isLocal: isLocal ?? false,
+      originCountryCode: originCountryCode ?? '',
+      originCountryName: _localized(
+        localeName,
+        ar: originCountryNameAr,
+        en: originCountryNameEn,
+        fallback: originCountryName,
+      ),
+      flagEmoji: flagEmoji,
     );
   }
 }

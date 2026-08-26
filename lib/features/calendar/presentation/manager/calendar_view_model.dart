@@ -249,6 +249,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
     emit(
       state.copyWith(
         isAvailableMealsLoading: true,
+        clearAvailableMeals: true,
         clearAvailableMealsFailure: true,
         clearSaveFailure: true,
       ),
@@ -564,6 +565,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
       ),
       meals: availableMeals.meals,
       slotRequirements: availableMeals.slotRequirements,
+      coreIngredients: availableMeals.coreIngredients,
     );
   }
 

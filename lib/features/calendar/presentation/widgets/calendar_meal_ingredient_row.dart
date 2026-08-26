@@ -1,9 +1,9 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealIngredientRow extends StatelessWidget {
-  const CalendarMealIngredientRow({required this.ingredients});
+  const CalendarMealIngredientRow({super.key, required this.ingredients});
 
-  final List<String> ingredients;
+  final List<CalendarMealIngredientEntity> ingredients;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,10 @@ class CalendarMealIngredientRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           for (final ingredient in ingredients) ...[
-            CalendarMealPickerIngredientChip(label: ingredient),
+            CalendarMealPickerIngredientChip(
+              label: ingredient.label,
+              iconUrl: ingredient.iconUrl,
+            ),
             const SizedBox(width: 3.5),
           ],
         ],
