@@ -50,6 +50,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   bool _suppressMealSheetAutoOpen = false;
   bool _didLoad = false;
   int _handledSaveSuccessCount = 0;
+  Route<void>? _mealPickerRoute;
 
   @override
   void initState() {
@@ -218,7 +219,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   CalendarEmptyMealsState(
                     onAddMeals: readOnly
                         ? null
-                        : () => _addMealsFromEmptyState(context, restaurant),
+                        : () => _openRestaurantPicker(context),
                   )
                 else ...[
                   if (restaurant != null) ...[
@@ -261,24 +262,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  void _addMealsFromEmptyState(
-    BuildContext context,
-    CalendarRestaurantEntity? restaurant,
-  ) {
-    if (restaurant == null) {
-      _openRestaurantPicker(context);
-      return;
-    }
-
-    _suppressMealSheetAutoOpen = false;
-    _viewModel.doIntent(
-      LoadCalendarAvailableMealsEvent(
-        localeName: context.localization.localeName,
-      ),
-    );
-    _openMealPicker(context);
-  }
-
   void _handleStateSideEffects(BuildContext context, CalendarState state) {
     if (state.availableMeals != null &&
         !_mealSheetOpen &&
@@ -297,8 +280,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           message: context.localization.calendar_meals_save_success,
         );
       }
-      Navigator.of(context).maybePop();
-      _mealSheetOpen = false;
+      _closeMealPickerRoute();
     }
   }
 
@@ -356,54 +338,72 @@ class _CalendarScreenState extends State<CalendarScreen> {
         localeName: locale.localeName,
       ),
     );
-    _openMealPicker(this.context);
   }
 
   Future<void> _openMealPicker(BuildContext context) async {
     if (_mealSheetOpen) return;
     _mealSheetOpen = true;
     final locale = context.localization;
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) {
-          return BlocProvider<CalendarViewModel>.value(
-            value: _viewModel,
-            child: BlocBuilder<CalendarViewModel, CalendarState>(
-              builder: (context, state) {
-                final restaurant =
-                    state.availableMeals?.restaurant ??
-                    state.selectedDay?.restaurant;
-                return CalendarMealPickerSheet(
-                  restaurantName: restaurant?.name,
-                  restaurantLogoUrl: restaurant?.logoUrl,
-                  restaurantInitials: _initials(restaurant?.name ?? ''),
-                  restaurantRating: restaurant?.rating,
-                  availableMeals: state.availableMeals,
-                  selectedMealIds: state.localSelectedMealIds,
-                  onMealToggled: (mealId) {
-                    _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
-                  },
-                  onSave: () {
-                    _viewModel.doIntent(
-                      SaveCalendarDayMealsEvent(localeName: locale.localeName),
-                    );
-                  },
-                  canSave: state.canSaveMeals,
-                  isLoading: state.isAvailableMealsLoading,
-                  isSaving: state.isSaving,
-                  failure: state.availableMealsFailure ?? state.saveFailure,
-                  isFullPage: true,
-                );
-              },
-            ),
-          );
-        },
-      ),
+    final route = MaterialPageRoute<void>(
+      builder: (_) {
+        return BlocProvider<CalendarViewModel>.value(
+          value: _viewModel,
+          child: BlocBuilder<CalendarViewModel, CalendarState>(
+            builder: (context, state) {
+              final restaurant =
+                  state.availableMeals?.restaurant ??
+                  state.selectedDay?.restaurant;
+              return CalendarMealPickerSheet(
+                restaurantName: restaurant?.name,
+                restaurantLogoUrl: restaurant?.logoUrl,
+                restaurantInitials: _initials(restaurant?.name ?? ''),
+                restaurantRating: restaurant?.rating,
+                availableMeals: state.availableMeals,
+                selectedMealIds: state.localSelectedMealIds,
+                onMealToggled: (mealId) {
+                  _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
+                },
+                onSave: () {
+                  _viewModel.doIntent(
+                    SaveCalendarDayMealsEvent(localeName: locale.localeName),
+                  );
+                },
+                canSave: state.canSaveMeals,
+                isLoading: state.isAvailableMealsLoading,
+                isSaving: state.isSaving,
+                failure: state.availableMealsFailure ?? state.saveFailure,
+                isFullPage: true,
+              );
+            },
+          ),
+        );
+      },
     );
+    _mealPickerRoute = route;
+    await Navigator.of(context).push<void>(route);
+    if (identical(_mealPickerRoute, route)) {
+      _mealPickerRoute = null;
+    }
     _mealSheetOpen = false;
     if (_viewModel.state.isAvailableMealsLoading ||
         _viewModel.state.availableMeals != null) {
       _suppressMealSheetAutoOpen = true;
+    }
+  }
+
+  void _closeMealPickerRoute() {
+    final route = _mealPickerRoute;
+    final navigator = route?.navigator;
+    _mealSheetOpen = false;
+    _mealPickerRoute = null;
+
+    if (route == null || navigator == null) return;
+    if (route.isCurrent) {
+      navigator.pop();
+      return;
+    }
+    if (route.isActive) {
+      navigator.removeRoute(route);
     }
   }
 

@@ -17,7 +17,7 @@ class CalendarMealTabs extends StatelessWidget {
     final color = context.colorScheme;
 
     return SizedBox(
-      height: 26.3,
+      height: Spacing.restaurantDetailsTabsHeight,
       child: Stack(
         children: [
           Positioned(
@@ -25,14 +25,14 @@ class CalendarMealTabs extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Divider(
-              height: 1.04,
-              thickness: 1.04,
+              height: Spacing.border,
+              thickness: Spacing.border,
               color: color.outlineVariant,
             ),
           ),
           Positioned(
-            right: 36,
-            left: 36,
+            left: Spacing.restaurantDetailsTabsHorizontalInset,
+            right: Spacing.restaurantDetailsTabsHorizontalInset,
             top: 0,
             child: labels.isEmpty
                 ? const SizedBox.shrink()
@@ -50,8 +50,8 @@ class CalendarMealTabs extends StatelessWidget {
                   ),
           ),
           Positioned(
-            right: 36,
-            left: 36,
+            left: Spacing.restaurantDetailsTabsHorizontalInset,
+            right: Spacing.restaurantDetailsTabsHorizontalInset,
             bottom: 0,
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -68,11 +68,11 @@ class CalendarMealTabs extends StatelessWidget {
                   ),
                   child: Container(
                     width: constraints.maxWidth / tabCount,
-                    height: 2,
+                    height: Spacing.restaurantDetailsTabsIndicatorHeight,
                     decoration: BoxDecoration(
                       color: color.primary,
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(16.6),
+                        top: Radius.circular(Spacing.radiusLg),
                       ),
                     ),
                   ),

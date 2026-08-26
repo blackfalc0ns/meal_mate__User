@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarSourceSection extends StatelessWidget {
-  const CalendarSourceSection({this.origins = const []});
+  const CalendarSourceSection({super.key, this.origins = const []});
 
   final List<SubscriptionRestaurantIngredientOriginEntity> origins;
 
@@ -10,20 +10,23 @@ class CalendarSourceSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    if (origins.isEmpty) return const SizedBox.shrink();
+
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 39, end: 39),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             locale.calendar_ingredient_origin_title,
+            textAlign: TextAlign.start,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size11,
               color: color.onSurface,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: Spacing.xs),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: _cards(context),

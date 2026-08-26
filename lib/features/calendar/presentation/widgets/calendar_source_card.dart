@@ -2,6 +2,7 @@ part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarSourceCard extends StatelessWidget {
   const CalendarSourceCard({
+    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -18,18 +19,21 @@ class CalendarSourceCard extends StatelessWidget {
     final color = context.colorScheme;
 
     return Container(
-      width: 68.8,
-      height: 67,
-      padding: const EdgeInsets.symmetric(vertical: 3),
+      width: Spacing.restaurantDetailsSourceCardWidth,
+      height: Spacing.restaurantDetailsSourceCardHeight,
+      padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(7.15),
-        border: Border.all(color: color.outlineVariant, width: 0.45),
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(
+          color: color.outlineVariant,
+          width: Spacing.hairline,
+        ),
       ),
       child: Column(
         children: [
-          Icon(icon, size: 19, color: color.primary),
-          const SizedBox(height: 1),
+          Icon(icon, size: Spacing.iconMd - Spacing.xs, color: color.primary),
+          const SizedBox(height: Spacing.xs),
           Text(
             title,
             style: getBoldStyle(
@@ -38,7 +42,7 @@ class CalendarSourceCard extends StatelessWidget {
               color: color.primary,
             ).copyWith(height: 1),
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: Spacing.xs),
           Text(
             subtitle,
             style: getMediumStyle(
@@ -49,12 +53,11 @@ class CalendarSourceCard extends StatelessWidget {
           ),
           const Spacer(),
           Container(
-            height: 13,
-            constraints: const BoxConstraints(minWidth: 44.7),
-            padding: const EdgeInsets.symmetric(horizontal: 4),
+            height: Spacing.base,
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
             decoration: BoxDecoration(
               color: color.primaryContainer,
-              borderRadius: BorderRadius.circular(4.47),
+              borderRadius: BorderRadius.circular(Spacing.radiusXs),
             ),
             child: Center(
               child: Text(

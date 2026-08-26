@@ -21,45 +21,42 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
 
     return Semantics(
       label: '${locale.calendar_restaurant_name}: $restaurantName',
-      child: SizedBox(
-        height: 31,
-        child: Stack(
-          clipBehavior: Clip.none,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Positioned(
-              top: 2,
-              right: Spacing.lg,
-              child: CalendarProteinLogo(
-                size: Spacing.xxxl + Spacing.md,
-                label: restaurantInitials ?? restaurantName,
-                logoAsset: restaurantLogoAsset,
-                logoUrl: restaurantLogoUrl,
-              ),
+            CalendarProteinLogo(
+              size: Spacing.restaurantDetailsHeaderLogoSize,
+              label: restaurantInitials ?? restaurantName,
+              logoAsset: restaurantLogoAsset,
+              logoUrl: restaurantLogoUrl,
             ),
-            Positioned(
-              top: 0,
-              right: Spacing.xxxl + Spacing.xxl + Spacing.sm,
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.verified_user_rounded,
-                      color: color.primary,
-                      size: Spacing.iconMd + Spacing.xs,
-                    ),
-                    const SizedBox(width: Spacing.md),
-                    Text(
+            const SizedBox(width: Spacing.md),
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.verified_user_rounded,
+                    color: color.primary,
+                    size: Spacing.iconMd + Spacing.xs,
+                  ),
+                  const SizedBox(width: Spacing.md),
+                  Flexible(
+                    child: Text(
                       restaurantName,
-                      textAlign: TextAlign.right,
-                      style: getMediumStyle(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: 20.8,
+                        fontSize: FontSize.size24,
                         color: color.onSurface,
-                      ).copyWith(letterSpacing: 0.46),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

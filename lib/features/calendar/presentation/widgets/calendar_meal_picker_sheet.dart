@@ -173,140 +173,131 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
 
     return Material(
       color: color.surface,
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          height: height,
-          color: color.surface,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                height: Spacing.restaurantDetailsHeroHeight,
-                child: details?.coverImageUrl == null
-                    ? Image.asset(
-                        Assets.calendarMealPickerHero,
-                        fit: BoxFit.cover,
-                      )
-                    : AppCachedNetworkImage(
-                        imageUrl: details!.coverImageUrl,
-                        fit: BoxFit.cover,
-                        semanticLabel: restaurantName,
-                      ),
-              ),
-              CustomBackButton(
-                onPressed:
-                    widget.onBackPressed ?? () => Navigator.maybePop(context),
-              ),
-              Positioned(
-                top: contentTop,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: ClipRRect(
-                  borderRadius: contentRadius,
-                  child: ColoredBox(
-                    color: color.surface,
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              if (!widget.isFullPage) ...[
-                                const SizedBox(height: Spacing.lg),
-                                const CalendarSheetHandle(),
-                              ],
-                              const SizedBox(height: Spacing.md),
-                              CalendarMealPickerRestaurantHeader(
-                                restaurantName: resolvedRestaurantName,
-                                restaurantLogoAsset: widget.restaurantLogoAsset,
-                                restaurantLogoUrl: restaurantLogoUrl,
-                                restaurantInitials: widget.restaurantInitials,
-                              ),
-                              const CalendarMealPickerRestaurantDescription(),
-                              const CalendarDividerLine(),
-                              CalendarSourceSection(
-                                origins: details?.ingredientOrigins ?? const [],
-                              ),
-                              const SizedBox(height: Spacing.base),
-                              CalendarMealTabs(
-                                labels: mealTabs,
-                                selectedIndex: selectedTab,
-                                onChanged: (index) {
-                                  setState(() => _selectedTab = index);
-                                },
-                              ),
-                              const SizedBox(height: Spacing.sm),
-                              if (widget.failure != null)
-                                ApiErrorWidget(
-                                  exception: widget.failure!.exception,
-                                )
-                              else if (widget.isLoading)
-                                const CalendarMealPickerLoadingSkeleton()
-                              else
-                                CalendarMealOptionsSection(
-                                  mealType: mealTabs[selectedTab],
-                                  tabIndex: selectedTab,
-                                  options: options,
-                                  onOptionSelected: availableMeals != null
-                                      ? (index) => widget.onMealToggled?.call(
-                                          options[index].id,
-                                        )
-                                      : groups.isEmpty
-                                      ? null
-                                      : (index) => _openMealDetails(
-                                          groups[selectedTab].meals[index],
-                                        ),
-                                  onOptionDetailsSelected:
-                                      availableMeals != null
-                                      ? (index) {
-                                          final selectedMeal = availableMeals
-                                              .meals
-                                              .where(
-                                                (m) =>
-                                                    m.id == options[index].id,
-                                              )
-                                              .firstOrNull;
-                                          if (selectedMeal != null) {
-                                            _openMealDetailsForCalendarMeal(
-                                              selectedMeal,
-                                            );
-                                          }
-                                        }
-                                      : groups.isEmpty
-                                      ? null
-                                      : (index) => _openMealDetails(
-                                          groups[selectedTab].meals[index],
-                                        ),
-                                ),
-                              if (widget.onSave != null) ...[
-                                const SizedBox(height: Spacing.lg),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: Spacing.lg,
-                                  ),
-                                  child: AppButton(
-                                    text: locale.calendar_done,
-                                    isLoading: widget.isSaving,
-                                    onPressed: widget.canSave
-                                        ? widget.onSave
-                                        : null,
-                                  ),
-                                ),
-                              ],
-                              const SizedBox(height: Spacing.xxl),
-                            ],
-                          ),
-                        ),
-                      ],
+      child: Container(
+        height: height,
+        color: color.surface,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: Spacing.restaurantDetailsHeroHeight,
+              child: details?.coverImageUrl == null
+                  ? Image.asset(
+                      Assets.calendarMealPickerHero,
+                      fit: BoxFit.cover,
+                    )
+                  : AppCachedNetworkImage(
+                      imageUrl: details!.coverImageUrl,
+                      fit: BoxFit.cover,
+                      semanticLabel: restaurantName,
                     ),
+            ),
+            CustomBackButton(
+              onPressed:
+                  widget.onBackPressed ?? () => Navigator.maybePop(context),
+            ),
+            Positioned(
+              top: contentTop,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: ClipRRect(
+                borderRadius: contentRadius,
+                child: ColoredBox(
+                  color: color.surface,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            if (!widget.isFullPage) ...[
+                              const SizedBox(height: Spacing.lg),
+                              const CalendarSheetHandle(),
+                            ],
+                            const SizedBox(height: Spacing.md),
+                            CalendarMealPickerRestaurantHeader(
+                              restaurantName: resolvedRestaurantName,
+                              restaurantLogoAsset: widget.restaurantLogoAsset,
+                              restaurantLogoUrl: restaurantLogoUrl,
+                              restaurantInitials: widget.restaurantInitials,
+                            ),
+                            const CalendarMealPickerRestaurantDescription(),
+                            const CalendarDividerLine(),
+                            CalendarSourceSection(
+                              origins: details?.ingredientOrigins ?? const [],
+                            ),
+                            const SizedBox(height: Spacing.base),
+                            CalendarMealTabs(
+                              labels: mealTabs,
+                              selectedIndex: selectedTab,
+                              onChanged: (index) {
+                                setState(() => _selectedTab = index);
+                              },
+                            ),
+                            const SizedBox(height: Spacing.sm),
+                            if (widget.failure != null)
+                              ApiErrorWidget(
+                                exception: widget.failure!.exception,
+                              )
+                            else if (widget.isLoading)
+                              const CalendarMealPickerLoadingSkeleton()
+                            else
+                              CalendarMealOptionsSection(
+                                mealType: mealTabs[selectedTab],
+                                tabIndex: selectedTab,
+                                options: options,
+                                onOptionSelected: availableMeals != null
+                                    ? (index) => widget.onMealToggled?.call(
+                                        options[index].id,
+                                      )
+                                    : null,
+                                onOptionDetailsSelected: availableMeals != null
+                                    ? (index) {
+                                        final selectedMeal = availableMeals
+                                            .meals
+                                            .where(
+                                              (m) => m.id == options[index].id,
+                                            )
+                                            .firstOrNull;
+                                        if (selectedMeal != null) {
+                                          _openMealDetailsForCalendarMeal(
+                                            selectedMeal,
+                                          );
+                                        }
+                                      }
+                                    : groups.isEmpty
+                                    ? null
+                                    : (index) => _openMealDetails(
+                                        groups[selectedTab].meals[index],
+                                      ),
+                              ),
+                            if (widget.onSave != null) ...[
+                              const SizedBox(height: Spacing.lg),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Spacing.lg,
+                                ),
+                                child: AppButton(
+                                  text: locale.calendar_done,
+                                  isLoading: widget.isSaving,
+                                  onPressed: widget.canSave
+                                      ? widget.onSave
+                                      : null,
+                                ),
+                              ),
+                            ],
+                            const SizedBox(height: Spacing.xxl),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

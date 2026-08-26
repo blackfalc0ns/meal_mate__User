@@ -853,8 +853,12 @@ class Spacing {
   static const double restaurantDetailsHeaderLogoSize = 60.0;
   static const double restaurantDetailsSourceCardWidth = 68.8;
   static const double restaurantDetailsSourceCardHeight = 67.0;
+  static const double restaurantDetailsTabsHeight = 26.3;
+  static const double restaurantDetailsTabsHorizontalInset = 36.0;
+  static const double restaurantDetailsTabsIndicatorHeight = 2.0;
   static const double restaurantDetailsMealCardHeight = 105.0;
   static const double restaurantDetailsMealImageSize = 92.0;
+  static const double restaurantDetailsMealImageRadius = 15.6;
   static const double familyDayDesignWidth = 390.0;
   static const double familyDayHorizontalPadding = 14.0;
   static const double familyDayHeaderHeight = 180.0;

@@ -1,7 +1,7 @@
 part of 'calendar_meal_picker_sheet.dart';
 
 class CalendarMealPickerRestaurantDescription extends StatelessWidget {
-  const CalendarMealPickerRestaurantDescription();
+  const CalendarMealPickerRestaurantDescription({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,15 +9,19 @@ class CalendarMealPickerRestaurantDescription extends StatelessWidget {
     final locale = context.localization;
 
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 88.0, end: 28.0),
+      padding: const EdgeInsetsDirectional.only(
+        start: Spacing.xxl,
+        end: Spacing.xxl,
+        top: Spacing.lg,
+      ),
       child: Text(
         locale.calendar_restaurant_description,
-
+        textAlign: TextAlign.start,
         style: getRegularStyle(
           fontFamily: FontConstant.alexandria,
-          fontSize: 12,
+          fontSize: FontSize.size12,
           color: color.onSurface.withValues(alpha: 0.62),
-        ).copyWith(height: 20 / 12),
+        ).copyWith(height: 1.7),
       ),
     );
   }

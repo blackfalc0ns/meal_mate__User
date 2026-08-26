@@ -21,11 +21,14 @@ class SubscriptionRestaurantGridCard extends StatefulWidget {
 
 class _SubscriptionRestaurantGridCardState
     extends State<SubscriptionRestaurantGridCard> {
+  static bool _isPushingRestaurantDetails = false;
+
   bool _isOpening = false;
 
   Future<void> _openRestaurantDetails() async {
-    if (_isOpening) return;
+    if (_isOpening || _isPushingRestaurantDetails) return;
 
+    _isPushingRestaurantDetails = true;
     setState(() => _isOpening = true);
     try {
       await context.pushNamed(
@@ -41,6 +44,7 @@ class _SubscriptionRestaurantGridCardState
         ),
       );
     } finally {
+      _isPushingRestaurantDetails = false;
       if (mounted) {
         setState(() => _isOpening = false);
       }
@@ -56,7 +60,7 @@ class _SubscriptionRestaurantGridCardState
       color: color.surface.withValues(alpha: 0),
       borderRadius: BorderRadius.circular(Spacing.monthlyRestaurantCardRadius),
       child: InkWell(
-        onTap: _openRestaurantDetails,
+        onTap: _isOpening ? null : _openRestaurantDetails,
         borderRadius: BorderRadius.circular(
           Spacing.monthlyRestaurantCardRadius,
         ),
