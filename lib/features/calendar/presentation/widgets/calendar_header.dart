@@ -48,7 +48,7 @@ class CalendarHeader extends StatelessWidget {
                 ),
               ),
               PositionedDirectional(
-                top: Spacing.xxxl,
+                top: Spacing.xxl,
                 start: 0,
                 end: 0,
                 child: Text(

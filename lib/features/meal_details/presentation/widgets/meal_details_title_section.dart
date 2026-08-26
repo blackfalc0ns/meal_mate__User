@@ -21,7 +21,7 @@ class MealDetailsTitleSection extends StatelessWidget {
       children: [
         MealDetailsRestaurantLogo(
           label: meal.restaurantLogo,
-          size: Spacing.xxxl + Spacing.base,
+          size: 65,
           logoUrl: meal.restaurantLogoUrl,
         ),
         const SizedBox(width: Spacing.base),

@@ -74,6 +74,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
     this.failure,
     this.onBackPressed,
     this.isFullPage = false,
+    this.bottomContentPadding = Spacing.zero,
   });
 
   final String? restaurantName;
@@ -95,6 +96,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
   final Failure? failure;
   final VoidCallback? onBackPressed;
   final bool isFullPage;
+  final double bottomContentPadding;
 
   @override
   State<CalendarMealPickerSheet> createState() =>
@@ -162,14 +164,10 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         widget.restaurantLogoUrl ??
         details?.logoUrl ??
         availableMeals?.restaurant?.logoUrl;
-    final contentTop = widget.isFullPage
-        ? Spacing.restaurantDetailsHeroHeight
-        : Spacing.restaurantDetailsSheetTop;
-    final contentRadius = widget.isFullPage
-        ? BorderRadius.zero
-        : const BorderRadius.vertical(
-            top: Radius.circular(Spacing.restaurantDetailsSheetRadius),
-          );
+    final contentTop = Spacing.restaurantDetailsSheetTop;
+    final contentRadius = const BorderRadius.vertical(
+      top: Radius.circular(Spacing.restaurantDetailsSheetRadius),
+    );
 
     return Material(
       color: color.surface,
@@ -290,7 +288,9 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                                 ),
                               ),
                             ],
-                            const SizedBox(height: Spacing.xxl),
+                            SizedBox(
+                              height: Spacing.xxl + widget.bottomContentPadding,
+                            ),
                           ],
                         ),
                       ),

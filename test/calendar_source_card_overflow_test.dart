@@ -134,4 +134,24 @@ void main() {
       contains('const CalendarMealPickerRestaurantDescription()'),
     );
   });
+
+  test('full page meal picker keeps rounded sheet border over hero image', () {
+    final sheetSource = File(
+      'lib/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart',
+    ).readAsStringSync();
+
+    expect(
+      sheetSource,
+      contains('final contentTop = Spacing.restaurantDetailsSheetTop;'),
+    );
+    expect(
+      sheetSource,
+      contains(
+        'final contentRadius = const BorderRadius.vertical(\n'
+        '      top: Radius.circular(Spacing.restaurantDetailsSheetRadius),\n'
+        '    );',
+      ),
+    );
+    expect(sheetSource, isNot(contains('BorderRadius.zero')));
+  });
 }

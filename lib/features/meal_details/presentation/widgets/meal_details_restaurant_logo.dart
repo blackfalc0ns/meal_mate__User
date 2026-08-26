@@ -24,7 +24,6 @@ class MealDetailsRestaurantLogo extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(color: color.primary, shape: BoxShape.circle),
       alignment: Alignment.center,
       child: logoUrl == null || logoUrl!.isEmpty
           ? Text(
@@ -33,7 +32,7 @@ class MealDetailsRestaurantLogo extends StatelessWidget {
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size9,
-                color: color.onPrimary,
+                color: color.primary,
               ).copyWith(height: locale.localeName == 'ar' ? 1 : 0.95),
             )
           : ClipOval(
@@ -42,7 +41,6 @@ class MealDetailsRestaurantLogo extends StatelessWidget {
                 width: size,
                 height: size,
                 fit: BoxFit.cover,
-                semanticLabel: label,
               ),
             ),
     );

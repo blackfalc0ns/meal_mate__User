@@ -81,4 +81,34 @@ void main() {
       contains('state.saveSuccessCount != _handledSaveSuccessCount'),
     );
   });
+
+  test(
+    'meal picker save button is selected separately from sheet rebuilds',
+    () {
+      final source = File(
+        'lib/features/calendar/presentation/screens/calendar_screen.dart',
+      ).readAsStringSync();
+
+      final openMealPickerIndex = source.indexOf(
+        'Future<void> _openMealPicker',
+      );
+      final closeMealPickerIndex = source.indexOf(
+        'void _closeMealPickerRoute',
+        openMealPickerIndex,
+      );
+      final openMealPickerSource = source.substring(
+        openMealPickerIndex,
+        closeMealPickerIndex,
+      );
+
+      expect(openMealPickerIndex, isNonNegative);
+      expect(closeMealPickerIndex, isNonNegative);
+      expect(openMealPickerSource, contains('BlocSelector<'));
+      expect(openMealPickerSource, contains('CalendarViewModel,'));
+      expect(openMealPickerSource, contains('CalendarState,'));
+      expect(openMealPickerSource, contains('canSave: state.canSaveMeals'));
+      expect(openMealPickerSource, contains('isSaving: state.isSaving'));
+      expect(openMealPickerSource, contains('onSave: null,'));
+    },
+  );
 }

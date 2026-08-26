@@ -342,38 +342,70 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Future<void> _openMealPicker(BuildContext context) async {
     if (_mealSheetOpen) return;
     _mealSheetOpen = true;
-    final locale = context.localization;
     final route = MaterialPageRoute<void>(
       builder: (_) {
         return BlocProvider<CalendarViewModel>.value(
           value: _viewModel,
-          child: BlocBuilder<CalendarViewModel, CalendarState>(
-            builder: (context, state) {
-              final restaurant =
-                  state.availableMeals?.restaurant ??
-                  state.selectedDay?.restaurant;
-              return CalendarMealPickerSheet(
-                restaurantName: restaurant?.name,
-                restaurantLogoUrl: restaurant?.logoUrl,
-                restaurantInitials: _initials(restaurant?.name ?? ''),
-                restaurantRating: restaurant?.rating,
-                availableMeals: state.availableMeals,
-                selectedMealIds: state.localSelectedMealIds,
-                onMealToggled: (mealId) {
-                  _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
-                },
-                onSave: () {
-                  _viewModel.doIntent(
-                    SaveCalendarDayMealsEvent(localeName: locale.localeName),
+          child: Stack(
+            children: [
+              BlocBuilder<CalendarViewModel, CalendarState>(
+                builder: (context, state) {
+                  final restaurant =
+                      state.availableMeals?.restaurant ??
+                      state.selectedDay?.restaurant;
+                  return CalendarMealPickerSheet(
+                    restaurantName: restaurant?.name,
+                    restaurantLogoUrl: restaurant?.logoUrl,
+                    restaurantInitials: _initials(restaurant?.name ?? ''),
+                    restaurantRating: restaurant?.rating,
+                    availableMeals: state.availableMeals,
+                    selectedMealIds: state.localSelectedMealIds,
+                    onMealToggled: (mealId) {
+                      _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
+                    },
+                    onSave: null,
+                    canSave: false,
+                    isLoading: state.isAvailableMealsLoading,
+                    isSaving: false,
+                    failure: state.availableMealsFailure ?? state.saveFailure,
+                    isFullPage: true,
+                    bottomContentPadding: Spacing.bottomNavHeight + Spacing.xxl,
                   );
                 },
-                canSave: state.canSaveMeals,
-                isLoading: state.isAvailableMealsLoading,
-                isSaving: state.isSaving,
-                failure: state.availableMealsFailure ?? state.saveFailure,
-                isFullPage: true,
-              );
-            },
+              ),
+              PositionedDirectional(
+                start: Spacing.lg,
+                end: Spacing.lg,
+                bottom: Spacing.xl,
+                child:
+                    BlocSelector<
+                      CalendarViewModel,
+                      CalendarState,
+                      ({bool canSave, bool isSaving})
+                    >(
+                      selector: (state) => (
+                        canSave: state.canSaveMeals,
+                        isSaving: state.isSaving,
+                      ),
+                      builder: (context, buttonState) {
+                        final locale = context.localization;
+                        return AppButton(
+                          text: locale.calendar_done,
+                          isLoading: buttonState.isSaving,
+                          onPressed: buttonState.canSave
+                              ? () {
+                                  _viewModel.doIntent(
+                                    SaveCalendarDayMealsEvent(
+                                      localeName: locale.localeName,
+                                    ),
+                                  );
+                                }
+                              : null,
+                        );
+                      },
+                    ),
+              ),
+            ],
           ),
         );
       },
