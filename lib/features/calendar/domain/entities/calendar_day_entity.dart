@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 
 class CalendarDayEntity {
@@ -10,6 +11,7 @@ class CalendarDayEntity {
     this.restaurant,
     this.meals = const [],
     this.selectedMealIds = const [],
+    this.nutritionTotals = const CalendarNutritionTotalsEntity(),
     this.slotRequirements = const [],
     this.isLocked = false,
     this.editDeadlineUtc,
@@ -27,6 +29,7 @@ class CalendarDayEntity {
   final CalendarRestaurantEntity? restaurant;
   final List<CalendarMealEntity> meals;
   final List<String> selectedMealIds;
+  final CalendarNutritionTotalsEntity nutritionTotals;
   final List<CalendarSlotRequirementEntity> slotRequirements;
   final bool isLocked;
   final DateTime? editDeadlineUtc;
@@ -78,6 +81,7 @@ class CalendarDayEntity {
     bool? isSelected,
     bool? isMuted,
     bool? hasMeals,
+    CalendarNutritionTotalsEntity? nutritionTotals,
   }) {
     return CalendarDayEntity(
       id: id,
@@ -86,6 +90,7 @@ class CalendarDayEntity {
       restaurant: restaurant,
       meals: meals,
       selectedMealIds: selectedMealIds,
+      nutritionTotals: nutritionTotals ?? this.nutritionTotals,
       slotRequirements: slotRequirements,
       isLocked: isLocked,
       editDeadlineUtc: editDeadlineUtc,

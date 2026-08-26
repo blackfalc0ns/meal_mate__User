@@ -71,6 +71,8 @@ import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.
     as _i147;
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart'
     as _i389;
+import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart'
+    as _i705;
 import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart'
     as _i389;
 import '../../features/calendar/domain/usecase/get_calendar_usecase.dart'
@@ -930,6 +932,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i333.CalendarRepository>(),
       ),
     );
+    gh.factory<_i705.GetCalendarDayUseCase>(
+      () => _i705.GetCalendarDayUseCase(gh<_i333.CalendarRepository>()),
+    );
     gh.factory<_i389.GetCalendarRestaurantsUseCase>(
       () => _i389.GetCalendarRestaurantsUseCase(gh<_i333.CalendarRepository>()),
     );
@@ -973,18 +978,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i42.SharedPrefHelper>(),
       ),
     );
-    gh.factory<_i127.CalendarViewModel>(
-      () => _i127.CalendarViewModel(
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i389.GetCalendarRestaurantsUseCase>(),
-        gh<_i133.SetCalendarDayRestaurantUseCase>(),
-        gh<_i389.GetCalendarAvailableMealsUseCase>(),
-        gh<_i896.SaveCalendarDayMealsUseCase>(),
-        gh<_i147.AutoSelectCalendarDayUseCase>(),
-        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
-      ),
-    );
     gh.factory<_i446.ProfileViewModel>(
       () => _i446.ProfileViewModel(
         gh<_i994.GetCustomerProfileUseCase>(),
@@ -1019,6 +1012,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(
       () => _i851.SubscriptionRestaurantDetailsViewModel(
         gh<_i837.GetSubscriptionRestaurantDetailsUseCase>(),
+      ),
+    );
+    gh.factory<_i127.CalendarViewModel>(
+      () => _i127.CalendarViewModel(
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
       ),
     );
     return this;

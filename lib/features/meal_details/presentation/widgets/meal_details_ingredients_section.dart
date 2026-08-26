@@ -44,10 +44,8 @@ class MealDetailsIngredientsSection extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xl,
-                        end: Spacing.xl,
-                        top: Spacing.xs,
-                        bottom: Spacing.xs,
+                     
+                        top: Spacing.xss,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

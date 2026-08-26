@@ -1376,6 +1376,36 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<CalendarDayResponseDto> getSubscriptionCalendarDay(
+    String subscriptionId,
+    String date,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CalendarDayResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/days/${date}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CalendarDayResponseDto _value;
+    try {
+      _value = CalendarDayResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarRestaurants(
     String subscriptionId,
   ) async {
@@ -1435,7 +1465,7 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<void> setSubscriptionCalendarDayRestaurant(
+  Future<CalendarDayResponseDto> setSubscriptionCalendarDayRestaurant(
     String subscriptionId,
     String date,
     CalendarSetRestaurantRequestDto request,
@@ -1445,7 +1475,7 @@ class _ApiServices implements ApiServices {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<void>(
+    final _options = _setStreamType<CalendarDayResponseDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1455,7 +1485,15 @@ class _ApiServices implements ApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CalendarDayResponseDto _value;
+    try {
+      _value = CalendarDayResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -1522,7 +1560,7 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<void> saveSubscriptionCalendarDayMeals(
+  Future<CalendarDayResponseDto> saveSubscriptionCalendarDayMeals(
     String subscriptionId,
     String date,
     CalendarSaveMealsRequestDto request,
@@ -1532,7 +1570,7 @@ class _ApiServices implements ApiServices {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<void>(
+    final _options = _setStreamType<CalendarDayResponseDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1542,11 +1580,19 @@ class _ApiServices implements ApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CalendarDayResponseDto _value;
+    try {
+      _value = CalendarDayResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
-  Future<void> autoSelectSubscriptionCalendarDay(
+  Future<CalendarDayResponseDto> autoSelectSubscriptionCalendarDay(
     String subscriptionId,
     String date,
   ) async {
@@ -1554,7 +1600,7 @@ class _ApiServices implements ApiServices {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
+    final _options = _setStreamType<CalendarDayResponseDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1564,7 +1610,15 @@ class _ApiServices implements ApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CalendarDayResponseDto _value;
+    try {
+      _value = CalendarDayResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override

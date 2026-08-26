@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
@@ -20,11 +19,11 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/meal_detail
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_pick_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_summary_card.dart';
 
@@ -46,6 +45,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late final CalendarViewModel _viewModel;
   late DateTime _focusedMonth;
   bool _isExpanded = false;
+  bool _restaurantSheetOpen = false;
   bool _mealSheetOpen = false;
   bool _suppressMealSheetAutoOpen = false;
   bool _didLoad = false;
@@ -181,7 +181,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         : _serviceDays(state.days, selectedDate: state.selectedDate);
     final restaurant = selectedDay?.restaurant;
     final meals = selectedDay?.meals ?? const [];
+    final selectedMeals = meals.where((meal) => meal.selected).toList();
     final readOnly = selectedDay?.isEditable != true;
+    final hasMeals = meals.isNotEmpty;
 
     return Column(
       children: [
@@ -194,7 +196,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           },
           onMonthChanged: _changeMonth,
           onDaySelected: (day) {
-            _viewModel.doIntent(SelectCalendarDayEvent(day));
+            _viewModel.doIntent(
+              SelectCalendarDayEvent(day: day, localeName: locale.localeName),
+            );
           },
         ),
         Expanded(
@@ -203,45 +207,51 @@ class _CalendarScreenState extends State<CalendarScreen> {
             padding: EdgeInsetsDirectional.only(
               start: Spacing.screenH,
               end: Spacing.screenH,
-              top: Spacing.xxxl,
+              top: hasMeals ? Spacing.xxxl : Spacing.calendarEmptyMealsTopGap,
               bottom: widget.showBottomSpace
                   ? Spacing.bottomNavHeight + Spacing.xxxl
                   : Spacing.xl,
             ),
             child: Column(
               children: [
-                if (restaurant == null)
-                  CalendarRestaurantPickCard(
-                    onTap: readOnly
+                if (!hasMeals)
+                  CalendarEmptyMealsState(
+                    onAddMeals: readOnly
                         ? null
-                        : () => _openRestaurantPicker(context),
+                        : () => _addMealsFromEmptyState(context, restaurant),
                   )
-                else
-                  CalendarRestaurantSummaryCard(
-                    restaurant: restaurant,
-                    meals: meals,
-                    day: selectedDay,
-                    onMorePressed: readOnly
-                        ? null
-                        : () => _openRestaurantPicker(context),
-                  ),
-                const SizedBox(height: Spacing.xl),
-                for (final meal in meals) ...[
-                  CalendarMealCard(
-                    meal: meal,
-                    readOnly: readOnly,
-                    onTap: () => _openMealDetails(context, meal, restaurant),
-                    onChangeMeal: () {
-                      _suppressMealSheetAutoOpen = false;
-                      _viewModel.doIntent(
-                        LoadCalendarAvailableMealsEvent(
-                          localeName: locale.localeName,
-                        ),
-                      );
-                      _openMealPicker(context);
-                    },
-                  ),
-                  const SizedBox(height: Spacing.md),
+                else ...[
+                  if (restaurant != null) ...[
+                    CalendarRestaurantSummaryCard(
+                      key: ValueKey(
+                        '${selectedDay?.date?.toIso8601String() ?? ''}'
+                        '-${_mealsSignature(selectedMeals)}',
+                      ),
+                      restaurant: restaurant,
+                      day: selectedDay,
+                      onMorePressed: readOnly
+                          ? null
+                          : () => _openRestaurantPicker(context),
+                    ),
+                    const SizedBox(height: Spacing.xl),
+                  ],
+                  for (final meal in meals) ...[
+                    CalendarMealCard(
+                      meal: meal,
+                      readOnly: readOnly,
+                      onTap: () => _openMealDetails(context, meal, restaurant),
+                      onChangeMeal: () {
+                        _suppressMealSheetAutoOpen = false;
+                        _viewModel.doIntent(
+                          LoadCalendarAvailableMealsEvent(
+                            localeName: locale.localeName,
+                          ),
+                        );
+                        _openMealPicker(context);
+                      },
+                    ),
+                    const SizedBox(height: Spacing.md),
+                  ],
                 ],
               ],
             ),
@@ -249,6 +259,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
       ],
     );
+  }
+
+  void _addMealsFromEmptyState(
+    BuildContext context,
+    CalendarRestaurantEntity? restaurant,
+  ) {
+    if (restaurant == null) {
+      _openRestaurantPicker(context);
+      return;
+    }
+
+    _suppressMealSheetAutoOpen = false;
+    _viewModel.doIntent(
+      LoadCalendarAvailableMealsEvent(
+        localeName: context.localization.localeName,
+      ),
+    );
+    _openMealPicker(context);
   }
 
   void _handleStateSideEffects(BuildContext context, CalendarState state) {
@@ -275,6 +303,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _openRestaurantPicker(BuildContext context) async {
+    if (_restaurantSheetOpen) return;
+    _restaurantSheetOpen = true;
     final locale = context.localization;
     _viewModel.doIntent(
       LoadCalendarRestaurantsEvent(localeName: locale.localeName),
@@ -314,6 +344,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             );
           },
         );
+
+    _restaurantSheetOpen = false;
 
     if (selectedRestaurant == null || !mounted) return;
 
@@ -446,6 +478,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
         a.day == b.day;
   }
 
+  String _mealsSignature(List<CalendarMealEntity> meals) {
+    return meals
+        .map(
+          (meal) =>
+              '${meal.id}:${meal.protein}:${meal.carbs}:${meal.fat}:${meal.calories}',
+        )
+        .join('|');
+  }
+
   void _openMealDetails(
     BuildContext context,
     CalendarMealEntity meal,
@@ -464,7 +505,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
       AppRoutes.mealDetails,
       arguments: MealDetailsEntity(
         title: meal.title,
-        description: locale.search_meal_description,
+        description: meal.description.isNotEmpty
+            ? meal.description
+            : locale.search_meal_description,
         restaurantName: restaurantName,
         restaurantLogo: _initials(restaurantName),
         restaurantLogoUrl: restaurant?.logoUrl,
@@ -483,8 +526,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ingredients: meal.ingredients
             .map(
               (ingredient) => MealDetailsIngredientEntity(
-                label: ingredient,
-                asset: Assets.calendarMealPickerHero,
+                label: ingredient.label,
+                asset: ingredient.asset,
+                iconUrl: ingredient.iconUrl,
               ),
             )
             .where((ingredient) => ingredient.label.isNotEmpty)

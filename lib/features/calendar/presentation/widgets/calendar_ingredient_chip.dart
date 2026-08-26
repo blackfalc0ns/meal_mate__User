@@ -1,15 +1,15 @@
 part of 'calendar_meal_card.dart';
 
 class CalendarMealCardIngredientChip extends StatelessWidget {
-  const CalendarMealCardIngredientChip({required this.label});
+  const CalendarMealCardIngredientChip({super.key, required this.ingredient});
 
-  final String label;
+  final CalendarMealIngredientEntity ingredient;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final isMore = label == locale.calendar_more;
+    final isMore = ingredient.label == locale.calendar_more;
 
     return Container(
       height: Spacing.lg,
@@ -28,16 +28,24 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (!isMore) ...[
-            Icon(
-              _ingredientIcon(label, locale),
-              size: 10,
-              color: color.primary,
+            SizedBox(
+              width: 10,
+              height: 10,
+              child: ClipOval(
+                child: ingredient.iconUrl == null || ingredient.iconUrl!.isEmpty
+                    ? Image.asset(ingredient.asset, fit: BoxFit.cover)
+                    : AppCachedNetworkImage(
+                        imageUrl: ingredient.iconUrl!,
+                        fit: BoxFit.cover,
+                        semanticLabel: ingredient.label,
+                      ),
+              ),
             ),
             const SizedBox(width: 2),
           ],
           Flexible(
             child: Text(
-              label,
+              ingredient.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
@@ -52,15 +60,5 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  IconData _ingredientIcon(String label, AppLocalizations locale) {
-    if (label == locale.calendar_carrot) {
-      return Icons.eco_rounded;
-    }
-    if (label == locale.calendar_broccoli) {
-      return Icons.spa_rounded;
-    }
-    return Icons.rice_bowl_rounded;
   }
 }

@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/calendar/data/models/response/calendar_r
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
@@ -19,18 +20,19 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
         restaurant?.toRestaurantEntity(localeName) ??
         _flatRestaurantEntity(localeName);
     final dayMeals = selectedMeals ?? meals ?? const [];
+    final sortedDayMeals = _sortedMeals(dayMeals);
+    final resolvedSelectedMealIds =
+        selectedMealIds ?? _selectedMealIds(sortedDayMeals);
     return CalendarDayEntity(
       id: id ?? '',
       status: status ?? '',
       restaurantId: restaurantId ?? selectedRestaurant?.id,
       restaurant: selectedRestaurant,
-      meals: dayMeals
-          .map(
-            (meal) =>
-                meal.toMealEntity(localeName, selectedMealIds ?? const []),
-          )
+      meals: sortedDayMeals
+          .map((meal) => meal.toMealEntity(localeName, resolvedSelectedMealIds))
           .toList(),
-      selectedMealIds: selectedMealIds ?? const [],
+      selectedMealIds: resolvedSelectedMealIds,
+      nutritionTotals: _nutritionTotalsEntity(),
       slotRequirements: (slotRequirements ?? const [])
           .map((requirement) => requirement.toEntity())
           .where(
@@ -53,18 +55,21 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
 
   CalendarRestaurantEntity? _flatRestaurantEntity(String localeName) {
     if ((restaurantId == null || restaurantId!.isEmpty) &&
+        (restaurantName == null || restaurantName!.isEmpty) &&
         (restaurantNameAr == null || restaurantNameAr!.isEmpty) &&
-        (restaurantNameEn == null || restaurantNameEn!.isEmpty)) {
+        (restaurantNameEn == null || restaurantNameEn!.isEmpty) &&
+        (restaurantLogoUrl == null || restaurantLogoUrl!.isEmpty)) {
       return null;
     }
 
     return CalendarRestaurantEntity(
       id: restaurantId ?? '',
+      logoUrl: restaurantLogoUrl,
       name: _localized(
         localeName,
         ar: restaurantNameAr,
         en: restaurantNameEn,
-        fallback: restaurantNameEn ?? restaurantNameAr,
+        fallback: restaurantName ?? restaurantNameEn ?? restaurantNameAr,
       ),
       category: '',
       rating: '',
@@ -120,16 +125,13 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
 extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
   CalendarMealEntity toMealEntity(String localeName, List<String> selectedIds) {
     final resolvedId = _firstNotEmpty([mealId, id]);
-    final ingredientNames = (ingredients ?? const [])
-        .map(
-          (ingredient) => _localized(
-            localeName,
-            ar: ingredient.nameAr,
-            en: ingredient.nameEn,
-            fallback: ingredient.name,
-          ),
-        )
-        .where((ingredient) => ingredient.isNotEmpty)
+    final nutritionCalories = _wholeNumber(nutrition?.calories);
+    final nutritionProtein = _wholeNumber(nutrition?.proteinG);
+    final nutritionCarbs = _wholeNumber(nutrition?.carbsG);
+    final nutritionFat = _wholeNumber(nutrition?.fatG);
+    final ingredientItems = (ingredients ?? const [])
+        .map((ingredient) => ingredient.toEntity(localeName))
+        .where((ingredient) => ingredient.label.isNotEmpty)
         .take(5)
         .toList();
 
@@ -139,6 +141,12 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
       imageUrl: imageUrl,
       blockReason: blockReason,
       selected: (isSelected ?? false) || selectedIds.contains(resolvedId),
+      description: _localized(
+        localeName,
+        ar: descriptionAr,
+        en: descriptionEn,
+        fallback: description,
+      ),
       mealType: _localized(
         localeName,
         ar: slotNameAr,
@@ -152,13 +160,23 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
         fallback: name ?? title,
       ),
       time: time ?? '',
-      calories: calories?.toString() ?? '',
-      protein: proteinG?.toString() ?? '',
-      carbs: carbsG?.toString() ?? '',
-      fat: fatG?.toString() ?? '',
-      ingredients: ingredientNames,
+      calories: (nutritionCalories ?? calories)?.toString() ?? '',
+      protein: (nutritionProtein ?? proteinG)?.toString() ?? '',
+      carbs: (nutritionCarbs ?? carbsG)?.toString() ?? '',
+      fat: (nutritionFat ?? fatG)?.toString() ?? '',
+      ingredients: ingredientItems,
       imageAsset: Assets.calendarMealPickerHero,
       actionLabel: '',
+    );
+  }
+}
+
+extension CalendarIngredientResponseDtoMapper on CalendarIngredientResponseDto {
+  CalendarMealIngredientEntity toEntity(String localeName) {
+    return CalendarMealIngredientEntity(
+      label: _localized(localeName, ar: nameAr, en: nameEn, fallback: name),
+      asset: Assets.calendarMealPickerHero,
+      iconUrl: iconUrl,
     );
   }
 }
@@ -252,16 +270,30 @@ extension CalendarResponseMapper on CalendarResponseDto {
       lockedAtUtc: day.lockedAtUtc,
       editDeadlineUtc: day.editDeadlineUtc,
       restaurantId: day.restaurantId,
+      restaurantName: day.restaurantName,
       restaurantNameAr: day.restaurantNameAr,
       restaurantNameEn: day.restaurantNameEn,
+      restaurantLogoUrl: day.restaurantLogoUrl,
       restaurant: day.restaurant,
       selectedMealIds: day.selectedMealIds,
       selectedMeals: day.selectedMeals,
+      nutritionTotals: day.nutritionTotals,
       meals: day.meals,
       slotRequirements: globalSlotRequirements,
       canEdit: day.canEdit,
       selectionDeadlineUtc: day.selectionDeadlineUtc,
       lockAtUtc: day.lockAtUtc,
+    );
+  }
+}
+
+extension CalendarNutritionResponseDtoMapper on CalendarNutritionResponseDto {
+  CalendarNutritionTotalsEntity toTotalsEntity() {
+    return CalendarNutritionTotalsEntity(
+      calories: _wholeNumber(calories) ?? 0,
+      proteinG: _wholeNumber(proteinG) ?? 0,
+      carbsG: _wholeNumber(carbsG) ?? 0,
+      fatG: _wholeNumber(fatG) ?? 0,
     );
   }
 }
@@ -288,6 +320,68 @@ DateTime? _parseDateTime(String? value) {
   return DateTime.tryParse(value);
 }
 
+List<CalendarMealResponseDto> _sortedMeals(
+  List<CalendarMealResponseDto> meals,
+) {
+  final sortedMeals = List<CalendarMealResponseDto>.from(meals);
+  sortedMeals.sort((a, b) {
+    final aOrder = a.sortOrder;
+    final bOrder = b.sortOrder;
+    if (aOrder == null && bOrder == null) return 0;
+    if (aOrder == null) return 1;
+    if (bOrder == null) return -1;
+    return aOrder.compareTo(bOrder);
+  });
+  return sortedMeals;
+}
+
+List<String> _selectedMealIds(List<CalendarMealResponseDto> meals) {
+  return meals
+      .where((meal) => meal.isSelected ?? true)
+      .map((meal) => _firstNotEmpty([meal.mealId, meal.id]))
+      .where((id) => id.isNotEmpty)
+      .toList();
+}
+
+extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
+  CalendarNutritionTotalsEntity _nutritionTotalsEntity() {
+    final totals = nutritionTotals;
+    if (totals != null) return totals.toTotalsEntity();
+
+    final mealsForTotals = selectedMeals ?? _fallbackSelectedMealsForTotals();
+    return mealsForTotals.fold(
+      const CalendarNutritionTotalsEntity(),
+      (total, meal) => CalendarNutritionTotalsEntity(
+        calories:
+            total.calories +
+            (_wholeNumber(meal.nutrition?.calories) ?? meal.calories ?? 0),
+        proteinG:
+            total.proteinG +
+            (_wholeNumber(meal.nutrition?.proteinG) ?? meal.proteinG ?? 0),
+        carbsG:
+            total.carbsG +
+            (_wholeNumber(meal.nutrition?.carbsG) ?? meal.carbsG ?? 0),
+        fatG:
+            total.fatG + (_wholeNumber(meal.nutrition?.fatG) ?? meal.fatG ?? 0),
+      ),
+    );
+  }
+
+  List<CalendarMealResponseDto> _fallbackSelectedMealsForTotals() {
+    final dayMeals = meals ?? const [];
+    final selectedIds = selectedMealIds ?? const [];
+    if (selectedIds.isNotEmpty) {
+      return dayMeals
+          .where(
+            (meal) =>
+                selectedIds.contains(_firstNotEmpty([meal.mealId, meal.id])),
+          )
+          .toList();
+    }
+    return dayMeals.where((meal) => meal.isSelected ?? false).toList();
+  }
+}
+
 String _localized(
   String localeName, {
   String? ar,
@@ -309,4 +403,9 @@ String? _firstNullableNotEmpty(List<String?> values) {
     if (value != null && value.trim().isNotEmpty) return value.trim();
   }
   return null;
+}
+
+int? _wholeNumber(num? value) {
+  if (value == null) return null;
+  return value.round();
 }

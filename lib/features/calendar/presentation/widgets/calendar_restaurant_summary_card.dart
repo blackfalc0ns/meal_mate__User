@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_nutrition_row.dart';
 part 'calendar_restaurant_text_block.dart';
@@ -16,13 +16,11 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
   const CalendarRestaurantSummaryCard({
     super.key,
     required this.restaurant,
-    required this.meals,
     this.day,
     this.onMorePressed,
   });
 
   final CalendarRestaurantEntity restaurant;
-  final List<CalendarMealEntity> meals;
   final CalendarDayEntity? day;
   final VoidCallback? onMorePressed;
 
@@ -84,7 +82,10 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.calendarRestaurantSummaryNutritionGap),
-          CalendarRestaurantNutritionRow(meals: meals),
+          CalendarRestaurantNutritionRow(
+            totals:
+                day?.nutritionTotals ?? const CalendarNutritionTotalsEntity(),
+          ),
           //   const Spacer(),
           const SizedBox(height: Spacing.md),
           _buildAction(context),

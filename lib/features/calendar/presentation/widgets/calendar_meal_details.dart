@@ -45,7 +45,7 @@ class CalendarMealDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (final ingredient in meal.ingredients) ...[
-              CalendarMealCardIngredientChip(label: ingredient),
+              CalendarMealCardIngredientChip(ingredient: ingredient),
               const SizedBox(width: 4.3),
             ],
           ],

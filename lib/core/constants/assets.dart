@@ -160,6 +160,8 @@ class Assets {
   // Calendar
   static const String calendarMealPickerHero =
       '$_images/calendar/figma/meal_picker_hero-47a8dd.png';
+  static const String calendarEmptyMealsIllustration =
+      '$_images/calendar/figma/calendar_empty_meals_illustration.png';
 
   // Meal details
   static const String mealDetailsHero =

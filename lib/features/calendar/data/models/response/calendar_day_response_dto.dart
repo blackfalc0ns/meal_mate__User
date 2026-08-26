@@ -13,11 +13,14 @@ class CalendarDayResponseDto {
     this.lockedAtUtc,
     this.editDeadlineUtc,
     this.restaurantId,
+    this.restaurantName,
     this.restaurantNameAr,
     this.restaurantNameEn,
+    this.restaurantLogoUrl,
     this.restaurant,
     this.selectedMealIds,
     this.selectedMeals,
+    this.nutritionTotals,
     this.meals,
     this.slotRequirements,
     this.canEdit,
@@ -33,11 +36,14 @@ class CalendarDayResponseDto {
   final String? lockedAtUtc;
   final String? editDeadlineUtc;
   final String? restaurantId;
+  final String? restaurantName;
   final String? restaurantNameAr;
   final String? restaurantNameEn;
+  final String? restaurantLogoUrl;
   final CalendarRestaurantResponseDto? restaurant;
   final List<String>? selectedMealIds;
   final List<CalendarMealResponseDto>? selectedMeals;
+  final CalendarNutritionResponseDto? nutritionTotals;
   final List<CalendarMealResponseDto>? meals;
   final List<CalendarSlotRequirementResponseDto>? slotRequirements;
   final bool? canEdit;
@@ -130,6 +136,8 @@ class CalendarMealResponseDto {
     this.nameEn,
     this.title,
     this.description,
+    this.descriptionAr,
+    this.descriptionEn,
     this.slot,
     this.slotName,
     this.slotNameAr,
@@ -140,10 +148,12 @@ class CalendarMealResponseDto {
     this.proteinG,
     this.carbsG,
     this.fatG,
+    this.nutrition,
     this.imageUrl,
     this.ingredients,
     this.blockReason,
     this.isSelected,
+    this.sortOrder,
   });
 
   final String? id;
@@ -153,6 +163,8 @@ class CalendarMealResponseDto {
   final String? nameEn;
   final String? title;
   final String? description;
+  final String? descriptionAr;
+  final String? descriptionEn;
   final String? slot;
   final String? slotName;
   final String? slotNameAr;
@@ -163,10 +175,12 @@ class CalendarMealResponseDto {
   final int? proteinG;
   final int? carbsG;
   final int? fatG;
+  final CalendarNutritionResponseDto? nutrition;
   final String? imageUrl;
   final List<CalendarIngredientResponseDto>? ingredients;
   final String? blockReason;
   final bool? isSelected;
+  final int? sortOrder;
 
   factory CalendarMealResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarMealResponseDtoFromJson(json);
@@ -178,6 +192,7 @@ class CalendarMealResponseDto {
 class CalendarIngredientResponseDto {
   const CalendarIngredientResponseDto({
     this.id,
+    this.ingredientId,
     this.name,
     this.nameAr,
     this.nameEn,
@@ -186,6 +201,7 @@ class CalendarIngredientResponseDto {
   });
 
   final String? id;
+  final String? ingredientId;
   final String? name;
   final String? nameAr;
   final String? nameEn;
@@ -196,6 +212,34 @@ class CalendarIngredientResponseDto {
       _$CalendarIngredientResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CalendarIngredientResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class CalendarNutritionResponseDto {
+  const CalendarNutritionResponseDto({
+    this.calories,
+    this.proteinG,
+    this.carbsG,
+    this.fatG,
+    this.fiberG,
+    this.carbsPercent,
+    this.proteinPercent,
+    this.fatPercent,
+  });
+
+  final num? calories;
+  final num? proteinG;
+  final num? carbsG;
+  final num? fatG;
+  final num? fiberG;
+  final int? carbsPercent;
+  final int? proteinPercent;
+  final int? fatPercent;
+
+  factory CalendarNutritionResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$CalendarNutritionResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CalendarNutritionResponseDtoToJson(this);
 }
 
 @JsonSerializable()

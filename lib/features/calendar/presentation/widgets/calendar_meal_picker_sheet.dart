@@ -458,9 +458,13 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     return meals
         .where((meal) => meal.slot.toLowerCase() == slot.toLowerCase())
         .map((meal) {
-          final ingredients = meal.ingredients.length > 4
-              ? [...meal.ingredients.take(4), moreLabel]
-              : meal.ingredients;
+          final ingredientLabels = meal.ingredients
+              .map((ingredient) => ingredient.label)
+              .where((ingredient) => ingredient.isNotEmpty)
+              .toList();
+          final visibleIngredients = ingredientLabels.length > 4
+              ? [...ingredientLabels.take(4), moreLabel]
+              : ingredientLabels;
 
           return (
             id: meal.id,
@@ -472,7 +476,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
             protein: meal.protein,
             carbs: meal.carbs,
             fat: meal.fat,
-            ingredients: ingredients,
+            ingredients: visibleIngredients,
             selected: widget.selectedMealIds.contains(meal.id),
             blockReason: meal.blockReason,
           );
@@ -565,8 +569,9 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         ingredients: meal.ingredients
             .map(
               (ingredient) => MealDetailsIngredientEntity(
-                label: ingredient,
-                asset: Assets.calendarMealPickerHero,
+                label: ingredient.label,
+                asset: ingredient.asset,
+                iconUrl: ingredient.iconUrl,
               ),
             )
             .where((ingredient) => ingredient.label.isNotEmpty)

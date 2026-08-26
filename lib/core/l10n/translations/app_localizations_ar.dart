@@ -2624,6 +2624,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_add_meal => 'إضافة وجبة';
 
   @override
+  String get calendar_empty_meals_title => 'لا توجد وجبات حالياً';
+
+  @override
+  String get calendar_empty_meals_description =>
+      'لم تقم بإضافة أي وجبات بعد.\nابدأ الآن بإضافة وجباتك الصحية.';
+
+  @override
+  String get calendar_empty_meals_button => 'إضافة وجبات';
+
+  @override
   String get calendar_reschedule => 'تأجيل الوجبة';
 
   @override

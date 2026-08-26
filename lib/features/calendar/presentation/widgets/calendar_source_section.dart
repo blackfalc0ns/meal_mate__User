@@ -36,32 +36,7 @@ class CalendarSourceSection extends StatelessWidget {
   List<Widget> _cards(BuildContext context) {
     final locale = context.localization;
     if (origins.isEmpty) {
-      return [
-        CalendarSourceCard(
-          icon: Icons.set_meal_rounded,
-          title: locale.calendar_meat,
-          subtitle: locale.calendar_imported,
-          country: locale.calendar_australia,
-        ),
-        CalendarSourceCard(
-          icon: Icons.egg_alt_rounded,
-          title: locale.calendar_poultry,
-          subtitle: locale.calendar_fresh_local,
-          country: locale.calendar_local,
-        ),
-        CalendarSourceCard(
-          icon: Icons.phishing_rounded,
-          title: locale.calendar_fish,
-          subtitle: locale.calendar_imported,
-          country: locale.calendar_norway,
-        ),
-        CalendarSourceCard(
-          icon: Icons.energy_savings_leaf_rounded,
-          title: locale.calendar_oils,
-          subtitle: locale.calendar_imported,
-          country: locale.calendar_spain,
-        ),
-      ];
+      return const [];
     }
 
     final ordered = [...origins]

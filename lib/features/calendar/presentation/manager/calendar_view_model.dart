@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_availa
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
@@ -24,6 +25,7 @@ import 'package:meal_meat_user/features/profile/domain/usecase/get_current_custo
 class CalendarViewModel extends Cubit<CalendarState> {
   CalendarViewModel(
     this._getCalendarUseCase,
+    this._getCalendarDayUseCase,
     this._getRestaurantsUseCase,
     this._setDayRestaurantUseCase,
     this._getAvailableMealsUseCase,
@@ -34,6 +36,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
   ) : super(const CalendarState());
 
   final GetCalendarUseCase _getCalendarUseCase;
+  final GetCalendarDayUseCase _getCalendarDayUseCase;
   final GetCalendarRestaurantsUseCase _getRestaurantsUseCase;
   final SetCalendarDayRestaurantUseCase _setDayRestaurantUseCase;
   final GetCalendarAvailableMealsUseCase _getAvailableMealsUseCase;
@@ -51,7 +54,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
           localeName: event.localeName,
         );
       case SelectCalendarDayEvent():
-        _selectDay(event.day);
+        _selectDay(day: event.day, localeName: event.localeName);
       case LoadCalendarRestaurantsEvent():
         _loadRestaurants(event.localeName);
       case SelectCalendarRestaurantEvent():
@@ -124,6 +127,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
             clearCalendarFailure: true,
           ),
         );
+        await _loadSelectedDayDetails(localeName);
       case ApiErrorResult():
         if (retryWithCurrentOnNotFound && _isNotFound(result.failure)) {
           await _sharedPrefHelper.removeData(
@@ -204,11 +208,13 @@ class CalendarViewModel extends Cubit<CalendarState> {
       subscriptionId: state.subscriptionId,
       date: date,
       restaurantId: restaurant.id,
+      localeName: localeName,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
+        _replaceDay(result.data);
         await _loadAvailableMeals(
           localeName,
           restaurantId: restaurant.id,
@@ -279,7 +285,10 @@ class CalendarViewModel extends Cubit<CalendarState> {
     }
   }
 
-  void _selectDay(CalendarDayEntity day) {
+  void _selectDay({
+    required CalendarDayEntity day,
+    required String localeName,
+  }) {
     if (day.date == null || !day.hasMeals) return;
     emit(
       state.copyWith(
@@ -291,6 +300,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
         clearSaveFailure: true,
       ),
     );
+    _loadSelectedDayDetailsForDate(day.date!, localeName: localeName);
   }
 
   void _toggleMeal(String mealId) {
@@ -350,14 +360,17 @@ class CalendarViewModel extends Cubit<CalendarState> {
       subscriptionId: state.subscriptionId,
       date: date,
       meals: selectedMeals,
+      localeName: localeName,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
+        _replaceDay(result.data);
         final completeResult = await _autoSelectDayUseCase(
           subscriptionId: state.subscriptionId,
           date: date,
+          localeName: localeName,
         );
         if (isClosed) return;
         if (completeResult case ApiErrorResult()) {
@@ -377,10 +390,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
             clearSaveFailure: true,
           ),
         );
-        await _loadCalendar(
-          subscriptionId: state.subscriptionId,
-          localeName: localeName,
-        );
+        if (completeResult case ApiSuccessResult()) {
+          _replaceDay(completeResult.data);
+        }
       case ApiErrorResult():
         emit(state.copyWith(isSaving: false, saveFailure: result.failure));
     }
@@ -395,16 +407,14 @@ class CalendarViewModel extends Cubit<CalendarState> {
     final result = await _autoSelectDayUseCase(
       subscriptionId: state.subscriptionId,
       date: date,
+      localeName: localeName,
     );
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
         emit(state.copyWith(isSaving: false, clearSaveFailure: true));
-        await _loadCalendar(
-          subscriptionId: state.subscriptionId,
-          localeName: localeName,
-        );
+        _replaceDay(result.data);
       case ApiErrorResult():
         emit(state.copyWith(isSaving: false, saveFailure: result.failure));
     }
@@ -423,6 +433,61 @@ class CalendarViewModel extends Cubit<CalendarState> {
         )
         .firstOrNull;
     return todayDay?.date ?? days.first.date;
+  }
+
+  Future<void> _loadSelectedDayDetails(String localeName) async {
+    final selectedDate = state.selectedDate;
+    if (selectedDate == null) return;
+    await _loadSelectedDayDetailsForDate(selectedDate, localeName: localeName);
+  }
+
+  Future<void> _loadSelectedDayDetailsForDate(
+    DateTime selectedDate, {
+    required String localeName,
+  }) async {
+    if (state.subscriptionId.isEmpty || localeName.isEmpty) return;
+    final date = DateFormat('yyyy-MM-dd').format(selectedDate);
+    final result = await _getCalendarDayUseCase(
+      subscriptionId: state.subscriptionId,
+      date: date,
+      localeName: localeName,
+    );
+    if (isClosed || !_isSameSelectedDate(selectedDate)) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        _replaceDay(result.data);
+      case ApiErrorResult():
+        emit(state.copyWith(calendarFailure: result.failure));
+    }
+  }
+
+  void _replaceDay(CalendarDayEntity updatedDay) {
+    if (updatedDay.date == null) return;
+    final updatedDays = state.days.map((day) {
+      if (day.date == null || !_isSameDay(day.date!, updatedDay.date!)) {
+        return day;
+      }
+      return updatedDay;
+    }).toList();
+    emit(
+      state.copyWith(
+        days: updatedDays,
+        localSelectedMealIds: _isSameSelectedDate(updatedDay.date!)
+            ? updatedDay.selectedMealIds
+            : state.localSelectedMealIds,
+      ),
+    );
+  }
+
+  bool _isSameSelectedDate(DateTime date) {
+    final selectedDate = state.selectedDate;
+    if (selectedDate == null) return false;
+    return _isSameDay(selectedDate, date);
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 
   Future<String?> _resolveCurrentSubscriptionId() async {

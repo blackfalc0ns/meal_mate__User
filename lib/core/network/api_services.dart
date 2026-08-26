@@ -320,6 +320,12 @@ abstract class ApiServices {
     @Path('subscriptionId') String subscriptionId,
   );
 
+  @GET(EndPoints.subscriptionCalendarDay)
+  Future<CalendarDayResponseDto> getSubscriptionCalendarDay(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+  );
+
   @GET(EndPoints.subscriptionCalendarRestaurants)
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarRestaurants(
     @Path('subscriptionId') String subscriptionId,
@@ -332,7 +338,7 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.subscriptionCalendarDayRestaurant)
-  Future<void> setSubscriptionCalendarDayRestaurant(
+  Future<CalendarDayResponseDto> setSubscriptionCalendarDayRestaurant(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
     @Body() CalendarSetRestaurantRequestDto request,
@@ -354,14 +360,14 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.subscriptionCalendarDayMeals)
-  Future<void> saveSubscriptionCalendarDayMeals(
+  Future<CalendarDayResponseDto> saveSubscriptionCalendarDayMeals(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
     @Body() CalendarSaveMealsRequestDto request,
   );
 
   @POST(EndPoints.subscriptionCalendarAutoSelect)
-  Future<void> autoSelectSubscriptionCalendarDay(
+  Future<CalendarDayResponseDto> autoSelectSubscriptionCalendarDay(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
   );

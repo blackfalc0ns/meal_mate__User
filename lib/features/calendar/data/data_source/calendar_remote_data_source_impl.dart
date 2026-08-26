@@ -19,6 +19,14 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
+  Future<CalendarDayResponseDto> getDay({
+    required String subscriptionId,
+    required String date,
+  }) {
+    return _apiServices.getSubscriptionCalendarDay(subscriptionId, date);
+  }
+
+  @override
   Future<List<CalendarRestaurantResponseDto>> getRestaurants({
     required String subscriptionId,
     required String date,
@@ -75,7 +83,7 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
-  Future<void> setDayRestaurant({
+  Future<CalendarDayResponseDto> setDayRestaurant({
     required String subscriptionId,
     required String date,
     required CalendarSetRestaurantRequestDto request,
@@ -101,7 +109,7 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
-  Future<void> saveDayMeals({
+  Future<CalendarDayResponseDto> saveDayMeals({
     required String subscriptionId,
     required String date,
     required CalendarSaveMealsRequestDto request,
@@ -114,7 +122,7 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
-  Future<void> autoSelect({
+  Future<CalendarDayResponseDto> autoSelect({
     required String subscriptionId,
     required String date,
   }) {

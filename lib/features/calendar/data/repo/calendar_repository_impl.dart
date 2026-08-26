@@ -3,6 +3,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/data/data_source/calendar_remote_data_source.dart';
 import 'package:meal_meat_user/features/calendar/data/mapper/calendar_mapper.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
@@ -29,6 +30,21 @@ class CalendarRepositoryImpl implements CalendarRepository {
   }
 
   @override
+  Future<ApiResult<CalendarDayEntity>> getDay({
+    required String subscriptionId,
+    required String date,
+    required String localeName,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getDay(
+        subscriptionId: subscriptionId,
+        date: date,
+      );
+      return response.toEntity(localeName);
+    });
+  }
+
+  @override
   Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
     required String subscriptionId,
     required String date,
@@ -47,17 +63,19 @@ class CalendarRepositoryImpl implements CalendarRepository {
   }
 
   @override
-  Future<ApiResult<void>> setDayRestaurant({
+  Future<ApiResult<CalendarDayEntity>> setDayRestaurant({
     required String subscriptionId,
     required String date,
     required String restaurantId,
+    required String localeName,
   }) {
-    return safeApiCall(() {
-      return _remoteDataSource.setDayRestaurant(
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.setDayRestaurant(
         subscriptionId: subscriptionId,
         date: date,
         request: restaurantId.toSetRestaurantDto(),
       );
+      return response.toEntity(localeName);
     });
   }
 
@@ -79,32 +97,42 @@ class CalendarRepositoryImpl implements CalendarRepository {
   }
 
   @override
-  Future<ApiResult<void>> saveDayMeals({
+  Future<ApiResult<CalendarDayEntity>> saveDayMeals({
     required String subscriptionId,
     required String date,
     required List<CalendarMealEntity> meals,
+    required String localeName,
   }) {
     return safeApiCall(() async {
+      CalendarDayEntity? updatedDay;
       for (final meal in meals) {
-        await _remoteDataSource.saveDayMeals(
+        final response = await _remoteDataSource.saveDayMeals(
           subscriptionId: subscriptionId,
           date: date,
           request: meal.toSaveMealsDto(),
         );
+        updatedDay = response.toEntity(localeName);
       }
+      return updatedDay ??
+          (await _remoteDataSource.getDay(
+            subscriptionId: subscriptionId,
+            date: date,
+          )).toEntity(localeName);
     });
   }
 
   @override
-  Future<ApiResult<void>> autoSelect({
+  Future<ApiResult<CalendarDayEntity>> autoSelect({
     required String subscriptionId,
     required String date,
+    required String localeName,
   }) {
-    return safeApiCall(() {
-      return _remoteDataSource.autoSelect(
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.autoSelect(
         subscriptionId: subscriptionId,
         date: date,
       );
+      return response.toEntity(localeName);
     });
   }
 }

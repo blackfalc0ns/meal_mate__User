@@ -5072,6 +5072,24 @@ abstract class AppLocalizations {
   /// **'Add meal'**
   String get calendar_add_meal;
 
+  /// No description provided for @calendar_empty_meals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals right now'**
+  String get calendar_empty_meals_title;
+
+  /// No description provided for @calendar_empty_meals_description.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not added any meals yet.\nStart now by adding your healthy meals.'**
+  String get calendar_empty_meals_description;
+
+  /// No description provided for @calendar_empty_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add meals'**
+  String get calendar_empty_meals_button;
+
   /// No description provided for @calendar_reschedule.
   ///
   /// In en, this message translates to:

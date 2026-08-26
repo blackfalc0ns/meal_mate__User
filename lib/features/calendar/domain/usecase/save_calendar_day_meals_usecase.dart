@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 
@@ -9,15 +10,17 @@ class SaveCalendarDayMealsUseCase {
 
   final CalendarRepository _repository;
 
-  Future<ApiResult<void>> call({
+  Future<ApiResult<CalendarDayEntity>> call({
     required String subscriptionId,
     required String date,
     required List<CalendarMealEntity> meals,
+    required String localeName,
   }) {
     return _repository.saveDayMeals(
       subscriptionId: subscriptionId,
       date: date,
       meals: meals,
+      localeName: localeName,
     );
   }
 }

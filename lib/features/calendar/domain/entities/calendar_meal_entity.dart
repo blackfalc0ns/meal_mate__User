@@ -5,6 +5,7 @@ class CalendarMealEntity {
     this.imageUrl,
     this.blockReason,
     this.selected = false,
+    this.description = '',
     required this.mealType,
     required this.title,
     required this.time,
@@ -22,6 +23,7 @@ class CalendarMealEntity {
   final String? imageUrl;
   final String? blockReason;
   final bool selected;
+  final String description;
   final String mealType;
   final String title;
   final String time;
@@ -29,7 +31,19 @@ class CalendarMealEntity {
   final String protein;
   final String carbs;
   final String fat;
-  final List<String> ingredients;
+  final List<CalendarMealIngredientEntity> ingredients;
   final String imageAsset;
   final String actionLabel;
+}
+
+class CalendarMealIngredientEntity {
+  const CalendarMealIngredientEntity({
+    required this.label,
+    required this.asset,
+    this.iconUrl,
+  });
+
+  final String label;
+  final String asset;
+  final String? iconUrl;
 }
