@@ -2900,6 +2900,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_change_restaurant => 'تغيير المطعم';
 
   @override
+  String get calendar_meals_changed => 'تم تغيير الوجبة';
+
+  @override
+  String get calendar_selection_locked_before_72_hours =>
+      'آخر تعديل قبل التوصيل بـ 72 ساعة';
+
+  @override
   String get calendar_pick_restaurant_first => 'اختيار ';
 
   @override

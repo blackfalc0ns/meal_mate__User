@@ -37,6 +37,20 @@ class CalendarDayEntity {
   final bool isMuted;
   final bool hasMeals;
 
+  bool get hasSelectedMeals {
+    return selectedMealIds.isNotEmpty || meals.any((meal) => meal.selected);
+  }
+
+  bool get isRestaurantClosed {
+    final normalizedStatus = status.toLowerCase();
+    return isLocked ||
+        normalizedStatus == 'senttorestaurant' ||
+        normalizedStatus == 'sent_to_restaurant' ||
+        normalizedStatus == 'locked' ||
+        normalizedStatus == 'completed' ||
+        normalizedStatus == 'cancelled';
+  }
+
   bool get isEditable {
     if (date == null || isLocked) return false;
     final normalizedStatus = status.toLowerCase();

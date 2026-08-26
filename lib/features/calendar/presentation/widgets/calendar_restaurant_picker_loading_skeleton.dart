@@ -20,20 +20,20 @@ class CalendarRestaurantPickerLoadingSkeleton extends StatelessWidget {
                 width: 1.55,
               ),
             ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 10.5,
                 vertical: Spacing.sm,
               ),
               child: Row(
                 children: [
-                  ShimmerPlaceholder.circle(size: 46),
-                  SizedBox(width: Spacing.md),
+                  const ShimmerPlaceholder.circle(size: 46),
+                  const SizedBox(width: Spacing.md),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         ShimmerPlaceholder.rect(width: 132, height: 13),
                         SizedBox(height: Spacing.xs),
                         ShimmerPlaceholder.rect(width: 188, height: 10),
@@ -42,8 +42,8 @@ class CalendarRestaurantPickerLoadingSkeleton extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: Spacing.md),
-                  ShimmerPlaceholder.circle(size: 46),
+                  const SizedBox(width: Spacing.md),
+                  const ShimmerPlaceholder.circle(size: 46),
                 ],
               ),
             ),

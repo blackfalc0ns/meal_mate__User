@@ -31,12 +31,13 @@ class CalendarMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final mealCardBodyHeight = readOnly ? 125.0 : 114.0;
     return SizedBox(
-      height: 155,
+      height: readOnly ? mealCardBodyHeight : 150.0,
       child: Column(
         children: [
           SizedBox(
-            height: 114,
+            height: mealCardBodyHeight,
             child: InkWell(
               onTap: onTap,
               borderRadius: BorderRadius.circular(15),
@@ -91,8 +92,8 @@ class CalendarMealCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: Spacing.sm),
-          if (!readOnly)
+          if (!readOnly) ...[
+            const SizedBox(height: Spacing.sm),
             SizedBox(
               height: 25,
               width: double.infinity,
@@ -118,6 +119,7 @@ class CalendarMealCard extends StatelessWidget {
                 ),
               ),
             ),
+          ],
         ],
       ),
     );

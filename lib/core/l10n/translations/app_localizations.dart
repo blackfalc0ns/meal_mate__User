@@ -5612,6 +5612,18 @@ abstract class AppLocalizations {
   /// **'Change restaurant'**
   String get calendar_change_restaurant;
 
+  /// No description provided for @calendar_meals_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal changed'**
+  String get calendar_meals_changed;
+
+  /// No description provided for @calendar_selection_locked_before_72_hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Last change is 72 hours before delivery'**
+  String get calendar_selection_locked_before_72_hours;
+
   /// No description provided for @calendar_pick_restaurant_first.
   ///
   /// In en, this message translates to:

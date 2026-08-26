@@ -143,7 +143,7 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
         localeName,
         ar: slotNameAr,
         en: slotNameEn,
-        fallback: mealType ?? slot,
+        fallback: slotName ?? mealType ?? slot,
       ),
       title: _localized(
         localeName,
@@ -168,8 +168,8 @@ extension CalendarSlotRequirementResponseDtoMapper
   CalendarSlotRequirementEntity toEntity() {
     return CalendarSlotRequirementEntity(
       slot: slot ?? '',
-      slotNameAr: slotNameAr ?? '',
-      slotNameEn: slotNameEn ?? slotNameAr ?? '',
+      slotNameAr: slotNameAr ?? slotName ?? '',
+      slotNameEn: slotNameEn ?? slotName ?? slotNameAr ?? '',
       count: count ?? 0,
     );
   }

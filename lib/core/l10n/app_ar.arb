@@ -995,6 +995,8 @@
   "calendar_search_restaurant_hint": "ابحث عن مطعم أو نوع مطبخ...",
   "calendar_meal_suffix": " وجبة",
   "calendar_change_restaurant": "تغيير المطعم",
+  "calendar_meals_changed": "تم تغيير الوجبة",
+  "calendar_selection_locked_before_72_hours": "آخر تعديل قبل التوصيل بـ 72 ساعة",
   "calendar_pick_restaurant_first": "اختيار ",
   "calendar_pick_restaurant_second": "مطعم",
   "calendar_done": "تم",

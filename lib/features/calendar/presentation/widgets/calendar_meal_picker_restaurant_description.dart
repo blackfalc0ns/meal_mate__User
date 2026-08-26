@@ -9,13 +9,10 @@ class CalendarMealPickerRestaurantDescription extends StatelessWidget {
     final locale = context.localization;
 
     return Padding(
-      padding: const EdgeInsetsDirectional.only(
-        start: Spacing.xxxl + Spacing.xxl + Spacing.sm,
-        end: Spacing.xl + Spacing.xs,
-      ),
+      padding: const EdgeInsetsDirectional.only(start: 88.0, end: 28.0),
       child: Text(
         locale.calendar_restaurant_description,
-        textAlign: TextAlign.right,
+
         style: getRegularStyle(
           fontFamily: FontConstant.alexandria,
           fontSize: 12,

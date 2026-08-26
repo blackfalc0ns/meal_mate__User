@@ -73,6 +73,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
     this.isSaving = false,
     this.failure,
     this.onBackPressed,
+    this.isFullPage = false,
   });
 
   final String? restaurantName;
@@ -93,6 +94,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
   final bool isSaving;
   final Failure? failure;
   final VoidCallback? onBackPressed;
+  final bool isFullPage;
 
   @override
   State<CalendarMealPickerSheet> createState() =>
@@ -160,6 +162,14 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         widget.restaurantLogoUrl ??
         details?.logoUrl ??
         availableMeals?.restaurant?.logoUrl;
+    final contentTop = widget.isFullPage
+        ? Spacing.restaurantDetailsHeroHeight
+        : Spacing.restaurantDetailsSheetTop;
+    final contentRadius = widget.isFullPage
+        ? BorderRadius.zero
+        : const BorderRadius.vertical(
+            top: Radius.circular(Spacing.restaurantDetailsSheetRadius),
+          );
 
     return Material(
       color: color.surface,
@@ -174,7 +184,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: 221,
+                height: Spacing.restaurantDetailsHeroHeight,
                 child: details?.coverImageUrl == null
                     ? Image.asset(
                         Assets.calendarMealPickerHero,
@@ -191,14 +201,12 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                     widget.onBackPressed ?? () => Navigator.maybePop(context),
               ),
               Positioned(
-                top: 189,
+                top: contentTop,
                 left: 0,
                 right: 0,
                 bottom: 0,
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(31.2),
-                  ),
+                  borderRadius: contentRadius,
                   child: ColoredBox(
                     color: color.surface,
                     child: CustomScrollView(
@@ -206,8 +214,10 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                         SliverToBoxAdapter(
                           child: Column(
                             children: [
-                              const SizedBox(height: Spacing.lg),
-                              const CalendarSheetHandle(),
+                              if (!widget.isFullPage) ...[
+                                const SizedBox(height: Spacing.lg),
+                                const CalendarSheetHandle(),
+                              ],
                               const SizedBox(height: Spacing.md),
                               CalendarMealPickerRestaurantHeader(
                                 restaurantName: resolvedRestaurantName,
@@ -249,8 +259,8 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                                       : (index) => _openMealDetails(
                                           groups[selectedTab].meals[index],
                                         ),
-                                  onOptionDetailsSelected: availableMeals !=
-                                          null
+                                  onOptionDetailsSelected:
+                                      availableMeals != null
                                       ? (index) {
                                           final selectedMeal = availableMeals
                                               .meals
@@ -448,25 +458,26 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     return meals
         .where((meal) => meal.slot.toLowerCase() == slot.toLowerCase())
         .map((meal) {
-      final ingredients = meal.ingredients.length > 4
-          ? [...meal.ingredients.take(4), moreLabel]
-          : meal.ingredients;
+          final ingredients = meal.ingredients.length > 4
+              ? [...meal.ingredients.take(4), moreLabel]
+              : meal.ingredients;
 
-      return (
-        id: meal.id,
-        slot: meal.slot,
-        title: meal.title,
-        imageAsset: Assets.calendarMealPickerHero,
-        imageUrl: meal.imageUrl,
-        calories: meal.calories,
-        protein: meal.protein,
-        carbs: meal.carbs,
-        fat: meal.fat,
-        ingredients: ingredients,
-        selected: widget.selectedMealIds.contains(meal.id),
-        blockReason: meal.blockReason,
-      );
-    }).toList();
+          return (
+            id: meal.id,
+            slot: meal.slot,
+            title: meal.title,
+            imageAsset: Assets.calendarMealPickerHero,
+            imageUrl: meal.imageUrl,
+            calories: meal.calories,
+            protein: meal.protein,
+            carbs: meal.carbs,
+            fat: meal.fat,
+            ingredients: ingredients,
+            selected: widget.selectedMealIds.contains(meal.id),
+            blockReason: meal.blockReason,
+          );
+        })
+        .toList();
   }
 
   List<MealDetailsMacroEntity> _macroItems(
@@ -538,9 +549,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         restaurantName: restaurantName,
         restaurantLogo: widget.restaurantInitials ?? _initials(restaurantName),
         restaurantLogoUrl:
-            widget.restaurantLogoUrl ??
-            restaurant?.logoUrl ??
-            details?.logoUrl,
+            widget.restaurantLogoUrl ?? restaurant?.logoUrl ?? details?.logoUrl,
         headerImageUrl: meal.imageUrl ?? details?.coverImageUrl,
         ratingTitle: locale.localeName == 'ar'
             ? 'تقييم المطعم'

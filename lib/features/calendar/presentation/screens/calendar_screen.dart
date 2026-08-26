@@ -220,6 +220,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   CalendarRestaurantSummaryCard(
                     restaurant: restaurant,
                     meals: meals,
+                    day: selectedDay,
                     onMorePressed: readOnly
                         ? null
                         : () => _openRestaurantPicker(context),
@@ -330,42 +331,42 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (_mealSheetOpen) return;
     _mealSheetOpen = true;
     final locale = context.localization;
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: context.colorScheme.surface,
-      builder: (_) {
-        return BlocProvider<CalendarViewModel>.value(
-          value: _viewModel,
-          child: BlocBuilder<CalendarViewModel, CalendarState>(
-            builder: (context, state) {
-              final restaurant =
-                  state.availableMeals?.restaurant ??
-                  state.selectedDay?.restaurant;
-              return CalendarMealPickerSheet(
-                restaurantName: restaurant?.name,
-                restaurantLogoUrl: restaurant?.logoUrl,
-                restaurantInitials: _initials(restaurant?.name ?? ''),
-                restaurantRating: restaurant?.rating,
-                availableMeals: state.availableMeals,
-                selectedMealIds: state.localSelectedMealIds,
-                onMealToggled: (mealId) {
-                  _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
-                },
-                onSave: () {
-                  _viewModel.doIntent(
-                    SaveCalendarDayMealsEvent(localeName: locale.localeName),
-                  );
-                },
-                canSave: state.canSaveMeals,
-                isLoading: state.isAvailableMealsLoading,
-                isSaving: state.isSaving,
-                failure: state.availableMealsFailure ?? state.saveFailure,
-              );
-            },
-          ),
-        );
-      },
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) {
+          return BlocProvider<CalendarViewModel>.value(
+            value: _viewModel,
+            child: BlocBuilder<CalendarViewModel, CalendarState>(
+              builder: (context, state) {
+                final restaurant =
+                    state.availableMeals?.restaurant ??
+                    state.selectedDay?.restaurant;
+                return CalendarMealPickerSheet(
+                  restaurantName: restaurant?.name,
+                  restaurantLogoUrl: restaurant?.logoUrl,
+                  restaurantInitials: _initials(restaurant?.name ?? ''),
+                  restaurantRating: restaurant?.rating,
+                  availableMeals: state.availableMeals,
+                  selectedMealIds: state.localSelectedMealIds,
+                  onMealToggled: (mealId) {
+                    _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
+                  },
+                  onSave: () {
+                    _viewModel.doIntent(
+                      SaveCalendarDayMealsEvent(localeName: locale.localeName),
+                    );
+                  },
+                  canSave: state.canSaveMeals,
+                  isLoading: state.isAvailableMealsLoading,
+                  isSaving: state.isSaving,
+                  failure: state.availableMealsFailure ?? state.saveFailure,
+                  isFullPage: true,
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
     _mealSheetOpen = false;
     if (_viewModel.state.isAvailableMealsLoading ||
@@ -521,7 +522,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         macroDistributionTitle: locale.localeName == 'ar'
             ? 'توزيع العناصر الغذائية'
             : 'Macro distribution',
-        macroItems: _macroItems(proteinG, carbsG, fatG, locale.localeName, locale),
+        macroItems: _macroItems(
+          proteinG,
+          carbsG,
+          fatG,
+          locale.localeName,
+          locale,
+        ),
         allergensTitle: locale.localeName == 'ar'
             ? 'مسببات الحساسية'
             : 'Allergens',

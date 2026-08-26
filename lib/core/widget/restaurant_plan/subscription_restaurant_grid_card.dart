@@ -9,10 +9,43 @@ import 'package:meal_meat_user/core/widget/restaurant_plan/subscription_restaura
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 
-class SubscriptionRestaurantGridCard extends StatelessWidget {
+class SubscriptionRestaurantGridCard extends StatefulWidget {
   const SubscriptionRestaurantGridCard({super.key, required this.restaurant});
 
   final MonthlyRestaurantPlanEntity restaurant;
+
+  @override
+  State<SubscriptionRestaurantGridCard> createState() =>
+      _SubscriptionRestaurantGridCardState();
+}
+
+class _SubscriptionRestaurantGridCardState
+    extends State<SubscriptionRestaurantGridCard> {
+  bool _isOpening = false;
+
+  Future<void> _openRestaurantDetails() async {
+    if (_isOpening) return;
+
+    setState(() => _isOpening = true);
+    try {
+      await context.pushNamed(
+        AppRoutes.restaurantDetails,
+        arguments: SubscriptionRestaurantDetailsArgs(
+          programId: widget.restaurant.programId,
+          bundleId: widget.restaurant.bundleId,
+          restaurantId: widget.restaurant.restaurantId,
+          restaurantName: widget.restaurant.name,
+          restaurantLogoUrl: widget.restaurant.logoUrl,
+          restaurantInitials: widget.restaurant.initials,
+          restaurantRating: widget.restaurant.rating,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isOpening = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +56,7 @@ class SubscriptionRestaurantGridCard extends StatelessWidget {
       color: color.surface.withValues(alpha: 0),
       borderRadius: BorderRadius.circular(Spacing.monthlyRestaurantCardRadius),
       child: InkWell(
-        onTap: () => context.pushNamed(
-          AppRoutes.restaurantDetails,
-          arguments: SubscriptionRestaurantDetailsArgs(
-            programId: restaurant.programId,
-            bundleId: restaurant.bundleId,
-            restaurantId: restaurant.restaurantId,
-            restaurantName: restaurant.name,
-            restaurantLogoUrl: restaurant.logoUrl,
-            restaurantInitials: restaurant.initials,
-            restaurantRating: restaurant.rating,
-          ),
-        ),
+        onTap: _openRestaurantDetails,
         borderRadius: BorderRadius.circular(
           Spacing.monthlyRestaurantCardRadius,
         ),
@@ -58,12 +80,12 @@ class SubscriptionRestaurantGridCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SubscriptionRestaurantLogo(
-                restaurant: restaurant,
+                restaurant: widget.restaurant,
                 size: Spacing.iconXl,
               ),
               const SizedBox(height: Spacing.xs),
               Text(
-                restaurant.name,
+                widget.restaurant.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -75,7 +97,7 @@ class SubscriptionRestaurantGridCard extends StatelessWidget {
               ),
               const SizedBox(height: Spacing.sm),
               Text(
-                restaurant.subtitle,
+                widget.restaurant.subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -94,7 +116,7 @@ class SubscriptionRestaurantGridCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Text(
-                  '${restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
+                  '${widget.restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(

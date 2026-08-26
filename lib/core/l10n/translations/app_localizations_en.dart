@@ -2945,6 +2945,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_change_restaurant => 'Change restaurant';
 
   @override
+  String get calendar_meals_changed => 'Meal changed';
+
+  @override
+  String get calendar_selection_locked_before_72_hours =>
+      'Last change is 72 hours before delivery';
+
+  @override
   String get calendar_pick_restaurant_first => 'Choose ';
 
   @override

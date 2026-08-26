@@ -131,6 +131,7 @@ class CalendarMealResponseDto {
     this.title,
     this.description,
     this.slot,
+    this.slotName,
     this.slotNameAr,
     this.slotNameEn,
     this.mealType,
@@ -153,6 +154,7 @@ class CalendarMealResponseDto {
   final String? title;
   final String? description;
   final String? slot;
+  final String? slotName;
   final String? slotNameAr;
   final String? slotNameEn;
   final String? mealType;
@@ -200,12 +202,14 @@ class CalendarIngredientResponseDto {
 class CalendarSlotRequirementResponseDto {
   const CalendarSlotRequirementResponseDto({
     this.slot,
+    this.slotName,
     this.slotNameAr,
     this.slotNameEn,
     this.count,
   });
 
   final String? slot;
+  final String? slotName;
   final String? slotNameAr;
   final String? slotNameEn;
   final int? count;
