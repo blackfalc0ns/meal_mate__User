@@ -16,6 +16,8 @@ abstract class AppRoutes {
   static const String familySubscriptionSettings =
       '/family-subscription-settings';
   static const String restaurantTierUpgrade = '/restaurant-tier-upgrade';
+  static const String restaurantTierUpgradeConfirmation =
+      '/restaurant-tier-upgrade-confirmation';
   static const String familySubscriptionMembers =
       '/family-subscription-members';
   static const String familySubscriptionMemberDetails =

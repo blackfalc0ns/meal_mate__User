@@ -21,12 +21,13 @@ class RestaurantTierComparisonRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
+            flex: 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 RestaurantTierBadge(
                   imageAsset: row.badgeAsset,
-                  size: Spacing.iconLg,
+                  size: Spacing.iconMd,
                 ),
                 const SizedBox(width: Spacing.xs),
                 Flexible(
@@ -38,7 +39,7 @@ class RestaurantTierComparisonRow extends StatelessWidget {
                           text: row.tierName,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size13,
+                            fontSize: FontSize.size11,
                             color: color.onSurface,
                           ),
                         ),
@@ -48,7 +49,7 @@ class RestaurantTierComparisonRow extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
+                      fontSize: FontSize.size11,
                       color: color.onSurface,
                     ),
                   ),
@@ -56,13 +57,14 @@ class RestaurantTierComparisonRow extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.xs),
           SizedBox(
-            height: Spacing.xxl,
+            height: Spacing.xl,
             child: VerticalDivider(color: color.outlineVariant),
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.xs),
           Expanded(
+            flex: 4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +77,7 @@ class RestaurantTierComparisonRow extends StatelessWidget {
                         text: row.restaurantCount,
                         style: getSemiBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.primary,
                         ),
                       ),
@@ -86,7 +88,7 @@ class RestaurantTierComparisonRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size11,
                     color: color.onSurface,
                   ),
                 ),
@@ -94,18 +96,18 @@ class RestaurantTierComparisonRow extends StatelessWidget {
                   row.caption,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size8,
+                    fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: Spacing.sm),
+          const SizedBox(width: Spacing.xs),
           Icon(
-            Icons.arrow_back_ios_new_rounded,
+            Icons.arrow_forward_ios_rounded,
             color: color.primary,
             size: Spacing.iconSm,
             semanticLabel: locale.subscription_summary_restaurant_tier_label,

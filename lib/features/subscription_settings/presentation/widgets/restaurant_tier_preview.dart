@@ -21,9 +21,9 @@ class RestaurantTierPreview extends StatelessWidget {
       children: [
         RestaurantTierBadge(
           imageAsset: tier.badgeAsset,
-          size: Spacing.restaurantTierBadgeSize,
+          size: Spacing.avatarSm,
         ),
-        const SizedBox(width: Spacing.sm),
+        const SizedBox(width: Spacing.xs),
         Semantics(
           label: locale.subscription_summary_restaurant_tier_label,
           child: Text(
@@ -32,7 +32,7 @@ class RestaurantTierPreview extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size24,
+              fontSize: FontSize.size16,
               color: color.primary,
             ),
           ),

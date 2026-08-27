@@ -18,7 +18,7 @@ class RestaurantTierDetailRow extends StatelessWidget {
     final style = row.isStrong
         ? getSemiBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size14,
+            fontSize: FontSize.size13,
             color: textColor,
           )
         : getMediumStyle(

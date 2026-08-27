@@ -38,7 +38,7 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
               payment.changeLabel,
               style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size11,
                 color: color.primary,
               ),
             ),
@@ -54,7 +54,7 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size14,
+                  fontSize: FontSize.size12,
                   color: color.onSurface,
                 ),
               ),
@@ -81,14 +81,14 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
               payment.brand,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size13,
+                fontSize: FontSize.size11,
                 color: color.primary,
               ),
             ),
           ),
           const SizedBox(width: Spacing.sm),
           Icon(
-            Icons.arrow_back_ios_new_rounded,
+            Icons.arrow_forward_ios_rounded,
             color: color.primary,
             size: Spacing.iconSm,
             semanticLabel: locale.profile_billing,

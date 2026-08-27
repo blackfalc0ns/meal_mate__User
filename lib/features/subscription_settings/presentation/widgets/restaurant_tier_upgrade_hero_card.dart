@@ -25,7 +25,6 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Align(
             alignment: AlignmentDirectional.centerStart,
@@ -33,7 +32,7 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
               data.currentPackageLabel,
               style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size11,
                 color: color.onSurfaceVariant,
               ),
             ),

@@ -22,7 +22,7 @@ class RestaurantTierFeatureChip extends StatelessWidget {
     };
 
     return Container(
-      height: Spacing.restaurantTierInlineButtonHeight + Spacing.xss,
+      height: Spacing.restaurantTierInlineButtonHeight,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
       decoration: BoxDecoration(
         color: color.primaryContainer.withValues(alpha: 0.2),

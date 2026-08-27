@@ -32,7 +32,7 @@ class RestaurantTierUpgradeActions extends StatelessWidget {
           borderRadius: Spacing.radiusPill,
           color: color.primary,
           textColor: color.onPrimary,
-          fontSize: FontSize.size18,
+          fontSize: FontSize.size14,
           iconWidget: Icon(
             Icons.offline_bolt_rounded,
             color: color.onPrimary,
@@ -48,7 +48,7 @@ class RestaurantTierUpgradeActions extends StatelessWidget {
           borderRadius: Spacing.radiusPill,
           color: color.primary,
           textColor: color.primary,
-          fontSize: FontSize.size18,
+          fontSize: FontSize.size14,
         ),
       ],
     );
