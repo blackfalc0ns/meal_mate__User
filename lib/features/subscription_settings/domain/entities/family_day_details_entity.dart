@@ -5,6 +5,7 @@ class FamilyDayDetailsEntity {
     required this.title,
     required this.reviewButtonLabel,
     required this.selectedMealsLabel,
+    required this.members,
     required this.member,
     required this.meals,
   });
@@ -12,6 +13,7 @@ class FamilyDayDetailsEntity {
   final String title;
   final String reviewButtonLabel;
   final String selectedMealsLabel;
+  final List<FamilyDayMemberEntity> members;
   final FamilyDayMemberEntity member;
   final List<FamilyDayMealEntity> meals;
 }

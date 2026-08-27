@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/family_day_de
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_header.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_selected_status.dart';
 
@@ -25,12 +26,19 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
   static const _dataSource = FamilyDayDetailsFakeDataSource();
 
   DateTime _selectedDate = DateTime(2024, 5, 26);
+  int _selectedMemberIndex = 3;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
     final details = _dataSource.getDetails();
+    final safeSelectedMemberIndex = details.members.isEmpty
+        ? 0
+        : _selectedMemberIndex.clamp(0, details.members.length - 1).toInt();
+    final selectedMember = details.members.isEmpty
+        ? details.member
+        : details.members[safeSelectedMemberIndex];
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -61,13 +69,20 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
             label: details.title,
             child: Column(
               children: [
+                FamilyDayMemberSelector(
+                  members: details.members,
+                  selectedIndex: safeSelectedMemberIndex,
+                  onMemberSelected: (index) {
+                    setState(() => _selectedMemberIndex = index);
+                  },
+                ),
                 FamilyDayHeader(
                   dateLabel: _formatDate(context, _selectedDate),
                   onPreviousDay: () => _changeDay(-1),
                   onNextDay: () => _changeDay(1),
                   onDatePressed: _openDatePicker,
                 ),
-                FamilyDayMemberCard(member: details.member),
+                FamilyDayMemberCard(member: selectedMember),
                 const SizedBox(height: Spacing.familyDayMemberTopGap),
                 for (final meal in details.meals) ...[
                   FamilyDayMealCard(
