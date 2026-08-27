@@ -69,110 +69,115 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: color.surfaceContainerHighest,
-                border: Border(bottom: BorderSide(color: color.outlineVariant)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Spacing.sm,
-                      horizontal: Spacing.screenH,
-                    ),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: SizedBox(
-                        height: 42,
-                        child: Row(
-                          children: [
-                            CalendarMonthArrowButton(
-                              icon: Icons.chevron_left_rounded,
-                              onPressed: () => _handleMonthArrow(-1),
-                            ),
-                            const Spacer(),
-                            CalendarMonthTitle(monthTitle: widget.monthTitle),
-                            const Spacer(),
-                            CalendarMonthArrowButton(
-                              icon: Icons.chevron_right_rounded,
-                              onPressed: () => _handleMonthArrow(1),
-                            ),
-                          ],
-                        ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: Spacing.lg),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: color.surfaceContainerHighest,
+                  border: Border(
+                    bottom: BorderSide(color: color.outlineVariant),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: Spacing.sm,
+                        horizontal: Spacing.screenH,
                       ),
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 520),
-                    curve: Curves.easeInOutCubic,
-                    height: widget.isExpanded ? 6 : 1,
-                  ),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 520),
-                    reverseDuration: const Duration(milliseconds: 500),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeInOutCubic,
-                    transitionBuilder: (child, animation) {
-                      final slide = Tween<Offset>(
-                        begin: const Offset(0, -0.035),
-                        end: Offset.zero,
-                      ).animate(animation);
-
-                      return FadeTransition(
-                        opacity: animation,
-                        child: SlideTransition(
-                          position: slide,
-                          child: AnimatedBuilder(
-                            animation: animation,
-                            child: child,
-                            builder: (context, child) {
-                              return Align(
-                                alignment: Alignment.topCenter,
-                                heightFactor: animation.value,
-                                child: child,
-                              );
-                            },
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: SizedBox(
+                          height: 42,
+                          child: Row(
+                            children: [
+                              CalendarMonthArrowButton(
+                                icon: Icons.chevron_left_rounded,
+                                onPressed: () => _handleMonthArrow(-1),
+                              ),
+                              const Spacer(),
+                              CalendarMonthTitle(monthTitle: widget.monthTitle),
+                              const Spacer(),
+                              CalendarMonthArrowButton(
+                                icon: Icons.chevron_right_rounded,
+                                onPressed: () => _handleMonthArrow(1),
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                    layoutBuilder: (currentChild, previousChildren) {
-                      return Stack(
-                        alignment: Alignment.topCenter,
-                        children: [...previousChildren, ?currentChild],
-                      );
-                    },
-                    child: AnimatedPadding(
-                      key: ValueKey(widget.isExpanded),
+                      ),
+                    ),
+                    AnimatedContainer(
                       duration: const Duration(milliseconds: 520),
                       curve: Curves.easeInOutCubic,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: widget.isExpanded ? 18 : 31,
-                      ),
-                      child: widget.isExpanded
-                          ? CalendarMonthGrid(
-                              days: widget.days,
-                              onDaySelected: widget.onDaySelected,
-                            )
-                          : CalendarWeekStrip(
-                              controller: _weekController,
-                              days: widget.days,
-                              onDaySelected: widget.onDaySelected,
-                            ),
+                      height: widget.isExpanded ? 6 : 1,
                     ),
-                  ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 520),
-                    curve: Curves.easeInOutCubic,
-                    height: widget.isExpanded ? 22 : 24,
-                  ),
-                ],
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 520),
+                      reverseDuration: const Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInOutCubic,
+                      transitionBuilder: (child, animation) {
+                        final slide = Tween<Offset>(
+                          begin: const Offset(0, -0.035),
+                          end: Offset.zero,
+                        ).animate(animation);
+
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: slide,
+                            child: AnimatedBuilder(
+                              animation: animation,
+                              child: child,
+                              builder: (context, child) {
+                                return Align(
+                                  alignment: Alignment.topCenter,
+                                  heightFactor: animation.value,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                      layoutBuilder: (currentChild, previousChildren) {
+                        return Stack(
+                          alignment: Alignment.topCenter,
+                          children: [...previousChildren, ?currentChild],
+                        );
+                      },
+                      child: AnimatedPadding(
+                        key: ValueKey(widget.isExpanded),
+                        duration: const Duration(milliseconds: 520),
+                        curve: Curves.easeInOutCubic,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: widget.isExpanded ? 18 : 31,
+                        ),
+                        child: widget.isExpanded
+                            ? CalendarMonthGrid(
+                                days: widget.days,
+                                onDaySelected: widget.onDaySelected,
+                              )
+                            : CalendarWeekStrip(
+                                controller: _weekController,
+                                days: widget.days,
+                                onDaySelected: widget.onDaySelected,
+                              ),
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 520),
+                      curve: Curves.easeInOutCubic,
+                      height: widget.isExpanded ? 22 : 24,
+                    ),
+                  ],
+                ),
               ),
             ),
             Positioned(
-              bottom: -18,
+              bottom: Spacing.zero,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: widget.onToggleExpanded,

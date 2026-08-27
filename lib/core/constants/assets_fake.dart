@@ -34,6 +34,12 @@ class AssetsFake {
       'assets/images/fake/calendar/family_day_snack.png';
   static const String calendarMealPickerBreakfast =
       'assets/images/fake/calendar/meal_picker_breakfast.png';
+  static const String familyCalendarChickenRice =
+      'assets/images/fake/calendar/family_calendar_chicken_rice.png';
+  static const String familyCalendarOmelet =
+      'assets/images/fake/calendar/family_calendar_omelet.png';
+  static const String familyCalendarTunaSalad =
+      'assets/images/fake/calendar/family_calendar_tuna_salad.png';
 
   static const String homeBurger = 'assets/images/fake/home/home_burger.png';
   static const String homeDonut = 'assets/images/fake/home/home_donut.png';

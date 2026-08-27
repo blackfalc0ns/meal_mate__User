@@ -49,6 +49,7 @@ import 'package:meal_meat_user/features/subscription_types/presentation/screens/
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
@@ -155,6 +156,11 @@ class RouteGenerator {
           page: const FamilyMemberDetailScreen(),
         );
       case AppRoutes.familyMemberDailyMeals:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyMemberCalendarScreen(),
+        );
+      case AppRoutes.familyMemberDayDetails:
         return _buildRoute(
           settings: settings,
           page: const FamilyDayMealsScreen(),
