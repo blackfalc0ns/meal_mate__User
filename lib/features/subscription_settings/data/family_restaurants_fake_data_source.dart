@@ -11,6 +11,25 @@ class FamilyRestaurantsFakeDataSource {
       dateLabel: locale.family_restaurants_date_label,
       searchHint: locale.family_restaurants_search_hint,
       subtitle: locale.family_restaurants_subtitle,
+      members: [
+        FamilyRestaurantsMemberData(
+          name: locale.family_member_mariam,
+          imageAsset: AssetsFake.familyMemberMariam,
+        ),
+        FamilyRestaurantsMemberData(
+          name: locale.family_member_yousef,
+          imageAsset: AssetsFake.familyMemberYousef,
+        ),
+        FamilyRestaurantsMemberData(
+          name: locale.family_member_sarah,
+          imageAsset: AssetsFake.familyMemberSarah,
+        ),
+        FamilyRestaurantsMemberData(
+          name: locale.family_restaurants_member_ahmed,
+          imageAsset: AssetsFake.familyMemberAhmed,
+          isSelected: true,
+        ),
+      ],
       summary: FamilyRestaurantsSummaryData(
         selectedMeals: locale.family_restaurants_summary_selected_meals_value,
         selectedMealsTotal:
@@ -157,6 +176,7 @@ class FamilyRestaurantsPageData {
     required this.dateLabel,
     required this.searchHint,
     required this.subtitle,
+    required this.members,
     required this.summary,
     required this.filters,
     required this.restaurants,
@@ -168,6 +188,7 @@ class FamilyRestaurantsPageData {
   final String dateLabel;
   final String searchHint;
   final String subtitle;
+  final List<FamilyRestaurantsMemberData> members;
   final FamilyRestaurantsSummaryData summary;
   final List<FamilyRestaurantsFilterData> filters;
   final List<FamilyRestaurantCardData> restaurants;
@@ -195,6 +216,18 @@ class FamilyRestaurantsSummaryData {
   final String calories;
   final String caloriesLabel;
   final String programLabel;
+}
+
+class FamilyRestaurantsMemberData {
+  const FamilyRestaurantsMemberData({
+    required this.name,
+    required this.imageAsset,
+    this.isSelected = false,
+  });
+
+  final String name;
+  final String imageAsset;
+  final bool isSelected;
 }
 
 class FamilyRestaurantsFilterData {

@@ -37,6 +37,7 @@ class FamilyRestaurantsScreen extends StatelessWidget {
               FamilyRestaurantsHeader(
                 title: locale.family_restaurants_title(data.memberName),
                 dateLabel: data.dateLabel,
+                members: data.members,
                 onBackPressed: () => Navigator.maybePop(context),
               ),
               FamilyRestaurantsSummaryCard(

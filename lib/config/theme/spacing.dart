@@ -275,7 +275,10 @@ class Spacing {
   static const double familyRestaurantsHeaderTitleTop = 61.0;
   static const double familyRestaurantsBackTop = 66.0;
   static const double familyRestaurantsBackEnd = 37.0;
+  static const double familyRestaurantsHeaderHeight = 251.0;
+  static const double familyRestaurantsMemberSelectorTop = 108.0;
   static const double familyRestaurantsDateTop = 92.0;
+  static const double familyRestaurantsDateWithMembersTop = 219.0;
   static const double familyRestaurantsDateWidth = 95.0;
   static const double familyRestaurantsDateHeight = 20.0;
   static const double familyRestaurantsSummaryTop = 117.19;
