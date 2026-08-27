@@ -106,7 +106,13 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
     return CalendarRestaurantOptionEntity(
       id: _firstNotEmpty([restaurantId, id]),
       logoUrl: _firstNullableNotEmpty([logoUrl, imageUrl]),
-      maxUsageCount: maxUsageCount ?? calculatedMaxUsageCount,
+      maxUsageCount: maxUsageCount ?? limit ?? calculatedMaxUsageCount,
+      usedCount: usedCount,
+      remainingCount: remainingCount,
+      isBusy: isBusy ?? false,
+      isQuotaExhausted: isQuotaExhausted ?? false,
+      isEnabled: isEnabled ?? true,
+      disabledReason: disabledReason,
       isUsageLimitReached: isUsageLimitReached,
       name: _localized(localeName, ar: nameAr, en: nameEn, fallback: name),
       description: _localized(

@@ -13,7 +13,7 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final isDisabled = restaurant.isUsageLimitReached;
+    final isDisabled = !restaurant.isEnabled;
 
     return SizedBox(
       height: 74.22,

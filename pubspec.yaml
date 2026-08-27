@@ -36,6 +36,7 @@ dependencies:
   json_annotation: ^4.12.0
   image_picker: ^1.2.3
   webview_flutter: ^4.14.1
+  rounded_loading_button_plus: ^3.0.1
 
 dev_dependencies:
   flutter_test:

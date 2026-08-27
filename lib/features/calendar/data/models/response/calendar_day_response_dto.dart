@@ -95,6 +95,13 @@ class CalendarRestaurantResponseDto {
     this.imageUrl,
     this.mealCount,
     this.safeMealCount,
+    this.limit,
+    this.usedCount,
+    this.remainingCount,
+    this.isBusy,
+    this.isQuotaExhausted,
+    this.isEnabled,
+    this.disabledReason,
     this.deliveryDuration,
     this.deliveryWindow,
     this.maxUsageCount,
@@ -116,6 +123,13 @@ class CalendarRestaurantResponseDto {
   final String? imageUrl;
   final int? mealCount;
   final int? safeMealCount;
+  final int? limit;
+  final int? usedCount;
+  final int? remainingCount;
+  final bool? isBusy;
+  final bool? isQuotaExhausted;
+  final bool? isEnabled;
+  final String? disabledReason;
   final String? deliveryDuration;
   final String? deliveryWindow;
   final int? maxUsageCount;

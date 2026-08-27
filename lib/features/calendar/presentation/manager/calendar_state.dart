@@ -93,43 +93,7 @@ class CalendarState {
   }
 
   List<CalendarRestaurantOptionEntity> restaurantsWithUsageLimits() {
-    if (restaurants.isEmpty) return const [];
-    final fallbackLimit = _calculatedRestaurantUsageLimit;
-    final usageCounts = <String, int>{};
-    for (final day in days) {
-      final restaurantId = day.restaurantId;
-      if (restaurantId == null || restaurantId.isEmpty) continue;
-      usageCounts[restaurantId] = (usageCounts[restaurantId] ?? 0) + 1;
-    }
-
-    final limited = restaurants.map((restaurant) {
-      final limit = restaurant.maxUsageCount ?? fallbackLimit;
-      final usageCount = usageCounts[restaurant.id] ?? 0;
-      final isLimitReached = limit > 0 && usageCount >= limit;
-      return CalendarRestaurantOptionEntity(
-        id: restaurant.id,
-        logoUrl: restaurant.logoUrl,
-        maxUsageCount: limit,
-        isUsageLimitReached: isLimitReached,
-        name: restaurant.name,
-        description: restaurant.description,
-        mealCount: restaurant.mealCount,
-        rating: restaurant.rating,
-        logoType: restaurant.logoType,
-      );
-    }).toList();
-
-    final hasAlternative = limited.any(
-      (restaurant) => !restaurant.isUsageLimitReached,
-    );
-    if (!hasAlternative) return limited;
-    return limited;
-  }
-
-  int get _calculatedRestaurantUsageLimit {
-    if (restaurants.isEmpty) return 0;
-    final calculated = (days.length / restaurants.length).ceil();
-    return calculated < 3 ? 3 : calculated;
+    return restaurants;
   }
 
   CalendarState copyWith({

@@ -335,7 +335,22 @@ class CalendarViewModel extends Cubit<CalendarState> {
               selected.contains(item.id),
         )
         .length;
-    if (selectedSlotCount >= slotLimit) return;
+    if (selectedSlotCount >= slotLimit) {
+      final selectedMealIdsInSlot = available.meals
+          .where(
+            (item) =>
+                item.slot.trim().toLowerCase() ==
+                    meal.slot.trim().toLowerCase() &&
+                selected.contains(item.id),
+          )
+          .map((item) => item.id)
+          .toSet();
+      final mealIdToReplace = selected
+          .where(selectedMealIdsInSlot.contains)
+          .firstOrNull;
+      if (mealIdToReplace == null) return;
+      selected.remove(mealIdToReplace);
+    }
 
     selected.add(mealId);
     emit(state.copyWith(localSelectedMealIds: selected));

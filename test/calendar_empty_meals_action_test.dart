@@ -68,6 +68,10 @@ void main() {
     ).readAsStringSync();
 
     final closeGuardIndex = source.indexOf('if (_mealSheetOpen &&');
+    final snackbarIndex = source.indexOf(
+      'CustomSnackbar.showSuccess(',
+      closeGuardIndex,
+    );
     final closeRouteIndex = source.indexOf(
       '_closeMealPickerRoute();',
       closeGuardIndex,
@@ -75,7 +79,9 @@ void main() {
     final closeGuard = source.substring(closeGuardIndex, closeRouteIndex);
 
     expect(closeGuardIndex, isNonNegative);
+    expect(snackbarIndex, isNonNegative);
     expect(closeRouteIndex, isNonNegative);
+    expect(snackbarIndex, lessThan(closeRouteIndex));
     expect(
       closeGuard,
       contains('state.saveSuccessCount != _handledSaveSuccessCount'),
@@ -109,6 +115,14 @@ void main() {
       expect(openMealPickerSource, contains('canSave: state.canSaveMeals'));
       expect(openMealPickerSource, contains('isSaving: state.isSaving'));
       expect(openMealPickerSource, contains('onSave: null,'));
+      expect(openMealPickerSource, contains('RoundedLoadingButton('));
+      expect(source, contains('RoundedLoadingButtonController()'));
+      expect(
+        openMealPickerSource,
+        contains('controller: _mealSaveButtonController'),
+      );
+      expect(openMealPickerSource, contains('animateOnTap: false'));
+      expect(openMealPickerSource, isNot(contains('return AppButton(')));
     },
   );
 }

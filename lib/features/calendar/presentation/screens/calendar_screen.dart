@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
@@ -26,6 +28,7 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_m
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_summary_card.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({
@@ -51,6 +54,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   bool _didLoad = false;
   int _handledSaveSuccessCount = 0;
   Route<void>? _mealPickerRoute;
+  final RoundedLoadingButtonController _mealSaveButtonController =
+      RoundedLoadingButtonController();
 
   @override
   void initState() {
@@ -280,6 +285,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
         message: context.localization.calendar_meals_save_success,
       );
       _closeMealPickerRoute();
+      _mealSaveButtonController.reset();
+      return;
+    }
+
+    if (_mealSheetOpen) {
+      if (state.isSaving) {
+        _mealSaveButtonController.start();
+      } else {
+        _mealSaveButtonController.stop();
+      }
     }
   }
 
@@ -388,19 +403,45 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         isSaving: state.isSaving,
                       ),
                       builder: (context, buttonState) {
+                        final color = context.colorScheme;
                         final locale = context.localization;
-                        return AppButton(
-                          text: locale.calendar_done,
-                          isLoading: buttonState.isSaving,
-                          onPressed: buttonState.canSave
-                              ? () {
-                                  _viewModel.doIntent(
-                                    SaveCalendarDayMealsEvent(
-                                      localeName: locale.localeName,
-                                    ),
-                                  );
-                                }
-                              : null,
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            return RoundedLoadingButton(
+                              controller: _mealSaveButtonController,
+                              onPressed: buttonState.canSave
+                                  ? () {
+                                      _viewModel.doIntent(
+                                        SaveCalendarDayMealsEvent(
+                                          localeName: locale.localeName,
+                                        ),
+                                      );
+                                    }
+                                  : null,
+                              animateOnTap: false,
+                              resetAfterDuration: false,
+                              height: Spacing.buttonHeight,
+                              width: constraints.maxWidth,
+                              borderRadius: Spacing.buttonRadius,
+                              elevation: 0,
+                              color: color.primary,
+                              successColor: color.primary,
+                              disabledColor: color.outlineVariant,
+                              valueColor: color.onPrimary,
+                              child: Text(
+                                locale.calendar_done,
+                                locale: Locale(locale.localeName),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size16,
+                                  color: color.onPrimary,
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
