@@ -63,6 +63,10 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_packages/data/models/response/family_size_package_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_conversion_options_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_upgrade_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -445,5 +449,22 @@ abstract class ApiServices {
   @POST(EndPoints.familySubscriptionFlowCheckout)
   Future<PaymentCheckoutResponseDto> checkoutFamilySubscription(
     @Body() FamilyCheckoutRequestDto request,
+  );
+
+  @GET(EndPoints.customerSubscriptionUpgradeOptions)
+  Future<SubscriptionUpgradeOptionsResponseDto> getSubscriptionUpgradeOptions(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @POST(EndPoints.customerSubscriptionUpgradeRequests)
+  Future<SubscriptionUpgradeRequestResponseDto> createSubscriptionUpgradeRequest(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() SubscriptionUpgradeRequestDto request,
+  );
+
+  @GET(EndPoints.customerSubscriptionUpgradeStatus)
+  Future<SubscriptionUpgradeStatusResponseDto> getSubscriptionUpgradeStatus(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('upgradeId') String upgradeId,
   );
 }

@@ -118,4 +118,10 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/payment-methods';
   static const String familySubscriptionFlowCheckout =
       '/api/v1/customer/family-subscription-flow/checkout';
+  static const String customerSubscriptionUpgradeOptions =
+      '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-options';
+  static const String customerSubscriptionUpgradeRequests =
+      '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests';
+  static const String customerSubscriptionUpgradeStatus =
+      '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests/{upgradeId}';
 }

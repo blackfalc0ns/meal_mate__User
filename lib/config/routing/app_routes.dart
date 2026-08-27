@@ -18,6 +18,8 @@ abstract class AppRoutes {
   static const String restaurantTierUpgrade = '/restaurant-tier-upgrade';
   static const String restaurantTierUpgradeConfirmation =
       '/restaurant-tier-upgrade-confirmation';
+  static const String restaurantTierUpgradeWebView =
+      '/restaurant-tier-upgrade-web-view';
   static const String familySubscriptionMembers =
       '/family-subscription-members';
   static const String familySubscriptionMemberDetails =

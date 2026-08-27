@@ -282,6 +282,22 @@ import '../../features/subscription_programs/domain/usecase/get_subscription_pro
     as _i178;
 import '../../features/subscription_programs/presentation/manager/subscription_programs_view_model.dart'
     as _i420;
+import '../../features/subscription_settings/data/data_source/restaurant_tier_upgrade_remote_data_source.dart'
+    as _i549;
+import '../../features/subscription_settings/data/data_source/restaurant_tier_upgrade_remote_data_source_impl.dart'
+    as _i798;
+import '../../features/subscription_settings/data/repo/restaurant_tier_upgrade_repository_impl.dart'
+    as _i859;
+import '../../features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart'
+    as _i603;
+import '../../features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart'
+    as _i261;
+import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart'
+    as _i990;
+import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart'
+    as _i934;
+import '../../features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart'
+    as _i528;
 import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source.dart'
     as _i735;
 import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source_impl.dart'
@@ -522,6 +538,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i557.MealDetailsRemoteDataSource>(
       () => _i90.MealDetailsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i549.RestaurantTierUpgradeRemoteDataSource>(
+      () => _i798.RestaurantTierUpgradeRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i755.SubscriptionPlanRemoteDataSource>(
       () => _i509.SubscriptionPlanRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -685,6 +706,11 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
     );
+    gh.factory<_i603.RestaurantTierUpgradeRepository>(
+      () => _i859.RestaurantTierUpgradeRepositoryImpl(
+        gh<_i549.RestaurantTierUpgradeRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i655.SubscriptionTypesRepository>(
       () => _i555.SubscriptionTypesRepositoryImpl(
         gh<_i735.SubscriptionTypesRemoteDataSource>(),
@@ -737,6 +763,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i678.SubscriptionPackagesRepository>(
       () => _i384.SubscriptionPackagesRepositoryImpl(
         gh<_i978.SubscriptionPackagesRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i261.CreateSubscriptionUpgradeRequestUseCase>(
+      () => _i261.CreateSubscriptionUpgradeRequestUseCase(
+        gh<_i603.RestaurantTierUpgradeRepository>(),
+      ),
+    );
+    gh.factory<_i990.GetSubscriptionUpgradeOptionsUseCase>(
+      () => _i990.GetSubscriptionUpgradeOptionsUseCase(
+        gh<_i603.RestaurantTierUpgradeRepository>(),
+      ),
+    );
+    gh.factory<_i934.GetSubscriptionUpgradeStatusUseCase>(
+      () => _i934.GetSubscriptionUpgradeStatusUseCase(
+        gh<_i603.RestaurantTierUpgradeRepository>(),
       ),
     );
     gh.factory<_i964.FamilyProgramsRepository>(
@@ -976,6 +1017,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
+      ),
+    );
+    gh.factory<_i528.RestaurantTierUpgradeViewModel>(
+      () => _i528.RestaurantTierUpgradeViewModel(
+        gh<_i990.GetSubscriptionUpgradeOptionsUseCase>(),
+        gh<_i261.CreateSubscriptionUpgradeRequestUseCase>(),
+        gh<_i934.GetSubscriptionUpgradeStatusUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
       ),
     );
     gh.factory<_i446.ProfileViewModel>(

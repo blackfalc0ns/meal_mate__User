@@ -53,8 +53,10 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_web_view_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_transactions_screen.dart';
@@ -129,14 +131,28 @@ class RouteGenerator {
           page: const FamilySubscriptionSettingsScreen(),
         );
       case AppRoutes.restaurantTierUpgrade:
+        final args = settings.arguments is RestaurantTierUpgradeArgs
+            ? settings.arguments! as RestaurantTierUpgradeArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const RestaurantTierUpgradeScreen(),
+          page: RestaurantTierUpgradeScreen(args: args),
         );
       case AppRoutes.restaurantTierUpgradeConfirmation:
+        final args = settings.arguments is RestaurantTierUpgradeConfirmationArgs
+            ? settings.arguments! as RestaurantTierUpgradeConfirmationArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const RestaurantTierUpgradeConfirmationScreen(),
+          page: RestaurantTierUpgradeConfirmationScreen(args: args),
+        );
+      case AppRoutes.restaurantTierUpgradeWebView:
+        final args = settings.arguments is RestaurantTierUpgradeWebViewArgs
+            ? settings.arguments! as RestaurantTierUpgradeWebViewArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: RestaurantTierUpgradeWebViewScreen(args: args),
         );
       case AppRoutes.familyPackageSelection:
         return _buildRoute(

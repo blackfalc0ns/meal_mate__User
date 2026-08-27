@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_action.dart';
 
 class ProfileBillingPlanCard extends StatelessWidget {
@@ -260,9 +261,38 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingUpgradeTier,
                         label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
-                        onTap: () => context.pushNamed(
-                          AppRoutes.restaurantTierUpgrade,
-                        ),
+                        onTap: () {
+                          if (!subscription.actions.canUpgrade &&
+                              subscription.actions.upgradeUnavailableReason.isNotEmpty) {
+                            final rawReason =
+                                subscription.actions.upgradeUnavailableReason;
+                            final message = switch (rawReason) {
+                              'upgrade_not_available_for_status' =>
+                                'الترقية متاحة فقط للاشتراكات النشطة (Active).',
+                              'already_elite' =>
+                                'أنت مشترك بالفعل في أعلى تصنيف متاح.',
+                              'upgrade_request_pending' =>
+                                'يوجد طلب ترقية معلق قيد المتابعة حالياً.',
+                              'upgrade_no_remaining_days' =>
+                                'لا توجد أيام متبقية في الاشتراك لإجراء الترقية.',
+                              'pricing.unavailable' =>
+                                'خدمة التسعير غير متوفرة حالياً.',
+                              _ => rawReason,
+                            };
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(message),
+                              ),
+                            );
+                            return;
+                          }
+                          context.pushNamed(
+                            AppRoutes.restaurantTierUpgrade,
+                            arguments: RestaurantTierUpgradeArgs(
+                              subscriptionId: subscription.subscriptionId,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: Spacing.sm),

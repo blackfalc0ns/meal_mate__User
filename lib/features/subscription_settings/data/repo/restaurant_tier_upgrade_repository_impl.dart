@@ -1,0 +1,55 @@
+import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/data_source/restaurant_tier_upgrade_remote_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/restaurant_tier_upgrade_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart';
+
+@Injectable(as: RestaurantTierUpgradeRepository)
+class RestaurantTierUpgradeRepositoryImpl
+    implements RestaurantTierUpgradeRepository {
+  RestaurantTierUpgradeRepositoryImpl(this._remoteDataSource);
+
+  final RestaurantTierUpgradeRemoteDataSource _remoteDataSource;
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
+    String subscriptionId,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getUpgradeOptions(
+        subscriptionId,
+      );
+      return RestaurantTierUpgradeMapper.toOptionsEntity(response);
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>> createUpgradeRequest(
+    String subscriptionId,
+    SubscriptionUpgradeRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final requestDto = RestaurantTierUpgradeMapper.toRequestDto(request);
+      final response = await _remoteDataSource.createUpgradeRequest(
+        subscriptionId,
+        requestDto,
+      );
+      return RestaurantTierUpgradeMapper.toRequestResultEntity(response);
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeStatusEntity>> getUpgradeStatus(
+    String subscriptionId,
+    String upgradeId,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getUpgradeStatus(
+        subscriptionId,
+        upgradeId,
+      );
+      return RestaurantTierUpgradeMapper.toStatusEntity(response);
+    });
+  }
+}
