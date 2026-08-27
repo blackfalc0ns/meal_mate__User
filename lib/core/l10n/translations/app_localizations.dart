@@ -1700,6 +1700,12 @@ abstract class AppLocalizations {
   /// **'Default'**
   String get addresses_default;
 
+  /// No description provided for @addresses_active_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address'**
+  String get addresses_active_delivery;
+
   /// No description provided for @addresses_access_instructions.
   ///
   /// In en, this message translates to:
@@ -1969,6 +1975,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set my current location as home address'**
   String get addresses_use_current_location_subtitle;
+
+  /// No description provided for @address_active_delivery_cannot_delete.
+  ///
+  /// In en, this message translates to:
+  /// **'This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.'**
+  String get address_active_delivery_cannot_delete;
+
+  /// No description provided for @addresses_delivery_notice_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address update'**
+  String get addresses_delivery_notice_title;
+
+  /// No description provided for @addresses_delivery_notice_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get addresses_delivery_notice_action;
+
+  /// No description provided for @addresses_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get addresses_edit;
+
+  /// No description provided for @addresses_set_default.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as default'**
+  String get addresses_set_default;
+
+  /// No description provided for @addresses_delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get addresses_delete;
+
+  /// No description provided for @addresses_delete_confirmation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete address?'**
+  String get addresses_delete_confirmation_title;
+
+  /// No description provided for @addresses_delete_confirmation_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this address?'**
+  String get addresses_delete_confirmation_message;
+
+  /// No description provided for @addresses_delete_confirmation_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get addresses_delete_confirmation_cancel;
+
+  /// No description provided for @addresses_delete_confirmation_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get addresses_delete_confirmation_action;
 
   /// No description provided for @profile_security.
   ///

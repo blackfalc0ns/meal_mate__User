@@ -15,6 +15,9 @@ class CurrentAddressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final badgeLabel = address?.isDeliveryActive == true
+        ? locale.addresses_active_delivery
+        : locale.addresses_default;
 
     return Container(
       height: Spacing.addressesCurrentCardHeight,
@@ -86,7 +89,7 @@ class CurrentAddressCard extends StatelessWidget {
                               ),
                               const SizedBox(width: Spacing.xs),
                               Text(
-                                locale.addresses_default,
+                                badgeLabel,
                                 style: getMediumStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size8,

@@ -25,12 +25,14 @@ class AddressesRemoteDataSourceImpl implements AddressesRemoteDataSource {
   }
 
   @override
-  Future<void> addCustomerAddress(CustomerAddressRequestDto request) {
+  Future<CustomerAddressResponseDto> addCustomerAddress(
+    CustomerAddressRequestDto request,
+  ) {
     return _apiServices.addCustomerAddress(request);
   }
 
   @override
-  Future<void> updateCustomerAddress(
+  Future<CustomerAddressResponseDto> updateCustomerAddress(
     String addressId,
     CustomerAddressRequestDto request,
   ) {

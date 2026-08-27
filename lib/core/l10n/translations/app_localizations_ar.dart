@@ -857,6 +857,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addresses_default => 'افتراضي';
 
   @override
+  String get addresses_active_delivery => 'عنوان التوصيل';
+
+  @override
   String get addresses_access_instructions => 'تعليمات الوصول';
 
   @override
@@ -999,6 +1002,38 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get addresses_use_current_location_subtitle =>
       'حدد موقعي الحالي كعنوان للبيت';
+
+  @override
+  String get address_active_delivery_cannot_delete =>
+      'هذا العنوان مستخدم حاليًا للتوصيل. عيّن عنوانًا افتراضيًا آخر وانتظر 72 ساعة حتى يتم تفعيله قبل حذف هذا العنوان.';
+
+  @override
+  String get addresses_delivery_notice_title => 'تحديث عنوان التوصيل';
+
+  @override
+  String get addresses_delivery_notice_action => 'فهمت';
+
+  @override
+  String get addresses_edit => 'تعديل';
+
+  @override
+  String get addresses_set_default => 'تعيين كافتراضي';
+
+  @override
+  String get addresses_delete => 'حذف';
+
+  @override
+  String get addresses_delete_confirmation_title => 'حذف العنوان؟';
+
+  @override
+  String get addresses_delete_confirmation_message =>
+      'هل أنت متأكد من حذف هذا العنوان؟';
+
+  @override
+  String get addresses_delete_confirmation_cancel => 'إلغاء';
+
+  @override
+  String get addresses_delete_confirmation_action => 'حذف';
 
   @override
   String get profile_security => 'الأمان والخصوصية';

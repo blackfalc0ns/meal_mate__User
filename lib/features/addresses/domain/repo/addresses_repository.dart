@@ -11,11 +11,11 @@ abstract interface class AddressesRepository {
 
   Future<ApiResult<List<CustomerAddressEntity>>> getCustomerAddresses();
 
-  Future<ApiResult<void>> addCustomerAddress(
+  Future<ApiResult<CustomerAddressEntity>> addCustomerAddress(
     CustomerAddressRequestEntity request,
   );
 
-  Future<ApiResult<void>> updateCustomerAddress(
+  Future<ApiResult<CustomerAddressEntity>> updateCustomerAddress(
     String addressId,
     CustomerAddressRequestEntity request,
   );

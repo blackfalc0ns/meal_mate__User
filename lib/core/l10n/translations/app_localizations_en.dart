@@ -874,6 +874,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addresses_default => 'Default';
 
   @override
+  String get addresses_active_delivery => 'Delivery address';
+
+  @override
   String get addresses_access_instructions => 'Access instructions';
 
   @override
@@ -1016,6 +1019,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addresses_use_current_location_subtitle =>
       'Set my current location as home address';
+
+  @override
+  String get address_active_delivery_cannot_delete =>
+      'This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.';
+
+  @override
+  String get addresses_delivery_notice_title => 'Delivery address update';
+
+  @override
+  String get addresses_delivery_notice_action => 'Got it';
+
+  @override
+  String get addresses_edit => 'Edit';
+
+  @override
+  String get addresses_set_default => 'Set as default';
+
+  @override
+  String get addresses_delete => 'Delete';
+
+  @override
+  String get addresses_delete_confirmation_title => 'Delete address?';
+
+  @override
+  String get addresses_delete_confirmation_message =>
+      'Are you sure you want to delete this address?';
+
+  @override
+  String get addresses_delete_confirmation_cancel => 'Cancel';
+
+  @override
+  String get addresses_delete_confirmation_action => 'Delete';
 
   @override
   String get profile_security => 'Security and privacy';

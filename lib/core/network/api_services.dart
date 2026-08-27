@@ -166,10 +166,12 @@ abstract class ApiServices {
   Future<List<CustomerAddressResponseDto>> getCustomerAddresses();
 
   @POST(EndPoints.customerAddresses)
-  Future<void> addCustomerAddress(@Body() CustomerAddressRequestDto request);
+  Future<CustomerAddressResponseDto> addCustomerAddress(
+    @Body() CustomerAddressRequestDto request,
+  );
 
   @PUT(EndPoints.customerAddress)
-  Future<void> updateCustomerAddress(
+  Future<CustomerAddressResponseDto> updateCustomerAddress(
     @Path('addressId') String addressId,
     @Body() CustomerAddressRequestDto request,
   );

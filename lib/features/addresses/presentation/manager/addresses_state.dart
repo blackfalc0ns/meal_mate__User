@@ -46,6 +46,21 @@ class CustomerAddressesState {
     return items.isEmpty ? null : items.first;
   }
 
+  CustomerAddressEntity? get currentDeliveryAddress {
+    for (final item in items) {
+      if (item.isDeliveryActive) return item;
+    }
+    return defaultAddress;
+  }
+
+  String? get pendingDeliveryChangeNotice {
+    for (final item in items) {
+      final notice = item.deliveryChangeNotice;
+      if (notice != null && notice.isNotEmpty) return notice;
+    }
+    return null;
+  }
+
   CustomerAddressesState copyWith({
     bool? isLoading,
     bool? isSuccess,
@@ -130,25 +145,44 @@ class AddressesActionState {
     this.isSuccess = false,
     this.errorMessage,
     this.failure,
+    this.address,
+    this.deliveryChangeNotice,
   });
 
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
   final Failure? failure;
+  final CustomerAddressEntity? address;
+  final String? deliveryChangeNotice;
+
+  String? get displayErrorMessage {
+    final code = failure?.code.trim();
+    if (code != null && code.isNotEmpty && code != 'unknown') {
+      return code;
+    }
+    return errorMessage;
+  }
 
   AddressesActionState copyWith({
     bool? isLoading,
     bool? isSuccess,
     String? errorMessage,
     Failure? failure,
+    CustomerAddressEntity? address,
+    String? deliveryChangeNotice,
     bool clearError = false,
+    bool clearAddress = false,
   }) {
     return AddressesActionState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       failure: clearError ? null : failure ?? this.failure,
+      address: clearAddress ? null : address ?? this.address,
+      deliveryChangeNotice: clearError
+          ? null
+          : deliveryChangeNotice ?? this.deliveryChangeNotice,
     );
   }
 }

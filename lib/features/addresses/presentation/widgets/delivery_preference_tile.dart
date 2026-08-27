@@ -19,13 +19,9 @@ class DeliveryPreferenceTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Expanded(
       child: Row(
-        textDirection: locale.localeName == 'ar'
-            ? TextDirection.rtl
-            : TextDirection.ltr,
         children: [
           Container(
             width: Spacing.addressesPreferenceIconContainerSize,

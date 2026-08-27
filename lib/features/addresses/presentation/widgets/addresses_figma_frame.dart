@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
@@ -20,6 +21,7 @@ class AddressesFigmaFrame extends StatefulWidget {
     super.key,
     required this.locations,
     required this.isSubmitting,
+    this.initialAddress,
   });
 
   static const double locationConfirmationCardHeight =
@@ -42,6 +44,7 @@ class AddressesFigmaFrame extends StatefulWidget {
 
   final LocationsCatalogState locations;
   final bool isSubmitting;
+  final CustomerAddressEntity? initialAddress;
 
   @override
   State<AddressesFigmaFrame> createState() => _AddressesFigmaFrameState();
@@ -58,6 +61,12 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       TextEditingController();
   final TextEditingController _apartmentController = TextEditingController();
   AddressBuildingType _buildingType = AddressBuildingType.home;
+
+  @override
+  void initState() {
+    super.initState();
+    _fillInitialAddress(widget.initialAddress);
+  }
 
   @override
   void dispose() {
@@ -193,6 +202,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final governorateCode = _regionCode(governorate?.code);
     final areaCode = _regionCode(area?.code);
     final blockCode = _regionCode(block?.code);
+    final initialAddress = widget.initialAddress;
     final label = isHome
         ? locale.addresses_building_type_home
         : locale.addresses_building_type_building;
@@ -215,29 +225,50 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       return;
     }
 
-    context.read<AddressesViewModel>().doIntent(
-      AddCustomerAddressEvent(
-        CustomerAddressRequestEntity(
-          label: label,
-          addressLine: addressLine.isEmpty
-              ? locale.addresses_home_address_title
-              : addressLine,
-          regionId: area.id,
-          governorate: governorateCode,
-          area: areaCode,
-          block: blockCode,
-          street: street.isEmpty ? null : street,
-          building: building.isEmpty ? null : building,
-          unit: isHome && unit.isNotEmpty ? unit : null,
-          floor: isHome && floor.isNotEmpty ? floor : null,
-          latitude: _temporaryLatitude,
-          longitude: _temporaryLongitude,
-          notes: avenue.isEmpty ? null : avenue,
-          isDefault: true,
-          notifyOnDelivery: true,
-        ),
-      ),
+    final request = CustomerAddressRequestEntity(
+      label: label,
+      addressLine: addressLine.isEmpty
+          ? locale.addresses_home_address_title
+          : addressLine,
+      regionId: area.id,
+      governorate: governorateCode,
+      area: areaCode,
+      block: blockCode,
+      blockRegionId: block?.id,
+      street: street.isEmpty ? null : street,
+      building: building.isEmpty ? null : building,
+      unit: isHome && unit.isNotEmpty ? unit : null,
+      floor: isHome && floor.isNotEmpty ? floor : null,
+      latitude: initialAddress?.latitude ?? _temporaryLatitude,
+      longitude: initialAddress?.longitude ?? _temporaryLongitude,
+      notes: avenue.isEmpty ? null : avenue,
+      isDefault: initialAddress?.isDefault ?? true,
+      notifyOnDelivery: initialAddress?.notifyOnDelivery ?? true,
     );
+
+    if (initialAddress != null && initialAddress.addressId.isNotEmpty) {
+      context.read<AddressesViewModel>().doIntent(
+        UpdateCustomerAddressEvent(
+          addressId: initialAddress.addressId,
+          request: request,
+        ),
+      );
+      return;
+    }
+
+    context.read<AddressesViewModel>().doIntent(
+      AddCustomerAddressEvent(request),
+    );
+  }
+
+  void _fillInitialAddress(CustomerAddressEntity? address) {
+    if (address == null) return;
+
+    _streetController.text = address.street ?? '';
+    _avenueController.text = address.notes ?? '';
+    _floorController.text = address.floor ?? '';
+    _buildingNumberController.text = address.building ?? '';
+    _apartmentController.text = address.unit ?? '';
   }
 
   String _addressLine(List<String?> parts) {

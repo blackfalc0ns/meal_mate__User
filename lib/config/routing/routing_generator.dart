@@ -301,9 +301,13 @@ class RouteGenerator {
       case AppRoutes.addresses:
         return _buildRoute(settings: settings, page: const AddressesScreen());
       case AppRoutes.addressChooseLocation:
-        final args = settings.arguments is SubscriptionFlowArgs
-            ? settings.arguments! as SubscriptionFlowArgs
-            : null;
+        final args = switch (settings.arguments) {
+          final AddressChooseLocationArgs args => args,
+          final SubscriptionFlowArgs args => AddressChooseLocationArgs(
+            subscriptionFlowArgs: args,
+          ),
+          _ => null,
+        };
         return _buildRoute(
           settings: settings,
           page: AddressChooseLocationScreen(args: args),

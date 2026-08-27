@@ -10,9 +10,11 @@ abstract interface class AddressesRemoteDataSource {
 
   Future<List<CustomerAddressResponseDto>> getCustomerAddresses();
 
-  Future<void> addCustomerAddress(CustomerAddressRequestDto request);
+  Future<CustomerAddressResponseDto> addCustomerAddress(
+    CustomerAddressRequestDto request,
+  );
 
-  Future<void> updateCustomerAddress(
+  Future<CustomerAddressResponseDto> updateCustomerAddress(
     String addressId,
     CustomerAddressRequestDto request,
   );

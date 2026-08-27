@@ -3,28 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class AddressChooseLocationScreen extends StatelessWidget {
   const AddressChooseLocationScreen({super.key, this.args});
 
-  final SubscriptionFlowArgs? args;
+  final AddressChooseLocationArgs? args;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final initialAddress = args?.initialAddress;
 
     return BlocProvider<AddressesViewModel>(
-      create: (_) =>
-          getIt<AddressesViewModel>()
-            ..doIntent(const GetLocationsCatalogEvent()),
+      create: (_) => getIt<AddressesViewModel>()
+        ..doIntent(GetLocationsCatalogEvent(initialAddress: initialAddress)),
       child: Scaffold(
         backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
@@ -45,19 +48,27 @@ class AddressChooseLocationScreen extends StatelessWidget {
                     child: BlocConsumer<AddressesViewModel, AddressesState>(
                       listenWhen: (previous, current) =>
                           previous.action != current.action,
-                      listener: (context, state) {
-                        final errorMessage =
-                            state.action.errorMessage ??
-                            state.action.failure?.errorMessage;
+                      listener: (context, state) async {
+                        final errorMessage = state.action.displayErrorMessage;
                         if (errorMessage != null && errorMessage.isNotEmpty) {
                           CustomSnackbar.showError(
                             context: context,
-                            message: errorMessage,
+                            message: mapFailureMessage(context, errorMessage),
                           );
                         }
 
                         if (state.action.isSuccess) {
-                          Navigator.of(context).pop(true);
+                          final notice = state.action.deliveryChangeNotice;
+                          if (notice != null && notice.isNotEmpty) {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (context) =>
+                                  AddressDeliveryNoticeDialog(message: notice),
+                            );
+                          }
+                          if (context.mounted) {
+                            Navigator.of(context).pop(true);
+                          }
                         }
                       },
                       buildWhen: (previous, current) =>
@@ -89,6 +100,7 @@ class AddressChooseLocationScreen extends StatelessWidget {
                                     child: AddressesFigmaFrame(
                                       locations: state.locations,
                                       isSubmitting: state.action.isLoading,
+                                      initialAddress: initialAddress,
                                     ),
                                   ),
                                 ),
@@ -108,4 +120,14 @@ class AddressChooseLocationScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class AddressChooseLocationArgs {
+  const AddressChooseLocationArgs({
+    this.subscriptionFlowArgs,
+    this.initialAddress,
+  });
+
+  final SubscriptionFlowArgs? subscriptionFlowArgs;
+  final CustomerAddressEntity? initialAddress;
 }

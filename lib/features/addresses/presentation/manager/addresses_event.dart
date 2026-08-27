@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 
@@ -10,9 +11,13 @@ class GetCustomerAddressesEvent extends AddressesEvent {
 }
 
 class GetLocationsCatalogEvent extends AddressesEvent {
-  const GetLocationsCatalogEvent({this.countryCode = 'KW'});
+  const GetLocationsCatalogEvent({
+    this.countryCode = 'KW',
+    this.initialAddress,
+  });
 
   final String countryCode;
+  final CustomerAddressEntity? initialAddress;
 }
 
 class SelectAddressGovernorateEvent extends AddressesEvent {

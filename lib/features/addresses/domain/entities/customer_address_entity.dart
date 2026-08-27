@@ -7,6 +7,7 @@ class CustomerAddressEntity {
     this.governorate,
     this.area,
     this.block,
+    this.blockRegionId,
     this.street,
     this.building,
     this.unit,
@@ -15,6 +16,9 @@ class CustomerAddressEntity {
     this.longitude,
     this.notes,
     required this.isDefault,
+    this.isDeliveryActive = false,
+    this.deliveryEffectiveFromUtc,
+    this.deliveryChangeNotice,
     required this.notifyOnDelivery,
   });
 
@@ -25,6 +29,7 @@ class CustomerAddressEntity {
   final String? governorate;
   final String? area;
   final String? block;
+  final String? blockRegionId;
   final String? street;
   final String? building;
   final String? unit;
@@ -33,5 +38,10 @@ class CustomerAddressEntity {
   final double? longitude;
   final String? notes;
   final bool isDefault;
+  final bool isDeliveryActive;
+  final DateTime? deliveryEffectiveFromUtc;
+  final String? deliveryChangeNotice;
   final bool notifyOnDelivery;
+
+  bool get canDelete => !isDeliveryActive;
 }

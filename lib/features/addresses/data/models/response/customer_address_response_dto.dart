@@ -13,6 +13,7 @@ class CustomerAddressResponseDto {
     this.governorate,
     this.area,
     this.block,
+    this.blockRegionId,
     this.street,
     this.building,
     this.unit,
@@ -21,6 +22,9 @@ class CustomerAddressResponseDto {
     this.longitude,
     this.notes,
     this.isDefault,
+    this.isDeliveryActive,
+    this.deliveryEffectiveFromUtc,
+    this.deliveryChangeNotice,
     this.notifyOnDelivery,
   });
 
@@ -32,6 +36,7 @@ class CustomerAddressResponseDto {
   final String? governorate;
   final String? area;
   final String? block;
+  final String? blockRegionId;
   final String? street;
   final String? building;
   final String? unit;
@@ -40,6 +45,9 @@ class CustomerAddressResponseDto {
   final double? longitude;
   final String? notes;
   final bool? isDefault;
+  final bool? isDeliveryActive;
+  final DateTime? deliveryEffectiveFromUtc;
+  final String? deliveryChangeNotice;
   final bool? notifyOnDelivery;
 
   factory CustomerAddressResponseDto.fromJson(Map<String, dynamic> json) =>

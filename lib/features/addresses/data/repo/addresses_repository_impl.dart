@@ -36,21 +36,28 @@ class AddressesRepositoryImpl implements AddressesRepository {
   }
 
   @override
-  Future<ApiResult<void>> addCustomerAddress(
+  Future<ApiResult<CustomerAddressEntity>> addCustomerAddress(
     CustomerAddressRequestEntity request,
   ) {
     return safeApiCall(() async {
-      await _remoteDataSource.addCustomerAddress(request.toDto());
+      final response = await _remoteDataSource.addCustomerAddress(
+        request.toDto(),
+      );
+      return response.toEntity();
     });
   }
 
   @override
-  Future<ApiResult<void>> updateCustomerAddress(
+  Future<ApiResult<CustomerAddressEntity>> updateCustomerAddress(
     String addressId,
     CustomerAddressRequestEntity request,
   ) {
     return safeApiCall(() async {
-      await _remoteDataSource.updateCustomerAddress(addressId, request.toDto());
+      final response = await _remoteDataSource.updateCustomerAddress(
+        addressId,
+        request.toDto(),
+      );
+      return response.toEntity();
     });
   }
 

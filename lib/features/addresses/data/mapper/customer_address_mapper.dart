@@ -16,6 +16,7 @@ extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
       governorate: governorate,
       area: area,
       block: block,
+      blockRegionId: blockRegionId,
       street: street,
       building: building,
       unit: unit,
@@ -24,6 +25,9 @@ extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
       longitude: longitude,
       notes: notes,
       isDefault: isDefault ?? false,
+      isDeliveryActive: isDeliveryActive ?? false,
+      deliveryEffectiveFromUtc: deliveryEffectiveFromUtc,
+      deliveryChangeNotice: deliveryChangeNotice,
       notifyOnDelivery: notifyOnDelivery ?? false,
     );
   }
@@ -38,6 +42,7 @@ extension CustomerAddressRequestEntityMapper on CustomerAddressRequestEntity {
       governorate: governorate,
       area: area,
       block: block,
+      blockRegionId: blockRegionId,
       street: street,
       building: building,
       unit: unit,

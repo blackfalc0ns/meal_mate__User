@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_action_menu_button.dart';
 
 class SavedAddressTile extends StatelessWidget {
   const SavedAddressTile({
@@ -10,18 +11,23 @@ class SavedAddressTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.address,
+    this.canDelete = true,
+    this.onEdit,
+    this.onSetDefault,
     this.onDelete,
   });
 
   final IconData icon;
   final String title;
   final String address;
+  final bool canDelete;
+  final VoidCallback? onEdit;
+  final VoidCallback? onSetDefault;
   final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       height: Spacing.addressesSavedTileHeight,
@@ -41,9 +47,6 @@ class SavedAddressTile extends StatelessWidget {
         ],
       ),
       child: Row(
-        textDirection: locale.localeName == 'ar'
-            ? TextDirection.rtl
-            : TextDirection.ltr,
         children: [
           Container(
             width: Spacing.addressesIconContainerSize,
@@ -84,23 +87,11 @@ class SavedAddressTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.sm),
-          GestureDetector(
-            onTap: onDelete,
-            child: Container(
-              width: Spacing.addressesOverflowButtonSize,
-              height: Spacing.addressesOverflowButtonSize,
-              decoration: BoxDecoration(
-                color: color.secondaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                onDelete == null
-                    ? Icons.more_horiz_rounded
-                    : Icons.delete_rounded,
-                color: color.primary,
-                size: Spacing.iconMd,
-              ),
-            ),
+          AddressActionMenuButton(
+            onEdit: onEdit,
+            onSetDefault: onSetDefault,
+            onDelete: onDelete,
+            canDelete: canDelete,
           ),
         ],
       ),

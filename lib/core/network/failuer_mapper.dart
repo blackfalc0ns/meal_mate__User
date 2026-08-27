@@ -98,6 +98,8 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.checkout_restaurant_not_eligible;
     case 'checkout.redirect_url_not_allowed':
       return locale.checkout_redirect_url_not_allowed;
+    case 'address.active_delivery_cannot_delete':
+      return locale.address_active_delivery_cannot_delete;
     case 'error_server':
       return locale.error_server;
     default:

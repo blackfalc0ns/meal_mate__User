@@ -8,13 +8,18 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
+import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_address_tile.dart';
@@ -39,7 +44,26 @@ class AddressesScreen extends StatelessWidget {
           backgroundColor: color.surface,
           showShadow: false,
         ),
-        body: BlocBuilder<AddressesViewModel, AddressesState>(
+        body: BlocConsumer<AddressesViewModel, AddressesState>(
+          listenWhen: (previous, current) => previous.action != current.action,
+          listener: (context, state) async {
+            final errorMessage = state.action.displayErrorMessage;
+            if (errorMessage != null && errorMessage.isNotEmpty) {
+              CustomSnackbar.showError(
+                context: context,
+                message: mapFailureMessage(context, errorMessage),
+              );
+            }
+
+            final deliveryNotice = _deliveryNoticeForAction(state);
+            if (deliveryNotice != null) {
+              await showDialog<void>(
+                context: context,
+                builder: (context) =>
+                    AddressDeliveryNoticeDialog(message: deliveryNotice),
+              );
+            }
+          },
           buildWhen: (previous, current) =>
               previous.addresses != current.addresses,
           builder: (context, state) {
@@ -72,7 +96,9 @@ class AddressesScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CurrentAddressCard(address: addressesState.defaultAddress),
+                    CurrentAddressCard(
+                      address: addressesState.currentDeliveryAddress,
+                    ),
                     const SizedBox(height: Spacing.addressesSectionGap),
                     Text(
                       locale.addresses_saved_section,
@@ -91,7 +117,6 @@ class AddressesScreen extends StatelessWidget {
                       )
                     else
                       ..._buildAddressTiles(context, addressesState.items),
-                    const SizedBox(height: Spacing.addressesSectionGap),
                     const SizedBox(height: Spacing.addressesSectionGap),
                     SizedBox(
                       height: Spacing.addressesAddButtonHeight,
@@ -156,6 +181,17 @@ class AddressesScreen extends StatelessWidget {
     );
   }
 
+  String? _deliveryNoticeForAction(AddressesState state) {
+    final actionNotice = state.action.deliveryChangeNotice;
+    if (!state.action.isSuccess ||
+        state.action.address == null ||
+        actionNotice == null ||
+        actionNotice.isEmpty) {
+      return null;
+    }
+    return actionNotice;
+  }
+
   List<Widget> _buildAddressTiles(
     BuildContext context,
     List<CustomerAddressEntity> addresses,
@@ -169,6 +205,19 @@ class AddressesScreen extends StatelessWidget {
           icon: _iconForAddress(address),
           title: address.label,
           address: address.addressLine,
+          canDelete: address.canDelete,
+          onEdit: () => Navigator.of(context).pushNamed(
+            AppRoutes.addressChooseLocation,
+            arguments: AddressChooseLocationArgs(initialAddress: address),
+          ),
+          onSetDefault: address.addressId.isEmpty || address.isDefault
+              ? null
+              : () => context.read<AddressesViewModel>().doIntent(
+                  UpdateCustomerAddressEvent(
+                    addressId: address.addressId,
+                    request: _defaultAddressRequest(address),
+                  ),
+                ),
           onDelete: address.addressId.isEmpty
               ? null
               : () => context.read<AddressesViewModel>().doIntent(
@@ -184,12 +233,35 @@ class AddressesScreen extends StatelessWidget {
     return children;
   }
 
+  CustomerAddressRequestEntity _defaultAddressRequest(
+    CustomerAddressEntity address,
+  ) {
+    return CustomerAddressRequestEntity(
+      label: address.label,
+      addressLine: address.addressLine,
+      regionId: address.regionId,
+      governorate: address.governorate,
+      area: address.area,
+      block: address.block,
+      blockRegionId: address.blockRegionId,
+      street: address.street,
+      building: address.building,
+      unit: address.unit,
+      floor: address.floor,
+      latitude: address.latitude,
+      longitude: address.longitude,
+      notes: address.notes,
+      isDefault: true,
+      notifyOnDelivery: address.notifyOnDelivery,
+    );
+  }
+
   IconData _iconForAddress(CustomerAddressEntity address) {
     final label = address.label.toLowerCase();
-    if (label.contains('work')) {
+    if (label.contains('work') || label.contains('عمل')) {
       return Icons.business_center_rounded;
     }
-    if (label.contains('home')) {
+    if (label.contains('home') || label.contains('منزل')) {
       return Icons.home_rounded;
     }
     return Icons.location_on_rounded;

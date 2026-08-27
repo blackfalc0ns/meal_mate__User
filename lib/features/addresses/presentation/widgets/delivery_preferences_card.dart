@@ -35,12 +35,6 @@ class DeliveryPreferencesCard extends StatelessWidget {
             title: locale.addresses_contact_on_arrival,
             description: locale.addresses_contact_on_arrival_description,
           ),
-          Divider(height: Spacing.hairline, color: color.outlineVariant),
-          DeliveryPreferenceTile(
-            icon: Icons.shopping_bag_rounded,
-            title: locale.addresses_leave_at_door,
-            description: locale.addresses_leave_at_door_description,
-          ),
         ],
       ),
     );

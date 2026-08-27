@@ -6,6 +6,7 @@ class CustomerAddressRequestEntity {
     this.governorate,
     this.area,
     this.block,
+    this.blockRegionId,
     this.street,
     this.building,
     this.unit,
@@ -23,6 +24,7 @@ class CustomerAddressRequestEntity {
   final String? governorate;
   final String? area;
   final String? block;
+  final String? blockRegionId;
   final String? street;
   final String? building;
   final String? unit;
