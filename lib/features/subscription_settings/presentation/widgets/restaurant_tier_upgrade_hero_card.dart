@@ -43,9 +43,9 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
             children: [
               Expanded(child: RestaurantTierPreview(tier: data.currentTier)),
               Icon(
-                Icons.arrow_back_ios_new_rounded,
+                Icons.arrow_forward_ios_rounded,
                 color: color.primary,
-                size: Spacing.iconLg,
+                size: Spacing.iconMd,
                 semanticLabel:
                     locale.subscription_summary_restaurant_tier_label,
               ),

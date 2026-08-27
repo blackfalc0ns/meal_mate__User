@@ -39,7 +39,7 @@ class RestaurantTierFeatureChip extends StatelessWidget {
             size: Spacing.iconSm,
             semanticLabel: locale.subscription_summary_restaurant_tier_label,
           ),
-          const SizedBox(width: Spacing.xs),
+
           Flexible(
             child: Text(
               feature.label,
@@ -47,7 +47,7 @@ class RestaurantTierFeatureChip extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size9,
                 color: color.primary,
               ),
             ),

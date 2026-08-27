@@ -260,11 +260,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingUpgradeTier,
                         label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
-                        onTap: subscription.actions.canUpgrade
-                            ? () => context.pushNamed(
-                                AppRoutes.restaurantTierUpgrade,
-                              )
-                            : null,
+                        onTap: () => context.pushNamed(
+                          AppRoutes.restaurantTierUpgrade,
+                        ),
                       ),
                     ),
                     const SizedBox(width: Spacing.sm),

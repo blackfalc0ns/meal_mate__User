@@ -119,6 +119,8 @@ class RestaurantTierActionPanel extends StatelessWidget {
               children: [
                 Text(
                   price,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size14,
@@ -127,6 +129,8 @@ class RestaurantTierActionPanel extends StatelessWidget {
                 ),
                 Text(
                   pricePeriod,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,

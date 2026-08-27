@@ -181,7 +181,7 @@ class Spacing {
   static const double subscriptionPackageSelectorHeight = 42.0;
   static const double restaurantTierDesignWidth = 522.0;
   static const double restaurantTierHorizontalPadding = 20.0;
-  static const double restaurantTierPlanCardHeight = 115.48;
+  static const double restaurantTierPlanCardHeight = 138.48;
   static const double restaurantTierOptionCardHeight = 150.48;
   static const double restaurantTierCurrentOptionHeight = 170.29;
   static const double restaurantTierCardRadius = 17.026;

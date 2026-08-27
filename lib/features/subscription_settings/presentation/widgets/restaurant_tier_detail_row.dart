@@ -31,15 +31,12 @@ class RestaurantTierDetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
       child: Row(
         children: [
-          Flexible(
-            flex: 3,
-            child: Text(
-              row.label,
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: style,
-            ),
+          Text(
+            row.label,
+            textAlign: TextAlign.end,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: style,
           ),
           const Spacer(),
           Text(
