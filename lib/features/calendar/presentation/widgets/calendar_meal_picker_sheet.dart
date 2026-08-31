@@ -471,7 +471,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
             carbs: meal.carbs,
             fat: meal.fat,
             ingredients: visibleIngredients,
-            selected: widget.selectedMealIds.contains(meal.id) || meal.selected,
+            selected: widget.selectedMealIds.contains(meal.id),
             blockReason: meal.blockReason,
           );
         })

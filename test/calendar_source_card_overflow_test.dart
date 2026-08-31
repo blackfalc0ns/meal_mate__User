@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 
 void main() {
@@ -116,6 +117,41 @@ void main() {
     expect(find.byIcon(Icons.eco_rounded), findsNothing);
   });
 
+  testWidgets(
+    'meal picker uses local selected IDs over stale API selected flag',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: CalendarMealPickerSheet(
+              availableMeals: CalendarAvailableMealsEntity(
+                restaurant: null,
+                meals: [
+                  _meal(id: 'meal-1', selected: true),
+                  _meal(id: 'meal-2'),
+                ],
+                slotRequirements: const [
+                  CalendarSlotRequirementEntity(
+                    slot: 'lunch',
+                    slotNameAr: 'الغداء',
+                    slotNameEn: 'Lunch',
+                    count: 1,
+                  ),
+                ],
+              ),
+              selectedMealIds: const ['meal-2'],
+              onMealToggled: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+    },
+  );
+
   test('restaurant description stays below the header', () {
     final headerSource = File(
       'lib/features/calendar/presentation/widgets/'
@@ -154,4 +190,22 @@ void main() {
     );
     expect(sheetSource, isNot(contains('BorderRadius.zero')));
   });
+}
+
+CalendarMealEntity _meal({required String id, bool selected = false}) {
+  return CalendarMealEntity(
+    id: id,
+    slot: 'lunch',
+    selected: selected,
+    mealType: 'Lunch',
+    title: id,
+    time: '',
+    calories: '',
+    protein: '',
+    carbs: '',
+    fat: '',
+    ingredients: const [],
+    imageAsset: '',
+    actionLabel: '',
+  );
 }
