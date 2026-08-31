@@ -59,3 +59,17 @@ class DeleteCustomerAddressEvent extends AddressesEvent {
 
   final String addressId;
 }
+
+class ReverseGeocodeEvent extends AddressesEvent {
+  const ReverseGeocodeEvent({required this.latitude, required this.longitude});
+
+  final double latitude;
+  final double longitude;
+}
+
+class GeocodeAddressEvent extends AddressesEvent {
+  const GeocodeAddressEvent({required this.address, this.countryCode = 'KW'});
+
+  final String address;
+  final String countryCode;
+}

@@ -1,13 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
@@ -20,6 +24,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
     this._addCustomerAddressUseCase,
     this._updateCustomerAddressUseCase,
     this._deleteCustomerAddressUseCase,
+    this._geocodeAddressUseCase,
+    this._reverseGeocodeLocationUseCase,
   ) : super(const AddressesState());
 
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
@@ -27,6 +33,13 @@ class AddressesViewModel extends Cubit<AddressesState> {
   final AddCustomerAddressUseCase _addCustomerAddressUseCase;
   final UpdateCustomerAddressUseCase _updateCustomerAddressUseCase;
   final DeleteCustomerAddressUseCase _deleteCustomerAddressUseCase;
+  final GeocodeAddressUseCase _geocodeAddressUseCase;
+  final ReverseGeocodeLocationUseCase _reverseGeocodeLocationUseCase;
+
+  static bool isWithinKuwaitBounds(double? lat, double? lng) {
+    if (lat == null || lng == null) return false;
+    return lat >= 28.5 && lat <= 30.2 && lng >= 46.5 && lng <= 48.5;
+  }
 
   void doIntent(AddressesEvent event) {
     switch (event) {
@@ -46,6 +59,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
         _updateCustomerAddress(event.addressId, event.request);
       case DeleteCustomerAddressEvent():
         _deleteCustomerAddress(event.addressId);
+      case ReverseGeocodeEvent():
+        _reverseGeocode(event.latitude, event.longitude);
+      case GeocodeAddressEvent():
+        _geocodeAddress(event.address, event.countryCode);
     }
   }
 
@@ -104,6 +121,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await _getLocationsCatalogUseCase(countryCode);
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -111,10 +129,11 @@ class AddressesViewModel extends Cubit<AddressesState> {
           result.data,
           initialAddress,
         );
-        final selectedAreaWithBlocks = initialSelection.area == null
+        final initialArea = initialSelection.area;
+        final selectedAreaWithBlocks = initialArea == null
             ? null
-            : await _loadAreaBlocks(countryCode, initialSelection.area!.id);
-        final selectedArea = selectedAreaWithBlocks ?? initialSelection.area;
+            : await _loadAreaBlocks(countryCode, initialArea.id);
+        final selectedArea = selectedAreaWithBlocks ?? initialArea;
         final selectedBlock = selectedArea == null
             ? null
             : _findInitialBlock(selectedArea, initialAddress);
@@ -232,13 +251,16 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   _InitialLocationSelection _findInitialSelection(
     LocationsCatalogEntity locations,
-    CustomerAddressEntity? address,
-  ) {
-    if (address == null) return const _InitialLocationSelection();
+    CustomerAddressEntity? address, {
+    MapAddressAutofillEntity? autofill,
+  }) {
+    if (address == null && autofill == null) {
+      return const _InitialLocationSelection();
+    }
 
     for (final governorate in locations.governorates) {
       for (final area in governorate.areas) {
-        if (_matchesArea(area, address)) {
+        if (_matchesArea(area, address, autofill: autofill)) {
           return _InitialLocationSelection(
             governorate: governorate,
             area: area,
@@ -250,7 +272,21 @@ class AddressesViewModel extends Cubit<AddressesState> {
     return const _InitialLocationSelection();
   }
 
-  bool _matchesArea(LocationAreaEntity area, CustomerAddressEntity address) {
+  bool _matchesArea(
+    LocationAreaEntity area,
+    CustomerAddressEntity? address, {
+    MapAddressAutofillEntity? autofill,
+  }) {
+    if (autofill != null) {
+      if (_matchesValue(area.id, autofill.suggestedRegionId)) return true;
+      if (_matchesValue(area.nameAr, autofill.suggestedRegionNameAr)) {
+        return true;
+      }
+      if (_matchesValue(area.nameEn, autofill.suggestedRegionName)) return true;
+      if (_matchesValue(area.nameAr, autofill.area)) return true;
+      if (_matchesValue(area.nameEn, autofill.area)) return true;
+    }
+    if (address == null) return false;
     return _matchesValue(area.id, address.regionId) ||
         _matchesValue(area.code, address.area) ||
         _matchesValue(area.nameAr, address.area) ||
@@ -259,15 +295,28 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   LocationBlockEntity? _findInitialBlock(
     LocationAreaEntity area,
-    CustomerAddressEntity? address,
-  ) {
-    if (address == null) return null;
+    CustomerAddressEntity? address, {
+    MapAddressAutofillEntity? autofill,
+  }) {
+    if (address == null && autofill == null) return null;
 
     for (final block in area.blocks) {
-      if (_matchesValue(block.id, address.blockRegionId) ||
-          _matchesValue(block.code, address.block) ||
-          _matchesValue(block.nameAr, address.block) ||
-          _matchesValue(block.nameEn, address.block)) {
+      if (autofill != null) {
+        if (_matchesValue(block.id, autofill.suggestedBlockId)) return block;
+        if (_matchesValue(block.nameAr, autofill.suggestedBlockNameAr)) {
+          return block;
+        }
+        if (_matchesValue(block.nameEn, autofill.suggestedBlockName)) {
+          return block;
+        }
+        if (_matchesValue(block.nameAr, autofill.block)) return block;
+        if (_matchesValue(block.nameEn, autofill.block)) return block;
+      }
+      if (address != null &&
+          (_matchesValue(block.id, address.blockRegionId) ||
+              _matchesValue(block.code, address.block) ||
+              _matchesValue(block.nameAr, address.block) ||
+              _matchesValue(block.nameEn, address.block))) {
         return block;
       }
     }
@@ -284,11 +333,180 @@ class AddressesViewModel extends Cubit<AddressesState> {
     return value?.trim().toLowerCase() ?? '';
   }
 
+  Future<void> _reverseGeocode(double latitude, double longitude) async {
+    if (isClosed) return;
+
+    emit(
+      state.copyWith(
+        mapAutofill: state.mapAutofill.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _reverseGeocodeLocationUseCase(latitude, longitude);
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        final autofill = result.data;
+        await _applyAutofillToCatalog(autofill);
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              mapAutofill: state.mapAutofill.copyWith(
+                isLoading: false,
+                isSuccess: true,
+                autofill: autofill,
+              ),
+            ),
+          );
+        }
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            mapAutofill: state.mapAutofill.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _geocodeAddress(String address, String countryCode) async {
+    if (isClosed) return;
+
+    emit(
+      state.copyWith(
+        mapAutofill: state.mapAutofill.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _geocodeAddressUseCase(
+      address,
+      countryCode: countryCode,
+    );
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        final autofill = result.data;
+        await _applyAutofillToCatalog(autofill);
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              mapAutofill: state.mapAutofill.copyWith(
+                isLoading: false,
+                isSuccess: true,
+                autofill: autofill,
+              ),
+            ),
+          );
+        }
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            mapAutofill: state.mapAutofill.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _applyAutofillToCatalog(MapAddressAutofillEntity autofill) async {
+    final catalog = state.locations.data;
+    if (catalog == null) return;
+
+    final tempAddress = CustomerAddressEntity(
+      addressId: '',
+      label: '',
+      addressLine: autofill.formattedAddress,
+      regionId: autofill.suggestedRegionId,
+      blockRegionId: autofill.suggestedBlockId,
+      governorate: autofill.suggestedGovernorateName ?? autofill.governorate,
+      area: autofill.suggestedRegionName ?? autofill.area,
+      block: autofill.suggestedBlockName ?? autofill.block,
+      street: autofill.street,
+      notes: autofill.avenue,
+      building: autofill.building,
+      latitude: autofill.latitude,
+      longitude: autofill.longitude,
+      isDefault: false,
+      isDeliveryActive: false,
+      notifyOnDelivery: false,
+    );
+
+    final selection = _findInitialSelection(
+      catalog,
+      tempAddress,
+      autofill: autofill,
+    );
+    if (selection.governorate == null && selection.area == null) return;
+
+    final countryCode = catalog.countryCode.isNotEmpty ? catalog.countryCode : 'KW';
+    final currentArea = state.locations.selectedArea;
+    final areaWithBlocks = (currentArea != null &&
+            currentArea.id == selection.area?.id &&
+            currentArea.blocks.isNotEmpty)
+        ? currentArea
+        : (selection.area != null
+            ? await _loadAreaBlocks(countryCode, selection.area!.id)
+            : null);
+
+    final selectedArea = areaWithBlocks ?? selection.area;
+    final selectedBlock = selectedArea != null
+        ? _findInitialBlock(
+            selectedArea,
+            tempAddress,
+            autofill: autofill,
+          )
+        : null;
+
+    if (!isClosed) {
+      emit(
+        state.copyWith(
+          locations: state.locations.copyWith(
+            selectedGovernorate: selection.governorate,
+            selectedArea: selectedArea,
+            selectedBlock: selectedBlock,
+          ),
+        ),
+      );
+    }
+  }
+
   Future<void> _addCustomerAddress(CustomerAddressRequestEntity request) async {
+    if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
+      emit(
+        state.copyWith(
+          action: state.action.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            errorMessage: 'address.out_of_kuwait_bounds',
+            failure: Failure(
+              errorMessage: 'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              code: 'address.out_of_kuwait_bounds',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     await _runAddressAction(() => _addCustomerAddressUseCase(request));
     if (!isClosed && state.action.isSuccess) {
       await _getCustomerAddresses();
-      _setDeliveryNoticeFromRefreshedAddresses();
     }
   }
 
@@ -296,12 +514,28 @@ class AddressesViewModel extends Cubit<AddressesState> {
     String addressId,
     CustomerAddressRequestEntity request,
   ) async {
+    if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
+      emit(
+        state.copyWith(
+          action: state.action.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            errorMessage: 'address.out_of_kuwait_bounds',
+            failure: Failure(
+              errorMessage: 'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              code: 'address.out_of_kuwait_bounds',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     await _runAddressAction(
       () => _updateCustomerAddressUseCase(addressId, request),
     );
     if (!isClosed && state.action.isSuccess) {
       await _getCustomerAddresses();
-      _setDeliveryNoticeFromRefreshedAddresses();
     }
   }
 
@@ -310,20 +544,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
     if (!isClosed && state.action.isSuccess) {
       await _getCustomerAddresses();
     }
-  }
-
-  void _setDeliveryNoticeFromRefreshedAddresses() {
-    final existingNotice = state.action.deliveryChangeNotice;
-    if (existingNotice != null && existingNotice.isNotEmpty) return;
-
-    final refreshedNotice = state.addresses.pendingDeliveryChangeNotice;
-    if (refreshedNotice == null || refreshedNotice.isEmpty) return;
-
-    emit(
-      state.copyWith(
-        action: state.action.copyWith(deliveryChangeNotice: refreshedNotice),
-      ),
-    );
   }
 
   Future<void> _runAddressAction(

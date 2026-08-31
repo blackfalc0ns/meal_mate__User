@@ -1025,6 +1025,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.';
 
   @override
+  String get addresses_out_of_kuwait_bounds =>
+      'The selected location must be within Kuwait bounds.';
+
+  @override
   String get addresses_delivery_notice_title => 'Delivery address update';
 
   @override

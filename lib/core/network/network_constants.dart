@@ -28,6 +28,8 @@ abstract class EndPoints {
   static const String customerAddresses = '/api/v1/customers/me/addresses';
   static const String customerAddress =
       '/api/v1/customers/me/addresses/{addressId}';
+  static const String mapsGeocode = '/api/v1/maps/geocode';
+  static const String mapsReverseGeocode = '/api/v1/maps/reverse-geocode';
   static const String customerPassword = '/api/v1/customers/me/password';
   static const String customerFoodPreferencesDisliked =
       '/api/v1/customers/me/food-preferences/disliked-ingredients';

@@ -1008,6 +1008,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذا العنوان مستخدم حاليًا للتوصيل. عيّن عنوانًا افتراضيًا آخر وانتظر 72 ساعة حتى يتم تفعيله قبل حذف هذا العنوان.';
 
   @override
+  String get addresses_out_of_kuwait_bounds =>
+      'يجب أن يكون الموقع المحدد داخل حدود دولة الكويت.';
+
+  @override
   String get addresses_delivery_notice_title => 'تحديث عنوان التوصيل';
 
   @override

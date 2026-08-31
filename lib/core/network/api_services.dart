@@ -22,6 +22,9 @@ import 'package:meal_meat_user/features/auth/data/models/response/reset_password
 import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_response_dto.dart';
 import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/map_geocode_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/map_reverse_geocode_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/map_address_autofill_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_dietary_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_disliked_ingredients_request_dto.dart';
@@ -182,6 +185,18 @@ abstract class ApiServices {
 
   @DELETE(EndPoints.customerAddress)
   Future<void> deleteCustomerAddress(@Path('addressId') String addressId);
+
+  @POST(EndPoints.mapsGeocode)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<MapAddressAutofillResponseDto> geocode(
+    @Body() MapGeocodeRequestDto request,
+  );
+
+  @POST(EndPoints.mapsReverseGeocode)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<MapAddressAutofillResponseDto> reverseGeocode(
+    @Body() MapReverseGeocodeRequestDto request,
+  );
 
   @PUT(EndPoints.customerPassword)
   Future<void> changeCustomerPassword(

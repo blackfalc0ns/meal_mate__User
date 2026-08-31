@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
@@ -51,8 +54,16 @@ class AddressesFigmaFrame extends StatefulWidget {
 }
 
 class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
-  static const double _temporaryLatitude = 29.1322222;
-  static const double _temporaryLongitude = 48.1261111;
+  static const double _defaultLatitude = 29.34;
+  static const double _defaultLongitude = 48.08;
+
+  late double _currentLatitude;
+  late double _currentLongitude;
+  double? _lastGeocodedLat;
+  double? _lastGeocodedLng;
+  GoogleMapController? _mapController;
+  Timer? _debounceTimer;
+  bool _isInitialMapMove = true;
 
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _avenueController = TextEditingController();
@@ -65,11 +76,15 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   @override
   void initState() {
     super.initState();
+    _currentLatitude = widget.initialAddress?.latitude ?? _defaultLatitude;
+    _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
     _fillInitialAddress(widget.initialAddress);
   }
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
+    _mapController?.dispose();
     _streetController.dispose();
     _avenueController.dispose();
     _floorController.dispose();
@@ -83,101 +98,207 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Semantics(
-      label: locale.addresses_choose_location_title,
-      child: Container(
-        width: Spacing.addressesChooseLocationDesignWidth,
-        height: AddressesFigmaFrame.frameHeight,
-        decoration: BoxDecoration(
+    return BlocListener<AddressesViewModel, AddressesState>(
+      listenWhen: (previous, current) =>
+          previous.mapAutofill != current.mapAutofill,
+      listener: (context, state) {
+        if (state.mapAutofill.isSuccess && state.mapAutofill.autofill != null) {
+          final autofill = state.mapAutofill.autofill!;
+          setState(() {
+            _currentLatitude = autofill.latitude;
+            _currentLongitude = autofill.longitude;
+            if (autofill.street != null && autofill.street!.isNotEmpty) {
+              _streetController.text = autofill.street!;
+            }
+            if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
+              _avenueController.text = autofill.avenue!;
+            }
+            if (autofill.building != null && autofill.building!.isNotEmpty) {
+              _buildingNumberController.text = autofill.building!;
+            }
+          });
+        }
+      },
+      child: Semantics(
+        label: locale.addresses_choose_location_title,
+        child: Container(
+          width: Spacing.addressesChooseLocationDesignWidth,
+          height: AddressesFigmaFrame.frameHeight,
           color: color.surfaceContainerHighest,
-          image: const DecorationImage(
-            image: AssetImage(Assets.addressesChooseLocationMap),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: Spacing.addressesChooseLocationGpsTop),
-            const Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: Spacing.addressesChooseLocationGpsStart,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: Spacing.addressesChooseLocationColumnTop + 60,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(_currentLatitude, _currentLongitude),
+                    zoom: 16.0,
+                  ),
+                  onMapCreated: _onMapCreated,
+                  onCameraMove: _onCameraMove,
+                  onCameraIdle: _onCameraIdle,
+                  myLocationEnabled: false,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  mapToolbarEnabled: false,
+                  compassEnabled: false,
+                  rotateGesturesEnabled: false,
+                  tiltGesturesEnabled: false,
+                  gestureRecognizers: {
+                    Factory<OneSequenceGestureRecognizer>(
+                      () => EagerGestureRecognizer(),
+                    ),
+                  },
+                ),
               ),
-              child: Row(children: [AddressGpsButton()]),
-            ),
-            const SizedBox(
-              height:
-                  Spacing.addressesChooseLocationBadgeTop -
-                  Spacing.addressesChooseLocationGpsTop -
-                  Spacing.addressesChooseLocationGpsSize,
-            ),
-            const AddressMapMarker(),
-            const SizedBox(
-              height:
-                  Spacing.addressesChooseLocationColumnTop -
-                  Spacing.addressesChooseLocationPinTop -
-                  Spacing.addressesChooseLocationPinSize,
-            ),
-            Center(
-              child: Column(
+              Column(
                 children: [
-                  LocationConfirmationCard(
-                    isLoading: widget.isSubmitting,
-                    onConfirm: () => _submitAddress(context),
+                  const SizedBox(height: Spacing.addressesChooseLocationGpsTop),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: Spacing.addressesChooseLocationGpsStart,
+                    ),
+                    child: Row(
+                      children: [
+                        AddressGpsButton(
+                          onTap: () => _onGpsPressed(context),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
-                    height: Spacing.addressesChooseLocationColumnGap,
+                    height:
+                        Spacing.addressesChooseLocationBadgeTop -
+                        Spacing.addressesChooseLocationGpsTop -
+                        Spacing.addressesChooseLocationGpsSize,
                   ),
-                  HomeAddressFormCard(
-                    governorates: widget.locations.governorates,
-                    areas: widget.locations.areas,
-                    blocks: widget.locations.blocks,
-                    selectedGovernorate: widget.locations.selectedGovernorate,
-                    selectedArea: widget.locations.selectedArea,
-                    selectedBlock: widget.locations.selectedBlock,
-                    streetController: _streetController,
-                    avenueController: _avenueController,
-                    floorController: _floorController,
-                    buildingNumberController: _buildingNumberController,
-                    apartmentController: _apartmentController,
-                    selectedBuildingType: _buildingType,
-                    onGovernorateSelected: (governorate) {
-                      context.read<AddressesViewModel>().doIntent(
-                        SelectAddressGovernorateEvent(governorate),
-                      );
-                    },
-                    onAreaSelected: (area) {
-                      context.read<AddressesViewModel>().doIntent(
-                        SelectAddressAreaEvent(area),
-                      );
-                    },
-                    onBlockSelected: (block) {
-                      context.read<AddressesViewModel>().doIntent(
-                        SelectAddressBlockEvent(block),
-                      );
-                    },
-                    onBuildingTypeChanged: (type) {
-                      setState(() {
-                        _buildingType = type;
-                        if (type == AddressBuildingType.building) {
-                          _floorController.clear();
-                          _apartmentController.clear();
-                        }
-                      });
-                    },
+                  const IgnorePointer(
+                    child: AddressMapMarker(),
                   ),
                   const SizedBox(
-                    height: Spacing.addressesChooseLocationColumnGap,
+                    height:
+                        Spacing.addressesChooseLocationColumnTop -
+                        Spacing.addressesChooseLocationPinTop -
+                        Spacing.addressesChooseLocationPinSize,
                   ),
-                  const CurrentLocationCard(),
-                  const SizedBox(
-                    height: Spacing.addressesChooseLocationBottomPadding,
+                  Center(
+                    child: Column(
+                      children: [
+                        LocationConfirmationCard(
+                          isLoading: widget.isSubmitting,
+                          onConfirm: () => _submitAddress(context),
+                        ),
+                        const SizedBox(
+                          height: Spacing.addressesChooseLocationColumnGap,
+                        ),
+                        HomeAddressFormCard(
+                          governorates: widget.locations.governorates,
+                          areas: widget.locations.areas,
+                          blocks: widget.locations.blocks,
+                          selectedGovernorate:
+                              widget.locations.selectedGovernorate,
+                          selectedArea: widget.locations.selectedArea,
+                          selectedBlock: widget.locations.selectedBlock,
+                          streetController: _streetController,
+                          avenueController: _avenueController,
+                          floorController: _floorController,
+                          buildingNumberController: _buildingNumberController,
+                          apartmentController: _apartmentController,
+                          selectedBuildingType: _buildingType,
+                          onGovernorateSelected: (governorate) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressGovernorateEvent(governorate),
+                            );
+                          },
+                          onAreaSelected: (area) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressAreaEvent(area),
+                            );
+                          },
+                          onBlockSelected: (block) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressBlockEvent(block),
+                            );
+                          },
+                          onBuildingTypeChanged: (type) {
+                            setState(() {
+                              _buildingType = type;
+                              if (type == AddressBuildingType.building) {
+                                _floorController.clear();
+                                _apartmentController.clear();
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          height: Spacing.addressesChooseLocationColumnGap,
+                        ),
+                        CurrentLocationCard(
+                          onTap: () => _onGpsPressed(context),
+                        ),
+                        const SizedBox(
+                          height: Spacing.addressesChooseLocationBottomPadding,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    _currentLatitude = position.target.latitude;
+    _currentLongitude = position.target.longitude;
+  }
+
+  void _onCameraIdle() {
+    if (_isInitialMapMove) {
+      _isInitialMapMove = false;
+      return;
+    }
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 600), () {
+      if (!mounted) return;
+      _triggerReverseGeocode(context);
+    });
+  }
+
+  void _onGpsPressed(BuildContext context) {
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLng(
+        LatLng(_currentLatitude, _currentLongitude),
+      ),
+    );
+    _triggerReverseGeocode(context);
+  }
+
+  void _triggerReverseGeocode(BuildContext context) {
+    if (_lastGeocodedLat != null && _lastGeocodedLng != null) {
+      final latDiff = (_currentLatitude - _lastGeocodedLat!).abs();
+      final lngDiff = (_currentLongitude - _lastGeocodedLng!).abs();
+      if (latDiff < 0.0001 && lngDiff < 0.0001) {
+        return;
+      }
+    }
+    _lastGeocodedLat = _currentLatitude;
+    _lastGeocodedLng = _currentLongitude;
+
+    context.read<AddressesViewModel>().doIntent(
+      ReverseGeocodeEvent(
+        latitude: _currentLatitude,
+        longitude: _currentLongitude,
       ),
     );
   }
@@ -239,8 +360,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       building: building.isEmpty ? null : building,
       unit: isHome && unit.isNotEmpty ? unit : null,
       floor: isHome && floor.isNotEmpty ? floor : null,
-      latitude: initialAddress?.latitude ?? _temporaryLatitude,
-      longitude: initialAddress?.longitude ?? _temporaryLongitude,
+      latitude: _currentLatitude,
+      longitude: _currentLongitude,
       notes: avenue.isEmpty ? null : avenue,
       isDefault: initialAddress?.isDefault ?? true,
       notifyOnDelivery: initialAddress?.notifyOnDelivery ?? true,

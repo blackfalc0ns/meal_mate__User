@@ -2,9 +2,13 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/data/data_source/addresses_remote_data_source.dart';
 import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_mapper.dart';
+import 'package:meal_meat_user/features/addresses/data/mapper/map_address_autofill_mapper.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/map_geocode_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/map_reverse_geocode_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/repo/addresses_repository.dart';
 
 @Injectable(as: AddressesRepository)
@@ -65,6 +69,35 @@ class AddressesRepositoryImpl implements AddressesRepository {
   Future<ApiResult<void>> deleteCustomerAddress(String addressId) {
     return safeApiCall(() async {
       await _remoteDataSource.deleteCustomerAddress(addressId);
+    });
+  }
+
+  @override
+  Future<ApiResult<MapAddressAutofillEntity>> geocode(
+    String address, {
+    String countryCode = 'KW',
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.geocode(
+        MapGeocodeRequestDto(address: address, countryCode: countryCode),
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<MapAddressAutofillEntity>> reverseGeocode(
+    double latitude,
+    double longitude,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.reverseGeocode(
+        MapReverseGeocodeRequestDto(
+          latitude: latitude,
+          longitude: longitude,
+        ),
+      );
+      return response.toEntity();
     });
   }
 }

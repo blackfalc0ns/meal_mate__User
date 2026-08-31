@@ -1982,6 +1982,12 @@ abstract class AppLocalizations {
   /// **'This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.'**
   String get address_active_delivery_cannot_delete;
 
+  /// No description provided for @addresses_out_of_kuwait_bounds.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected location must be within Kuwait bounds.'**
+  String get addresses_out_of_kuwait_bounds;
+
   /// No description provided for @addresses_delivery_notice_title.
   ///
   /// In en, this message translates to:

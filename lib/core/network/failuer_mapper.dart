@@ -100,6 +100,8 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.checkout_redirect_url_not_allowed;
     case 'address.active_delivery_cannot_delete':
       return locale.address_active_delivery_cannot_delete;
+    case 'address.out_of_kuwait_bounds':
+      return locale.addresses_out_of_kuwait_bounds;
     case 'error_server':
       return locale.error_server;
     default:

@@ -29,10 +29,14 @@ import '../../features/addresses/domain/usecase/add_customer_address_usecase.dar
     as _i898;
 import '../../features/addresses/domain/usecase/delete_customer_address_usecase.dart'
     as _i624;
+import '../../features/addresses/domain/usecase/geocode_address_usecase.dart'
+    as _i563;
 import '../../features/addresses/domain/usecase/get_customer_addresses_usecase.dart'
     as _i945;
 import '../../features/addresses/domain/usecase/get_locations_catalog_usecase.dart'
     as _i2;
+import '../../features/addresses/domain/usecase/reverse_geocode_location_usecase.dart'
+    as _i1019;
 import '../../features/addresses/domain/usecase/update_customer_address_usecase.dart'
     as _i241;
 import '../../features/addresses/presentation/manager/addresses_view_model.dart'
@@ -907,11 +911,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i624.DeleteCustomerAddressUseCase>(
       () => _i624.DeleteCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i563.GeocodeAddressUseCase>(
+      () => _i563.GeocodeAddressUseCase(gh<_i556.AddressesRepository>()),
+    );
     gh.factory<_i945.GetCustomerAddressesUseCase>(
       () => _i945.GetCustomerAddressesUseCase(gh<_i556.AddressesRepository>()),
     );
     gh.factory<_i2.GetLocationsCatalogUseCase>(
       () => _i2.GetLocationsCatalogUseCase(gh<_i556.AddressesRepository>()),
+    );
+    gh.factory<_i1019.ReverseGeocodeLocationUseCase>(
+      () =>
+          _i1019.ReverseGeocodeLocationUseCase(gh<_i556.AddressesRepository>()),
     );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
@@ -995,6 +1006,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
       ),
     );
+    gh.factory<_i524.AddressesViewModel>(
+      () => _i524.AddressesViewModel(
+        gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i2.GetLocationsCatalogUseCase>(),
+        gh<_i898.AddCustomerAddressUseCase>(),
+        gh<_i241.UpdateCustomerAddressUseCase>(),
+        gh<_i624.DeleteCustomerAddressUseCase>(),
+        gh<_i563.GeocodeAddressUseCase>(),
+        gh<_i1019.ReverseGeocodeLocationUseCase>(),
+      ),
+    );
     gh.factory<_i665.FamilyCheckoutViewModel>(
       () => _i665.FamilyCheckoutViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1040,15 +1062,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i293.MealDetailsViewModel>(
       () => _i293.MealDetailsViewModel(
         gh<_i832.GetSubscriptionMealDetailsUseCase>(),
-      ),
-    );
-    gh.factory<_i524.AddressesViewModel>(
-      () => _i524.AddressesViewModel(
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i2.GetLocationsCatalogUseCase>(),
-        gh<_i898.AddCustomerAddressUseCase>(),
-        gh<_i241.UpdateCustomerAddressUseCase>(),
-        gh<_i624.DeleteCustomerAddressUseCase>(),
       ),
     );
     gh.factory<_i731.FamilyProgramsViewModel>(

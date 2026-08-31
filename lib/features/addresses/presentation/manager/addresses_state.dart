@@ -1,27 +1,32 @@
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 
 class AddressesState {
   const AddressesState({
     this.addresses = const CustomerAddressesState(),
     this.locations = const LocationsCatalogState(),
     this.action = const AddressesActionState(),
+    this.mapAutofill = const MapAutofillState(),
   });
 
   final CustomerAddressesState addresses;
   final LocationsCatalogState locations;
   final AddressesActionState action;
+  final MapAutofillState mapAutofill;
 
   AddressesState copyWith({
     CustomerAddressesState? addresses,
     LocationsCatalogState? locations,
     AddressesActionState? action,
+    MapAutofillState? mapAutofill,
   }) {
     return AddressesState(
       addresses: addresses ?? this.addresses,
       locations: locations ?? this.locations,
       action: action ?? this.action,
+      mapAutofill: mapAutofill ?? this.mapAutofill,
     );
   }
 }
@@ -183,6 +188,36 @@ class AddressesActionState {
       deliveryChangeNotice: clearError
           ? null
           : deliveryChangeNotice ?? this.deliveryChangeNotice,
+    );
+  }
+}
+
+class MapAutofillState {
+  const MapAutofillState({
+    this.isLoading = false,
+    this.isSuccess = false,
+    this.autofill,
+    this.failure,
+  });
+
+  final bool isLoading;
+  final bool isSuccess;
+  final MapAddressAutofillEntity? autofill;
+  final Failure? failure;
+
+  MapAutofillState copyWith({
+    bool? isLoading,
+    bool? isSuccess,
+    MapAddressAutofillEntity? autofill,
+    Failure? failure,
+    bool clearFailure = false,
+    bool clearAutofill = false,
+  }) {
+    return MapAutofillState(
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      autofill: clearAutofill ? null : autofill ?? this.autofill,
+      failure: clearFailure ? null : failure ?? this.failure,
     );
   }
 }

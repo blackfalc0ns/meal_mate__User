@@ -5,30 +5,38 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AddressGpsButton extends StatelessWidget {
-  const AddressGpsButton({super.key});
+  const AddressGpsButton({super.key, this.onTap});
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
-      width: Spacing.addressesChooseLocationGpsSize,
-      height: Spacing.addressesChooseLocationGpsSize,
-      decoration: BoxDecoration(
-        color: color.surface,
-        border: Border.all(color: color.outline, width: 0.662),
-        borderRadius: BorderRadius.circular(
-          Spacing.addressesChooseLocationGpsRadius,
-        ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(
+        Spacing.addressesChooseLocationGpsRadius,
       ),
-      child: Center(
-        child: Semantics(
-          label: locale.addresses_use_current_location,
-          child: SvgPicture.asset(
-            Assets.addressesIconGps,
-            width: Spacing.addressesChooseLocationGpsIconSize,
-            height: Spacing.addressesChooseLocationGpsIconSize,
+      child: Container(
+        width: Spacing.addressesChooseLocationGpsSize,
+        height: Spacing.addressesChooseLocationGpsSize,
+        decoration: BoxDecoration(
+          color: color.surface,
+          border: Border.all(color: color.outline, width: 0.662),
+          borderRadius: BorderRadius.circular(
+            Spacing.addressesChooseLocationGpsRadius,
+          ),
+        ),
+        child: Center(
+          child: Semantics(
+            label: locale.addresses_use_current_location,
+            child: SvgPicture.asset(
+              Assets.addressesIconGps,
+              width: Spacing.addressesChooseLocationGpsIconSize,
+              height: Spacing.addressesChooseLocationGpsIconSize,
+            ),
           ),
         ),
       ),

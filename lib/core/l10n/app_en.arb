@@ -335,6 +335,7 @@
   "addresses_use_current_location": "Use my current location",
   "addresses_use_current_location_subtitle": "Set my current location as home address",
   "address_active_delivery_cannot_delete": "This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.",
+  "addresses_out_of_kuwait_bounds": "The selected location must be within Kuwait bounds.",
   "addresses_delivery_notice_title": "Delivery address update",
   "addresses_delivery_notice_action": "Got it",
   "addresses_edit": "Edit",

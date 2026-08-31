@@ -335,6 +335,7 @@
   "addresses_use_current_location": "استخدام موقعي الحالي",
   "addresses_use_current_location_subtitle": "حدد موقعي الحالي كعنوان للبيت",
   "address_active_delivery_cannot_delete": "هذا العنوان مستخدم حاليًا للتوصيل. عيّن عنوانًا افتراضيًا آخر وانتظر 72 ساعة حتى يتم تفعيله قبل حذف هذا العنوان.",
+  "addresses_out_of_kuwait_bounds": "يجب أن يكون الموقع المحدد داخل حدود دولة الكويت.",
   "addresses_delivery_notice_title": "تحديث عنوان التوصيل",
   "addresses_delivery_notice_action": "فهمت",
   "addresses_edit": "تعديل",
