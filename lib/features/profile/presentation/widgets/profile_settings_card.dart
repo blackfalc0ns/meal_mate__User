@@ -36,6 +36,11 @@ class ProfileSettingsCard extends StatelessWidget {
         locale.profile_billing_subtitle,
       ),
       (
+        Icons.campaign_rounded,
+        locale.profile_influencer_partner,
+        locale.profile_influencer_partner_subtitle,
+      ),
+      (
         Icons.account_balance_wallet_rounded,
         locale.payment_method_wallet,
         locale.payment_method_wallet_balance,
@@ -53,7 +58,7 @@ class ProfileSettingsCard extends StatelessWidget {
     ];
 
     return Container(
-      height: Spacing.profileSettingsHeight,
+      height: Spacing.profileSettingsInfluencerHeight,
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.profileCardRadius),
@@ -97,11 +102,15 @@ class ProfileSettingsCard extends StatelessWidget {
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.profileBilling)
                 : index == 4
+                ? () => Navigator.of(
+                    context,
+                  ).pushNamed(AppRoutes.influencerDashboard)
+                : index == 5
                 ? () => Navigator.of(context).pushNamed(AppRoutes.wallet)
                 : index == items.length - 1
                 ? () =>
                       Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
-                : index == 5
+                : index == 6
                 ? () => Navigator.of(context).pushNamed(AppRoutes.addresses)
                 : index == 2
                 ? () => Navigator.of(

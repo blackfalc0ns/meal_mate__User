@@ -7471,6 +7471,426 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restaurants suitable for {memberName}'**
   String family_restaurants_suitable_title(String memberName);
+
+  /// No description provided for @profile_influencer_partner.
+  ///
+  /// In en, this message translates to:
+  /// **'Influencer Partner'**
+  String get profile_influencer_partner;
+
+  /// No description provided for @profile_influencer_partner_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track referrals, links, and earnings'**
+  String get profile_influencer_partner_subtitle;
+
+  /// No description provided for @influencer_dashboard_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Influencer'**
+  String get influencer_dashboard_title;
+
+  /// No description provided for @influencer_user_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Mohamed'**
+  String get influencer_user_name;
+
+  /// No description provided for @influencer_partner_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Influencer Partner'**
+  String get influencer_partner_label;
+
+  /// No description provided for @influencer_statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get influencer_statistics;
+
+  /// No description provided for @influencer_tools.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner tools'**
+  String get influencer_tools;
+
+  /// No description provided for @influencer_total_earnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total earnings'**
+  String get influencer_total_earnings;
+
+  /// No description provided for @influencer_total_earnings_value.
+  ///
+  /// In en, this message translates to:
+  /// **'152.3 KWD'**
+  String get influencer_total_earnings_value;
+
+  /// No description provided for @influencer_this_month.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get influencer_this_month;
+
+  /// No description provided for @influencer_referrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Referrals'**
+  String get influencer_referrals;
+
+  /// No description provided for @influencer_referrals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'84'**
+  String get influencer_referrals_value;
+
+  /// No description provided for @influencer_active_codes.
+  ///
+  /// In en, this message translates to:
+  /// **'Active codes'**
+  String get influencer_active_codes;
+
+  /// No description provided for @influencer_conversion_rate.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversion'**
+  String get influencer_conversion_rate;
+
+  /// No description provided for @influencer_conversion_rate_value.
+  ///
+  /// In en, this message translates to:
+  /// **'12%'**
+  String get influencer_conversion_rate_value;
+
+  /// No description provided for @influencer_from_visits.
+  ///
+  /// In en, this message translates to:
+  /// **'From visits'**
+  String get influencer_from_visits;
+
+  /// No description provided for @influencer_pending_withdrawals.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get influencer_pending_withdrawals;
+
+  /// No description provided for @influencer_pending_withdrawals_value.
+  ///
+  /// In en, this message translates to:
+  /// **'32.5 KWD'**
+  String get influencer_pending_withdrawals_value;
+
+  /// No description provided for @influencer_under_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get influencer_under_review;
+
+  /// No description provided for @influencer_share_links_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Share links'**
+  String get influencer_share_links_title;
+
+  /// No description provided for @influencer_share_links_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your link and code'**
+  String get influencer_share_links_subtitle;
+
+  /// No description provided for @influencer_social_connections_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Social accounts'**
+  String get influencer_social_connections_title;
+
+  /// No description provided for @influencer_social_connections_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your public channels'**
+  String get influencer_social_connections_subtitle;
+
+  /// No description provided for @influencer_wallet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings wallet'**
+  String get influencer_wallet_title;
+
+  /// No description provided for @influencer_wallet_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View balance and transactions'**
+  String get influencer_wallet_subtitle;
+
+  /// No description provided for @influencer_referral_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral code'**
+  String get influencer_referral_code_title;
+
+  /// No description provided for @influencer_referral_code_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your code and earn more commissions'**
+  String get influencer_referral_code_subtitle;
+
+  /// No description provided for @influencer_referral_code_value.
+  ///
+  /// In en, this message translates to:
+  /// **'MEALMATE24'**
+  String get influencer_referral_code_value;
+
+  /// No description provided for @influencer_share_links_header.
+  ///
+  /// In en, this message translates to:
+  /// **'Share now'**
+  String get influencer_share_links_header;
+
+  /// No description provided for @influencer_share_links_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Share easily across social platforms'**
+  String get influencer_share_links_body;
+
+  /// No description provided for @influencer_share_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Share now'**
+  String get influencer_share_now;
+
+  /// No description provided for @influencer_add_social_accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Add social accounts'**
+  String get influencer_add_social_accounts;
+
+  /// No description provided for @influencer_social_connections_header.
+  ///
+  /// In en, this message translates to:
+  /// **'Add social accounts'**
+  String get influencer_social_connections_header;
+
+  /// No description provided for @influencer_social_connections_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your social accounts to start the partnership and earn more commissions'**
+  String get influencer_social_connections_body;
+
+  /// No description provided for @influencer_save_continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and continue'**
+  String get influencer_save_continue;
+
+  /// No description provided for @influencer_skip_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip now'**
+  String get influencer_skip_now;
+
+  /// No description provided for @influencer_instagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get influencer_instagram;
+
+  /// No description provided for @influencer_tiktok.
+  ///
+  /// In en, this message translates to:
+  /// **'TikTok'**
+  String get influencer_tiktok;
+
+  /// No description provided for @influencer_snapchat.
+  ///
+  /// In en, this message translates to:
+  /// **'Snapchat'**
+  String get influencer_snapchat;
+
+  /// No description provided for @influencer_not_connected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get influencer_not_connected;
+
+  /// No description provided for @influencer_currency.
+  ///
+  /// In en, this message translates to:
+  /// **'KWD'**
+  String get influencer_currency;
+
+  /// No description provided for @influencer_wallet_last_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated today at 09:15 AM'**
+  String get influencer_wallet_last_updated;
+
+  /// No description provided for @influencer_available_earnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Available earnings'**
+  String get influencer_available_earnings;
+
+  /// No description provided for @influencer_request_withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Request withdrawal'**
+  String get influencer_request_withdraw;
+
+  /// No description provided for @influencer_request_withdraw_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer earnings to your bank account'**
+  String get influencer_request_withdraw_subtitle;
+
+  /// No description provided for @influencer_withdraw_history_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal history'**
+  String get influencer_withdraw_history_title;
+
+  /// No description provided for @influencer_withdraw_history_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track previous and pending requests'**
+  String get influencer_withdraw_history_subtitle;
+
+  /// No description provided for @influencer_recent_commissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent commissions'**
+  String get influencer_recent_commissions;
+
+  /// No description provided for @influencer_withdraw_arrival_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount will be reviewed before transfer'**
+  String get influencer_withdraw_arrival_hint;
+
+  /// No description provided for @influencer_withdraw_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal method'**
+  String get influencer_withdraw_method;
+
+  /// No description provided for @influencer_bank_account_holder.
+  ///
+  /// In en, this message translates to:
+  /// **'Account holder name'**
+  String get influencer_bank_account_holder;
+
+  /// No description provided for @influencer_bank_account_holder_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Mohamed Ahmed'**
+  String get influencer_bank_account_holder_value;
+
+  /// No description provided for @influencer_bank_iban.
+  ///
+  /// In en, this message translates to:
+  /// **'IBAN'**
+  String get influencer_bank_iban;
+
+  /// No description provided for @influencer_bank_iban_value.
+  ///
+  /// In en, this message translates to:
+  /// **'KW81CBKU0000000000001234560101'**
+  String get influencer_bank_iban_value;
+
+  /// No description provided for @influencer_bank_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank name'**
+  String get influencer_bank_name;
+
+  /// No description provided for @influencer_bank_name_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Kuwait National Bank'**
+  String get influencer_bank_name_value;
+
+  /// No description provided for @influencer_continue_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to review'**
+  String get influencer_continue_review;
+
+  /// No description provided for @influencer_withdraw_review_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Review withdrawal request'**
+  String get influencer_withdraw_review_title;
+
+  /// No description provided for @influencer_withdraw_review_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your request details before confirming'**
+  String get influencer_withdraw_review_subtitle;
+
+  /// No description provided for @influencer_withdraw_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal amount'**
+  String get influencer_withdraw_amount;
+
+  /// No description provided for @influencer_confirm_withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm withdrawal request'**
+  String get influencer_confirm_withdraw;
+
+  /// No description provided for @influencer_transaction_subscription_commission.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription commission'**
+  String get influencer_transaction_subscription_commission;
+
+  /// No description provided for @influencer_transaction_withdraw_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal request'**
+  String get influencer_transaction_withdraw_request;
+
+  /// No description provided for @influencer_transaction_referral_bonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral bonus'**
+  String get influencer_transaction_referral_bonus;
+
+  /// No description provided for @influencer_transaction_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today, 09:15 AM'**
+  String get influencer_transaction_today;
+
+  /// No description provided for @influencer_transaction_yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday, 02:40 PM'**
+  String get influencer_transaction_yesterday;
+
+  /// No description provided for @influencer_transaction_week.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get influencer_transaction_week;
+
+  /// No description provided for @influencer_transaction_amount_large.
+  ///
+  /// In en, this message translates to:
+  /// **'+24.000 KWD'**
+  String get influencer_transaction_amount_large;
+
+  /// No description provided for @influencer_transaction_amount_medium.
+  ///
+  /// In en, this message translates to:
+  /// **'-32.500 KWD'**
+  String get influencer_transaction_amount_medium;
+
+  /// No description provided for @influencer_transaction_amount_small.
+  ///
+  /// In en, this message translates to:
+  /// **'+6.250 KWD'**
+  String get influencer_transaction_amount_small;
 }
 
 class _AppLocalizationsDelegate

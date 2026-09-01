@@ -656,6 +656,7 @@ class Spacing {
   static const double profileStatsHeight = 96.03;
   static const double profileSettingsTopGap = 11.57;
   static const double profileSettingsHeight = 371.41;
+  static const double profileSettingsInfluencerHeight = 423.48;
   static const double profileCardRadius = 15.04;
   static const double profileSettingsTileHeight = 52.07;
   static const double profileSettingsIconContainer = 30.08;

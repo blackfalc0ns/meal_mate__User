@@ -33,5 +33,20 @@ void main() {
       expect(payload?.routeName, '/offers');
       expect(payload?.arguments, isEmpty);
     });
+
+    test('maps MealMate deep links to app routes', () {
+      final payload = PushNotificationPayload.fromData(const {
+        'eventKey': 'order.locked_72h',
+        'subjectId': 'sub-1',
+        'deepLink': 'mealmate://calendar',
+      });
+
+      expect(payload?.routeName, '/calendar');
+      expect(payload?.arguments, {
+        'eventKey': 'order.locked_72h',
+        'subjectId': 'sub-1',
+        'deepLink': 'mealmate://calendar',
+      });
+    });
   });
 }

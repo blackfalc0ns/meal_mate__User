@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/push_notification_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/calling_code_mapper.dart';
@@ -41,11 +42,13 @@ class AuthRepositoryImpl implements AuthRepository {
     this._remoteDataSource,
     this._tokenService,
     this._sharedPrefHelper,
+    this._pushNotificationService,
   );
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
   final SharedPrefHelper _sharedPrefHelper;
+  final PushNotificationService _pushNotificationService;
 
   @override
   Future<ApiResult<LoginEntity>> login(LoginRequestEntity request) {
@@ -59,6 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
         refreshToken: entity.refreshToken,
         userId: entity.userId,
       );
+      await _pushNotificationService.registerCurrentToken();
 
       return entity;
     });
@@ -86,6 +90,7 @@ class AuthRepositoryImpl implements AuthRepository {
         refreshToken: entity.refreshToken,
         userId: entity.userId,
       );
+      await _pushNotificationService.registerCurrentToken();
 
       return entity;
     });
@@ -146,6 +151,7 @@ class AuthRepositoryImpl implements AuthRepository {
         refreshToken: entity.refreshToken,
         userId: entity.userId,
       );
+      await _pushNotificationService.registerCurrentToken();
 
       return entity;
     });
@@ -155,6 +161,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<ApiResult<LogoutEntity>> logout(LogoutRequestEntity request) {
     return safeApiCall(() async {
       try {
+        await _pushNotificationService.unregisterCurrentToken();
         await _remoteDataSource.logout(request.toDto());
       } finally {
         await _tokenService.clearTokens();

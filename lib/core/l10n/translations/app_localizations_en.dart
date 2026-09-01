@@ -3935,4 +3935,224 @@ class AppLocalizationsEn extends AppLocalizations {
   String family_restaurants_suitable_title(String memberName) {
     return 'Restaurants suitable for $memberName';
   }
+
+  @override
+  String get profile_influencer_partner => 'Influencer Partner';
+
+  @override
+  String get profile_influencer_partner_subtitle =>
+      'Track referrals, links, and earnings';
+
+  @override
+  String get influencer_dashboard_title => 'Influencer';
+
+  @override
+  String get influencer_user_name => 'Mohamed';
+
+  @override
+  String get influencer_partner_label => 'Influencer Partner';
+
+  @override
+  String get influencer_statistics => 'Statistics';
+
+  @override
+  String get influencer_tools => 'Partner tools';
+
+  @override
+  String get influencer_total_earnings => 'Total earnings';
+
+  @override
+  String get influencer_total_earnings_value => '152.3 KWD';
+
+  @override
+  String get influencer_this_month => 'This month';
+
+  @override
+  String get influencer_referrals => 'Referrals';
+
+  @override
+  String get influencer_referrals_value => '84';
+
+  @override
+  String get influencer_active_codes => 'Active codes';
+
+  @override
+  String get influencer_conversion_rate => 'Conversion';
+
+  @override
+  String get influencer_conversion_rate_value => '12%';
+
+  @override
+  String get influencer_from_visits => 'From visits';
+
+  @override
+  String get influencer_pending_withdrawals => 'Pending';
+
+  @override
+  String get influencer_pending_withdrawals_value => '32.5 KWD';
+
+  @override
+  String get influencer_under_review => 'Under review';
+
+  @override
+  String get influencer_share_links_title => 'Share links';
+
+  @override
+  String get influencer_share_links_subtitle => 'Share your link and code';
+
+  @override
+  String get influencer_social_connections_title => 'Social accounts';
+
+  @override
+  String get influencer_social_connections_subtitle =>
+      'Connect your public channels';
+
+  @override
+  String get influencer_wallet_title => 'Earnings wallet';
+
+  @override
+  String get influencer_wallet_subtitle => 'View balance and transactions';
+
+  @override
+  String get influencer_referral_code_title => 'Referral code';
+
+  @override
+  String get influencer_referral_code_subtitle =>
+      'Share your code and earn more commissions';
+
+  @override
+  String get influencer_referral_code_value => 'MEALMATE24';
+
+  @override
+  String get influencer_share_links_header => 'Share now';
+
+  @override
+  String get influencer_share_links_body =>
+      'Share easily across social platforms';
+
+  @override
+  String get influencer_share_now => 'Share now';
+
+  @override
+  String get influencer_add_social_accounts => 'Add social accounts';
+
+  @override
+  String get influencer_social_connections_header => 'Add social accounts';
+
+  @override
+  String get influencer_social_connections_body =>
+      'Add your social accounts to start the partnership and earn more commissions';
+
+  @override
+  String get influencer_save_continue => 'Save and continue';
+
+  @override
+  String get influencer_skip_now => 'Skip now';
+
+  @override
+  String get influencer_instagram => 'Instagram';
+
+  @override
+  String get influencer_tiktok => 'TikTok';
+
+  @override
+  String get influencer_snapchat => 'Snapchat';
+
+  @override
+  String get influencer_not_connected => 'Not connected';
+
+  @override
+  String get influencer_currency => 'KWD';
+
+  @override
+  String get influencer_wallet_last_updated => 'Last updated today at 09:15 AM';
+
+  @override
+  String get influencer_available_earnings => 'Available earnings';
+
+  @override
+  String get influencer_request_withdraw => 'Request withdrawal';
+
+  @override
+  String get influencer_request_withdraw_subtitle =>
+      'Transfer earnings to your bank account';
+
+  @override
+  String get influencer_withdraw_history_title => 'Withdrawal history';
+
+  @override
+  String get influencer_withdraw_history_subtitle =>
+      'Track previous and pending requests';
+
+  @override
+  String get influencer_recent_commissions => 'Recent commissions';
+
+  @override
+  String get influencer_withdraw_arrival_hint =>
+      'The amount will be reviewed before transfer';
+
+  @override
+  String get influencer_withdraw_method => 'Withdrawal method';
+
+  @override
+  String get influencer_bank_account_holder => 'Account holder name';
+
+  @override
+  String get influencer_bank_account_holder_value => 'Mohamed Ahmed';
+
+  @override
+  String get influencer_bank_iban => 'IBAN';
+
+  @override
+  String get influencer_bank_iban_value => 'KW81CBKU0000000000001234560101';
+
+  @override
+  String get influencer_bank_name => 'Bank name';
+
+  @override
+  String get influencer_bank_name_value => 'Kuwait National Bank';
+
+  @override
+  String get influencer_continue_review => 'Continue to review';
+
+  @override
+  String get influencer_withdraw_review_title => 'Review withdrawal request';
+
+  @override
+  String get influencer_withdraw_review_subtitle =>
+      'Review your request details before confirming';
+
+  @override
+  String get influencer_withdraw_amount => 'Withdrawal amount';
+
+  @override
+  String get influencer_confirm_withdraw => 'Confirm withdrawal request';
+
+  @override
+  String get influencer_transaction_subscription_commission =>
+      'Subscription commission';
+
+  @override
+  String get influencer_transaction_withdraw_request => 'Withdrawal request';
+
+  @override
+  String get influencer_transaction_referral_bonus => 'Referral bonus';
+
+  @override
+  String get influencer_transaction_today => 'Today, 09:15 AM';
+
+  @override
+  String get influencer_transaction_yesterday => 'Yesterday, 02:40 PM';
+
+  @override
+  String get influencer_transaction_week => 'This week';
+
+  @override
+  String get influencer_transaction_amount_large => '+24.000 KWD';
+
+  @override
+  String get influencer_transaction_amount_medium => '-32.500 KWD';
+
+  @override
+  String get influencer_transaction_amount_small => '+6.250 KWD';
 }

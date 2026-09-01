@@ -224,6 +224,18 @@ import '../../features/monthly_plans/presentation/manager/subscription_plan_view
     as _i527;
 import '../../features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart'
     as _i851;
+import '../../features/notifications/data/data_source/notifications_remote_data_source.dart'
+    as _i173;
+import '../../features/notifications/data/data_source/notifications_remote_data_source_impl.dart'
+    as _i2;
+import '../../features/notifications/data/repo/notifications_repository_impl.dart'
+    as _i166;
+import '../../features/notifications/domain/repo/notifications_repository.dart'
+    as _i341;
+import '../../features/notifications/domain/usecase/register_device_token_usecase.dart'
+    as _i350;
+import '../../features/notifications/domain/usecase/unregister_device_token_usecase.dart'
+    as _i546;
 import '../../features/payment/data/data_source/payment_remote_data_source.dart'
     as _i957;
 import '../../features/payment/data/data_source/payment_remote_data_source_impl.dart'
@@ -418,13 +430,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
     );
-    gh.lazySingleton<_i63.PushNotificationService>(
-      () => _i63.PushNotificationService(
-        gh<_i892.FirebaseMessaging>(),
-        gh<_i163.FlutterLocalNotificationsPlugin>(),
-        gh<_i179.AppNavigatorService>(),
-      ),
-    );
     gh.factory<_i227.TokenService>(
       () => _i227.TokenService(
         prefs: gh<_i558.FlutterSecureStorage>(),
@@ -532,13 +537,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i96.SubscriptionProgramsRemoteDataSource>(),
       ),
     );
-    gh.factory<_i2.AuthRepository>(
-      () => _i607.AuthRepositoryImpl(
-        gh<_i182.AuthRemoteDataSource>(),
-        gh<_i227.TokenService>(),
-        gh<_i42.SharedPrefHelper>(),
-      ),
-    );
     gh.factory<_i856.CheckoutFamilySubscriptionUseCase>(
       () => _i856.CheckoutFamilySubscriptionUseCase(
         gh<_i802.FamilyCheckoutRepository>(),
@@ -578,36 +576,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i99.UploadFileRemoteDataSource>(
       () => _i963.UploadFileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
-    gh.factory<_i749.ForgotPasswordUseCase>(
-      () => _i749.ForgotPasswordUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i171.GetCallingCodesUseCase>(
-      () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i911.LoginUseCase>(
-      () => _i911.LoginUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i757.LogoutUseCase>(
-      () => _i757.LogoutUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i501.RefreshTokenUseCase>(
-      () => _i501.RefreshTokenUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i769.RegisterUseCase>(
-      () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i610.ResendPasswordOtpUseCase>(
-      () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i621.ResendPhoneOtpUseCase>(
-      () => _i621.ResendPhoneOtpUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i1029.ResetPasswordUseCase>(
-      () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i918.VerifyPhoneUseCase>(
-      () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
-    );
     gh.factory<_i998.ProfileRemoteDataSource>(
       () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -636,6 +604,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i461.SubscriptionPackagesRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
       ),
+    );
+    gh.factory<_i173.NotificationsRemoteDataSource>(
+      () => _i2.NotificationsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i62.FoodPreferencesRepository>(
       () => _i1070.FoodPreferencesRepositoryImpl(
@@ -743,6 +714,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i32.GetFoodPreferencesCatalogUseCase>(),
         gh<_i635.UpdateFoodPreferencesUseCase>(),
         gh<_i400.UpdateFoodPreferencesAllergiesUseCase>(),
+      ),
+    );
+    gh.factory<_i341.NotificationsRepository>(
+      () => _i166.NotificationsRepositoryImpl(
+        gh<_i173.NotificationsRemoteDataSource>(),
       ),
     );
     gh.factory<_i718.GetSubscriptionProgramBundlesUseCase>(
@@ -883,6 +859,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i857.UpdateCustomerProfileUseCase>(
       () => _i857.UpdateCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i350.RegisterDeviceTokenUseCase>(
+      () =>
+          _i350.RegisterDeviceTokenUseCase(gh<_i341.NotificationsRepository>()),
+    );
+    gh.factory<_i546.UnregisterDeviceTokenUseCase>(
+      () => _i546.UnregisterDeviceTokenUseCase(
+        gh<_i341.NotificationsRepository>(),
+      ),
     );
     gh.factory<_i832.GetSubscriptionMealDetailsUseCase>(
       () => _i832.GetSubscriptionMealDetailsUseCase(
@@ -1042,20 +1027,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i856.CheckoutFamilySubscriptionUseCase>(),
       ),
     );
-    gh.factory<_i892.AuthViewModel>(
-      () => _i892.AuthViewModel(
-        gh<_i911.LoginUseCase>(),
-        gh<_i769.RegisterUseCase>(),
-        gh<_i171.GetCallingCodesUseCase>(),
-        gh<_i918.VerifyPhoneUseCase>(),
-        gh<_i621.ResendPhoneOtpUseCase>(),
-        gh<_i749.ForgotPasswordUseCase>(),
-        gh<_i1029.ResetPasswordUseCase>(),
-        gh<_i610.ResendPasswordOtpUseCase>(),
-        gh<_i501.RefreshTokenUseCase>(),
-        gh<_i757.LogoutUseCase>(),
-        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
+    gh.lazySingleton<_i63.PushNotificationService>(
+      () => _i63.PushNotificationService(
+        gh<_i892.FirebaseMessaging>(),
+        gh<_i163.FlutterLocalNotificationsPlugin>(),
+        gh<_i179.AppNavigatorService>(),
+        gh<_i227.TokenService>(),
+        gh<_i148.DeviceIdService>(),
+        gh<_i350.RegisterDeviceTokenUseCase>(),
+        gh<_i546.UnregisterDeviceTokenUseCase>(),
       ),
     );
     gh.factory<_i528.RestaurantTierUpgradeViewModel>(
@@ -1102,6 +1082,60 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i389.GetCalendarAvailableMealsUseCase>(),
         gh<_i896.SaveCalendarDayMealsUseCase>(),
         gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+      ),
+    );
+    gh.factory<_i2.AuthRepository>(
+      () => _i607.AuthRepositoryImpl(
+        gh<_i182.AuthRemoteDataSource>(),
+        gh<_i227.TokenService>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i63.PushNotificationService>(),
+      ),
+    );
+    gh.factory<_i749.ForgotPasswordUseCase>(
+      () => _i749.ForgotPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i171.GetCallingCodesUseCase>(
+      () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i911.LoginUseCase>(
+      () => _i911.LoginUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i757.LogoutUseCase>(
+      () => _i757.LogoutUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i501.RefreshTokenUseCase>(
+      () => _i501.RefreshTokenUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i769.RegisterUseCase>(
+      () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i610.ResendPasswordOtpUseCase>(
+      () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i621.ResendPhoneOtpUseCase>(
+      () => _i621.ResendPhoneOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i1029.ResetPasswordUseCase>(
+      () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i918.VerifyPhoneUseCase>(
+      () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i892.AuthViewModel>(
+      () => _i892.AuthViewModel(
+        gh<_i911.LoginUseCase>(),
+        gh<_i769.RegisterUseCase>(),
+        gh<_i171.GetCallingCodesUseCase>(),
+        gh<_i918.VerifyPhoneUseCase>(),
+        gh<_i621.ResendPhoneOtpUseCase>(),
+        gh<_i749.ForgotPasswordUseCase>(),
+        gh<_i1029.ResetPasswordUseCase>(),
+        gh<_i610.ResendPasswordOtpUseCase>(),
+        gh<_i501.RefreshTokenUseCase>(),
+        gh<_i757.LogoutUseCase>(),
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
       ),

@@ -1,15 +1,113 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
+import 'package:meal_meat_user/core/services/device_id_service.dart';
 import 'package:meal_meat_user/core/services/push_notification_payload.dart';
+import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
+import 'package:meal_meat_user/features/notifications/domain/entities/device_token_unregister_request_entity.dart';
+import 'package:meal_meat_user/features/notifications/domain/usecase/register_device_token_usecase.dart';
+import 'package:meal_meat_user/features/notifications/domain/usecase/unregister_device_token_usecase.dart';
+import 'package:meal_meat_user/firebase_options.dart';
 
 @pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  logPushNotificationMessage('background', message);
+}
+
+void logPushNotificationMessage(String source, RemoteMessage message) {
+  debugPrint(
+    formatPushNotificationDebugLog(
+      source: source,
+      receivedAt: DateTime.now(),
+      messageId: message.messageId,
+      sentTime: message.sentTime,
+      title: message.notification?.title,
+      body: message.notification?.body,
+      channelId: message.notification?.android?.channelId,
+      data: message.data,
+    ),
+  );
+}
+
+@visibleForTesting
+String formatPushNotificationDebugLog({
+  required String source,
+  required DateTime receivedAt,
+  required String? messageId,
+  required DateTime? sentTime,
+  required String? title,
+  required String? body,
+  required String? channelId,
+  required Map<String, dynamic> data,
+}) {
+  final sortedDataKeys = data.keys.toList()..sort();
+  final sanitizedData = _sanitizePushNotificationData(data);
+
+  return [
+    '[PushNotification]',
+    'source=$source',
+    'receivedAt=${receivedAt.toUtc().toIso8601String()}',
+    'sentTime=${sentTime?.toUtc().toIso8601String() ?? 'null'}',
+    'messageId=${messageId ?? 'null'}',
+    'title=${title ?? 'null'}',
+    'body=${body ?? 'null'}',
+    'channelId=${channelId ?? 'null'}',
+    'dataKeys=$sortedDataKeys',
+    'data=${jsonEncode(sanitizedData)}',
+  ].join(' | ');
+}
+
+Map<String, dynamic> _sanitizePushNotificationData(Map<String, dynamic> data) {
+  return data.map(
+    (key, value) => MapEntry(key, _sanitizeDebugValue(key, value)),
+  );
+}
+
+Object? _sanitizeDebugValue(String key, Object? value) {
+  if (value is Map) {
+    return value.map(
+      (nestedKey, nestedValue) => MapEntry(
+        nestedKey.toString(),
+        _sanitizeDebugValue(nestedKey.toString(), nestedValue),
+      ),
+    );
+  }
+
+  if (value is List) {
+    return value
+        .map((item) => _sanitizeDebugValue(key, item))
+        .toList(growable: false);
+  }
+
+  if (value is String && _looksSensitivePushKey(key)) {
+    return _maskDebugValue(value);
+  }
+
+  return value;
+}
+
+bool _looksSensitivePushKey(String key) {
+  final normalized = key.toLowerCase();
+  return normalized.contains('token') ||
+      normalized.contains('secret') ||
+      normalized.contains('password');
+}
+
+String _maskDebugValue(String value) {
+  if (value.length <= 4) {
+    return '***';
+  }
+
+  return '***${value.substring(value.length - 4)}';
+}
 
 @lazySingleton
 class PushNotificationService {
@@ -17,6 +115,10 @@ class PushNotificationService {
     this._messaging,
     this._localNotifications,
     this._navigatorService,
+    this._tokenService,
+    this._deviceIdService,
+    this._registerDeviceTokenUseCase,
+    this._unregisterDeviceTokenUseCase,
   );
 
   static const AndroidNotificationChannel _androidChannel =
@@ -30,6 +132,10 @@ class PushNotificationService {
   final FirebaseMessaging _messaging;
   final FlutterLocalNotificationsPlugin _localNotifications;
   final AppNavigatorService _navigatorService;
+  final TokenService _tokenService;
+  final DeviceIdService _deviceIdService;
+  final RegisterDeviceTokenUseCase _registerDeviceTokenUseCase;
+  final UnregisterDeviceTokenUseCase _unregisterDeviceTokenUseCase;
 
   bool _initialized = false;
 
@@ -54,11 +160,68 @@ class PushNotificationService {
 
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
+      logPushNotificationMessage('initial', initialMessage);
       unawaited(_handleMessageTap(initialMessage));
     }
 
     _messaging.onTokenRefresh.listen(_handleTokenRefresh);
-    return _messaging.getToken();
+
+    final token = await _messaging.getToken();
+    await registerCurrentToken(token: token);
+    return token;
+  }
+
+  Future<void> registerCurrentToken({String? token}) async {
+    try {
+      if (!_tokenService.isAccessTokenSaved) {
+        return;
+      }
+
+      final fcmToken = token ?? await _messaging.getToken();
+      if (fcmToken == null || fcmToken.isEmpty) {
+        return;
+      }
+
+      final platform = _currentPlatform;
+      if (platform == null) {
+        return;
+      }
+
+      await _registerDeviceTokenUseCase(
+        DeviceTokenRegisterRequestEntity(
+          token: fcmToken,
+          platform: platform,
+          deviceId: await _deviceIdService.getOrCreateDeviceId(),
+        ),
+      );
+    } catch (error, stackTrace) {
+      debugPrintStack(
+        label: 'Failed to register push notification token: $error',
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  Future<void> unregisterCurrentToken() async {
+    try {
+      if (!_tokenService.isAccessTokenSaved) {
+        return;
+      }
+
+      final fcmToken = await _messaging.getToken();
+      if (fcmToken == null || fcmToken.isEmpty) {
+        return;
+      }
+
+      await _unregisterDeviceTokenUseCase(
+        DeviceTokenUnregisterRequestEntity(token: fcmToken),
+      );
+    } catch (error, stackTrace) {
+      debugPrintStack(
+        label: 'Failed to unregister push notification token: $error',
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> _requestPermissions() async {
@@ -94,6 +257,8 @@ class PushNotificationService {
   }
 
   Future<void> _showForegroundNotification(RemoteMessage message) async {
+    logPushNotificationMessage('foreground', message);
+
     final notification = message.notification;
     if (defaultTargetPlatform == TargetPlatform.iOS && notification != null) {
       return;
@@ -127,6 +292,7 @@ class PushNotificationService {
   }
 
   Future<void> _handleMessageTap(RemoteMessage message) {
+    logPushNotificationMessage('opened', message);
     return _navigateFromData(message.data);
   }
 
@@ -161,5 +327,15 @@ class PushNotificationService {
     );
   }
 
-  void _handleTokenRefresh(String _) {}
+  Future<void> _handleTokenRefresh(String token) {
+    return registerCurrentToken(token: token);
+  }
+
+  int? get _currentPlatform {
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.android => 1,
+      TargetPlatform.iOS => 2,
+      _ => null,
+    };
+  }
 }

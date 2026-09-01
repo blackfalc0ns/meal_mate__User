@@ -73,6 +73,7 @@ flutter:
     - assets/images/offers/
     - assets/images/calendar/figma/
     - assets/images/meal_details/figma/
+    - assets/images/influencer/figma/
     - assets/images/subscriptions/
     - assets/images/subscriptions/figma/
     - assets/images/subscriptions/figma/family_manage_plan_card.png

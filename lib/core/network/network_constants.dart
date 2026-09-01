@@ -126,4 +126,6 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests';
   static const String customerSubscriptionUpgradeStatus =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests/{upgradeId}';
+  static const String customerDeviceTokens =
+      '/api/v1/customers/me/device-tokens';
 }

@@ -7,6 +7,13 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/meal_detail
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition_details_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_dashboard_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_wallet_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_history_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_review_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
@@ -368,6 +375,41 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const WalletTransactionsScreen(),
+        );
+      case AppRoutes.influencerDashboard:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerDashboardScreen(),
+        );
+      case AppRoutes.influencerShareLinks:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerShareLinksScreen(),
+        );
+      case AppRoutes.influencerSocialConnections:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerSocialConnectionsScreen(),
+        );
+      case AppRoutes.influencerWallet:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerWalletScreen(),
+        );
+      case AppRoutes.influencerWithdraw:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerWithdrawScreen(),
+        );
+      case AppRoutes.influencerWithdrawReview:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerWithdrawReviewScreen(),
+        );
+      case AppRoutes.influencerWithdrawHistory:
+        return _buildRoute(
+          settings: settings,
+          page: const InfluencerWithdrawHistoryScreen(),
         );
       default:
         return _buildRoute(

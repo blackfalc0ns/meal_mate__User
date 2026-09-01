@@ -59,4 +59,13 @@ abstract class AppRoutes {
   static const String wallet = '/wallet';
   static const String walletRefund = '/wallet-refund';
   static const String walletTransactions = '/wallet-transactions';
+  static const String influencerDashboard = '/influencer-dashboard';
+  static const String influencerShareLinks = '/influencer-share-links';
+  static const String influencerSocialConnections =
+      '/influencer-social-connections';
+  static const String influencerWallet = '/influencer-wallet';
+  static const String influencerWithdraw = '/influencer-withdraw';
+  static const String influencerWithdrawReview = '/influencer-withdraw-review';
+  static const String influencerWithdrawHistory =
+      '/influencer-withdraw-history';
 }

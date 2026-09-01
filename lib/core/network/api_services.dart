@@ -70,6 +70,8 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/reques
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
+import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
+import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -481,5 +483,15 @@ abstract class ApiServices {
   Future<SubscriptionUpgradeStatusResponseDto> getSubscriptionUpgradeStatus(
     @Path('subscriptionId') String subscriptionId,
     @Path('upgradeId') String upgradeId,
+  );
+
+  @PUT(EndPoints.customerDeviceTokens)
+  Future<void> registerDeviceToken(
+    @Body() DeviceTokenRegisterRequestDto request,
+  );
+
+  @DELETE(EndPoints.customerDeviceTokens)
+  Future<void> unregisterDeviceToken(
+    @Body() DeviceTokenUnregisterRequestDto request,
   );
 }

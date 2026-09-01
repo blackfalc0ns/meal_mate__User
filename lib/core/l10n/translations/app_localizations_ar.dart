@@ -3877,4 +3877,221 @@ class AppLocalizationsAr extends AppLocalizations {
   String family_restaurants_suitable_title(String memberName) {
     return 'مطاعم مناسبة لـ$memberName';
   }
+
+  @override
+  String get profile_influencer_partner => 'شريك مؤثر';
+
+  @override
+  String get profile_influencer_partner_subtitle =>
+      'تابع الإحالات والروابط والأرباح';
+
+  @override
+  String get influencer_dashboard_title => 'المؤثر';
+
+  @override
+  String get influencer_user_name => 'محمد';
+
+  @override
+  String get influencer_partner_label => 'Influencer Partner';
+
+  @override
+  String get influencer_statistics => 'الإحصائيات';
+
+  @override
+  String get influencer_tools => 'أدوات الشراكة';
+
+  @override
+  String get influencer_total_earnings => 'إجمالي الأرباح';
+
+  @override
+  String get influencer_total_earnings_value => '152.3 د.ك';
+
+  @override
+  String get influencer_this_month => 'هذا الشهر';
+
+  @override
+  String get influencer_referrals => 'الإحالات';
+
+  @override
+  String get influencer_referrals_value => '84';
+
+  @override
+  String get influencer_active_codes => 'أكواد نشطة';
+
+  @override
+  String get influencer_conversion_rate => 'التحويل';
+
+  @override
+  String get influencer_conversion_rate_value => '12%';
+
+  @override
+  String get influencer_from_visits => 'من الزيارات';
+
+  @override
+  String get influencer_pending_withdrawals => 'قيد المراجعة';
+
+  @override
+  String get influencer_pending_withdrawals_value => '32.5 د.ك';
+
+  @override
+  String get influencer_under_review => 'تحت المراجعة';
+
+  @override
+  String get influencer_share_links_title => 'روابط المشاركة';
+
+  @override
+  String get influencer_share_links_subtitle => 'شارك رابطك وكودك';
+
+  @override
+  String get influencer_social_connections_title => 'حسابات التواصل';
+
+  @override
+  String get influencer_social_connections_subtitle => 'اربط قنواتك العامة';
+
+  @override
+  String get influencer_wallet_title => 'محفظة الأرباح';
+
+  @override
+  String get influencer_wallet_subtitle => 'اعرض الرصيد والعمليات';
+
+  @override
+  String get influencer_referral_code_title => 'كود الإحالة';
+
+  @override
+  String get influencer_referral_code_subtitle =>
+      'شارك كودك واحصل على عمولات أكثر';
+
+  @override
+  String get influencer_referral_code_value => 'MEALMATE24';
+
+  @override
+  String get influencer_share_links_header => 'شارك الآن';
+
+  @override
+  String get influencer_share_links_body => 'شارك بسهولة عبر منصات التواصل';
+
+  @override
+  String get influencer_share_now => 'شارك الآن';
+
+  @override
+  String get influencer_add_social_accounts => 'إضافة وسائل التواصل';
+
+  @override
+  String get influencer_social_connections_header => 'إضافة وسائل التواصل';
+
+  @override
+  String get influencer_social_connections_body =>
+      'أضف حساباتك على وسائل التواصل لبدء الشراكة وكسب عمولات أكثر';
+
+  @override
+  String get influencer_save_continue => 'حفظ ومتابعة';
+
+  @override
+  String get influencer_skip_now => 'تخطي الآن';
+
+  @override
+  String get influencer_instagram => 'إنستغرام';
+
+  @override
+  String get influencer_tiktok => 'تيك توك';
+
+  @override
+  String get influencer_snapchat => 'سناب شات';
+
+  @override
+  String get influencer_not_connected => 'غير متصل';
+
+  @override
+  String get influencer_currency => 'د.ك';
+
+  @override
+  String get influencer_wallet_last_updated => 'آخر تحديث اليوم 09:15 ص';
+
+  @override
+  String get influencer_available_earnings => 'الأرباح المتاحة';
+
+  @override
+  String get influencer_request_withdraw => 'طلب سحب الأرباح';
+
+  @override
+  String get influencer_request_withdraw_subtitle =>
+      'حوّل أرباحك إلى حسابك البنكي';
+
+  @override
+  String get influencer_withdraw_history_title => 'سجل عمليات السحب';
+
+  @override
+  String get influencer_withdraw_history_subtitle =>
+      'تابع الطلبات السابقة والمعلقة';
+
+  @override
+  String get influencer_recent_commissions => 'آخر العمولات';
+
+  @override
+  String get influencer_withdraw_arrival_hint =>
+      'سيتم مراجعة المبلغ قبل التحويل';
+
+  @override
+  String get influencer_withdraw_method => 'طريقة السحب';
+
+  @override
+  String get influencer_bank_account_holder => 'اسم صاحب الحساب';
+
+  @override
+  String get influencer_bank_account_holder_value => 'محمد أحمد';
+
+  @override
+  String get influencer_bank_iban => 'رقم الآيبان';
+
+  @override
+  String get influencer_bank_iban_value => 'KW81CBKU0000000000001234560101';
+
+  @override
+  String get influencer_bank_name => 'اسم البنك';
+
+  @override
+  String get influencer_bank_name_value => 'بنك الكويت الوطني';
+
+  @override
+  String get influencer_continue_review => 'متابعة للمراجعة';
+
+  @override
+  String get influencer_withdraw_review_title => 'مراجعة طلب السحب';
+
+  @override
+  String get influencer_withdraw_review_subtitle =>
+      'راجع بيانات الطلب قبل تأكيد السحب';
+
+  @override
+  String get influencer_withdraw_amount => 'مبلغ السحب';
+
+  @override
+  String get influencer_confirm_withdraw => 'تأكيد طلب السحب';
+
+  @override
+  String get influencer_transaction_subscription_commission => 'عمولة اشتراك';
+
+  @override
+  String get influencer_transaction_withdraw_request => 'طلب سحب أرباح';
+
+  @override
+  String get influencer_transaction_referral_bonus => 'مكافأة إحالة';
+
+  @override
+  String get influencer_transaction_today => 'اليوم، 09:15 ص';
+
+  @override
+  String get influencer_transaction_yesterday => 'أمس، 02:40 م';
+
+  @override
+  String get influencer_transaction_week => 'هذا الأسبوع';
+
+  @override
+  String get influencer_transaction_amount_large => '+24.000 د.ك';
+
+  @override
+  String get influencer_transaction_amount_medium => '-32.500 د.ك';
+
+  @override
+  String get influencer_transaction_amount_small => '+6.250 د.ك';
 }

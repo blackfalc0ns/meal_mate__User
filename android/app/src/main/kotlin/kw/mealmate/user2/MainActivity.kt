@@ -1,4 +1,4 @@
-package com.example.meal_meat_user
+package kw.mealmate.user2
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

@@ -170,4 +170,10 @@ class AssetsFake {
       'assets/images/fake/subscriptions/subscription_month_plan.png';
   static const String subscriptionWeekPlan =
       'assets/images/fake/subscriptions/subscription_week_plan.png';
+  static const String influencerDashboardHero =
+      'assets/images/influencer/figma/influencer_dashboard_hero-7ac056.png';
+  static const String influencerShareBanner =
+      'assets/images/influencer/figma/influencer_share_banner.png';
+  static const String influencerQr =
+      'assets/images/influencer/figma/influencer_qr.png';
 }
