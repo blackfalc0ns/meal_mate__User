@@ -21,7 +21,6 @@ abstract interface class SubscriptionPlanRemoteDataSource {
     required String programId,
     required String bundleId,
     required String tier,
-    required List<String> restaurantIds,
   });
 
   Future<SubscriptionRestaurantDetailsResponseDto> getRestaurantDetails({

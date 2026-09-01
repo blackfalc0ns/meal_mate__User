@@ -1150,11 +1150,9 @@ class _ApiServices implements ApiServices {
     String programId,
     String bundleId,
     String tier,
-    List<String>? restaurantIds,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'restaurantIds': restaurantIds};
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =

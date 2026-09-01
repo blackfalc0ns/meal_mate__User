@@ -527,15 +527,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         clearFailure: true,
       ),
     );
-    final restaurantIds = selectedTier.restaurants
-        .map((r) => r.restaurantId)
-        .where((id) => id.isNotEmpty)
-        .toList();
     final result = await _getSubscriptionTierRestaurantsUseCase(
       programId: programId,
       bundleId: bundle.bundleId,
       tier: selectedTier.tier,
-      restaurantIds: restaurantIds,
     );
     if (isClosed) return;
     switch (result) {

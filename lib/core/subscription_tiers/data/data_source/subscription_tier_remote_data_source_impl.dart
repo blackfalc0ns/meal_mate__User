@@ -31,13 +31,11 @@ class SubscriptionTierRemoteDataSourceImpl
     required String programId,
     required String bundleId,
     required String tier,
-    required List<String> restaurantIds,
   }) {
     return _apiServices.getSubscriptionTierRestaurants(
       programId,
       bundleId,
       tier,
-      restaurantIds.isEmpty ? null : restaurantIds,
     );
   }
 }

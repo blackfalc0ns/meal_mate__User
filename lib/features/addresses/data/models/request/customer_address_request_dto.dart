@@ -13,6 +13,7 @@ class CustomerAddressRequestDto {
     this.block,
     this.blockRegionId,
     this.street,
+    this.avenue,
     this.building,
     this.unit,
     this.floor,
@@ -31,6 +32,7 @@ class CustomerAddressRequestDto {
   final String? block;
   final String? blockRegionId;
   final String? street;
+  final String? avenue;
   final String? building;
   final String? unit;
   final String? floor;

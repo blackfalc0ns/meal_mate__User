@@ -113,9 +113,9 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
             if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
               _avenueController.text = autofill.avenue!;
             }
-            if (autofill.building != null && autofill.building!.isNotEmpty) {
-              _buildingNumberController.text = autofill.building!;
-            }
+            _buildingNumberController.clear();
+            _floorController.clear();
+            _apartmentController.clear();
           });
         }
       },
@@ -357,6 +357,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       block: blockCode,
       blockRegionId: block?.id,
       street: street.isEmpty ? null : street,
+      avenue: avenue.isEmpty ? null : avenue,
       building: building.isEmpty ? null : building,
       unit: isHome && unit.isNotEmpty ? unit : null,
       floor: isHome && floor.isNotEmpty ? floor : null,

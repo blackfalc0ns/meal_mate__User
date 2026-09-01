@@ -7,11 +7,18 @@ import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/services/app_locale_notifier.dart';
+import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
+import 'package:meal_meat_user/core/services/push_notification_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:meal_meat_user/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await getIt<PushNotificationService>().initialize();
   appLocaleNotifier.value = Locale(getIt<LanguageService>().getLanguageCode());
   debugPaintBaselinesEnabled = false;
 
@@ -30,6 +37,7 @@ class MealMateApp extends StatelessWidget {
       builder: (context, appLocale, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+          navigatorKey: getIt<AppNavigatorService>().navigatorKey,
           builder: DevicePreview.appBuilder,
           locale: appLocale,
           title: 'Meal Mate',

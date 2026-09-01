@@ -283,7 +283,6 @@ abstract class ApiServices {
     @Path('programId') String programId,
     @Path('bundleId') String bundleId,
     @Path('tier') String tier,
-    @Query('restaurantIds') List<String>? restaurantIds,
   );
 
   @GET(EndPoints.subscriptionRestaurantDetails)
@@ -472,7 +471,8 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.customerSubscriptionUpgradeRequests)
-  Future<SubscriptionUpgradeRequestResponseDto> createSubscriptionUpgradeRequest(
+  Future<SubscriptionUpgradeRequestResponseDto>
+  createSubscriptionUpgradeRequest(
     @Path('subscriptionId') String subscriptionId,
     @Body() SubscriptionUpgradeRequestDto request,
   );

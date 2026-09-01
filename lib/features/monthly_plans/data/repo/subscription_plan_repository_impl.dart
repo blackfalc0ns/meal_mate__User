@@ -57,14 +57,12 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
     required String programId,
     required String bundleId,
     required String tier,
-    required List<String> restaurantIds,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getTierRestaurants(
         programId: programId,
         bundleId: bundleId,
         tier: tier,
-        restaurantIds: restaurantIds,
       );
       return response.map((restaurant) => restaurant.toEntity()).toList();
     });

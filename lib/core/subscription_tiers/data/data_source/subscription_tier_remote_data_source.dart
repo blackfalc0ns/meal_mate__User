@@ -13,6 +13,5 @@ abstract class SubscriptionTierRemoteDataSource {
     required String programId,
     required String bundleId,
     required String tier,
-    required List<String> restaurantIds,
   });
 }

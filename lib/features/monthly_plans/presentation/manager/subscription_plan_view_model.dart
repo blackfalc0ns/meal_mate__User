@@ -258,11 +258,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     if (tierIndex < 0 || tierIndex >= state.tiers.length) return;
 
     final tier = state.tiers[tierIndex];
-    final restaurantIds = tier.restaurants
-        .map((restaurant) => restaurant.restaurantId)
-        .where((restaurantId) => restaurantId.isNotEmpty)
-        .toList();
-
     emit(
       state.copyWith(
         isBrowseRestaurantsLoading: true,
@@ -276,7 +271,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       programId: programId,
       bundleId: bundleId,
       tier: tier.tier,
-      restaurantIds: restaurantIds,
     );
 
     switch (result) {

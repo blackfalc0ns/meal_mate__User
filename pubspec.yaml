@@ -38,6 +38,9 @@ dependencies:
   webview_flutter: ^4.14.1
   rounded_loading_button_plus: ^3.0.1
   google_maps_flutter: ^2.18.0
+  firebase_core: ^4.14.0
+  firebase_messaging: ^16.6.0
+  flutter_local_notifications: ^22.3.0
 
 dev_dependencies:
   flutter_test:

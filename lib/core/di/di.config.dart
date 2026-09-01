@@ -10,6 +10,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
+import 'package:firebase_messaging/firebase_messaging.dart' as _i892;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    as _i163;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -326,6 +329,7 @@ import '../services/app_navigator_service.dart' as _i179;
 import '../services/device_id_service.dart' as _i148;
 import '../services/language_interceptor.dart' as _i32;
 import '../services/language_service.dart' as _i819;
+import '../services/push_notification_service.dart' as _i63;
 import '../services/retry_interceptor.dart' as _i844;
 import '../services/token_interceptor.dart' as _i1056;
 import '../services/token_service.dart' as _i227;
@@ -401,12 +405,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i152.LocalAuthentication>(
       () => externalModules.provideLocalAuthentication(),
     );
+    gh.lazySingleton<_i892.FirebaseMessaging>(
+      () => externalModules.provideFirebaseMessaging(),
+    );
+    gh.lazySingleton<_i163.FlutterLocalNotificationsPlugin>(
+      () => externalModules.provideFlutterLocalNotificationsPlugin(),
+    );
     gh.lazySingleton<_i179.AppNavigatorService>(
       () => _i179.AppNavigatorService(),
     );
     gh.lazySingleton<_i1056.TokenInterceptor>(() => _i1056.TokenInterceptor());
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i63.PushNotificationService>(
+      () => _i63.PushNotificationService(
+        gh<_i892.FirebaseMessaging>(),
+        gh<_i163.FlutterLocalNotificationsPlugin>(),
+        gh<_i179.AppNavigatorService>(),
+      ),
     );
     gh.factory<_i227.TokenService>(
       () => _i227.TokenService(

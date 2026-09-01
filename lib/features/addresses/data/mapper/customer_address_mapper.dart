@@ -44,6 +44,7 @@ extension CustomerAddressRequestEntityMapper on CustomerAddressRequestEntity {
       block: block,
       blockRegionId: blockRegionId,
       street: street,
+      avenue: avenue,
       building: building,
       unit: unit,
       floor: floor,
