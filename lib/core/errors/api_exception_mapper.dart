@@ -146,6 +146,28 @@ class ApiExceptionMapper {
 
   static String? _extractBackendMessage(dynamic data) {
     if (data is Map) {
+      final fridayAvailabilityMessage = _extractMessageFromMap(
+        data['fridayAvailability'],
+      );
+      if (fridayAvailabilityMessage != null) {
+        return fridayAvailabilityMessage;
+      }
+
+      final backendMessage = _extractMessageFromMap(data);
+      if (backendMessage != null) {
+        return backendMessage;
+      }
+    }
+
+    if (data is String && data.trim().isNotEmpty) {
+      return data.trim();
+    }
+
+    return null;
+  }
+
+  static String? _extractMessageFromMap(dynamic data) {
+    if (data is Map) {
       for (final key in const [
         'detail',
         'message',
@@ -159,10 +181,6 @@ class ApiExceptionMapper {
           return value.trim();
         }
       }
-    }
-
-    if (data is String && data.trim().isNotEmpty) {
-      return data.trim();
     }
 
     return null;

@@ -7,6 +7,8 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
@@ -53,8 +55,15 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
       child: BlocConsumer<SubscriptionPlanViewModel, SubscriptionPlanState>(
         listenWhen: (previous, current) =>
             previous.readiness != current.readiness ||
-            previous.readinessFailure != current.readinessFailure,
+            previous.readinessFailure != current.readinessFailure ||
+            previous.failure != current.failure,
         listener: (context, state) {
+          final failure = state.failure;
+          if (_shouldShowFailureDialog(failure)) {
+            _showFailureDialog(context, failure!);
+            return;
+          }
+
           final readiness = state.readiness;
           if (readiness == null) return;
 
@@ -241,5 +250,28 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
         reason == 'restaurant.not_eligible' ||
         reason == 'subscription_flow.no_restaurants_for_address' ||
         reason == 'checkout.no_restaurants_for_address';
+  }
+
+  bool _shouldShowFailureDialog(Failure? failure) {
+    return failure?.code == 'subscription_flow.friday_unavailable';
+  }
+
+  Future<void> _showFailureDialog(BuildContext context, Failure failure) {
+    final message = mapFailureMessage(context, failure.errorMessage);
+
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
