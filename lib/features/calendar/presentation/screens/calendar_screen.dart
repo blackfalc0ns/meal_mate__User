@@ -670,9 +670,34 @@ class _CalendarScreenState extends State<CalendarScreen> {
         allergensTitle: locale.localeName == 'ar'
             ? 'مسببات الحساسية'
             : 'Allergens',
-        allergens: const [],
+        allergens: _mealDetailsAllergens(meal.allergens),
       ),
     );
+  }
+
+  List<MealDetailsAllergenEntity> _mealDetailsAllergens(
+    List<CalendarMealAllergenEntity> allergens,
+  ) {
+    return allergens
+        .map(
+          (allergen) => MealDetailsAllergenEntity(
+            label: allergen.label,
+            type: _allergenType(allergen.code),
+          ),
+        )
+        .where((allergen) => allergen.label.isNotEmpty)
+        .toList();
+  }
+
+  MealDetailsAllergenType _allergenType(String code) {
+    final normalized = code.toUpperCase();
+    if (normalized.contains('MILK') || normalized.contains('LACTOSE')) {
+      return MealDetailsAllergenType.lactose;
+    }
+    if (normalized.contains('GLUTEN') || normalized.contains('WHEAT')) {
+      return MealDetailsAllergenType.gluten;
+    }
+    return MealDetailsAllergenType.nuts;
   }
 
   List<MealDetailsMacroEntity> _macroItems(

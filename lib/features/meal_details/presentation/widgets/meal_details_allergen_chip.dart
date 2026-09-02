@@ -13,7 +13,6 @@ class MealDetailsAllergenChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       height: Spacing.iconMd,
@@ -37,7 +36,7 @@ class MealDetailsAllergenChip extends StatelessWidget {
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size10,
               color: color.onSurface,
-            ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.15),
+            ),
           ),
         ],
       ),

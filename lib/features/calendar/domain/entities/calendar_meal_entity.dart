@@ -16,6 +16,7 @@ class CalendarMealEntity {
     required this.ingredients,
     required this.imageAsset,
     required this.actionLabel,
+    this.allergens = const [],
     this.proteinPercentage,
     this.carbsPercentage,
     this.fatPercentage,
@@ -37,9 +38,17 @@ class CalendarMealEntity {
   final List<CalendarMealIngredientEntity> ingredients;
   final String imageAsset;
   final String actionLabel;
+  final List<CalendarMealAllergenEntity> allergens;
   final double? proteinPercentage;
   final double? carbsPercentage;
   final double? fatPercentage;
+}
+
+class CalendarMealAllergenEntity {
+  const CalendarMealAllergenEntity({required this.code, required this.label});
+
+  final String code;
+  final String label;
 }
 
 class CalendarMealIngredientEntity {

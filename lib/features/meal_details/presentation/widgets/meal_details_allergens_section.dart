@@ -13,7 +13,6 @@ class MealDetailsAllergensSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +31,6 @@ class MealDetailsAllergensSection extends StatelessWidget {
               ),
           ],
         ),
-        SizedBox(height: locale.localeName == 'ar' ? 0 : Spacing.xs),
       ],
     );
   }

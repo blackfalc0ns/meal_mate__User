@@ -73,6 +73,47 @@ void main() {
     expect(entity.slots.single.displayName, 'الغداء');
   });
 
+  test('maps allergen details supplied by available meal response', () {
+    final response = CalendarAvailableMealsResponseDto.fromJson({
+      'slots': [
+        {
+          'slot': 'snack',
+          'slotName': 'سناك',
+          'slotNameAr': 'سناك',
+          'count': 1,
+          'meals': [
+            {
+              'mealId': 'meal-cheese',
+              'name': 'جبنة كيتو',
+              'slot': 'snack',
+              'slotName': 'سناك',
+              'calories': 210.0,
+              'proteinG': 14.0,
+              'carbsG': 3.0,
+              'fatG': 16.0,
+              'allergenDetails': [
+                {'code': 'MILK', 'nameAr': 'لاكتوز', 'name': 'لاكتوز'},
+                {'code': 'TREE_NUTS', 'nameAr': 'مكسرات', 'name': 'مكسرات'},
+              ],
+            },
+          ],
+        },
+      ],
+      'selectedMealIds': const [],
+    });
+
+    final entity = response.toEntity('ar');
+
+    expect(entity.meals.single.allergens.map((allergen) => allergen.label), [
+      'لاكتوز',
+      'مكسرات',
+    ]);
+    expect(entity.meals.single.allergens.map((allergen) => allergen.code), [
+      'MILK',
+      'TREE_NUTS',
+    ]);
+  });
+
   test('maps selected day response fields used by the calendar UI', () async {
     await initializeDateFormatting('en');
 

@@ -271,6 +271,7 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
       ingredients: ingredientItems,
       imageAsset: Assets.calendarMealPickerHero,
       actionLabel: '',
+      allergens: _mealAllergens(this, localeName),
       proteinPercentage:
           (proteinPercentage ??
                   nutrition?.proteinPercentage ??
@@ -286,6 +287,46 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
               ?.toDouble(),
     );
   }
+}
+
+List<CalendarMealAllergenEntity> _mealAllergens(
+  CalendarMealResponseDto meal,
+  String localeName,
+) {
+  final details = meal.allergenDetails ?? const [];
+  if (details.isNotEmpty) {
+    return details
+        .map(
+          (allergen) => CalendarMealAllergenEntity(
+            code: allergen.code ?? '',
+            label: _localized(
+              localeName,
+              ar: allergen.nameAr,
+              en: allergen.nameEn,
+              fallback: allergen.name,
+            ),
+          ),
+        )
+        .where((allergen) => allergen.label.isNotEmpty)
+        .toList();
+  }
+
+  final labels = _localizedList(
+    localeName,
+    ar: meal.allergensAr,
+    en: meal.allergensEn,
+    fallback: meal.allergens,
+  );
+
+  return [
+    for (var index = 0; index < labels.length; index++)
+      CalendarMealAllergenEntity(
+        code: index < (meal.presentAllergenCodes?.length ?? 0)
+            ? meal.presentAllergenCodes![index]
+            : '',
+        label: labels[index],
+      ),
+  ];
 }
 
 extension CalendarIngredientResponseDtoMapper on CalendarIngredientResponseDto {
@@ -684,6 +725,21 @@ String _localized(
       ? ar ?? fallback ?? en
       : en ?? fallback ?? ar;
   return value ?? '';
+}
+
+List<String> _localizedList(
+  String localeName, {
+  List<String>? ar,
+  List<String>? en,
+  List<String>? fallback,
+}) {
+  final values = localeName.startsWith('ar')
+      ? ar ?? fallback ?? en
+      : en ?? fallback ?? ar;
+  return (values ?? const [])
+      .map((value) => value.trim())
+      .where((value) => value.isNotEmpty)
+      .toList();
 }
 
 String _firstNotEmpty(List<String?> values) {

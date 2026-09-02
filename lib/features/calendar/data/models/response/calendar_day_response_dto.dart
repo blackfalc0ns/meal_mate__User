@@ -232,6 +232,10 @@ class CalendarMealResponseDto {
     this.sortOrder,
     this.presentAllergenCodes,
     this.mayContainAllergenCodes,
+    this.allergens,
+    this.allergensAr,
+    this.allergensEn,
+    this.allergenDetails,
     this.dietaryPreferenceCodes,
     this.proteinPercentage,
     this.carbsPercentage,
@@ -265,6 +269,10 @@ class CalendarMealResponseDto {
   final int? sortOrder;
   final List<String>? presentAllergenCodes;
   final List<String>? mayContainAllergenCodes;
+  final List<String>? allergens;
+  final List<String>? allergensAr;
+  final List<String>? allergensEn;
+  final List<CalendarMealAllergenDetailsResponseDto>? allergenDetails;
   final List<String>? dietaryPreferenceCodes;
   final num? proteinPercentage;
   final num? carbsPercentage;
@@ -274,6 +282,28 @@ class CalendarMealResponseDto {
       _$CalendarMealResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CalendarMealResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class CalendarMealAllergenDetailsResponseDto {
+  const CalendarMealAllergenDetailsResponseDto({
+    this.code,
+    this.name,
+    this.nameAr,
+    this.nameEn,
+  });
+
+  final String? code;
+  final String? name;
+  final String? nameAr;
+  final String? nameEn;
+
+  factory CalendarMealAllergenDetailsResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$CalendarMealAllergenDetailsResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$CalendarMealAllergenDetailsResponseDtoToJson(this);
 }
 
 @JsonSerializable()
