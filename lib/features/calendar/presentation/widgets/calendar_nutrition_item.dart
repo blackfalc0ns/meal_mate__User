@@ -40,7 +40,7 @@ class CalendarMealCardNutritionItem extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  value,
+                  value.formattedValue,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(

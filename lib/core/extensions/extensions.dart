@@ -37,6 +37,26 @@ extension NumFormattingExtension on num {
   }
 }
 
+extension StringFormattingExtension on String? {
+  /// Formats numeric string by removing trailing decimal zeroes if whole number (e.g. '14.0' -> '14').
+  String get formattedNumericValue {
+    if (this == null) return '';
+    final trimmed = this!.trim();
+    if (trimmed.isEmpty) return '';
+    final parsed = num.tryParse(trimmed);
+    if (parsed != null) {
+      if (parsed % 1 == 0) {
+        return parsed.toInt().toString();
+      }
+      return parsed.toString();
+    }
+    return trimmed;
+  }
+
+  /// Shortcut alias for formattedNumericValue
+  String get formattedValue => formattedNumericValue;
+}
+
 extension BottomSheetExtension on BuildContext {
   /// Open a standardized app bottom sheet
   Future<T?> showAppBottomSheet<T>({
