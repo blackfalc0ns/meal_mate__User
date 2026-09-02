@@ -567,6 +567,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
         logoUrl: restaurant?.logoUrl?.isNotEmpty == true
             ? restaurant!.logoUrl
             : fallback.logoUrl,
+        tierLogoUrl: restaurant?.tierLogoUrl,
         maxUsageCount: restaurant?.maxUsageCount ?? fallback.maxUsageCount,
         name: restaurant?.name.isNotEmpty == true
             ? restaurant!.name

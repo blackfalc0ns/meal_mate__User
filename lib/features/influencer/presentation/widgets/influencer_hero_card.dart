@@ -28,8 +28,8 @@ class InfluencerHeroCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(child: Image.asset(imageAsset, fit: BoxFit.cover)),
-            PositionedDirectional(
-              end: Spacing.influencerHeroContentStart,
+            Positioned(
+              left: Spacing.influencerHeroContentStart,
               top: Spacing.influencerHeroContentTop,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,15 +47,6 @@ class InfluencerHeroCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        locale.influencer_total_earnings_value,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size30,
-                          color: color.onPrimary,
-                        ),
-                      ),
-                      const SizedBox(width: Spacing.xs),
                       Padding(
                         padding: const EdgeInsets.only(
                           top: Spacing.influencerHeroCurrencyTop,
@@ -67,6 +58,16 @@ class InfluencerHeroCard extends StatelessWidget {
                             fontSize: FontSize.size13,
                             color: color.onPrimary,
                           ),
+                        ),
+                      ),
+                      const SizedBox(width: Spacing.xs),
+
+                      Text(
+                        locale.influencer_total_earnings_value,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size30,
+                          color: color.onPrimary,
                         ),
                       ),
                     ],
@@ -113,8 +114,8 @@ class InfluencerHeroCard extends StatelessWidget {
                 ],
               ),
             ),
-            PositionedDirectional(
-              start: Spacing.influencerHeroContentStart,
+            Positioned(
+              right: Spacing.influencerHeroContentStart,
               bottom: Spacing.md,
               child: SizedBox(
                 width: Spacing.influencerHeroProgressWidth,
@@ -169,8 +170,8 @@ class InfluencerHeroCard extends StatelessWidget {
                 ),
               ),
             ),
-            PositionedDirectional(
-              end: Spacing.lg,
+            Positioned(
+              left: Spacing.lg,
               bottom: Spacing.sm,
               child: Container(
                 width: Spacing.influencerHeroDetailsWidth,

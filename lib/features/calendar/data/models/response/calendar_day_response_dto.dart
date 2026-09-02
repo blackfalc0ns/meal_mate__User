@@ -9,7 +9,9 @@ class CalendarDayResponseDto {
     this.date,
     this.serviceDate,
     this.status,
+    this.uiStatus,
     this.isLocked,
+    this.isAutoSelected,
     this.lockedAtUtc,
     this.editDeadlineUtc,
     this.restaurantId,
@@ -26,13 +28,32 @@ class CalendarDayResponseDto {
     this.canEdit,
     this.selectionDeadlineUtc,
     this.lockAtUtc,
+    this.lockRemainingSeconds,
+    this.filledCount,
+    this.requiredCount,
+    this.failureReasonCode,
+    this.restaurantRating,
+    this.restaurantRatingCount,
+    this.deliveryWindowStart,
+    this.deliveryWindowEnd,
+    this.deliveryTimeText,
+    this.tier,
+    this.tierNameAr,
+    this.tierNameEn,
+    this.tierName,
+    this.tierLogoUrl,
+    this.programNameAr,
+    this.programNameEn,
+    this.programName,
   });
 
   final String? id;
   final String? date;
   final String? serviceDate;
   final String? status;
+  final String? uiStatus;
   final bool? isLocked;
+  final bool? isAutoSelected;
   final String? lockedAtUtc;
   final String? editDeadlineUtc;
   final String? restaurantId;
@@ -49,6 +70,23 @@ class CalendarDayResponseDto {
   final bool? canEdit;
   final String? selectionDeadlineUtc;
   final String? lockAtUtc;
+  final int? lockRemainingSeconds;
+  final int? filledCount;
+  final int? requiredCount;
+  final String? failureReasonCode;
+  final num? restaurantRating;
+  final int? restaurantRatingCount;
+  final String? deliveryWindowStart;
+  final String? deliveryWindowEnd;
+  final String? deliveryTimeText;
+  final String? tier;
+  final String? tierNameAr;
+  final String? tierNameEn;
+  final String? tierName;
+  final String? tierLogoUrl;
+  final String? programNameAr;
+  final String? programNameEn;
+  final String? programName;
 
   factory CalendarDayResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarDayResponseDtoFromJson(json);

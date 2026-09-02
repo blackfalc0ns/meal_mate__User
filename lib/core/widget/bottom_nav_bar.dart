@@ -15,11 +15,17 @@ class AppBottomNavBar extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     required this.onTap,
+    this.activeColor,
+    this.inactiveColor,
+    this.activeBackground,
   });
 
   final List<AppBottomNavBarItem> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final Color? activeColor;
+  final Color? inactiveColor;
+  final Color? activeBackground;
 
   static const _activeColor = Color(0xFF0C6C3F);
   static const _inactiveColor = Color(0xFF191C1D);
@@ -36,64 +42,63 @@ class AppBottomNavBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Center(
             heightFactor: 1,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 354),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(9999),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x24000000),
-                      offset: Offset(0, 2),
-                      blurRadius: 20,
-                    ),
-                    BoxShadow(
-                      color: Color(0x33FFFFFF),
-                      offset: Offset(0, -1),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(9999),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.28),
-                        borderRadius: BorderRadius.circular(9999),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.38),
-                          width: 1,
-                        ),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.white.withValues(alpha: 0.42),
-                            Colors.white.withValues(alpha: 0.14),
-                          ],
-                        ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9999),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x24000000),
+                    offset: Offset(0, 2),
+                    blurRadius: 20,
+                  ),
+                  BoxShadow(
+                    color: Color(0x33FFFFFF),
+                    offset: Offset(0, -1),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(9999),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.28),
+                      borderRadius: BorderRadius.circular(9999),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.38),
+                        width: 1,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: SizedBox(
-                          height: 66,
-                          child: Row(
-                            children: List.generate(items.length, (index) {
-                              return Expanded(
-                                child: _NavItem(
-                                  key: items[index].itemKey,
-                                  item: items[index],
-                                  selected: index == currentIndex,
-                                  activeColor: _activeColor,
-                                  inactiveColor: _inactiveColor,
-                                  activeBackground: _activeBackground,
-                                  onTap: () => onTap(index),
-                                ),
-                              );
-                            }),
-                          ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withValues(alpha: 0.42),
+                          Colors.white.withValues(alpha: 0.14),
+                        ],
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SizedBox(
+                        height: 66,
+                        child: Row(
+                          children: List.generate(items.length, (index) {
+                            return Expanded(
+                              child: _NavItem(
+                                key: items[index].itemKey,
+                                item: items[index],
+                                selected: index == currentIndex,
+                                activeColor: activeColor ?? _activeColor,
+                                inactiveColor:
+                                    inactiveColor ?? _inactiveColor,
+                                activeBackground:
+                                    activeBackground ?? _activeBackground,
+                                onTap: () => onTap(index),
+                              ),
+                            );
+                          }),
                         ),
                       ),
                     ),
@@ -200,7 +205,7 @@ class _NavItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 1),
                   Text(
                     item.label,
                     maxLines: 1,

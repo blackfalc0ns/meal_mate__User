@@ -5396,6 +5396,12 @@ abstract class AppLocalizations {
   /// **'Total nutrition for this day'**
   String get calendar_daily_nutrition_total;
 
+  /// No description provided for @calendar_usual_delivery_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Usual delivery time'**
+  String get calendar_usual_delivery_time;
+
   /// No description provided for @calendar_calories.
   ///
   /// In en, this message translates to:

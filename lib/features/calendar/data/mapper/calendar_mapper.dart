@@ -17,7 +17,10 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
   CalendarDayEntity toEntity(String localeName) {
     final parsedDate = _parseDate(serviceDate ?? date);
     final selectedRestaurant =
-        restaurant?.toRestaurantEntity(localeName) ??
+        _restaurantWithDayDelivery(
+          restaurant?.toRestaurantEntity(localeName),
+          localeName,
+        ) ??
         _flatRestaurantEntity(localeName);
     final dayMeals = selectedMeals ?? meals ?? const [];
     final sortedDayMeals = _sortedMeals(dayMeals);
@@ -25,7 +28,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
         selectedMealIds ?? _selectedMealIds(sortedDayMeals);
     return CalendarDayEntity(
       id: id ?? '',
-      status: status ?? '',
+      status: _firstNotEmpty([status, uiStatus]),
       restaurantId: restaurantId ?? selectedRestaurant?.id,
       restaurant: selectedRestaurant,
       meals: sortedDayMeals
@@ -64,17 +67,88 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
 
     return CalendarRestaurantEntity(
       id: restaurantId ?? '',
-      logoUrl: restaurantLogoUrl,
+      logoUrl: _firstNullableNotEmpty([restaurantLogoUrl, tierLogoUrl]),
+      tierLogoUrl: tierLogoUrl,
       name: _localized(
         localeName,
         ar: restaurantNameAr,
         en: restaurantNameEn,
         fallback: restaurantName ?? restaurantNameEn ?? restaurantNameAr,
       ),
-      category: '',
-      rating: '',
-      deliveryDuration: '',
-      deliveryWindow: '',
+      category: _localized(
+        localeName,
+        ar: programNameAr,
+        en: programNameEn,
+        fallback: programName,
+      ),
+      rating: restaurantRating?.toString() ?? '4.5',
+      deliveryDuration: _localized(
+        localeName,
+        ar: tierNameAr,
+        en: tierNameEn,
+        fallback: tierName ?? tier,
+      ),
+      deliveryWindow: _deliveryWindowText(
+        deliveryTimeText: deliveryTimeText,
+        deliveryWindowStart: deliveryWindowStart,
+        deliveryWindowEnd: deliveryWindowEnd,
+      ),
+    );
+  }
+
+  CalendarRestaurantEntity? _restaurantWithDayDelivery(
+    CalendarRestaurantEntity? restaurant,
+    String localeName,
+  ) {
+    if (restaurant == null) return null;
+
+    final dayDeliveryWindow = _deliveryWindowText(
+      deliveryTimeText: deliveryTimeText,
+      deliveryWindowStart: deliveryWindowStart,
+      deliveryWindowEnd: deliveryWindowEnd,
+    );
+    final category = _localized(
+      localeName,
+      ar: programNameAr,
+      en: programNameEn,
+      fallback: programName,
+    );
+    final deliveryDuration = _localized(
+      localeName,
+      ar: tierNameAr,
+      en: tierNameEn,
+      fallback: tierName ?? tier,
+    );
+    final hasDayOverrides =
+        (restaurant.deliveryWindow.trim().isEmpty &&
+            dayDeliveryWindow.isNotEmpty) ||
+        (restaurant.category.trim().isEmpty && category.isNotEmpty) ||
+        (restaurant.deliveryDuration.trim().isEmpty &&
+            deliveryDuration.isNotEmpty);
+
+    if (!hasDayOverrides) {
+      return restaurant;
+    }
+
+    return CalendarRestaurantEntity(
+      id: restaurant.id,
+      logoUrl: _firstNullableNotEmpty([restaurant.logoUrl, tierLogoUrl]),
+      tierLogoUrl: _firstNullableNotEmpty([
+        restaurant.tierLogoUrl,
+        tierLogoUrl,
+      ]),
+      maxUsageCount: restaurant.maxUsageCount,
+      name: restaurant.name,
+      category: _firstNotEmpty([restaurant.category, category]),
+      rating: restaurant.rating,
+      deliveryDuration: _firstNotEmpty([
+        restaurant.deliveryDuration,
+        deliveryDuration,
+      ]),
+      deliveryWindow: _firstNotEmpty([
+        restaurant.deliveryWindow,
+        dayDeliveryWindow,
+      ]),
     );
   }
 }
@@ -84,6 +158,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
     return CalendarRestaurantEntity(
       id: _firstNotEmpty([restaurantId, id]),
       logoUrl: _firstNullableNotEmpty([logoUrl, imageUrl]),
+      tierLogoUrl: null,
       maxUsageCount: maxUsageCount,
       name: _localized(localeName, ar: nameAr, en: nameEn, fallback: name),
       category: _localized(
@@ -297,6 +372,8 @@ extension CalendarResponseMapper on CalendarResponseDto {
       date: day.date,
       serviceDate: day.serviceDate,
       status: day.status,
+      uiStatus: day.uiStatus,
+      isAutoSelected: day.isAutoSelected,
       isLocked: day.isLocked,
       lockedAtUtc: day.lockedAtUtc,
       editDeadlineUtc: day.editDeadlineUtc,
@@ -314,6 +391,23 @@ extension CalendarResponseMapper on CalendarResponseDto {
       canEdit: day.canEdit,
       selectionDeadlineUtc: day.selectionDeadlineUtc,
       lockAtUtc: day.lockAtUtc,
+      lockRemainingSeconds: day.lockRemainingSeconds,
+      filledCount: day.filledCount,
+      requiredCount: day.requiredCount,
+      failureReasonCode: day.failureReasonCode,
+      restaurantRating: day.restaurantRating,
+      restaurantRatingCount: day.restaurantRatingCount,
+      deliveryWindowStart: day.deliveryWindowStart,
+      deliveryWindowEnd: day.deliveryWindowEnd,
+      deliveryTimeText: day.deliveryTimeText,
+      tier: day.tier,
+      tierNameAr: day.tierNameAr,
+      tierNameEn: day.tierNameEn,
+      tierName: day.tierName,
+      tierLogoUrl: day.tierLogoUrl,
+      programNameAr: day.programNameAr,
+      programNameEn: day.programNameEn,
+      programName: day.programName,
     );
   }
 }
@@ -439,4 +533,20 @@ String? _firstNullableNotEmpty(List<String?> values) {
 int? _wholeNumber(num? value) {
   if (value == null) return null;
   return value.round();
+}
+
+String _deliveryWindowText({
+  String? deliveryTimeText,
+  String? deliveryWindowStart,
+  String? deliveryWindowEnd,
+}) {
+  final providedText = _firstNullableNotEmpty([deliveryTimeText]);
+  if (providedText != null) return providedText;
+
+  final start = _firstNullableNotEmpty([deliveryWindowStart]);
+  final end = _firstNullableNotEmpty([deliveryWindowEnd]);
+  if (start == null && end == null) return '';
+  if (start == null) return end!;
+  if (end == null) return start;
+  return '$start - $end';
 }

@@ -7,12 +7,14 @@ class CalendarMetaChip extends StatelessWidget {
     required this.label,
     required this.iconColor,
     this.badgeColor,
+    this.imageUrl,
   });
 
   final IconData icon;
   final String label;
   final Color iconColor;
   final Color? badgeColor;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +45,26 @@ class CalendarMetaChip extends StatelessWidget {
               label,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size11,
                 color: color.onPrimary,
               ),
             ),
           ),
         const SizedBox(width: Spacing.calendarRestaurantSummaryMetaGap),
-        Icon(
-          icon,
-          color: iconColor,
-          size: badgeColor == null ? FontSize.size11 : FontSize.size10,
-        ),
+        if (imageUrl?.isNotEmpty == true)
+          AppCachedNetworkImage(width:25,height:25,
+             imageUrl: imageUrl!,
+            // width: badgeColor == null ? FontSize.size11 : FontSize.size10,
+            // height: badgeColor == null ? FontSize.size11 : FontSize.size10,
+            fit: BoxFit.cover,
+          
+          )
+        else
+          Icon(
+            icon,
+            color: iconColor,
+            size: badgeColor == null ? FontSize.size11 : FontSize.size10,
+          ),
       ],
     );
   }

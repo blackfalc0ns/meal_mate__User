@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
@@ -10,12 +9,15 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
   const InfluencerDashboardBottomTabs({
     super.key,
     this.selectedTab = InfluencerDashboardTabItem.home,
+    required this.onTabSelected,
   });
 
   final InfluencerDashboardTabItem selectedTab;
+  final ValueChanged<InfluencerDashboardTabItem> onTabSelected;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final locale = context.localization;
     final tabs = [
       _InfluencerDashboardTab(
@@ -23,7 +25,6 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
         label: locale.influencer_tab_profile,
         iconAsset: AssetsFake.influencerTabProfile,
         icon: Icons.person_rounded,
-        routeName: AppRoutes.influencerSocialConnections,
         tab: InfluencerDashboardTabItem.profile,
       ),
       _InfluencerDashboardTab(
@@ -31,7 +32,6 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
         label: locale.influencer_tab_stats,
         iconAsset: AssetsFake.influencerTabStats,
         icon: Icons.bar_chart_rounded,
-        routeName: AppRoutes.influencerDashboard,
         tab: InfluencerDashboardTabItem.stats,
       ),
       _InfluencerDashboardTab(
@@ -39,7 +39,6 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
         label: locale.influencer_tab_wallet,
         iconAsset: AssetsFake.influencerTabWallet,
         icon: Icons.account_balance_wallet_rounded,
-        routeName: AppRoutes.influencerWallet,
         tab: InfluencerDashboardTabItem.wallet,
       ),
       _InfluencerDashboardTab(
@@ -47,7 +46,6 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
         label: locale.influencer_tab_links,
         iconAsset: AssetsFake.influencerTabLinks,
         icon: Icons.link_rounded,
-        routeName: AppRoutes.influencerShareLinks,
         tab: InfluencerDashboardTabItem.links,
       ),
       _InfluencerDashboardTab(
@@ -55,17 +53,19 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
         label: locale.influencer_tab_home,
         iconAsset: AssetsFake.influencerTabHome,
         icon: Icons.home_rounded,
-        routeName: AppRoutes.influencerDashboard,
         tab: InfluencerDashboardTabItem.home,
       ),
     ];
 
     return AppBottomNavBar(
       currentIndex: selectedTab.index,
+      activeColor: color.onPrimary,
+      inactiveColor: color.onSurface,
+      activeBackground: color.primary,
       onTap: (index) {
         final tab = tabs[index];
         if (tab.tab == selectedTab) return;
-        Navigator.of(context).pushReplacementNamed(tab.routeName);
+        onTabSelected(tab.tab);
       },
       items: [
         for (final tab in tabs)
@@ -87,7 +87,6 @@ class _InfluencerDashboardTab {
     required this.label,
     required this.iconAsset,
     required this.icon,
-    required this.routeName,
     required this.tab,
   });
 
@@ -95,6 +94,5 @@ class _InfluencerDashboardTab {
   final String label;
   final String iconAsset;
   final IconData icon;
-  final String routeName;
   final InfluencerDashboardTabItem tab;
 }

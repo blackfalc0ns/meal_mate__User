@@ -2834,6 +2834,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_daily_nutrition_total => 'Total nutrition for this day';
 
   @override
+  String get calendar_usual_delivery_time => 'Usual delivery time';
+
+  @override
   String get calendar_calories => 'Calories';
 
   @override

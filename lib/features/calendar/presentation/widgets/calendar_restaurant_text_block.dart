@@ -37,7 +37,7 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xs),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
@@ -55,28 +55,47 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
             const SizedBox(width: Spacing.xs),
             CalendarMetaChip(
               icon: Icons.star_rounded,
-              label: restaurant.deliveryDuration,
-              iconColor: color.onPrimary,
-            ),
-            const SizedBox(width: Spacing.xs),
-            CalendarMetaChip(
-              icon: Icons.star_rounded,
               label: restaurant.rating,
               iconColor: color.onPrimary,
               badgeColor: color.secondary,
             ),
+            const SizedBox(width: Spacing.xs),
+            CalendarMetaChip(
+              icon: Icons.star_rounded,
+              label: restaurant.deliveryDuration,
+              iconColor: color.onPrimary,
+              imageUrl: restaurant.tierLogoUrl,
+            ),
           ],
         ),
         const SizedBox(height: Spacing.xs),
-        Text(
-          restaurant.deliveryWindow,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size11,
-            color: color.onPrimary,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              locale.calendar_usual_delivery_time,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onPrimary,
+              ),
+            ),
+            const SizedBox(width: Spacing.xs),
+            Flexible(
+              child: Text(
+                restaurant.deliveryWindow,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size11,
+                  color: color.onPrimary,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
