@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarTabLabel extends StatelessWidget {
-  const CalendarTabLabel({
+class RestaurantMenuTabLabel extends StatelessWidget {
+  const RestaurantMenuTabLabel({
     super.key,
     required this.text,
     required this.active,

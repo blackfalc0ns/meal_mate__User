@@ -1,34 +1,34 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealPickerNutritionRow extends StatelessWidget {
-  const CalendarMealPickerNutritionRow({super.key, required this.option});
+class RestaurantMenuNutritionRow extends StatelessWidget {
+  const RestaurantMenuNutritionRow({super.key, required this.option});
 
-  final CalendarMealPickerOption option;
+  final RestaurantMenuOption option;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
     final items = [
-      CalendarMealPickerNutrition(
+      RestaurantMenuNutrition(
         icon: Icons.local_fire_department_rounded,
         animationAsset: Assets.fireAnimation,
         value: option.calories,
         label: locale.calendar_calories,
       ),
-      CalendarMealPickerNutrition(
+      RestaurantMenuNutrition(
         icon: Icons.fitness_center_rounded,
         animationAsset: Assets.muscleAnimation,
         value: option.protein,
         label: locale.calendar_protein,
       ),
-      CalendarMealPickerNutrition(
+      RestaurantMenuNutrition(
         icon: Icons.grass_rounded,
         animationAsset: Assets.wheatAnimation,
         value: option.carbs,
         label: locale.calendar_carbs,
       ),
-      CalendarMealPickerNutrition(
+      RestaurantMenuNutrition(
         icon: Icons.water_drop_rounded,
         animationAsset: Assets.dropletAnimation,
         value: option.fat,
@@ -36,18 +36,18 @@ class CalendarMealPickerNutritionRow extends StatelessWidget {
       ),
     ];
 
-    return SizedBox(
-      height: 30,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          for (var index = 0; index < items.length; index++) ...[
-            items[index],
-            if (index != items.length - 1)
-              Container(width: 0.45, height: 18, color: color.outlineVariant),
-          ],
+    return Row(
+      children: [
+        for (var index = 0; index < items.length; index++) ...[
+          Expanded(child: items[index]),
+          if (index != items.length - 1)
+            Container(
+              width: Spacing.hairline,
+              height: Spacing.xxl,
+              color: color.outlineVariant,
+            ),
         ],
-      ),
+      ],
     );
   }
 }

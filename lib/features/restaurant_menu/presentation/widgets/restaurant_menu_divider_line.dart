@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarDividerLine extends StatelessWidget {
-  const CalendarDividerLine();
+class RestaurantMenuDividerLine extends StatelessWidget {
+  const RestaurantMenuDividerLine({super.key});
 
   @override
   Widget build(BuildContext context) {

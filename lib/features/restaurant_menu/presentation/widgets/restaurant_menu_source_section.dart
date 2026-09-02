@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarSourceSection extends StatelessWidget {
-  const CalendarSourceSection({
+class RestaurantMenuSourceSection extends StatelessWidget {
+  const RestaurantMenuSourceSection({
     super.key,
     this.coreIngredients = const [],
     this.origins = const [],
@@ -56,7 +56,7 @@ class CalendarSourceSection extends StatelessWidget {
     final locale = context.localization;
     if (coreIngredients.isNotEmpty) {
       return coreIngredients.map((ingredient) {
-        return CalendarSourceCard(
+        return RestaurantMenuSourceCard(
           icon: Icons.eco_rounded,
           iconUrl: ingredient.iconUrl,
           title: ingredient.name,
@@ -79,7 +79,7 @@ class CalendarSourceSection extends StatelessWidget {
       });
 
     return ordered.map((origin) {
-      return CalendarSourceCard(
+      return RestaurantMenuSourceCard(
         icon: _iconFor(origin.category),
         iconUrl: origin.iconUrl,
         title: origin.name(locale.localeName),

@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealOptionsSection extends StatelessWidget {
-  const CalendarMealOptionsSection({
+class RestaurantMenuOptionsSection extends StatelessWidget {
+  const RestaurantMenuOptionsSection({
     super.key,
     required this.mealType,
     required this.tabIndex,
@@ -13,7 +13,7 @@ class CalendarMealOptionsSection extends StatelessWidget {
 
   final String mealType;
   final int tabIndex;
-  final List<CalendarMealPickerOption> options;
+  final List<RestaurantMenuOption> options;
   final ValueChanged<int>? onOptionSelected;
   final ValueChanged<int>? onOptionDetailsSelected;
   final bool isLoadingMore;
@@ -49,10 +49,10 @@ class CalendarMealOptionsSection extends StatelessWidget {
         key: ValueKey(tabIndex),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CalendarMealPickerSectionTitle(mealType: mealType),
+          RestaurantMenuSectionTitle(mealType: mealType),
           const SizedBox(height: Spacing.base),
           for (var index = 0; index < options.length; index++) ...[
-            CalendarMealOptionCard(
+            RestaurantMenuOptionCard(
               option: options[index],
               onTap: onOptionSelected == null
                   ? null
@@ -61,7 +61,7 @@ class CalendarMealOptionsSection extends StatelessWidget {
                   ? null
                   : () => onOptionDetailsSelected!(index),
             ),
-            if (index != options.length - 1) const CalendarDividerLine(),
+            if (index != options.length - 1) const RestaurantMenuDividerLine(),
           ],
           if (isLoadingMore) ...[
             const SizedBox(height: Spacing.md),

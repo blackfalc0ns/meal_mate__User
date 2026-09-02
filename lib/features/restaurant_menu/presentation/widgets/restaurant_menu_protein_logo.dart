@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarProteinLogo extends StatelessWidget {
-  const CalendarProteinLogo({
+class RestaurantMenuProteinLogo extends StatelessWidget {
+  const RestaurantMenuProteinLogo({
     super.key,
     required this.size,
     required this.label,

@@ -19,26 +19,28 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/meal_detail
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_entity.dart';
 
-part 'calendar_sheet_handle.dart';
-part 'calendar_meal_picker_restaurant_header.dart';
-part 'calendar_meal_picker_restaurant_description.dart';
-part 'calendar_source_section.dart';
-part 'calendar_source_card.dart';
-part 'calendar_meal_tabs.dart';
-part 'calendar_tab_label.dart';
-part 'calendar_meal_options_section.dart';
-part 'calendar_section_title.dart';
-part 'calendar_meal_option_card.dart';
-part 'calendar_select_button.dart';
-part 'calendar_meal_nutrition_row.dart';
-part 'calendar_meal_nutrition.dart';
-part 'calendar_meal_ingredient_row.dart';
-part 'calendar_meal_picker_ingredient_chip.dart';
-part 'calendar_meal_picker_loading_skeleton.dart';
-part 'calendar_divider_line.dart';
-part 'calendar_protein_logo.dart';
+part 'restaurant_menu_sheet_handle.dart';
+part 'restaurant_menu_header.dart';
+part 'restaurant_menu_description.dart';
+part 'restaurant_menu_source_section.dart';
+part 'restaurant_menu_source_card.dart';
+part 'restaurant_menu_tabs.dart';
+part 'restaurant_menu_tab_label.dart';
+part 'restaurant_menu_options_section.dart';
+part 'restaurant_menu_section_title.dart';
+part 'restaurant_menu_option_card.dart';
+part 'restaurant_menu_select_button.dart';
+part 'restaurant_menu_nutrition_row.dart';
+part 'restaurant_menu_nutrition.dart';
+part 'restaurant_menu_ingredient_row.dart';
+part 'restaurant_menu_ingredient_chip.dart';
+part 'restaurant_menu_loading_skeleton.dart';
+part 'restaurant_menu_divider_line.dart';
+part 'restaurant_menu_protein_logo.dart';
 
-typedef CalendarMealPickerOption = ({
+enum RestaurantMenuMode { preview, selection }
+
+typedef RestaurantMenuOption = ({
   String id,
   String slot,
   String title,
@@ -53,9 +55,10 @@ typedef CalendarMealPickerOption = ({
   String? blockReason,
 });
 
-class CalendarMealPickerSheet extends StatefulWidget {
-  const CalendarMealPickerSheet({
+class RestaurantMenuView extends StatefulWidget {
+  const RestaurantMenuView({
     super.key,
+    required this.mode,
     this.restaurantName,
     this.restaurantLogoAsset,
     this.restaurantLogoUrl,
@@ -80,6 +83,7 @@ class CalendarMealPickerSheet extends StatefulWidget {
     this.bottomContentPadding = Spacing.zero,
   });
 
+  final RestaurantMenuMode mode;
   final String? restaurantName;
   final String? restaurantLogoAsset;
   final String? restaurantLogoUrl;
@@ -104,11 +108,10 @@ class CalendarMealPickerSheet extends StatefulWidget {
   final double bottomContentPadding;
 
   @override
-  State<CalendarMealPickerSheet> createState() =>
-      CalendarMealPickerSheetState();
+  State<RestaurantMenuView> createState() => RestaurantMenuViewState();
 }
 
-class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
+class RestaurantMenuViewState extends State<RestaurantMenuView> {
   int _selectedTab = 0;
 
   @override
@@ -128,7 +131,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
         .toList();
     final apiSlotLabels = apiSlotRequirements
         .map((requirement) {
-          final label = requirement.name(locale.localeName);
+          final label = requirement.displayName;
           return label.isNotEmpty ? label : requirement.slot;
         })
         .where((slot) => slot.isNotEmpty)
@@ -155,7 +158,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
             locale.calendar_more,
           )
         : groups.isEmpty
-        ? const <CalendarMealPickerOption>[]
+        ? const <RestaurantMenuOption>[]
         : _optionsFromGroup(
             groups[selectedTab],
             locale.localeName,
@@ -227,24 +230,24 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                             children: [
                               if (!widget.isFullPage) ...[
                                 const SizedBox(height: Spacing.lg),
-                                const CalendarSheetHandle(),
+                                const RestaurantMenuSheetHandle(),
                               ],
                               const SizedBox(height: Spacing.md),
-                              CalendarMealPickerRestaurantHeader(
+                              RestaurantMenuHeader(
                                 restaurantName: resolvedRestaurantName,
                                 restaurantLogoAsset: widget.restaurantLogoAsset,
                                 restaurantLogoUrl: restaurantLogoUrl,
                                 restaurantInitials: widget.restaurantInitials,
                               ),
-                              const CalendarMealPickerRestaurantDescription(),
-                              const CalendarDividerLine(),
-                              CalendarSourceSection(
+                              const RestaurantMenuDescription(),
+                              const RestaurantMenuDividerLine(),
+                              RestaurantMenuSourceSection(
                                 coreIngredients:
                                     availableMeals?.coreIngredients ?? const [],
                                 origins: details?.ingredientOrigins ?? const [],
                               ),
                               const SizedBox(height: Spacing.base),
-                              CalendarMealTabs(
+                              RestaurantMenuTabs(
                                 labels: mealTabs,
                                 selectedIndex: selectedTab,
                                 onChanged: (index) {
@@ -257,71 +260,78 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                                   exception: widget.failure!.exception,
                                 )
                               else if (widget.isLoading)
-                                const CalendarMealPickerLoadingSkeleton()
+                                const RestaurantMenuLoadingSkeleton()
                               else
-                                CalendarMealOptionsSection(
+                                RestaurantMenuOptionsSection(
                                   mealType: mealTabs[selectedTab],
                                   tabIndex: selectedTab,
                                   options: options,
                                   isLoadingMore: widget.isLoadingMore,
-                                  onOptionSelected: availableMeals != null
-                                      ? (index) => widget.onMealToggled?.call(
+                                  onOptionSelected:
+                                      widget.mode ==
+                                              RestaurantMenuMode.selection &&
+                                          availableMeals != null &&
+                                          widget.onMealToggled != null
+                                      ? (index) => widget.onMealToggled!(
                                           options[index].id,
                                         )
                                       : null,
                                   onOptionDetailsSelected:
                                       availableMeals != null
-                                          ? (index) {
-                                              final selectedMeal = availableMeals
-                                                  .meals
-                                                  .where(
-                                              (m) => m.id == options[index].id,
-                                            )
-                                            .firstOrNull;
-                                        if (selectedMeal != null) {
-                                          _openMealDetailsForCalendarMeal(
-                                            selectedMeal,
-                                          );
+                                      ? (index) {
+                                          final selectedMeal = availableMeals
+                                              .meals
+                                              .where(
+                                                (m) =>
+                                                    m.id == options[index].id,
+                                              )
+                                              .firstOrNull;
+                                          if (selectedMeal != null) {
+                                            _openMealDetailsForCalendarMeal(
+                                              selectedMeal,
+                                            );
+                                          }
                                         }
-                                      }
-                                    : groups.isEmpty
-                                    ? null
-                                    : (index) => _openMealDetails(
-                                        groups[selectedTab].meals[index],
-                                      ),
-                              ),
-                            if (widget.onSave != null) ...[
-                              const SizedBox(height: Spacing.lg),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: Spacing.lg,
+                                      : groups.isEmpty
+                                      ? null
+                                      : (index) => _openMealDetails(
+                                          groups[selectedTab].meals[index],
+                                        ),
                                 ),
-                                child: AppButton(
-                                  text: locale.calendar_done,
-                                  isLoading: widget.isSaving,
-                                  onPressed: widget.canSave
-                                      ? widget.onSave
-                                      : null,
+                              if (widget.mode == RestaurantMenuMode.selection &&
+                                  widget.onSave != null) ...[
+                                const SizedBox(height: Spacing.lg),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Spacing.lg,
+                                  ),
+                                  child: AppButton(
+                                    text: locale.calendar_done,
+                                    isLoading: widget.isSaving,
+                                    onPressed: widget.canSave
+                                        ? widget.onSave
+                                        : null,
+                                  ),
                                 ),
+                              ],
+                              SizedBox(
+                                height:
+                                    Spacing.xxl + widget.bottomContentPadding,
                               ),
                             ],
-                            SizedBox(
-                              height: Spacing.xxl + widget.bottomContentPadding,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   void _openMealDetails(SubscriptionRestaurantMealEntity meal) {
     final locale = context.localization;
@@ -430,7 +440,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     );
   }
 
-  List<CalendarMealPickerOption> _optionsFromGroup(
+  List<RestaurantMenuOption> _optionsFromGroup(
     SubscriptionRestaurantMealGroupEntity group,
     String localeName,
     String moreLabel,
@@ -465,7 +475,7 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     }).toList();
   }
 
-  List<CalendarMealPickerOption> _optionsFromAvailableMeals(
+  List<RestaurantMenuOption> _optionsFromAvailableMeals(
     List<CalendarMealEntity> meals,
     String slot,
     String moreLabel,

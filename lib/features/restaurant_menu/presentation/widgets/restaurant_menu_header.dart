@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealPickerRestaurantHeader extends StatelessWidget {
-  const CalendarMealPickerRestaurantHeader({
+class RestaurantMenuHeader extends StatelessWidget {
+  const RestaurantMenuHeader({
     super.key,
     required this.restaurantName,
     this.restaurantLogoAsset,
@@ -23,7 +23,7 @@ class CalendarMealPickerRestaurantHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CalendarProteinLogo(
+          RestaurantMenuProteinLogo(
             size: Spacing.restaurantDetailsHeaderLogoSize,
             label: restaurantInitials ?? restaurantName,
             logoAsset: restaurantLogoAsset,

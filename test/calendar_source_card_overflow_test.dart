@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
+import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
 
 void main() {
   testWidgets('calendar source card fits its fixed height', (tester) async {
@@ -14,7 +15,7 @@ void main() {
       const MaterialApp(
         home: Scaffold(
           body: Center(
-            child: CalendarSourceCard(
+            child: RestaurantMenuSourceCard(
               icon: Icons.eco_rounded,
               title: 'لحم ضاني',
               subtitle: 'مستوردة',
@@ -84,12 +85,95 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: CalendarSourceSection(coreIngredients: ingredients),
+          body: RestaurantMenuSourceSection(coreIngredients: ingredients),
         ),
       ),
     );
 
     expect(find.text('Ingredient 5', skipOffstage: false), findsOneWidget);
+  });
+
+  testWidgets('meal picker nutrition row fits option card content width', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            body: SizedBox(
+              width: 160,
+              child: RestaurantMenuNutritionRow(
+                option: (
+                  id: 'meal-1',
+                  slot: 'lunch',
+                  title: 'meal',
+                  imageAsset: '',
+                  imageUrl: null,
+                  calories: '210',
+                  protein: '14',
+                  carbs: '3',
+                  fat: '16',
+                  ingredients: [],
+                  selected: false,
+                  blockReason: null,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('meal picker option card fits nutrition and ingredient chips', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            body: SizedBox(
+              width: 390,
+              child: RestaurantMenuOptionCard(
+                option: (
+                  id: 'meal-1',
+                  slot: 'lunch',
+                  title: 'دجاج مشوي مع أرز',
+                  imageAsset:
+                      'assets/images/calendar/figma/meal_picker_hero-47a8dd.png',
+                  imageUrl: null,
+                  calories: '620',
+                  protein: '38',
+                  carbs: '5',
+                  fat: '50',
+                  ingredients: const [
+                    CalendarMealIngredientEntity(label: 'سبانخ', asset: ''),
+                    CalendarMealIngredientEntity(label: 'قرنبيط', asset: ''),
+                  ],
+                  selected: false,
+                  blockReason: null,
+                ),
+                onTap: () {},
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('meal ingredient chip uses API icon URL when available', (
@@ -100,7 +184,7 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: CalendarMealPickerIngredientChip(
+          body: RestaurantMenuIngredientChip(
             label: 'Broccoli',
             iconUrl:
                 'https://ik.imagekit.io/f7h9cj23x/catalog/ingredient-photos/broccoli.webp',
@@ -125,7 +209,8 @@ void main() {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
-            body: CalendarMealPickerSheet(
+            body: RestaurantMenuView(
+              mode: RestaurantMenuMode.selection,
               availableMeals: CalendarAvailableMealsEntity(
                 restaurant: null,
                 meals: [
@@ -135,6 +220,7 @@ void main() {
                 slotRequirements: const [
                   CalendarSlotRequirementEntity(
                     slot: 'lunch',
+                    displayName: 'Lunch',
                     slotNameAr: 'الغداء',
                     slotNameEn: 'Lunch',
                     count: 1,
@@ -154,26 +240,23 @@ void main() {
 
   test('restaurant description stays below the header', () {
     final headerSource = File(
-      'lib/features/calendar/presentation/widgets/'
-      'calendar_meal_picker_restaurant_header.dart',
+      'lib/features/restaurant_menu/presentation/widgets/'
+      'restaurant_menu_header.dart',
     ).readAsStringSync();
     final sheetSource = File(
-      'lib/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart',
+      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart',
     ).readAsStringSync();
 
     expect(
       headerSource,
       isNot(contains('locale.calendar_restaurant_description')),
     );
-    expect(
-      sheetSource,
-      contains('const CalendarMealPickerRestaurantDescription()'),
-    );
+    expect(sheetSource, contains('const RestaurantMenuDescription()'));
   });
 
   test('full page meal picker keeps rounded sheet border over hero image', () {
     final sheetSource = File(
-      'lib/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart',
+      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart',
     ).readAsStringSync();
 
     expect(

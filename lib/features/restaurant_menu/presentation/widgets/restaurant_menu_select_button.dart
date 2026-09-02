@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarSelectButton extends StatelessWidget {
-  const CalendarSelectButton({
+class RestaurantMenuSelectButton extends StatelessWidget {
+  const RestaurantMenuSelectButton({
     super.key,
     required this.selected,
     this.enabled = true,

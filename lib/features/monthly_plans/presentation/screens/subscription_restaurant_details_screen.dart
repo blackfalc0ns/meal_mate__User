@@ -4,12 +4,12 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/subscription_restaurant_details_loading_skeleton.dart';
+import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
 
 class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
   const SubscriptionRestaurantDetailsScreen({super.key, this.args});
@@ -90,7 +90,8 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
                 );
               }
 
-              return CalendarMealPickerSheet(
+              return RestaurantMenuView(
+                mode: RestaurantMenuMode.preview,
                 restaurantName: details.name(locale.localeName).isEmpty
                     ? detailsArgs.restaurantName
                     : details.name(locale.localeName),

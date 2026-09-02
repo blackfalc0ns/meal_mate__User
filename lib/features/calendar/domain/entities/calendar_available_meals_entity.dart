@@ -58,6 +58,7 @@ class CalendarAvailableMealsEntity {
 class CalendarSlotMealsEntity {
   const CalendarSlotMealsEntity({
     required this.slot,
+    required this.displayName,
     required this.slotNameAr,
     required this.slotNameEn,
     required this.count,
@@ -71,6 +72,7 @@ class CalendarSlotMealsEntity {
   });
 
   final String slot;
+  final String displayName;
   final String slotNameAr;
   final String slotNameEn;
   final int count;
@@ -82,11 +84,15 @@ class CalendarSlotMealsEntity {
   final bool hasPreviousPage;
   final List<CalendarMealEntity> meals;
 
-  String name(String localeName) =>
-      localeName == 'ar' ? slotNameAr : slotNameEn;
+  String name(String localeName) => displayName.isNotEmpty
+      ? displayName
+      : localeName == 'ar'
+      ? slotNameAr
+      : slotNameEn;
 
   CalendarSlotMealsEntity copyWith({
     String? slot,
+    String? displayName,
     String? slotNameAr,
     String? slotNameEn,
     int? count,
@@ -100,6 +106,7 @@ class CalendarSlotMealsEntity {
   }) {
     return CalendarSlotMealsEntity(
       slot: slot ?? this.slot,
+      displayName: displayName ?? this.displayName,
       slotNameAr: slotNameAr ?? this.slotNameAr,
       slotNameEn: slotNameEn ?? this.slotNameEn,
       count: count ?? this.count,
@@ -137,16 +144,21 @@ class CalendarCoreIngredientEntity {
 class CalendarSlotRequirementEntity {
   const CalendarSlotRequirementEntity({
     required this.slot,
+    required this.displayName,
     required this.slotNameAr,
     required this.slotNameEn,
     required this.count,
   });
 
   final String slot;
+  final String displayName;
   final String slotNameAr;
   final String slotNameEn;
   final int count;
 
-  String name(String localeName) =>
-      localeName == 'ar' ? slotNameAr : slotNameEn;
+  String name(String localeName) => displayName.isNotEmpty
+      ? displayName
+      : localeName == 'ar'
+      ? slotNameAr
+      : slotNameEn;
 }

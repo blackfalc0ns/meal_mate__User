@@ -1,14 +1,14 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealOptionCard extends StatelessWidget {
-  const CalendarMealOptionCard({
+class RestaurantMenuOptionCard extends StatelessWidget {
+  const RestaurantMenuOptionCard({
     super.key,
     required this.option,
     this.onTap,
     this.onDetailsTap,
   });
 
-  final CalendarMealPickerOption option;
+  final RestaurantMenuOption option;
   final VoidCallback? onTap;
   final VoidCallback? onDetailsTap;
 
@@ -19,6 +19,7 @@ class CalendarMealOptionCard extends StatelessWidget {
     final blockReason = option.blockReason;
     final isBlocked = blockReason != null && blockReason.isNotEmpty;
     final showsSelectButton = onTap != null;
+    final cardHeight = Spacing.restaurantDetailsMealCardHeight + Spacing.md;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -26,12 +27,11 @@ class CalendarMealOptionCard extends StatelessWidget {
         vertical: Spacing.xs,
       ),
       child: SizedBox(
-        height: isBlocked
-            ? Spacing.restaurantDetailsMealCardHeight + Spacing.lg
-            : Spacing.restaurantDetailsMealCardHeight,
+        height: isBlocked ? cardHeight + Spacing.lg : cardHeight,
         child: Opacity(
           opacity: isBlocked ? 0.58 : 1,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -76,7 +76,7 @@ class CalendarMealOptionCard extends StatelessWidget {
                         ).copyWith(height: 1.5),
                       ),
                       const SizedBox(height: Spacing.xs),
-                      CalendarMealPickerNutritionRow(option: option),
+                      RestaurantMenuNutritionRow(option: option),
                       if (isBlocked) ...[
                         const SizedBox(height: Spacing.xs),
                         Text(
@@ -105,7 +105,7 @@ class CalendarMealOptionCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: Spacing.xs),
-                      CalendarMealIngredientRow(
+                      RestaurantMenuIngredientRow(
                         ingredients: option.ingredients,
                       ),
                     ],
@@ -114,12 +114,17 @@ class CalendarMealOptionCard extends StatelessWidget {
               ),
               if (showsSelectButton) ...[
                 const SizedBox(width: Spacing.lg),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: isBlocked ? null : onTap,
-                  child: CalendarSelectButton(
-                    selected: option.selected,
-                    enabled: !isBlocked,
+                SizedBox(
+                  height: Spacing.restaurantDetailsMealImageSize,
+                  child: Center(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: isBlocked ? null : onTap,
+                      child: RestaurantMenuSelectButton(
+                        selected: option.selected,
+                        enabled: !isBlocked,
+                      ),
+                    ),
                   ),
                 ),
               ],

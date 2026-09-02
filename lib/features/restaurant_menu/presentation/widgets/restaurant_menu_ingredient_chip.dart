@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealPickerIngredientChip extends StatelessWidget {
-  const CalendarMealPickerIngredientChip({
+class RestaurantMenuIngredientChip extends StatelessWidget {
+  const RestaurantMenuIngredientChip({
     super.key,
     required this.label,
     this.iconUrl,

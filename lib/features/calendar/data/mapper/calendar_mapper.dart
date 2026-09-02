@@ -48,9 +48,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
         selectionDeadlineUtc ?? editDeadlineUtc ?? lockAtUtc ?? lockedAtUtc,
       ),
       dayNumber: parsedDate?.day ?? 0,
-      weekday: parsedDate == null
-          ? ''
-          : _formatWeekday(parsedDate, localeName),
+      weekday: parsedDate == null ? '' : _formatWeekday(parsedDate, localeName),
       date: parsedDate,
       hasMeals: true,
     );
@@ -284,9 +282,7 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
                   nutrition?.carbsPercent)
               ?.toDouble(),
       fatPercentage:
-          (fatPercentage ??
-                  nutrition?.fatPercentage ??
-                  nutrition?.fatPercent)
+          (fatPercentage ?? nutrition?.fatPercentage ?? nutrition?.fatPercent)
               ?.toDouble(),
     );
   }
@@ -307,6 +303,7 @@ extension CalendarSlotRequirementResponseDtoMapper
   CalendarSlotRequirementEntity toEntity() {
     return CalendarSlotRequirementEntity(
       slot: slot ?? '',
+      displayName: _firstNotEmpty([slotName, slotNameAr, slotNameEn, slot]),
       slotNameAr: slotNameAr ?? slotName ?? '',
       slotNameEn: slotNameEn ?? slotName ?? slotNameAr ?? '',
       count: count ?? 0,
@@ -322,6 +319,7 @@ extension CalendarAvailableMealSlotResponseDtoMapper
   ) {
     return CalendarSlotMealsEntity(
       slot: slot ?? '',
+      displayName: _firstNotEmpty([slotName, slotNameAr, slotNameEn, slot]),
       slotNameAr: slotNameAr ?? slotName ?? '',
       slotNameEn: slotNameEn ?? slotName ?? slotNameAr ?? '',
       count: count ?? 0,
@@ -354,26 +352,28 @@ extension CalendarAvailableMealsResponseDtoMapper
         .where((meal) => meal.id.isNotEmpty)
         .toList();
 
-    final combinedMeals =
-        topLevelMeals.isNotEmpty ? topLevelMeals : allMealsFromSlots;
+    final combinedMeals = topLevelMeals.isNotEmpty
+        ? topLevelMeals
+        : allMealsFromSlots;
 
     final mappedSlotRequirements =
         (slotRequirements != null && slotRequirements!.isNotEmpty)
-            ? slotRequirements!
-                .map((requirement) => requirement.toEntity())
-                .where((r) => r.slot.isNotEmpty && r.count > 0)
-                .toList()
-            : mappedSlots
-                .map(
-                  (s) => CalendarSlotRequirementEntity(
-                    slot: s.slot,
-                    slotNameAr: s.slotNameAr,
-                    slotNameEn: s.slotNameEn,
-                    count: s.count,
-                  ),
-                )
-                .where((r) => r.slot.isNotEmpty && r.count > 0)
-                .toList();
+        ? slotRequirements!
+              .map((requirement) => requirement.toEntity())
+              .where((r) => r.slot.isNotEmpty && r.count > 0)
+              .toList()
+        : mappedSlots
+              .map(
+                (s) => CalendarSlotRequirementEntity(
+                  slot: s.slot,
+                  displayName: s.displayName,
+                  slotNameAr: s.slotNameAr,
+                  slotNameEn: s.slotNameEn,
+                  count: s.count,
+                ),
+              )
+              .where((r) => r.slot.isNotEmpty && r.count > 0)
+              .toList();
 
     return CalendarAvailableMealsEntity(
       restaurant:
@@ -599,12 +599,12 @@ extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
         proteinG: totalsEntity.proteinG,
         carbsG: totalsEntity.carbsG,
         fatG: totalsEntity.fatG,
-        proteinPercentage:
-            (proteinPercentage ?? totalsEntity.proteinPercentage)?.toDouble(),
-        carbsPercentage:
-            (carbsPercentage ?? totalsEntity.carbsPercentage)?.toDouble(),
-        fatPercentage:
-            (fatPercentage ?? totalsEntity.fatPercentage)?.toDouble(),
+        proteinPercentage: (proteinPercentage ?? totalsEntity.proteinPercentage)
+            ?.toDouble(),
+        carbsPercentage: (carbsPercentage ?? totalsEntity.carbsPercentage)
+            ?.toDouble(),
+        fatPercentage: (fatPercentage ?? totalsEntity.fatPercentage)
+            ?.toDouble(),
       );
     }
 
@@ -645,15 +645,17 @@ extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
       proteinG: summed.proteinG,
       carbsG: summed.carbsG,
       fatG: summed.fatG,
-      proteinPercentage: (proteinPercentage ??
-              (totalCal > 0 ? (proteinCal / totalCal) * 100 : null))
-          ?.toDouble(),
-      carbsPercentage: (carbsPercentage ??
-              (totalCal > 0 ? (carbsCal / totalCal) * 100 : null))
-          ?.toDouble(),
-      fatPercentage: (fatPercentage ??
-              (totalCal > 0 ? (fatCal / totalCal) * 100 : null))
-          ?.toDouble(),
+      proteinPercentage:
+          (proteinPercentage ??
+                  (totalCal > 0 ? (proteinCal / totalCal) * 100 : null))
+              ?.toDouble(),
+      carbsPercentage:
+          (carbsPercentage ??
+                  (totalCal > 0 ? (carbsCal / totalCal) * 100 : null))
+              ?.toDouble(),
+      fatPercentage:
+          (fatPercentage ?? (totalCal > 0 ? (fatCal / totalCal) * 100 : null))
+              ?.toDouble(),
     );
   }
 

@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarSheetHandle extends StatelessWidget {
-  const CalendarSheetHandle();
+class RestaurantMenuSheetHandle extends StatelessWidget {
+  const RestaurantMenuSheetHandle({super.key});
 
   @override
   Widget build(BuildContext context) {

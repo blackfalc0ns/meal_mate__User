@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealPickerSectionTitle extends StatelessWidget {
-  const CalendarMealPickerSectionTitle({required this.mealType});
+class RestaurantMenuSectionTitle extends StatelessWidget {
+  const RestaurantMenuSectionTitle({super.key, required this.mealType});
 
   final String mealType;
 

@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarSourceCard extends StatelessWidget {
-  const CalendarSourceCard({
+class RestaurantMenuSourceCard extends StatelessWidget {
+  const RestaurantMenuSourceCard({
     super.key,
     required this.icon,
     this.iconUrl,
@@ -58,7 +58,6 @@ class CalendarSourceCard extends StatelessWidget {
                     color: color.primary,
                   ).copyWith(height: 1),
                 ),
-               
               ],
             ),
           ),

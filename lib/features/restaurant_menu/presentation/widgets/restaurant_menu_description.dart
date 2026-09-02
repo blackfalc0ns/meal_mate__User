@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealPickerRestaurantDescription extends StatelessWidget {
-  const CalendarMealPickerRestaurantDescription({super.key});
+class RestaurantMenuDescription extends StatelessWidget {
+  const RestaurantMenuDescription({super.key});
 
   @override
   Widget build(BuildContext context) {

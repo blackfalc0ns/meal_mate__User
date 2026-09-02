@@ -53,6 +53,26 @@ void main() {
     },
   );
 
+  test('maps localized slot labels supplied by the API response', () {
+    final response = CalendarAvailableMealsResponseDto.fromJson({
+      'slots': [
+        {
+          'slot': 'lunch',
+          'slotName': 'الغداء',
+          'slotNameAr': 'الغداء',
+          'count': 1,
+          'meals': const [],
+        },
+      ],
+      'selectedMealIds': const [],
+    });
+
+    final entity = response.toEntity('en');
+
+    expect(entity.slotRequirements.single.displayName, 'الغداء');
+    expect(entity.slots.single.displayName, 'الغداء');
+  });
+
   test('maps selected day response fields used by the calendar UI', () async {
     await initializeDateFormatting('en');
 

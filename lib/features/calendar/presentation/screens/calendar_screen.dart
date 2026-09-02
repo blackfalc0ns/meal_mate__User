@@ -24,11 +24,11 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_v
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_summary_card.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
+import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({
@@ -377,7 +377,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   final restaurant =
                       state.availableMeals?.restaurant ??
                       state.selectedDay?.restaurant;
-                  return CalendarMealPickerSheet(
+                  return RestaurantMenuView(
+                    mode: RestaurantMenuMode.selection,
                     restaurantName: restaurant?.name,
                     restaurantLogoUrl: restaurant?.logoUrl,
                     restaurantInitials: _initials(restaurant?.name ?? ''),

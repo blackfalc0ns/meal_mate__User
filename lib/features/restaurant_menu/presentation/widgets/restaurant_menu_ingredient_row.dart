@@ -1,7 +1,7 @@
-part of 'calendar_meal_picker_sheet.dart';
+part of 'restaurant_menu_view.dart';
 
-class CalendarMealIngredientRow extends StatelessWidget {
-  const CalendarMealIngredientRow({super.key, required this.ingredients});
+class RestaurantMenuIngredientRow extends StatelessWidget {
+  const RestaurantMenuIngredientRow({super.key, required this.ingredients});
 
   final List<CalendarMealIngredientEntity> ingredients;
 
@@ -13,7 +13,7 @@ class CalendarMealIngredientRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           for (final ingredient in ingredients) ...[
-            CalendarMealPickerIngredientChip(
+            RestaurantMenuIngredientChip(
               label: ingredient.label,
               iconUrl: ingredient.iconUrl,
             ),
