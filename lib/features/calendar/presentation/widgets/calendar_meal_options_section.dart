@@ -8,6 +8,7 @@ class CalendarMealOptionsSection extends StatelessWidget {
     required this.options,
     this.onOptionSelected,
     this.onOptionDetailsSelected,
+    this.isLoadingMore = false,
   });
 
   final String mealType;
@@ -15,6 +16,7 @@ class CalendarMealOptionsSection extends StatelessWidget {
   final List<CalendarMealPickerOption> options;
   final ValueChanged<int>? onOptionSelected;
   final ValueChanged<int>? onOptionDetailsSelected;
+  final bool isLoadingMore;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,15 @@ class CalendarMealOptionsSection extends StatelessWidget {
                   : () => onOptionDetailsSelected!(index),
             ),
             if (index != options.length - 1) const CalendarDividerLine(),
+          ],
+          if (isLoadingMore) ...[
+            const SizedBox(height: Spacing.md),
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: Spacing.md),
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
           ],
         ],
       ),

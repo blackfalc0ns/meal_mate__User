@@ -45,6 +45,9 @@ class CalendarDayResponseDto {
     this.programNameAr,
     this.programNameEn,
     this.programName,
+    this.proteinPercentage,
+    this.carbsPercentage,
+    this.fatPercentage,
   });
 
   final String? id;
@@ -87,6 +90,9 @@ class CalendarDayResponseDto {
   final String? programNameAr;
   final String? programNameEn;
   final String? programName;
+  final num? proteinPercentage;
+  final num? carbsPercentage;
+  final num? fatPercentage;
 
   factory CalendarDayResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarDayResponseDtoFromJson(json);
@@ -224,6 +230,12 @@ class CalendarMealResponseDto {
     this.blockReason,
     this.isSelected,
     this.sortOrder,
+    this.presentAllergenCodes,
+    this.mayContainAllergenCodes,
+    this.dietaryPreferenceCodes,
+    this.proteinPercentage,
+    this.carbsPercentage,
+    this.fatPercentage,
   });
 
   final String? id;
@@ -241,16 +253,22 @@ class CalendarMealResponseDto {
   final String? slotNameEn;
   final String? mealType;
   final String? time;
-  final int? calories;
-  final int? proteinG;
-  final int? carbsG;
-  final int? fatG;
+  final num? calories;
+  final num? proteinG;
+  final num? carbsG;
+  final num? fatG;
   final CalendarNutritionResponseDto? nutrition;
   final String? imageUrl;
   final List<CalendarIngredientResponseDto>? ingredients;
   final String? blockReason;
   final bool? isSelected;
   final int? sortOrder;
+  final List<String>? presentAllergenCodes;
+  final List<String>? mayContainAllergenCodes;
+  final List<String>? dietaryPreferenceCodes;
+  final num? proteinPercentage;
+  final num? carbsPercentage;
+  final num? fatPercentage;
 
   factory CalendarMealResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarMealResponseDtoFromJson(json);
@@ -268,6 +286,12 @@ class CalendarIngredientResponseDto {
     this.nameEn,
     this.category,
     this.iconUrl,
+    this.originCountryCode,
+    this.supplierName,
+    this.isLocal,
+    this.isHalalCertified,
+    this.allergenCodes,
+    this.isCore,
   });
 
   final String? id;
@@ -277,6 +301,12 @@ class CalendarIngredientResponseDto {
   final String? nameEn;
   final String? category;
   final String? iconUrl;
+  final String? originCountryCode;
+  final String? supplierName;
+  final bool? isLocal;
+  final bool? isHalalCertified;
+  final List<String>? allergenCodes;
+  final bool? isCore;
 
   factory CalendarIngredientResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarIngredientResponseDtoFromJson(json);
@@ -295,6 +325,9 @@ class CalendarNutritionResponseDto {
     this.carbsPercent,
     this.proteinPercent,
     this.fatPercent,
+    this.proteinPercentage,
+    this.carbsPercentage,
+    this.fatPercentage,
   });
 
   final num? calories;
@@ -305,6 +338,9 @@ class CalendarNutritionResponseDto {
   final int? carbsPercent;
   final int? proteinPercent;
   final int? fatPercent;
+  final num? proteinPercentage;
+  final num? carbsPercentage;
+  final num? fatPercentage;
 
   factory CalendarNutritionResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarNutritionResponseDtoFromJson(json);

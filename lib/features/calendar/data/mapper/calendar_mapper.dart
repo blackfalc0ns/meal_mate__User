@@ -50,7 +50,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
       dayNumber: parsedDate?.day ?? 0,
       weekday: parsedDate == null
           ? ''
-          : DateFormat.E(localeName).format(parsedDate),
+          : _formatWeekday(parsedDate, localeName),
       date: parsedDate,
       hasMeals: true,
     );
@@ -170,7 +170,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         en: categoryEn,
         fallback: category,
       ),
-      rating: rating?.toString() ?? '',
+      rating: rating?.toString() ?? '4.5',
       deliveryDuration: _localized(
         localeName,
         ar: tierNameAr,
@@ -210,7 +210,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         fallback: description,
       ),
       mealCount: safeMealCount ?? mealCount ?? 0,
-      rating: rating?.toString() ?? '',
+      rating: rating?.toString() ?? '4.5',
       ratingCount: ratingCount ?? 0,
       deliveryWindow: _deliveryWindowText(
         deliveryTimeText: deliveryTimeText ?? deliveryWindow,
@@ -266,13 +266,28 @@ extension CalendarMealResponseDtoMapper on CalendarMealResponseDto {
         fallback: name ?? title,
       ),
       time: time ?? '',
-      calories: (nutritionCalories ?? calories)?.toString() ?? '',
-      protein: (nutritionProtein ?? proteinG)?.toString() ?? '',
-      carbs: (nutritionCarbs ?? carbsG)?.toString() ?? '',
-      fat: (nutritionFat ?? fatG)?.toString() ?? '',
+      calories: (nutritionCalories ?? _wholeNumber(calories))?.toString() ?? '',
+      protein: (nutritionProtein ?? _wholeNumber(proteinG))?.toString() ?? '',
+      carbs: (nutritionCarbs ?? _wholeNumber(carbsG))?.toString() ?? '',
+      fat: (nutritionFat ?? _wholeNumber(fatG))?.toString() ?? '',
       ingredients: ingredientItems,
       imageAsset: Assets.calendarMealPickerHero,
       actionLabel: '',
+      proteinPercentage:
+          (proteinPercentage ??
+                  nutrition?.proteinPercentage ??
+                  nutrition?.proteinPercent)
+              ?.toDouble(),
+      carbsPercentage:
+          (carbsPercentage ??
+                  nutrition?.carbsPercentage ??
+                  nutrition?.carbsPercent)
+              ?.toDouble(),
+      fatPercentage:
+          (fatPercentage ??
+                  nutrition?.fatPercentage ??
+                  nutrition?.fatPercent)
+              ?.toDouble(),
     );
   }
 }
@@ -299,49 +314,125 @@ extension CalendarSlotRequirementResponseDtoMapper
   }
 }
 
-extension CalendarAvailableMealsResponseDtoMapper
-    on CalendarAvailableMealsResponseDto {
-  CalendarAvailableMealsEntity toEntity(String localeName) {
-    final selectedIds = selectedMealIds ?? const [];
-    return CalendarAvailableMealsEntity(
-      restaurant:
-          restaurant?.toRestaurantEntity(localeName) ??
-          _flatRestaurantEntity(localeName),
+extension CalendarAvailableMealSlotResponseDtoMapper
+    on CalendarAvailableMealSlotResponseDto {
+  CalendarSlotMealsEntity toEntity(
+    String localeName,
+    List<String> selectedIds,
+  ) {
+    return CalendarSlotMealsEntity(
+      slot: slot ?? '',
+      slotNameAr: slotNameAr ?? slotName ?? '',
+      slotNameEn: slotNameEn ?? slotName ?? slotNameAr ?? '',
+      count: count ?? 0,
+      page: page ?? 1,
+      pageSize: pageSize ?? 20,
+      totalCount: totalCount ?? (meals?.length ?? 0),
+      totalPages: totalPages ?? 1,
+      hasNextPage: hasNextPage ?? false,
+      hasPreviousPage: hasPreviousPage ?? false,
       meals: (meals ?? const [])
           .map((meal) => meal.toMealEntity(localeName, selectedIds))
           .where((meal) => meal.id.isNotEmpty)
           .toList(),
-      slotRequirements: (slotRequirements ?? const [])
-          .map((requirement) => requirement.toEntity())
-          .where(
-            (requirement) =>
-                requirement.slot.isNotEmpty && requirement.count > 0,
-          )
-          .toList(),
+    );
+  }
+}
+
+extension CalendarAvailableMealsResponseDtoMapper
+    on CalendarAvailableMealsResponseDto {
+  CalendarAvailableMealsEntity toEntity(String localeName) {
+    final selectedIds = selectedMealIds ?? const [];
+    final mappedSlots = (slots ?? const [])
+        .map((slotDto) => slotDto.toEntity(localeName, selectedIds))
+        .where((slot) => slot.slot.isNotEmpty)
+        .toList();
+
+    final allMealsFromSlots = mappedSlots.expand((slot) => slot.meals).toList();
+    final topLevelMeals = (meals ?? const [])
+        .map((meal) => meal.toMealEntity(localeName, selectedIds))
+        .where((meal) => meal.id.isNotEmpty)
+        .toList();
+
+    final combinedMeals =
+        topLevelMeals.isNotEmpty ? topLevelMeals : allMealsFromSlots;
+
+    final mappedSlotRequirements =
+        (slotRequirements != null && slotRequirements!.isNotEmpty)
+            ? slotRequirements!
+                .map((requirement) => requirement.toEntity())
+                .where((r) => r.slot.isNotEmpty && r.count > 0)
+                .toList()
+            : mappedSlots
+                .map(
+                  (s) => CalendarSlotRequirementEntity(
+                    slot: s.slot,
+                    slotNameAr: s.slotNameAr,
+                    slotNameEn: s.slotNameEn,
+                    count: s.count,
+                  ),
+                )
+                .where((r) => r.slot.isNotEmpty && r.count > 0)
+                .toList();
+
+    return CalendarAvailableMealsEntity(
+      restaurant:
+          restaurant?.toRestaurantEntity(localeName) ??
+          _flatRestaurantEntity(localeName),
+      meals: combinedMeals,
+      slotRequirements: mappedSlotRequirements,
+      slots: mappedSlots,
       coreIngredients: (coreIngredients ?? const [])
           .map((ingredient) => ingredient.toEntity(localeName))
           .where((ingredient) => ingredient.name.isNotEmpty)
           .toList(),
+      serviceDate: serviceDate,
+      requiredCount: requiredCount,
+      filledCount: filledCount,
     );
   }
 
   CalendarRestaurantEntity? _flatRestaurantEntity(String localeName) {
     if ((restaurantId == null || restaurantId!.isEmpty) &&
         (nameAr == null || nameAr!.isEmpty) &&
-        (nameEn == null || nameEn!.isEmpty)) {
+        (nameEn == null || nameEn!.isEmpty) &&
+        (name == null || name!.isEmpty)) {
       return null;
     }
 
+    final category = _localized(
+      localeName,
+      ar: programNameAr,
+      en: programNameEn,
+      fallback: programName,
+    );
+    final deliveryDuration = _localized(
+      localeName,
+      ar: tierNameAr,
+      en: tierNameEn,
+      fallback: tierName ?? tier,
+    );
+    final deliveryWindow = _deliveryWindowText(
+      deliveryTimeText: deliveryTimeText,
+      deliveryWindowStart: deliveryWindowStart,
+      deliveryWindowEnd: deliveryWindowEnd,
+    );
+
     return CalendarRestaurantEntity(
       id: restaurantId ?? '',
-      logoUrl: logoUrl,
-      tierLogoUrl: restaurant?.tierLogoUrl,
-      ratingCount: restaurant?.ratingCount ?? 0,
-      name: _localized(localeName, ar: nameAr, en: nameEn, fallback: nameEn),
-      category: '',
-      rating: '',
-      deliveryDuration: '',
-      deliveryWindow: '',
+      logoUrl: _firstNullableNotEmpty([logoUrl, tierLogoUrl]),
+      tierLogoUrl: tierLogoUrl ?? restaurant?.tierLogoUrl,
+      ratingCount: ratingCount ?? restaurant?.ratingCount ?? 0,
+      name: _localized(
+        localeName,
+        ar: nameAr,
+        en: nameEn,
+        fallback: name ?? nameEn ?? nameAr,
+      ),
+      category: category,
+      rating: rating?.toString() ?? restaurant?.rating?.toString() ?? '4.5',
+      deliveryDuration: deliveryDuration,
+      deliveryWindow: deliveryWindow,
     );
   }
 }
@@ -446,6 +537,9 @@ extension CalendarNutritionResponseDtoMapper on CalendarNutritionResponseDto {
       proteinG: _wholeNumber(proteinG) ?? 0,
       carbsG: _wholeNumber(carbsG) ?? 0,
       fatG: _wholeNumber(fatG) ?? 0,
+      proteinPercentage: (proteinPercentage ?? proteinPercent)?.toDouble(),
+      carbsPercentage: (carbsPercentage ?? carbsPercent)?.toDouble(),
+      fatPercentage: (fatPercentage ?? fatPercent)?.toDouble(),
     );
   }
 }
@@ -498,24 +592,68 @@ List<String> _selectedMealIds(List<CalendarMealResponseDto> meals) {
 extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
   CalendarNutritionTotalsEntity _nutritionTotalsEntity() {
     final totals = nutritionTotals;
-    if (totals != null) return totals.toTotalsEntity();
+    if (totals != null) {
+      final totalsEntity = totals.toTotalsEntity();
+      return CalendarNutritionTotalsEntity(
+        calories: totalsEntity.calories,
+        proteinG: totalsEntity.proteinG,
+        carbsG: totalsEntity.carbsG,
+        fatG: totalsEntity.fatG,
+        proteinPercentage:
+            (proteinPercentage ?? totalsEntity.proteinPercentage)?.toDouble(),
+        carbsPercentage:
+            (carbsPercentage ?? totalsEntity.carbsPercentage)?.toDouble(),
+        fatPercentage:
+            (fatPercentage ?? totalsEntity.fatPercentage)?.toDouble(),
+      );
+    }
 
     final mealsForTotals = selectedMeals ?? _fallbackSelectedMealsForTotals();
-    return mealsForTotals.fold(
+    final summed = mealsForTotals.fold(
       const CalendarNutritionTotalsEntity(),
       (total, meal) => CalendarNutritionTotalsEntity(
         calories:
             total.calories +
-            (_wholeNumber(meal.nutrition?.calories) ?? meal.calories ?? 0),
+            (_wholeNumber(meal.nutrition?.calories) ??
+                _wholeNumber(meal.calories) ??
+                0),
         proteinG:
             total.proteinG +
-            (_wholeNumber(meal.nutrition?.proteinG) ?? meal.proteinG ?? 0),
+            (_wholeNumber(meal.nutrition?.proteinG) ??
+                _wholeNumber(meal.proteinG) ??
+                0),
         carbsG:
             total.carbsG +
-            (_wholeNumber(meal.nutrition?.carbsG) ?? meal.carbsG ?? 0),
+            (_wholeNumber(meal.nutrition?.carbsG) ??
+                _wholeNumber(meal.carbsG) ??
+                0),
         fatG:
-            total.fatG + (_wholeNumber(meal.nutrition?.fatG) ?? meal.fatG ?? 0),
+            total.fatG +
+            (_wholeNumber(meal.nutrition?.fatG) ??
+                _wholeNumber(meal.fatG) ??
+                0),
       ),
+    );
+
+    final fatCal = summed.fatG * 9;
+    final proteinCal = summed.proteinG * 4;
+    final carbsCal = summed.carbsG * 4;
+    final totalCal = fatCal + proteinCal + carbsCal;
+
+    return CalendarNutritionTotalsEntity(
+      calories: summed.calories,
+      proteinG: summed.proteinG,
+      carbsG: summed.carbsG,
+      fatG: summed.fatG,
+      proteinPercentage: (proteinPercentage ??
+              (totalCal > 0 ? (proteinCal / totalCal) * 100 : null))
+          ?.toDouble(),
+      carbsPercentage: (carbsPercentage ??
+              (totalCal > 0 ? (carbsCal / totalCal) * 100 : null))
+          ?.toDouble(),
+      fatPercentage: (fatPercentage ??
+              (totalCal > 0 ? (fatCal / totalCal) * 100 : null))
+          ?.toDouble(),
     );
   }
 
@@ -576,4 +714,13 @@ String _deliveryWindowText({
   if (start == null) return end!;
   if (end == null) return start;
   return '$start - $end';
+}
+
+String _formatWeekday(DateTime date, String localeName) {
+  try {
+    return DateFormat.E(localeName).format(date);
+  } catch (_) {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return days[date.weekday - 1];
+  }
 }

@@ -28,6 +28,9 @@ abstract interface class CalendarRemoteDataSource {
     required String subscriptionId,
     required String date,
     required String restaurantId,
+    int? page,
+    int? pageSize,
+    String? slot,
   });
 
   Future<CalendarDayResponseDto> saveDayMeals({

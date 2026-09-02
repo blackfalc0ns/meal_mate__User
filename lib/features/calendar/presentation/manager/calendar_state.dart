@@ -19,9 +19,11 @@ class CalendarState {
     this.isAvailableMealsLoading = false,
     this.isSaving = false,
     this.saveSuccessCount = 0,
+    this.isLoadingMoreMeals = false,
     this.calendarFailure,
     this.restaurantsFailure,
     this.availableMealsFailure,
+    this.loadMoreMealsFailure,
     this.saveFailure,
     this.hasNoSubscription = false,
   });
@@ -38,9 +40,11 @@ class CalendarState {
   final bool isAvailableMealsLoading;
   final bool isSaving;
   final int saveSuccessCount;
+  final bool isLoadingMoreMeals;
   final Failure? calendarFailure;
   final Failure? restaurantsFailure;
   final Failure? availableMealsFailure;
+  final Failure? loadMoreMealsFailure;
   final Failure? saveFailure;
   final bool hasNoSubscription;
 
@@ -109,9 +113,11 @@ class CalendarState {
     bool? isAvailableMealsLoading,
     bool? isSaving,
     int? saveSuccessCount,
+    bool? isLoadingMoreMeals,
     Failure? calendarFailure,
     Failure? restaurantsFailure,
     Failure? availableMealsFailure,
+    Failure? loadMoreMealsFailure,
     Failure? saveFailure,
     bool? hasNoSubscription,
     bool clearRestaurants = false,
@@ -119,6 +125,7 @@ class CalendarState {
     bool clearCalendarFailure = false,
     bool clearRestaurantsFailure = false,
     bool clearAvailableMealsFailure = false,
+    bool clearLoadMoreMealsFailure = false,
     bool clearSaveFailure = false,
   }) {
     return CalendarState(
@@ -139,6 +146,7 @@ class CalendarState {
           isAvailableMealsLoading ?? this.isAvailableMealsLoading,
       isSaving: isSaving ?? this.isSaving,
       saveSuccessCount: saveSuccessCount ?? this.saveSuccessCount,
+      isLoadingMoreMeals: isLoadingMoreMeals ?? this.isLoadingMoreMeals,
       calendarFailure: clearCalendarFailure
           ? null
           : calendarFailure ?? this.calendarFailure,
@@ -148,6 +156,9 @@ class CalendarState {
       availableMealsFailure: clearAvailableMealsFailure
           ? null
           : availableMealsFailure ?? this.availableMealsFailure,
+      loadMoreMealsFailure: clearLoadMoreMealsFailure
+          ? null
+          : loadMoreMealsFailure ?? this.loadMoreMealsFailure,
       saveFailure: clearSaveFailure ? null : saveFailure ?? this.saveFailure,
       hasNoSubscription: hasNoSubscription ?? this.hasNoSubscription,
     );

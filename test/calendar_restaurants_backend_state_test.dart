@@ -98,4 +98,19 @@ void main() {
       expect(entity.tierLogoUrl, 'https://example.com/tier.png');
     },
   );
+
+  test('defaults rating to 4.5 when rating is null in API response', () {
+    final response = CalendarRestaurantResponseDto.fromJson({
+      'restaurantId': 'f757b93d-2909-4fc5-8480-0a5f4e071080',
+      'nameAr': 'مطبخ دايت كير',
+      'rating': null,
+      'ratingCount': 0,
+    });
+
+    final optionEntity = response.toOptionEntity('ar');
+    final restaurantEntity = response.toRestaurantEntity('ar');
+
+    expect(optionEntity.rating, '4.5');
+    expect(restaurantEntity.rating, '4.5');
+  });
 }

@@ -40,16 +40,18 @@ class CalendarMealDetails extends StatelessWidget {
             color: color.onSurface,
           ),
         ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            for (final ingredient in meal.ingredients) ...[
-              CalendarMealCardIngredientChip(ingredient: ingredient),
-              const SizedBox(width: 4.3),
+        if (meal.ingredients.isNotEmpty) ...[
+          const SizedBox(height: Spacing.xss),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              for (final ingredient in meal.ingredients) ...[
+                CalendarMealCardIngredientChip(ingredient: ingredient),
+                const SizedBox(width: 4.3),
+              ],
             ],
-          ],
-        ),
+          ),
+        ],
       ],
     );
   }

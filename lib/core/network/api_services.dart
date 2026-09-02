@@ -373,8 +373,11 @@ abstract class ApiServices {
   getSubscriptionCalendarRestaurantMeals(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
-    @Path('restaurantId') String restaurantId,
-  );
+    @Path('restaurantId') String restaurantId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('slot') String? slot,
+  });
 
   @GET(EndPoints.subscriptionCalendarAvailableMeals)
   Future<CalendarAvailableMealsResponseDto>

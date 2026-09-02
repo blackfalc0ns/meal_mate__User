@@ -1,28 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CalendarRestaurantNutritionItem extends StatelessWidget {
   const CalendarRestaurantNutritionItem({
     super.key,
-    required this.icon,
+    this.icon,
+    this.animationAsset,
     required this.label,
     required this.value,
-    required this.iconColor,
+    this.unit,
+    this.target,
+    this.percentage,
+    this.color,
+    this.iconColor,
   });
 
-  final IconData icon;
+  final IconData? icon;
+  final String? animationAsset;
   final String label;
   final int value;
-  final Color iconColor;
+  final String? unit;
+  final int? target;
+  final int? percentage;
+  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    assert(locale.localeName.isNotEmpty);
+    final isAr = locale.localeName == 'ar';
+    final resolvedColor = _resolveColor(color);
+    final resolvedUnit = unit ?? _resolveUnit(isAr);
+    final resolvedTarget = target ?? _resolveTarget();
+    final resolvedPercentage =
+        percentage ??
+        (resolvedTarget > 0 ? ((value / resolvedTarget) * 100).round() : 0);
+    final progress = resolvedTarget > 0
+        ? (value / resolvedTarget).clamp(0.0, 1.0)
+        : (resolvedPercentage / 100).clamp(0.0, 1.0);
 
     return Expanded(
       child: Container(
@@ -34,52 +56,107 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: color.surface,
           borderRadius: BorderRadius.circular(Spacing.radiusMd),
+          boxShadow: [
+            BoxShadow(
+              color: color.shadow.withValues(alpha: 0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Flexible(
+                  child: Text(
                     label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
+                      fontSize: FontSize.size9,
                       color: color.onSurface,
-                    ).copyWith(height: 1),
-                  ),
-                  Text(
-                    value.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
-                      color: color.primary,
-                    ).copyWith(height: 1),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    child: LinearProgressIndicator(
-                      minHeight: Spacing
-                          .calendarRestaurantSummaryNutritionProgressHeight,
-                      value: _progressValue,
-                      backgroundColor: color.outline.withValues(alpha: 0.35),
-                      valueColor: AlwaysStoppedAnimation<Color>(color.primary),
                     ),
                   ),
-                ],
+                ),
+
+                const SizedBox(width: 4),
+                Lottie.asset(
+                  animationAsset!,
+                  width: 10,
+                  height: 30,
+                  fit: BoxFit.cover,
+                  repeat: true,
+                ),
+              ],
+            ),
+            Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      _formattedValue,
+                      maxLines: 1,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size16,
+                        color: color.onSurface,
+                      ).copyWith(height: 1),
+                    ),
+                    if (resolvedUnit.isNotEmpty) ...[
+                      const SizedBox(width: 2),
+                      Text(
+                        resolvedUnit,
+                        maxLines: 1,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onSurface,
+                        ).copyWith(height: 1),
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
-            const SizedBox(width: Spacing.xs),
-            Icon(
-              icon,
-              size: Spacing.calendarRestaurantSummaryNutritionIconSize,
-              color: iconColor,
+            Row(
+              textDirection: TextDirection.ltr,
+              children: [
+                Text(
+                  '%$resolvedPercentage',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: resolvedColor,
+                  ).copyWith(height: 1),
+                ),
+                const SizedBox(width: Spacing.xs),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: LinearProgressIndicator(
+                        minHeight: Spacing
+                            .calendarRestaurantSummaryNutritionProgressHeight,
+                        value: progress,
+                        backgroundColor: color.outline.withValues(alpha: 0.18),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          resolvedColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -87,5 +164,53 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
     );
   }
 
-  double get _progressValue => (value / 2000).clamp(0.18, 1.0);
+  String get _formattedValue {
+    if (value >= 1000) {
+      final str = value.toString();
+      final thousands = str.substring(0, str.length - 3);
+      final rest = str.substring(str.length - 3);
+      return '$thousands,$rest';
+    }
+    return value.toString();
+  }
+
+  Color _resolveColor(ColorScheme colorScheme) {
+    if (color != null) return color!;
+    if (animationAsset == Assets.fireAnimation) {
+      return AppColors.calendarNutritionCalories;
+    }
+    if (animationAsset == Assets.dropletAnimation) {
+      return AppColors.calendarNutritionFat;
+    }
+    if (animationAsset == Assets.wheatAnimation) {
+      return AppColors.calendarNutritionCarbs;
+    }
+    if (animationAsset == Assets.muscleAnimation) {
+      return AppColors.calendarNutritionProtein;
+    }
+    return iconColor ?? colorScheme.primary;
+  }
+
+  String _resolveUnit(bool isAr) {
+    if (animationAsset == Assets.fireAnimation) {
+      return isAr ? 'سعرة' : 'kcal';
+    }
+    return isAr ? 'جم' : 'g';
+  }
+
+  int _resolveTarget() {
+    if (animationAsset == Assets.fireAnimation) {
+      return 2400;
+    }
+    if (animationAsset == Assets.dropletAnimation) {
+      return 40;
+    }
+    if (animationAsset == Assets.wheatAnimation) {
+      return 110;
+    }
+    if (animationAsset == Assets.muscleAnimation) {
+      return 50;
+    }
+    return 100;
+  }
 }

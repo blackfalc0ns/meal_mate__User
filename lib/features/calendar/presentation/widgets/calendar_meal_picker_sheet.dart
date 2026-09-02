@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -67,9 +68,11 @@ class CalendarMealPickerSheet extends StatefulWidget {
     this.availableMeals,
     this.selectedMealIds = const [],
     this.onMealToggled,
+    this.onLoadMore,
     this.onSave,
     this.canSave = false,
     this.isLoading = false,
+    this.isLoadingMore = false,
     this.isSaving = false,
     this.failure,
     this.onBackPressed,
@@ -89,9 +92,11 @@ class CalendarMealPickerSheet extends StatefulWidget {
   final CalendarAvailableMealsEntity? availableMeals;
   final List<String> selectedMealIds;
   final ValueChanged<String>? onMealToggled;
+  final ValueChanged<String>? onLoadMore;
   final VoidCallback? onSave;
   final bool canSave;
   final bool isLoading;
+  final bool isLoadingMore;
   final bool isSaving;
   final Failure? failure;
   final VoidCallback? onBackPressed;
@@ -205,59 +210,71 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                 borderRadius: contentRadius,
                 child: ColoredBox(
                   color: color.surface,
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            if (!widget.isFullPage) ...[
-                              const SizedBox(height: Spacing.lg),
-                              const CalendarSheetHandle(),
-                            ],
-                            const SizedBox(height: Spacing.md),
-                            CalendarMealPickerRestaurantHeader(
-                              restaurantName: resolvedRestaurantName,
-                              restaurantLogoAsset: widget.restaurantLogoAsset,
-                              restaurantLogoUrl: restaurantLogoUrl,
-                              restaurantInitials: widget.restaurantInitials,
-                            ),
-                            const CalendarMealPickerRestaurantDescription(),
-                            const CalendarDividerLine(),
-                            CalendarSourceSection(
-                              coreIngredients:
-                                  availableMeals?.coreIngredients ?? const [],
-                              origins: details?.ingredientOrigins ?? const [],
-                            ),
-                            const SizedBox(height: Spacing.base),
-                            CalendarMealTabs(
-                              labels: mealTabs,
-                              selectedIndex: selectedTab,
-                              onChanged: (index) {
-                                setState(() => _selectedTab = index);
-                              },
-                            ),
-                            const SizedBox(height: Spacing.sm),
-                            if (widget.failure != null)
-                              ApiErrorWidget(
-                                exception: widget.failure!.exception,
-                              )
-                            else if (widget.isLoading)
-                              const CalendarMealPickerLoadingSkeleton()
-                            else
-                              CalendarMealOptionsSection(
-                                mealType: mealTabs[selectedTab],
-                                tabIndex: selectedTab,
-                                options: options,
-                                onOptionSelected: availableMeals != null
-                                    ? (index) => widget.onMealToggled?.call(
-                                        options[index].id,
-                                      )
-                                    : null,
-                                onOptionDetailsSelected: availableMeals != null
-                                    ? (index) {
-                                        final selectedMeal = availableMeals
-                                            .meals
-                                            .where(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification.metrics.pixels >=
+                              notification.metrics.maxScrollExtent - 200 &&
+                          !widget.isLoading &&
+                          !widget.isLoadingMore) {
+                        widget.onLoadMore?.call(selectedSlot);
+                      }
+                      return false;
+                    },
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              if (!widget.isFullPage) ...[
+                                const SizedBox(height: Spacing.lg),
+                                const CalendarSheetHandle(),
+                              ],
+                              const SizedBox(height: Spacing.md),
+                              CalendarMealPickerRestaurantHeader(
+                                restaurantName: resolvedRestaurantName,
+                                restaurantLogoAsset: widget.restaurantLogoAsset,
+                                restaurantLogoUrl: restaurantLogoUrl,
+                                restaurantInitials: widget.restaurantInitials,
+                              ),
+                              const CalendarMealPickerRestaurantDescription(),
+                              const CalendarDividerLine(),
+                              CalendarSourceSection(
+                                coreIngredients:
+                                    availableMeals?.coreIngredients ?? const [],
+                                origins: details?.ingredientOrigins ?? const [],
+                              ),
+                              const SizedBox(height: Spacing.base),
+                              CalendarMealTabs(
+                                labels: mealTabs,
+                                selectedIndex: selectedTab,
+                                onChanged: (index) {
+                                  setState(() => _selectedTab = index);
+                                },
+                              ),
+                              const SizedBox(height: Spacing.sm),
+                              if (widget.failure != null)
+                                ApiErrorWidget(
+                                  exception: widget.failure!.exception,
+                                )
+                              else if (widget.isLoading)
+                                const CalendarMealPickerLoadingSkeleton()
+                              else
+                                CalendarMealOptionsSection(
+                                  mealType: mealTabs[selectedTab],
+                                  tabIndex: selectedTab,
+                                  options: options,
+                                  isLoadingMore: widget.isLoadingMore,
+                                  onOptionSelected: availableMeals != null
+                                      ? (index) => widget.onMealToggled?.call(
+                                          options[index].id,
+                                        )
+                                      : null,
+                                  onOptionDetailsSelected:
+                                      availableMeals != null
+                                          ? (index) {
+                                              final selectedMeal = availableMeals
+                                                  .meals
+                                                  .where(
                                               (m) => m.id == options[index].id,
                                             )
                                             .firstOrNull;
@@ -299,11 +316,12 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _openMealDetails(SubscriptionRestaurantMealEntity meal) {
     final locale = context.localization;
@@ -623,6 +641,9 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
           fatG,
           locale.localeName,
           locale,
+          proteinPercentage: meal.proteinPercentage,
+          carbsPercentage: meal.carbsPercentage,
+          fatPercentage: meal.fatPercentage,
         ),
         allergensTitle: locale.localeName == 'ar'
             ? 'مسببات الحساسية'
@@ -637,28 +658,41 @@ class CalendarMealPickerSheetState extends State<CalendarMealPickerSheet> {
     int? carbsG,
     int? fatG,
     String localeName,
-    AppLocalizations locale,
-  ) {
+    AppLocalizations locale, {
+    double? proteinPercentage,
+    double? carbsPercentage,
+    double? fatPercentage,
+  }) {
     final fatCalories = (fatG ?? 0) * 9;
     final proteinCalories = (proteinG ?? 0) * 4;
     final carbsCalories = (carbsG ?? 0) * 4;
     final total = fatCalories + proteinCalories + carbsCalories;
 
+    final fatPercentStr = fatPercentage != null
+        ? '%${fatPercentage.round()}'
+        : _percent(fatCalories, total);
+    final proteinPercentStr = proteinPercentage != null
+        ? '%${proteinPercentage.round()}'
+        : _percent(proteinCalories, total);
+    final carbsPercentStr = carbsPercentage != null
+        ? '%${carbsPercentage.round()}'
+        : _percent(carbsCalories, total);
+
     return [
       MealDetailsMacroEntity(
-        percent: _percent(fatCalories, total),
+        percent: fatPercentStr,
         label: locale.calendar_fat,
         value: _gramValue(fatG, localeName),
         type: MealDetailsNutritionType.fat,
       ),
       MealDetailsMacroEntity(
-        percent: _percent(proteinCalories, total),
+        percent: proteinPercentStr,
         label: locale.calendar_protein,
         value: _gramValue(proteinG, localeName),
         type: MealDetailsNutritionType.protein,
       ),
       MealDetailsMacroEntity(
-        percent: _percent(carbsCalories, total),
+        percent: carbsPercentStr,
         label: locale.calendar_carbs,
         value: _gramValue(carbsG, localeName),
         type: MealDetailsNutritionType.carbs,

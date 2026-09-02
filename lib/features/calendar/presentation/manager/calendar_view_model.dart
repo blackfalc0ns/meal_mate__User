@@ -70,6 +70,8 @@ class CalendarViewModel extends Cubit<CalendarState> {
         _saveMeals(event.localeName);
       case AutoSelectCalendarDayEvent():
         _autoSelect(event.localeName);
+      case LoadMoreCalendarMealsEvent():
+        _loadMoreMeals(slot: event.slot, localeName: event.localeName);
     }
   }
 
@@ -285,6 +287,155 @@ class CalendarViewModel extends Cubit<CalendarState> {
           ),
         );
     }
+  }
+
+  Future<void> _loadMoreMeals({
+    required String slot,
+    required String localeName,
+  }) async {
+    final day = state.selectedDay;
+    final date = _dateParam(day);
+    final available = state.availableMeals;
+    final restaurantId = day?.restaurantId ?? available?.restaurant?.id;
+    if (day == null ||
+        !day.isEditable ||
+        date.isEmpty ||
+        restaurantId == null ||
+        restaurantId.isEmpty ||
+        available == null ||
+        state.isLoadingMoreMeals ||
+        state.isAvailableMealsLoading) {
+      return;
+    }
+
+    final currentSlotEntity = available.slots
+        .where((s) => s.slot.trim().toLowerCase() == slot.trim().toLowerCase())
+        .firstOrNull;
+    if (currentSlotEntity == null || !currentSlotEntity.hasNextPage) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isLoadingMoreMeals: true,
+        clearLoadMoreMealsFailure: true,
+      ),
+    );
+
+    final nextPage = currentSlotEntity.page + 1;
+    final result = await _getAvailableMealsUseCase(
+      subscriptionId: state.subscriptionId,
+      date: date,
+      restaurantId: restaurantId,
+      localeName: localeName,
+      page: nextPage,
+      pageSize: currentSlotEntity.pageSize,
+      slot: currentSlotEntity.slot,
+    );
+
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        final updatedAvailableMeals = _mergeMoreMeals(
+          current: available,
+          incoming: result.data,
+          requestedSlot: currentSlotEntity.slot,
+        );
+        emit(
+          state.copyWith(
+            isLoadingMoreMeals: false,
+            availableMeals: updatedAvailableMeals,
+            clearLoadMoreMealsFailure: true,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isLoadingMoreMeals: false,
+            loadMoreMealsFailure: result.failure,
+          ),
+        );
+    }
+  }
+
+  CalendarAvailableMealsEntity _mergeMoreMeals({
+    required CalendarAvailableMealsEntity current,
+    required CalendarAvailableMealsEntity incoming,
+    required String requestedSlot,
+  }) {
+    if (incoming.slots.isEmpty && incoming.meals.isNotEmpty) {
+      final updatedSlots = current.slots.map((existingSlot) {
+        if (existingSlot.slot.trim().toLowerCase() !=
+            requestedSlot.trim().toLowerCase()) {
+          return existingSlot;
+        }
+        final existingMealIds = existingSlot.meals.map((m) => m.id).toSet();
+        final newMeals = incoming.meals
+            .where((m) => !existingMealIds.contains(m.id))
+            .toList();
+        return existingSlot.copyWith(
+          meals: [...existingSlot.meals, ...newMeals],
+        );
+      }).toList();
+      return current.copyWith(
+        slots: updatedSlots,
+        meals: updatedSlots.expand((s) => s.meals).toList(),
+      );
+    }
+
+    final updatedSlots = <CalendarSlotMealsEntity>[];
+    for (final existingSlot in current.slots) {
+      final matchingIncoming = incoming.slots
+          .where(
+            (s) =>
+                s.slot.trim().toLowerCase() ==
+                existingSlot.slot.trim().toLowerCase(),
+          )
+          .firstOrNull;
+
+      if (matchingIncoming == null) {
+        updatedSlots.add(existingSlot);
+        continue;
+      }
+
+      final existingMealIds = existingSlot.meals.map((m) => m.id).toSet();
+      final newUniqueMeals = matchingIncoming.meals
+          .where((m) => !existingMealIds.contains(m.id))
+          .toList();
+
+      final mergedMeals = [...existingSlot.meals, ...newUniqueMeals];
+
+      updatedSlots.add(
+        existingSlot.copyWith(
+          page: matchingIncoming.page,
+          pageSize: matchingIncoming.pageSize,
+          totalCount: matchingIncoming.totalCount,
+          totalPages: matchingIncoming.totalPages,
+          hasNextPage: matchingIncoming.hasNextPage,
+          hasPreviousPage: matchingIncoming.hasPreviousPage,
+          meals: mergedMeals,
+        ),
+      );
+    }
+
+    for (final incomingSlot in incoming.slots) {
+      final exists = updatedSlots.any(
+        (s) =>
+            s.slot.trim().toLowerCase() ==
+            incomingSlot.slot.trim().toLowerCase(),
+      );
+      if (!exists) {
+        updatedSlots.add(incomingSlot);
+      }
+    }
+
+    final allMergedMeals = updatedSlots.expand((s) => s.meals).toList();
+
+    return current.copyWith(
+      slots: updatedSlots,
+      meals: allMergedMeals,
+    );
   }
 
   void _selectDay({
@@ -562,7 +713,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
       return availableMeals;
     }
 
-    return CalendarAvailableMealsEntity(
+    return availableMeals.copyWith(
       restaurant: CalendarRestaurantEntity(
         id: restaurant?.id.isNotEmpty == true ? restaurant!.id : fallback.id,
         logoUrl: restaurant?.logoUrl?.isNotEmpty == true
@@ -581,9 +732,6 @@ class CalendarViewModel extends Cubit<CalendarState> {
         deliveryDuration: restaurant?.deliveryDuration ?? '',
         deliveryWindow: restaurant?.deliveryWindow ?? '',
       ),
-      meals: availableMeals.meals,
-      slotRequirements: availableMeals.slotRequirements,
-      coreIngredients: availableMeals.coreIngredients,
     );
   }
 

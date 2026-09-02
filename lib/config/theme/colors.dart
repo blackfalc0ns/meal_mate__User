@@ -197,6 +197,10 @@ class AppColors {
   static const Color calendarLightShadow = Color(0x08000000);
   static const Color calendarCardShadow = Color(0x1A000000);
   static const Color calendarCurrentShadow = Color(0x66FF6B57);
+  static const Color calendarNutritionCalories = Color(0xFFEB3738);
+  static const Color calendarNutritionFat = Color(0xFFFFA000);
+  static const Color calendarNutritionCarbs = Color(0xFF07A856);
+  static const Color calendarNutritionProtein = Color(0xFF3B9EAA);
 
   // Addresses choose location.
   static const Color addressesBackground = Color(0xFFF4F5F7);

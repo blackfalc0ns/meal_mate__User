@@ -119,11 +119,17 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
     required String subscriptionId,
     required String date,
     required String restaurantId,
+    int? page,
+    int? pageSize,
+    String? slot,
   }) {
     return _apiServices.getSubscriptionCalendarRestaurantMeals(
       subscriptionId,
       date,
       restaurantId,
+      page: page,
+      pageSize: pageSize,
+      slot: slot,
     );
   }
 

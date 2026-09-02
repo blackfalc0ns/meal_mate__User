@@ -31,7 +31,9 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      height: Spacing.calendarRestaurantSummaryHeight,
+      constraints: const BoxConstraints(
+        minHeight: Spacing.calendarRestaurantSummaryHeight,
+      ),
       padding: const EdgeInsetsDirectional.only(
         top: Spacing.sm,
         start: Spacing.sm,

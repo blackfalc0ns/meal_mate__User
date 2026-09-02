@@ -2,57 +2,72 @@ part of 'calendar_meal_card.dart';
 
 class CalendarMealCardNutritionItem extends StatelessWidget {
   const CalendarMealCardNutritionItem({
-    required this.icon,
+    super.key,
+    this.icon,
+    this.animationAsset,
     required this.value,
     required this.label,
   });
 
-  final IconData icon;
+  final IconData? icon;
+  final String? animationAsset;
   final String value;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return SizedBox(
-      width: label == locale.calendar_calories ? 54 : 44,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 12, color: color.primary),
-              const SizedBox(width: 1.5),
-              FittedBox(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (animationAsset != null)
+              Lottie.asset(
+                animationAsset!,
+                fit: BoxFit.contain,
+                repeat: true,
+                width: 30,
+                height: 30,
+              )
+            else if (icon != null)
+              Icon(icon, size: 14, color: color.primary),
+            const SizedBox(width: 2),
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Text(
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size11,
                     color: color.onSurface,
                   ).copyWith(height: 1),
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 3),
-          Text(
+            ),
+          ],
+        ),
+        const SizedBox(height: 1),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: getBoldStyle(
+            style: getSemiBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: color.onSurface.withValues(alpha: 0.62),
             ).copyWith(height: 1),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

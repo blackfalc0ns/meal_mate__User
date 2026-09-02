@@ -36,6 +36,9 @@ abstract interface class CalendarRepository {
     required String date,
     required String restaurantId,
     required String localeName,
+    int? page,
+    int? pageSize,
+    String? slot,
   });
 
   Future<ApiResult<CalendarDayEntity>> saveDayMeals({

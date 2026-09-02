@@ -14,7 +14,6 @@ class MealDetailsNutritionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Expanded(
       child: Container(
@@ -48,7 +47,7 @@ class MealDetailsNutritionCard extends StatelessWidget {
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: color.onSurface,
-              ).copyWith(height: locale.localeName == 'ar' ? 1.35 : 1.1),
+              ),
             ),
           ],
         ),

@@ -14,8 +14,8 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
     return Container(
       height: Spacing.lg,
       constraints: BoxConstraints(
-        minWidth: isMore ? 28.6 : 30,
-        maxWidth: isMore ? 42 : 58,
+        minWidth: isMore ? 30 : 33,
+        maxWidth: isMore ? 45 : 60,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
@@ -32,13 +32,11 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
               width: 10,
               height: 10,
               child: ClipOval(
-                child: ingredient.iconUrl == null || ingredient.iconUrl!.isEmpty
-                    ? Image.asset(ingredient.asset, fit: BoxFit.cover)
-                    : AppCachedNetworkImage(
-                        imageUrl: ingredient.iconUrl!,
-                        fit: BoxFit.cover,
-                        semanticLabel: ingredient.label,
-                      ),
+                child: AppCachedNetworkImage(
+                  imageUrl: ingredient.iconUrl!,
+                  fit: BoxFit.cover,
+                  semanticLabel: ingredient.label,
+                ),
               ),
             ),
             const SizedBox(width: 2),
@@ -48,7 +46,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
               ingredient.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: getBoldStyle(
+              style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
                 color: isMore

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -30,9 +31,11 @@ class CalendarMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final mealCardBodyHeight = readOnly ? 125.0 : 114.0;
+    final mealCardBodyHeight = 140.0;
     return SizedBox(
-      height: readOnly ? mealCardBodyHeight : 150.0,
+      height: readOnly
+          ? mealCardBodyHeight
+          : (mealCardBodyHeight + Spacing.sm + 25.0),
       child: Column(
         children: [
           SizedBox(

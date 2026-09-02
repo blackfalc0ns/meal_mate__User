@@ -373,6 +373,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             children: [
               BlocBuilder<CalendarViewModel, CalendarState>(
                 builder: (context, state) {
+                  final locale = context.localization;
                   final restaurant =
                       state.availableMeals?.restaurant ??
                       state.selectedDay?.restaurant;
@@ -386,6 +387,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     onMealToggled: (mealId) {
                       _viewModel.doIntent(ToggleCalendarMealEvent(mealId));
                     },
+                    onLoadMore: (slot) {
+                      _viewModel.doIntent(
+                        LoadMoreCalendarMealsEvent(
+                          slot: slot,
+                          localeName: locale.localeName,
+                        ),
+                      );
+                    },
+                    isLoadingMore: state.isLoadingMoreMeals,
                     onSave: null,
                     canSave: false,
                     isLoading: state.isAvailableMealsLoading,
@@ -652,6 +662,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           fatG,
           locale.localeName,
           locale,
+          proteinPercentage: meal.proteinPercentage,
+          carbsPercentage: meal.carbsPercentage,
+          fatPercentage: meal.fatPercentage,
         ),
         allergensTitle: locale.localeName == 'ar'
             ? 'مسببات الحساسية'
@@ -666,28 +679,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
     int? carbsG,
     int? fatG,
     String localeName,
-    AppLocalizations locale,
-  ) {
+    AppLocalizations locale, {
+    double? proteinPercentage,
+    double? carbsPercentage,
+    double? fatPercentage,
+  }) {
     final fatCalories = (fatG ?? 0) * 9;
     final proteinCalories = (proteinG ?? 0) * 4;
     final carbsCalories = (carbsG ?? 0) * 4;
     final total = fatCalories + proteinCalories + carbsCalories;
 
+    final fatPercentStr = fatPercentage != null
+        ? '%${fatPercentage.round()}'
+        : _percent(fatCalories, total);
+    final proteinPercentStr = proteinPercentage != null
+        ? '%${proteinPercentage.round()}'
+        : _percent(proteinCalories, total);
+    final carbsPercentStr = carbsPercentage != null
+        ? '%${carbsPercentage.round()}'
+        : _percent(carbsCalories, total);
+
     return [
       MealDetailsMacroEntity(
-        percent: _percent(fatCalories, total),
+        percent: fatPercentStr,
         label: locale.calendar_fat,
         value: _gramValue(fatG, localeName),
         type: MealDetailsNutritionType.fat,
       ),
       MealDetailsMacroEntity(
-        percent: _percent(proteinCalories, total),
+        percent: proteinPercentStr,
         label: locale.calendar_protein,
         value: _gramValue(proteinG, localeName),
         type: MealDetailsNutritionType.protein,
       ),
       MealDetailsMacroEntity(
-        percent: _percent(carbsCalories, total),
+        percent: carbsPercentStr,
         label: locale.calendar_carbs,
         value: _gramValue(carbsG, localeName),
         type: MealDetailsNutritionType.carbs,

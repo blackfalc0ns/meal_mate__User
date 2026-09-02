@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 
@@ -13,6 +15,17 @@ class MealDetailsNutritionIcon extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final animation = _animation;
+    if (animation != null) {
+      return Lottie.asset(
+        width: 30,
+        height: 30,
+        animation,
+        fit: BoxFit.contain,
+        repeat: true,
+      );
+    }
+
     return Icon(
       _icon,
       size: Spacing.iconSm,
@@ -21,6 +34,16 @@ class MealDetailsNutritionIcon extends StatelessWidget {
           ? TextDirection.rtl
           : TextDirection.ltr,
     );
+  }
+
+  String? get _animation {
+    return switch (type) {
+      MealDetailsNutritionType.protein => Assets.muscleAnimation,
+      MealDetailsNutritionType.carbs => Assets.wheatAnimation,
+      MealDetailsNutritionType.fat => Assets.dropletAnimation,
+      MealDetailsNutritionType.calories => Assets.fireAnimation,
+      MealDetailsNutritionType.fiber => null,
+    };
   }
 
   IconData get _icon {

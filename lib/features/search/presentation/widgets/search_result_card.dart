@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/search/data/search_fake_data_source.dart';
@@ -122,10 +123,12 @@ class SearchResultCard extends StatelessWidget {
                                 SearchResultMeta(
                                   label: locale.search_calories,
                                   icon: Icons.local_fire_department_rounded,
+                                  animationAsset: Assets.fireAnimation,
                                 ),
                                 SearchResultMeta(
                                   label: locale.search_carbs,
                                   icon: Icons.grain_rounded,
+                                  animationAsset: Assets.wheatAnimation,
                                 ),
                               ],
                             ),
@@ -137,10 +140,12 @@ class SearchResultCard extends StatelessWidget {
                                 SearchResultMeta(
                                   label: locale.search_protein,
                                   icon: Icons.fitness_center_rounded,
+                                  animationAsset: Assets.muscleAnimation,
                                 ),
                                 SearchResultMeta(
                                   label: locale.search_fat,
                                   icon: Icons.water_drop_rounded,
+                                  animationAsset: Assets.dropletAnimation,
                                 ),
                               ],
                             ),

@@ -12,21 +12,25 @@ class CalendarMealPickerNutritionRow extends StatelessWidget {
     final items = [
       CalendarMealPickerNutrition(
         icon: Icons.local_fire_department_rounded,
+        animationAsset: Assets.fireAnimation,
         value: option.calories,
         label: locale.calendar_calories,
       ),
       CalendarMealPickerNutrition(
-        icon: Icons.water_drop_outlined,
+        icon: Icons.fitness_center_rounded,
+        animationAsset: Assets.muscleAnimation,
         value: option.protein,
         label: locale.calendar_protein,
       ),
       CalendarMealPickerNutrition(
         icon: Icons.grass_rounded,
+        animationAsset: Assets.wheatAnimation,
         value: option.carbs,
         label: locale.calendar_carbs,
       ),
       CalendarMealPickerNutrition(
         icon: Icons.water_drop_rounded,
+        animationAsset: Assets.dropletAnimation,
         value: option.fat,
         label: locale.calendar_fat,
       ),

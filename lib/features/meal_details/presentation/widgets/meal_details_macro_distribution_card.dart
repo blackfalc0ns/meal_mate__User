@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_macro_item.dart';
@@ -42,13 +44,10 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.local_fire_department_rounded,
-                      color: color.primary,
-                      size: Spacing.iconMd,
-                    ),
-                    const SizedBox(height: Spacing.xs),
+                    Lottie.asset(Assets.fireAnimation, width: 30, height: 30),
+
                     Text(
                       calories.label,
                       maxLines: 1,
@@ -57,7 +56,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
                         color: color.onSurface,
-                      ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),
+                      ),
                     ),
                     Text(
                       calories.value,
@@ -75,7 +74,7 @@ class MealDetailsMacroDistributionCard extends StatelessWidget {
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size8,
                         color: color.onSurfaceVariant,
-                      ).copyWith(height: locale.localeName == 'ar' ? 1.4 : 1.1),
+                      ),
                     ),
                   ],
                 ),

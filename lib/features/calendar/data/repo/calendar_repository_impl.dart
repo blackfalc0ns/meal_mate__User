@@ -87,12 +87,18 @@ class CalendarRepositoryImpl implements CalendarRepository {
     required String date,
     required String restaurantId,
     required String localeName,
+    int? page,
+    int? pageSize,
+    String? slot,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getAvailableMeals(
         subscriptionId: subscriptionId,
         date: date,
         restaurantId: restaurantId,
+        page: page,
+        pageSize: pageSize,
+        slot: slot,
       );
       return response.toEntity(localeName);
     });

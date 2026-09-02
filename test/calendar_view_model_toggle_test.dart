@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/calendar/data/mapper/calendar_mapper.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_available_meals_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
@@ -102,6 +105,207 @@ void main() {
       await viewModel.close();
     },
   );
+
+  test(
+    'deserializes calendar available meals JSON with slots and pagination',
+    () {
+      final json = <String, dynamic>{
+        "restaurantId": "8ff16c1f-70ca-42f9-ae42-3c803da87744",
+        "nameAr": "جرين بول",
+        "logoUrl": "https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/logo-green-bowl.png",
+        "serviceDate": "2026-09-07",
+        "requiredCount": 2,
+        "filledCount": 0,
+        "slots": [
+          {
+            "slot": "lunch",
+            "slotNameAr": "الغداء",
+            "count": 1,
+            "page": 1,
+            "pageSize": 20,
+            "totalCount": 2,
+            "totalPages": 1,
+            "hasNextPage": false,
+            "hasPreviousPage": false,
+            "meals": [
+              {
+                "mealId": "ebb5f986-bce7-41f2-88b1-a29a07fd156e",
+                "nameAr": "دجاج مشوي مع أرز",
+                "slot": "lunch",
+                "slotNameAr": "الغداء",
+                "sortOrder": 1,
+                "imageUrl": "https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/meal-lunch.jpg",
+                "calories": 620.0,
+                "proteinG": 38.0,
+                "carbsG": 5.0,
+                "fatG": 50.0,
+                "descriptionAr": "وجبة طازجة محسوبة القيم الغذائية ومعدة يوميًا.",
+                "presentAllergenCodes": [],
+                "mayContainAllergenCodes": [],
+                "dietaryPreferenceCodes": [],
+                "ingredients": [],
+                "blockReason": null,
+                "isSelected": false,
+                "name": "دجاج مشوي مع أرز",
+                "slotName": "الغداء",
+                "description": "وجبة طازجة محسوبة القيم الغذائية ومعدة يوميًا."
+              }
+            ],
+            "slotName": "الغداء"
+          },
+          {
+            "slot": "snack",
+            "slotNameAr": "سناك",
+            "count": 1,
+            "page": 1,
+            "pageSize": 20,
+            "totalCount": 2,
+            "totalPages": 1,
+            "hasNextPage": false,
+            "hasPreviousPage": false,
+            "meals": [
+              {
+                "mealId": "b180a081-5883-422d-8607-c1f2b036d8a7",
+                "nameAr": "زبادي يوناني بالشوفان",
+                "slot": "snack",
+                "slotNameAr": "سناك",
+                "sortOrder": 1,
+                "imageUrl": "https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/meal-snack.jpg",
+                "calories": 210.0,
+                "proteinG": 14.0,
+                "carbsG": 3.0,
+                "fatG": 16.0,
+                "descriptionAr": "وجبة طازجة محسوبة القيم الغذائية ومعدة يوميًا.",
+                "presentAllergenCodes": [],
+                "mayContainAllergenCodes": [],
+                "dietaryPreferenceCodes": [],
+                "ingredients": [],
+                "blockReason": null,
+                "isSelected": false,
+                "name": "زبادي يوناني بالشوفان",
+                "slotName": "سناك",
+                "description": "وجبة طازجة محسوبة القيم الغذائية ومعدة يوميًا."
+              }
+            ],
+            "slotName": "سناك"
+          }
+        ],
+        "coreIngredients": [
+          {
+            "id": "e69721c0-2ee8-4d8e-b4e9-f46c00a4f40d",
+            "nameAr": "أفوكادو",
+            "iconUrl": "https://ik.imagekit.io/f7h9cj23x/catalog/ingredient-photos/avocado.webp",
+            "isLocal": true,
+            "originCountryCode": "KW",
+            "originCountryNameAr": "الكويت",
+            "flagEmoji": "🇰🇼",
+            "name": "أفوكادو",
+            "originCountryName": "الكويت"
+          }
+        ],
+        "selectedMealIds": [],
+        "rating": null,
+        "ratingCount": 0,
+        "deliveryWindowStart": "08:00:00",
+        "deliveryWindowEnd": "16:00:00",
+        "deliveryTimeText": "8:00 ص - 4:00 م",
+        "tier": "Basic",
+        "tierNameAr": "أساسي",
+        "tierName": "أساسي",
+        "tierLogoUrl": "https://ik.imagekit.io/f7h9cj23x/uploads/admin/tiers/Group_19497_apsDC4VCMe.png",
+        "programNameAr": "برنامج الكيتو المتكامل",
+        "programName": "برنامج الكيتو المتكامل",
+        "name": "جرين بول"
+      };
+
+      final dto = CalendarAvailableMealsResponseDto.fromJson(json);
+      expect(dto.restaurantId, "8ff16c1f-70ca-42f9-ae42-3c803da87744");
+      expect(dto.slots?.length, 2);
+      expect(dto.slots?.first.slot, "lunch");
+      expect(dto.slots?.first.page, 1);
+      expect(dto.slots?.first.pageSize, 20);
+      expect(dto.slots?.first.hasNextPage, false);
+      expect(dto.slots?.first.meals?.first.calories, 620.0);
+
+      final entity = dto.toEntity('ar');
+      expect(entity.requiredMealsCount, 2);
+      expect(entity.slotRequirements.length, 2);
+      expect(entity.slots.length, 2);
+      expect(entity.slots.first.slot, "lunch");
+      expect(entity.slots.first.meals.length, 1);
+      expect(entity.meals.length, 2);
+      expect(entity.coreIngredients.length, 1);
+      expect(entity.restaurant?.name, "جرين بول");
+    },
+  );
+
+  test(
+    'deserializes nutritionTotals with macro percentages and maps to entity',
+    () {
+      final json = <String, dynamic>{
+        "id": "63ccd3ed-b8cd-49b7-967f-dfaeb78af266",
+        "serviceDate": "2026-09-05",
+        "nutritionTotals": {
+          "calories": 620.0,
+          "proteinG": 38.0,
+          "carbsG": 5.0,
+          "fatG": 50.0,
+          "proteinPercentage": 24.4,
+          "carbsPercentage": 3.2,
+          "fatPercentage": 72.3
+        }
+      };
+
+      final dayDto = CalendarDayResponseDto.fromJson(json);
+      expect(dayDto.nutritionTotals?.calories, 620.0);
+      expect(dayDto.nutritionTotals?.proteinPercentage, 24.4);
+      expect(dayDto.nutritionTotals?.carbsPercentage, 3.2);
+      expect(dayDto.nutritionTotals?.fatPercentage, 72.3);
+
+      final dayEntity = dayDto.toEntity('en');
+      expect(dayEntity.nutritionTotals.calories, 620);
+      expect(dayEntity.nutritionTotals.proteinG, 38);
+      expect(dayEntity.nutritionTotals.carbsG, 5);
+      expect(dayEntity.nutritionTotals.fatG, 50);
+      expect(dayEntity.nutritionTotals.proteinPercentage, 24.4);
+      expect(dayEntity.nutritionTotals.carbsPercentage, 3.2);
+      expect(dayEntity.nutritionTotals.fatPercentage, 72.3);
+    },
+  );
+
+  test(
+    'deserializes root-level macro percentages in day JSON and maps to nutritionTotals',
+    () {
+      final json = <String, dynamic>{
+        "id": "63ccd3ed-b8cd-49b7-967f-dfaeb78af266",
+        "serviceDate": "2026-09-05",
+        "nutritionTotals": {
+          "calories": 830.0,
+          "proteinG": 52.0,
+          "carbsG": 8.0,
+          "fatG": 66.0
+        },
+        "proteinPercentage": 24.9,
+        "carbsPercentage": 3.8,
+        "fatPercentage": 71.2,
+        "restaurantName": "مطبخ دايت كير"
+      };
+
+      final dayDto = CalendarDayResponseDto.fromJson(json);
+      expect(dayDto.proteinPercentage, 24.9);
+      expect(dayDto.carbsPercentage, 3.8);
+      expect(dayDto.fatPercentage, 71.2);
+
+      final dayEntity = dayDto.toEntity('en');
+      expect(dayEntity.nutritionTotals.calories, 830);
+      expect(dayEntity.nutritionTotals.proteinG, 52);
+      expect(dayEntity.nutritionTotals.carbsG, 8);
+      expect(dayEntity.nutritionTotals.fatG, 66);
+      expect(dayEntity.nutritionTotals.proteinPercentage, 24.9);
+      expect(dayEntity.nutritionTotals.carbsPercentage, 3.8);
+      expect(dayEntity.nutritionTotals.fatPercentage, 71.2);
+    },
+  );
 }
 
 Future<_TestCalendarViewModel> _calendarViewModel() async {
@@ -173,6 +377,9 @@ class _CalendarRepositoryFake implements CalendarRepository {
     required String date,
     required String restaurantId,
     required String localeName,
+    int? page,
+    int? pageSize,
+    String? slot,
   }) {
     throw UnimplementedError();
   }

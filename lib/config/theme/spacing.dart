@@ -832,7 +832,7 @@ class Spacing {
   static const double calendarEmptyMealsButtonHeight = 45.28;
   static const double calendarEmptyMealsButtonRadius = 51.58;
   static const double calendarMealCardVerticalPadding = 4.0;
-  static const double calendarRestaurantSummaryHeight = 200.0;
+  static const double calendarRestaurantSummaryHeight = 234.0;
   static const double calendarRestaurantSummaryRadius = 10.0;
   static const double calendarRestaurantSummaryTopPadding = 12.0;
   static const double calendarRestaurantSummaryHorizontalPadding = 24.0;
@@ -844,7 +844,7 @@ class Spacing {
   static const double calendarRestaurantSummaryDividerDashGap = 12.0;
   static const double calendarRestaurantSummaryNutritionTop = 82.0;
   static const double calendarRestaurantSummaryNutritionGap = 4.0;
-  static const double calendarRestaurantSummaryNutritionCardHeight = 50.0;
+  static const double calendarRestaurantSummaryNutritionCardHeight = 84.0;
   static const double calendarRestaurantSummaryNutritionIconSize = 18.0;
   static const double calendarRestaurantSummaryNutritionProgressHeight = 3.0;
   static const double calendarRestaurantSummaryButtonHeight = 25.0;

@@ -13,7 +13,7 @@ class CalendarRating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final showRating = value.trim().isNotEmpty && ratingCount > 0;
+    final showRating = value.trim().isNotEmpty;
 
     return SizedBox(
       width: 38,

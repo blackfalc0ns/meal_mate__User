@@ -59,3 +59,14 @@ class AutoSelectCalendarDayEvent extends CalendarEvent {
 
   final String localeName;
 }
+
+class LoadMoreCalendarMealsEvent extends CalendarEvent {
+  const LoadMoreCalendarMealsEvent({
+    required this.slot,
+    required this.localeName,
+  });
+
+  final String slot;
+  final String localeName;
+}
+

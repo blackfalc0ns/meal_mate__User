@@ -14,12 +14,18 @@ class GetCalendarAvailableMealsUseCase {
     required String date,
     required String restaurantId,
     required String localeName,
+    int? page,
+    int? pageSize,
+    String? slot,
   }) {
     return _repository.getAvailableMeals(
       subscriptionId: subscriptionId,
       date: date,
       restaurantId: restaurantId,
       localeName: localeName,
+      page: page,
+      pageSize: pageSize,
+      slot: slot,
     );
   }
 }
