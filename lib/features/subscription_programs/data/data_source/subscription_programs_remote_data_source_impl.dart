@@ -17,7 +17,7 @@ class SubscriptionProgramsRemoteDataSourceImpl
   }
 
   @override
-  Future<List<SubscriptionBundleResponseDto>> getSubscriptionProgramBundles(
+  Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     String programId,
   ) {
     return _apiServices.getSubscriptionProgramBundles(programId);

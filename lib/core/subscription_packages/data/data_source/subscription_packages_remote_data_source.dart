@@ -1,7 +1,7 @@
 import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
 
 abstract interface class SubscriptionPackagesRemoteDataSource {
-  Future<List<SubscriptionBundleResponseDto>> getSubscriptionProgramBundles(
+  Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     String programId,
   );
 }

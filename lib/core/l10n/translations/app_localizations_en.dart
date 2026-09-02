@@ -3947,7 +3947,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_dashboard_title => 'Influencer';
 
   @override
-  String get influencer_user_name => 'Mohamed';
+  String get influencer_user_name => 'Hello, Mohamed';
 
   @override
   String get influencer_partner_label => 'Influencer Partner';
@@ -3959,40 +3959,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_tools => 'Partner tools';
 
   @override
-  String get influencer_total_earnings => 'Total earnings';
+  String get influencer_total_earnings => 'Total commissions';
 
   @override
-  String get influencer_total_earnings_value => '152.3 KWD';
+  String get influencer_total_earnings_value => '845';
 
   @override
-  String get influencer_this_month => 'This month';
+  String get influencer_this_month => 'Monthly goal';
 
   @override
-  String get influencer_referrals => 'Referrals';
+  String get influencer_referrals => 'Registered customers';
 
   @override
-  String get influencer_referrals_value => '84';
+  String get influencer_referrals_value => '230';
 
   @override
-  String get influencer_active_codes => 'Active codes';
+  String get influencer_active_codes => 'This week 7+';
 
   @override
-  String get influencer_conversion_rate => 'Conversion';
+  String get influencer_conversion_rate => 'Conversion rate';
 
   @override
-  String get influencer_conversion_rate_value => '12%';
+  String get influencer_conversion_rate_value => '35%';
 
   @override
-  String get influencer_from_visits => 'From visits';
+  String get influencer_from_visits => 'This week 7+';
 
   @override
-  String get influencer_pending_withdrawals => 'Pending';
+  String get influencer_pending_withdrawals => 'Link clicks';
 
   @override
-  String get influencer_pending_withdrawals_value => '32.5 KWD';
+  String get influencer_pending_withdrawals_value => '520';
 
   @override
-  String get influencer_under_review => 'Under review';
+  String get influencer_under_review => 'This week 7+';
+
+  @override
+  String get influencer_completed_subscriptions => 'Completed subscriptions';
+
+  @override
+  String get influencer_completed_subscriptions_value => '81';
+
+  @override
+  String get influencer_weekly_commission_gain => '+35 KWD';
+
+  @override
+  String get influencer_this_week => 'This week';
+
+  @override
+  String get influencer_month_goal_progress => '80%';
+
+  @override
+  String get influencer_month_goal_value => '680 KWD / 850 KWD';
+
+  @override
+  String get influencer_view_details => 'View details';
 
   @override
   String get influencer_share_links_title => 'Share links';
@@ -4014,14 +4035,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_wallet_subtitle => 'View balance and transactions';
 
   @override
-  String get influencer_referral_code_title => 'Referral code';
+  String get influencer_referral_code_title => 'Your discount code';
 
   @override
-  String get influencer_referral_code_subtitle =>
-      'Share your code and earn more commissions';
+  String get influencer_referral_code_subtitle => 'Earn more commissions';
 
   @override
-  String get influencer_referral_code_value => 'MEALMATE24';
+  String get influencer_referral_code_value => 'AMMAR20';
+
+  @override
+  String get influencer_share_code_title => 'Share your link and code';
+
+  @override
+  String get influencer_recent_activities => 'Recent activities';
+
+  @override
+  String get influencer_view_all => 'View all';
+
+  @override
+  String get influencer_activity_first_user => 'User #gdf55';
+
+  @override
+  String get influencer_activity_first_plan =>
+      'Subscribed to a monthly package';
+
+  @override
+  String get influencer_activity_second_user => 'Mohamed Ali';
+
+  @override
+  String get influencer_activity_second_plan =>
+      'Subscribed to a weekly package';
+
+  @override
+  String get influencer_activity_third_user => 'Abdullah Nasser';
+
+  @override
+  String get influencer_activity_third_plan =>
+      'Subscribed to a monthly package';
+
+  @override
+  String get influencer_activity_amount => '+5 KWD';
+
+  @override
+  String get influencer_activity_time => '2 hours ago';
+
+  @override
+  String get influencer_tab_home => 'Home';
+
+  @override
+  String get influencer_tab_links => 'Links';
+
+  @override
+  String get influencer_tab_wallet => 'Wallet';
+
+  @override
+  String get influencer_tab_stats => 'Stats';
+
+  @override
+  String get influencer_tab_profile => 'Profile';
 
   @override
   String get influencer_share_links_header => 'Share now';

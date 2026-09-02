@@ -8,6 +8,7 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_action_tile.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_dashboard_bottom_tabs.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_transaction_tile.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_balance_card.dart';
 
@@ -43,6 +44,9 @@ class InfluencerWalletScreen extends StatelessWidget {
         titleFontSize: FontSize.size17,
         backgroundColor: color.surface,
         showShadow: false,
+      ),
+      bottomNavigationBar: const InfluencerDashboardBottomTabs(
+        selectedTab: InfluencerDashboardTabItem.wallet,
       ),
       body: SafeArea(
         top: false,

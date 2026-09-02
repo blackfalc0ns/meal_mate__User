@@ -172,6 +172,34 @@ class AssetsFake {
       'assets/images/fake/subscriptions/subscription_week_plan.png';
   static const String influencerDashboardHero =
       'assets/images/influencer/figma/influencer_dashboard_hero-7ac056.png';
+  static const String influencerDashboardAvatar =
+      'assets/images/influencer/figma/influencer_dashboard_avatar.png';
+  static const String influencerLogo =
+      'assets/images/influencer/figma/influencer_logo.svg';
+  static const String influencerTrendUp =
+      'assets/images/influencer/figma/influencer_trend_up.svg';
+  static const String influencerMetricUsers =
+      'assets/images/influencer/figma/influencer_metric_users.svg';
+  static const String influencerMetricSubscriptions =
+      'assets/images/influencer/figma/influencer_metric_subscriptions.svg';
+  static const String influencerMetricClicks =
+      'assets/images/influencer/figma/influencer_metric_clicks.svg';
+  static const String influencerMetricConversion =
+      'assets/images/influencer/figma/influencer_metric_conversion.svg';
+  static const String influencerShareIcon =
+      'assets/images/influencer/figma/influencer_share_icon.svg';
+  static const String influencerCopyIcon =
+      'assets/images/influencer/figma/influencer_copy_icon.svg';
+  static const String influencerTabHome =
+      'assets/images/influencer/figma/influencer_tab_home.svg';
+  static const String influencerTabLinks =
+      'assets/images/influencer/figma/influencer_tab_links.svg';
+  static const String influencerTabWallet =
+      'assets/images/influencer/figma/influencer_tab_wallet.svg';
+  static const String influencerTabStats =
+      'assets/images/influencer/figma/influencer_tab_stats.svg';
+  static const String influencerTabProfile =
+      'assets/images/influencer/figma/influencer_tab_profile.svg';
   static const String influencerShareBanner =
       'assets/images/influencer/figma/influencer_share_banner.png';
   static const String influencerQr =

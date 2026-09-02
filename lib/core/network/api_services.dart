@@ -260,7 +260,7 @@ abstract class ApiServices {
   Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();
 
   @GET(EndPoints.subscriptionProgramBundles)
-  Future<List<SubscriptionBundleResponseDto>> getSubscriptionProgramBundles(
+  Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     @Path('programId') String programId,
   );
 

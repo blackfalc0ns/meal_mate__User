@@ -16,9 +16,9 @@ class InfluencerMetricsGrid extends StatelessWidget {
       itemCount: metrics.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisExtent: 88,
-        crossAxisSpacing: Spacing.sm,
-        mainAxisSpacing: Spacing.sm,
+        mainAxisExtent: Spacing.influencerMetricCardHeight,
+        crossAxisSpacing: Spacing.influencerMetricGridGap,
+        mainAxisSpacing: Spacing.influencerMetricGridGap,
       ),
       itemBuilder: (context, index) =>
           InfluencerMetricCard(metric: metrics[index]),

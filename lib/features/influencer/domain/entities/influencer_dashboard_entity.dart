@@ -5,10 +5,16 @@ class InfluencerDashboardEntity {
     required this.heroImageAsset,
     required this.shareBannerAsset,
     required this.qrAsset,
+    required this.avatarAsset,
+    required this.logoAsset,
+    required this.shareIconAsset,
+    required this.copyIconAsset,
+    required this.trendIconAsset,
     required this.metrics,
     required this.actions,
     required this.wallet,
     required this.socialAccounts,
+    required this.activities,
   });
 
   final String userName;
@@ -16,10 +22,16 @@ class InfluencerDashboardEntity {
   final String heroImageAsset;
   final String shareBannerAsset;
   final String qrAsset;
+  final String avatarAsset;
+  final String logoAsset;
+  final String shareIconAsset;
+  final String copyIconAsset;
+  final String trendIconAsset;
   final List<InfluencerMetricEntity> metrics;
   final List<InfluencerActionEntity> actions;
   final InfluencerWalletEntity wallet;
   final List<InfluencerSocialAccountEntity> socialAccounts;
+  final List<InfluencerActivityEntity> activities;
 }
 
 class InfluencerMetricEntity {
@@ -27,11 +39,15 @@ class InfluencerMetricEntity {
     required this.title,
     required this.value,
     required this.subtitle,
+    required this.iconAsset,
+    required this.trendIconAsset,
   });
 
   final String title;
   final String value;
   final String subtitle;
+  final String iconAsset;
+  final String trendIconAsset;
 }
 
 class InfluencerActionEntity {
@@ -104,4 +120,20 @@ class InfluencerSocialAccountEntity {
   final String platform;
   final String handle;
   final bool connected;
+}
+
+class InfluencerActivityEntity {
+  const InfluencerActivityEntity({
+    required this.title,
+    required this.subtitle,
+    required this.amount,
+    required this.time,
+    required this.avatarAsset,
+  });
+
+  final String title;
+  final String subtitle;
+  final String amount;
+  final String time;
+  final String avatarAsset;
 }

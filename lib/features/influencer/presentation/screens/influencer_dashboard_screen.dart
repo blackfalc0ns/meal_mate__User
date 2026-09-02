@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_action_tile.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_dashboard_bottom_tabs.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_header_card.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_hero_card.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_metrics_grid.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_recent_activities_section.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_prompt_card.dart';
 
 class InfluencerDashboardScreen extends StatelessWidget {
   const InfluencerDashboardScreen({super.key});
@@ -27,7 +27,9 @@ class InfluencerDashboardScreen extends StatelessWidget {
         titleFontSize: FontSize.size17,
         backgroundColor: color.surface,
         showShadow: false,
+        showBackButton: false,
       ),
+      bottomNavigationBar: const InfluencerDashboardBottomTabs(),
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
@@ -43,47 +45,30 @@ class InfluencerDashboardScreen extends StatelessWidget {
               InfluencerHeaderCard(
                 userName: dashboard.userName,
                 partnerLabel: dashboard.partnerLabel,
+                avatarAsset: dashboard.avatarAsset,
+                logoAsset: dashboard.logoAsset,
               ),
-              const SizedBox(height: Spacing.base),
-              InfluencerHeroCard(imageAsset: dashboard.heroImageAsset),
-              const SizedBox(height: Spacing.base),
-              Text(
-                locale.influencer_statistics,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size14,
-                  color: color.onSurface,
-                ),
+              const SizedBox(height: Spacing.md),
+              InfluencerHeroCard(
+                imageAsset: dashboard.heroImageAsset,
+                trendIconAsset: dashboard.trendIconAsset,
               ),
-              const SizedBox(height: Spacing.sm),
+              const SizedBox(height: Spacing.influencerMetricsTopGap),
               InfluencerMetricsGrid(metrics: dashboard.metrics),
               const SizedBox(height: Spacing.base),
-              Text(
-                locale.influencer_tools,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size14,
-                  color: color.onSurface,
-                ),
-              ),
-              const SizedBox(height: Spacing.sm),
-              ...dashboard.actions.map(
-                (action) => Padding(
-                  padding: const EdgeInsets.only(bottom: Spacing.sm),
-                  child: InfluencerActionTile(
-                    action: action,
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(action.routeName),
-                  ),
-                ),
-              ),
-              const SizedBox(height: Spacing.sm),
-              InfluencerShareCard(
-                title: locale.influencer_referral_code_title,
+              InfluencerSharePromptCard(
+                title: locale.influencer_share_code_title,
                 subtitle: locale.influencer_referral_code_subtitle,
+                codeTitle: locale.influencer_referral_code_title,
                 code: locale.influencer_referral_code_value,
-                imageAsset: dashboard.shareBannerAsset,
-                qrAsset: dashboard.qrAsset,
+                shareIconAsset: dashboard.shareIconAsset,
+                copyIconAsset: dashboard.copyIconAsset,
+              ),
+              const SizedBox(height: Spacing.sm),
+              InfluencerRecentActivitiesSection(
+                title: locale.influencer_recent_activities,
+                actionLabel: locale.influencer_view_all,
+                activities: dashboard.activities,
               ),
             ],
           ),

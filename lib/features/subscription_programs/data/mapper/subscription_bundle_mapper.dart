@@ -7,8 +7,8 @@ extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
       bundleId: bundleId ?? '',
       programId: programId ?? '',
       code: code ?? '',
-      nameAr: nameAr ?? '',
-      nameEn: nameEn ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
       descriptionAr: descriptionAr ?? description ?? '',
       descriptionEn: descriptionEn ?? description ?? '',
       imageUrl: imageUrl,
@@ -34,8 +34,8 @@ extension SubscriptionBundleSlotResponseDtoMapper
   SubscriptionBundleSlotEntity toEntity() {
     return SubscriptionBundleSlotEntity(
       code: code ?? '',
-      nameAr: nameAr ?? '',
-      nameEn: nameEn ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
       quantity: quantity ?? 0,
     );
   }

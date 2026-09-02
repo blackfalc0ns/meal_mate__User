@@ -7493,7 +7493,7 @@ abstract class AppLocalizations {
   /// No description provided for @influencer_user_name.
   ///
   /// In en, this message translates to:
-  /// **'Mohamed'**
+  /// **'Hello, Mohamed'**
   String get influencer_user_name;
 
   /// No description provided for @influencer_partner_label.
@@ -7517,74 +7517,116 @@ abstract class AppLocalizations {
   /// No description provided for @influencer_total_earnings.
   ///
   /// In en, this message translates to:
-  /// **'Total earnings'**
+  /// **'Total commissions'**
   String get influencer_total_earnings;
 
   /// No description provided for @influencer_total_earnings_value.
   ///
   /// In en, this message translates to:
-  /// **'152.3 KWD'**
+  /// **'845'**
   String get influencer_total_earnings_value;
 
   /// No description provided for @influencer_this_month.
   ///
   /// In en, this message translates to:
-  /// **'This month'**
+  /// **'Monthly goal'**
   String get influencer_this_month;
 
   /// No description provided for @influencer_referrals.
   ///
   /// In en, this message translates to:
-  /// **'Referrals'**
+  /// **'Registered customers'**
   String get influencer_referrals;
 
   /// No description provided for @influencer_referrals_value.
   ///
   /// In en, this message translates to:
-  /// **'84'**
+  /// **'230'**
   String get influencer_referrals_value;
 
   /// No description provided for @influencer_active_codes.
   ///
   /// In en, this message translates to:
-  /// **'Active codes'**
+  /// **'This week 7+'**
   String get influencer_active_codes;
 
   /// No description provided for @influencer_conversion_rate.
   ///
   /// In en, this message translates to:
-  /// **'Conversion'**
+  /// **'Conversion rate'**
   String get influencer_conversion_rate;
 
   /// No description provided for @influencer_conversion_rate_value.
   ///
   /// In en, this message translates to:
-  /// **'12%'**
+  /// **'35%'**
   String get influencer_conversion_rate_value;
 
   /// No description provided for @influencer_from_visits.
   ///
   /// In en, this message translates to:
-  /// **'From visits'**
+  /// **'This week 7+'**
   String get influencer_from_visits;
 
   /// No description provided for @influencer_pending_withdrawals.
   ///
   /// In en, this message translates to:
-  /// **'Pending'**
+  /// **'Link clicks'**
   String get influencer_pending_withdrawals;
 
   /// No description provided for @influencer_pending_withdrawals_value.
   ///
   /// In en, this message translates to:
-  /// **'32.5 KWD'**
+  /// **'520'**
   String get influencer_pending_withdrawals_value;
 
   /// No description provided for @influencer_under_review.
   ///
   /// In en, this message translates to:
-  /// **'Under review'**
+  /// **'This week 7+'**
   String get influencer_under_review;
+
+  /// No description provided for @influencer_completed_subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed subscriptions'**
+  String get influencer_completed_subscriptions;
+
+  /// No description provided for @influencer_completed_subscriptions_value.
+  ///
+  /// In en, this message translates to:
+  /// **'81'**
+  String get influencer_completed_subscriptions_value;
+
+  /// No description provided for @influencer_weekly_commission_gain.
+  ///
+  /// In en, this message translates to:
+  /// **'+35 KWD'**
+  String get influencer_weekly_commission_gain;
+
+  /// No description provided for @influencer_this_week.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get influencer_this_week;
+
+  /// No description provided for @influencer_month_goal_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'80%'**
+  String get influencer_month_goal_progress;
+
+  /// No description provided for @influencer_month_goal_value.
+  ///
+  /// In en, this message translates to:
+  /// **'680 KWD / 850 KWD'**
+  String get influencer_month_goal_value;
+
+  /// No description provided for @influencer_view_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get influencer_view_details;
 
   /// No description provided for @influencer_share_links_title.
   ///
@@ -7625,20 +7667,116 @@ abstract class AppLocalizations {
   /// No description provided for @influencer_referral_code_title.
   ///
   /// In en, this message translates to:
-  /// **'Referral code'**
+  /// **'Your discount code'**
   String get influencer_referral_code_title;
 
   /// No description provided for @influencer_referral_code_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Share your code and earn more commissions'**
+  /// **'Earn more commissions'**
   String get influencer_referral_code_subtitle;
 
   /// No description provided for @influencer_referral_code_value.
   ///
   /// In en, this message translates to:
-  /// **'MEALMATE24'**
+  /// **'AMMAR20'**
   String get influencer_referral_code_value;
+
+  /// No description provided for @influencer_share_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your link and code'**
+  String get influencer_share_code_title;
+
+  /// No description provided for @influencer_recent_activities.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activities'**
+  String get influencer_recent_activities;
+
+  /// No description provided for @influencer_view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get influencer_view_all;
+
+  /// No description provided for @influencer_activity_first_user.
+  ///
+  /// In en, this message translates to:
+  /// **'User #gdf55'**
+  String get influencer_activity_first_user;
+
+  /// No description provided for @influencer_activity_first_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribed to a monthly package'**
+  String get influencer_activity_first_plan;
+
+  /// No description provided for @influencer_activity_second_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Mohamed Ali'**
+  String get influencer_activity_second_user;
+
+  /// No description provided for @influencer_activity_second_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribed to a weekly package'**
+  String get influencer_activity_second_plan;
+
+  /// No description provided for @influencer_activity_third_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Abdullah Nasser'**
+  String get influencer_activity_third_user;
+
+  /// No description provided for @influencer_activity_third_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribed to a monthly package'**
+  String get influencer_activity_third_plan;
+
+  /// No description provided for @influencer_activity_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'+5 KWD'**
+  String get influencer_activity_amount;
+
+  /// No description provided for @influencer_activity_time.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours ago'**
+  String get influencer_activity_time;
+
+  /// No description provided for @influencer_tab_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get influencer_tab_home;
+
+  /// No description provided for @influencer_tab_links.
+  ///
+  /// In en, this message translates to:
+  /// **'Links'**
+  String get influencer_tab_links;
+
+  /// No description provided for @influencer_tab_wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get influencer_tab_wallet;
+
+  /// No description provided for @influencer_tab_stats.
+  ///
+  /// In en, this message translates to:
+  /// **'Stats'**
+  String get influencer_tab_stats;
+
+  /// No description provided for @influencer_tab_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get influencer_tab_profile;
 
   /// No description provided for @influencer_share_links_header.
   ///

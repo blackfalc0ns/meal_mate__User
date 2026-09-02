@@ -10,6 +10,7 @@ class SubscriptionBundleResponseDto {
     this.code,
     this.nameAr,
     this.nameEn,
+    this.name,
     this.description,
     this.imageUrl,
     this.mealsPerDay,
@@ -34,6 +35,7 @@ class SubscriptionBundleResponseDto {
   final String? code;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
   final String? description;
   final String? imageUrl;
   final int? mealsPerDay;
@@ -57,6 +59,21 @@ class SubscriptionBundleResponseDto {
 }
 
 @JsonSerializable(createToJson: false)
+class SubscriptionProgramBundlesResponseDto {
+  const SubscriptionProgramBundlesResponseDto({
+    this.hasDeliveryAddress,
+    this.bundles,
+  });
+
+  final bool? hasDeliveryAddress;
+  final List<SubscriptionBundleResponseDto>? bundles;
+
+  factory SubscriptionProgramBundlesResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionProgramBundlesResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class SubscriptionBundleSlotRequirementResponseDto {
   const SubscriptionBundleSlotRequirementResponseDto({this.slot, this.count});
 
@@ -74,12 +91,14 @@ class SubscriptionBundleSlotResponseDto {
     this.code,
     this.nameAr,
     this.nameEn,
+    this.name,
     this.quantity,
   });
 
   final String? code;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
   final int? quantity;
 
   factory SubscriptionBundleSlotResponseDto.fromJson(

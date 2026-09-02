@@ -83,6 +83,7 @@ class AppBottomNavBar extends StatelessWidget {
                             children: List.generate(items.length, (index) {
                               return Expanded(
                                 child: _NavItem(
+                                  key: items[index].itemKey,
                                   item: items[index],
                                   selected: index == currentIndex,
                                   activeColor: _activeColor,
@@ -109,6 +110,7 @@ class AppBottomNavBar extends StatelessWidget {
 
 class _NavItem extends StatelessWidget {
   const _NavItem({
+    super.key,
     required this.item,
     required this.selected,
     required this.activeColor,
@@ -224,6 +226,7 @@ class _NavItem extends StatelessWidget {
 
 class AppBottomNavBarItem {
   const AppBottomNavBarItem({
+    this.itemKey,
     required this.label,
     required this.icon,
     this.selectedIcon,
@@ -235,6 +238,7 @@ class AppBottomNavBarItem {
     this.isAnimated = false,
   });
 
+  final Key? itemKey;
   final String label;
   final IconData icon;
   final IconData? selectedIcon;

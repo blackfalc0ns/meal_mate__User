@@ -3889,7 +3889,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_dashboard_title => 'المؤثر';
 
   @override
-  String get influencer_user_name => 'محمد';
+  String get influencer_user_name => 'مرحباً ، محمد';
 
   @override
   String get influencer_partner_label => 'Influencer Partner';
@@ -3901,40 +3901,61 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_tools => 'أدوات الشراكة';
 
   @override
-  String get influencer_total_earnings => 'إجمالي الأرباح';
+  String get influencer_total_earnings => 'إجمالي العمولات';
 
   @override
-  String get influencer_total_earnings_value => '152.3 د.ك';
+  String get influencer_total_earnings_value => '845';
 
   @override
-  String get influencer_this_month => 'هذا الشهر';
+  String get influencer_this_month => 'هدف الشهر';
 
   @override
-  String get influencer_referrals => 'الإحالات';
+  String get influencer_referrals => 'العملاء المسجلون';
 
   @override
-  String get influencer_referrals_value => '84';
+  String get influencer_referrals_value => '230';
 
   @override
-  String get influencer_active_codes => 'أكواد نشطة';
+  String get influencer_active_codes => 'هذا الأسبوع 7+';
 
   @override
-  String get influencer_conversion_rate => 'التحويل';
+  String get influencer_conversion_rate => 'معدل التحويل';
 
   @override
-  String get influencer_conversion_rate_value => '12%';
+  String get influencer_conversion_rate_value => '35%';
 
   @override
-  String get influencer_from_visits => 'من الزيارات';
+  String get influencer_from_visits => 'هذا الأسبوع 7+';
 
   @override
-  String get influencer_pending_withdrawals => 'قيد المراجعة';
+  String get influencer_pending_withdrawals => 'النقرات على الرابط';
 
   @override
-  String get influencer_pending_withdrawals_value => '32.5 د.ك';
+  String get influencer_pending_withdrawals_value => '520';
 
   @override
-  String get influencer_under_review => 'تحت المراجعة';
+  String get influencer_under_review => 'هذا الأسبوع 7+';
+
+  @override
+  String get influencer_completed_subscriptions => 'الاشتراكات المكتملة';
+
+  @override
+  String get influencer_completed_subscriptions_value => '81';
+
+  @override
+  String get influencer_weekly_commission_gain => '+35 KWD';
+
+  @override
+  String get influencer_this_week => 'هذا الأسبوع';
+
+  @override
+  String get influencer_month_goal_progress => '80%';
+
+  @override
+  String get influencer_month_goal_value => '680 KWD / 850 KWD';
+
+  @override
+  String get influencer_view_details => 'عرض التفاصيل';
 
   @override
   String get influencer_share_links_title => 'روابط المشاركة';
@@ -3955,14 +3976,61 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_wallet_subtitle => 'اعرض الرصيد والعمليات';
 
   @override
-  String get influencer_referral_code_title => 'كود الإحالة';
+  String get influencer_referral_code_title => 'كود الخصم الخاص بك';
 
   @override
-  String get influencer_referral_code_subtitle =>
-      'شارك كودك واحصل على عمولات أكثر';
+  String get influencer_referral_code_subtitle => 'واحصل على عمولات أكثر';
 
   @override
-  String get influencer_referral_code_value => 'MEALMATE24';
+  String get influencer_referral_code_value => 'AMMAR20';
+
+  @override
+  String get influencer_share_code_title => 'شارك رابطك وكودك';
+
+  @override
+  String get influencer_recent_activities => 'آخر النشاطات';
+
+  @override
+  String get influencer_view_all => 'عرض الكل';
+
+  @override
+  String get influencer_activity_first_user => 'المستخدم #gdf55';
+
+  @override
+  String get influencer_activity_first_plan => 'اشترك في باقة شهرية';
+
+  @override
+  String get influencer_activity_second_user => 'محمد علي';
+
+  @override
+  String get influencer_activity_second_plan => 'اشترك في باقة أسبوعية';
+
+  @override
+  String get influencer_activity_third_user => 'عبدالله ناصر';
+
+  @override
+  String get influencer_activity_third_plan => 'اشترك في باقة شهرية';
+
+  @override
+  String get influencer_activity_amount => '+5 KWD';
+
+  @override
+  String get influencer_activity_time => 'منذ 2 ساعة';
+
+  @override
+  String get influencer_tab_home => 'الرئيسية';
+
+  @override
+  String get influencer_tab_links => 'روابط';
+
+  @override
+  String get influencer_tab_wallet => 'المحفظة';
+
+  @override
+  String get influencer_tab_stats => 'احصائيات';
+
+  @override
+  String get influencer_tab_profile => 'البروفايل';
 
   @override
   String get influencer_share_links_header => 'شارك الآن';
@@ -4002,7 +4070,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_not_connected => 'غير متصل';
 
   @override
-  String get influencer_currency => 'د.ك';
+  String get influencer_currency => 'KWD';
 
   @override
   String get influencer_wallet_last_updated => 'آخر تحديث اليوم 09:15 ص';

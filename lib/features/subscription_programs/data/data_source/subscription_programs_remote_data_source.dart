@@ -4,7 +4,7 @@ import 'package:meal_meat_user/features/subscription_programs/data/models/respon
 abstract interface class SubscriptionProgramsRemoteDataSource {
   Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();
 
-  Future<List<SubscriptionBundleResponseDto>> getSubscriptionProgramBundles(
+  Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     String programId,
   );
 }

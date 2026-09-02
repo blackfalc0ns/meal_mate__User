@@ -38,14 +38,21 @@ class RestaurantPackageTiersSection extends StatelessWidget {
 
           return Center(
             child: SizedBox(
-              width: cardWidth,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      Icon(
+                        Icons.grid_view_rounded,
+                        size: Spacing.iconMd,
+                        color: color.primary,
+                      ),
+
+                      const SizedBox(width: Spacing.sm),
+
                       Text(
                         locale.subscription_restaurant_categories_title,
                         maxLines: 1,
@@ -56,12 +63,6 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                           color: color.onSurface,
                         ),
                       ),
-                      const SizedBox(width: Spacing.sm),
-                      Icon(
-                        Icons.grid_view_rounded,
-                        size: Spacing.iconMd,
-                        color: color.primary,
-                      ),
                     ],
                   ),
                   const SizedBox(height: Spacing.xs),
@@ -69,7 +70,7 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                     locale.subscription_restaurant_categories_subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
+
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,

@@ -29,7 +29,9 @@ class SubscriptionProgramsRepositoryImpl
       final response = await _remoteDataSource.getSubscriptionProgramBundles(
         programId,
       );
-      return response.map((item) => item.toEntity()).toList();
+      return (response.bundles ?? const [])
+          .map((item) => item.toEntity())
+          .toList();
     });
   }
 }

@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_dashboard_bottom_tabs.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_primary_button.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_card.dart';
 
@@ -25,6 +26,9 @@ class InfluencerShareLinksScreen extends StatelessWidget {
         titleFontSize: FontSize.size17,
         backgroundColor: color.surface,
         showShadow: false,
+      ),
+      bottomNavigationBar: const InfluencerDashboardBottomTabs(
+        selectedTab: InfluencerDashboardTabItem.links,
       ),
       body: SafeArea(
         top: false,

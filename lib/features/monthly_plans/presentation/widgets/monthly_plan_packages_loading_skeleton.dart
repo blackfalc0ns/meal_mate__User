@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_card_skeleton.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 
 class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
@@ -52,10 +53,9 @@ class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
                           ? Spacing.zero
                           : Spacing.monthlyPlanPackageGap,
                     ),
-                    child: ShimmerPlaceholder.rect(
+                    child: RestaurantPackageTierCardSkeleton(
                       width: cardWidth,
                       height: Spacing.monthlyPlanPackageSideHeight,
-                      borderRadius: Spacing.monthlyPlanPackageSideRadius,
                     ),
                   ),
               ],
