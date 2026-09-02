@@ -69,6 +69,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
       id: restaurantId ?? '',
       logoUrl: _firstNullableNotEmpty([restaurantLogoUrl, tierLogoUrl]),
       tierLogoUrl: tierLogoUrl,
+      ratingCount: restaurantRatingCount ?? 0,
       name: _localized(
         localeName,
         ar: restaurantNameAr,
@@ -137,6 +138,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
         restaurant.tierLogoUrl,
         tierLogoUrl,
       ]),
+      ratingCount: restaurant.ratingCount,
       maxUsageCount: restaurant.maxUsageCount,
       name: restaurant.name,
       category: _firstNotEmpty([restaurant.category, category]),
@@ -158,7 +160,8 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
     return CalendarRestaurantEntity(
       id: _firstNotEmpty([restaurantId, id]),
       logoUrl: _firstNullableNotEmpty([logoUrl, imageUrl]),
-      tierLogoUrl: null,
+      tierLogoUrl: tierLogoUrl,
+      ratingCount: ratingCount ?? 0,
       maxUsageCount: maxUsageCount,
       name: _localized(localeName, ar: nameAr, en: nameEn, fallback: name),
       category: _localized(
@@ -168,8 +171,17 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         fallback: category,
       ),
       rating: rating?.toString() ?? '',
-      deliveryDuration: deliveryDuration ?? '',
-      deliveryWindow: deliveryWindow ?? '',
+      deliveryDuration: _localized(
+        localeName,
+        ar: tierNameAr,
+        en: tierNameEn,
+        fallback: tierName ?? tier ?? deliveryDuration,
+      ),
+      deliveryWindow: _deliveryWindowText(
+        deliveryTimeText: deliveryTimeText ?? deliveryWindow,
+        deliveryWindowStart: deliveryWindowStart,
+        deliveryWindowEnd: deliveryWindowEnd,
+      ),
     );
   }
 
@@ -181,6 +193,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
     return CalendarRestaurantOptionEntity(
       id: _firstNotEmpty([restaurantId, id]),
       logoUrl: _firstNullableNotEmpty([logoUrl, imageUrl]),
+      tierLogoUrl: tierLogoUrl,
       maxUsageCount: maxUsageCount ?? limit ?? calculatedMaxUsageCount,
       usedCount: usedCount,
       remainingCount: remainingCount,
@@ -198,6 +211,18 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
       ),
       mealCount: safeMealCount ?? mealCount ?? 0,
       rating: rating?.toString() ?? '',
+      ratingCount: ratingCount ?? 0,
+      deliveryWindow: _deliveryWindowText(
+        deliveryTimeText: deliveryTimeText ?? deliveryWindow,
+        deliveryWindowStart: deliveryWindowStart,
+        deliveryWindowEnd: deliveryWindowEnd,
+      ),
+      tierName: _localized(
+        localeName,
+        ar: tierNameAr,
+        en: tierNameEn,
+        fallback: tierName ?? tier,
+      ),
       logoType: CalendarRestaurantLogoType.healthyBowl,
     );
   }
@@ -310,6 +335,8 @@ extension CalendarAvailableMealsResponseDtoMapper
     return CalendarRestaurantEntity(
       id: restaurantId ?? '',
       logoUrl: logoUrl,
+      tierLogoUrl: restaurant?.tierLogoUrl,
+      ratingCount: restaurant?.ratingCount ?? 0,
       name: _localized(localeName, ar: nameAr, en: nameEn, fallback: nameEn),
       category: '',
       rating: '',

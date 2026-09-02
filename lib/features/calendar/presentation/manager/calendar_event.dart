@@ -20,9 +20,10 @@ class SelectCalendarDayEvent extends CalendarEvent {
 }
 
 class LoadCalendarRestaurantsEvent extends CalendarEvent {
-  const LoadCalendarRestaurantsEvent({required this.localeName});
+  const LoadCalendarRestaurantsEvent({required this.localeName, this.query});
 
   final String localeName;
+  final String? query;
 }
 
 class SelectCalendarRestaurantEvent extends CalendarEvent {

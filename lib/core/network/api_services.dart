@@ -351,12 +351,14 @@ abstract class ApiServices {
   @GET(EndPoints.subscriptionCalendarRestaurants)
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarRestaurants(
     @Path('subscriptionId') String subscriptionId,
+    @Query('query') String? query,
   );
 
   @GET(EndPoints.subscriptionCalendarDayRestaurants)
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarDayRestaurants(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
+    @Query('query') String? query,
   );
 
   @POST(EndPoints.subscriptionCalendarDayRestaurant)

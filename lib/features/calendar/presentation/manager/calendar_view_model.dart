@@ -56,7 +56,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
       case SelectCalendarDayEvent():
         _selectDay(day: event.day, localeName: event.localeName);
       case LoadCalendarRestaurantsEvent():
-        _loadRestaurants(event.localeName);
+        _loadRestaurants(event.localeName, query: event.query);
       case SelectCalendarRestaurantEvent():
         _selectRestaurant(
           restaurant: event.restaurant,
@@ -149,7 +149,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
     }
   }
 
-  Future<void> _loadRestaurants(String localeName) async {
+  Future<void> _loadRestaurants(String localeName, {String? query}) async {
     final day = state.selectedDay;
     final date = _dateParam(day);
     if (state.subscriptionId.isEmpty || date.isEmpty) return;
@@ -160,6 +160,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
       subscriptionId: state.subscriptionId,
       date: date,
       localeName: localeName,
+      query: query,
     );
     if (isClosed) return;
 
@@ -568,6 +569,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
             ? restaurant!.logoUrl
             : fallback.logoUrl,
         tierLogoUrl: restaurant?.tierLogoUrl,
+        ratingCount: restaurant?.ratingCount ?? fallback.ratingCount,
         maxUsageCount: restaurant?.maxUsageCount ?? fallback.maxUsageCount,
         name: restaurant?.name.isNotEmpty == true
             ? restaurant!.name

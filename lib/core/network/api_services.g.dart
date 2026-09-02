@@ -1478,9 +1478,11 @@ class _ApiServices implements ApiServices {
   @override
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarRestaurants(
     String subscriptionId,
+    String? query,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'query': query};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<CalendarRestaurantsResponseDto>(
@@ -1508,9 +1510,11 @@ class _ApiServices implements ApiServices {
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarDayRestaurants(
     String subscriptionId,
     String date,
+    String? query,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'query': query};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<CalendarRestaurantsResponseDto>(

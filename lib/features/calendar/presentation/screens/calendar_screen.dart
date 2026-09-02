@@ -331,6 +331,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   return CalendarRestaurantPickerSheet(
                     restaurants: sheetState.restaurantsWithUsageLimits(),
                     isLoading: sheetState.isRestaurantsLoading,
+                    onSearchChanged: (query) {
+                      _viewModel.doIntent(
+                        LoadCalendarRestaurantsEvent(
+                          localeName: locale.localeName,
+                          query: query,
+                        ),
+                      );
+                    },
                     onRestaurantSelected: (restaurant) {
                       Navigator.pop(sheetContext, restaurant);
                     },

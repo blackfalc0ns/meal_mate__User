@@ -30,16 +30,19 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   Future<List<CalendarRestaurantResponseDto>> getRestaurants({
     required String subscriptionId,
     required String date,
+    String? query,
   }) async {
     final response = await _apiServices.getSubscriptionCalendarDayRestaurants(
       subscriptionId,
       date,
+      query,
     );
     final dayRestaurants = response.restaurants ?? const [];
     if (dayRestaurants.isEmpty) return dayRestaurants;
 
     final poolResponse = await _apiServices.getSubscriptionCalendarRestaurants(
       subscriptionId,
+      query,
     );
     final poolLogos = <String, String>{};
     for (final restaurant in poolResponse.restaurants ?? const []) {
@@ -71,6 +74,7 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
         categoryAr: restaurant.categoryAr,
         categoryEn: restaurant.categoryEn,
         rating: restaurant.rating,
+        ratingCount: restaurant.ratingCount,
         logoUrl: logo,
         imageUrl: restaurant.imageUrl,
         mealCount: restaurant.mealCount,
@@ -84,6 +88,14 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
         disabledReason: restaurant.disabledReason,
         deliveryDuration: restaurant.deliveryDuration,
         deliveryWindow: restaurant.deliveryWindow,
+        deliveryWindowStart: restaurant.deliveryWindowStart,
+        deliveryWindowEnd: restaurant.deliveryWindowEnd,
+        deliveryTimeText: restaurant.deliveryTimeText,
+        tier: restaurant.tier,
+        tierNameAr: restaurant.tierNameAr,
+        tierNameEn: restaurant.tierNameEn,
+        tierName: restaurant.tierName,
+        tierLogoUrl: restaurant.tierLogoUrl,
         maxUsageCount: restaurant.maxUsageCount,
       );
     }).toList();

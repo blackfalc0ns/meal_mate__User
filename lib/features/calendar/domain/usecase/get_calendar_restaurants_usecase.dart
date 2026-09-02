@@ -13,11 +13,13 @@ class GetCalendarRestaurantsUseCase {
     required String subscriptionId,
     required String date,
     required String localeName,
+    String? query,
   }) {
     return _repository.getRestaurants(
       subscriptionId: subscriptionId,
       date: date,
       localeName: localeName,
+      query: query,
     );
   }
 }

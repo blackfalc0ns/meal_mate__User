@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantCopy extends StatelessWidget {
-  const CalendarRestaurantCopy({required this.restaurant});
+  const CalendarRestaurantCopy({super.key, required this.restaurant});
 
   final CalendarRestaurantOptionEntity restaurant;
 
@@ -40,26 +40,46 @@ class CalendarRestaurantCopy extends StatelessWidget {
             ).copyWith(letterSpacing: 0),
           ),
           const SizedBox(height: 1.8),
-          RichText(
-            textAlign: TextAlign.right,
-            text: TextSpan(
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
-                color: color.onSurface,
-              ).copyWith(letterSpacing: 0),
-              children: [
-                TextSpan(
-                  text: '${restaurant.mealCount}',
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: 10.96,
-                    color: color.onSurface,
-                  ).copyWith(letterSpacing: 0),
+          Row(
+            children: [
+              if (restaurant.tierLogoUrl?.isNotEmpty == true) ...[
+                AppCachedNetworkImage(
+                  imageUrl: restaurant.tierLogoUrl!,
+                  width: 14,
+                  height: 14,
+                  shape: BoxShape.circle,
+                  semanticLabel: restaurant.tierName,
                 ),
-                TextSpan(text: locale.calendar_meal_suffix),
+                const SizedBox(width: Spacing.xs),
               ],
-            ),
+              Expanded(
+                child: RichText(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  text: TextSpan(
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size11,
+                      color: color.onSurface,
+                    ).copyWith(letterSpacing: 0),
+                    children: [
+                      if (restaurant.tierName.isNotEmpty)
+                        TextSpan(text: '${restaurant.tierName} - '),
+                      TextSpan(
+                        text: '${restaurant.mealCount}',
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: 10.96,
+                          color: color.onSurface,
+                        ).copyWith(letterSpacing: 0),
+                      ),
+                      TextSpan(text: locale.calendar_meal_suffix),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

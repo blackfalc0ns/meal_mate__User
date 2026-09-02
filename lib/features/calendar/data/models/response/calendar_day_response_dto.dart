@@ -129,6 +129,7 @@ class CalendarRestaurantResponseDto {
     this.categoryAr,
     this.categoryEn,
     this.rating,
+    this.ratingCount,
     this.logoUrl,
     this.imageUrl,
     this.mealCount,
@@ -142,6 +143,14 @@ class CalendarRestaurantResponseDto {
     this.disabledReason,
     this.deliveryDuration,
     this.deliveryWindow,
+    this.deliveryWindowStart,
+    this.deliveryWindowEnd,
+    this.deliveryTimeText,
+    this.tier,
+    this.tierNameAr,
+    this.tierNameEn,
+    this.tierName,
+    this.tierLogoUrl,
     this.maxUsageCount,
   });
 
@@ -157,6 +166,7 @@ class CalendarRestaurantResponseDto {
   final String? categoryAr;
   final String? categoryEn;
   final num? rating;
+  final int? ratingCount;
   final String? logoUrl;
   final String? imageUrl;
   final int? mealCount;
@@ -170,6 +180,14 @@ class CalendarRestaurantResponseDto {
   final String? disabledReason;
   final String? deliveryDuration;
   final String? deliveryWindow;
+  final String? deliveryWindowStart;
+  final String? deliveryWindowEnd;
+  final String? deliveryTimeText;
+  final String? tier;
+  final String? tierNameAr;
+  final String? tierNameEn;
+  final String? tierName;
+  final String? tierLogoUrl;
   final int? maxUsageCount;
 
   factory CalendarRestaurantResponseDto.fromJson(Map<String, dynamic> json) =>

@@ -3,6 +3,7 @@ class CalendarRestaurantEntity {
     this.id = '',
     this.logoUrl,
     this.tierLogoUrl,
+    this.ratingCount = 0,
     this.maxUsageCount,
     required this.name,
     required this.category,
@@ -14,6 +15,7 @@ class CalendarRestaurantEntity {
   final String id;
   final String? logoUrl;
   final String? tierLogoUrl;
+  final int ratingCount;
   final int? maxUsageCount;
   final String name;
   final String category;

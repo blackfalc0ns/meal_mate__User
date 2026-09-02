@@ -49,11 +49,13 @@ class CalendarRepositoryImpl implements CalendarRepository {
     required String subscriptionId,
     required String date,
     required String localeName,
+    String? query,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getRestaurants(
         subscriptionId: subscriptionId,
         date: date,
+        query: query,
       );
       return response
           .map((restaurant) => restaurant.toOptionEntity(localeName))

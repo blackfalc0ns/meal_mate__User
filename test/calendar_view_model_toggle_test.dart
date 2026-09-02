@@ -59,6 +59,49 @@ void main() {
       await viewModel.close();
     },
   );
+
+  test(
+    'passes restaurant search query through the calendar view model',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final calendarRepository = _CalendarRepositoryFake();
+      final profileRepository = _ProfileRepositoryFake();
+      final sharedPreferences = await SharedPreferences.getInstance();
+      final viewModel = _TestCalendarViewModel(
+        GetCalendarUseCase(calendarRepository),
+        GetCalendarDayUseCase(calendarRepository),
+        GetCalendarRestaurantsUseCase(calendarRepository),
+        SetCalendarDayRestaurantUseCase(calendarRepository),
+        GetCalendarAvailableMealsUseCase(calendarRepository),
+        SaveCalendarDayMealsUseCase(calendarRepository),
+        AutoSelectCalendarDayUseCase(calendarRepository),
+        GetCurrentCustomerSubscriptionUseCase(profileRepository),
+        SharedPrefHelper(sharedPreferences),
+      );
+
+      viewModel.seed(
+        CalendarState(
+          subscriptionId: 'subscription-1',
+          selectedDate: DateTime(2026, 9, 6),
+          days: [
+            CalendarDayEntity(
+              dayNumber: 6,
+              weekday: 'Sun',
+              date: DateTime(2026, 9, 6),
+            ),
+          ],
+        ),
+      );
+
+      viewModel.doIntent(
+        const LoadCalendarRestaurantsEvent(localeName: 'en', query: 'Healthy'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(calendarRepository.lastRestaurantQuery, 'Healthy');
+      await viewModel.close();
+    },
+  );
 }
 
 Future<_TestCalendarViewModel> _calendarViewModel() async {
@@ -113,6 +156,8 @@ class _TestCalendarViewModel extends CalendarViewModel {
 }
 
 class _CalendarRepositoryFake implements CalendarRepository {
+  String? lastRestaurantQuery;
+
   @override
   Future<ApiResult<CalendarDayEntity>> autoSelect({
     required String subscriptionId,
@@ -154,8 +199,10 @@ class _CalendarRepositoryFake implements CalendarRepository {
     required String subscriptionId,
     required String date,
     required String localeName,
+    String? query,
   }) {
-    throw UnimplementedError();
+    lastRestaurantQuery = query;
+    return Future.value(ApiSuccessResult(data: []));
   }
 
   @override

@@ -71,4 +71,31 @@ void main() {
     expect(entity.isEnabled, isFalse);
     expect(entity.disabledReason, 'quota_exhausted');
   });
+
+  test(
+    'maps restaurant rating delivery and tier fields from the API response',
+    () {
+      final response = CalendarRestaurantResponseDto.fromJson({
+        'restaurantId': 'restaurant-1',
+        'name': 'Fit Plate',
+        'safeMealCount': 8,
+        'rating': 4.8,
+        'ratingCount': 94,
+        'deliveryWindowStart': '18:00:00',
+        'deliveryWindowEnd': '19:00:00',
+        'deliveryTimeText': '6:00 PM - 7:00 PM',
+        'tier': 'Platinum',
+        'tierName': 'Platinum',
+        'tierLogoUrl': 'https://example.com/tier.png',
+      });
+
+      final entity = response.toOptionEntity('en');
+
+      expect(entity.rating, '4.8');
+      expect(entity.ratingCount, 94);
+      expect(entity.deliveryWindow, '6:00 PM - 7:00 PM');
+      expect(entity.tierName, 'Platinum');
+      expect(entity.tierLogoUrl, 'https://example.com/tier.png');
+    },
+  );
 }

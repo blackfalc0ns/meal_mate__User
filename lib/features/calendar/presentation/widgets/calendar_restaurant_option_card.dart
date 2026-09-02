@@ -36,7 +36,10 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                 children: [
                   const CalendarArrowBubble(),
                   const SizedBox(width: 27.6),
-                  CalendarRating(value: restaurant.rating),
+                  CalendarRating(
+                    value: restaurant.rating,
+                    ratingCount: restaurant.ratingCount,
+                  ),
                   const SizedBox(width: 27.6),
                   Expanded(
                     child: CalendarRestaurantCopy(restaurant: restaurant),

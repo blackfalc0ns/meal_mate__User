@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -16,17 +18,41 @@ part 'calendar_circle_text_logo.dart';
 part 'calendar_image_circle_logo.dart';
 part 'calendar_restaurant_picker_loading_skeleton.dart';
 
-class CalendarRestaurantPickerSheet extends StatelessWidget {
+class CalendarRestaurantPickerSheet extends StatefulWidget {
   const CalendarRestaurantPickerSheet({
     super.key,
     required this.restaurants,
     required this.onRestaurantSelected,
+    required this.onSearchChanged,
     this.isLoading = false,
   });
 
   final List<CalendarRestaurantOptionEntity> restaurants;
   final ValueChanged<CalendarRestaurantOptionEntity> onRestaurantSelected;
+  final ValueChanged<String> onSearchChanged;
   final bool isLoading;
+
+  @override
+  State<CalendarRestaurantPickerSheet> createState() =>
+      _CalendarRestaurantPickerSheetState();
+}
+
+class _CalendarRestaurantPickerSheetState
+    extends State<CalendarRestaurantPickerSheet> {
+  Timer? _searchDebounce;
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+      widget.onSearchChanged(value.trim());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,28 +144,28 @@ class CalendarRestaurantPickerSheet extends StatelessWidget {
                 ],
               ),
             ),
-            const Positioned(
+            Positioned(
               top: 87,
               left: 42,
               right: 42,
-              child: CalendarRestaurantSearchField(),
+              child: CalendarRestaurantSearchField(onChanged: _onSearchChanged),
             ),
             Positioned(
               top: 149,
               left: 19,
               right: 20,
               bottom: 24,
-              child: isLoading
+              child: widget.isLoading
                   ? const CalendarRestaurantPickerLoadingSkeleton()
                   : ListView.separated(
                       padding: EdgeInsets.zero,
-                      itemCount: restaurants.length,
+                      itemCount: widget.restaurants.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 9.2),
                       itemBuilder: (context, index) {
-                        final restaurant = restaurants[index];
+                        final restaurant = widget.restaurants[index];
                         return CalendarRestaurantOptionCard(
                           restaurant: restaurant,
-                          onTap: () => onRestaurantSelected(restaurant),
+                          onTap: () => widget.onRestaurantSelected(restaurant),
                         );
                       },
                     ),

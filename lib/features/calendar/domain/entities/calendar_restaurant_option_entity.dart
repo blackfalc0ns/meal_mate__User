@@ -2,6 +2,7 @@ class CalendarRestaurantOptionEntity {
   const CalendarRestaurantOptionEntity({
     this.id = '',
     this.logoUrl,
+    this.tierLogoUrl,
     this.maxUsageCount,
     this.usedCount,
     this.remainingCount,
@@ -14,11 +15,15 @@ class CalendarRestaurantOptionEntity {
     required this.description,
     required this.mealCount,
     required this.rating,
+    this.ratingCount = 0,
+    this.deliveryWindow = '',
+    this.tierName = '',
     required this.logoType,
   });
 
   final String id;
   final String? logoUrl;
+  final String? tierLogoUrl;
   final int? maxUsageCount;
   final int? usedCount;
   final int? remainingCount;
@@ -31,6 +36,9 @@ class CalendarRestaurantOptionEntity {
   final String description;
   final int mealCount;
   final String rating;
+  final int ratingCount;
+  final String deliveryWindow;
+  final String tierName;
   final CalendarRestaurantLogoType logoType;
 }
 

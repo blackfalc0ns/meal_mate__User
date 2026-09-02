@@ -52,12 +52,13 @@ class CalendarMetaChip extends StatelessWidget {
           ),
         const SizedBox(width: Spacing.calendarRestaurantSummaryMetaGap),
         if (imageUrl?.isNotEmpty == true)
-          AppCachedNetworkImage(width:25,height:25,
-             imageUrl: imageUrl!,
+          AppCachedNetworkImage(
+            width: 25,
+            height: 25,
+            imageUrl: imageUrl!,
             // width: badgeColor == null ? FontSize.size11 : FontSize.size10,
             // height: badgeColor == null ? FontSize.size11 : FontSize.size10,
             fit: BoxFit.cover,
-          
           )
         else
           Icon(

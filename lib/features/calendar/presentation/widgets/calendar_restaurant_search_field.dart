@@ -1,7 +1,9 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantSearchField extends StatelessWidget {
-  const CalendarRestaurantSearchField();
+  const CalendarRestaurantSearchField({super.key, required this.onChanged});
+
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +25,24 @@ class CalendarRestaurantSearchField extends StatelessWidget {
             size: 22,
           ),
           Expanded(
-            child: Text(
-              locale.calendar_search_restaurant_hint,
+            child: TextField(
+              onChanged: onChanged,
               textAlign: TextAlign.center,
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: 13,
-                color: color.onSurface.withValues(alpha: 0.62),
+                color: color.onSurface,
               ).copyWith(height: 20 / 13),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                isCollapsed: true,
+                hintText: locale.calendar_search_restaurant_hint,
+                hintStyle: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: 13,
+                  color: color.onSurface.withValues(alpha: 0.62),
+                ).copyWith(height: 20 / 13),
+              ),
             ),
           ),
           const SizedBox(width: 22),

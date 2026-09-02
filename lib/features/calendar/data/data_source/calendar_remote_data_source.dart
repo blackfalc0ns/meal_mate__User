@@ -15,6 +15,7 @@ abstract interface class CalendarRemoteDataSource {
   Future<List<CalendarRestaurantResponseDto>> getRestaurants({
     required String subscriptionId,
     required String date,
+    String? query,
   });
 
   Future<CalendarDayResponseDto> setDayRestaurant({

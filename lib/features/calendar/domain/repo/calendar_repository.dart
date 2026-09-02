@@ -21,6 +21,7 @@ abstract interface class CalendarRepository {
     required String subscriptionId,
     required String date,
     required String localeName,
+    String? query,
   });
 
   Future<ApiResult<CalendarDayEntity>> setDayRestaurant({
