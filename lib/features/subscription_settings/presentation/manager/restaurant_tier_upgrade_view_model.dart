@@ -42,7 +42,10 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
       case SubmitUpgradeRequestEvent():
         _submit(paymentMethodId: event.paymentMethodId, reason: event.reason);
       case VerifyUpgradeStatusEvent():
-        _verifyStatus(event.upgradeId);
+        _verifyStatus(
+          subscriptionId: event.subscriptionId,
+          upgradeId: event.upgradeId,
+        );
       case MarkUpgradeFailedEvent():
         emit(
           state.copyWith(
@@ -264,9 +267,11 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     }
   }
 
-  Future<void> _verifyStatus(String upgradeId) async {
-    final subId = state.subscriptionId;
-    if (subId.isEmpty || upgradeId.isEmpty) return;
+  Future<void> _verifyStatus({
+    required String subscriptionId,
+    required String upgradeId,
+  }) async {
+    if (subscriptionId.isEmpty || upgradeId.isEmpty) return;
 
     emit(
       state.copyWith(
@@ -283,7 +288,7 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
       }
 
       final result = await _getSubscriptionUpgradeStatusUseCase(
-        subscriptionId: subId,
+        subscriptionId: subscriptionId,
         upgradeId: upgradeId,
       );
 

@@ -1,7 +1,11 @@
 part of 'calendar_picker_panel.dart';
 
 class CalendarMonthArrowButton extends StatelessWidget {
-  const CalendarMonthArrowButton({required this.icon, required this.onPressed});
+  const CalendarMonthArrowButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
 
   final IconData icon;
   final VoidCallback onPressed;

@@ -1,7 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarImageCircleLogo extends StatelessWidget {
-  const CalendarImageCircleLogo({required this.asset});
+  const CalendarImageCircleLogo({super.key, required this.asset});
 
   final String asset;
 

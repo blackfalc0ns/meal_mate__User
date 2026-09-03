@@ -44,6 +44,31 @@ void main() {
 
     expect(upgradeRepository.submittedRequest?.paymentMethodId, 6);
   });
+
+  test(
+    'verifies upgrade status with the subscription id from web view args',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-from-web-view',
+          upgradeId: 'upgrade-from-web-view',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(upgradeRepository.statusSubscriptionId, 'sub-from-web-view');
+      expect(upgradeRepository.statusUpgradeId, 'upgrade-from-web-view');
+    },
+  );
 }
 
 const _platinumOption = SubscriptionUpgradeOptionEntity(
@@ -96,6 +121,8 @@ const _upgradeOptions = SubscriptionUpgradeOptionsEntity(
 class _RestaurantTierUpgradeRepositoryFake
     implements RestaurantTierUpgradeRepository {
   SubscriptionUpgradeRequestEntity? submittedRequest;
+  String? statusSubscriptionId;
+  String? statusUpgradeId;
 
   @override
   Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
@@ -132,6 +159,8 @@ class _RestaurantTierUpgradeRepositoryFake
     String subscriptionId,
     String upgradeId,
   ) async {
+    statusSubscriptionId = subscriptionId;
+    statusUpgradeId = upgradeId;
     return ApiSuccessResult(
       data: const SubscriptionUpgradeStatusEntity(
         upgradeId: 'upgrade-1',

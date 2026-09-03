@@ -37,8 +37,7 @@ class CustomSnackbar {
 
     CherryToast(
       animationCurve: Curves.linearToEaseOut,
-      icon: icon,
-      iconColor: AppColors.white,
+      iconWidget: Icon(icon, color: AppColors.white),
       themeColor: themeColor,
       backgroundColor: themeColor,
       title: Text(

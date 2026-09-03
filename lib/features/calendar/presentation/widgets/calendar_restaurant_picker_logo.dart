@@ -2,6 +2,7 @@ part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantPickerLogo extends StatelessWidget {
   const CalendarRestaurantPickerLogo({
+    super.key,
     required this.type,
     this.logoUrl,
     this.semanticLabel,

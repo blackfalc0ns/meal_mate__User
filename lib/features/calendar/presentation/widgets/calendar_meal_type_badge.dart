@@ -1,7 +1,7 @@
 part of 'calendar_meal_card.dart';
 
 class CalendarMealTypeBadge extends StatelessWidget {
-  const CalendarMealTypeBadge({required this.mealType});
+  const CalendarMealTypeBadge({super.key, required this.mealType});
 
   final String mealType;
 

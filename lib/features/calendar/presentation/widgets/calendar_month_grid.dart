@@ -1,7 +1,11 @@
 part of 'calendar_picker_panel.dart';
 
 class CalendarMonthGrid extends StatelessWidget {
-  const CalendarMonthGrid({required this.days, required this.onDaySelected});
+  const CalendarMonthGrid({
+    super.key,
+    required this.days,
+    required this.onDaySelected,
+  });
 
   final List<CalendarDayEntity> days;
   final ValueChanged<CalendarDayEntity> onDaySelected;

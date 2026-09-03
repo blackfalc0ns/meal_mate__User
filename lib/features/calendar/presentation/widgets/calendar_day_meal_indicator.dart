@@ -2,6 +2,7 @@ part of 'calendar_picker_panel.dart';
 
 class CalendarDayMealIndicator extends StatelessWidget {
   const CalendarDayMealIndicator({
+    super.key,
     required this.selected,
     required this.muted,
     required this.compact,

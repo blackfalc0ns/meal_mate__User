@@ -37,8 +37,12 @@ class SubmitUpgradeRequestEvent extends RestaurantTierUpgradeEvent {
 }
 
 class VerifyUpgradeStatusEvent extends RestaurantTierUpgradeEvent {
-  const VerifyUpgradeStatusEvent(this.upgradeId);
+  const VerifyUpgradeStatusEvent({
+    required this.subscriptionId,
+    required this.upgradeId,
+  });
 
+  final String subscriptionId;
   final String upgradeId;
 }
 
