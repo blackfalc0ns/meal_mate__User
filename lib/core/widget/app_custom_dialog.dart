@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_loading_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class AppCustomDialog {
@@ -35,37 +37,53 @@ class AppCustomDialog {
       modalBarrierColor: color.scrim,
       modalTypeBuilder: (_) => WoltModalType.bottomSheet(),
       pageListBuilder: (modalContext) {
-        final modalColor = Theme.of(modalContext).colorScheme;
+        final modalColor = modalContext.colorScheme;
+        final primaryColor = confirmTextColor ?? modalColor.primary;
 
         return [
           WoltModalSheetPage(
+            hasTopBarLayer: false,
+            navBarHeight: Spacing.zero,
             backgroundColor: modalColor.surface,
             surfaceTintColor: modalColor.surface,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.screenH,
-                //    vertical: Spacing.md,
+              padding: const EdgeInsets.only(
+                left: Spacing.screenH,
+                right: Spacing.screenH,
+                top: Spacing.lg,
+                bottom: Spacing.base,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (icon != null) ...[
-                    ExcludeSemantics(
-                      child: Icon(
-                        icon,
-                        color: iconColor ?? modalColor.primary,
-                        size: Spacing.iconXl,
+                    Center(
+                      child: Container(
+                        width: Spacing.iconXl + Spacing.sm,
+                        height: Spacing.iconXl + Spacing.sm,
+                        decoration: BoxDecoration(
+                          color: (iconColor ?? primaryColor).withValues(
+                            alpha: 0.1,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          icon,
+                          color: iconColor ?? primaryColor,
+                          size: Spacing.xxl,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: Spacing.sm),
+                    const SizedBox(height: Spacing.md),
                   ],
                   Text(
                     title,
                     textAlign: TextAlign.center,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size15,
+                      fontSize: FontSize.size16,
                       color: modalColor.onSurface,
                     ),
                   ),
@@ -73,46 +91,70 @@ class AppCustomDialog {
                     const SizedBox(height: Spacing.sm),
                     Text(
                       message,
-                      textAlign: TextAlign.start,
+                      textAlign: message.contains('\n')
+                          ? TextAlign.start
+                          : TextAlign.center,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size13,
                         color: modalColor.onSurfaceVariant,
-                      ),
+                      ).copyWith(height: 1.5),
                     ),
                   ],
                   if (content != null) ...[
-                    const SizedBox(height: Spacing.sm),
+                    const SizedBox(height: Spacing.md),
                     content,
                   ],
-                  const SizedBox(height: Spacing.md),
+                  const SizedBox(height: Spacing.lg),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(modalContext).pop(onCancel());
-                        },
-                        child: Text(
-                          cancelText,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size13,
-                            color: modalColor.onSurfaceVariant,
-                          ),
+                      Expanded(
+                        child: AppLoadingButton(
+                          height: Spacing.buttonSmallHeight,
+                          text: confirmText,
+                          color: primaryColor,
+                          textColor: modalColor.onPrimary,
+                          fontSize: FontSize.size13,
+                          borderRadius: Spacing.buttonRadius,
+                          onPressed: () {
+                            Navigator.of(modalContext).pop(onConfirm());
+                          },
                         ),
                       ),
                       const SizedBox(width: Spacing.sm),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(modalContext).pop(onConfirm());
-                        },
-                        child: Text(
-                          confirmText,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size13,
-                            color: confirmTextColor ?? modalColor.primary,
+                      Expanded(
+                        child: SizedBox(
+                          height: Spacing.buttonSmallHeight,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: modalColor.outlineVariant,
+                                width: Spacing.border,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.buttonRadius,
+                                ),
+                              ),
+                              backgroundColor: modalColor.surface,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.sm,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(modalContext).pop(onCancel());
+                            },
+                            child: Text(
+                              cancelText,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size13,
+                                color: modalColor.onSurfaceVariant,
+                              ),
+                            ),
                           ),
                         ),
                       ),
