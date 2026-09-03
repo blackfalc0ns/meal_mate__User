@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_primary_button.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_banner.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_discount_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_quick_stats_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_referral_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_social_tile.dart';
 
 class InfluencerShareLinksScreen extends StatelessWidget {
   const InfluencerShareLinksScreen({super.key, this.showScaffold = true});
@@ -19,6 +21,7 @@ class InfluencerShareLinksScreen extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
+    final shareLinks = dashboard.shareLinks;
 
     final body = SafeArea(
       top: false,
@@ -30,20 +33,25 @@ class InfluencerShareLinksScreen extends StatelessWidget {
           bottom: Spacing.xxxl,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              locale.influencer_share_links_header,
-              textAlign: TextAlign.center,
-              style: getBoldStyle(
+              shareLinks.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+             
+              style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size18,
+                fontSize: FontSize.size17,
                 color: color.onSurface,
               ),
             ),
             const SizedBox(height: Spacing.xs),
             Text(
-              locale.influencer_share_links_body,
-              textAlign: TextAlign.center,
+              shareLinks.subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
@@ -51,26 +59,67 @@ class InfluencerShareLinksScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Spacing.base),
-            InfluencerShareCard(
-              title: locale.influencer_referral_code_title,
-              subtitle: locale.influencer_referral_code_subtitle,
-              code: locale.influencer_referral_code_value,
+            InfluencerShareBanner(
+              shareLinks: shareLinks,
               imageAsset: dashboard.shareBannerAsset,
-              qrAsset: dashboard.qrAsset,
+              trendIconAsset: dashboard.trendIconAsset,
             ),
             const SizedBox(height: Spacing.base),
-            InfluencerPrimaryButton(
-              label: locale.influencer_share_now,
-              onPressed: () {},
+            InfluencerShareDiscountCard(
+              shareLinks: shareLinks,
+              qrAsset: dashboard.qrAsset,
+              copyIconAsset: dashboard.copyIconAsset,
+            ),
+            const SizedBox(height: Spacing.base),
+            InfluencerShareReferralCard(
+              shareLinks: shareLinks,
+              copyIconAsset: dashboard.copyIconAsset,
+            ),
+            const SizedBox(height: Spacing.lg),
+            Text(
+              shareLinks.shareNowTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+           
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size13,
+                color: color.onSurface,
+              ),
+            ),
+            const SizedBox(height: Spacing.xs),
+            Text(
+              shareLinks.shareNowSubtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+             
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: Spacing.sm),
-            InfluencerPrimaryButton(
-              label: locale.influencer_add_social_accounts,
-              filled: false,
-              onPressed: () => Navigator.of(
-                context,
-              ).pushNamed(AppRoutes.influencerSocialConnections),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (
+                    var index = 0;
+                    index < shareLinks.socialPlatforms.length;
+                    index++
+                  ) ...[
+                    InfluencerShareSocialTile(
+                      platform: shareLinks.socialPlatforms[index],
+                    ),
+                    if (index < shareLinks.socialPlatforms.length - 1)
+                      const SizedBox(width: Spacing.md),
+                  ],
+                ],
+              ),
             ),
+            const SizedBox(height: Spacing.lg),
+            InfluencerShareQuickStatsCard(shareLinks: shareLinks),
           ],
         ),
       ),
@@ -83,7 +132,7 @@ class InfluencerShareLinksScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: color.surface,
       appBar: CustomAppBar(
-        title: locale.influencer_share_links_title,
+        title: shareLinks.title,
         titleFontSize: FontSize.size17,
         backgroundColor: color.surface,
         showShadow: false,

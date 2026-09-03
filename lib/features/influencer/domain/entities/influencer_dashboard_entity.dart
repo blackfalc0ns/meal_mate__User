@@ -16,6 +16,7 @@ class InfluencerDashboardEntity {
     required this.socialAccounts,
     required this.activities,
     required this.statistics,
+    required this.shareLinks,
   });
 
   final String userName;
@@ -34,6 +35,7 @@ class InfluencerDashboardEntity {
   final List<InfluencerSocialAccountEntity> socialAccounts;
   final List<InfluencerActivityEntity> activities;
   final InfluencerStatisticsEntity statistics;
+  final InfluencerShareLinksEntity shareLinks;
 }
 
 class InfluencerMetricEntity {
@@ -122,6 +124,80 @@ class InfluencerSocialAccountEntity {
   final String platform;
   final String handle;
   final bool connected;
+}
+
+class InfluencerShareLinksEntity {
+  const InfluencerShareLinksEntity({
+    required this.title,
+    required this.subtitle,
+    required this.bannerTitle,
+    required this.bannerHighlight,
+    required this.bannerSubtitle,
+    required this.bannerFooter,
+    required this.discountCodeTitle,
+    required this.discountCode,
+    required this.discountBadgePrefix,
+    required this.discountBadgeValue,
+    required this.discountBadgeSuffix,
+    required this.copyCodeLabel,
+    required this.qrLabel,
+    required this.referralLinkTitle,
+    required this.referralLink,
+    required this.copyLinkLabel,
+    required this.shareNowTitle,
+    required this.shareNowSubtitle,
+    required this.quickStatsTitle,
+    required this.quickStatsSubtitle,
+    required this.socialPlatforms,
+    required this.quickStats,
+  });
+
+  final String title;
+  final String subtitle;
+  final String bannerTitle;
+  final String bannerHighlight;
+  final String bannerSubtitle;
+  final String bannerFooter;
+  final String discountCodeTitle;
+  final String discountCode;
+  final String discountBadgePrefix;
+  final String discountBadgeValue;
+  final String discountBadgeSuffix;
+  final String copyCodeLabel;
+  final String qrLabel;
+  final String referralLinkTitle;
+  final String referralLink;
+  final String copyLinkLabel;
+  final String shareNowTitle;
+  final String shareNowSubtitle;
+  final String quickStatsTitle;
+  final String quickStatsSubtitle;
+  final List<InfluencerShareSocialPlatformEntity> socialPlatforms;
+  final List<InfluencerShareQuickStatEntity> quickStats;
+}
+
+class InfluencerShareSocialPlatformEntity {
+  const InfluencerShareSocialPlatformEntity({
+    required this.label,
+    required this.iconAsset,
+    this.drawDotsIcon = false,
+  });
+
+  final String label;
+  final String iconAsset;
+  final bool drawDotsIcon;
+}
+
+class InfluencerShareQuickStatEntity {
+  const InfluencerShareQuickStatEntity({
+    required this.label,
+    required this.value,
+    required this.iconAsset,
+  });
+
+  final String label;
+  final String value;
+  final String iconAsset;
 }
 
 class InfluencerActivityEntity {

@@ -168,6 +168,68 @@ class InfluencerFakeDataSource {
           revenue: locale.influencer_top_product_revenue_value,
         ),
       ),
+      shareLinks: InfluencerShareLinksEntity(
+        title: 'روابط المشاركة',
+        subtitle: 'شارك رابطك وكودك واحصل على عمولات أكثر',
+        bannerTitle: 'كل ما تشارك أكثر',
+        bannerHighlight: 'تكسب أكثر!',
+        bannerSubtitle: 'شارك رابطك مع اصدقائك',
+        bannerFooter: 'واحصل على عمولات من كل طلب',
+        discountCodeTitle: 'كود الخصم الخاص بك',
+        discountCode: 'Mealmate20',
+        discountBadgePrefix: 'خصم ',
+        discountBadgeValue: '20%',
+        discountBadgeSuffix: ' للعملاء الجدد',
+        copyCodeLabel: 'نسخ الكود',
+        qrLabel: 'امسح للمشاركة',
+        referralLinkTitle: 'رابط الإحالة الخاص بك',
+        referralLink: 'https://mealmate.com/ref/Mealmate20',
+        copyLinkLabel: 'نسخ الرابط',
+        shareNowTitle: 'شارك الآن',
+        shareNowSubtitle: 'شارك يسهولة عبر منصات التواصل',
+        quickStatsTitle: 'مشاركة سريعة',
+        quickStatsSubtitle: 'أداؤك في مشاركة الروابط',
+        socialPlatforms: const [
+          InfluencerShareSocialPlatformEntity(
+            label: 'واتساب',
+            iconAsset: AssetsFake.influencerSocialWhatsapp,
+          ),
+          InfluencerShareSocialPlatformEntity(
+            label: 'إنستغرام',
+            iconAsset: AssetsFake.influencerSocialInstagram,
+          ),
+          InfluencerShareSocialPlatformEntity(
+            label: 'تيليجرام',
+            iconAsset: AssetsFake.influencerSocialTelegram,
+          ),
+          InfluencerShareSocialPlatformEntity(
+            label: 'تيك توك',
+            iconAsset: AssetsFake.influencerSocialTiktok,
+          ),
+          InfluencerShareSocialPlatformEntity(
+            label: 'المزيد',
+            iconAsset: AssetsFake.influencerSocialMore,
+            drawDotsIcon: true,
+          ),
+        ],
+        quickStats: const [
+          InfluencerShareQuickStatEntity(
+            label: 'النقرات على الرابط',
+            value: '520',
+            iconAsset: AssetsFake.influencerQuickStatClicks,
+          ),
+          InfluencerShareQuickStatEntity(
+            label: 'الطلبات الناتجة',
+            value: '68',
+            iconAsset: AssetsFake.influencerQuickStatOrders,
+          ),
+          InfluencerShareQuickStatEntity(
+            label: 'التحويلات',
+            value: '35%',
+            iconAsset: AssetsFake.influencerQuickStatConversion,
+          ),
+        ],
+      ),
     );
   }
 

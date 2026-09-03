@@ -204,4 +204,20 @@ class AssetsFake {
       'assets/images/influencer/figma/influencer_share_banner.png';
   static const String influencerQr =
       'assets/images/influencer/figma/influencer_qr.png';
+  static const String influencerSocialWhatsapp =
+      'assets/images/influencer/figma/influencer_social_whatsapp.svg';
+  static const String influencerSocialInstagram =
+      'assets/images/influencer/figma/influencer_social_instagram.svg';
+  static const String influencerSocialTelegram =
+      'assets/images/influencer/figma/influencer_social_telegram.svg';
+  static const String influencerSocialTiktok =
+      'assets/images/influencer/figma/influencer_social_tiktok.svg';
+  static const String influencerSocialMore =
+      'assets/images/influencer/figma/influencer_social_more.svg';
+  static const String influencerQuickStatClicks =
+      'assets/images/influencer/figma/influencer_quick_stat_clicks.svg';
+  static const String influencerQuickStatOrders =
+      'assets/images/influencer/figma/influencer_quick_stat_orders.svg';
+  static const String influencerQuickStatConversion =
+      'assets/images/influencer/figma/influencer_quick_stat_conversion.svg';
 }

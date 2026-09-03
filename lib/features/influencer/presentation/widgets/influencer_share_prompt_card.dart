@@ -68,7 +68,7 @@ class InfluencerSharePromptCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size7,
+                        fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
                       ),
                     ),
@@ -158,7 +158,7 @@ class InfluencerSharePromptCard extends StatelessWidget {
                   bottom: Spacing.zero,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,

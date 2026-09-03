@@ -40,27 +40,13 @@ class InfluencerHeaderCard extends StatelessWidget
           children: [
             Row(
               children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipOval(
-                      child: Image.asset(
-                        avatarAsset,
-                        width: Spacing.influencerAvatarSize,
-                        height: Spacing.influencerAvatarSize,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      right: Spacing.zero,
-                      bottom: Spacing.zero,
-                      child: Icon(
-                        Icons.verified_rounded,
-                        color: color.primary,
-                        size: Spacing.influencerVerifiedSize,
-                      ),
-                    ),
-                  ],
+                ClipOval(
+                  child: Image.asset(
+                    avatarAsset,
+                    width: Spacing.influencerAvatarSize,
+                    height: Spacing.influencerAvatarSize,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(width: Spacing.sm),
                 Column(
