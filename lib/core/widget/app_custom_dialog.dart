@@ -13,9 +13,9 @@ class AppCustomDialog {
     required BuildContext context,
     required String title,
     required String confirmText,
-    required String cancelText,
+    String? cancelText,
     required T Function() onConfirm,
-    required T Function() onCancel,
+    T Function()? onCancel,
     String? message,
     Widget? content,
     IconData? icon,
@@ -94,7 +94,7 @@ class AppCustomDialog {
                       textAlign: message.contains('\n')
                           ? TextAlign.start
                           : TextAlign.center,
-                      style: getRegularStyle(
+                      style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size13,
                         color: modalColor.onSurfaceVariant,
@@ -106,59 +106,74 @@ class AppCustomDialog {
                     content,
                   ],
                   const SizedBox(height: Spacing.lg),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppLoadingButton(
-                          height: Spacing.buttonSmallHeight,
-                          text: confirmText,
-                          color: primaryColor,
-                          textColor: modalColor.onPrimary,
-                          fontSize: FontSize.size13,
-                          borderRadius: Spacing.buttonRadius,
-                          onPressed: () {
-                            Navigator.of(modalContext).pop(onConfirm());
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: Spacing.sm),
-                      Expanded(
-                        child: SizedBox(
-                          height: Spacing.buttonSmallHeight,
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                color: modalColor.outlineVariant,
-                                width: Spacing.border,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  Spacing.buttonRadius,
+                  Builder(
+                    builder: (_) {
+                      final hasCancel =
+                          cancelText != null && cancelText.trim().isNotEmpty;
+                      final confirmBtn = AppLoadingButton(
+                        height: Spacing.buttonSmallHeight,
+                        text: confirmText,
+                        color: primaryColor,
+                        textColor: modalColor.onPrimary,
+                        fontSize: FontSize.size13,
+                        borderRadius: Spacing.buttonRadius,
+                        onPressed: () {
+                          Navigator.of(modalContext).pop(onConfirm());
+                        },
+                      );
+
+                      if (!hasCancel) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: confirmBtn,
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Expanded(child: confirmBtn),
+                          const SizedBox(width: Spacing.sm),
+                          Expanded(
+                            child: SizedBox(
+                              height: Spacing.buttonSmallHeight,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                    color: modalColor.outlineVariant,
+                                    width: Spacing.border,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      Spacing.buttonRadius,
+                                    ),
+                                  ),
+                                  backgroundColor: modalColor.surface,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Spacing.sm,
+                                  ),
                                 ),
-                              ),
-                              backgroundColor: modalColor.surface,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Spacing.sm,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.of(modalContext).pop(onCancel());
-                            },
-                            child: Text(
-                              cancelText,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size13,
-                                color: modalColor.onSurfaceVariant,
+                                onPressed: () {
+                                  Navigator.of(modalContext).pop(
+                                    onCancel?.call(),
+                                  );
+                                },
+                                child: Text(
+                                  cancelText,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size13,
+                                    color: modalColor.onSurfaceVariant,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

@@ -53,11 +53,14 @@ class CalendarDayResponseDto {
   final String? id;
   final String? date;
   final String? serviceDate;
+  @JsonKey(fromJson: _statusFromJson)
   final String? status;
   final String? uiStatus;
   final bool? isLocked;
   final bool? isAutoSelected;
   final String? lockedAtUtc;
+
+  static String? _statusFromJson(dynamic value) => value?.toString();
   final String? editDeadlineUtc;
   final String? restaurantId;
   final String? restaurantName;

@@ -24,34 +24,31 @@ class InfluencerRecentActivitiesSection extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(
-          height: Spacing.influencerActivityHeaderHeight,
-          child: Row(
-            textDirection: TextDirection.ltr,
-            children: [
-              Text(
-                actionLabel,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
-                  color: color.primary,
-                ),
+        Row(
+          children: [
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size12,
+                color: color.onSurface,
               ),
-              const Spacer(),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
-                  color: color.onSurface,
-                ),
+            ),
+            const Spacer(),
+
+            Text(
+              actionLabel,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size9,
+                color: color.primary,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(height: Spacing.sm),
         ...activities.map(

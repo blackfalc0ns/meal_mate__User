@@ -181,8 +181,11 @@ extension ProfileBillingFreezePolicyResponseDtoMapper
       startDelayDays: startDelayDays ?? 0,
       extendSubscriptionEnd: extendSubscriptionEnd ?? false,
       earliestAllowedStartDate: earliestAllowedStartDate ?? '',
-      messageAr: messageAr ?? '',
-      messageEn: messageEn ?? '',
+      messageAr: messageAr ?? message ?? '',
+      messageEn: messageEn ?? message ?? '',
+      message: message ?? messageAr ?? '',
+      noticeAr: noticeAr ?? notice ?? '',
+      notice: notice ?? noticeAr ?? '',
     );
   }
 }
@@ -194,6 +197,8 @@ extension ProfileBillingFreezeRequestEntityMapper
       startDate: startDate,
       endDate: endDate,
       reason: reason,
+      acknowledgeLostSelections:
+          acknowledgeLostSelections ? true : null,
     );
   }
 }

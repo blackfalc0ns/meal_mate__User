@@ -4302,4 +4302,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get influencer_transaction_amount_small => '+6.250 KWD';
+
+  @override
+  String get billing_freeze_rules_title => 'Freeze Policy & Rules';
+
+  @override
+  String get billing_confirm_overwrite_selections_title =>
+      'Confirm Meal Selections Cancellation';
+
+  @override
+  String get billing_confirm_overwrite_selections_message =>
+      'You have selected meals on days within the freeze period. These selections will be cancelled and compensatory days will be added at the end of your subscription. Do you want to continue?';
+
+  @override
+  String get calendar_selection_locked =>
+      'Modifications are locked for this day.';
+
+  @override
+  String get calendar_day_frozen_title => 'This day is frozen';
+
+  @override
+  String get calendar_day_frozen_description =>
+      'Deliveries are paused during the freeze period. No meals are delivered on this day, and replacement days have been added at the end of your subscription.';
+
+  @override
+  String get subscription_day_frozen =>
+      'This day is frozen as part of your subscription freeze.';
+
+  @override
+  String get billing_pending_freeze_title => 'Subscription Freeze Details';
+
+  @override
+  String get billing_pending_freeze_message =>
+      'Your subscription freeze is active. Start and end dates are detailed below:';
+
+  @override
+  String get billing_pending_freeze_start_date => 'Freeze start date';
+
+  @override
+  String get billing_pending_freeze_end_date => 'Freeze end date';
+
+  @override
+  String billing_pending_freeze_days(int days) {
+    return 'Duration: $days days';
+  }
+
+  @override
+  String get billing_pending_freeze_status => 'Status';
+
+  @override
+  String billing_pending_freeze_notice_banner(
+    String startDate,
+    String endDate,
+  ) {
+    return 'Subscription frozen from $startDate to $endDate';
+  }
+
+  @override
+  String get billing_status_approved => 'Approved';
 }

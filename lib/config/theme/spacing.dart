@@ -1254,8 +1254,8 @@ class Spacing {
   static const double influencerShareCouponWidth = 148.83;
   static const double influencerShareCouponHeight = 56.83;
   static const double influencerShareCouponRadius = 10.824;
-  static const double influencerCopyIconSize = 15.33;
-  static const double influencerActivityHeaderHeight = 10.0;
+  static const double influencerCopyIconSize = 20.33;
+  static const double influencerActivityHeaderHeight = 15.0;
   static const double influencerActivityTileHeight = 47.14;
   static const double influencerActivityTileRadius = 11.785;
   static const double influencerActivityAvatarSize = 38.08;

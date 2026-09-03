@@ -8149,6 +8149,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'+6.250 KWD'**
   String get influencer_transaction_amount_small;
+
+  /// No description provided for @billing_freeze_rules_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze Policy & Rules'**
+  String get billing_freeze_rules_title;
+
+  /// No description provided for @billing_confirm_overwrite_selections_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Meal Selections Cancellation'**
+  String get billing_confirm_overwrite_selections_title;
+
+  /// No description provided for @billing_confirm_overwrite_selections_message.
+  ///
+  /// In en, this message translates to:
+  /// **'You have selected meals on days within the freeze period. These selections will be cancelled and compensatory days will be added at the end of your subscription. Do you want to continue?'**
+  String get billing_confirm_overwrite_selections_message;
+
+  /// No description provided for @calendar_selection_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Modifications are locked for this day.'**
+  String get calendar_selection_locked;
+
+  /// No description provided for @calendar_day_frozen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is frozen'**
+  String get calendar_day_frozen_title;
+
+  /// No description provided for @calendar_day_frozen_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries are paused during the freeze period. No meals are delivered on this day, and replacement days have been added at the end of your subscription.'**
+  String get calendar_day_frozen_description;
+
+  /// No description provided for @subscription_day_frozen.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is frozen as part of your subscription freeze.'**
+  String get subscription_day_frozen;
+
+  /// No description provided for @billing_pending_freeze_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Freeze Details'**
+  String get billing_pending_freeze_title;
+
+  /// No description provided for @billing_pending_freeze_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription freeze is active. Start and end dates are detailed below:'**
+  String get billing_pending_freeze_message;
+
+  /// No description provided for @billing_pending_freeze_start_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze start date'**
+  String get billing_pending_freeze_start_date;
+
+  /// No description provided for @billing_pending_freeze_end_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze end date'**
+  String get billing_pending_freeze_end_date;
+
+  /// No description provided for @billing_pending_freeze_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {days} days'**
+  String billing_pending_freeze_days(int days);
+
+  /// No description provided for @billing_pending_freeze_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get billing_pending_freeze_status;
+
+  /// No description provided for @billing_pending_freeze_notice_banner.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription frozen from {startDate} to {endDate}'**
+  String billing_pending_freeze_notice_banner(String startDate, String endDate);
+
+  /// No description provided for @billing_status_approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get billing_status_approved;
 }
 
 class _AppLocalizationsDelegate

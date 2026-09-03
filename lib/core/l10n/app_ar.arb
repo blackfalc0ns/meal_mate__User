@@ -1509,5 +1509,37 @@
   "influencer_transaction_week": "هذا الأسبوع",
   "influencer_transaction_amount_large": "+24.000 د.ك",
   "influencer_transaction_amount_medium": "-32.500 د.ك",
-  "influencer_transaction_amount_small": "+6.250 د.ك"
+  "influencer_transaction_amount_small": "+6.250 د.ك",
+  "billing_freeze_rules_title": "شروط وسياسة التجميد",
+  "billing_confirm_overwrite_selections_title": "تأكيد إلغاء الوجبات المحددة",
+  "billing_confirm_overwrite_selections_message": "لديك وجبات محددة مسبقاً خلال فترة التجميد، وسيتم إلغاء هذه الاختيارات وإضافة أيام تعويضية بديلة في نهاية الاشتراك. هل تريد المتابعة؟",
+  "calendar_selection_locked": "تم إيقاف التعديل على هذا اليوم نظراً لتجميد الاشتراك أو إغلاق المطبخ.",
+  "calendar_day_frozen_title": "اليوم مجمّد",
+  "calendar_day_frozen_description": "يتوقف التوصيل مؤقتاً أثناء فترة التجميد. لا يتم تسليم وجبات في هذا اليوم، وقد تم تمديد اشتراكك بإضافة أيام تعويضية بديلة في نهاية الاشتراك.",
+  "subscription_day_frozen": "هذا اليوم مجمّد ضمن فترة تجميد الاشتراك.",
+  "billing_pending_freeze_title": "تفاصيل تجميد الاشتراك",
+  "billing_pending_freeze_message": "اشتراكك مجمّد حالياً. تفاصيل وتواريخ فترة التجميد موضحة أدناه:",
+  "billing_pending_freeze_start_date": "تاريخ بداية التجميد",
+  "billing_pending_freeze_end_date": "تاريخ نهاية التجميد",
+  "billing_pending_freeze_days": "المدة: {days} أيام",
+  "@billing_pending_freeze_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_pending_freeze_status": "الحالة",
+  "billing_pending_freeze_notice_banner": "الاشتراك مجمّد من {startDate} إلى {endDate}",
+  "@billing_pending_freeze_notice_banner": {
+    "placeholders": {
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_status_approved": "معتمد"
 }

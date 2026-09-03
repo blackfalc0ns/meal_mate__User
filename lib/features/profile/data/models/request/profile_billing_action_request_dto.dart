@@ -8,11 +8,14 @@ class ProfileBillingFreezeRequestDto {
     required this.startDate,
     required this.endDate,
     this.reason,
+    this.acknowledgeLostSelections,
   });
 
   final String startDate;
   final String endDate;
   final String? reason;
+  @JsonKey(includeIfNull: false)
+  final bool? acknowledgeLostSelections;
 
   factory ProfileBillingFreezeRequestDto.fromJson(Map<String, dynamic> json) =>
       _$ProfileBillingFreezeRequestDtoFromJson(json);

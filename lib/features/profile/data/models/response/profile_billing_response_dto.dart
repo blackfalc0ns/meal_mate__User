@@ -283,6 +283,9 @@ class ProfileBillingFreezePolicyResponseDto {
     this.earliestAllowedStartDate,
     this.messageAr,
     this.messageEn,
+    this.message,
+    this.noticeAr,
+    this.notice,
   });
 
   final int? defaultDurationDays;
@@ -291,6 +294,9 @@ class ProfileBillingFreezePolicyResponseDto {
   final String? earliestAllowedStartDate;
   final String? messageAr;
   final String? messageEn;
+  final String? message;
+  final String? noticeAr;
+  final String? notice;
 
   factory ProfileBillingFreezePolicyResponseDto.fromJson(
     Map<String, dynamic> json,
@@ -405,5 +411,6 @@ class ProfileBillingFreezeResponseDto {
   factory ProfileBillingFreezeResponseDto.fromJson(Map<String, dynamic> json) =>
       _$ProfileBillingFreezeResponseDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProfileBillingFreezeResponseDtoToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingFreezeResponseDtoToJson(this);
 }

@@ -238,6 +238,9 @@ class ProfileBillingFreezePolicyEntity {
     required this.earliestAllowedStartDate,
     required this.messageAr,
     required this.messageEn,
+    this.message = '',
+    this.noticeAr = '',
+    this.notice = '',
   });
 
   final int defaultDurationDays;
@@ -246,6 +249,9 @@ class ProfileBillingFreezePolicyEntity {
   final String earliestAllowedStartDate;
   final String messageAr;
   final String messageEn;
+  final String message;
+  final String noticeAr;
+  final String notice;
 }
 
 class ProfileBillingFreezeRequestEntity {
@@ -253,11 +259,13 @@ class ProfileBillingFreezeRequestEntity {
     required this.startDate,
     required this.endDate,
     this.reason,
+    this.acknowledgeLostSelections = false,
   });
 
   final String startDate;
   final String endDate;
   final String? reason;
+  final bool acknowledgeLostSelections;
 }
 
 class ProfileBillingFreezeDatePolicy {

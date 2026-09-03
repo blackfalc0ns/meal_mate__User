@@ -132,6 +132,8 @@ class ProfileBillingActionState {
     this.cancellationQuote,
     this.cancellationResult,
     this.freezeResult,
+    this.pendingFreezeRequest,
+    this.pendingFreezeSubscriptionId,
   });
 
   final String? type;
@@ -142,6 +144,8 @@ class ProfileBillingActionState {
   final ProfileBillingCancellationQuoteEntity? cancellationQuote;
   final ProfileBillingCancellationResultEntity? cancellationResult;
   final ProfileBillingFreezeResponseEntity? freezeResult;
+  final ProfileBillingFreezeRequestEntity? pendingFreezeRequest;
+  final String? pendingFreezeSubscriptionId;
 
   ProfileBillingActionState copyWith({
     String? type,
@@ -152,11 +156,14 @@ class ProfileBillingActionState {
     ProfileBillingCancellationQuoteEntity? cancellationQuote,
     ProfileBillingCancellationResultEntity? cancellationResult,
     ProfileBillingFreezeResponseEntity? freezeResult,
+    ProfileBillingFreezeRequestEntity? pendingFreezeRequest,
+    String? pendingFreezeSubscriptionId,
     bool clearError = false,
     bool clearQuote = false,
     bool clearResult = false,
     bool clearFreezeResult = false,
     bool clearType = false,
+    bool clearPendingFreeze = false,
   }) {
     return ProfileBillingActionState(
       type: clearType ? null : type ?? this.type,
@@ -173,6 +180,12 @@ class ProfileBillingActionState {
       freezeResult: clearFreezeResult
           ? null
           : freezeResult ?? this.freezeResult,
+      pendingFreezeRequest: clearPendingFreeze
+          ? null
+          : pendingFreezeRequest ?? this.pendingFreezeRequest,
+      pendingFreezeSubscriptionId: clearPendingFreeze
+          ? null
+          : pendingFreezeSubscriptionId ?? this.pendingFreezeSubscriptionId,
     );
   }
 }

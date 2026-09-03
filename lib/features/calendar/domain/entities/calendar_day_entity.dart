@@ -7,6 +7,9 @@ class CalendarDayEntity {
   const CalendarDayEntity({
     this.id = '',
     this.status = '',
+    this.uiStatus,
+    this.canEdit,
+    this.failureReasonCode,
     this.restaurantId,
     this.restaurant,
     this.meals = const [],
@@ -25,6 +28,9 @@ class CalendarDayEntity {
 
   final String id;
   final String status;
+  final String? uiStatus;
+  final bool? canEdit;
+  final String? failureReasonCode;
   final String? restaurantId;
   final CalendarRestaurantEntity? restaurant;
   final List<CalendarMealEntity> meals;
@@ -40,11 +46,21 @@ class CalendarDayEntity {
   final bool isMuted;
   final bool hasMeals;
 
+  bool get isFrozen {
+    final normalizedStatus = status.toLowerCase();
+    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
+    return normalizedStatus == 'frozen' ||
+        normalizedStatus == '12' ||
+        normalizedUiStatus == 'frozen' ||
+        failureReasonCode == 'subscription.day_frozen';
+  }
+
   bool get hasSelectedMeals {
     return selectedMealIds.isNotEmpty || meals.any((meal) => meal.selected);
   }
 
   bool get isRestaurantClosed {
+    if (isFrozen) return true;
     final normalizedStatus = status.toLowerCase();
     return isLocked ||
         normalizedStatus == 'senttorestaurant' ||
@@ -55,13 +71,15 @@ class CalendarDayEntity {
   }
 
   bool get isEditable {
-    if (date == null || isLocked) return false;
+    if (date == null || isLocked || isFrozen || canEdit == false) return false;
     final normalizedStatus = status.toLowerCase();
     if (normalizedStatus == 'senttorestaurant' ||
         normalizedStatus == 'sent_to_restaurant' ||
         normalizedStatus == 'locked' ||
         normalizedStatus == 'completed' ||
-        normalizedStatus == 'cancelled') {
+        normalizedStatus == 'cancelled' ||
+        normalizedStatus == 'frozen' ||
+        normalizedStatus == '12') {
       return false;
     }
 
@@ -82,10 +100,16 @@ class CalendarDayEntity {
     bool? isMuted,
     bool? hasMeals,
     CalendarNutritionTotalsEntity? nutritionTotals,
+    String? uiStatus,
+    bool? canEdit,
+    String? failureReasonCode,
   }) {
     return CalendarDayEntity(
       id: id,
       status: status,
+      uiStatus: uiStatus ?? this.uiStatus,
+      canEdit: canEdit ?? this.canEdit,
+      failureReasonCode: failureReasonCode ?? this.failureReasonCode,
       restaurantId: restaurantId,
       restaurant: restaurant,
       meals: meals,

@@ -93,9 +93,9 @@ extension CustomDialogExtension on BuildContext {
   Future<T?> showAppCustomDialog<T>({
     required String title,
     required String confirmText,
-    required String cancelText,
+    String? cancelText,
     required T Function() onConfirm,
-    required T Function() onCancel,
+    T Function()? onCancel,
     String? message,
     Widget? content,
     IconData? icon,

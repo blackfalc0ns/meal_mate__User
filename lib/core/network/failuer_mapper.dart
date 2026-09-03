@@ -102,6 +102,12 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.address_active_delivery_cannot_delete;
     case 'freeze.locked_days_cannot_be_frozen':
       return locale.billing_freeze_locked_days_cannot_be_frozen;
+    case 'freeze.confirm_overwrite_selections':
+      return locale.billing_confirm_overwrite_selections_message;
+    case 'calendar.selection_locked':
+      return locale.calendar_selection_locked;
+    case 'subscription.day_frozen':
+      return locale.subscription_day_frozen;
     case 'address.out_of_kuwait_bounds':
       return locale.addresses_out_of_kuwait_bounds;
     case 'error_server':

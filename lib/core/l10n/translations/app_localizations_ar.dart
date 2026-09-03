@@ -4236,4 +4236,62 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get influencer_transaction_amount_small => '+6.250 د.ك';
+
+  @override
+  String get billing_freeze_rules_title => 'شروط وسياسة التجميد';
+
+  @override
+  String get billing_confirm_overwrite_selections_title =>
+      'تأكيد إلغاء الوجبات المحددة';
+
+  @override
+  String get billing_confirm_overwrite_selections_message =>
+      'لديك وجبات محددة مسبقاً خلال فترة التجميد، وسيتم إلغاء هذه الاختيارات وإضافة أيام تعويضية بديلة في نهاية الاشتراك. هل تريد المتابعة؟';
+
+  @override
+  String get calendar_selection_locked =>
+      'تم إيقاف التعديل على هذا اليوم نظراً لتجميد الاشتراك أو إغلاق المطبخ.';
+
+  @override
+  String get calendar_day_frozen_title => 'اليوم مجمّد';
+
+  @override
+  String get calendar_day_frozen_description =>
+      'يتوقف التوصيل مؤقتاً أثناء فترة التجميد. لا يتم تسليم وجبات في هذا اليوم، وقد تم تمديد اشتراكك بإضافة أيام تعويضية بديلة في نهاية الاشتراك.';
+
+  @override
+  String get subscription_day_frozen =>
+      'هذا اليوم مجمّد ضمن فترة تجميد الاشتراك.';
+
+  @override
+  String get billing_pending_freeze_title => 'تفاصيل تجميد الاشتراك';
+
+  @override
+  String get billing_pending_freeze_message =>
+      'اشتراكك مجمّد حالياً. تفاصيل وتواريخ فترة التجميد موضحة أدناه:';
+
+  @override
+  String get billing_pending_freeze_start_date => 'تاريخ بداية التجميد';
+
+  @override
+  String get billing_pending_freeze_end_date => 'تاريخ نهاية التجميد';
+
+  @override
+  String billing_pending_freeze_days(int days) {
+    return 'المدة: $days أيام';
+  }
+
+  @override
+  String get billing_pending_freeze_status => 'الحالة';
+
+  @override
+  String billing_pending_freeze_notice_banner(
+    String startDate,
+    String endDate,
+  ) {
+    return 'الاشتراك مجمّد من $startDate إلى $endDate';
+  }
+
+  @override
+  String get billing_status_approved => 'معتمد';
 }

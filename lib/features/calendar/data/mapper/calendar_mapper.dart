@@ -26,9 +26,17 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
     final sortedDayMeals = _sortedMeals(dayMeals);
     final resolvedSelectedMealIds =
         selectedMealIds ?? _selectedMealIds(sortedDayMeals);
+    final isFrozenDay =
+        (status?.toLowerCase() == 'frozen') ||
+        status == '12' ||
+        (uiStatus?.toLowerCase() == 'frozen') ||
+        failureReasonCode == 'subscription.day_frozen';
     return CalendarDayEntity(
       id: id ?? '',
       status: _firstNotEmpty([status, uiStatus]),
+      uiStatus: uiStatus,
+      canEdit: canEdit,
+      failureReasonCode: failureReasonCode,
       restaurantId: restaurantId ?? selectedRestaurant?.id,
       restaurant: selectedRestaurant,
       meals: sortedDayMeals
@@ -43,7 +51,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
                 requirement.slot.isNotEmpty && requirement.count > 0,
           )
           .toList(),
-      isLocked: isLocked ?? !(canEdit ?? true),
+      isLocked: isLocked ?? !(canEdit ?? true) || isFrozenDay,
       editDeadlineUtc: _parseDateTime(
         selectionDeadlineUtc ?? editDeadlineUtc ?? lockAtUtc ?? lockedAtUtc,
       ),

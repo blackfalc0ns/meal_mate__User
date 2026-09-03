@@ -51,7 +51,7 @@ class InfluencerActivityTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size11,
+                    fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ),
                 ),

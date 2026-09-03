@@ -18,6 +18,9 @@ import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_freeze_rules_card.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_pending_freeze_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_invoice_history_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_loading_skeleton.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_payment_card.dart';
@@ -97,7 +100,8 @@ class ProfileBillingScreen extends StatelessWidget {
                         subscription: subscription,
                         isActionLoading: state.billingAction.isLoading,
                         onRenew: () => _confirmRenew(context, subscription),
-                        onFreeze: () => _confirmFreeze(context, subscription),
+                        onFreeze: () =>
+                            _confirmFreeze(context, subscription, freezePolicy),
                         onCancel: () =>
                             context.read<ProfileViewModel>().doIntent(
                               GetCancellationQuoteEvent(
@@ -105,6 +109,22 @@ class ProfileBillingScreen extends StatelessWidget {
                               ),
                             ),
                       ),
+                    if (subscription != null &&
+                        subscription.pendingFreeze != null) ...[
+                      const SizedBox(height: Spacing.md),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                        onTap: () => _showPendingFreezeDialog(
+                          context,
+                          subscription.pendingFreeze!,
+                          subscription,
+                          freezePolicy,
+                        ),
+                        child: ProfileBillingPendingFreezeCard(
+                          pendingFreeze: subscription.pendingFreeze!,
+                        ),
+                      ),
+                    ],
                     if (subscription?.pendingUpgrade != null) ...[
                       const SizedBox(height: Spacing.md),
                       Container(
@@ -208,7 +228,19 @@ class ProfileBillingScreen extends StatelessWidget {
   Future<void> _confirmFreeze(
     BuildContext context,
     ProfileBillingSubscriptionEntity subscription,
+    ProfileBillingFreezePolicyEntity? freezePolicy,
   ) async {
+    final pendingFreeze = subscription.pendingFreeze;
+    if (pendingFreeze != null) {
+      await _showPendingFreezeDialog(
+        context,
+        pendingFreeze,
+        subscription,
+        freezePolicy,
+      );
+      return;
+    }
+
     final locale = context.localization;
     final firstDate = ProfileBillingFreezeDatePolicy.minimumStartDate(
       now: DateTime.now(),
@@ -251,6 +283,10 @@ class ProfileBillingScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (freezePolicy != null) ...[
+            ProfileBillingFreezeRulesCard(policy: freezePolicy),
+            const SizedBox(height: Spacing.md),
+          ],
           Text(
             locale.billing_selected_freeze_dates(
               dateFormatter.format(pickedRange.start),
@@ -285,8 +321,38 @@ class ProfileBillingScreen extends StatelessWidget {
           startDate: _formatApiDate(pickedRange.start),
           endDate: _formatApiDate(pickedRange.end),
           reason: reason.isEmpty ? null : reason,
+          acknowledgeLostSelections: false,
         ),
       ),
+    );
+  }
+
+  Future<void> _showPendingFreezeDialog(
+    BuildContext context,
+    ProfileBillingPendingFreezeEntity pendingFreeze,
+    ProfileBillingSubscriptionEntity subscription,
+    ProfileBillingFreezePolicyEntity? freezePolicy,
+  ) async {
+    final locale = context.localization;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final notice = isRtl
+        ? (freezePolicy?.noticeAr.isNotEmpty == true
+            ? freezePolicy!.noticeAr
+            : freezePolicy?.notice ?? '')
+        : (freezePolicy?.notice.isNotEmpty == true
+            ? freezePolicy!.notice
+            : freezePolicy?.noticeAr ?? '');
+
+    await context.showAppCustomDialog<void>(
+      title: locale.billing_pending_freeze_title,
+      message: locale.billing_pending_freeze_message,
+      confirmText: locale.billing_dismiss,
+      icon: Icons.ac_unit_rounded,
+      content: ProfileBillingPendingFreezeCard(
+        pendingFreeze: pendingFreeze,
+        notice: notice.isNotEmpty ? notice : null,
+      ),
+      onConfirm: () {},
     );
   }
 
@@ -367,11 +433,23 @@ class ProfileBillingScreen extends StatelessWidget {
     final locale = context.localization;
 
     if (actionState.failure != null) {
+      if (actionState.type == 'freeze' &&
+          actionState.failure?.code == 'freeze.confirm_overwrite_selections') {
+        _handleConfirmOverwriteSelections(context, actionState);
+        return;
+      }
+
+      final failureCode = actionState.failure?.code ?? '';
+      final failureMessage = actionState.failure?.errorMessage ?? '';
+      final rawError = failureCode.isNotEmpty
+          ? failureCode
+          : (failureMessage.isNotEmpty
+                ? failureMessage
+                : actionState.errorMessage ?? locale.billing_action_failed);
+
       CustomSnackbar.showError(
         context: context,
-        message: actionState.failure?.code ??
-            actionState.errorMessage ??
-            locale.billing_action_failed,
+        message: mapFailureMessage(context, rawError),
       );
       return;
     }
@@ -405,6 +483,60 @@ class ProfileBillingScreen extends StatelessWidget {
           message: locale.billing_cancel_success,
         );
         break;
+    }
+  }
+
+  Future<void> _handleConfirmOverwriteSelections(
+    BuildContext context,
+    ProfileBillingActionState actionState,
+  ) async {
+    final locale = context.localization;
+    final color = context.colorScheme;
+    final backendDetail = actionState.failure?.errorMessage;
+    final message =
+        (backendDetail != null &&
+            backendDetail.trim().isNotEmpty &&
+            backendDetail != 'freeze.confirm_overwrite_selections')
+        ? backendDetail.trim()
+        : locale.billing_confirm_overwrite_selections_message;
+
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_confirm_overwrite_selections_title,
+      message: message,
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      icon: Icons.warning_amber_rounded,
+      iconColor: color.error,
+      confirmTextColor: color.error,
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (confirmed != true) {
+      context.read<ProfileViewModel>().doIntent(
+        const ResetBillingActionEvent(),
+      );
+      return;
+    }
+
+    final pendingRequest = actionState.pendingFreezeRequest;
+    final pendingSubId = actionState.pendingFreezeSubscriptionId;
+    if (pendingSubId != null && pendingRequest != null) {
+      context.read<ProfileViewModel>().doIntent(
+        FreezeSubscriptionEvent(
+          subscriptionId: pendingSubId,
+          request: ProfileBillingFreezeRequestEntity(
+            startDate: pendingRequest.startDate,
+            endDate: pendingRequest.endDate,
+            reason: pendingRequest.reason,
+            acknowledgeLostSelections: true,
+          ),
+        ),
+      );
     }
   }
 
@@ -449,9 +581,7 @@ class _BillingReasonInputFieldState extends State<_BillingReasonInputField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
-      decoration: InputDecoration(
-        labelText: widget.labelText,
-      ),
+      decoration: InputDecoration(labelText: widget.labelText),
       maxLines: 2,
       onChanged: widget.onChanged,
     );

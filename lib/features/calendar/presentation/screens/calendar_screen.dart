@@ -22,6 +22,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_e
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_frozen_day_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
@@ -220,7 +221,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             child: Column(
               children: [
-                if (!hasMeals)
+                if (!hasMeals && selectedDay?.isFrozen == true)
+                  const CalendarFrozenDayState()
+                else if (!hasMeals)
                   CalendarEmptyMealsState(
                     onAddMeals: readOnly
                         ? null

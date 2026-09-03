@@ -237,6 +237,8 @@ class ProfileViewModel extends Cubit<ProfileState> {
           isSuccess: false,
           clearError: true,
           clearFreezeResult: true,
+          pendingFreezeRequest: request,
+          pendingFreezeSubscriptionId: subscriptionId,
         ),
       ),
     );
@@ -255,6 +257,7 @@ class ProfileViewModel extends Cubit<ProfileState> {
               isLoading: false,
               isSuccess: true,
               freezeResult: result.data,
+              clearPendingFreeze: true,
             ),
           ),
         );

@@ -20,8 +20,11 @@ class CalendarDayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final selected = day.isSelected;
+    final isFrozen = day.isFrozen;
     final textColor = selected
         ? color.onPrimary
+        : isFrozen
+        ? color.primary
         : day.isMuted
         ? color.onSurface.withValues(alpha: 0.25)
         : color.onSurface;
@@ -34,6 +37,8 @@ class CalendarDayTile extends StatelessWidget {
             ? color.primary
             : compact
             ? color.surface.withValues(alpha: 0)
+            : isFrozen
+            ? color.primary.withValues(alpha: 0.06)
             : color.surface,
         borderRadius: BorderRadius.circular(compact ? 14 : 12),
         elevation: compact || selected ? 0 : 2,
@@ -86,11 +91,17 @@ class CalendarDayTile extends StatelessWidget {
                 ],
                 SizedBox(height: compact ? 4 : (selected ? 5 : 4)),
                 if (!compact)
-                  CalendarDayMealIndicator(
-                    selected: selected,
-                    muted: day.isMuted,
-                    compact: compact,
-                  ),
+                  isFrozen
+                      ? Icon(
+                          Icons.ac_unit_rounded,
+                          size: 10,
+                          color: selected ? color.onPrimary : color.primary,
+                        )
+                      : CalendarDayMealIndicator(
+                          selected: selected,
+                          muted: day.isMuted,
+                          compact: compact,
+                        ),
               ],
             ),
           ),
