@@ -28,48 +28,18 @@ class MealDetailsBottomActionButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          textDirection: TextDirection.rtl,
           children: [
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    locale.meal_details_select_meal_button,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size16,
-                      color: color.onPrimary,
-                    ).copyWith(height: locale.localeName == 'ar' ? 1.25 : 1.1),
-                  ),
-                  Text(
-                    locale.meal_details_select_meal_hint,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.onPrimary,
-                    ).copyWith(height: locale.localeName == 'ar' ? 1.35 : 1.1),
-                  ),
-                ],
-              ),
-            ),
+            const Icon(Icons.add_rounded, size: Spacing.iconMd),
             const SizedBox(width: Spacing.md),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: color.onPrimary,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(Spacing.sm),
-                child: Icon(
-                  Icons.check_rounded,
-                  size: Spacing.iconMd,
-                  color: color.primary,
+            Flexible(
+              child: Text(
+                locale.meal_details_select_meal_button,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size16,
+                  color: color.onPrimary,
                 ),
               ),
             ),

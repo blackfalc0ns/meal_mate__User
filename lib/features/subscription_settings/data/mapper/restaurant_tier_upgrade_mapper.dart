@@ -20,6 +20,27 @@ abstract class RestaurantTierUpgradeMapper {
       options: (dto.options ?? const [])
           .map((option) => toOptionEntity(option))
           .toList(),
+      paymentMethods: (dto.paymentMethods ?? const [])
+          .map((method) => toPaymentMethodEntity(method))
+          .where((method) => method.id > 0)
+          .toList(),
+    );
+  }
+
+  static SubscriptionUpgradePaymentMethodEntity toPaymentMethodEntity(
+    SubscriptionUpgradePaymentMethodResponseDto dto,
+  ) {
+    return SubscriptionUpgradePaymentMethodEntity(
+      id: dto.paymentMethodId ?? dto.id ?? 0,
+      code: dto.code ?? '',
+      title: dto.nameAr ?? dto.nameEn ?? dto.name ?? '',
+      integrationType: dto.integrationType ?? '',
+      serviceCharge: dto.serviceCharge ?? 0.0,
+      totalAmount: dto.totalAmount ?? 0.0,
+      currencyCode: dto.currencyCode ?? 'KWD',
+      isAvailable: dto.isAvailable ?? false,
+      unavailableReason: dto.unavailableReason,
+      imageUrl: dto.imageUrl,
     );
   }
 
@@ -209,7 +230,8 @@ abstract class RestaurantTierUpgradeMapper {
       note: 'يمكنك ترقية التصنيف حتى نهاية مدة الاشتراك الحالية.',
       chooseTitle: 'اختر التصنيف الذي تريد الترقية إليه',
       chooseSubtitle: 'كلما ارتفع التصنيف، كلما شملت خيارات مطاعم أكثر وأفضل.',
-      price: '${selectedOption.priceDifference.toStringAsFixed(3)} $currencyText',
+      price:
+          '${selectedOption.priceDifference.toStringAsFixed(3)} $currencyText',
       pricePeriod: 'حتى نهاية الاشتراك',
       continuePlusLabel: 'متابعة الترقية إلى بلس',
       continueMaxLabel: 'متابعة الترقية إلى ماكس',

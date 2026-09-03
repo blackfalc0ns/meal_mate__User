@@ -6,59 +6,97 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/meal_detail
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_sheet.dart';
 
 void main() {
-  testWidgets('meal details shows allergens and optional notes sections', (
+  testWidgets('meal details shows allergens without selection controls', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        locale: const Locale('ar'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(body: MealDetailsSheet(meal: _meal())),
-      ),
-    );
+    await _pumpMealDetails(tester, _meal());
 
-    expect(find.text('لاكتوز'), findsOneWidget);
-    expect(find.text('مكسرات'), findsOneWidget);
-    expect(find.text('ملاحظات اختيارية'), findsOneWidget);
+    expect(find.text('Lactose'), findsOneWidget);
+    expect(find.text('Nuts'), findsOneWidget);
+    expect(find.text('Optional notes'), findsNothing);
+    expect(find.text('Select this meal'), findsNothing);
   });
+
+  testWidgets(
+    'meal details shows selection controls when selection is allowed',
+    (tester) async {
+      var selected = false;
+
+      await _pumpMealDetails(
+        tester,
+        _meal(
+          onSelectMeal: () {
+            selected = true;
+          },
+        ),
+      );
+
+      expect(find.text('Optional notes'), findsOneWidget);
+      expect(find.text('Select this meal'), findsOneWidget);
+
+      await tester.ensureVisible(find.text('Select this meal'));
+      await tester.tap(find.text('Select this meal'));
+      await tester.pump();
+
+      expect(selected, isTrue);
+    },
+  );
 }
 
-MealDetailsEntity _meal() {
-  return const MealDetailsEntity(
-    title: 'جبنة كيتو',
-    description: 'شيدر وعين جمل وخيار.',
-    restaurantName: 'جرين بول',
+Future<void> _pumpMealDetails(WidgetTester tester, MealDetailsEntity meal) {
+  tester.view.physicalSize = const Size(800, 1000);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(() {
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
+
+  return tester.pumpWidget(
+    MaterialApp(
+      theme: AppTheme.lightTheme,
+      locale: const Locale('en'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(body: MealDetailsSheet(meal: meal)),
+    ),
+  );
+}
+
+MealDetailsEntity _meal({void Function()? onSelectMeal}) {
+  return MealDetailsEntity(
+    title: 'Keto cheese',
+    description: 'Cheddar, cucumber, and greens.',
+    restaurantName: 'Green Bowl',
     restaurantLogo: 'GB',
-    ratingTitle: 'تقييم المطعم',
+    ratingTitle: 'Restaurant rating',
     ratingValue: '',
-    programLabel: 'نوع الوجبة',
-    programValue: 'سناك',
-    deliveryLabel: 'وقت التوصيل',
+    programLabel: 'Meal type',
+    programValue: 'Snack',
+    deliveryLabel: 'Delivery time',
     deliveryValue: '',
-    ingredientsTitle: 'المكونات',
-    ingredients: [],
-    nutritionTitle: 'القيم الغذائية',
-    nutritionItems: [
+    ingredientsTitle: 'Ingredients',
+    ingredients: const [],
+    nutritionTitle: 'Nutrition facts',
+    nutritionItems: const [
       MealDetailsNutritionEntity(
         value: '210',
-        label: 'سعرة حرارية',
+        label: 'Calories',
         type: MealDetailsNutritionType.calories,
       ),
     ],
-    macroDistributionTitle: 'توزيع العناصر الغذائية',
-    macroItems: [],
-    allergensTitle: 'مسببات الحساسية',
-    allergens: [
+    macroDistributionTitle: 'Macro distribution',
+    macroItems: const [],
+    allergensTitle: 'Allergens',
+    allergens: const [
       MealDetailsAllergenEntity(
-        label: 'لاكتوز',
+        label: 'Lactose',
         type: MealDetailsAllergenType.lactose,
       ),
       MealDetailsAllergenEntity(
-        label: 'مكسرات',
+        label: 'Nuts',
         type: MealDetailsAllergenType.nuts,
       ),
     ],
+    onSelectMeal: onSelectMeal,
   );
 }

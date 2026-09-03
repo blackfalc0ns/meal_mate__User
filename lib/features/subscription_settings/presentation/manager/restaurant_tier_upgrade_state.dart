@@ -11,6 +11,7 @@ class RestaurantTierUpgradeState {
     this.optionsFailure,
     this.optionsEntity,
     this.selectedOption,
+    this.selectedPaymentMethod,
     this.uiData,
     this.isSubmitting = false,
     this.submitFailure,
@@ -30,6 +31,7 @@ class RestaurantTierUpgradeState {
   final Failure? optionsFailure;
   final SubscriptionUpgradeOptionsEntity? optionsEntity;
   final SubscriptionUpgradeOptionEntity? selectedOption;
+  final SubscriptionUpgradePaymentMethodEntity? selectedPaymentMethod;
   final RestaurantTierUpgradeEntity? uiData;
   final bool isSubmitting;
   final Failure? submitFailure;
@@ -50,6 +52,7 @@ class RestaurantTierUpgradeState {
     bool clearOptionsFailure = false,
     SubscriptionUpgradeOptionsEntity? optionsEntity,
     SubscriptionUpgradeOptionEntity? selectedOption,
+    SubscriptionUpgradePaymentMethodEntity? selectedPaymentMethod,
     RestaurantTierUpgradeEntity? uiData,
     bool? isSubmitting,
     Failure? submitFailure,
@@ -70,25 +73,31 @@ class RestaurantTierUpgradeState {
       programName: programName ?? this.programName,
       bundleName: bundleName ?? this.bundleName,
       isLoadingOptions: isLoadingOptions ?? this.isLoadingOptions,
-      optionsFailure:
-          clearOptionsFailure ? null : (optionsFailure ?? this.optionsFailure),
+      optionsFailure: clearOptionsFailure
+          ? null
+          : (optionsFailure ?? this.optionsFailure),
       optionsEntity: optionsEntity ?? this.optionsEntity,
       selectedOption: selectedOption ?? this.selectedOption,
+      selectedPaymentMethod:
+          selectedPaymentMethod ?? this.selectedPaymentMethod,
       uiData: uiData ?? this.uiData,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      submitFailure:
-          clearSubmitFailure ? null : (submitFailure ?? this.submitFailure),
+      submitFailure: clearSubmitFailure
+          ? null
+          : (submitFailure ?? this.submitFailure),
       upgradeRequestResult: clearUpgradeRequestResult
           ? null
           : (upgradeRequestResult ?? this.upgradeRequestResult),
       isPollingStatus: isPollingStatus ?? this.isPollingStatus,
-      statusFailure:
-          clearStatusFailure ? null : (statusFailure ?? this.statusFailure),
+      statusFailure: clearStatusFailure
+          ? null
+          : (statusFailure ?? this.statusFailure),
       upgradeStatus: upgradeStatus ?? this.upgradeStatus,
       isUpgradeSuccess: isUpgradeSuccess ?? this.isUpgradeSuccess,
       isUpgradeFailed: isUpgradeFailed ?? this.isUpgradeFailed,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
     );
   }
 }

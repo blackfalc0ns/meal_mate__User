@@ -7,6 +7,7 @@ class SubscriptionUpgradeOptionsEntity {
     required this.totalServiceDays,
     required this.upgradeEndpoint,
     required this.options,
+    required this.paymentMethods,
   });
 
   final bool canUpgrade;
@@ -16,6 +17,33 @@ class SubscriptionUpgradeOptionsEntity {
   final int totalServiceDays;
   final String upgradeEndpoint;
   final List<SubscriptionUpgradeOptionEntity> options;
+  final List<SubscriptionUpgradePaymentMethodEntity> paymentMethods;
+}
+
+class SubscriptionUpgradePaymentMethodEntity {
+  const SubscriptionUpgradePaymentMethodEntity({
+    required this.id,
+    required this.code,
+    required this.title,
+    required this.integrationType,
+    required this.serviceCharge,
+    required this.totalAmount,
+    required this.currencyCode,
+    required this.isAvailable,
+    this.unavailableReason,
+    this.imageUrl,
+  });
+
+  final int id;
+  final String code;
+  final String title;
+  final String integrationType;
+  final double serviceCharge;
+  final double totalAmount;
+  final String currencyCode;
+  final bool isAvailable;
+  final String? unavailableReason;
+  final String? imageUrl;
 }
 
 class SubscriptionUpgradeOptionEntity {

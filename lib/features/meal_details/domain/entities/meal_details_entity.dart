@@ -20,6 +20,7 @@ class MealDetailsEntity {
     required this.allergens,
     this.headerImageUrl,
     this.restaurantLogoUrl,
+    this.onSelectMeal,
   });
 
   final String title;
@@ -42,6 +43,7 @@ class MealDetailsEntity {
   final List<MealDetailsMacroEntity> macroItems;
   final String allergensTitle;
   final List<MealDetailsAllergenEntity> allergens;
+  final void Function()? onSelectMeal;
 }
 
 class MealDetailsIngredientEntity {

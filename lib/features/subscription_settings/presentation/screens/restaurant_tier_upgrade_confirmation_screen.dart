@@ -71,104 +71,108 @@ class _RestaurantTierUpgradeConfirmationScreenState
 
     return BlocProvider<RestaurantTierUpgradeViewModel>.value(
       value: _viewModel,
-      child: BlocConsumer<RestaurantTierUpgradeViewModel,
-          RestaurantTierUpgradeState>(
-        listenWhen: (previous, current) =>
-            previous.isUpgradeSuccess != current.isUpgradeSuccess ||
-            previous.upgradeRequestResult != current.upgradeRequestResult ||
-            previous.submitFailure != current.submitFailure,
-        listener: (context, state) {
-          if (state.isUpgradeSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً',
-                ),
-                backgroundColor: Colors.green,
-              ),
-            );
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            return;
-          }
+      child:
+          BlocConsumer<
+            RestaurantTierUpgradeViewModel,
+            RestaurantTierUpgradeState
+          >(
+            listenWhen: (previous, current) =>
+                previous.isUpgradeSuccess != current.isUpgradeSuccess ||
+                previous.upgradeRequestResult != current.upgradeRequestResult ||
+                previous.submitFailure != current.submitFailure,
+            listener: (context, state) {
+              if (state.isUpgradeSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً',
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                return;
+              }
 
-          final requestResult = state.upgradeRequestResult;
-          if (requestResult != null &&
-              requestResult.paymentUrl != null &&
-              requestResult.paymentUrl!.isNotEmpty) {
-            context.pushNamed(
-              AppRoutes.restaurantTierUpgradeWebView,
-              arguments: RestaurantTierUpgradeWebViewArgs(
-                subscriptionId: state.subscriptionId,
-                upgradeId: requestResult.upgradeId,
-                paymentUrl: requestResult.paymentUrl!,
-              ),
-            );
-            return;
-          }
+              final requestResult = state.upgradeRequestResult;
+              if (requestResult != null &&
+                  requestResult.paymentUrl != null &&
+                  requestResult.paymentUrl!.isNotEmpty) {
+                context.pushNamed(
+                  AppRoutes.restaurantTierUpgradeWebView,
+                  arguments: RestaurantTierUpgradeWebViewArgs(
+                    subscriptionId: state.subscriptionId,
+                    upgradeId: requestResult.upgradeId,
+                    paymentUrl: requestResult.paymentUrl!,
+                  ),
+                );
+                return;
+              }
 
-          if (state.submitFailure != null) {
-            final failure = state.submitFailure!;
-            final message = _mapErrorCodeToMessage(
-              failure.code.isNotEmpty
-                  ? failure.code
-                  : failure.exception.backendErrorCode,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          final data = state.uiData ??
-              RestaurantTierUpgradeMapper.toUiEntity(
-                optionsEntity: args.optionsEntity,
-                selectedOption: args.selectedOption,
-                programName: args.programName,
-                bundleName: args.bundleName,
-              );
+              if (state.submitFailure != null) {
+                final failure = state.submitFailure!;
+                final message = _mapErrorCodeToMessage(
+                  failure.code.isNotEmpty
+                      ? failure.code
+                      : failure.exception.backendErrorCode,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message), backgroundColor: Colors.red),
+                );
+              }
+            },
+            builder: (context, state) {
+              final data =
+                  state.uiData ??
+                  RestaurantTierUpgradeMapper.toUiEntity(
+                    optionsEntity: args.optionsEntity,
+                    selectedOption: args.selectedOption,
+                    programName: args.programName,
+                    bundleName: args.bundleName,
+                  );
 
-          return Semantics(
-            label: locale.nav_subscription,
-            child: Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: data.title),
-              body: SafeArea(
-                top: false,
-                child: Stack(
-                  children: [
-                    CustomScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      slivers: [
-                        SliverPadding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.screenH,
-                          ),
-                          sliver: SliverList.list(
-                            children: _confirmationChildren(
-                              context,
-                              data,
-                              state,
+              return Semantics(
+                label: locale.nav_subscription,
+                child: Scaffold(
+                  appBar: CustomAppBar(
+                    elevation: Spacing.zero,
+                    title: data.title,
+                  ),
+                  body: SafeArea(
+                    top: false,
+                    child: Stack(
+                      children: [
+                        CustomScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          slivers: [
+                            SliverPadding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.screenH,
+                              ),
+                              sliver: SliverList.list(
+                                children: _confirmationChildren(
+                                  context,
+                                  data,
+                                  state,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (state.isSubmitting)
+                          ColoredBox(
+                            color: Colors.black26,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
                             ),
                           ),
-                        ),
                       ],
                     ),
-                    if (state.isSubmitting)
-                      ColoredBox(
-                        color: Colors.black26,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
     );
   }
 
@@ -184,8 +188,16 @@ class _RestaurantTierUpgradeConfirmationScreenState
       RestaurantTierQuickComparisonSection(data: data),
       const SizedBox(height: Spacing.lg),
       RestaurantTierDetailsSection(data: data),
-      const SizedBox(height: Spacing.lg),
-      RestaurantTierPaymentSection(data: data),
+      if ((state.optionsEntity?.paymentMethods ?? const []).isNotEmpty) ...[
+        const SizedBox(height: Spacing.lg),
+        RestaurantTierPaymentSection(
+          title: data.paymentTitle,
+          paymentMethods: state.optionsEntity!.paymentMethods,
+          selectedPaymentMethod: state.selectedPaymentMethod,
+          onPaymentMethodSelected: (method) =>
+              _viewModel.doIntent(SelectUpgradePaymentMethodEvent(method)),
+        ),
+      ],
       const SizedBox(height: Spacing.lg),
       RestaurantTierUpgradeActions(
         confirmLabel: state.isSubmitting

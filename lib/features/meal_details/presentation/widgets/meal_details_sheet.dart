@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_allergens_section.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_bottom_action_button.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_ingredients_section.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_info_row.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_macro_distribution_card.dart';
@@ -18,6 +19,7 @@ class MealDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final onSelectMeal = meal.onSelectMeal;
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
@@ -58,14 +60,17 @@ class MealDetailsSheet extends StatelessWidget {
                       MealDetailsAllergensSection(meal: meal),
                       const SizedBox(height: Spacing.lg),
                     ],
-                    const MealDetailsOptionalNotesField(),
-                    const SizedBox(height: Spacing.lg),
-                    // MealDetailsBottomActionButton(
-                    //   onPressed: () => Navigator.maybePop(context),
-                    // ),
-                    // SizedBox(
-                    //   height: locale.localeName == 'ar' ? Spacing.sm : 0,
-                    // ),
+                    if (onSelectMeal != null) ...[
+                      const MealDetailsOptionalNotesField(),
+                      const SizedBox(height: Spacing.lg),
+                      MealDetailsBottomActionButton(
+                        onPressed: () {
+                          onSelectMeal();
+                          Navigator.maybePop(context);
+                        },
+                      ),
+                      const SizedBox(height: Spacing.lg),
+                    ],
                   ],
                 ),
               ),

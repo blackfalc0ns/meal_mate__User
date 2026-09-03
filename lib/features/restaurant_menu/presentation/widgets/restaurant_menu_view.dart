@@ -571,6 +571,7 @@ class RestaurantMenuViewState extends State<RestaurantMenuView> {
     final details = widget.details;
     final availableMeals = widget.availableMeals;
     final restaurant = availableMeals?.restaurant;
+    final isSelected = widget.selectedMealIds.contains(meal.id);
     final restaurantName =
         widget.restaurantName ??
         restaurant?.name ??
@@ -659,6 +660,12 @@ class RestaurantMenuViewState extends State<RestaurantMenuView> {
             ? 'مسببات الحساسية'
             : 'Allergens',
         allergens: _mealDetailsAllergens(meal.allergens),
+        onSelectMeal:
+            widget.mode == RestaurantMenuMode.selection &&
+                !isSelected &&
+                widget.onMealToggled != null
+            ? () => widget.onMealToggled!(meal.id)
+            : null,
       ),
     );
   }

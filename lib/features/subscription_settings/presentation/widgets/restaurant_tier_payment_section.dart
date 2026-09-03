@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_payment_method_tile.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_section_card.dart';
 
 class RestaurantTierPaymentSection extends StatelessWidget {
-  const RestaurantTierPaymentSection({super.key, required this.data});
+  const RestaurantTierPaymentSection({
+    super.key,
+    required this.title,
+    required this.paymentMethods,
+    required this.selectedPaymentMethod,
+    required this.onPaymentMethodSelected,
+  });
 
-  final RestaurantTierUpgradeEntity data;
+  final String title;
+  final List<SubscriptionUpgradePaymentMethodEntity> paymentMethods;
+  final SubscriptionUpgradePaymentMethodEntity? selectedPaymentMethod;
+  final ValueChanged<SubscriptionUpgradePaymentMethodEntity>
+  onPaymentMethodSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +28,24 @@ class RestaurantTierPaymentSection extends StatelessWidget {
     return ColoredBox(
       color: color.surface,
       child: RestaurantTierSectionCard(
-        title: data.paymentTitle,
+        title: title,
         icon: Icons.credit_card_rounded,
         child: Semantics(
           label: locale.profile_billing,
-          child: RestaurantTierPaymentMethodTile(payment: data.paymentMethod),
+          child: Column(
+            children: [
+              for (var index = 0; index < paymentMethods.length; index++) ...[
+                RestaurantTierPaymentMethodTile(
+                  paymentMethod: paymentMethods[index],
+                  isSelected:
+                      selectedPaymentMethod?.id == paymentMethods[index].id,
+                  onTap: () => onPaymentMethodSelected(paymentMethods[index]),
+                ),
+                if (index < paymentMethods.length - 1)
+                  const SizedBox(height: Spacing.sm),
+              ],
+            ],
+          ),
         ),
       ),
     );

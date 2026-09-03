@@ -23,11 +23,14 @@ class SelectTierOptionEvent extends RestaurantTierUpgradeEvent {
   final SubscriptionUpgradeOptionEntity option;
 }
 
+class SelectUpgradePaymentMethodEvent extends RestaurantTierUpgradeEvent {
+  const SelectUpgradePaymentMethodEvent(this.paymentMethod);
+
+  final SubscriptionUpgradePaymentMethodEntity paymentMethod;
+}
+
 class SubmitUpgradeRequestEvent extends RestaurantTierUpgradeEvent {
-  const SubmitUpgradeRequestEvent({
-    this.paymentMethodId = 1,
-    this.reason,
-  });
+  const SubmitUpgradeRequestEvent({this.paymentMethodId, this.reason});
 
   final int? paymentMethodId;
   final String? reason;

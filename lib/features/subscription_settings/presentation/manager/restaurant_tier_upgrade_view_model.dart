@@ -12,8 +12,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_state.dart';
 
 @injectable
-class RestaurantTierUpgradeViewModel
-    extends Cubit<RestaurantTierUpgradeState> {
+class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
   RestaurantTierUpgradeViewModel(
     this._getSubscriptionUpgradeOptionsUseCase,
     this._createSubscriptionUpgradeRequestUseCase,
@@ -38,11 +37,10 @@ class RestaurantTierUpgradeViewModel
         _load(event.subscriptionId);
       case SelectTierOptionEvent():
         _selectOption(event.option);
+      case SelectUpgradePaymentMethodEvent():
+        _selectPaymentMethod(event.paymentMethod);
       case SubmitUpgradeRequestEvent():
-        _submit(
-          paymentMethodId: event.paymentMethodId,
-          reason: event.reason,
-        );
+        _submit(paymentMethodId: event.paymentMethodId, reason: event.reason);
       case VerifyUpgradeStatusEvent():
         _verifyStatus(event.upgradeId);
       case MarkUpgradeFailedEvent():
@@ -75,6 +73,7 @@ class RestaurantTierUpgradeViewModel
         bundleName: args.bundleName,
         optionsEntity: args.optionsEntity,
         selectedOption: args.selectedOption,
+        selectedPaymentMethod: _defaultPaymentMethod(args.optionsEntity),
         uiData: RestaurantTierUpgradeMapper.toUiEntity(
           optionsEntity: args.optionsEntity,
           selectedOption: args.selectedOption,
@@ -164,6 +163,7 @@ class RestaurantTierUpgradeViewModel
             isLoadingOptions: false,
             optionsEntity: optionsEntity,
             selectedOption: selected,
+            selectedPaymentMethod: _defaultPaymentMethod(optionsEntity),
             uiData: uiData,
             clearOptionsFailure: true,
           ),
@@ -191,12 +191,14 @@ class RestaurantTierUpgradeViewModel
       bundleName: state.bundleName,
     );
 
-    emit(
-      state.copyWith(
-        selectedOption: option,
-        uiData: uiData,
-      ),
-    );
+    emit(state.copyWith(selectedOption: option, uiData: uiData));
+  }
+
+  void _selectPaymentMethod(
+    SubscriptionUpgradePaymentMethodEntity paymentMethod,
+  ) {
+    if (!paymentMethod.isAvailable) return;
+    emit(state.copyWith(selectedPaymentMethod: paymentMethod));
   }
 
   Future<void> _submit({int? paymentMethodId, String? reason}) async {
@@ -221,7 +223,7 @@ class RestaurantTierUpgradeViewModel
       targetTier: selected.targetTier,
       callbackUrl: 'mealmate://payment/success',
       errorUrl: 'mealmate://payment/error',
-      paymentMethodId: paymentMethodId ?? 1,
+      paymentMethodId: paymentMethodId ?? state.selectedPaymentMethod?.id ?? 1,
       reason: reason,
     );
 
@@ -257,10 +259,7 @@ class RestaurantTierUpgradeViewModel
         }
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isSubmitting: false,
-            submitFailure: result.failure,
-          ),
+          state.copyWith(isSubmitting: false, submitFailure: result.failure),
         );
     }
   }
@@ -347,5 +346,15 @@ class RestaurantTierUpgradeViewModel
       yield const Duration(seconds: 5);
       elapsed += 5;
     }
+  }
+
+  SubscriptionUpgradePaymentMethodEntity? _defaultPaymentMethod(
+    SubscriptionUpgradeOptionsEntity optionsEntity,
+  ) {
+    for (final method in optionsEntity.paymentMethods) {
+      if (method.isAvailable) return method;
+    }
+    if (optionsEntity.paymentMethods.isEmpty) return null;
+    return optionsEntity.paymentMethods.first;
   }
 }
