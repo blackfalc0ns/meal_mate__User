@@ -44,7 +44,7 @@ class AppCustomDialog {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.screenH,
-                vertical: Spacing.md,
+                //    vertical: Spacing.md,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

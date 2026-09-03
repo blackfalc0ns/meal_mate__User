@@ -10,9 +10,8 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
-import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
@@ -230,13 +229,10 @@ class ProfileBillingScreen extends StatelessWidget {
 
     final freezeDays = pickedRange.end.difference(pickedRange.start).inDays + 1;
     if (freezeDays > subscription.actions.maximumFreezeDays) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            locale.billing_freeze_range_too_long(
-              subscription.actions.maximumFreezeDays,
-            ),
-          ),
+      CustomSnackbar.showWarning(
+        context: context,
+        message: locale.billing_freeze_range_too_long(
+          subscription.actions.maximumFreezeDays,
         ),
       );
       return;
@@ -370,26 +366,12 @@ class ProfileBillingScreen extends StatelessWidget {
 
     final locale = context.localization;
 
-    void showMessage(String message) {
-      final messenger = ScaffoldMessenger.maybeOf(context);
-      if (messenger != null) {
-        messenger.hideCurrentSnackBar();
-        messenger.showSnackBar(SnackBar(content: Text(message)));
-      } else {
-        getIt<AppNavigatorService>().showSnackBar(
-          SnackBar(content: Text(message)),
-        );
-      }
-    }
-
     if (actionState.failure != null) {
-      showMessage(
-        mapFailureMessage(
-          context,
-          actionState.failure?.code ??
-              actionState.errorMessage ??
-              locale.billing_action_failed,
-        ),
+      CustomSnackbar.showError(
+        context: context,
+        message: actionState.failure?.code ??
+            actionState.errorMessage ??
+            locale.billing_action_failed,
       );
       return;
     }
@@ -406,13 +388,22 @@ class ProfileBillingScreen extends StatelessWidget {
         }
         break;
       case 'renew':
-        showMessage(locale.billing_renew_success);
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_renew_success,
+        );
         break;
       case 'freeze':
-        showMessage(locale.billing_freeze_success);
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_freeze_success,
+        );
         break;
       case 'cancel':
-        showMessage(locale.billing_cancel_success);
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_cancel_success,
+        );
         break;
     }
   }

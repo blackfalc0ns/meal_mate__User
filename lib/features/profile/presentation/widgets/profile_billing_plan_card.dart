@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_action.dart';
@@ -296,9 +297,10 @@ class ProfileBillingPlanCard extends StatelessWidget {
                                 'خدمة التسعير غير متوفرة حالياً.',
                               _ => rawReason,
                             };
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(SnackBar(content: Text(message)));
+                            CustomSnackbar.showWarning(
+                              context: context,
+                              message: message,
+                            );
                             return;
                           }
                           context.pushNamed(
@@ -321,12 +323,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                             return;
                           }
                           if (!subscription.actions.canFreeze) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  locale.billing_action_unavailable,
-                                ),
-                              ),
+                            CustomSnackbar.showWarning(
+                              context: context,
+                              message: locale.billing_action_unavailable,
                             );
                             return;
                           }
@@ -345,12 +344,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                             return;
                           }
                           if (!subscription.actions.canRenew) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  locale.billing_action_unavailable,
-                                ),
-                              ),
+                            CustomSnackbar.showWarning(
+                              context: context,
+                              message: locale.billing_action_unavailable,
                             );
                             return;
                           }
@@ -369,12 +365,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                             return;
                           }
                           if (!subscription.actions.canCancel) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  locale.billing_action_unavailable,
-                                ),
-                              ),
+                            CustomSnackbar.showWarning(
+                              context: context,
+                              message: locale.billing_action_unavailable,
                             );
                             return;
                           }

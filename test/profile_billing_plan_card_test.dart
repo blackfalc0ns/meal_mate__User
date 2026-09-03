@@ -71,6 +71,33 @@ void main() {
     expect(frozen, isTrue);
     expect(cancelled, isTrue);
   });
+
+  testWidgets('tapping unavailable action shows custom snackbar message', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            body: ProfileBillingPlanCard(
+              subscription: _subscription(canFreeze: false),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('تجميد'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('هذا الإجراء غير متاح حالياً.'), findsOneWidget);
+  });
 }
 
 ProfileBillingSubscriptionEntity _subscription({
