@@ -5,7 +5,9 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations_ar.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
+import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_dashboard_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
@@ -14,7 +16,9 @@ import 'package:meal_meat_user/features/influencer/presentation/screens/influenc
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_activity_tile.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_header_card.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_hero_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_period_filter_strip.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_prompt_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_statistics_summary_card.dart';
 
 void main() {
   testWidgets(
@@ -94,6 +98,162 @@ void main() {
       expect(find.byType(InfluencerDashboardScreen), findsOneWidget);
     },
   );
+
+  testWidgets('influencer stats tab shows analytics content', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const InfluencerDashboardScreen(),
+      ),
+    );
+
+    await tester.tap(find.byKey(const ValueKey('influencer-tab-stats')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Track your performance and business growth'),
+      findsOneWidget,
+    );
+    expect(find.text('30 days'), findsOneWidget);
+    expect(find.text('Revenue growth'), findsOneWidget);
+    expect(find.text('Top performing products'), findsOneWidget);
+    expect(find.text('Share your link and code'), findsNothing);
+  });
+
+  testWidgets('influencer statistics summary follows inherited direction', (
+    tester,
+  ) async {
+    Future<double> pumpSummaryAndReadAmountCenter(Locale locale) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Builder(
+            builder: (context) {
+              final statistics = InfluencerFakeDataSource(
+                AppLocalizations.of(context)!,
+              ).loadDashboard().statistics;
+
+              return Scaffold(
+                body: Center(
+                  child: SizedBox(
+                    width: 359,
+                    child: InfluencerStatisticsSummaryCard(
+                      summary: statistics.summary,
+                      points: statistics.revenuePoints,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pump();
+
+      return tester.getCenter(find.text('845')).dx;
+    }
+
+    final ltrAmountCenter = await pumpSummaryAndReadAmountCenter(
+      const Locale('en'),
+    );
+    final rtlAmountCenter = await pumpSummaryAndReadAmountCenter(
+      const Locale('ar'),
+    );
+
+    expect(ltrAmountCenter, greaterThan(rtlAmountCenter));
+  });
+
+  testWidgets('influencer period filters follow inherited direction', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Builder(
+          builder: (context) {
+            final statistics = InfluencerFakeDataSource(
+              AppLocalizations.of(context)!,
+            ).loadDashboard().statistics;
+
+            return Scaffold(
+              body: InfluencerPeriodFilterStrip(
+                periods: statistics.periods,
+                selectedIndex: statistics.selectedPeriodIndex,
+                onSelected: (_) {},
+              ),
+            );
+          },
+        ),
+      ),
+    );
+
+    final firstPeriodCenter = tester.getCenter(
+      find.text(AppLocalizationsAr().influencer_period_year),
+    );
+    final lastPeriodCenter = tester.getCenter(
+      find.text(AppLocalizationsAr().influencer_period_7_days),
+    );
+
+    expect(firstPeriodCenter.dx, greaterThan(lastPeriodCenter.dx));
+  });
+
+  testWidgets('influencer summary chart spaces compact date labels', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 300));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Builder(
+          builder: (context) {
+            final statistics = InfluencerFakeDataSource(
+              AppLocalizations.of(context)!,
+            ).loadDashboard().statistics;
+
+            return Scaffold(
+              body: Center(
+                child: SizedBox(
+                  width: 359,
+                  child: InfluencerStatisticsSummaryCard(
+                    summary: statistics.summary,
+                    points: statistics.revenuePoints,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+
+    final visibleDateLabelCount = [
+      AppLocalizationsAr().influencer_chart_20_april,
+      AppLocalizationsAr().influencer_chart_27_april,
+      AppLocalizationsAr().influencer_chart_4_may,
+      AppLocalizationsAr().influencer_chart_11_may,
+      AppLocalizationsAr().influencer_chart_18_may,
+      AppLocalizationsAr().influencer_chart_25_may,
+    ].where((label) => find.text(label).evaluate().isNotEmpty).length;
+
+    expect(visibleDateLabelCount, lessThanOrEqualTo(3));
+  });
 
   testWidgets('influencer selected bottom tab uses influencer colors', (
     tester,

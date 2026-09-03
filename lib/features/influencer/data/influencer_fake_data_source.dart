@@ -141,6 +141,122 @@ class InfluencerFakeDataSource {
           avatarAsset: AssetsFake.influencerDashboardAvatar,
         ),
       ],
+      statistics: InfluencerStatisticsEntity(
+        periods: [
+          locale.influencer_period_year,
+          locale.influencer_period_6_months,
+          locale.influencer_period_90_days,
+          locale.influencer_period_30_days,
+          locale.influencer_period_7_days,
+        ],
+        selectedPeriodIndex: 3,
+        summary: InfluencerStatisticsSummaryEntity(
+          title: locale.influencer_total_earnings,
+          value: locale.influencer_total_earnings_value,
+          currency: locale.influencer_currency,
+          gain: locale.influencer_weekly_commission_gain,
+          growthPercent: locale.influencer_growth_percent,
+          comparisonLabel: locale.influencer_previous_30_days_comparison,
+          dateLabels: [
+            locale.influencer_chart_20_april,
+            locale.influencer_chart_27_april,
+            locale.influencer_chart_4_may,
+            locale.influencer_chart_11_may,
+            locale.influencer_chart_18_may,
+            locale.influencer_chart_25_may,
+          ],
+        ),
+        overviewMetrics: [
+          InfluencerMetricEntity(
+            title: locale.influencer_referrals,
+            value: locale.influencer_referrals_value,
+            subtitle: locale.influencer_previous_30_days_comparison,
+            iconAsset: AssetsFake.influencerMetricUsers,
+            trendIconAsset: AssetsFake.influencerTrendUp,
+          ),
+          InfluencerMetricEntity(
+            title: locale.influencer_generated_orders,
+            value: locale.influencer_generated_orders_value,
+            subtitle: locale.influencer_previous_30_days_comparison,
+            iconAsset: AssetsFake.influencerMetricSubscriptions,
+            trendIconAsset: AssetsFake.influencerTrendUp,
+          ),
+          InfluencerMetricEntity(
+            title: locale.influencer_pending_withdrawals,
+            value: locale.influencer_pending_withdrawals_value,
+            subtitle: locale.influencer_previous_30_days_comparison,
+            iconAsset: AssetsFake.influencerMetricClicks,
+            trendIconAsset: AssetsFake.influencerTrendUp,
+          ),
+          InfluencerMetricEntity(
+            title: locale.influencer_conversion_rate,
+            value: locale.influencer_conversion_rate_value,
+            subtitle: locale.influencer_previous_30_days_comparison,
+            iconAsset: AssetsFake.influencerMetricConversion,
+            trendIconAsset: AssetsFake.influencerTrendUp,
+          ),
+        ],
+        revenuePoints: [
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_20_april,
+            value: 120,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_27_april,
+            value: 150,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_4_may,
+            value: 180,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_11_may,
+            value: 210,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_18_may,
+            value: 170,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_25_may,
+            value: 210,
+          ),
+        ],
+        revenueBars: [
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_20_april,
+            value: 120,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_27_april,
+            value: 150,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_4_may,
+            value: 180,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_11_may,
+            value: 210,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_18_may,
+            value: 170,
+          ),
+          InfluencerChartPointEntity(
+            label: locale.influencer_chart_25_may,
+            value: 210,
+          ),
+        ],
+        topProduct: InfluencerTopProductEntity(
+          rank: '1',
+          name: locale.influencer_top_product_name,
+          orders: locale.influencer_top_product_orders_value,
+          ordersLabel: locale.influencer_orders_label,
+          revenueLabel: locale.influencer_product_revenue_label,
+          revenue: locale.influencer_top_product_revenue_value,
+        ),
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_statistics_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_wallet_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_dashboard_bottom_tabs.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_header_card.dart';
@@ -37,7 +38,7 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
     final homeTab = _buildHomeTab(context);
     final screens = [
       const InfluencerSocialConnectionsScreen(showScaffold: false),
-      homeTab,
+      const InfluencerStatisticsScreen(),
       const InfluencerWalletScreen(showScaffold: false),
       const InfluencerShareLinksScreen(showScaffold: false),
       homeTab,

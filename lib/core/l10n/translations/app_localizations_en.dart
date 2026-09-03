@@ -4032,6 +4032,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_statistics => 'Statistics';
 
   @override
+  String get influencer_statistics_subtitle =>
+      'Track your performance and business growth';
+
+  @override
   String get influencer_tools => 'Partner tools';
 
   @override
@@ -4039,6 +4043,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get influencer_total_earnings_value => '845';
+
+  @override
+  String get influencer_period_7_days => '7 days';
+
+  @override
+  String get influencer_period_30_days => '30 days';
+
+  @override
+  String get influencer_period_90_days => '90 days';
+
+  @override
+  String get influencer_period_6_months => '6 months';
+
+  @override
+  String get influencer_period_year => 'Year';
+
+  @override
+  String get influencer_previous_30_days_comparison =>
+      'Compared with the previous 30 days';
+
+  @override
+  String get influencer_growth_percent => '+4.3%';
 
   @override
   String get influencer_this_month => 'Monthly goal';
@@ -4075,6 +4101,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get influencer_completed_subscriptions_value => '81';
+
+  @override
+  String get influencer_generated_orders => 'Generated orders';
+
+  @override
+  String get influencer_generated_orders_value => '68';
+
+  @override
+  String get influencer_overview => 'Overview';
+
+  @override
+  String get influencer_revenue_growth => 'Revenue growth';
+
+  @override
+  String get influencer_daily => 'Daily';
+
+  @override
+  String get influencer_earnings_label => 'Earnings';
+
+  @override
+  String get influencer_top_products => 'Top performing products';
+
+  @override
+  String get influencer_top_product_name => 'Complete diet box';
+
+  @override
+  String get influencer_top_product_orders_value => '124';
+
+  @override
+  String get influencer_orders_label => 'orders';
+
+  @override
+  String get influencer_product_revenue_label => 'Earnings';
+
+  @override
+  String get influencer_top_product_revenue_value => '245 KWD';
+
+  @override
+  String get influencer_chart_20_april => '20 Apr';
+
+  @override
+  String get influencer_chart_27_april => '27 Apr';
+
+  @override
+  String get influencer_chart_4_may => '4 May';
+
+  @override
+  String get influencer_chart_11_may => '11 May';
+
+  @override
+  String get influencer_chart_18_may => '18 May';
+
+  @override
+  String get influencer_chart_25_may => '25 May';
 
   @override
   String get influencer_weekly_commission_gain => '+35 KWD';

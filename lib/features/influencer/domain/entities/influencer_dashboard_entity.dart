@@ -15,6 +15,7 @@ class InfluencerDashboardEntity {
     required this.wallet,
     required this.socialAccounts,
     required this.activities,
+    required this.statistics,
   });
 
   final String userName;
@@ -32,6 +33,7 @@ class InfluencerDashboardEntity {
   final InfluencerWalletEntity wallet;
   final List<InfluencerSocialAccountEntity> socialAccounts;
   final List<InfluencerActivityEntity> activities;
+  final InfluencerStatisticsEntity statistics;
 }
 
 class InfluencerMetricEntity {
@@ -136,4 +138,69 @@ class InfluencerActivityEntity {
   final String amount;
   final String time;
   final String avatarAsset;
+}
+
+class InfluencerStatisticsEntity {
+  const InfluencerStatisticsEntity({
+    required this.periods,
+    required this.selectedPeriodIndex,
+    required this.summary,
+    required this.overviewMetrics,
+    required this.revenuePoints,
+    required this.revenueBars,
+    required this.topProduct,
+  });
+
+  final List<String> periods;
+  final int selectedPeriodIndex;
+  final InfluencerStatisticsSummaryEntity summary;
+  final List<InfluencerMetricEntity> overviewMetrics;
+  final List<InfluencerChartPointEntity> revenuePoints;
+  final List<InfluencerChartPointEntity> revenueBars;
+  final InfluencerTopProductEntity topProduct;
+}
+
+class InfluencerStatisticsSummaryEntity {
+  const InfluencerStatisticsSummaryEntity({
+    required this.title,
+    required this.value,
+    required this.currency,
+    required this.gain,
+    required this.growthPercent,
+    required this.comparisonLabel,
+    required this.dateLabels,
+  });
+
+  final String title;
+  final String value;
+  final String currency;
+  final String gain;
+  final String growthPercent;
+  final String comparisonLabel;
+  final List<String> dateLabels;
+}
+
+class InfluencerChartPointEntity {
+  const InfluencerChartPointEntity({required this.label, required this.value});
+
+  final String label;
+  final double value;
+}
+
+class InfluencerTopProductEntity {
+  const InfluencerTopProductEntity({
+    required this.rank,
+    required this.name,
+    required this.orders,
+    required this.ordersLabel,
+    required this.revenueLabel,
+    required this.revenue,
+  });
+
+  final String rank;
+  final String name;
+  final String orders;
+  final String ordersLabel;
+  final String revenueLabel;
+  final String revenue;
 }

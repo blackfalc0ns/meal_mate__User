@@ -3972,6 +3972,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_statistics => 'الإحصائيات';
 
   @override
+  String get influencer_statistics_subtitle => 'تابع أداءك ونمو أعمالك';
+
+  @override
   String get influencer_tools => 'أدوات الشراكة';
 
   @override
@@ -3979,6 +3982,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get influencer_total_earnings_value => '845';
+
+  @override
+  String get influencer_period_7_days => '7 أيام';
+
+  @override
+  String get influencer_period_30_days => '30 يوم';
+
+  @override
+  String get influencer_period_90_days => '90 يوم';
+
+  @override
+  String get influencer_period_6_months => '6 أشهر';
+
+  @override
+  String get influencer_period_year => 'سنة';
+
+  @override
+  String get influencer_previous_30_days_comparison =>
+      'مقارنة بالـ 30 يوم السابقة';
+
+  @override
+  String get influencer_growth_percent => '+4.3%';
 
   @override
   String get influencer_this_month => 'هدف الشهر';
@@ -4015,6 +4040,60 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get influencer_completed_subscriptions_value => '81';
+
+  @override
+  String get influencer_generated_orders => 'الطلبات الناتجة';
+
+  @override
+  String get influencer_generated_orders_value => '68';
+
+  @override
+  String get influencer_overview => 'نظرة عامة';
+
+  @override
+  String get influencer_revenue_growth => 'تطور الأرباح';
+
+  @override
+  String get influencer_daily => 'يومي';
+
+  @override
+  String get influencer_earnings_label => 'الأرباح';
+
+  @override
+  String get influencer_top_products => 'أفضل المنتجات أداءاً';
+
+  @override
+  String get influencer_top_product_name => 'بوكس دايت متكامل';
+
+  @override
+  String get influencer_top_product_orders_value => '124';
+
+  @override
+  String get influencer_orders_label => 'طلب';
+
+  @override
+  String get influencer_product_revenue_label => 'الأرباح';
+
+  @override
+  String get influencer_top_product_revenue_value => '245 KWD';
+
+  @override
+  String get influencer_chart_20_april => '20 أبريل';
+
+  @override
+  String get influencer_chart_27_april => '27 أبريل';
+
+  @override
+  String get influencer_chart_4_may => '4 مايو';
+
+  @override
+  String get influencer_chart_11_may => '11 مايو';
+
+  @override
+  String get influencer_chart_18_may => '18 مايو';
+
+  @override
+  String get influencer_chart_25_may => '25 مايو';
 
   @override
   String get influencer_weekly_commission_gain => '+35 KWD';

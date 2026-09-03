@@ -7628,6 +7628,12 @@ abstract class AppLocalizations {
   /// **'Statistics'**
   String get influencer_statistics;
 
+  /// No description provided for @influencer_statistics_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your performance and business growth'**
+  String get influencer_statistics_subtitle;
+
   /// No description provided for @influencer_tools.
   ///
   /// In en, this message translates to:
@@ -7645,6 +7651,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'845'**
   String get influencer_total_earnings_value;
+
+  /// No description provided for @influencer_period_7_days.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get influencer_period_7_days;
+
+  /// No description provided for @influencer_period_30_days.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get influencer_period_30_days;
+
+  /// No description provided for @influencer_period_90_days.
+  ///
+  /// In en, this message translates to:
+  /// **'90 days'**
+  String get influencer_period_90_days;
+
+  /// No description provided for @influencer_period_6_months.
+  ///
+  /// In en, this message translates to:
+  /// **'6 months'**
+  String get influencer_period_6_months;
+
+  /// No description provided for @influencer_period_year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get influencer_period_year;
+
+  /// No description provided for @influencer_previous_30_days_comparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Compared with the previous 30 days'**
+  String get influencer_previous_30_days_comparison;
+
+  /// No description provided for @influencer_growth_percent.
+  ///
+  /// In en, this message translates to:
+  /// **'+4.3%'**
+  String get influencer_growth_percent;
 
   /// No description provided for @influencer_this_month.
   ///
@@ -7717,6 +7765,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'81'**
   String get influencer_completed_subscriptions_value;
+
+  /// No description provided for @influencer_generated_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated orders'**
+  String get influencer_generated_orders;
+
+  /// No description provided for @influencer_generated_orders_value.
+  ///
+  /// In en, this message translates to:
+  /// **'68'**
+  String get influencer_generated_orders_value;
+
+  /// No description provided for @influencer_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get influencer_overview;
+
+  /// No description provided for @influencer_revenue_growth.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue growth'**
+  String get influencer_revenue_growth;
+
+  /// No description provided for @influencer_daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get influencer_daily;
+
+  /// No description provided for @influencer_earnings_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get influencer_earnings_label;
+
+  /// No description provided for @influencer_top_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Top performing products'**
+  String get influencer_top_products;
+
+  /// No description provided for @influencer_top_product_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete diet box'**
+  String get influencer_top_product_name;
+
+  /// No description provided for @influencer_top_product_orders_value.
+  ///
+  /// In en, this message translates to:
+  /// **'124'**
+  String get influencer_top_product_orders_value;
+
+  /// No description provided for @influencer_orders_label.
+  ///
+  /// In en, this message translates to:
+  /// **'orders'**
+  String get influencer_orders_label;
+
+  /// No description provided for @influencer_product_revenue_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get influencer_product_revenue_label;
+
+  /// No description provided for @influencer_top_product_revenue_value.
+  ///
+  /// In en, this message translates to:
+  /// **'245 KWD'**
+  String get influencer_top_product_revenue_value;
+
+  /// No description provided for @influencer_chart_20_april.
+  ///
+  /// In en, this message translates to:
+  /// **'20 Apr'**
+  String get influencer_chart_20_april;
+
+  /// No description provided for @influencer_chart_27_april.
+  ///
+  /// In en, this message translates to:
+  /// **'27 Apr'**
+  String get influencer_chart_27_april;
+
+  /// No description provided for @influencer_chart_4_may.
+  ///
+  /// In en, this message translates to:
+  /// **'4 May'**
+  String get influencer_chart_4_may;
+
+  /// No description provided for @influencer_chart_11_may.
+  ///
+  /// In en, this message translates to:
+  /// **'11 May'**
+  String get influencer_chart_11_may;
+
+  /// No description provided for @influencer_chart_18_may.
+  ///
+  /// In en, this message translates to:
+  /// **'18 May'**
+  String get influencer_chart_18_may;
+
+  /// No description provided for @influencer_chart_25_may.
+  ///
+  /// In en, this message translates to:
+  /// **'25 May'**
+  String get influencer_chart_25_may;
 
   /// No description provided for @influencer_weekly_commission_gain.
   ///
