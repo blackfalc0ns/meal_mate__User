@@ -38,6 +38,8 @@ class MealMateApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           navigatorKey: getIt<AppNavigatorService>().navigatorKey,
+          scaffoldMessengerKey:
+              getIt<AppNavigatorService>().scaffoldMessengerKey,
           builder: DevicePreview.appBuilder,
           locale: appLocale,
           title: 'Meal Mate',

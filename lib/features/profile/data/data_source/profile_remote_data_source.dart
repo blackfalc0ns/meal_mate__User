@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
@@ -21,4 +22,21 @@ abstract interface class ProfileRemoteDataSource {
 
   Future<ProfileBillingFreezePolicyResponseDto>
   getCustomerSubscriptionFreezePolicy();
+
+  Future<void> createCustomerSubscriptionRenewalRequest(String subscriptionId);
+
+  Future<ProfileBillingFreezeResponseDto>
+  createCustomerSubscriptionFreezeRequest(
+    String subscriptionId,
+    ProfileBillingFreezeRequestDto request,
+  );
+
+  Future<ProfileBillingCancellationQuoteResponseDto>
+  getCustomerSubscriptionCancellationQuote(String subscriptionId);
+
+  Future<ProfileBillingCancellationResultResponseDto>
+  createCustomerSubscriptionCancellationRequest(
+    String subscriptionId,
+    ProfileBillingCancellationRequestDto request,
+  );
 }

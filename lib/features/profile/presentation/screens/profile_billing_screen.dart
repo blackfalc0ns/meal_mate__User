@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
+import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
@@ -38,8 +43,16 @@ class ProfileBillingScreen extends StatelessWidget {
           backgroundColor: color.surface,
           showShadow: false,
         ),
-        body: BlocBuilder<ProfileViewModel, ProfileState>(
-          buildWhen: (previous, current) => previous.billing != current.billing,
+        body: BlocConsumer<ProfileViewModel, ProfileState>(
+          listenWhen: (previous, current) =>
+              previous.billingAction != current.billingAction,
+          listener: (context, state) {
+            _handleBillingActionState(context, state.billingAction);
+          },
+          buildWhen: (previous, current) =>
+              previous.billing != current.billing ||
+              previous.billingAction.isLoading !=
+                  current.billingAction.isLoading,
           builder: (context, state) {
             final billingState = state.billing;
             final billing = billingState.data;
@@ -60,7 +73,8 @@ class ProfileBillingScreen extends StatelessWidget {
             final subscription = billing?.current.subscription;
             final paymentMethod = billing?.paymentMethod;
             final freezePolicy = billing?.freezePolicy;
-            final freezeMessage = locale.localeName == 'ar'
+            final isRtl = Directionality.of(context) == TextDirection.rtl;
+            final freezeMessage = isRtl
                 ? freezePolicy?.messageAr
                 : freezePolicy?.messageEn;
 
@@ -80,7 +94,41 @@ class ProfileBillingScreen extends StatelessWidget {
                         icon: Icons.receipt_long_rounded,
                       )
                     else
-                      ProfileBillingPlanCard(subscription: subscription),
+                      ProfileBillingPlanCard(
+                        subscription: subscription,
+                        isActionLoading: state.billingAction.isLoading,
+                        onRenew: () => _confirmRenew(context, subscription),
+                        onFreeze: () => _confirmFreeze(context, subscription),
+                        onCancel: () =>
+                            context.read<ProfileViewModel>().doIntent(
+                              GetCancellationQuoteEvent(
+                                subscription.subscriptionId,
+                              ),
+                            ),
+                      ),
+                    if (subscription?.pendingUpgrade != null) ...[
+                      const SizedBox(height: Spacing.md),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.md,
+                          vertical: Spacing.sm,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.inverseSurface,
+                          borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                        ),
+                        child: Text(
+                          locale.billing_pending_upgrade_notice,
+                          textAlign: TextAlign.center,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onInverseSurface,
+                          ),
+                        ),
+                      ),
+                    ],
                     if (paymentMethod != null &&
                         paymentMethod.hasSavedMethod) ...[
                       const SizedBox(height: Spacing.md),
@@ -131,6 +179,290 @@ class ProfileBillingScreen extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  Future<void> _confirmRenew(
+    BuildContext context,
+    ProfileBillingSubscriptionEntity subscription,
+  ) async {
+    final locale = context.localization;
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_renew_confirm_title,
+      message: locale.billing_renew_confirm_message,
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      icon: Icons.autorenew_rounded,
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+
+    if (!context.mounted || confirmed != true) {
+      return;
+    }
+
+    context.read<ProfileViewModel>().doIntent(
+      RenewSubscriptionEvent(subscription.subscriptionId),
+    );
+  }
+
+  Future<void> _confirmFreeze(
+    BuildContext context,
+    ProfileBillingSubscriptionEntity subscription,
+  ) async {
+    final locale = context.localization;
+    final firstDate = ProfileBillingFreezeDatePolicy.minimumStartDate(
+      now: DateTime.now(),
+      freezeStartDelayDays: subscription.actions.freezeStartDelayDays,
+      earliestFreezeStartDate: subscription.actions.earliestFreezeStartDate,
+    );
+    final pickedRange = await context.showAppDateRangePicker(
+      title: locale.billing_pick_freeze_dates,
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      firstDate: firstDate,
+      lastDate: firstDate.add(const Duration(days: 365)),
+    );
+
+    if (!context.mounted || pickedRange == null) {
+      return;
+    }
+
+    final freezeDays = pickedRange.end.difference(pickedRange.start).inDays + 1;
+    if (freezeDays > subscription.actions.maximumFreezeDays) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            locale.billing_freeze_range_too_long(
+              subscription.actions.maximumFreezeDays,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
+    String reasonText = '';
+    final color = context.colorScheme;
+    final dateFormatter = intl.DateFormat.yMd(locale.localeName);
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_freeze_confirm_title,
+      message: locale.billing_freeze_confirm_message,
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      icon: Icons.ac_unit_rounded,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            locale.billing_selected_freeze_dates(
+              dateFormatter.format(pickedRange.start),
+              dateFormatter.format(pickedRange.end),
+            ),
+            style: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size13,
+              color: color.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: Spacing.sm),
+          _BillingReasonInputField(
+            labelText: locale.billing_optional_reason,
+            onChanged: (value) => reasonText = value,
+          ),
+        ],
+      ),
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+
+    if (!context.mounted || confirmed != true) {
+      return;
+    }
+
+    final reason = reasonText.trim();
+    context.read<ProfileViewModel>().doIntent(
+      FreezeSubscriptionEvent(
+        subscriptionId: subscription.subscriptionId,
+        request: ProfileBillingFreezeRequestEntity(
+          startDate: _formatApiDate(pickedRange.start),
+          endDate: _formatApiDate(pickedRange.end),
+          reason: reason.isEmpty ? null : reason,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmCancel(
+    BuildContext context,
+    ProfileBillingCancellationQuoteEntity quote,
+  ) async {
+    final locale = context.localization;
+    String reasonText = '';
+    final color = context.colorScheme;
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_cancel_quote_title,
+      message: locale.billing_cancel_quote_message(
+        quote.refundableDays,
+        quote.refundAmount.toStringAsFixed(3),
+        quote.currencyCode,
+      ),
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      icon: Icons.cancel_outlined,
+      iconColor: color.error,
+      confirmTextColor: color.error,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (quote.policyMessageAr.isNotEmpty) ...[
+            Text(
+              quote.policyMessageAr,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size13,
+                color: color.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+          ],
+          _BillingReasonInputField(
+            labelText: locale.billing_optional_reason,
+            onChanged: (value) => reasonText = value,
+          ),
+        ],
+      ),
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (confirmed != true) {
+      context.read<ProfileViewModel>().doIntent(
+        const ResetBillingActionEvent(),
+      );
+      return;
+    }
+
+    final reason = reasonText.trim();
+    context.read<ProfileViewModel>().doIntent(
+      CancelSubscriptionEvent(
+        subscriptionId: quote.subscriptionId,
+        request: ProfileBillingCancellationRequestEntity(
+          reason: reason.isEmpty ? null : reason,
+        ),
+      ),
+    );
+  }
+
+  void _handleBillingActionState(
+    BuildContext context,
+    ProfileBillingActionState actionState,
+  ) {
+    if (!context.mounted) {
+      return;
+    }
+
+    final locale = context.localization;
+
+    void showMessage(String message) {
+      final messenger = ScaffoldMessenger.maybeOf(context);
+      if (messenger != null) {
+        messenger.hideCurrentSnackBar();
+        messenger.showSnackBar(SnackBar(content: Text(message)));
+      } else {
+        getIt<AppNavigatorService>().showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    }
+
+    if (actionState.failure != null) {
+      showMessage(
+        mapFailureMessage(
+          context,
+          actionState.failure?.code ??
+              actionState.errorMessage ??
+              locale.billing_action_failed,
+        ),
+      );
+      return;
+    }
+
+    if (!actionState.isSuccess) {
+      return;
+    }
+
+    switch (actionState.type) {
+      case 'quote':
+        final quote = actionState.cancellationQuote;
+        if (quote != null) {
+          _confirmCancel(context, quote);
+        }
+        break;
+      case 'renew':
+        showMessage(locale.billing_renew_success);
+        break;
+      case 'freeze':
+        showMessage(locale.billing_freeze_success);
+        break;
+      case 'cancel':
+        showMessage(locale.billing_cancel_success);
+        break;
+    }
+  }
+
+  String _formatApiDate(DateTime date) {
+    final year = date.year.toString().padLeft(4, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '$year-$month-$day';
+  }
+}
+
+class _BillingReasonInputField extends StatefulWidget {
+  const _BillingReasonInputField({
+    required this.labelText,
+    required this.onChanged,
+  });
+
+  final String labelText;
+  final ValueChanged<String> onChanged;
+
+  @override
+  State<_BillingReasonInputField> createState() =>
+      _BillingReasonInputFieldState();
+}
+
+class _BillingReasonInputFieldState extends State<_BillingReasonInputField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+      ),
+      maxLines: 2,
+      onChanged: widget.onChanged,
     );
   }
 }

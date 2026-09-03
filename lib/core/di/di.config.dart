@@ -259,6 +259,12 @@ import '../../features/profile/data/data_source/profile_remote_data_source_impl.
 import '../../features/profile/data/repo/profile_repository_impl.dart'
     as _i1015;
 import '../../features/profile/domain/repo/profile_repository.dart' as _i311;
+import '../../features/profile/domain/usecase/create_subscription_cancellation_request_usecase.dart'
+    as _i406;
+import '../../features/profile/domain/usecase/create_subscription_freeze_request_usecase.dart'
+    as _i335;
+import '../../features/profile/domain/usecase/create_subscription_renewal_request_usecase.dart'
+    as _i995;
 import '../../features/profile/domain/usecase/delete_customer_profile_image_usecase.dart'
     as _i186;
 import '../../features/profile/domain/usecase/get_current_customer_subscription_usecase.dart'
@@ -267,6 +273,8 @@ import '../../features/profile/domain/usecase/get_customer_profile_usecase.dart'
     as _i994;
 import '../../features/profile/domain/usecase/get_profile_billing_usecase.dart'
     as _i768;
+import '../../features/profile/domain/usecase/get_subscription_cancellation_quote_usecase.dart'
+    as _i701;
 import '../../features/profile/domain/usecase/update_customer_profile_image_usecase.dart'
     as _i399;
 import '../../features/profile/domain/usecase/update_customer_profile_usecase.dart'
@@ -836,6 +844,21 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
+    gh.factory<_i406.CreateSubscriptionCancellationRequestUseCase>(
+      () => _i406.CreateSubscriptionCancellationRequestUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i335.CreateSubscriptionFreezeRequestUseCase>(
+      () => _i335.CreateSubscriptionFreezeRequestUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i995.CreateSubscriptionRenewalRequestUseCase>(
+      () => _i995.CreateSubscriptionRenewalRequestUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -851,6 +874,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i768.GetProfileBillingUseCase>(
       () => _i768.GetProfileBillingUseCase(gh<_i311.ProfileRepository>()),
+    );
+    gh.factory<_i701.GetSubscriptionCancellationQuoteUseCase>(
+      () => _i701.GetSubscriptionCancellationQuoteUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
     );
     gh.factory<_i399.UpdateCustomerProfileImageUseCase>(
       () => _i399.UpdateCustomerProfileImageUseCase(
@@ -1050,6 +1078,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i446.ProfileViewModel(
         gh<_i994.GetCustomerProfileUseCase>(),
         gh<_i768.GetProfileBillingUseCase>(),
+        gh<_i995.CreateSubscriptionRenewalRequestUseCase>(),
+        gh<_i335.CreateSubscriptionFreezeRequestUseCase>(),
+        gh<_i701.GetSubscriptionCancellationQuoteUseCase>(),
+        gh<_i406.CreateSubscriptionCancellationRequestUseCase>(),
         gh<_i857.UpdateCustomerProfileUseCase>(),
         gh<_i995.UploadFileUseCase>(),
         gh<_i399.UpdateCustomerProfileImageUseCase>(),

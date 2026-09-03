@@ -18,6 +18,7 @@ class AppBottomNavBar extends StatelessWidget {
     this.activeColor,
     this.inactiveColor,
     this.activeBackground,
+    this.layoutTextDirection,
   });
 
   final List<AppBottomNavBarItem> items;
@@ -26,6 +27,7 @@ class AppBottomNavBar extends StatelessWidget {
   final Color? activeColor;
   final Color? inactiveColor;
   final Color? activeBackground;
+  final TextDirection? layoutTextDirection;
 
   static const _activeColor = Color(0xFF0C6C3F);
   static const _inactiveColor = Color(0xFF191C1D);
@@ -84,6 +86,7 @@ class AppBottomNavBar extends StatelessWidget {
                       child: SizedBox(
                         height: 66,
                         child: Row(
+                          textDirection: layoutTextDirection,
                           children: List.generate(items.length, (index) {
                             return Expanded(
                               child: _NavItem(
@@ -91,8 +94,7 @@ class AppBottomNavBar extends StatelessWidget {
                                 item: items[index],
                                 selected: index == currentIndex,
                                 activeColor: activeColor ?? _activeColor,
-                                inactiveColor:
-                                    inactiveColor ?? _inactiveColor,
+                                inactiveColor: inactiveColor ?? _inactiveColor,
                                 activeBackground:
                                     activeBackground ?? _activeBackground,
                                 onTap: () => onTap(index),

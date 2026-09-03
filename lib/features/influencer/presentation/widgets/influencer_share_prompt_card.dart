@@ -42,70 +42,120 @@ class InfluencerSharePromptCard extends StatelessWidget {
           width: Spacing.influencerSharePromptBorder,
         ),
       ),
-      child: Row(
+      child: Stack(
         children: [
-          SizedBox(
-            width: Spacing.influencerShareCouponWidth,
-            height: Spacing.influencerShareCouponHeight,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: color.surface.withValues(alpha: 0),
-                borderRadius: BorderRadius.circular(
-                  Spacing.influencerShareCouponRadius,
+          Positioned(
+            left: Spacing.zero,
+            top: Spacing.zero,
+            bottom: Spacing.zero,
+            child: SizedBox(
+              width: Spacing.influencerShareCouponWidth,
+              height: Spacing.influencerShareCouponHeight,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: color.surface.withValues(alpha: 0),
+                  borderRadius: BorderRadius.circular(
+                    Spacing.influencerShareCouponRadius,
+                  ),
+                  border: Border.all(color: color.outlineVariant),
                 ),
-                border: Border.all(color: color.outlineVariant),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    codeTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size7,
-                      color: color.onSurfaceVariant,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      codeTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size7,
+                        color: color.onSurfaceVariant,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: Spacing.xss),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        code,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size15,
-                          color: color.primary,
-                        ),
+                    const SizedBox(height: Spacing.xss),
+                    SizedBox(
+                      width:
+                          Spacing.influencerShareCouponWidth -
+                          (Spacing.influencerSharePromptContentPadding * 2),
+                      height: Spacing.lg,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: Spacing.zero,
+                            top: Spacing.zero,
+                            bottom: Spacing.zero,
+                            child: Text(
+                              code,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size15,
+                                color: color.primary,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: Spacing.zero,
+                            top: Spacing.zero,
+                            bottom: Spacing.zero,
+                            child: SvgPicture.asset(
+                              copyIconAsset,
+                              width: Spacing.influencerCopyIconSize,
+                              height: Spacing.influencerCopyIconSize,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: Spacing.xs),
-                      SvgPicture.asset(
-                        copyIconAsset,
-                        width: Spacing.influencerCopyIconSize,
-                        height: Spacing.influencerCopyIconSize,
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          const SizedBox(width: Spacing.md),
-          Container(
-            width: Spacing.hairline,
-            height: Spacing.influencerShareCouponHeight,
-            color: color.outlineVariant,
+          Positioned(
+            left: Spacing.influencerShareCouponWidth + Spacing.md,
+            top: Spacing.sm,
+            bottom: Spacing.sm,
+            child: Container(
+              width: Spacing.hairline,
+              color: color.outlineVariant,
+            ),
           ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+          Positioned(
+            left: Spacing.influencerShareCouponWidth + Spacing.md + Spacing.md,
+            right: Spacing.zero,
+            top: Spacing.zero,
+            bottom: Spacing.zero,
+            child: Stack(
               children: [
-                Flexible(
+                Positioned(
+                  right: Spacing.zero,
+                  top: Spacing.zero,
+                  bottom: Spacing.zero,
+                  child: Center(
+                    child: Container(
+                      key: const ValueKey('influencer-share-action-circle'),
+                      width: Spacing.iconXl,
+                      height: Spacing.iconXl,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: color.surface,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset(
+                        shareIconAsset,
+                        width: Spacing.influencerShareIconSize,
+                        height: Spacing.influencerShareIconSize,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: Spacing.zero,
+                  right: Spacing.iconXl + Spacing.sm,
+                  top: Spacing.zero,
+                  bottom: Spacing.zero,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -135,12 +185,6 @@ class InfluencerSharePromptCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(width: Spacing.sm),
-                SvgPicture.asset(
-                  shareIconAsset,
-                  width: Spacing.influencerShareIconSize,
-                  height: Spacing.influencerShareIconSize,
                 ),
               ],
             ),

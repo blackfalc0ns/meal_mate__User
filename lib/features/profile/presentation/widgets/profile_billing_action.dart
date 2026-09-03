@@ -22,11 +22,6 @@ class ProfileBillingAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-
-    final textDirection = locale.localeName == 'ar'
-        ? TextDirection.rtl
-        : TextDirection.ltr;
 
     return InkWell(
       onTap: onTap,
@@ -56,7 +51,6 @@ class ProfileBillingAction extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              textDirection: textDirection,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size9,

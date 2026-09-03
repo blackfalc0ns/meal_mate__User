@@ -94,6 +94,14 @@ abstract class EndPoints {
       '/api/v1/customer/payment-methods/default';
   static const String customerSubscriptionFreezePolicy =
       '/api/v1/customer/subscriptions/freeze-policy';
+  static const String customerSubscriptionRenewalRequests =
+      '/api/v1/customer/subscriptions/{subscriptionId}/renewal-requests';
+  static const String customerSubscriptionFreezeRequests =
+      '/api/v1/customer/subscriptions/{subscriptionId}/freeze-requests';
+  static const String customerSubscriptionCancellationQuote =
+      '/api/v1/customer/subscriptions/{subscriptionId}/cancellation-quote';
+  static const String customerSubscriptionCancellationRequests =
+      '/api/v1/customer/subscriptions/{subscriptionId}/cancellation-requests';
   static const String familySubscriptionFlowPackages =
       '/api/v1/customer/family-subscription-flow/packages';
   static const String familySubscriptionFlowRelationships =

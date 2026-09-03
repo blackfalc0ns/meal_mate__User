@@ -27,15 +27,20 @@ class ProfileBillingSubscriptionEntity {
     required this.subscriptionId,
     required this.status,
     required this.statusNameAr,
+    required this.programId,
     required this.programNameAr,
     required this.programNameEn,
+    required this.bundleId,
     required this.bundleNameAr,
     required this.bundleNameEn,
     required this.tier,
     required this.tierNameAr,
     required this.tierNameEn,
     required this.tierLogoUrl,
+    required this.mealsPerDay,
     required this.imageUrl,
+    required this.startDate,
+    required this.endDate,
     required this.nextRenewalDate,
     required this.totalServiceDays,
     required this.completedServiceDays,
@@ -45,20 +50,27 @@ class ProfileBillingSubscriptionEntity {
     required this.currencyCode,
     required this.restaurant,
     required this.actions,
+    this.pendingFreeze,
+    this.pendingUpgrade,
   });
 
   final String subscriptionId;
   final String status;
   final String statusNameAr;
+  final String programId;
   final String programNameAr;
   final String programNameEn;
+  final String bundleId;
   final String bundleNameAr;
   final String bundleNameEn;
   final String tier;
   final String tierNameAr;
   final String tierNameEn;
   final String tierLogoUrl;
+  final int mealsPerDay;
   final String imageUrl;
+  final String startDate;
+  final String endDate;
   final String nextRenewalDate;
   final int totalServiceDays;
   final int completedServiceDays;
@@ -68,6 +80,8 @@ class ProfileBillingSubscriptionEntity {
   final String currencyCode;
   final ProfileBillingRestaurantEntity restaurant;
   final ProfileBillingActionsEntity actions;
+  final ProfileBillingPendingFreezeEntity? pendingFreeze;
+  final ProfileBillingPendingUpgradeEntity? pendingUpgrade;
 }
 
 class ProfileBillingRestaurantEntity {
@@ -97,6 +111,12 @@ class ProfileBillingActionsEntity {
     required this.freezeStartDelayDays,
     required this.maximumFreezeDays,
     required this.freezeExtendsSubscriptionEnd,
+    required this.earliestFreezeStartDate,
+    required this.renewalEndpoint,
+    required this.freezeEndpoint,
+    required this.cancellationEndpoint,
+    required this.upgradeEndpoint,
+    required this.cancellationQuoteEndpoint,
   });
 
   final bool canRenew;
@@ -110,6 +130,44 @@ class ProfileBillingActionsEntity {
   final int freezeStartDelayDays;
   final int maximumFreezeDays;
   final bool freezeExtendsSubscriptionEnd;
+  final String earliestFreezeStartDate;
+  final String renewalEndpoint;
+  final String freezeEndpoint;
+  final String cancellationEndpoint;
+  final String upgradeEndpoint;
+  final String cancellationQuoteEndpoint;
+}
+
+class ProfileBillingPendingFreezeEntity {
+  const ProfileBillingPendingFreezeEntity({
+    required this.requestId,
+    required this.startDate,
+    required this.endDate,
+    required this.freezeDays,
+    required this.status,
+  });
+
+  final String requestId;
+  final String startDate;
+  final String endDate;
+  final int freezeDays;
+  final String status;
+}
+
+class ProfileBillingPendingUpgradeEntity {
+  const ProfileBillingPendingUpgradeEntity({
+    required this.requestId,
+    required this.fromTier,
+    required this.toTier,
+    required this.priceDifference,
+    required this.status,
+  });
+
+  final String requestId;
+  final String fromTier;
+  final String toTier;
+  final double priceDifference;
+  final String status;
 }
 
 class ProfileBillingPaymentMethodEntity {
@@ -177,6 +235,7 @@ class ProfileBillingFreezePolicyEntity {
     required this.defaultDurationDays,
     required this.startDelayDays,
     required this.extendSubscriptionEnd,
+    required this.earliestAllowedStartDate,
     required this.messageAr,
     required this.messageEn,
   });
@@ -184,6 +243,134 @@ class ProfileBillingFreezePolicyEntity {
   final int defaultDurationDays;
   final int startDelayDays;
   final bool extendSubscriptionEnd;
+  final String earliestAllowedStartDate;
   final String messageAr;
   final String messageEn;
+}
+
+class ProfileBillingFreezeRequestEntity {
+  const ProfileBillingFreezeRequestEntity({
+    required this.startDate,
+    required this.endDate,
+    this.reason,
+  });
+
+  final String startDate;
+  final String endDate;
+  final String? reason;
+}
+
+class ProfileBillingFreezeDatePolicy {
+  const ProfileBillingFreezeDatePolicy._();
+
+  static DateTime minimumStartDate({
+    required DateTime now,
+    required int freezeStartDelayDays,
+    String earliestFreezeStartDate = '',
+  }) {
+    if (earliestFreezeStartDate.isNotEmpty) {
+      final parsedDate = DateTime.tryParse(earliestFreezeStartDate);
+      if (parsedDate != null) {
+        return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+      }
+    }
+    final today = DateTime(now.year, now.month, now.day);
+    return today.add(Duration(days: freezeStartDelayDays + 1));
+  }
+}
+
+class ProfileBillingCancellationRequestEntity {
+  const ProfileBillingCancellationRequestEntity({
+    this.reason,
+    this.requestedEffectiveDate,
+  });
+
+  final String? reason;
+  final String? requestedEffectiveDate;
+}
+
+class ProfileBillingCancellationQuoteEntity {
+  const ProfileBillingCancellationQuoteEntity({
+    required this.subscriptionId,
+    required this.totalServiceDays,
+    required this.deliveredDays,
+    required this.lockedKitchenDays,
+    required this.refundableDays,
+    required this.dailyBoxPrice,
+    required this.refundAmount,
+    required this.currencyCode,
+    required this.effectiveCancellationDate,
+    required this.policyMessageAr,
+  });
+
+  final String subscriptionId;
+  final int totalServiceDays;
+  final int deliveredDays;
+  final int lockedKitchenDays;
+  final int refundableDays;
+  final double dailyBoxPrice;
+  final double refundAmount;
+  final String currencyCode;
+  final String effectiveCancellationDate;
+  final String policyMessageAr;
+}
+
+class ProfileBillingCancellationResultEntity {
+  const ProfileBillingCancellationResultEntity({
+    required this.requestId,
+    required this.subscriptionId,
+    required this.status,
+    required this.statusNameAr,
+    required this.totalServiceDays,
+    required this.deliveredDays,
+    required this.lockedKitchenDays,
+    required this.refundableDays,
+    required this.dailyBoxPrice,
+    required this.refundAmount,
+    required this.currencyCode,
+    required this.effectiveCancellationDate,
+    required this.messageAr,
+    required this.timestampUtc,
+  });
+
+  final String requestId;
+  final String subscriptionId;
+  final String status;
+  final String statusNameAr;
+  final int totalServiceDays;
+  final int deliveredDays;
+  final int lockedKitchenDays;
+  final int refundableDays;
+  final double dailyBoxPrice;
+  final double refundAmount;
+  final String currencyCode;
+  final String effectiveCancellationDate;
+  final String messageAr;
+  final String timestampUtc;
+}
+
+class ProfileBillingFreezeResponseEntity {
+  const ProfileBillingFreezeResponseEntity({
+    required this.id,
+    required this.subscriptionId,
+    required this.freezeStartDate,
+    required this.freezeEndDate,
+    required this.freezeDays,
+    required this.reason,
+    required this.status,
+    this.approvedByUserId,
+    required this.processedAtUtc,
+    required this.createdAtUtc,
+  });
+
+  final String id;
+  final String subscriptionId;
+  final String freezeStartDate;
+  final String freezeEndDate;
+  final int freezeDays;
+  final String reason;
+  final String status;
+  final String? approvedByUserId;
+  final String processedAtUtc;
+  final String createdAtUtc;
 }

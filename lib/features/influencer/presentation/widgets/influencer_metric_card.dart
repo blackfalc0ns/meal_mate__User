@@ -36,22 +36,27 @@ class InfluencerMetricCard extends StatelessWidget {
         ],
       ),
       child: Row(
-        textDirection: Directionality.of(context),
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SvgPicture.asset(
+            metric.iconAsset,
+            width: Spacing.influencerMetricIconSize,
+            height: Spacing.influencerMetricIconSize,
+          ),
+
+          const SizedBox(width: Spacing.md),
           Flexible(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   metric.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  style: getRegularStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ),
                 ),
@@ -60,7 +65,6 @@ class InfluencerMetricCard extends StatelessWidget {
                   metric.value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size18,
@@ -69,37 +73,31 @@ class InfluencerMetricCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      metric.trendIconAsset,
-                      width: Spacing.influencerHeroTrendIconSize,
-                      height: Spacing.influencerHeroTrendIconSize,
-                    ),
-                    const SizedBox(width: Spacing.xs),
                     Flexible(
                       child: Text(
                         metric.subtitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.end,
-                        style: getRegularStyle(
+                        style: getMediumStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size8,
+                          fontSize: FontSize.size10,
                           color: color.primary,
                         ),
                       ),
+                    ),
+                    const SizedBox(width: Spacing.xs),
+
+                    SvgPicture.asset(
+                      metric.trendIconAsset,
+                      width: Spacing.iconSm,
+                      height: Spacing.iconSm,
                     ),
                   ],
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: Spacing.md),
-          SvgPicture.asset(
-            metric.iconAsset,
-            width: Spacing.influencerMetricIconSize,
-            height: Spacing.influencerMetricIconSize,
           ),
         ],
       ),

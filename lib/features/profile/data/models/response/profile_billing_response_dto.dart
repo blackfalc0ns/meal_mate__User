@@ -26,15 +26,20 @@ class ProfileBillingSubscriptionResponseDto {
     this.subscriptionId,
     this.status,
     this.statusNameAr,
+    this.programId,
     this.programNameAr,
     this.programNameEn,
+    this.bundleId,
     this.bundleNameAr,
     this.bundleNameEn,
     this.tier,
     this.tierNameAr,
     this.tierNameEn,
     this.tierLogoUrl,
+    this.mealsPerDay,
     this.imageUrl,
+    this.startDate,
+    this.endDate,
     this.nextRenewalDate,
     this.totalServiceDays,
     this.completedServiceDays,
@@ -43,21 +48,28 @@ class ProfileBillingSubscriptionResponseDto {
     this.paidAmount,
     this.currencyCode,
     this.restaurant,
+    this.pendingFreeze,
+    this.pendingUpgrade,
     this.actions,
   });
 
   final String? subscriptionId;
   final String? status;
   final String? statusNameAr;
+  final String? programId;
   final String? programNameAr;
   final String? programNameEn;
+  final String? bundleId;
   final String? bundleNameAr;
   final String? bundleNameEn;
   final String? tier;
   final String? tierNameAr;
   final String? tierNameEn;
   final String? tierLogoUrl;
+  final int? mealsPerDay;
   final String? imageUrl;
+  final String? startDate;
+  final String? endDate;
   final String? nextRenewalDate;
   final int? totalServiceDays;
   final int? completedServiceDays;
@@ -66,6 +78,8 @@ class ProfileBillingSubscriptionResponseDto {
   final double? paidAmount;
   final String? currencyCode;
   final ProfileBillingRestaurantResponseDto? restaurant;
+  final ProfileBillingPendingFreezeResponseDto? pendingFreeze;
+  final ProfileBillingPendingUpgradeResponseDto? pendingUpgrade;
   final ProfileBillingActionsResponseDto? actions;
 
   factory ProfileBillingSubscriptionResponseDto.fromJson(
@@ -112,6 +126,12 @@ class ProfileBillingActionsResponseDto {
     this.freezeStartDelayDays,
     this.maximumFreezeDays,
     this.freezeExtendsSubscriptionEnd,
+    this.earliestFreezeStartDate,
+    this.renewalEndpoint,
+    this.freezeEndpoint,
+    this.cancellationEndpoint,
+    this.upgradeEndpoint,
+    this.cancellationQuoteEndpoint,
   });
 
   final bool? canRenew;
@@ -125,6 +145,12 @@ class ProfileBillingActionsResponseDto {
   final int? freezeStartDelayDays;
   final int? maximumFreezeDays;
   final bool? freezeExtendsSubscriptionEnd;
+  final String? earliestFreezeStartDate;
+  final String? renewalEndpoint;
+  final String? freezeEndpoint;
+  final String? cancellationEndpoint;
+  final String? upgradeEndpoint;
+  final String? cancellationQuoteEndpoint;
 
   factory ProfileBillingActionsResponseDto.fromJson(
     Map<String, dynamic> json,
@@ -132,6 +158,54 @@ class ProfileBillingActionsResponseDto {
 
   Map<String, dynamic> toJson() =>
       _$ProfileBillingActionsResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingPendingFreezeResponseDto {
+  const ProfileBillingPendingFreezeResponseDto({
+    this.requestId,
+    this.startDate,
+    this.endDate,
+    this.freezeDays,
+    this.status,
+  });
+
+  final String? requestId;
+  final String? startDate;
+  final String? endDate;
+  final int? freezeDays;
+  final String? status;
+
+  factory ProfileBillingPendingFreezeResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingPendingFreezeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingPendingFreezeResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingPendingUpgradeResponseDto {
+  const ProfileBillingPendingUpgradeResponseDto({
+    this.requestId,
+    this.fromTier,
+    this.toTier,
+    this.priceDifference,
+    this.status,
+  });
+
+  final String? requestId;
+  final String? fromTier;
+  final String? toTier;
+  final double? priceDifference;
+  final String? status;
+
+  factory ProfileBillingPendingUpgradeResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingPendingUpgradeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingPendingUpgradeResponseDtoToJson(this);
 }
 
 @JsonSerializable()
@@ -206,6 +280,7 @@ class ProfileBillingFreezePolicyResponseDto {
     this.defaultDurationDays,
     this.startDelayDays,
     this.extendSubscriptionEnd,
+    this.earliestAllowedStartDate,
     this.messageAr,
     this.messageEn,
   });
@@ -213,6 +288,7 @@ class ProfileBillingFreezePolicyResponseDto {
   final int? defaultDurationDays;
   final int? startDelayDays;
   final bool? extendSubscriptionEnd;
+  final String? earliestAllowedStartDate;
   final String? messageAr;
   final String? messageEn;
 
@@ -222,4 +298,112 @@ class ProfileBillingFreezePolicyResponseDto {
 
   Map<String, dynamic> toJson() =>
       _$ProfileBillingFreezePolicyResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingCancellationQuoteResponseDto {
+  const ProfileBillingCancellationQuoteResponseDto({
+    this.subscriptionId,
+    this.totalServiceDays,
+    this.deliveredDays,
+    this.lockedKitchenDays,
+    this.refundableDays,
+    this.dailyBoxPrice,
+    this.refundAmount,
+    this.currencyCode,
+    this.effectiveCancellationDate,
+    this.policyMessageAr,
+  });
+
+  final String? subscriptionId;
+  final int? totalServiceDays;
+  final int? deliveredDays;
+  final int? lockedKitchenDays;
+  final int? refundableDays;
+  final double? dailyBoxPrice;
+  final double? refundAmount;
+  final String? currencyCode;
+  final String? effectiveCancellationDate;
+  final String? policyMessageAr;
+
+  factory ProfileBillingCancellationQuoteResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingCancellationQuoteResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingCancellationQuoteResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingCancellationResultResponseDto {
+  const ProfileBillingCancellationResultResponseDto({
+    this.requestId,
+    this.subscriptionId,
+    this.status,
+    this.statusNameAr,
+    this.totalServiceDays,
+    this.deliveredDays,
+    this.lockedKitchenDays,
+    this.refundableDays,
+    this.dailyBoxPrice,
+    this.refundAmount,
+    this.currencyCode,
+    this.effectiveCancellationDate,
+    this.messageAr,
+    this.timestampUtc,
+  });
+
+  final String? requestId;
+  final String? subscriptionId;
+  final String? status;
+  final String? statusNameAr;
+  final int? totalServiceDays;
+  final int? deliveredDays;
+  final int? lockedKitchenDays;
+  final int? refundableDays;
+  final double? dailyBoxPrice;
+  final double? refundAmount;
+  final String? currencyCode;
+  final String? effectiveCancellationDate;
+  final String? messageAr;
+  final String? timestampUtc;
+
+  factory ProfileBillingCancellationResultResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingCancellationResultResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingCancellationResultResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingFreezeResponseDto {
+  const ProfileBillingFreezeResponseDto({
+    this.id,
+    this.subscriptionId,
+    this.freezeStartDate,
+    this.freezeEndDate,
+    this.freezeDays,
+    this.reason,
+    this.status,
+    this.approvedByUserId,
+    this.processedAtUtc,
+    this.createdAtUtc,
+  });
+
+  final String? id;
+  final String? subscriptionId;
+  final String? freezeStartDate;
+  final String? freezeEndDate;
+  final int? freezeDays;
+  final String? reason;
+  final String? status;
+  final String? approvedByUserId;
+  final String? processedAtUtc;
+  final String? createdAtUtc;
+
+  factory ProfileBillingFreezeResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$ProfileBillingFreezeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProfileBillingFreezeResponseDtoToJson(this);
 }

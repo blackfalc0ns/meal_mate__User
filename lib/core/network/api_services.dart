@@ -31,6 +31,7 @@ import 'package:meal_meat_user/features/food_preferences/data/models/request/foo
 import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
+import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/meal_details/data/models/response/subscription_meal_details_response_dto.dart';
@@ -412,6 +413,31 @@ abstract class ApiServices {
   @GET(EndPoints.customerSubscriptionFreezePolicy)
   Future<ProfileBillingFreezePolicyResponseDto>
   getCustomerSubscriptionFreezePolicy();
+
+  @POST(EndPoints.customerSubscriptionRenewalRequests)
+  Future<void> createCustomerSubscriptionRenewalRequest(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @POST(EndPoints.customerSubscriptionFreezeRequests)
+  Future<ProfileBillingFreezeResponseDto>
+  createCustomerSubscriptionFreezeRequest(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() ProfileBillingFreezeRequestDto request,
+  );
+
+  @GET(EndPoints.customerSubscriptionCancellationQuote)
+  Future<ProfileBillingCancellationQuoteResponseDto>
+  getCustomerSubscriptionCancellationQuote(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @POST(EndPoints.customerSubscriptionCancellationRequests)
+  Future<ProfileBillingCancellationResultResponseDto>
+  createCustomerSubscriptionCancellationRequest(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() ProfileBillingCancellationRequestDto request,
+  );
 
   @GET(EndPoints.familySubscriptionFlowPackages)
   Future<List<FamilySizePackageResponseDto>> getFamilySizePackages();

@@ -1682,6 +1682,120 @@ abstract class AppLocalizations {
   /// **'You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.'**
   String get billing_notice;
 
+  /// No description provided for @billing_pending_upgrade_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a pending upgrade request currently being processed.'**
+  String get billing_pending_upgrade_notice;
+
+  /// No description provided for @billing_action_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is not available right now.'**
+  String get billing_action_unavailable;
+
+  /// No description provided for @billing_renew_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew subscription'**
+  String get billing_renew_confirm_title;
+
+  /// No description provided for @billing_renew_confirm_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit a renewal request for this subscription?'**
+  String get billing_renew_confirm_message;
+
+  /// No description provided for @billing_freeze_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze subscription'**
+  String get billing_freeze_confirm_title;
+
+  /// No description provided for @billing_freeze_confirm_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the freeze dates, then confirm the request.'**
+  String get billing_freeze_confirm_message;
+
+  /// No description provided for @billing_pick_freeze_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick freeze dates'**
+  String get billing_pick_freeze_dates;
+
+  /// No description provided for @billing_selected_freeze_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'{startDate} - {endDate}'**
+  String billing_selected_freeze_dates(String startDate, String endDate);
+
+  /// No description provided for @billing_optional_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get billing_optional_reason;
+
+  /// No description provided for @billing_freeze_range_too_long.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze duration cannot exceed {days} days.'**
+  String billing_freeze_range_too_long(int days);
+
+  /// No description provided for @billing_freeze_locked_days_cannot_be_frozen.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked days cannot be frozen. Choose later dates.'**
+  String get billing_freeze_locked_days_cannot_be_frozen;
+
+  /// No description provided for @billing_cancel_quote_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel subscription'**
+  String get billing_cancel_quote_title;
+
+  /// No description provided for @billing_cancel_quote_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Refundable days: {days}\nRefund amount: {amount} {currency}'**
+  String billing_cancel_quote_message(int days, String amount, String currency);
+
+  /// No description provided for @billing_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get billing_confirm;
+
+  /// No description provided for @billing_dismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get billing_dismiss;
+
+  /// No description provided for @billing_renew_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Renewal request submitted.'**
+  String get billing_renew_success;
+
+  /// No description provided for @billing_freeze_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze request submitted.'**
+  String get billing_freeze_success;
+
+  /// No description provided for @billing_cancel_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation request submitted.'**
+  String get billing_cancel_success;
+
+  /// No description provided for @billing_action_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the request. Please try again.'**
+  String get billing_action_failed;
+
   /// No description provided for @profile_addresses.
   ///
   /// In en, this message translates to:

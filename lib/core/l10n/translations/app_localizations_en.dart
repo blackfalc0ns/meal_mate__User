@@ -865,6 +865,79 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.';
 
   @override
+  String get billing_pending_upgrade_notice =>
+      'There is a pending upgrade request currently being processed.';
+
+  @override
+  String get billing_action_unavailable =>
+      'This action is not available right now.';
+
+  @override
+  String get billing_renew_confirm_title => 'Renew subscription';
+
+  @override
+  String get billing_renew_confirm_message =>
+      'Submit a renewal request for this subscription?';
+
+  @override
+  String get billing_freeze_confirm_title => 'Freeze subscription';
+
+  @override
+  String get billing_freeze_confirm_message =>
+      'Choose the freeze dates, then confirm the request.';
+
+  @override
+  String get billing_pick_freeze_dates => 'Pick freeze dates';
+
+  @override
+  String billing_selected_freeze_dates(String startDate, String endDate) {
+    return '$startDate - $endDate';
+  }
+
+  @override
+  String get billing_optional_reason => 'Reason (optional)';
+
+  @override
+  String billing_freeze_range_too_long(int days) {
+    return 'Freeze duration cannot exceed $days days.';
+  }
+
+  @override
+  String get billing_freeze_locked_days_cannot_be_frozen =>
+      'Locked days cannot be frozen. Choose later dates.';
+
+  @override
+  String get billing_cancel_quote_title => 'Cancel subscription';
+
+  @override
+  String billing_cancel_quote_message(
+    int days,
+    String amount,
+    String currency,
+  ) {
+    return 'Refundable days: $days\nRefund amount: $amount $currency';
+  }
+
+  @override
+  String get billing_confirm => 'Confirm';
+
+  @override
+  String get billing_dismiss => 'Dismiss';
+
+  @override
+  String get billing_renew_success => 'Renewal request submitted.';
+
+  @override
+  String get billing_freeze_success => 'Freeze request submitted.';
+
+  @override
+  String get billing_cancel_success => 'Cancellation request submitted.';
+
+  @override
+  String get billing_action_failed =>
+      'Could not complete the request. Please try again.';
+
+  @override
   String get profile_addresses => 'Addresses';
 
   @override

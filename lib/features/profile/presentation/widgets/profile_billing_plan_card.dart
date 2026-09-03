@@ -15,9 +15,20 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/re
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_action.dart';
 
 class ProfileBillingPlanCard extends StatelessWidget {
-  const ProfileBillingPlanCard({required this.subscription, super.key});
+  const ProfileBillingPlanCard({
+    required this.subscription,
+    this.isActionLoading = false,
+    this.onRenew,
+    this.onFreeze,
+    this.onCancel,
+    super.key,
+  });
 
   final ProfileBillingSubscriptionEntity subscription;
+  final bool isActionLoading;
+  final VoidCallback? onRenew;
+  final VoidCallback? onFreeze;
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -262,8 +273,14 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         label: locale.billing_upgrade_tier,
                         actionColor: color.primary,
                         onTap: () {
+                          if (isActionLoading) {
+                            return;
+                          }
                           if (!subscription.actions.canUpgrade &&
-                              subscription.actions.upgradeUnavailableReason.isNotEmpty) {
+                              subscription
+                                  .actions
+                                  .upgradeUnavailableReason
+                                  .isNotEmpty) {
                             final rawReason =
                                 subscription.actions.upgradeUnavailableReason;
                             final message = switch (rawReason) {
@@ -279,11 +296,9 @@ class ProfileBillingPlanCard extends StatelessWidget {
                                 'خدمة التسعير غير متوفرة حالياً.',
                               _ => rawReason,
                             };
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(message),
-                              ),
-                            );
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(message)));
                             return;
                           }
                           context.pushNamed(
@@ -301,6 +316,22 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingFreeze,
                         label: locale.billing_freeze,
                         actionColor: color.tertiary,
+                        onTap: () {
+                          if (isActionLoading) {
+                            return;
+                          }
+                          if (!subscription.actions.canFreeze) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  locale.billing_action_unavailable,
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          onFreeze?.call();
+                        },
                       ),
                     ),
                     const SizedBox(width: Spacing.sm),
@@ -309,6 +340,22 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingRenew,
                         label: locale.billing_renew,
                         actionColor: color.primary,
+                        onTap: () {
+                          if (isActionLoading) {
+                            return;
+                          }
+                          if (!subscription.actions.canRenew) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  locale.billing_action_unavailable,
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          onRenew?.call();
+                        },
                       ),
                     ),
                     const SizedBox(width: Spacing.sm),
@@ -317,6 +364,22 @@ class ProfileBillingPlanCard extends StatelessWidget {
                         iconAsset: Assets.profileBillingCancel,
                         label: locale.billing_cancel,
                         actionColor: color.error,
+                        onTap: () {
+                          if (isActionLoading) {
+                            return;
+                          }
+                          if (!subscription.actions.canCancel) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  locale.billing_action_unavailable,
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          onCancel?.call();
+                        },
                       ),
                     ),
                   ],

@@ -27,6 +27,7 @@ class InfluencerHeaderCard extends StatelessWidget {
     return SizedBox(
       height: Spacing.influencerHeaderHeight,
       child: Row(
+        textDirection: TextDirection.ltr,
         children: [
           SvgPicture.asset(
             Assets.notificationBold,
@@ -41,6 +42,7 @@ class InfluencerHeaderCard extends StatelessWidget {
           ),
           const Spacer(),
           Row(
+            textDirection: TextDirection.ltr,
             mainAxisSize: MainAxisSize.min,
             children: [
               Column(
@@ -84,8 +86,8 @@ class InfluencerHeaderCard extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  PositionedDirectional(
-                    end: Spacing.zero,
+                  Positioned(
+                    right: Spacing.zero,
                     bottom: Spacing.zero,
                     child: Icon(
                       Icons.verified_rounded,

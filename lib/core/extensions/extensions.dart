@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/app_date_range_picker.dart';
 import 'package:meal_meat_user/core/widget/app_bottom_sheet.dart';
+import 'package:meal_meat_user/core/widget/app_custom_dialog.dart';
 
 extension ContextExtension on BuildContext {
   /// Get height of context screen
@@ -83,6 +85,74 @@ extension BottomSheetExtension on BuildContext {
       elevation: elevation,
       borderRadius: borderRadius,
       clipBehavior: clipBehavior,
+    );
+  }
+}
+
+extension CustomDialogExtension on BuildContext {
+  Future<T?> showAppCustomDialog<T>({
+    required String title,
+    required String confirmText,
+    required String cancelText,
+    required T Function() onConfirm,
+    required T Function() onCancel,
+    String? message,
+    Widget? content,
+    IconData? icon,
+    Color? iconColor,
+    Color? confirmTextColor,
+    bool barrierDismissible = true,
+    bool enableDrag = true,
+    bool showDragHandle = true,
+    bool useSafeArea = true,
+  }) {
+    return AppCustomDialog.show<T>(
+      context: this,
+      title: title,
+      confirmText: confirmText,
+      cancelText: cancelText,
+      onConfirm: onConfirm,
+      onCancel: onCancel,
+      message: message,
+      content: content,
+      icon: icon,
+      iconColor: iconColor,
+      confirmTextColor: confirmTextColor,
+      barrierDismissible: barrierDismissible,
+      enableDrag: enableDrag,
+      showDragHandle: showDragHandle,
+      useSafeArea: useSafeArea,
+    );
+  }
+}
+
+extension DateRangePickerExtension on BuildContext {
+  Future<DateTimeRange?> showAppDateRangePicker({
+    required String title,
+    required String confirmText,
+    required String cancelText,
+    required DateTime firstDate,
+    required DateTime lastDate,
+    DateTime? initialStartDate,
+    DateTime? initialEndDate,
+    bool barrierDismissible = true,
+    bool enableDrag = true,
+    bool showDragHandle = true,
+    bool useSafeArea = true,
+  }) {
+    return AppDateRangePicker.show(
+      context: this,
+      title: title,
+      confirmText: confirmText,
+      cancelText: cancelText,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      initialStartDate: initialStartDate,
+      initialEndDate: initialEndDate,
+      barrierDismissible: barrierDismissible,
+      enableDrag: enableDrag,
+      showDragHandle: showDragHandle,
+      useSafeArea: useSafeArea,
     );
   }
 }

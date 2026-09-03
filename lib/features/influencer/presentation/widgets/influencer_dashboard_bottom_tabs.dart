@@ -62,6 +62,7 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
       activeColor: color.onPrimary,
       inactiveColor: color.onSurface,
       activeBackground: color.primary,
+      layoutTextDirection: TextDirection.ltr,
       onTap: (index) {
         final tab = tabs[index];
         if (tab.tab == selectedTab) return;

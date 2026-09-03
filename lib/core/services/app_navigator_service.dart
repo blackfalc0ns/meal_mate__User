@@ -4,12 +4,20 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class AppNavigatorService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
   static const Duration _retryDelay = Duration(milliseconds: 200);
   static const int _retryAttempts = 20;
 
   BuildContext? get currentContext => navigatorKey.currentContext;
 
   NavigatorState? get navigator => navigatorKey.currentState;
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
+    SnackBar snackBar,
+  ) {
+    return scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  }
 
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {

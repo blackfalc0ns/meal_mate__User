@@ -27,6 +27,7 @@ class InfluencerRecentActivitiesSection extends StatelessWidget {
         SizedBox(
           height: Spacing.influencerActivityHeaderHeight,
           child: Row(
+            textDirection: TextDirection.ltr,
             children: [
               Text(
                 actionLabel,

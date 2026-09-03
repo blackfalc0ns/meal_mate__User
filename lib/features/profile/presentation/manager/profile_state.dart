@@ -7,24 +7,28 @@ class ProfileState {
   const ProfileState({
     this.profile = const CustomerProfileState(),
     this.billing = const ProfileBillingState(),
+    this.billingAction = const ProfileBillingActionState(),
     this.action = const ProfileActionState(),
     this.upload = const UploadFileState(),
   });
 
   final CustomerProfileState profile;
   final ProfileBillingState billing;
+  final ProfileBillingActionState billingAction;
   final ProfileActionState action;
   final UploadFileState upload;
 
   ProfileState copyWith({
     CustomerProfileState? profile,
     ProfileBillingState? billing,
+    ProfileBillingActionState? billingAction,
     ProfileActionState? action,
     UploadFileState? upload,
   }) {
     return ProfileState(
       profile: profile ?? this.profile,
       billing: billing ?? this.billing,
+      billingAction: billingAction ?? this.billingAction,
       action: action ?? this.action,
       upload: upload ?? this.upload,
     );
@@ -114,6 +118,61 @@ class ProfileActionState {
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       failure: clearError ? null : failure ?? this.failure,
+    );
+  }
+}
+
+class ProfileBillingActionState {
+  const ProfileBillingActionState({
+    this.type,
+    this.isLoading = false,
+    this.isSuccess = false,
+    this.errorMessage,
+    this.failure,
+    this.cancellationQuote,
+    this.cancellationResult,
+    this.freezeResult,
+  });
+
+  final String? type;
+  final bool isLoading;
+  final bool isSuccess;
+  final String? errorMessage;
+  final Failure? failure;
+  final ProfileBillingCancellationQuoteEntity? cancellationQuote;
+  final ProfileBillingCancellationResultEntity? cancellationResult;
+  final ProfileBillingFreezeResponseEntity? freezeResult;
+
+  ProfileBillingActionState copyWith({
+    String? type,
+    bool? isLoading,
+    bool? isSuccess,
+    String? errorMessage,
+    Failure? failure,
+    ProfileBillingCancellationQuoteEntity? cancellationQuote,
+    ProfileBillingCancellationResultEntity? cancellationResult,
+    ProfileBillingFreezeResponseEntity? freezeResult,
+    bool clearError = false,
+    bool clearQuote = false,
+    bool clearResult = false,
+    bool clearFreezeResult = false,
+    bool clearType = false,
+  }) {
+    return ProfileBillingActionState(
+      type: clearType ? null : type ?? this.type,
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+      failure: clearError ? null : failure ?? this.failure,
+      cancellationQuote: clearQuote
+          ? null
+          : cancellationQuote ?? this.cancellationQuote,
+      cancellationResult: clearResult
+          ? null
+          : cancellationResult ?? this.cancellationResult,
+      freezeResult: clearFreezeResult
+          ? null
+          : freezeResult ?? this.freezeResult,
     );
   }
 }

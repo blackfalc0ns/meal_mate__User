@@ -34,22 +34,68 @@ void main() {
 
     expect(find.text('restaurant tier upgrade route'), findsOneWidget);
   });
+
+  testWidgets('renew freeze and cancel actions call callbacks when available', (
+    tester,
+  ) async {
+    var renewed = false;
+    var frozen = false;
+    var cancelled = false;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: ProfileBillingPlanCard(
+            subscription: _subscription(
+              canRenew: true,
+              canFreeze: true,
+              canCancel: true,
+            ),
+            onRenew: () => renewed = true,
+            onFreeze: () => frozen = true,
+            onCancel: () => cancelled = true,
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Renew'));
+    await tester.tap(find.text('Freeze'));
+    await tester.tap(find.text('Cancel'));
+
+    expect(renewed, isTrue);
+    expect(frozen, isTrue);
+    expect(cancelled, isTrue);
+  });
 }
 
-ProfileBillingSubscriptionEntity _subscription() {
-  return const ProfileBillingSubscriptionEntity(
+ProfileBillingSubscriptionEntity _subscription({
+  bool canRenew = false,
+  bool canFreeze = false,
+  bool canCancel = false,
+}) {
+  return ProfileBillingSubscriptionEntity(
     subscriptionId: 'subscription-1',
     status: 'active',
+    programId: 'program-1',
     statusNameAr: 'مجدول',
     programNameAr: 'متوازنة',
     programNameEn: 'Balanced',
+    bundleId: 'bundle-1',
     bundleNameAr: 'باقة متوازنة خفيفة',
     bundleNameEn: 'Light balanced package',
     tier: 'select',
     tierNameAr: 'أساسي',
     tierNameEn: 'Basic',
     tierLogoUrl: '',
+    mealsPerDay: 2,
     imageUrl: '',
+    startDate: '2026-09-01',
+    endDate: '2026-09-12',
     nextRenewalDate: '2026-09-11',
     totalServiceDays: 12,
     completedServiceDays: 0,
@@ -57,16 +103,16 @@ ProfileBillingSubscriptionEntity _subscription() {
     progressPercentage: 0,
     paidAmount: 65,
     currencyCode: 'KWD',
-    restaurant: ProfileBillingRestaurantEntity(
+    restaurant: const ProfileBillingRestaurantEntity(
       restaurantId: 'restaurant-1',
       nameAr: 'دايت كير',
       nameEn: 'Diet Care',
       logoUrl: '',
     ),
     actions: ProfileBillingActionsEntity(
-      canRenew: false,
-      canFreeze: false,
-      canCancel: false,
+      canRenew: canRenew,
+      canFreeze: canFreeze,
+      canCancel: canCancel,
       canUpgrade: false,
       renewUnavailableReason: '',
       freezeUnavailableReason: '',
@@ -75,6 +121,12 @@ ProfileBillingSubscriptionEntity _subscription() {
       freezeStartDelayDays: 0,
       maximumFreezeDays: 0,
       freezeExtendsSubscriptionEnd: false,
+      earliestFreezeStartDate: '',
+      renewalEndpoint: '',
+      freezeEndpoint: '',
+      cancellationEndpoint: '',
+      upgradeEndpoint: '',
+      cancellationQuoteEndpoint: '',
     ),
   );
 }

@@ -21,4 +21,23 @@ abstract interface class ProfileRepository {
   getCurrentCustomerSubscription();
 
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling();
+
+  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
+    String subscriptionId,
+  );
+
+  Future<ApiResult<ProfileBillingFreezeResponseEntity>>
+  createCustomerSubscriptionFreezeRequest({
+    required String subscriptionId,
+    required ProfileBillingFreezeRequestEntity request,
+  });
+
+  Future<ApiResult<ProfileBillingCancellationQuoteEntity>>
+  getCustomerSubscriptionCancellationQuote(String subscriptionId);
+
+  Future<ApiResult<ProfileBillingCancellationResultEntity>>
+  createCustomerSubscriptionCancellationRequest({
+    required String subscriptionId,
+    required ProfileBillingCancellationRequestEntity request,
+  });
 }

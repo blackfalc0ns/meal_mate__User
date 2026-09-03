@@ -848,6 +848,77 @@ class AppLocalizationsAr extends AppLocalizations {
       'يمكنك تجميد اشتراكك حتى 30 يوماً مرة واحدة كل 6 أشهر. عند الإلغاء، ستظل تتمتع بالمزايا حتى نهاية دورة الفوترة الحالية.';
 
   @override
+  String get billing_pending_upgrade_notice =>
+      'يوجد طلب ترقية معلق قيد المتابعة حالياً.';
+
+  @override
+  String get billing_action_unavailable => 'هذا الإجراء غير متاح حالياً.';
+
+  @override
+  String get billing_renew_confirm_title => 'تجديد الاشتراك';
+
+  @override
+  String get billing_renew_confirm_message =>
+      'هل تريد إرسال طلب تجديد لهذا الاشتراك؟';
+
+  @override
+  String get billing_freeze_confirm_title => 'تجميد الاشتراك';
+
+  @override
+  String get billing_freeze_confirm_message =>
+      'اختر تواريخ التجميد، ثم أكد الطلب.';
+
+  @override
+  String get billing_pick_freeze_dates => 'اختيار تواريخ التجميد';
+
+  @override
+  String billing_selected_freeze_dates(String startDate, String endDate) {
+    return '$startDate - $endDate';
+  }
+
+  @override
+  String get billing_optional_reason => 'السبب (اختياري)';
+
+  @override
+  String billing_freeze_range_too_long(int days) {
+    return 'لا يمكن أن تتجاوز مدة التجميد $days أيام.';
+  }
+
+  @override
+  String get billing_freeze_locked_days_cannot_be_frozen =>
+      'لا يمكن تجميد الأيام المقفولة. اختر تواريخ لاحقة.';
+
+  @override
+  String get billing_cancel_quote_title => 'إلغاء الاشتراك';
+
+  @override
+  String billing_cancel_quote_message(
+    int days,
+    String amount,
+    String currency,
+  ) {
+    return 'الأيام المستردة: $days\nالمبلغ المسترد: $amount $currency';
+  }
+
+  @override
+  String get billing_confirm => 'تأكيد';
+
+  @override
+  String get billing_dismiss => 'إغلاق';
+
+  @override
+  String get billing_renew_success => 'تم إرسال طلب التجديد.';
+
+  @override
+  String get billing_freeze_success => 'تم إرسال طلب التجميد.';
+
+  @override
+  String get billing_cancel_success => 'تم إرسال طلب الإلغاء.';
+
+  @override
+  String get billing_action_failed => 'تعذر تنفيذ الطلب. حاول مرة أخرى.';
+
+  @override
   String get profile_addresses => 'العناوين';
 
   @override

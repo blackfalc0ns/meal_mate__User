@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 
@@ -18,15 +19,20 @@ extension ProfileBillingSubscriptionResponseDtoMapper
       subscriptionId: subscriptionId ?? '',
       status: status ?? '',
       statusNameAr: statusNameAr ?? '',
+      programId: programId ?? '',
       programNameAr: programNameAr ?? '',
       programNameEn: programNameEn ?? '',
+      bundleId: bundleId ?? '',
       bundleNameAr: bundleNameAr ?? '',
       bundleNameEn: bundleNameEn ?? '',
       tier: tier ?? '',
       tierNameAr: tierNameAr ?? '',
       tierNameEn: tierNameEn ?? '',
       tierLogoUrl: tierLogoUrl ?? '',
+      mealsPerDay: mealsPerDay ?? 0,
       imageUrl: imageUrl ?? '',
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
       nextRenewalDate: nextRenewalDate ?? '',
       totalServiceDays: totalServiceDays ?? 0,
       completedServiceDays: completedServiceDays ?? 0,
@@ -42,6 +48,8 @@ extension ProfileBillingSubscriptionResponseDtoMapper
             nameEn: '',
             logoUrl: '',
           ),
+      pendingFreeze: pendingFreeze?.toEntity(),
+      pendingUpgrade: pendingUpgrade?.toEntity(),
       actions:
           actions?.toEntity() ??
           const ProfileBillingActionsEntity(
@@ -53,9 +61,15 @@ extension ProfileBillingSubscriptionResponseDtoMapper
             freezeUnavailableReason: '',
             cancelUnavailableReason: '',
             upgradeUnavailableReason: '',
-            freezeStartDelayDays: 0,
-            maximumFreezeDays: 0,
-            freezeExtendsSubscriptionEnd: false,
+      freezeStartDelayDays: 0,
+      maximumFreezeDays: 0,
+      freezeExtendsSubscriptionEnd: false,
+      earliestFreezeStartDate: '',
+      renewalEndpoint: '',
+      freezeEndpoint: '',
+      cancellationEndpoint: '',
+            upgradeEndpoint: '',
+            cancellationQuoteEndpoint: '',
           ),
     );
   }
@@ -88,6 +102,38 @@ extension ProfileBillingActionsResponseDtoMapper
       freezeStartDelayDays: freezeStartDelayDays ?? 0,
       maximumFreezeDays: maximumFreezeDays ?? 0,
       freezeExtendsSubscriptionEnd: freezeExtendsSubscriptionEnd ?? false,
+      earliestFreezeStartDate: earliestFreezeStartDate ?? '',
+      renewalEndpoint: renewalEndpoint ?? '',
+      freezeEndpoint: freezeEndpoint ?? '',
+      cancellationEndpoint: cancellationEndpoint ?? '',
+      upgradeEndpoint: upgradeEndpoint ?? '',
+      cancellationQuoteEndpoint: cancellationQuoteEndpoint ?? '',
+    );
+  }
+}
+
+extension ProfileBillingPendingFreezeResponseDtoMapper
+    on ProfileBillingPendingFreezeResponseDto {
+  ProfileBillingPendingFreezeEntity toEntity() {
+    return ProfileBillingPendingFreezeEntity(
+      requestId: requestId ?? '',
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
+      freezeDays: freezeDays ?? 0,
+      status: status ?? '',
+    );
+  }
+}
+
+extension ProfileBillingPendingUpgradeResponseDtoMapper
+    on ProfileBillingPendingUpgradeResponseDto {
+  ProfileBillingPendingUpgradeEntity toEntity() {
+    return ProfileBillingPendingUpgradeEntity(
+      requestId: requestId ?? '',
+      fromTier: fromTier ?? '',
+      toTier: toTier ?? '',
+      priceDifference: priceDifference ?? 0,
+      status: status ?? '',
     );
   }
 }
@@ -134,8 +180,88 @@ extension ProfileBillingFreezePolicyResponseDtoMapper
       defaultDurationDays: defaultDurationDays ?? 0,
       startDelayDays: startDelayDays ?? 0,
       extendSubscriptionEnd: extendSubscriptionEnd ?? false,
+      earliestAllowedStartDate: earliestAllowedStartDate ?? '',
       messageAr: messageAr ?? '',
       messageEn: messageEn ?? '',
+    );
+  }
+}
+
+extension ProfileBillingFreezeRequestEntityMapper
+    on ProfileBillingFreezeRequestEntity {
+  ProfileBillingFreezeRequestDto toDto() {
+    return ProfileBillingFreezeRequestDto(
+      startDate: startDate,
+      endDate: endDate,
+      reason: reason,
+    );
+  }
+}
+
+extension ProfileBillingCancellationRequestEntityMapper
+    on ProfileBillingCancellationRequestEntity {
+  ProfileBillingCancellationRequestDto toDto() {
+    return ProfileBillingCancellationRequestDto(
+      reason: reason,
+      requestedEffectiveDate: requestedEffectiveDate,
+    );
+  }
+}
+
+extension ProfileBillingCancellationQuoteResponseDtoMapper
+    on ProfileBillingCancellationQuoteResponseDto {
+  ProfileBillingCancellationQuoteEntity toEntity() {
+    return ProfileBillingCancellationQuoteEntity(
+      subscriptionId: subscriptionId ?? '',
+      totalServiceDays: totalServiceDays ?? 0,
+      deliveredDays: deliveredDays ?? 0,
+      lockedKitchenDays: lockedKitchenDays ?? 0,
+      refundableDays: refundableDays ?? 0,
+      dailyBoxPrice: dailyBoxPrice ?? 0,
+      refundAmount: refundAmount ?? 0,
+      currencyCode: currencyCode ?? '',
+      effectiveCancellationDate: effectiveCancellationDate ?? '',
+      policyMessageAr: policyMessageAr ?? '',
+    );
+  }
+}
+
+extension ProfileBillingCancellationResultResponseDtoMapper
+    on ProfileBillingCancellationResultResponseDto {
+  ProfileBillingCancellationResultEntity toEntity() {
+    return ProfileBillingCancellationResultEntity(
+      requestId: requestId ?? '',
+      subscriptionId: subscriptionId ?? '',
+      status: status ?? '',
+      statusNameAr: statusNameAr ?? '',
+      totalServiceDays: totalServiceDays ?? 0,
+      deliveredDays: deliveredDays ?? 0,
+      lockedKitchenDays: lockedKitchenDays ?? 0,
+      refundableDays: refundableDays ?? 0,
+      dailyBoxPrice: dailyBoxPrice ?? 0,
+      refundAmount: refundAmount ?? 0,
+      currencyCode: currencyCode ?? '',
+      effectiveCancellationDate: effectiveCancellationDate ?? '',
+      messageAr: messageAr ?? '',
+      timestampUtc: timestampUtc ?? '',
+    );
+  }
+}
+
+extension ProfileBillingFreezeResponseDtoMapper
+    on ProfileBillingFreezeResponseDto {
+  ProfileBillingFreezeResponseEntity toEntity() {
+    return ProfileBillingFreezeResponseEntity(
+      id: id ?? '',
+      subscriptionId: subscriptionId ?? '',
+      freezeStartDate: freezeStartDate ?? '',
+      freezeEndDate: freezeEndDate ?? '',
+      freezeDays: freezeDays ?? 0,
+      reason: reason ?? '',
+      status: status ?? '',
+      approvedByUserId: approvedByUserId,
+      processedAtUtc: processedAtUtc ?? '',
+      createdAtUtc: createdAtUtc ?? '',
     );
   }
 }

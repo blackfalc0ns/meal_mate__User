@@ -202,6 +202,37 @@ class _ProfileRepositoryFake implements ProfileRepository {
   }
 
   @override
+  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
+    String subscriptionId,
+  ) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingFreezeResponseEntity>>
+  createCustomerSubscriptionFreezeRequest({
+    required String subscriptionId,
+    required ProfileBillingFreezeRequestEntity request,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingCancellationQuoteEntity>>
+  getCustomerSubscriptionCancellationQuote(String subscriptionId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingCancellationResultEntity>>
+  createCustomerSubscriptionCancellationRequest({
+    required String subscriptionId,
+    required ProfileBillingCancellationRequestEntity request,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<ApiResult<void>> updateCustomerProfile(
     UpdateCustomerProfileRequestEntity request,
   ) async {

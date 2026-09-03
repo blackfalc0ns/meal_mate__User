@@ -285,6 +285,55 @@
   "billing_no_subscription_description": "ستظهر تفاصيل اشتراكك هنا بعد الاشتراك.",
   "billing_manage_subscription": "إدارة الاشتراك",
   "billing_notice": "يمكنك تجميد اشتراكك حتى 30 يوماً مرة واحدة كل 6 أشهر. عند الإلغاء، ستظل تتمتع بالمزايا حتى نهاية دورة الفوترة الحالية.",
+  "billing_pending_upgrade_notice": "يوجد طلب ترقية معلق قيد المتابعة حالياً.",
+  "billing_action_unavailable": "هذا الإجراء غير متاح حالياً.",
+  "billing_renew_confirm_title": "تجديد الاشتراك",
+  "billing_renew_confirm_message": "هل تريد إرسال طلب تجديد لهذا الاشتراك؟",
+  "billing_freeze_confirm_title": "تجميد الاشتراك",
+  "billing_freeze_confirm_message": "اختر تواريخ التجميد، ثم أكد الطلب.",
+  "billing_pick_freeze_dates": "اختيار تواريخ التجميد",
+  "billing_selected_freeze_dates": "{startDate} - {endDate}",
+  "@billing_selected_freeze_dates": {
+    "placeholders": {
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_optional_reason": "السبب (اختياري)",
+  "billing_freeze_range_too_long": "لا يمكن أن تتجاوز مدة التجميد {days} أيام.",
+  "@billing_freeze_range_too_long": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_freeze_locked_days_cannot_be_frozen": "لا يمكن تجميد الأيام المقفولة. اختر تواريخ لاحقة.",
+  "billing_cancel_quote_title": "إلغاء الاشتراك",
+  "billing_cancel_quote_message": "الأيام المستردة: {days}\nالمبلغ المسترد: {amount} {currency}",
+  "@billing_cancel_quote_message": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_confirm": "تأكيد",
+  "billing_dismiss": "إغلاق",
+  "billing_renew_success": "تم إرسال طلب التجديد.",
+  "billing_freeze_success": "تم إرسال طلب التجميد.",
+  "billing_cancel_success": "تم إرسال طلب الإلغاء.",
+  "billing_action_failed": "تعذر تنفيذ الطلب. حاول مرة أخرى.",
   "profile_addresses": "العناوين",
   "profile_addresses_subtitle": "إدارة عناوين التوصيل",
   "addresses_default": "افتراضي",

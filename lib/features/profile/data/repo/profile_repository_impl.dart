@@ -75,4 +75,57 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     });
   }
+
+  @override
+  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
+    String subscriptionId,
+  ) {
+    return safeApiCall(() async {
+      await _remoteDataSource.createCustomerSubscriptionRenewalRequest(
+        subscriptionId,
+      );
+    });
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingFreezeResponseEntity>>
+  createCustomerSubscriptionFreezeRequest({
+    required String subscriptionId,
+    required ProfileBillingFreezeRequestEntity request,
+  }) {
+    return safeApiCall(() async {
+      final response =
+          await _remoteDataSource.createCustomerSubscriptionFreezeRequest(
+            subscriptionId,
+            request.toDto(),
+          );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingCancellationQuoteEntity>>
+  getCustomerSubscriptionCancellationQuote(String subscriptionId) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .getCustomerSubscriptionCancellationQuote(subscriptionId);
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingCancellationResultEntity>>
+  createCustomerSubscriptionCancellationRequest({
+    required String subscriptionId,
+    required ProfileBillingCancellationRequestEntity request,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .createCustomerSubscriptionCancellationRequest(
+            subscriptionId,
+            request.toDto(),
+          );
+      return response.toEntity();
+    });
+  }
 }

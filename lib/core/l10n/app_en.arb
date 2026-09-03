@@ -285,6 +285,55 @@
   "billing_no_subscription_description": "Your subscription details will appear here once you subscribe.",
   "billing_manage_subscription": "Manage subscription",
   "billing_notice": "You can freeze your subscription for up to 30 days once every 6 months. Once cancelled, you can still enjoy your meals until the end of the current billing cycle.",
+  "billing_pending_upgrade_notice": "There is a pending upgrade request currently being processed.",
+  "billing_action_unavailable": "This action is not available right now.",
+  "billing_renew_confirm_title": "Renew subscription",
+  "billing_renew_confirm_message": "Submit a renewal request for this subscription?",
+  "billing_freeze_confirm_title": "Freeze subscription",
+  "billing_freeze_confirm_message": "Choose the freeze dates, then confirm the request.",
+  "billing_pick_freeze_dates": "Pick freeze dates",
+  "billing_selected_freeze_dates": "{startDate} - {endDate}",
+  "@billing_selected_freeze_dates": {
+    "placeholders": {
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_optional_reason": "Reason (optional)",
+  "billing_freeze_range_too_long": "Freeze duration cannot exceed {days} days.",
+  "@billing_freeze_range_too_long": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_freeze_locked_days_cannot_be_frozen": "Locked days cannot be frozen. Choose later dates.",
+  "billing_cancel_quote_title": "Cancel subscription",
+  "billing_cancel_quote_message": "Refundable days: {days}\nRefund amount: {amount} {currency}",
+  "@billing_cancel_quote_message": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_confirm": "Confirm",
+  "billing_dismiss": "Dismiss",
+  "billing_renew_success": "Renewal request submitted.",
+  "billing_freeze_success": "Freeze request submitted.",
+  "billing_cancel_success": "Cancellation request submitted.",
+  "billing_action_failed": "Could not complete the request. Please try again.",
   "profile_addresses": "Addresses",
   "profile_addresses_subtitle": "Manage delivery addresses",
   "addresses_default": "Default",
