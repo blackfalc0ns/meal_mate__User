@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 
@@ -18,6 +20,7 @@ class InfluencerWalletActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final svgPath = _svgAsset;
 
     return InkWell(
       onTap: onTap,
@@ -37,7 +40,13 @@ class InfluencerWalletActionButton extends StatelessWidget {
                   Spacing.influencerWalletActionRadius,
                 ),
               ),
-              child: Icon(_icon, color: color.primary, size: _iconSize),
+              child: svgPath != null
+                  ? SvgPicture.asset(
+                      svgPath,
+                      width: _iconSize,
+                      height: _iconSize,
+                    )
+                  : Icon(_icon, color: color.primary, size: _iconSize),
             ),
             const SizedBox(height: Spacing.xs),
             Text(
@@ -55,6 +64,14 @@ class InfluencerWalletActionButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? get _svgAsset {
+    return switch (action.icon) {
+      InfluencerActionIcon.wallet => AssetsFake.influencerWalletActionWithdraw,
+      InfluencerActionIcon.history => AssetsFake.influencerWalletActionHistory,
+      _ => null,
+    };
   }
 
   IconData get _icon {

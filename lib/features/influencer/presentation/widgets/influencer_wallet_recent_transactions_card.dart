@@ -48,45 +48,42 @@ class InfluencerWalletRecentTransactionsCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: Spacing.influencerWalletRecentTransactionsHeaderHeight,
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: onActionTap,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.chevron_left_rounded,
+          Row(
+            children: [
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: onActionTap,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      actionLabel,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
                         color: color.primary,
-                        size: Spacing.iconSm,
                       ),
-                      Text(
-                        actionLabel,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size7,
-                          color: color.primary,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: color.primary,
+                      size: Spacing.iconSm,
+                    ),
+                  ],
                 ),
-                const Spacer(),
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size8,
-                    color: color.onSurface,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           const SizedBox(height: Spacing.md),
           Divider(color: color.outlineVariant, height: Spacing.hairline),

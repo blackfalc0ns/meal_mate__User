@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class InfluencerWalletOverviewCard extends StatelessWidget {
@@ -30,7 +32,6 @@ class InfluencerWalletOverviewCard extends StatelessWidget {
         height: Spacing.influencerWalletBalanceCardHeight,
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [color.primary, color.tertiary]),
           boxShadow: [
             BoxShadow(
               color: color.shadow.withValues(alpha: 0.07),
@@ -41,57 +42,71 @@ class InfluencerWalletOverviewCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
+            Positioned.fill(
+              child: SvgPicture.asset(
+                AssetsFake.influencerWalletCardBg,
+                fit: BoxFit.fill,
+              ),
+            ),
             Positioned(
               left: Spacing.base,
+              top: Spacing.md,
+              child: SvgPicture.asset(
+                AssetsFake.influencerWalletIcon,
+                width: Spacing.influencerWalletBalanceIconSize,
+                height: Spacing.influencerWalletBalanceIconSize,
+              ),
+            ),
+            Positioned(
+              right: Spacing.lg,
+              bottom: Spacing.base,
+              child: SvgPicture.asset(
+                AssetsFake.influencerWalletContactless,
+                width: Spacing.influencerWalletBalanceDecorationWidth,
+                height: Spacing.influencerWalletBalanceDecorationHeight,
+              ),
+            ),
+            Positioned(
+              left: Spacing.xl,
               top: Spacing.influencerWalletBalanceInnerTop,
-              child: SizedBox(
-                width: Spacing.influencerWalletBalanceInnerWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            availableTitle,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size14,
-                              color: color.onPrimary,
-                            ),
+              right: Spacing.influencerWalletBalanceInnerTop * 2.5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: TextDirection.ltr,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          availableTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size14,
+                            color: color.onPrimary,
                           ),
                         ),
-                        const SizedBox(width: Spacing.sm),
-                        Icon(
-                          Icons.visibility_outlined,
-                          color: color.onPrimary,
-                          size: Spacing.influencerWalletBalanceIconSize,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: Spacing.influencerWalletBalanceAmountHeight,
+                      ),
+                      const SizedBox(width: Spacing.sm),
+                      SvgPicture.asset(
+                        AssetsFake.influencerWalletEye,
+                        width: Spacing.iconMd,
+                        height: Spacing.iconMd,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Spacing.influencerWalletBalanceAmountHeight,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        textDirection: TextDirection.ltr,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Text(
-                              availableAmount,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size69,
-                                color: color.onPrimary,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.xs),
                           Text(
                             currency,
                             style: getBoldStyle(
@@ -100,32 +115,42 @@ class InfluencerWalletOverviewCard extends StatelessWidget {
                               color: color.onPrimary,
                             ),
                           ),
+                          const SizedBox(width: Spacing.sm),
+                          Text(
+                            availableAmount,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size69,
+                              color: color.onPrimary,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Positioned(
-              left: Spacing.xxl,
-              top: Spacing.influencerWalletBalanceTotalTop,
+              left: Spacing.xl,
+              bottom: Spacing.base,
               child: Row(
+                textDirection: TextDirection.ltr,
                 children: [
-                  Text(
-                    totalAmount,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size17,
-                      color: color.onPrimary,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.xs),
                   Text(
                     currency,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
+                      color: color.onPrimary,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    totalAmount,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size17,
                       color: color.onPrimary,
                     ),
                   ),
@@ -139,24 +164,6 @@ class InfluencerWalletOverviewCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Positioned(
-              right: Spacing.xxl,
-              bottom: Spacing.sm,
-              child: Icon(
-                Icons.payments_outlined,
-                color: color.onPrimary,
-                size: Spacing.influencerWalletBalanceDecorationHeight,
-              ),
-            ),
-            Positioned(
-              left: Spacing.base,
-              top: Spacing.md,
-              child: Icon(
-                Icons.account_balance_wallet_outlined,
-                color: color.onPrimary,
-                size: Spacing.influencerWalletBalanceIconSize,
               ),
             ),
           ],

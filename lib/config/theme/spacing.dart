@@ -1291,7 +1291,7 @@ class Spacing {
   static const double influencerStatsTopProductInnerRadius = 11.878;
   static const double influencerWalletTitleBlockWidth = 113.0;
   static const double influencerWalletTitleGap = 9.5;
-  static const double influencerWalletBalanceCardHeight = 223.98;
+  static const double influencerWalletBalanceCardHeight = 180.98;
   static const double influencerWalletBalanceInnerWidth = 161.25;
   static const double influencerWalletBalanceInnerTop = 44.49;
   static const double influencerWalletBalanceIconSize = 33.35;
@@ -1321,7 +1321,7 @@ class Spacing {
   static const double influencerWalletRecentTransactionsPaddingTop = 14.3;
   static const double influencerWalletRecentTransactionsHeaderHeight = 12.0;
   static const double influencerWalletRecentTransactionsDividerTop = 23.18;
-  static const double influencerWalletTransactionRowHeight = 38.62;
+  static const double influencerWalletTransactionRowHeight = 55.62;
   static const double influencerWalletTransactionIconSize = 27.62;
   static const double influencerWalletTransactionGap = 14.0;
   static const double influencerShareLinksBannerHeight = 138.42;

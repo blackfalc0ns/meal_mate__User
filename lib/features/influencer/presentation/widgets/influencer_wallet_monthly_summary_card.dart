@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_summary_metric_card.dart';
@@ -45,31 +47,26 @@ class InfluencerWalletMonthlySummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: Spacing.influencerWalletMonthlySummaryHeaderHeight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.calendar_month_rounded,
-                  color: color.primary,
-                  size: Spacing.influencerWalletMonthlySummaryHeaderHeight,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SvgPicture.asset(
+                AssetsFake.influencerWalletCalendar,
+                width: Spacing.influencerWalletMonthlySummaryHeaderHeight,
+                height: Spacing.influencerWalletMonthlySummaryHeaderHeight,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
                 ),
-
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size8,
-                    color: color.onSurface,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           const SizedBox(height: Spacing.sm),
           Row(

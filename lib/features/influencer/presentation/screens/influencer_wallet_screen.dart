@@ -25,16 +25,16 @@ class InfluencerWalletScreen extends StatelessWidget {
 
     final actions = [
       InfluencerActionEntity(
-        title: locale.influencer_wallet_withdraw_action,
-        subtitle: locale.influencer_request_withdraw_subtitle,
-        icon: InfluencerActionIcon.wallet,
-        routeName: AppRoutes.influencerWithdraw,
-      ),
-      InfluencerActionEntity(
         title: locale.influencer_wallet_history_action,
         subtitle: locale.influencer_withdraw_history_subtitle,
         icon: InfluencerActionIcon.history,
         routeName: AppRoutes.influencerWithdrawHistory,
+      ),
+      InfluencerActionEntity(
+        title: locale.influencer_wallet_withdraw_action,
+        subtitle: locale.influencer_request_withdraw_subtitle,
+        icon: InfluencerActionIcon.wallet,
+        routeName: AppRoutes.influencerWithdraw,
       ),
     ];
 
@@ -65,7 +65,6 @@ class InfluencerWalletScreen extends StatelessWidget {
             const SizedBox(height: Spacing.influencerWalletActionsTopGap),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              textDirection: TextDirection.ltr,
               children: [
                 for (var index = 0; index < actions.length; index++) ...[
                   InfluencerWalletActionButton(

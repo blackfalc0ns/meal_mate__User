@@ -220,4 +220,26 @@ class AssetsFake {
       'assets/images/influencer/figma/influencer_quick_stat_orders.svg';
   static const String influencerQuickStatConversion =
       'assets/images/influencer/figma/influencer_quick_stat_conversion.svg';
+  static const String influencerWalletCardBg =
+      'assets/images/influencer/figma/influencer_wallet_card_bg.svg';
+  static const String influencerWalletContactless =
+      'assets/images/influencer/figma/influencer_wallet_contactless.svg';
+  static const String influencerWalletIcon =
+      'assets/images/influencer/figma/influencer_wallet_icon.svg';
+  static const String influencerWalletActionWithdraw =
+      'assets/images/influencer/figma/influencer_wallet_action_withdraw.svg';
+  static const String influencerWalletActionHistory =
+      'assets/images/influencer/figma/influencer_wallet_action_history.svg';
+  static const String influencerWalletCalendar =
+      'assets/images/influencer/figma/influencer_wallet_calendar.svg';
+  static const String influencerWalletDownload =
+      'assets/images/influencer/figma/influencer_wallet_download.svg';
+  static const String influencerWalletTrendUp =
+      'assets/images/influencer/figma/influencer_wallet_trend_up.svg';
+  static const String influencerWalletTxReferral =
+      'assets/images/influencer/figma/influencer_wallet_tx_referral.svg';
+  static const String influencerWalletTxWithdraw =
+      'assets/images/influencer/figma/influencer_wallet_tx_withdraw.svg';
+  static const String influencerWalletEye =
+      'assets/images/influencer/figma/influencer_wallet_eye.svg';
 }

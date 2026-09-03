@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 
@@ -28,17 +30,14 @@ class InfluencerWalletSummaryMetricCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(_icon, color: color.primary, size: _iconSize),
-          const Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 metric.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.end,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size7,
@@ -74,15 +73,23 @@ class InfluencerWalletSummaryMetricCard extends StatelessWidget {
               ),
             ],
           ),
+          const Spacer(),
+          SvgPicture.asset(
+            _svgAsset,
+            width: _iconSize,
+            height: _iconSize,
+          ),
         ],
       ),
     );
   }
 
-  IconData get _icon {
+  String get _svgAsset {
     return switch (metric.icon) {
-      InfluencerWalletSummaryIcon.earnings => Icons.trending_up_rounded,
-      InfluencerWalletSummaryIcon.withdrawn => Icons.download_rounded,
+      InfluencerWalletSummaryIcon.earnings =>
+        AssetsFake.influencerWalletTrendUp,
+      InfluencerWalletSummaryIcon.withdrawn =>
+        AssetsFake.influencerWalletDownload,
     };
   }
 

@@ -76,7 +76,7 @@ class InfluencerFakeDataSource {
       ],
       wallet: InfluencerWalletEntity(
         totalBalance: locale.influencer_wallet_total_balance_value,
-        availableBalance: locale.influencer_pending_withdrawals_value,
+        availableBalance: locale.influencer_total_earnings_value,
         currency: locale.influencer_currency,
         lastUpdated: locale.influencer_wallet_last_updated,
         bankAccount: InfluencerBankAccountEntity(
@@ -86,16 +86,16 @@ class InfluencerFakeDataSource {
         ),
         monthlySummary: [
           InfluencerWalletSummaryMetricEntity(
-            title: locale.influencer_wallet_summary_total_earnings,
-            value: locale.influencer_total_earnings_value,
-            currency: locale.influencer_currency,
-            icon: InfluencerWalletSummaryIcon.earnings,
-          ),
-          InfluencerWalletSummaryMetricEntity(
             title: locale.influencer_wallet_summary_withdrawn,
             value: locale.influencer_wallet_withdrawn_value,
             currency: locale.influencer_currency,
             icon: InfluencerWalletSummaryIcon.withdrawn,
+          ),
+          InfluencerWalletSummaryMetricEntity(
+            title: locale.influencer_wallet_summary_total_earnings,
+            value: locale.influencer_total_earnings_value,
+            currency: locale.influencer_currency,
+            icon: InfluencerWalletSummaryIcon.earnings,
           ),
         ],
         transactions: [
