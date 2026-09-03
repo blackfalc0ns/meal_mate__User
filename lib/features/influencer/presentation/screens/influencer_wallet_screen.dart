@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_action_tile.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_transaction_tile.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_balance_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_header_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_action_button.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_monthly_summary_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_overview_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_recent_transactions_card.dart';
+import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_wallet_title_block.dart';
 
 class InfluencerWalletScreen extends StatelessWidget {
   const InfluencerWalletScreen({super.key, this.showScaffold = true});
@@ -25,13 +25,13 @@ class InfluencerWalletScreen extends StatelessWidget {
 
     final actions = [
       InfluencerActionEntity(
-        title: locale.influencer_request_withdraw,
+        title: locale.influencer_wallet_withdraw_action,
         subtitle: locale.influencer_request_withdraw_subtitle,
         icon: InfluencerActionIcon.wallet,
         routeName: AppRoutes.influencerWithdraw,
       ),
       InfluencerActionEntity(
-        title: locale.influencer_withdraw_history_title,
+        title: locale.influencer_wallet_history_action,
         subtitle: locale.influencer_withdraw_history_subtitle,
         icon: InfluencerActionIcon.history,
         routeName: AppRoutes.influencerWithdrawHistory,
@@ -48,42 +48,51 @@ class InfluencerWalletScreen extends StatelessWidget {
           bottom: Spacing.xxxl,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            InfluencerWalletBalanceCard(
-              title: locale.influencer_available_earnings,
-              amount: wallet.availableBalance,
-              subtitle: wallet.lastUpdated,
+            InfluencerWalletTitleBlock(
+              title: locale.influencer_wallet_figma_title,
+              subtitle: locale.influencer_wallet_figma_subtitle,
             ),
             const SizedBox(height: Spacing.base),
-            ...actions.map(
-              (action) => Padding(
-                padding: const EdgeInsets.only(bottom: Spacing.sm),
-                child: InfluencerActionTile(
-                  action: action,
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(action.routeName),
-                ),
-              ),
+            InfluencerWalletOverviewCard(
+              availableTitle: locale.influencer_available_balance,
+              availableAmount: wallet.availableBalance,
+              totalTitle: locale.influencer_total_earnings_colon,
+              totalAmount: wallet.totalBalance,
+              currency: wallet.currency,
             ),
-            const SizedBox(height: Spacing.sm),
-            Text(
-              locale.influencer_recent_commissions,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size14,
-                color: color.onSurface,
-              ),
-            ),
-            const SizedBox(height: Spacing.sm),
-            ...wallet.transactions
-                .take(2)
-                .map(
-                  (transaction) => Padding(
-                    padding: const EdgeInsets.only(bottom: Spacing.sm),
-                    child: InfluencerTransactionTile(transaction: transaction),
+            const SizedBox(height: Spacing.influencerWalletActionsTopGap),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              textDirection: TextDirection.ltr,
+              children: [
+                for (var index = 0; index < actions.length; index++) ...[
+                  InfluencerWalletActionButton(
+                    action: actions[index],
+                    onTap: () => Navigator.of(
+                      context,
+                    ).pushNamed(actions[index].routeName),
                   ),
-                ),
+                  if (index < actions.length - 1)
+                    const SizedBox(width: Spacing.influencerWalletActionsGap),
+                ],
+              ],
+            ),
+            const SizedBox(height: Spacing.base),
+            InfluencerWalletMonthlySummaryCard(
+              title: locale.influencer_wallet_month_summary,
+              metrics: wallet.monthlySummary,
+            ),
+            const SizedBox(height: Spacing.base),
+            InfluencerWalletRecentTransactionsCard(
+              title: locale.influencer_wallet_latest_transactions,
+              actionLabel: locale.influencer_view_all,
+              transactions: wallet.transactions,
+              onActionTap: () => Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.influencerWithdrawHistory),
+            ),
           ],
         ),
       ),
@@ -95,11 +104,11 @@ class InfluencerWalletScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        title: locale.influencer_wallet_title,
-        titleFontSize: FontSize.size17,
-        backgroundColor: color.surface,
-        showShadow: false,
+      appBar: InfluencerHeaderCard(
+        userName: dashboard.userName,
+        partnerLabel: dashboard.partnerLabel,
+        avatarAsset: dashboard.avatarAsset,
+        logoAsset: dashboard.logoAsset,
       ),
       body: body,
     );

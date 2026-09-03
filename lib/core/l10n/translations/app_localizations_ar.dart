@@ -4129,6 +4129,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_wallet_subtitle => 'اعرض الرصيد والعمليات';
 
   @override
+  String get influencer_wallet_figma_title => 'محفظتي';
+
+  @override
+  String get influencer_wallet_figma_subtitle => 'إدارة أرباحك وحركاتك المالية';
+
+  @override
+  String get influencer_available_balance => 'الرصيد المتاح';
+
+  @override
+  String get influencer_total_earnings_colon => 'إجمالي الأرباح :';
+
+  @override
+  String get influencer_wallet_total_balance_value => '1.245';
+
+  @override
+  String get influencer_wallet_withdraw_action => 'سحب الارباح';
+
+  @override
+  String get influencer_wallet_history_action => 'سجل العمليات';
+
+  @override
+  String get influencer_wallet_month_summary => 'ملخص هذا الشهر';
+
+  @override
+  String get influencer_wallet_summary_total_earnings => 'إجمالي الأرباح';
+
+  @override
+  String get influencer_wallet_summary_withdrawn => 'تم السحب';
+
+  @override
+  String get influencer_wallet_withdrawn_value => '400';
+
+  @override
+  String get influencer_wallet_latest_transactions => 'أحدث المعاملات';
+
+  @override
   String get influencer_referral_code_title => 'كود الخصم الخاص بك';
 
   @override
@@ -4297,6 +4333,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get influencer_transaction_referral_bonus => 'مكافأة إحالة';
+
+  @override
+  String get influencer_transaction_new_referral => 'إحالة جديدة';
+
+  @override
+  String get influencer_transaction_bank_withdrawal => 'سحب إلى حساب بنكي';
+
+  @override
+  String get influencer_transaction_premium_order_completed => 'طلب مميز مكتمل';
+
+  @override
+  String get influencer_transaction_25_may_2025 => '25 مايو 2025';
+
+  @override
+  String get influencer_transaction_amount_positive_120 => '+120 KWD';
+
+  @override
+  String get influencer_transaction_amount_negative_120 => '-120 KWD';
 
   @override
   String get influencer_transaction_today => 'اليوم، 09:15 ص';

@@ -77,6 +77,7 @@ class InfluencerWalletEntity {
     required this.currency,
     required this.lastUpdated,
     required this.bankAccount,
+    required this.monthlySummary,
     required this.transactions,
   });
 
@@ -85,8 +86,25 @@ class InfluencerWalletEntity {
   final String currency;
   final String lastUpdated;
   final InfluencerBankAccountEntity bankAccount;
+  final List<InfluencerWalletSummaryMetricEntity> monthlySummary;
   final List<InfluencerTransactionEntity> transactions;
 }
+
+class InfluencerWalletSummaryMetricEntity {
+  const InfluencerWalletSummaryMetricEntity({
+    required this.title,
+    required this.value,
+    required this.currency,
+    required this.icon,
+  });
+
+  final String title;
+  final String value;
+  final String currency;
+  final InfluencerWalletSummaryIcon icon;
+}
+
+enum InfluencerWalletSummaryIcon { earnings, withdrawn }
 
 class InfluencerBankAccountEntity {
   const InfluencerBankAccountEntity({
@@ -106,12 +124,14 @@ class InfluencerTransactionEntity {
     required this.date,
     required this.amount,
     required this.status,
+    this.isDebit = false,
   });
 
   final String title;
   final String date;
   final String amount;
   final String status;
+  final bool isDebit;
 }
 
 class InfluencerSocialAccountEntity {

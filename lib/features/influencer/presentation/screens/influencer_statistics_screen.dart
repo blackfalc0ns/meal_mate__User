@@ -45,11 +45,9 @@ class _InfluencerStatisticsScreenState
     return SafeArea(
       top: false,
       child: SingleChildScrollView(
-        padding: const EdgeInsetsDirectional.only(
-          start: Spacing.screenH,
-          top: Spacing.md,
-          end: Spacing.screenH,
-          bottom: Spacing.xxxl,
+        padding: const EdgeInsetsDirectional.symmetric(
+          vertical: Spacing.screenV,
+          horizontal: Spacing.screenH,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

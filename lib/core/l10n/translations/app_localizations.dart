@@ -7940,6 +7940,78 @@ abstract class AppLocalizations {
   /// **'View balance and transactions'**
   String get influencer_wallet_subtitle;
 
+  /// No description provided for @influencer_wallet_figma_title.
+  ///
+  /// In en, this message translates to:
+  /// **'My wallet'**
+  String get influencer_wallet_figma_title;
+
+  /// No description provided for @influencer_wallet_figma_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your earnings and financial transactions'**
+  String get influencer_wallet_figma_subtitle;
+
+  /// No description provided for @influencer_available_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available balance'**
+  String get influencer_available_balance;
+
+  /// No description provided for @influencer_total_earnings_colon.
+  ///
+  /// In en, this message translates to:
+  /// **'Total earnings:'**
+  String get influencer_total_earnings_colon;
+
+  /// No description provided for @influencer_wallet_total_balance_value.
+  ///
+  /// In en, this message translates to:
+  /// **'1.245'**
+  String get influencer_wallet_total_balance_value;
+
+  /// No description provided for @influencer_wallet_withdraw_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw earnings'**
+  String get influencer_wallet_withdraw_action;
+
+  /// No description provided for @influencer_wallet_history_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history'**
+  String get influencer_wallet_history_action;
+
+  /// No description provided for @influencer_wallet_month_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'This month\'s summary'**
+  String get influencer_wallet_month_summary;
+
+  /// No description provided for @influencer_wallet_summary_total_earnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total earnings'**
+  String get influencer_wallet_summary_total_earnings;
+
+  /// No description provided for @influencer_wallet_summary_withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get influencer_wallet_summary_withdrawn;
+
+  /// No description provided for @influencer_wallet_withdrawn_value.
+  ///
+  /// In en, this message translates to:
+  /// **'400'**
+  String get influencer_wallet_withdrawn_value;
+
+  /// No description provided for @influencer_wallet_latest_transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest transactions'**
+  String get influencer_wallet_latest_transactions;
+
   /// No description provided for @influencer_referral_code_title.
   ///
   /// In en, this message translates to:
@@ -8269,6 +8341,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Referral bonus'**
   String get influencer_transaction_referral_bonus;
+
+  /// No description provided for @influencer_transaction_new_referral.
+  ///
+  /// In en, this message translates to:
+  /// **'New referral'**
+  String get influencer_transaction_new_referral;
+
+  /// No description provided for @influencer_transaction_bank_withdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal to bank account'**
+  String get influencer_transaction_bank_withdrawal;
+
+  /// No description provided for @influencer_transaction_premium_order_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium order completed'**
+  String get influencer_transaction_premium_order_completed;
+
+  /// No description provided for @influencer_transaction_25_may_2025.
+  ///
+  /// In en, this message translates to:
+  /// **'25 May 2025'**
+  String get influencer_transaction_25_may_2025;
+
+  /// No description provided for @influencer_transaction_amount_positive_120.
+  ///
+  /// In en, this message translates to:
+  /// **'+120 KWD'**
+  String get influencer_transaction_amount_positive_120;
+
+  /// No description provided for @influencer_transaction_amount_negative_120.
+  ///
+  /// In en, this message translates to:
+  /// **'-120 KWD'**
+  String get influencer_transaction_amount_negative_120;
 
   /// No description provided for @influencer_transaction_today.
   ///

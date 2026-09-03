@@ -4191,6 +4191,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_wallet_subtitle => 'View balance and transactions';
 
   @override
+  String get influencer_wallet_figma_title => 'My wallet';
+
+  @override
+  String get influencer_wallet_figma_subtitle =>
+      'Manage your earnings and financial transactions';
+
+  @override
+  String get influencer_available_balance => 'Available balance';
+
+  @override
+  String get influencer_total_earnings_colon => 'Total earnings:';
+
+  @override
+  String get influencer_wallet_total_balance_value => '1.245';
+
+  @override
+  String get influencer_wallet_withdraw_action => 'Withdraw earnings';
+
+  @override
+  String get influencer_wallet_history_action => 'Transaction history';
+
+  @override
+  String get influencer_wallet_month_summary => 'This month\'s summary';
+
+  @override
+  String get influencer_wallet_summary_total_earnings => 'Total earnings';
+
+  @override
+  String get influencer_wallet_summary_withdrawn => 'Withdrawn';
+
+  @override
+  String get influencer_wallet_withdrawn_value => '400';
+
+  @override
+  String get influencer_wallet_latest_transactions => 'Latest transactions';
+
+  @override
   String get influencer_referral_code_title => 'Your discount code';
 
   @override
@@ -4364,6 +4401,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get influencer_transaction_referral_bonus => 'Referral bonus';
+
+  @override
+  String get influencer_transaction_new_referral => 'New referral';
+
+  @override
+  String get influencer_transaction_bank_withdrawal =>
+      'Withdrawal to bank account';
+
+  @override
+  String get influencer_transaction_premium_order_completed =>
+      'Premium order completed';
+
+  @override
+  String get influencer_transaction_25_may_2025 => '25 May 2025';
+
+  @override
+  String get influencer_transaction_amount_positive_120 => '+120 KWD';
+
+  @override
+  String get influencer_transaction_amount_negative_120 => '-120 KWD';
 
   @override
   String get influencer_transaction_today => 'Today, 09:15 AM';
