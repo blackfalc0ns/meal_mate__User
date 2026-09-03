@@ -4440,4 +4440,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billing_status_approved => 'Approved';
+
+  @override
+  String billing_active_freeze_service_days(int days) {
+    return 'Frozen service days: $days';
+  }
+
+  @override
+  String billing_active_freeze_compensation_days(int days) {
+    return 'Compensation days: $days';
+  }
+
+  @override
+  String billing_active_freeze_new_end_date(String date) {
+    return 'New end date: $date';
+  }
+
+  @override
+  String get billing_active_freeze_compensation_dates => 'Compensation dates';
 }

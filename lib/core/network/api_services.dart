@@ -403,6 +403,16 @@ abstract class ApiServices {
   @GET(EndPoints.customerSubscriptionCurrent)
   Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
 
+  @GET(EndPoints.customerSubscriptionCurrentFreezeDetails)
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCurrentCustomerSubscriptionFreezeDetails();
+
+  @GET(EndPoints.customerSubscriptionFreezeDetails)
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCustomerSubscriptionFreezeDetails(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
   @GET(EndPoints.customerInvoices)
   Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices();
 

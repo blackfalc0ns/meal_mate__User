@@ -4373,4 +4373,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get billing_status_approved => 'معتمد';
+
+  @override
+  String billing_active_freeze_service_days(int days) {
+    return 'أيام الخدمة المجمدة: $days';
+  }
+
+  @override
+  String billing_active_freeze_compensation_days(int days) {
+    return 'أيام التعويض: $days';
+  }
+
+  @override
+  String billing_active_freeze_new_end_date(String date) {
+    return 'تاريخ نهاية الاشتراك الجديد: $date';
+  }
+
+  @override
+  String get billing_active_freeze_compensation_dates => 'تواريخ التعويض';
 }

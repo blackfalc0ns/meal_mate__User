@@ -19,6 +19,7 @@ import 'package:meal_meat_user/features/profile/presentation/manager/profile_eve
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_active_freeze_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_freeze_rules_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_pending_freeze_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_invoice_history_card.dart';
@@ -230,6 +231,12 @@ class ProfileBillingScreen extends StatelessWidget {
     ProfileBillingSubscriptionEntity subscription,
     ProfileBillingFreezePolicyEntity? freezePolicy,
   ) async {
+    final activeFreeze = subscription.activeFreeze;
+    if (activeFreeze != null) {
+      await _showActiveFreezeDialog(context, activeFreeze);
+      return;
+    }
+
     final pendingFreeze = subscription.pendingFreeze;
     if (pendingFreeze != null) {
       await _showPendingFreezeDialog(
@@ -327,6 +334,22 @@ class ProfileBillingScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _showActiveFreezeDialog(
+    BuildContext context,
+    ProfileBillingActiveFreezeEntity activeFreeze,
+  ) async {
+    final locale = context.localization;
+
+    await context.showAppCustomDialog<void>(
+      title: locale.billing_pending_freeze_title,
+      message: locale.billing_pending_freeze_message,
+      confirmText: locale.billing_dismiss,
+      icon: Icons.ac_unit_rounded,
+      content: ProfileBillingActiveFreezeCard(activeFreeze: activeFreeze),
+      onConfirm: () {},
+    );
+  }
+
   Future<void> _showPendingFreezeDialog(
     BuildContext context,
     ProfileBillingPendingFreezeEntity pendingFreeze,
@@ -337,11 +360,11 @@ class ProfileBillingScreen extends StatelessWidget {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     final notice = isRtl
         ? (freezePolicy?.noticeAr.isNotEmpty == true
-            ? freezePolicy!.noticeAr
-            : freezePolicy?.notice ?? '')
+              ? freezePolicy!.noticeAr
+              : freezePolicy?.notice ?? '')
         : (freezePolicy?.notice.isNotEmpty == true
-            ? freezePolicy!.notice
-            : freezePolicy?.noticeAr ?? '');
+              ? freezePolicy!.notice
+              : freezePolicy?.noticeAr ?? '');
 
     await context.showAppCustomDialog<void>(
       title: locale.billing_pending_freeze_title,

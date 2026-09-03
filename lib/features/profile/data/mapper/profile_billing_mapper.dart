@@ -49,6 +49,7 @@ extension ProfileBillingSubscriptionResponseDtoMapper
             logoUrl: '',
           ),
       pendingFreeze: pendingFreeze?.toEntity(),
+      activeFreeze: activeFreeze?.toEntity(),
       pendingUpgrade: pendingUpgrade?.toEntity(),
       actions:
           actions?.toEntity() ??
@@ -61,15 +62,16 @@ extension ProfileBillingSubscriptionResponseDtoMapper
             freezeUnavailableReason: '',
             cancelUnavailableReason: '',
             upgradeUnavailableReason: '',
-      freezeStartDelayDays: 0,
-      maximumFreezeDays: 0,
-      freezeExtendsSubscriptionEnd: false,
-      earliestFreezeStartDate: '',
-      renewalEndpoint: '',
-      freezeEndpoint: '',
-      cancellationEndpoint: '',
+            freezeStartDelayDays: 0,
+            maximumFreezeDays: 0,
+            freezeExtendsSubscriptionEnd: false,
+            earliestFreezeStartDate: '',
+            renewalEndpoint: '',
+            freezeEndpoint: '',
+            cancellationEndpoint: '',
             upgradeEndpoint: '',
             cancellationQuoteEndpoint: '',
+            freezeDetailsEndpoint: '',
           ),
     );
   }
@@ -108,6 +110,68 @@ extension ProfileBillingActionsResponseDtoMapper
       cancellationEndpoint: cancellationEndpoint ?? '',
       upgradeEndpoint: upgradeEndpoint ?? '',
       cancellationQuoteEndpoint: cancellationQuoteEndpoint ?? '',
+      freezeDetailsEndpoint: freezeDetailsEndpoint ?? '',
+    );
+  }
+}
+
+extension ProfileBillingActiveFreezeResponseDtoMapper
+    on ProfileBillingActiveFreezeResponseDto {
+  ProfileBillingActiveFreezeEntity toEntity() {
+    return ProfileBillingActiveFreezeEntity(
+      requestId: requestId ?? '',
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
+      freezeDays: freezeDays ?? 0,
+      frozenServiceDaysCount: frozenServiceDaysCount ?? 0,
+      status: status ?? '',
+      statusNameAr: statusNameAr ?? '',
+      isCurrentlyActive: isCurrentlyActive ?? false,
+      isUpcoming: isUpcoming ?? false,
+      reason: reason ?? '',
+      createdAtUtc: createdAtUtc ?? '',
+      processedAtUtc: processedAtUtc ?? '',
+      frozenServiceDates: frozenServiceDates ?? const [],
+      compensationDates: compensationDates ?? const [],
+      subscriptionEndDate: subscriptionEndDate ?? '',
+      summaryAr: summaryAr ?? '',
+      summaryEn: summaryEn ?? '',
+    );
+  }
+}
+
+extension ProfileBillingFreezeHistoryResponseDtoMapper
+    on ProfileBillingFreezeHistoryResponseDto {
+  ProfileBillingFreezeHistoryEntity toEntity() {
+    return ProfileBillingFreezeHistoryEntity(
+      requestId: requestId ?? '',
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
+      freezeDays: freezeDays ?? 0,
+      status: status ?? '',
+      statusNameAr: statusNameAr ?? '',
+      reason: reason ?? '',
+      createdAtUtc: createdAtUtc ?? '',
+      processedAtUtc: processedAtUtc ?? '',
+    );
+  }
+}
+
+extension ProfileBillingFreezeDetailsResponseDtoMapper
+    on ProfileBillingFreezeDetailsResponseDto {
+  ProfileBillingFreezeDetailsEntity toEntity() {
+    return ProfileBillingFreezeDetailsEntity(
+      subscriptionId: subscriptionId ?? '',
+      subscriptionStatus: subscriptionStatus ?? '',
+      subscriptionStatusNameAr: subscriptionStatusNameAr ?? '',
+      hasFreeze: hasFreeze ?? false,
+      isCurrentlyFrozen: isCurrentlyFrozen ?? false,
+      currentFreeze: currentFreeze?.toEntity(),
+      freezeHistory:
+          freezeHistory?.map((history) => history.toEntity()).toList() ??
+          const [],
+      noticeAr: noticeAr ?? '',
+      noticeEn: noticeEn ?? '',
     );
   }
 }
@@ -197,8 +261,7 @@ extension ProfileBillingFreezeRequestEntityMapper
       startDate: startDate,
       endDate: endDate,
       reason: reason,
-      acknowledgeLostSelections:
-          acknowledgeLostSelections ? true : null,
+      acknowledgeLostSelections: acknowledgeLostSelections ? true : null,
     );
   }
 }

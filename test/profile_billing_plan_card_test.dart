@@ -72,6 +72,35 @@ void main() {
     expect(cancelled, isTrue);
   });
 
+  testWidgets(
+    'freeze action opens active freeze details when freeze is active',
+    (tester) async {
+      var frozen = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: ProfileBillingPlanCard(
+              subscription: _subscription(
+                canFreeze: false,
+                activeFreeze: _activeFreeze(),
+              ),
+              onFreeze: () => frozen = true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Freeze'));
+
+      expect(frozen, isTrue);
+    },
+  );
+
   testWidgets('tapping unavailable action shows custom snackbar message', (
     tester,
   ) async {
@@ -104,6 +133,7 @@ ProfileBillingSubscriptionEntity _subscription({
   bool canRenew = false,
   bool canFreeze = false,
   bool canCancel = false,
+  ProfileBillingActiveFreezeEntity? activeFreeze,
 }) {
   return ProfileBillingSubscriptionEntity(
     subscriptionId: 'subscription-1',
@@ -155,5 +185,42 @@ ProfileBillingSubscriptionEntity _subscription({
       upgradeEndpoint: '',
       cancellationQuoteEndpoint: '',
     ),
+    activeFreeze: activeFreeze,
+  );
+}
+
+ProfileBillingActiveFreezeEntity _activeFreeze() {
+  return const ProfileBillingActiveFreezeEntity(
+    requestId: 'freeze-1',
+    startDate: '2026-09-07',
+    endDate: '2026-09-12',
+    freezeDays: 6,
+    frozenServiceDaysCount: 6,
+    status: 'Approved',
+    statusNameAr: 'Approved and applied',
+    isCurrentlyActive: true,
+    isUpcoming: false,
+    reason: '',
+    createdAtUtc: '2026-09-03T14:18:47.743613Z',
+    processedAtUtc: '2026-09-03T14:18:47.743302Z',
+    frozenServiceDates: [
+      '2026-09-07',
+      '2026-09-08',
+      '2026-09-09',
+      '2026-09-10',
+      '2026-09-11',
+      '2026-09-12',
+    ],
+    compensationDates: [
+      '2026-09-19',
+      '2026-09-20',
+      '2026-09-21',
+      '2026-09-22',
+      '2026-09-23',
+      '2026-09-24',
+    ],
+    subscriptionEndDate: '2026-09-24',
+    summaryAr: '',
+    summaryEn: '',
   );
 }

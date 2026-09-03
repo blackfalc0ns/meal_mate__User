@@ -63,6 +63,39 @@ void main() {
           'cancellationEndpoint': '/cancel',
           'upgradeEndpoint': '/upgrade',
           'cancellationQuoteEndpoint': '/cancel-quote',
+          'freezeDetailsEndpoint':
+              '/api/v1/customer/subscriptions/sub-1/freeze-details',
+        },
+        'activeFreeze': {
+          'requestId': 'freeze-details-1',
+          'startDate': '2026-09-07',
+          'endDate': '2026-09-12',
+          'freezeDays': 6,
+          'frozenServiceDaysCount': 5,
+          'status': 'Approved',
+          'statusNameAr': 'approved ar',
+          'isCurrentlyActive': false,
+          'isUpcoming': true,
+          'reason': 'travel',
+          'createdAtUtc': '2026-09-03T14:18:47.743613Z',
+          'processedAtUtc': '2026-09-03T14:18:47.743302Z',
+          'frozenServiceDates': [
+            '2026-09-07',
+            '2026-09-08',
+            '2026-09-09',
+            '2026-09-10',
+            '2026-09-12',
+          ],
+          'compensationDates': [
+            '2026-09-20',
+            '2026-09-21',
+            '2026-09-22',
+            '2026-09-23',
+            '2026-09-24',
+          ],
+          'subscriptionEndDate': '2026-09-24',
+          'summaryAr': 'summary ar',
+          'summaryEn': 'summary en',
         },
       },
       'emptyStateCode': null,
@@ -82,6 +115,22 @@ void main() {
     expect(entity.actions.earliestFreezeStartDate, '2026-09-06');
     expect(entity.actions.cancellationEndpoint, '/cancel');
     expect(entity.actions.cancellationQuoteEndpoint, '/cancel-quote');
+    expect(
+      entity.actions.freezeDetailsEndpoint,
+      '/api/v1/customer/subscriptions/sub-1/freeze-details',
+    );
+    expect(entity.activeFreeze?.requestId, 'freeze-details-1');
+    expect(entity.activeFreeze?.statusNameAr, 'approved ar');
+    expect(entity.activeFreeze?.frozenServiceDaysCount, 5);
+    expect(entity.activeFreeze?.compensationDates, [
+      '2026-09-20',
+      '2026-09-21',
+      '2026-09-22',
+      '2026-09-23',
+      '2026-09-24',
+    ]);
+    expect(entity.activeFreeze?.subscriptionEndDate, '2026-09-24');
+    expect(entity.activeFreeze?.summaryAr, 'summary ar');
   });
 
   test('maps freeze policy earliest allowed date into billing entity', () {

@@ -51,6 +51,7 @@ class ProfileBillingSubscriptionEntity {
     required this.restaurant,
     required this.actions,
     this.pendingFreeze,
+    this.activeFreeze,
     this.pendingUpgrade,
   });
 
@@ -81,6 +82,7 @@ class ProfileBillingSubscriptionEntity {
   final ProfileBillingRestaurantEntity restaurant;
   final ProfileBillingActionsEntity actions;
   final ProfileBillingPendingFreezeEntity? pendingFreeze;
+  final ProfileBillingActiveFreezeEntity? activeFreeze;
   final ProfileBillingPendingUpgradeEntity? pendingUpgrade;
 }
 
@@ -117,6 +119,7 @@ class ProfileBillingActionsEntity {
     required this.cancellationEndpoint,
     required this.upgradeEndpoint,
     required this.cancellationQuoteEndpoint,
+    this.freezeDetailsEndpoint = '',
   });
 
   final bool canRenew;
@@ -136,6 +139,7 @@ class ProfileBillingActionsEntity {
   final String cancellationEndpoint;
   final String upgradeEndpoint;
   final String cancellationQuoteEndpoint;
+  final String freezeDetailsEndpoint;
 }
 
 class ProfileBillingPendingFreezeEntity {
@@ -152,6 +156,94 @@ class ProfileBillingPendingFreezeEntity {
   final String endDate;
   final int freezeDays;
   final String status;
+}
+
+class ProfileBillingActiveFreezeEntity {
+  const ProfileBillingActiveFreezeEntity({
+    required this.requestId,
+    required this.startDate,
+    required this.endDate,
+    required this.freezeDays,
+    required this.frozenServiceDaysCount,
+    required this.status,
+    required this.statusNameAr,
+    required this.isCurrentlyActive,
+    required this.isUpcoming,
+    required this.reason,
+    required this.createdAtUtc,
+    required this.processedAtUtc,
+    required this.frozenServiceDates,
+    required this.compensationDates,
+    required this.subscriptionEndDate,
+    required this.summaryAr,
+    required this.summaryEn,
+  });
+
+  final String requestId;
+  final String startDate;
+  final String endDate;
+  final int freezeDays;
+  final int frozenServiceDaysCount;
+  final String status;
+  final String statusNameAr;
+  final bool isCurrentlyActive;
+  final bool isUpcoming;
+  final String reason;
+  final String createdAtUtc;
+  final String processedAtUtc;
+  final List<String> frozenServiceDates;
+  final List<String> compensationDates;
+  final String subscriptionEndDate;
+  final String summaryAr;
+  final String summaryEn;
+}
+
+class ProfileBillingFreezeHistoryEntity {
+  const ProfileBillingFreezeHistoryEntity({
+    required this.requestId,
+    required this.startDate,
+    required this.endDate,
+    required this.freezeDays,
+    required this.status,
+    required this.statusNameAr,
+    required this.reason,
+    required this.createdAtUtc,
+    required this.processedAtUtc,
+  });
+
+  final String requestId;
+  final String startDate;
+  final String endDate;
+  final int freezeDays;
+  final String status;
+  final String statusNameAr;
+  final String reason;
+  final String createdAtUtc;
+  final String processedAtUtc;
+}
+
+class ProfileBillingFreezeDetailsEntity {
+  const ProfileBillingFreezeDetailsEntity({
+    required this.subscriptionId,
+    required this.subscriptionStatus,
+    required this.subscriptionStatusNameAr,
+    required this.hasFreeze,
+    required this.isCurrentlyFrozen,
+    required this.freezeHistory,
+    required this.noticeAr,
+    required this.noticeEn,
+    this.currentFreeze,
+  });
+
+  final String subscriptionId;
+  final String subscriptionStatus;
+  final String subscriptionStatusNameAr;
+  final bool hasFreeze;
+  final bool isCurrentlyFrozen;
+  final ProfileBillingActiveFreezeEntity? currentFreeze;
+  final List<ProfileBillingFreezeHistoryEntity> freezeHistory;
+  final String noticeAr;
+  final String noticeEn;
 }
 
 class ProfileBillingPendingUpgradeEntity {

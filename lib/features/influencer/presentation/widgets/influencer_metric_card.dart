@@ -67,7 +67,7 @@ class InfluencerMetricCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size18,
+                    fontSize: FontSize.size15,
                     color: color.onSurface,
                   ),
                 ),

@@ -449,6 +449,18 @@ class _ProfileRepositoryFake implements ProfileRepository {
   }
 
   @override
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCurrentCustomerSubscriptionFreezeDetails() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCustomerSubscriptionFreezeDetails(String subscriptionId) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<ApiResult<CustomerProfileEntity>> getCustomerProfile() {
     throw UnimplementedError();
   }

@@ -58,6 +58,26 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCurrentCustomerSubscriptionFreezeDetails() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .getCurrentCustomerSubscriptionFreezeDetails();
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCustomerSubscriptionFreezeDetails(String subscriptionId) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .getCustomerSubscriptionFreezeDetails(subscriptionId);
+      return response.toEntity();
+    });
+  }
+
+  @override
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling() {
     return safeApiCall(() async {
       final (current, invoices, paymentMethod, freezePolicy) = await (
@@ -94,8 +114,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
     required ProfileBillingFreezeRequestEntity request,
   }) {
     return safeApiCall(() async {
-      final response =
-          await _remoteDataSource.createCustomerSubscriptionFreezeRequest(
+      final response = await _remoteDataSource
+          .createCustomerSubscriptionFreezeRequest(
             subscriptionId,
             request.toDto(),
           );

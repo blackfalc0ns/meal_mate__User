@@ -39,6 +39,18 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCurrentCustomerSubscriptionFreezeDetails() {
+    return _apiServices.getCurrentCustomerSubscriptionFreezeDetails();
+  }
+
+  @override
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCustomerSubscriptionFreezeDetails(String subscriptionId) {
+    return _apiServices.getCustomerSubscriptionFreezeDetails(subscriptionId);
+  }
+
+  @override
   Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices() {
     return _apiServices.getCustomerInvoices();
   }

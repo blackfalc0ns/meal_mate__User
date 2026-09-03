@@ -1567,5 +1567,30 @@
       }
     }
   },
-  "billing_status_approved": "معتمد"
+  "billing_status_approved": "معتمد",
+  "billing_active_freeze_service_days": "أيام الخدمة المجمدة: {days}",
+  "@billing_active_freeze_service_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_active_freeze_compensation_days": "أيام التعويض: {days}",
+  "@billing_active_freeze_compensation_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_active_freeze_new_end_date": "تاريخ نهاية الاشتراك الجديد: {date}",
+  "@billing_active_freeze_new_end_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_active_freeze_compensation_dates": "تواريخ التعويض"
 }

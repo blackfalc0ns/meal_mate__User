@@ -1567,5 +1567,30 @@
       }
     }
   },
-  "billing_status_approved": "Approved"
+  "billing_status_approved": "Approved",
+  "billing_active_freeze_service_days": "Frozen service days: {days}",
+  "@billing_active_freeze_service_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_active_freeze_compensation_days": "Compensation days: {days}",
+  "@billing_active_freeze_compensation_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billing_active_freeze_new_end_date": "New end date: {date}",
+  "@billing_active_freeze_new_end_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billing_active_freeze_compensation_dates": "Compensation dates"
 }

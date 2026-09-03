@@ -49,6 +49,7 @@ class ProfileBillingSubscriptionResponseDto {
     this.currencyCode,
     this.restaurant,
     this.pendingFreeze,
+    this.activeFreeze,
     this.pendingUpgrade,
     this.actions,
   });
@@ -79,6 +80,7 @@ class ProfileBillingSubscriptionResponseDto {
   final String? currencyCode;
   final ProfileBillingRestaurantResponseDto? restaurant;
   final ProfileBillingPendingFreezeResponseDto? pendingFreeze;
+  final ProfileBillingActiveFreezeResponseDto? activeFreeze;
   final ProfileBillingPendingUpgradeResponseDto? pendingUpgrade;
   final ProfileBillingActionsResponseDto? actions;
 
@@ -132,6 +134,7 @@ class ProfileBillingActionsResponseDto {
     this.cancellationEndpoint,
     this.upgradeEndpoint,
     this.cancellationQuoteEndpoint,
+    this.freezeDetailsEndpoint,
   });
 
   final bool? canRenew;
@@ -151,6 +154,7 @@ class ProfileBillingActionsResponseDto {
   final String? cancellationEndpoint;
   final String? upgradeEndpoint;
   final String? cancellationQuoteEndpoint;
+  final String? freezeDetailsEndpoint;
 
   factory ProfileBillingActionsResponseDto.fromJson(
     Map<String, dynamic> json,
@@ -158,6 +162,118 @@ class ProfileBillingActionsResponseDto {
 
   Map<String, dynamic> toJson() =>
       _$ProfileBillingActionsResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingActiveFreezeResponseDto {
+  const ProfileBillingActiveFreezeResponseDto({
+    this.requestId,
+    this.startDate,
+    this.endDate,
+    this.freezeDays,
+    this.frozenServiceDaysCount,
+    this.status,
+    this.statusNameAr,
+    this.isCurrentlyActive,
+    this.isUpcoming,
+    this.reason,
+    this.createdAtUtc,
+    this.processedAtUtc,
+    this.frozenServiceDates,
+    this.compensationDates,
+    this.subscriptionEndDate,
+    this.summaryAr,
+    this.summaryEn,
+  });
+
+  final String? requestId;
+  final String? startDate;
+  final String? endDate;
+  final int? freezeDays;
+  final int? frozenServiceDaysCount;
+  final String? status;
+  final String? statusNameAr;
+  final bool? isCurrentlyActive;
+  final bool? isUpcoming;
+  final String? reason;
+  final String? createdAtUtc;
+  final String? processedAtUtc;
+  final List<String>? frozenServiceDates;
+  final List<String>? compensationDates;
+  final String? subscriptionEndDate;
+  final String? summaryAr;
+  final String? summaryEn;
+
+  factory ProfileBillingActiveFreezeResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingActiveFreezeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingActiveFreezeResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingFreezeHistoryResponseDto {
+  const ProfileBillingFreezeHistoryResponseDto({
+    this.requestId,
+    this.startDate,
+    this.endDate,
+    this.freezeDays,
+    this.status,
+    this.statusNameAr,
+    this.reason,
+    this.createdAtUtc,
+    this.processedAtUtc,
+  });
+
+  final String? requestId;
+  final String? startDate;
+  final String? endDate;
+  final int? freezeDays;
+  final String? status;
+  final String? statusNameAr;
+  final String? reason;
+  final String? createdAtUtc;
+  final String? processedAtUtc;
+
+  factory ProfileBillingFreezeHistoryResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingFreezeHistoryResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingFreezeHistoryResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingFreezeDetailsResponseDto {
+  const ProfileBillingFreezeDetailsResponseDto({
+    this.subscriptionId,
+    this.subscriptionStatus,
+    this.subscriptionStatusNameAr,
+    this.hasFreeze,
+    this.isCurrentlyFrozen,
+    this.currentFreeze,
+    this.freezeHistory,
+    this.noticeAr,
+    this.noticeEn,
+  });
+
+  final String? subscriptionId;
+  final String? subscriptionStatus;
+  final String? subscriptionStatusNameAr;
+  final bool? hasFreeze;
+  final bool? isCurrentlyFrozen;
+  final ProfileBillingActiveFreezeResponseDto? currentFreeze;
+  final List<ProfileBillingFreezeHistoryResponseDto>? freezeHistory;
+  final String? noticeAr;
+  final String? noticeEn;
+
+  factory ProfileBillingFreezeDetailsResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingFreezeDetailsResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingFreezeDetailsResponseDtoToJson(this);
 }
 
 @JsonSerializable()

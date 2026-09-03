@@ -113,10 +113,10 @@ class _InfluencerStatisticsScreenState
             const SizedBox(height: Spacing.lg),
             Text(
               locale.influencer_overview,
-              textAlign: TextAlign.end,
+            
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
+                fontSize: FontSize.size12,
                 color: color.onSurface,
               ),
             ),

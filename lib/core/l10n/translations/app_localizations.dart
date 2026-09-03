@@ -8395,6 +8395,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Approved'**
   String get billing_status_approved;
+
+  /// No description provided for @billing_active_freeze_service_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Frozen service days: {days}'**
+  String billing_active_freeze_service_days(int days);
+
+  /// No description provided for @billing_active_freeze_compensation_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation days: {days}'**
+  String billing_active_freeze_compensation_days(int days);
+
+  /// No description provided for @billing_active_freeze_new_end_date.
+  ///
+  /// In en, this message translates to:
+  /// **'New end date: {date}'**
+  String billing_active_freeze_new_end_date(String date);
+
+  /// No description provided for @billing_active_freeze_compensation_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation dates'**
+  String get billing_active_freeze_compensation_dates;
 }
 
 class _AppLocalizationsDelegate

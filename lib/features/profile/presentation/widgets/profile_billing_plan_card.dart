@@ -323,7 +323,8 @@ class ProfileBillingPlanCard extends StatelessWidget {
                             return;
                           }
                           if (!subscription.actions.canFreeze &&
-                              subscription.pendingFreeze == null) {
+                              subscription.pendingFreeze == null &&
+                              subscription.activeFreeze == null) {
                             CustomSnackbar.showWarning(
                               context: context,
                               message: locale.billing_action_unavailable,

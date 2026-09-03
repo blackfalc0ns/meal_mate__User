@@ -275,6 +275,8 @@ import '../../features/profile/domain/usecase/get_profile_billing_usecase.dart'
     as _i768;
 import '../../features/profile/domain/usecase/get_subscription_cancellation_quote_usecase.dart'
     as _i701;
+import '../../features/profile/domain/usecase/get_subscription_freeze_details_usecase.dart'
+    as _i999;
 import '../../features/profile/domain/usecase/update_customer_profile_image_usecase.dart'
     as _i399;
 import '../../features/profile/domain/usecase/update_customer_profile_usecase.dart'
@@ -877,6 +879,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i701.GetSubscriptionCancellationQuoteUseCase>(
       () => _i701.GetSubscriptionCancellationQuoteUseCase(
+        gh<_i311.ProfileRepository>(),
+      ),
+    );
+    gh.factory<_i999.GetSubscriptionFreezeDetailsUseCase>(
+      () => _i999.GetSubscriptionFreezeDetailsUseCase(
         gh<_i311.ProfileRepository>(),
       ),
     );

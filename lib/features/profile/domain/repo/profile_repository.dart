@@ -20,6 +20,12 @@ abstract interface class ProfileRepository {
   Future<ApiResult<ProfileBillingCurrentEntity>>
   getCurrentCustomerSubscription();
 
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCurrentCustomerSubscriptionFreezeDetails();
+
+  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
+  getCustomerSubscriptionFreezeDetails(String subscriptionId);
+
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling();
 
   Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(

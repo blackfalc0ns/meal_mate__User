@@ -15,6 +15,12 @@ abstract interface class ProfileRemoteDataSource {
 
   Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
 
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCurrentCustomerSubscriptionFreezeDetails();
+
+  Future<ProfileBillingFreezeDetailsResponseDto>
+  getCustomerSubscriptionFreezeDetails(String subscriptionId);
+
   Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices();
 
   Future<ProfileBillingPaymentMethodResponseDto>

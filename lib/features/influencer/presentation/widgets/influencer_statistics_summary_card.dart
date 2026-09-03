@@ -47,7 +47,7 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
                   width: Spacing.influencerStatsSummaryPillWidth,
@@ -74,23 +74,9 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Row(
+                Row(mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Flexible(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          summary.value,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size33,
-                            color: color.onPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: Spacing.xs),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: Spacing.xs),
@@ -106,54 +92,72 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    const SizedBox(width: Spacing.xs),
+
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          summary.value,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size33,
+                            color: color.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const Spacer(),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: Spacing.influencerStatsSummaryGainWidth,
-                          height: Spacing.influencerStatsSummaryGainHeight,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: color.tertiary,
-                            borderRadius: BorderRadius.circular(
-                              Spacing.influencerStatsSummaryGainRadius,
-                            ),
-                          ),
-                          child: Text(
-                            summary.gain,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size12,
-                              color: color.onPrimary,
-                            ),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                     
+                      Text(
+                        summary.growthPercent,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.inversePrimary,
+                        ),
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      SvgPicture.asset(
+                        AssetsFake.influencerTrendUp,
+                        width: Spacing.influencerHeroTrendIconSize,
+                        height: Spacing.influencerHeroTrendIconSize,
+                      ),
+                    
+                    
+                                          const SizedBox(width: Spacing.sm),
+
+                     Container(
+                        width: Spacing.influencerStatsSummaryGainWidth,
+                        height: Spacing.influencerStatsSummaryGainHeight,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: color.tertiary,
+                          borderRadius: BorderRadius.circular(
+                            Spacing.influencerStatsSummaryGainRadius,
                           ),
                         ),
-                        const SizedBox(width: Spacing.sm),
-                        Text(
-                          summary.growthPercent,
-                          style: getBoldStyle(
+                        child: Text(
+                          summary.gain,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getRegularStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.inversePrimary,
+                            fontSize: FontSize.size12,
+                            color: color.onPrimary,
                           ),
                         ),
-                        const SizedBox(width: Spacing.xs),
-                        SvgPicture.asset(
-                          AssetsFake.influencerTrendUp,
-                          width: Spacing.influencerHeroTrendIconSize,
-                          height: Spacing.influencerHeroTrendIconSize,
-                        ),
-                      ],
-                    ),
+                      ),
+                    
+                    ],
                   ),
                 ),
                 const SizedBox(height: Spacing.xs),
