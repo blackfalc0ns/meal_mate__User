@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_dashboard_screen.dart';
+import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_statistics_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_wallet_screen.dart';
@@ -99,6 +100,25 @@ void main() {
     },
   );
 
+  testWidgets('influencer dashboard uses influencer header as app bar', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const InfluencerDashboardScreen(),
+      ),
+    );
+
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).first);
+
+    expect(scaffold.appBar, isA<InfluencerHeaderCard>());
+    expect(find.byType(InfluencerHeaderCard), findsOneWidget);
+  });
+
   testWidgets('influencer stats tab shows analytics content', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 1200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -124,6 +144,37 @@ void main() {
     expect(find.text('Revenue growth'), findsOneWidget);
     expect(find.text('Top performing products'), findsOneWidget);
     expect(find.text('Share your link and code'), findsNothing);
+  });
+
+  testWidgets('influencer statistics period selection updates fake data', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(body: InfluencerStatisticsScreen()),
+      ),
+    );
+
+    expect(find.text('845'), findsOneWidget);
+
+    await tester.tap(find.text('Year'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('3240'), findsOneWidget);
+    expect(find.text('845'), findsNothing);
+
+    await tester.tap(find.text('6 months'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('1860'), findsOneWidget);
+    expect(find.text('3240'), findsNothing);
   });
 
   testWidgets('influencer statistics summary follows inherited direction', (

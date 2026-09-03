@@ -9,6 +9,10 @@ class InfluencerFakeDataSource {
   final AppLocalizations locale;
 
   InfluencerDashboardEntity loadDashboard() {
+    final periodData = _loadStatisticsPeriodData();
+    final selectedPeriodIndex = 3;
+    final selectedPeriodData = periodData[selectedPeriodIndex];
+
     return InfluencerDashboardEntity(
       userName: locale.influencer_user_name,
       partnerLabel: locale.influencer_partner_label,
@@ -149,105 +153,12 @@ class InfluencerFakeDataSource {
           locale.influencer_period_30_days,
           locale.influencer_period_7_days,
         ],
-        selectedPeriodIndex: 3,
-        summary: InfluencerStatisticsSummaryEntity(
-          title: locale.influencer_total_earnings,
-          value: locale.influencer_total_earnings_value,
-          currency: locale.influencer_currency,
-          gain: locale.influencer_weekly_commission_gain,
-          growthPercent: locale.influencer_growth_percent,
-          comparisonLabel: locale.influencer_previous_30_days_comparison,
-          dateLabels: [
-            locale.influencer_chart_20_april,
-            locale.influencer_chart_27_april,
-            locale.influencer_chart_4_may,
-            locale.influencer_chart_11_may,
-            locale.influencer_chart_18_may,
-            locale.influencer_chart_25_may,
-          ],
-        ),
-        overviewMetrics: [
-          InfluencerMetricEntity(
-            title: locale.influencer_referrals,
-            value: locale.influencer_referrals_value,
-            subtitle: locale.influencer_previous_30_days_comparison,
-            iconAsset: AssetsFake.influencerMetricUsers,
-            trendIconAsset: AssetsFake.influencerTrendUp,
-          ),
-          InfluencerMetricEntity(
-            title: locale.influencer_generated_orders,
-            value: locale.influencer_generated_orders_value,
-            subtitle: locale.influencer_previous_30_days_comparison,
-            iconAsset: AssetsFake.influencerMetricSubscriptions,
-            trendIconAsset: AssetsFake.influencerTrendUp,
-          ),
-          InfluencerMetricEntity(
-            title: locale.influencer_pending_withdrawals,
-            value: locale.influencer_pending_withdrawals_value,
-            subtitle: locale.influencer_previous_30_days_comparison,
-            iconAsset: AssetsFake.influencerMetricClicks,
-            trendIconAsset: AssetsFake.influencerTrendUp,
-          ),
-          InfluencerMetricEntity(
-            title: locale.influencer_conversion_rate,
-            value: locale.influencer_conversion_rate_value,
-            subtitle: locale.influencer_previous_30_days_comparison,
-            iconAsset: AssetsFake.influencerMetricConversion,
-            trendIconAsset: AssetsFake.influencerTrendUp,
-          ),
-        ],
-        revenuePoints: [
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_20_april,
-            value: 120,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_27_april,
-            value: 150,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_4_may,
-            value: 180,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_11_may,
-            value: 210,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_18_may,
-            value: 170,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_25_may,
-            value: 210,
-          ),
-        ],
-        revenueBars: [
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_20_april,
-            value: 120,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_27_april,
-            value: 150,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_4_may,
-            value: 180,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_11_may,
-            value: 210,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_18_may,
-            value: 170,
-          ),
-          InfluencerChartPointEntity(
-            label: locale.influencer_chart_25_may,
-            value: 210,
-          ),
-        ],
+        selectedPeriodIndex: selectedPeriodIndex,
+        summary: selectedPeriodData.summary,
+        overviewMetrics: selectedPeriodData.overviewMetrics,
+        revenuePoints: selectedPeriodData.revenuePoints,
+        revenueBars: selectedPeriodData.revenueBars,
+        periodData: periodData,
         topProduct: InfluencerTopProductEntity(
           rank: '1',
           name: locale.influencer_top_product_name,
@@ -257,6 +168,157 @@ class InfluencerFakeDataSource {
           revenue: locale.influencer_top_product_revenue_value,
         ),
       ),
+    );
+  }
+
+  List<InfluencerStatisticsPeriodDataEntity> _loadStatisticsPeriodData() {
+    return [
+      _statisticsPeriodData(
+        value: '3240',
+        gain: 'KWD 420+',
+        growthPercent: '+18.5%',
+        comparisonLabel: 'مقارنة بالسنة السابقة',
+        referrals: '920',
+        orders: '310',
+        withdrawals: '1240',
+        conversionRate: '42%',
+        points: const [
+          InfluencerChartPointEntity(label: 'Jan', value: 180),
+          InfluencerChartPointEntity(label: 'Mar', value: 210),
+          InfluencerChartPointEntity(label: 'May', value: 230),
+          InfluencerChartPointEntity(label: 'Jul', value: 260),
+          InfluencerChartPointEntity(label: 'Sep', value: 240),
+          InfluencerChartPointEntity(label: 'Nov', value: 280),
+        ],
+      ),
+      _statisticsPeriodData(
+        value: '1860',
+        gain: 'KWD 260+',
+        growthPercent: '+12.2%',
+        comparisonLabel: 'مقارنة بالـ 6 أشهر السابقة',
+        referrals: '510',
+        orders: '168',
+        withdrawals: '730',
+        conversionRate: '39%',
+        points: const [
+          InfluencerChartPointEntity(label: 'May', value: 140),
+          InfluencerChartPointEntity(label: 'Jun', value: 165),
+          InfluencerChartPointEntity(label: 'Jul', value: 190),
+          InfluencerChartPointEntity(label: 'Aug', value: 220),
+          InfluencerChartPointEntity(label: 'Sep', value: 205),
+          InfluencerChartPointEntity(label: 'Oct', value: 240),
+        ],
+      ),
+      _statisticsPeriodData(
+        value: '1245',
+        gain: 'KWD 165+',
+        growthPercent: '+8.1%',
+        comparisonLabel: 'مقارنة بالـ 90 يوم السابقة',
+        referrals: '230',
+        orders: '68',
+        withdrawals: '520',
+        conversionRate: '35%',
+        points: const [
+          InfluencerChartPointEntity(label: 'Apr 20', value: 120),
+          InfluencerChartPointEntity(label: 'May 4', value: 150),
+          InfluencerChartPointEntity(label: 'May 18', value: 180),
+          InfluencerChartPointEntity(label: 'Jun 1', value: 210),
+          InfluencerChartPointEntity(label: 'Jun 15', value: 170),
+          InfluencerChartPointEntity(label: 'Jun 29', value: 210),
+        ],
+      ),
+      _statisticsPeriodData(
+        value: '845',
+        gain: 'KWD 35+',
+        growthPercent: '+4.3%',
+        comparisonLabel: 'مقارنة بالـ 30 يوم السابقة',
+        referrals: '230',
+        orders: '68',
+        withdrawals: '520',
+        conversionRate: '35%',
+        points: const [
+          InfluencerChartPointEntity(label: 'Apr 20', value: 120),
+          InfluencerChartPointEntity(label: 'Apr 27', value: 150),
+          InfluencerChartPointEntity(label: 'May 4', value: 180),
+          InfluencerChartPointEntity(label: 'May 11', value: 210),
+          InfluencerChartPointEntity(label: 'May 18', value: 170),
+          InfluencerChartPointEntity(label: 'May 25', value: 210),
+        ],
+      ),
+      _statisticsPeriodData(
+        value: '215',
+        gain: 'KWD 18+',
+        growthPercent: '+2.6%',
+        comparisonLabel: 'مقارنة بالـ 7 أيام السابقة',
+        referrals: '64',
+        orders: '19',
+        withdrawals: '135',
+        conversionRate: '31%',
+        points: const [
+          InfluencerChartPointEntity(label: 'Sat', value: 24),
+          InfluencerChartPointEntity(label: 'Sun', value: 28),
+          InfluencerChartPointEntity(label: 'Mon', value: 32),
+          InfluencerChartPointEntity(label: 'Tue', value: 26),
+          InfluencerChartPointEntity(label: 'Wed', value: 36),
+          InfluencerChartPointEntity(label: 'Thu', value: 42),
+        ],
+      ),
+    ];
+  }
+
+  InfluencerStatisticsPeriodDataEntity _statisticsPeriodData({
+    required String value,
+    required String gain,
+    required String growthPercent,
+    required String comparisonLabel,
+    required String referrals,
+    required String orders,
+    required String withdrawals,
+    required String conversionRate,
+    required List<InfluencerChartPointEntity> points,
+  }) {
+    return InfluencerStatisticsPeriodDataEntity(
+      summary: InfluencerStatisticsSummaryEntity(
+        title: locale.influencer_total_earnings,
+        value: value,
+        currency: 'KWD',
+        gain: gain,
+        growthPercent: growthPercent,
+        comparisonLabel: comparisonLabel,
+        dateLabels: points.map((point) => point.label).toList(),
+      ),
+      overviewMetrics: [
+        InfluencerMetricEntity(
+          title: locale.influencer_referrals,
+          value: referrals,
+          subtitle: comparisonLabel,
+          iconAsset: AssetsFake.influencerMetricUsers,
+          trendIconAsset: AssetsFake.influencerTrendUp,
+        ),
+        InfluencerMetricEntity(
+          title: locale.influencer_generated_orders,
+          value: orders,
+          subtitle: comparisonLabel,
+          iconAsset: AssetsFake.influencerMetricSubscriptions,
+          trendIconAsset: AssetsFake.influencerTrendUp,
+        ),
+        InfluencerMetricEntity(
+          title: locale.influencer_pending_withdrawals,
+          value: withdrawals,
+          subtitle: comparisonLabel,
+          iconAsset: AssetsFake.influencerMetricClicks,
+          trendIconAsset: AssetsFake.influencerTrendUp,
+        ),
+        InfluencerMetricEntity(
+          title: locale.influencer_conversion_rate,
+          value: conversionRate,
+          subtitle: comparisonLabel,
+          iconAsset: AssetsFake.influencerMetricConversion,
+          trendIconAsset: AssetsFake.influencerTrendUp,
+        ),
+      ],
+      revenuePoints: points,
+      revenueBars: points,
     );
   }
 }

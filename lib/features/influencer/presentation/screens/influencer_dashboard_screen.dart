@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
 import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
@@ -35,6 +33,7 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
     final homeTab = _buildHomeTab(context);
     final screens = [
       const InfluencerSocialConnectionsScreen(showScaffold: false),
@@ -46,12 +45,11 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
 
     return Scaffold(
       backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        title: locale.influencer_dashboard_title,
-        titleFontSize: FontSize.size17,
-        backgroundColor: color.surface,
-        showShadow: false,
-        showBackButton: false,
+      appBar: InfluencerHeaderCard(
+        userName: dashboard.userName,
+        partnerLabel: dashboard.partnerLabel,
+        avatarAsset: dashboard.avatarAsset,
+        logoAsset: dashboard.logoAsset,
       ),
       bottomNavigationBar: InfluencerDashboardBottomTabs(
         selectedTab: _selectedTab,
@@ -83,13 +81,6 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InfluencerHeaderCard(
-          userName: dashboard.userName,
-          partnerLabel: dashboard.partnerLabel,
-          avatarAsset: dashboard.avatarAsset,
-          logoAsset: dashboard.logoAsset,
-        ),
-        const SizedBox(height: Spacing.md),
         InfluencerHeroCard(
           imageAsset: dashboard.heroImageAsset,
           trendIconAsset: dashboard.trendIconAsset,

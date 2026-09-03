@@ -29,7 +29,6 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
       children: [
         Text(
           title,
-        
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
@@ -66,7 +65,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
                         legendLabel,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size7,
+                          fontSize: FontSize.size9,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -88,7 +87,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
                       filterLabel,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size7,
+                        fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
                       ),
                     ),
@@ -125,7 +124,32 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
       borderData: FlBorderData(show: false),
       barTouchData: BarTouchData(enabled: false),
       titlesData: FlTitlesData(
-        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: Spacing.lg,
+            interval: 1,
+            getTitlesWidget: (value, meta) {
+              final index = value.toInt();
+              if (index < 0 || index >= bars.length) {
+                return const SizedBox.shrink();
+              }
+
+              return SideTitleWidget(
+                meta: meta,
+                space: Spacing.zero,
+                child: Text(
+                  bars[index].value.toInt().toString(),
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size9,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -138,7 +162,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
               value.toInt().toString(),
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size6,
+                fontSize: FontSize.size9,
                 color: color.onSurfaceVariant,
               ),
             ),
@@ -158,7 +182,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
                 bars[index].label,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size6,
+                  fontSize: FontSize.size9,
                   color: color.onSurfaceVariant,
                 ),
               );

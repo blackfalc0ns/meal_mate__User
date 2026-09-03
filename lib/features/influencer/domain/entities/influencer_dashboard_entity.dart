@@ -149,6 +149,7 @@ class InfluencerStatisticsEntity {
     required this.revenuePoints,
     required this.revenueBars,
     required this.topProduct,
+    required this.periodData,
   });
 
   final List<String> periods;
@@ -158,6 +159,21 @@ class InfluencerStatisticsEntity {
   final List<InfluencerChartPointEntity> revenuePoints;
   final List<InfluencerChartPointEntity> revenueBars;
   final InfluencerTopProductEntity topProduct;
+  final List<InfluencerStatisticsPeriodDataEntity> periodData;
+}
+
+class InfluencerStatisticsPeriodDataEntity {
+  const InfluencerStatisticsPeriodDataEntity({
+    required this.summary,
+    required this.overviewMetrics,
+    required this.revenuePoints,
+    required this.revenueBars,
+  });
+
+  final InfluencerStatisticsSummaryEntity summary;
+  final List<InfluencerMetricEntity> overviewMetrics;
+  final List<InfluencerChartPointEntity> revenuePoints;
+  final List<InfluencerChartPointEntity> revenueBars;
 }
 
 class InfluencerStatisticsSummaryEntity {

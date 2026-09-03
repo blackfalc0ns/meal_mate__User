@@ -6,7 +6,8 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class InfluencerHeaderCard extends StatelessWidget {
+class InfluencerHeaderCard extends StatelessWidget
+    implements PreferredSizeWidget {
   const InfluencerHeaderCard({
     super.key,
     required this.userName,
@@ -24,83 +25,92 @@ class InfluencerHeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return SizedBox(
-      height: Spacing.influencerHeaderHeight,
-      child: Row(
-        textDirection: TextDirection.ltr,
-        children: [
-          SvgPicture.asset(
-            Assets.notificationBold,
-            width: Spacing.influencerNotificationSize,
-            height: Spacing.influencerNotificationSize,
-          ),
-          const Spacer(),
-          SvgPicture.asset(
-            logoAsset,
-            width: Spacing.influencerHeaderLogoWidth,
-            height: Spacing.influencerHeaderLogoHeight,
-          ),
-          const Spacer(),
-          Row(
-            textDirection: TextDirection.ltr,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    userName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurface,
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: color.surface,
+      elevation: Spacing.zero,
+      scrolledUnderElevation: Spacing.zero,
+      toolbarHeight: Spacing.influencerHeaderHeight,
+      titleSpacing: Spacing.zero,
+      title: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: Spacing.screenH,
+        ),
+        child: Row(
+          children: [
+            Row(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    ClipOval(
+                      child: Image.asset(
+                        avatarAsset,
+                        width: Spacing.influencerAvatarSize,
+                        height: Spacing.influencerAvatarSize,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: Spacing.xss),
-                  Text(
-                    partnerLabel,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.primary,
+                    Positioned(
+                      right: Spacing.zero,
+                      bottom: Spacing.zero,
+                      child: Icon(
+                        Icons.verified_rounded,
+                        color: color.primary,
+                        size: Spacing.influencerVerifiedSize,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: Spacing.sm),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ClipOval(
-                    child: Image.asset(
-                      avatarAsset,
-                      width: Spacing.influencerAvatarSize,
-                      height: Spacing.influencerAvatarSize,
-                      fit: BoxFit.cover,
+                  ],
+                ),
+                const SizedBox(width: Spacing.sm),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size11,
+                        color: color.onSurface,
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    right: Spacing.zero,
-                    bottom: Spacing.zero,
-                    child: Icon(
-                      Icons.verified_rounded,
-                      color: color.primary,
-                      size: Spacing.influencerVerifiedSize,
+                    const SizedBox(height: Spacing.xss),
+                    Text(
+                      partnerLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
+                        color: color.primary,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                  ],
+                ),
+              ],
+            ),
+            const Spacer(),
+            SvgPicture.asset(
+              logoAsset,
+              width: Spacing.influencerHeaderLogoWidth,
+              height: Spacing.influencerHeaderLogoHeight,
+            ),
+            const Spacer(),
+            SvgPicture.asset(
+              Assets.notificationBold,
+              width: Spacing.influencerNotificationSize,
+              height: Spacing.influencerNotificationSize,
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  @override
+  Size get preferredSize =>
+      const Size.fromHeight(Spacing.influencerHeaderHeight);
 }

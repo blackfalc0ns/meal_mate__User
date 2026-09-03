@@ -1278,15 +1278,15 @@ class Spacing {
   static const double influencerStatsSummaryGainWidth = 65.86;
   static const double influencerStatsSummaryGainHeight = 19.85;
   static const double influencerStatsSummaryGainRadius = 4.749;
-  static const double influencerStatsChartCardHeight = 123.8;
+  static const double influencerStatsChartCardHeight = 200.8;
   static const double influencerStatsChartCardRadius = 12.38;
   static const double influencerStatsChartLegendDot = 8.57;
   static const double influencerStatsChartFilterWidth = 65.71;
   static const double influencerStatsChartFilterHeight = 19.05;
   static const double influencerStatsChartFilterRadius = 9.523;
-  static const double influencerStatsTopProductHeight = 83.29;
+  static const double influencerStatsTopProductHeight = 104.0;
   static const double influencerStatsTopProductRadius = 12.445;
   static const double influencerStatsTopProductRankSize = 21.02;
-  static const double influencerStatsTopProductInnerHeight = 43.86;
+  static const double influencerStatsTopProductInnerHeight = 64.0;
   static const double influencerStatsTopProductInnerRadius = 11.878;
 }
