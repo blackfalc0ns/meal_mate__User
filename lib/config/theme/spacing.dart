@@ -1322,7 +1322,7 @@ class Spacing {
   static const double influencerWalletRecentTransactionsHeaderHeight = 12.0;
   static const double influencerWalletRecentTransactionsDividerTop = 23.18;
   static const double influencerWalletTransactionRowHeight = 55.62;
-  static const double influencerWalletTransactionIconSize = 27.62;
+  static const double influencerWalletTransactionIconSize = 32.62;
   static const double influencerWalletTransactionGap = 14.0;
   static const double influencerShareLinksBannerHeight = 138.42;
   static const double influencerShareLinksBannerRadius = 15.182;

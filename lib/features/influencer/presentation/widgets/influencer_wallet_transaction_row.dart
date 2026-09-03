@@ -28,9 +28,9 @@ class InfluencerWalletTransactionRow extends StatelessWidget {
                 transaction.amount,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: getMediumStyle(
+                style: getSemiBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size10,
                   color: transaction.isDebit ? color.error : color.primary,
                 ),
               ),
@@ -72,8 +72,8 @@ class InfluencerWalletTransactionRow extends StatelessWidget {
               transaction.isDebit
                   ? AssetsFake.influencerWalletTxWithdraw
                   : AssetsFake.influencerWalletTxReferral,
-              width: Spacing.md,
-              height: Spacing.md,
+              width: Spacing.iconSm,
+              height: Spacing.iconSm,
             ),
           ),
         ],

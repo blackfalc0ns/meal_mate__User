@@ -41,11 +41,9 @@ class InfluencerWalletScreen extends StatelessWidget {
     final body = SafeArea(
       top: false,
       child: SingleChildScrollView(
-        padding: const EdgeInsetsDirectional.only(
-          start: Spacing.screenH,
-          top: Spacing.md,
-          end: Spacing.screenH,
-          bottom: Spacing.xxxl,
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: Spacing.screenH,
+          vertical: Spacing.screenV,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

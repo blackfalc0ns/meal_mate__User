@@ -25,12 +25,12 @@ class InfluencerWalletRecentTransactionsCard extends StatelessWidget {
     final color = context.colorScheme;
 
     return Container(
-      height: Spacing.influencerWalletRecentTransactionsHeight,
       width: double.infinity,
       padding: const EdgeInsetsDirectional.only(
         start: Spacing.influencerWalletRecentTransactionsPaddingH,
         top: Spacing.influencerWalletRecentTransactionsPaddingTop,
         end: Spacing.influencerWalletRecentTransactionsPaddingH,
+        bottom: Spacing.influencerWalletRecentTransactionsPaddingTop,
       ),
       decoration: BoxDecoration(
         color: color.surface,
