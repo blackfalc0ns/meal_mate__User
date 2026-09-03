@@ -221,7 +221,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             child: Column(
               children: [
-                if (!hasMeals && selectedDay?.isFrozen == true)
+                if (selectedDay?.isFrozen == true)
                   const CalendarFrozenDayState()
                 else if (!hasMeals)
                   CalendarEmptyMealsState(

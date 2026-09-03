@@ -8447,8 +8447,14 @@ abstract class AppLocalizations {
   /// No description provided for @calendar_day_frozen_description.
   ///
   /// In en, this message translates to:
-  /// **'Deliveries are paused during the freeze period. No meals are delivered on this day, and replacement days have been added at the end of your subscription.'**
+  /// **'Meal preparation and delivery are temporarily paused for this day. You can unfreeze it to resume meals.'**
   String get calendar_day_frozen_description;
+
+  /// No description provided for @calendar_day_frozen_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Day frozen'**
+  String get calendar_day_frozen_badge;
 
   /// No description provided for @subscription_day_frozen.
   ///

@@ -4460,7 +4460,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendar_day_frozen_description =>
-      'Deliveries are paused during the freeze period. No meals are delivered on this day, and replacement days have been added at the end of your subscription.';
+      'Meal preparation and delivery are temporarily paused for this day. You can unfreeze it to resume meals.';
+
+  @override
+  String get calendar_day_frozen_badge => 'Day frozen';
 
   @override
   String get subscription_day_frozen =>

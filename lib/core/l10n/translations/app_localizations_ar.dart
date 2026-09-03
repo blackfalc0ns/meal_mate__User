@@ -4386,11 +4386,14 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم إيقاف التعديل على هذا اليوم نظراً لتجميد الاشتراك أو إغلاق المطبخ.';
 
   @override
-  String get calendar_day_frozen_title => 'اليوم مجمّد';
+  String get calendar_day_frozen_title => 'تم تجميد اليوم';
 
   @override
   String get calendar_day_frozen_description =>
-      'يتوقف التوصيل مؤقتاً أثناء فترة التجميد. لا يتم تسليم وجبات في هذا اليوم، وقد تم تمديد اشتراكك بإضافة أيام تعويضية بديلة في نهاية الاشتراك.';
+      'تم إيقاف تحضير وتوصيل وجبات هذا اليوم مؤقتا. يمكنك إلغاء التجميد لاستئناف الوجبات';
+
+  @override
+  String get calendar_day_frozen_badge => 'اليوم مجمد';
 
   @override
   String get subscription_day_frozen =>
