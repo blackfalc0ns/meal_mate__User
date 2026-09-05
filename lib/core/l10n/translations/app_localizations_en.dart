@@ -4359,6 +4359,50 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_withdraw_method => 'Withdrawal method';
 
   @override
+  String get influencer_withdraw_screen_title => 'Withdraw Profits';
+
+  @override
+  String get influencer_withdraw_screen_subtitle =>
+      'Select withdrawal method and enter details';
+
+  @override
+  String get influencer_available_for_withdraw =>
+      'Available balance for withdrawal';
+
+  @override
+  String get influencer_choose_withdraw_method => 'Select withdrawal method';
+
+  @override
+  String get influencer_bank_transfer => 'Bank Transfer';
+
+  @override
+  String get influencer_bank_transfer_subtitle =>
+      'Transfer to your bank account';
+
+  @override
+  String get influencer_electronic_wallet => 'Electronic Wallet';
+
+  @override
+  String get influencer_electronic_wallet_subtitle =>
+      'Transfer to your electronic wallet';
+
+  @override
+  String get influencer_bank_transfer_details => 'Bank Transfer Details';
+
+  @override
+  String get influencer_account_holder_hint => 'Enter full name';
+
+  @override
+  String get influencer_iban_hint => 'Enter IBAN number';
+
+  @override
+  String get influencer_select_bank_hint => 'Select bank';
+
+  @override
+  String get influencer_withdraw_notice_text =>
+      'The full amount will be transferred to your account. The operation may take 1 to 3 business days';
+
+  @override
   String get influencer_bank_account_holder => 'Account holder name';
 
   @override

@@ -8258,6 +8258,84 @@ abstract class AppLocalizations {
   /// **'Withdrawal method'**
   String get influencer_withdraw_method;
 
+  /// No description provided for @influencer_withdraw_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw Profits'**
+  String get influencer_withdraw_screen_title;
+
+  /// No description provided for @influencer_withdraw_screen_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select withdrawal method and enter details'**
+  String get influencer_withdraw_screen_subtitle;
+
+  /// No description provided for @influencer_available_for_withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Available balance for withdrawal'**
+  String get influencer_available_for_withdraw;
+
+  /// No description provided for @influencer_choose_withdraw_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Select withdrawal method'**
+  String get influencer_choose_withdraw_method;
+
+  /// No description provided for @influencer_bank_transfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer'**
+  String get influencer_bank_transfer;
+
+  /// No description provided for @influencer_bank_transfer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer to your bank account'**
+  String get influencer_bank_transfer_subtitle;
+
+  /// No description provided for @influencer_electronic_wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronic Wallet'**
+  String get influencer_electronic_wallet;
+
+  /// No description provided for @influencer_electronic_wallet_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer to your electronic wallet'**
+  String get influencer_electronic_wallet_subtitle;
+
+  /// No description provided for @influencer_bank_transfer_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer Details'**
+  String get influencer_bank_transfer_details;
+
+  /// No description provided for @influencer_account_holder_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter full name'**
+  String get influencer_account_holder_hint;
+
+  /// No description provided for @influencer_iban_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter IBAN number'**
+  String get influencer_iban_hint;
+
+  /// No description provided for @influencer_select_bank_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select bank'**
+  String get influencer_select_bank_hint;
+
+  /// No description provided for @influencer_withdraw_notice_text.
+  ///
+  /// In en, this message translates to:
+  /// **'The full amount will be transferred to your account. The operation may take 1 to 3 business days'**
+  String get influencer_withdraw_notice_text;
+
   /// No description provided for @influencer_bank_account_holder.
   ///
   /// In en, this message translates to:

@@ -4292,6 +4292,48 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_withdraw_method => 'طريقة السحب';
 
   @override
+  String get influencer_withdraw_screen_title => 'سحب الأرباح';
+
+  @override
+  String get influencer_withdraw_screen_subtitle =>
+      'اختر طريقة السحب وأدخل البيانات';
+
+  @override
+  String get influencer_available_for_withdraw => 'الرصيد المتاح للسحب';
+
+  @override
+  String get influencer_choose_withdraw_method => 'اختر طريقة السحب';
+
+  @override
+  String get influencer_bank_transfer => 'تحويل بنكي';
+
+  @override
+  String get influencer_bank_transfer_subtitle => 'تحويل إلى حسابك البنكي';
+
+  @override
+  String get influencer_electronic_wallet => 'محفظة إلكترونية';
+
+  @override
+  String get influencer_electronic_wallet_subtitle =>
+      'تحويل إلى محفظة إلكترونية';
+
+  @override
+  String get influencer_bank_transfer_details => 'بيانات التحويل البنكي';
+
+  @override
+  String get influencer_account_holder_hint => 'أدخل الاسم بالكامل';
+
+  @override
+  String get influencer_iban_hint => 'أدخل رقم الآيبان';
+
+  @override
+  String get influencer_select_bank_hint => 'اختر البنك';
+
+  @override
+  String get influencer_withdraw_notice_text =>
+      'سيتم تحويل المبلغ كامل إلى حسابك قد تستغرق العملية من 1 إلى 3 أيام عمل';
+
+  @override
   String get influencer_bank_account_holder => 'اسم صاحب الحساب';
 
   @override

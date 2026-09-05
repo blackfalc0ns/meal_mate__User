@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class InfluencerPrimaryButton extends StatelessWidget {
   const InfluencerPrimaryButton({
@@ -20,30 +20,17 @@ class InfluencerPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return SizedBox(
-      width: double.infinity,
+    return AppButton(
+      text: label,
+      onPressed: onPressed,
+      variant: filled ? AppButtonVariant.filled : AppButtonVariant.outlined,
       height: Spacing.buttonSmallHeight,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: filled ? color.primary : color.surface,
-          foregroundColor: filled ? color.onPrimary : color.primary,
-          side: BorderSide(color: color.primary),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Spacing.radiusPill),
-          ),
-        ),
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size12,
-            color: filled ? color.onPrimary : color.primary,
-          ),
-        ),
-      ),
+      borderRadius: Spacing.radiusPill,
+      color: color.primary,
+      textColor: filled ? color.onPrimary : color.primary,
+      fontSize: FontSize.size12,
+      fontWeight: FontWeightManger.bold,
+      isExpanded: true,
     );
   }
 }
