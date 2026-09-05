@@ -107,10 +107,9 @@ class InfluencerShareDiscountCard extends StatelessWidget {
                   shareLinks.discountCodeTitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  style: getRegularStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ),
                 ),

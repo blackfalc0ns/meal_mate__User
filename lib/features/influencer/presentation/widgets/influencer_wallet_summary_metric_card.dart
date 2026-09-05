@@ -38,9 +38,9 @@ class InfluencerWalletSummaryMetricCard extends StatelessWidget {
                 metric.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
+                style: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size7,
+                  fontSize: FontSize.size9,
                   color: color.onSurfaceVariant,
                 ),
               ),

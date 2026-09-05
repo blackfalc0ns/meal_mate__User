@@ -70,15 +70,16 @@ class InfluencerShareQuickStatsCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              shareLinks.quickStats[index].label,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size9,
-                                color: color.onSurfaceVariant,
+                            FittedBox(
+                              child: Text(
+                                shareLinks.quickStats[index].label,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getRegularStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size10,
+                                  color: color.onSurfaceVariant,
+                                ),
                               ),
                             ),
                             const SizedBox(height: Spacing.xs),
