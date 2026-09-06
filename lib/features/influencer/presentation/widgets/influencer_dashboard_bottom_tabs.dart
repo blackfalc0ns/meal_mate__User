@@ -21,13 +21,6 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
     final locale = context.localization;
     final tabs = [
       _InfluencerDashboardTab(
-        itemKey: const ValueKey('influencer-tab-profile'),
-        label: locale.influencer_tab_profile,
-        iconAsset: AssetsFake.influencerTabProfile,
-        icon: Icons.person_rounded,
-        tab: InfluencerDashboardTabItem.profile,
-      ),
-      _InfluencerDashboardTab(
         itemKey: const ValueKey('influencer-tab-stats'),
         label: locale.influencer_tab_stats,
         iconAsset: AssetsFake.influencerTabStats,

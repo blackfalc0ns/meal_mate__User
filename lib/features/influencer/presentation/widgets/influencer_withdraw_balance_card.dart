@@ -76,8 +76,8 @@ class InfluencerWithdrawBalanceCard extends StatelessWidget {
             ),
           ),
           Container(
-            width: Spacing.avatarSm + Spacing.sm,
-            height: Spacing.avatarSm + Spacing.sm,
+            width: Spacing.buttonSmallHeight,
+            height: Spacing.buttonSmallHeight,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: color.primaryContainer,

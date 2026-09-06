@@ -4368,6 +4368,46 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_confirm_withdraw => 'تأكيد طلب السحب';
 
   @override
+  String get influencer_transfer_details => 'بيانات التحويل';
+
+  @override
+  String get influencer_bank_label => 'البنك';
+
+  @override
+  String get influencer_account_number => 'رقم الحساب';
+
+  @override
+  String get influencer_account_number_sample => '**** **** **** 1234';
+
+  @override
+  String get influencer_iban_with_label => 'رقم الآيبان(IBAN)';
+
+  @override
+  String get influencer_operation_summary => 'ملخص العملية';
+
+  @override
+  String get influencer_requested_withdraw_amount => 'المبلغ المطلوب سحبه';
+
+  @override
+  String get influencer_transfer_fees => 'رسوم التحويل';
+
+  @override
+  String get influencer_transfer_fees_value => '0.000 KWD';
+
+  @override
+  String get influencer_final_received_amount => 'المبلغ النهائي المستلم';
+
+  @override
+  String get influencer_important_info => 'معلومة هامة';
+
+  @override
+  String get influencer_important_info_message =>
+      'سيتم تحويل المبلغ بالكامل إلى حسابك البنكي قد تستغرق العملية من 1 إلى 3 أيام عمل';
+
+  @override
+  String get influencer_back_button => 'رجوع';
+
+  @override
   String get influencer_transaction_subscription_commission => 'عمولة اشتراك';
 
   @override

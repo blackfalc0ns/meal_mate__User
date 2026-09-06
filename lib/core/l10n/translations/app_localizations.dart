@@ -8402,6 +8402,84 @@ abstract class AppLocalizations {
   /// **'Confirm withdrawal request'**
   String get influencer_confirm_withdraw;
 
+  /// No description provided for @influencer_transfer_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer Details'**
+  String get influencer_transfer_details;
+
+  /// No description provided for @influencer_bank_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get influencer_bank_label;
+
+  /// No description provided for @influencer_account_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Number'**
+  String get influencer_account_number;
+
+  /// No description provided for @influencer_account_number_sample.
+  ///
+  /// In en, this message translates to:
+  /// **'**** **** **** 1234'**
+  String get influencer_account_number_sample;
+
+  /// No description provided for @influencer_iban_with_label.
+  ///
+  /// In en, this message translates to:
+  /// **'IBAN'**
+  String get influencer_iban_with_label;
+
+  /// No description provided for @influencer_operation_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation Summary'**
+  String get influencer_operation_summary;
+
+  /// No description provided for @influencer_requested_withdraw_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested withdrawal amount'**
+  String get influencer_requested_withdraw_amount;
+
+  /// No description provided for @influencer_transfer_fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer fees'**
+  String get influencer_transfer_fees;
+
+  /// No description provided for @influencer_transfer_fees_value.
+  ///
+  /// In en, this message translates to:
+  /// **'0.000 KWD'**
+  String get influencer_transfer_fees_value;
+
+  /// No description provided for @influencer_final_received_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Final received amount'**
+  String get influencer_final_received_amount;
+
+  /// No description provided for @influencer_important_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Important Information'**
+  String get influencer_important_info;
+
+  /// No description provided for @influencer_important_info_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The full amount will be transferred to your bank account. The operation may take 1 to 3 business days'**
+  String get influencer_important_info_message;
+
+  /// No description provided for @influencer_back_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get influencer_back_button;
+
   /// No description provided for @influencer_transaction_subscription_commission.
   ///
   /// In en, this message translates to:

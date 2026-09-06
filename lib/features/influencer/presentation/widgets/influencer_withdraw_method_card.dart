@@ -100,7 +100,7 @@ class InfluencerWithdrawMethodCard extends StatelessWidget {
                   ? Icon(
                       Icons.check,
                       color: color.onPrimary,
-                      size: Spacing.iconSm - Spacing.xs,
+                      size: Spacing.md,
                     )
                   : null,
             ),

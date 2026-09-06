@@ -4437,6 +4437,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_confirm_withdraw => 'Confirm withdrawal request';
 
   @override
+  String get influencer_transfer_details => 'Transfer Details';
+
+  @override
+  String get influencer_bank_label => 'Bank';
+
+  @override
+  String get influencer_account_number => 'Account Number';
+
+  @override
+  String get influencer_account_number_sample => '**** **** **** 1234';
+
+  @override
+  String get influencer_iban_with_label => 'IBAN';
+
+  @override
+  String get influencer_operation_summary => 'Operation Summary';
+
+  @override
+  String get influencer_requested_withdraw_amount =>
+      'Requested withdrawal amount';
+
+  @override
+  String get influencer_transfer_fees => 'Transfer fees';
+
+  @override
+  String get influencer_transfer_fees_value => '0.000 KWD';
+
+  @override
+  String get influencer_final_received_amount => 'Final received amount';
+
+  @override
+  String get influencer_important_info => 'Important Information';
+
+  @override
+  String get influencer_important_info_message =>
+      'The full amount will be transferred to your bank account. The operation may take 1 to 3 business days';
+
+  @override
+  String get influencer_back_button => 'Back';
+
+  @override
   String get influencer_transaction_subscription_commission =>
       'Subscription commission';
 
