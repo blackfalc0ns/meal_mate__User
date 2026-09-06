@@ -1637,5 +1637,10 @@
       }
     }
   },
-  "billing_active_freeze_compensation_dates": "تواريخ التعويض"
+  "billing_active_freeze_compensation_dates": "تواريخ التعويض",
+  "address_restaurant_does_not_service_region": "المطعم المشترك معه حالياً لا يخدم هذه المنطقة. يرجى اختيار عنوان آخر.",
+  "address_coverage_notice_title": "تنبيه تغطية المطاعم",
+  "address_no_serving_restaurants": "لا توجد مطاعم تخدم هذه المنطقة حالياً",
+  "address_serving_restaurants_title": "المطاعم التي تخدم منطقتك الجديدة",
+  "address_coverage_notice_action": "حسناً، فهمت"
 }

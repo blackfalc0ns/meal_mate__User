@@ -4530,4 +4530,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get billing_active_freeze_compensation_dates => 'تواريخ التعويض';
+
+  @override
+  String get address_restaurant_does_not_service_region =>
+      'المطعم المشترك معه حالياً لا يخدم هذه المنطقة. يرجى اختيار عنوان آخر.';
+
+  @override
+  String get address_coverage_notice_title => 'تنبيه تغطية المطاعم';
+
+  @override
+  String get address_no_serving_restaurants =>
+      'لا توجد مطاعم تخدم هذه المنطقة حالياً';
+
+  @override
+  String get address_serving_restaurants_title =>
+      'المطاعم التي تخدم منطقتك الجديدة';
+
+  @override
+  String get address_coverage_notice_action => 'حسناً، فهمت';
 }

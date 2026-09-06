@@ -176,7 +176,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     _restaurantSheetOpen = false;
 
-    if (selectedRestaurant == null || !mounted) return;
+    if (selectedRestaurant == null || !mounted || !context.mounted) return;
 
     _suppressMealSheetAutoOpen = false;
     _viewModel.doIntent(
@@ -185,9 +185,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         localeName: locale.localeName,
       ),
     );
+    await _openMealPicker(context, initialRestaurant: selectedRestaurant);
   }
 
-  Future<void> _openMealPicker(BuildContext context) async {
+  Future<void> _openMealPicker(
+    BuildContext context, {
+    CalendarRestaurantOptionEntity? initialRestaurant,
+  }) async {
     if (_mealSheetOpen) return;
     _mealSheetOpen = true;
     final route = MaterialPageRoute<void>(
@@ -196,6 +200,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           value: _viewModel,
           child: CalendarMealSelectionScreen(
             saveButtonController: _mealSaveButtonController,
+            initialRestaurant: initialRestaurant,
           ),
         );
       },

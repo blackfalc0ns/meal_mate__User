@@ -18,6 +18,7 @@ extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
       block: block,
       blockRegionId: blockRegionId,
       street: street,
+      avenue: avenue,
       building: building,
       unit: unit,
       floor: floor,
@@ -29,6 +30,32 @@ extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
       deliveryEffectiveFromUtc: deliveryEffectiveFromUtc,
       deliveryChangeNotice: deliveryChangeNotice,
       notifyOnDelivery: notifyOnDelivery ?? false,
+      restaurantCoverageNotice: restaurantCoverageNotice?.toEntity(),
+      servingRestaurants:
+          servingRestaurants?.map((item) => item.toEntity()).toList() ??
+          const [],
+    );
+  }
+}
+
+extension CustomerAddressCoverageNoticeDtoMapper
+    on CustomerAddressCoverageNoticeDto {
+  CustomerAddressCoverageNoticeEntity toEntity() {
+    return CustomerAddressCoverageNoticeEntity(
+      ar: ar ?? '',
+      en: en ?? '',
+    );
+  }
+}
+
+extension ServingRestaurantDtoMapper on ServingRestaurantDto {
+  ServingRestaurantEntity toEntity() {
+    return ServingRestaurantEntity(
+      id: id ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
+      logoUrl: logoUrl,
+      rating: rating,
     );
   }
 }

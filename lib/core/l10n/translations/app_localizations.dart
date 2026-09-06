@@ -8689,6 +8689,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Compensation dates'**
   String get billing_active_freeze_compensation_dates;
+
+  /// No description provided for @address_restaurant_does_not_service_region.
+  ///
+  /// In en, this message translates to:
+  /// **'The currently subscribed restaurant does not deliver to this area. Please select another address.'**
+  String get address_restaurant_does_not_service_region;
+
+  /// No description provided for @address_coverage_notice_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant Coverage Notice'**
+  String get address_coverage_notice_title;
+
+  /// No description provided for @address_no_serving_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants currently serve this area'**
+  String get address_no_serving_restaurants;
+
+  /// No description provided for @address_serving_restaurants_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants serving your new area'**
+  String get address_serving_restaurants_title;
+
+  /// No description provided for @address_coverage_notice_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get address_coverage_notice_action;
 }
 
 class _AppLocalizationsDelegate

@@ -19,6 +19,7 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_notice_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
@@ -55,13 +56,32 @@ class AddressesScreen extends StatelessWidget {
               );
             }
 
-            final deliveryNotice = _deliveryNoticeForAction(state);
-            if (deliveryNotice != null) {
-              await showDialog<void>(
-                context: context,
-                builder: (context) =>
-                    AddressDeliveryNoticeDialog(message: deliveryNotice),
-              );
+            if (state.action.isSuccess) {
+              final address = state.action.address;
+              final coverageNotice = address?.restaurantCoverageNotice;
+              final servingRestaurants =
+                  address?.servingRestaurants ?? const [];
+
+              if (coverageNotice != null && coverageNotice.hasContent) {
+                await showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: color.surface,
+                  builder: (sheetContext) => AddressCoverageNoticeSheet(
+                    notice: coverageNotice,
+                    servingRestaurants: servingRestaurants,
+                  ),
+                );
+              } else {
+                final deliveryNotice = _deliveryNoticeForAction(state);
+                if (deliveryNotice != null) {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) =>
+                        AddressDeliveryNoticeDialog(message: deliveryNotice),
+                  );
+                }
+              }
             }
           },
           buildWhen: (previous, current) =>

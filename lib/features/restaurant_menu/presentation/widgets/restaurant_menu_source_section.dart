@@ -5,15 +5,49 @@ class RestaurantMenuSourceSection extends StatelessWidget {
     super.key,
     this.coreIngredients = const [],
     this.origins = const [],
+    this.isLoading = false,
   });
 
   final List<CalendarCoreIngredientEntity> coreIngredients;
   final List<SubscriptionRestaurantIngredientOriginEntity> origins;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    if (isLoading) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: ShimmerPlaceholder.rect(
+                width: 140,
+                height: 14,
+                borderRadius: Spacing.xs,
+              ),
+            ),
+            const SizedBox(height: Spacing.xs),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              child: Row(
+                children: [
+                  for (var index = 0; index < 4; index++) ...[
+                    if (index > 0) const SizedBox(width: Spacing.base),
+                    _shimmerCard(context),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     if (coreIngredients.isEmpty && origins.isEmpty) {
       return const SizedBox.shrink();
@@ -108,5 +142,42 @@ class RestaurantMenuSourceSection extends StatelessWidget {
       'dairy' => Icons.local_drink_rounded,
       _ => Icons.eco_rounded,
     };
+  }
+
+  Widget _shimmerCard(BuildContext context) {
+    final color = context.colorScheme;
+
+    return Container(
+      width: Spacing.restaurantDetailsSourceCardWidth,
+      height: Spacing.restaurantDetailsSourceCardHeight,
+      padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        border: Border.all(
+          color: color.outlineVariant,
+          width: Spacing.hairline,
+        ),
+      ),
+      child: const Column(
+        children: [
+          ShimmerPlaceholder.circle(size: 20),
+          Expanded(
+            child: Center(
+              child: ShimmerPlaceholder.rect(
+                width: 44,
+                height: 10,
+                borderRadius: Spacing.xs,
+              ),
+            ),
+          ),
+          ShimmerPlaceholder.rect(
+            width: 52,
+            height: 14,
+            borderRadius: Spacing.radiusXs,
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -100,6 +100,8 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.checkout_redirect_url_not_allowed;
     case 'address.active_delivery_cannot_delete':
       return locale.address_active_delivery_cannot_delete;
+    case 'address.restaurant_does_not_service_region':
+      return locale.address_restaurant_does_not_service_region;
     case 'freeze.locked_days_cannot_be_frozen':
       return locale.billing_freeze_locked_days_cannot_be_frozen;
     case 'freeze.confirm_overwrite_selections':

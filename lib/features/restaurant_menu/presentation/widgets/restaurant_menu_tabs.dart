@@ -6,15 +6,74 @@ class RestaurantMenuTabs extends StatelessWidget {
     required this.labels,
     required this.selectedIndex,
     required this.onChanged,
+    this.isLoading = false,
   });
 
   final List<String> labels;
   final int selectedIndex;
   final ValueChanged<int> onChanged;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+
+    if (isLoading) {
+      return SizedBox(
+        height: Spacing.restaurantDetailsTabsHeight,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Divider(
+                height: Spacing.border,
+                thickness: Spacing.border,
+                color: color.outlineVariant,
+              ),
+            ),
+            const Positioned(
+              left: Spacing.restaurantDetailsTabsHorizontalInset,
+              right: Spacing.restaurantDetailsTabsHorizontalInset,
+              top: 0,
+              bottom: 0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: ShimmerPlaceholder.rect(
+                        width: 70,
+                        height: 14,
+                        borderRadius: Spacing.xs,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: ShimmerPlaceholder.rect(
+                        width: 70,
+                        height: 14,
+                        borderRadius: Spacing.xs,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: ShimmerPlaceholder.rect(
+                        width: 70,
+                        height: 14,
+                        borderRadius: Spacing.xs,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return SizedBox(
       height: Spacing.restaurantDetailsTabsHeight,

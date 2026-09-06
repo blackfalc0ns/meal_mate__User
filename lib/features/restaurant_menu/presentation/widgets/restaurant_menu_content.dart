@@ -84,11 +84,13 @@ class RestaurantMenuContent extends StatelessWidget {
                 RestaurantMenuSourceSection(
                   coreIngredients: coreIngredients,
                   origins: origins,
+                  isLoading: isLoading,
                 ),
                 const SizedBox(height: Spacing.base),
                 RestaurantMenuTabs(
                   labels: mealTabs,
                   selectedIndex: selectedTab,
+                  isLoading: isLoading,
                   onChanged: (index) {
                     onTabChanged(index);
                   },

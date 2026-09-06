@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
@@ -13,8 +14,12 @@ class CalendarMealSelectionScreen extends StatelessWidget {
   const CalendarMealSelectionScreen({
     super.key,
     required this.saveButtonController,
+    this.initialRestaurant,
   });
+
   final RoundedLoadingButtonController saveButtonController;
+  final CalendarRestaurantOptionEntity? initialRestaurant;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -22,21 +27,32 @@ class CalendarMealSelectionScreen extends StatelessWidget {
         BlocBuilder<CalendarViewModel, CalendarState>(
           builder: (context, state) {
             final locale = context.localization;
-            final restaurant =
-                state.availableMeals?.restaurant ??
-                state.selectedDay?.restaurant;
+            final currentDayRestaurant = state.selectedDay?.restaurant;
+            final restaurantName =
+                state.availableMeals?.restaurant?.name ??
+                initialRestaurant?.name ??
+                currentDayRestaurant?.name;
+            final restaurantLogoUrl =
+                state.availableMeals?.restaurant?.logoUrl ??
+                initialRestaurant?.logoUrl ??
+                currentDayRestaurant?.logoUrl;
+            final restaurantRating =
+                state.availableMeals?.restaurant?.rating ??
+                initialRestaurant?.rating ??
+                currentDayRestaurant?.rating;
+            final restaurantInitials = (restaurantName ?? '')
+                .trim()
+                .split(RegExp(r'\s+'))
+                .where((word) => word.isNotEmpty)
+                .take(3)
+                .map((word) => word.characters.first)
+                .join();
             return RestaurantMenuScreen(
               mode: RestaurantMenuMode.selection,
-              restaurantName: restaurant?.name,
-              restaurantLogoUrl: restaurant?.logoUrl,
-              restaurantInitials: (restaurant?.name ?? '')
-                  .trim()
-                  .split(RegExp(r'\s+'))
-                  .where((word) => word.isNotEmpty)
-                  .take(3)
-                  .map((word) => word.characters.first)
-                  .join(),
-              restaurantRating: restaurant?.rating,
+              restaurantName: restaurantName,
+              restaurantLogoUrl: restaurantLogoUrl,
+              restaurantInitials: restaurantInitials,
+              restaurantRating: restaurantRating,
               availableMeals: state.availableMeals,
               selectedMealIds: state.localSelectedMealIds,
               onMealToggled: (mealId) {

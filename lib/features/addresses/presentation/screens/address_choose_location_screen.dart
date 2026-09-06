@@ -10,6 +10,7 @@ import 'package:meal_meat_user/features/addresses/domain/entities/customer_addre
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_notice_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
@@ -58,13 +59,35 @@ class AddressChooseLocationScreen extends StatelessWidget {
                         }
 
                         if (state.action.isSuccess) {
-                          final notice = state.action.deliveryChangeNotice;
-                          if (notice != null && notice.isNotEmpty) {
-                            await showDialog<void>(
+                          final address = state.action.address;
+                          final coverageNotice =
+                              address?.restaurantCoverageNotice;
+                          final servingRestaurants =
+                              address?.servingRestaurants ?? const [];
+
+                          if (coverageNotice != null &&
+                              coverageNotice.hasContent) {
+                            await showModalBottomSheet<void>(
                               context: context,
-                              builder: (context) =>
-                                  AddressDeliveryNoticeDialog(message: notice),
+                              isScrollControlled: true,
+                              backgroundColor: color.surface,
+                              builder: (sheetContext) =>
+                                  AddressCoverageNoticeSheet(
+                                notice: coverageNotice,
+                                servingRestaurants: servingRestaurants,
+                              ),
                             );
+                          } else {
+                            final notice = state.action.deliveryChangeNotice;
+                            if (notice != null && notice.isNotEmpty) {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (context) =>
+                                    AddressDeliveryNoticeDialog(
+                                  message: notice,
+                                ),
+                              );
+                            }
                           }
                           if (context.mounted) {
                             Navigator.of(context).pop(true);

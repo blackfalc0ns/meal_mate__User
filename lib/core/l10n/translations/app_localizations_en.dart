@@ -4603,4 +4603,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billing_active_freeze_compensation_dates => 'Compensation dates';
+
+  @override
+  String get address_restaurant_does_not_service_region =>
+      'The currently subscribed restaurant does not deliver to this area. Please select another address.';
+
+  @override
+  String get address_coverage_notice_title => 'Restaurant Coverage Notice';
+
+  @override
+  String get address_no_serving_restaurants =>
+      'No restaurants currently serve this area';
+
+  @override
+  String get address_serving_restaurants_title =>
+      'Restaurants serving your new area';
+
+  @override
+  String get address_coverage_notice_action => 'Got it';
 }

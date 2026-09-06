@@ -1637,5 +1637,10 @@
       }
     }
   },
-  "billing_active_freeze_compensation_dates": "Compensation dates"
+  "billing_active_freeze_compensation_dates": "Compensation dates",
+  "address_restaurant_does_not_service_region": "The currently subscribed restaurant does not deliver to this area. Please select another address.",
+  "address_coverage_notice_title": "Restaurant Coverage Notice",
+  "address_no_serving_restaurants": "No restaurants currently serve this area",
+  "address_serving_restaurants_title": "Restaurants serving your new area",
+  "address_coverage_notice_action": "Got it"
 }
