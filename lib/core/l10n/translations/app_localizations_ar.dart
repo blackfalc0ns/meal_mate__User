@@ -9,6 +9,29 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get meal_details_restaurant_rating => 'تقييم المطعم';
+
+  @override
+  String get meal_details_meal_type => 'نوع الوجبة';
+
+  @override
+  String get meal_details_delivery_time => 'وقت التوصيل';
+
+  @override
+  String get meal_details_nutrition_facts => 'القيم الغذائية';
+
+  @override
+  String get meal_details_macro_distribution => 'توزيع العناصر الغذائية';
+
+  @override
+  String get meal_details_allergens => 'مسببات الحساسية';
+
+  @override
+  String meal_details_gram_value(String value) {
+    return '$value جم';
+  }
+
+  @override
   String get app_brand_name => 'MealMate';
 
   @override

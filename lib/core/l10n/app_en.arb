@@ -1,4 +1,18 @@
 {
+  "meal_details_restaurant_rating": "Restaurant rating",
+  "meal_details_meal_type": "Meal type",
+  "meal_details_delivery_time": "Delivery time",
+  "meal_details_nutrition_facts": "Nutrition facts",
+  "meal_details_macro_distribution": "Macro distribution",
+  "meal_details_allergens": "Allergens",
+  "meal_details_gram_value": "{value}g",
+  "@meal_details_gram_value": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "app_brand_name": "MealMate",
   "app_brand_tagline": "Your Daily Meal Mate",
   "error_no_internet_connection": "No internet connection",

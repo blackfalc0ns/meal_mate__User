@@ -9,6 +9,29 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get meal_details_restaurant_rating => 'Restaurant rating';
+
+  @override
+  String get meal_details_meal_type => 'Meal type';
+
+  @override
+  String get meal_details_delivery_time => 'Delivery time';
+
+  @override
+  String get meal_details_nutrition_facts => 'Nutrition facts';
+
+  @override
+  String get meal_details_macro_distribution => 'Macro distribution';
+
+  @override
+  String get meal_details_allergens => 'Allergens';
+
+  @override
+  String meal_details_gram_value(String value) {
+    return '${value}g';
+  }
+
+  @override
   String get app_brand_name => 'MealMate';
 
   @override

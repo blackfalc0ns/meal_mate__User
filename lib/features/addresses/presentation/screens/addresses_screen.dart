@@ -87,14 +87,14 @@ class AddressesScreen extends StatelessWidget {
                             locale.address_coverage_confirm_set_default,
                         onConfirm: () {
                           innerContext.read<AddressesViewModel>().doIntent(
-                                const ConfirmPendingAddressActionEvent(),
-                              );
+                            const ConfirmPendingAddressActionEvent(),
+                          );
                         },
                         onChooseAnother: () {
                           Navigator.of(sheetContext).pop();
                           innerContext.read<AddressesViewModel>().doIntent(
-                                const ClearCoveragePreviewEvent(),
-                              );
+                            const ClearCoveragePreviewEvent(),
+                          );
                         },
                       );
                     },

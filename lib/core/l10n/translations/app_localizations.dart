@@ -98,6 +98,48 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @meal_details_restaurant_rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant rating'**
+  String get meal_details_restaurant_rating;
+
+  /// No description provided for @meal_details_meal_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal type'**
+  String get meal_details_meal_type;
+
+  /// No description provided for @meal_details_delivery_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery time'**
+  String get meal_details_delivery_time;
+
+  /// No description provided for @meal_details_nutrition_facts.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition facts'**
+  String get meal_details_nutrition_facts;
+
+  /// No description provided for @meal_details_macro_distribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Macro distribution'**
+  String get meal_details_macro_distribution;
+
+  /// No description provided for @meal_details_allergens.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergens'**
+  String get meal_details_allergens;
+
+  /// No description provided for @meal_details_gram_value.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}g'**
+  String meal_details_gram_value(String value);
+
   /// No description provided for @app_brand_name.
   ///
   /// In en, this message translates to:
