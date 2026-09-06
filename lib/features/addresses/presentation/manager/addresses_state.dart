@@ -1,5 +1,7 @@
 import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 
@@ -9,24 +11,28 @@ class AddressesState {
     this.locations = const LocationsCatalogState(),
     this.action = const AddressesActionState(),
     this.mapAutofill = const MapAutofillState(),
+    this.coveragePreview = const AddressCoveragePreviewState(),
   });
 
   final CustomerAddressesState addresses;
   final LocationsCatalogState locations;
   final AddressesActionState action;
   final MapAutofillState mapAutofill;
+  final AddressCoveragePreviewState coveragePreview;
 
   AddressesState copyWith({
     CustomerAddressesState? addresses,
     LocationsCatalogState? locations,
     AddressesActionState? action,
     MapAutofillState? mapAutofill,
+    AddressCoveragePreviewState? coveragePreview,
   }) {
     return AddressesState(
       addresses: addresses ?? this.addresses,
       locations: locations ?? this.locations,
       action: action ?? this.action,
       mapAutofill: mapAutofill ?? this.mapAutofill,
+      coveragePreview: coveragePreview ?? this.coveragePreview,
     );
   }
 }
@@ -217,6 +223,61 @@ class MapAutofillState {
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       autofill: clearAutofill ? null : autofill ?? this.autofill,
+      failure: clearFailure ? null : failure ?? this.failure,
+    );
+  }
+}
+
+enum AddressPendingActionType { add, update, setDefault }
+
+class AddressCoveragePreviewState {
+  const AddressCoveragePreviewState({
+    this.isLoading = false,
+    this.isSuccess = false,
+    this.preview,
+    this.pendingAction,
+    this.targetAddressId,
+    this.pendingRequest,
+    this.failure,
+  });
+
+  final bool isLoading;
+  final bool isSuccess;
+  final AddressCoveragePreviewEntity? preview;
+  final AddressPendingActionType? pendingAction;
+  final String? targetAddressId;
+  final CustomerAddressRequestEntity? pendingRequest;
+  final Failure? failure;
+
+  String? get displayErrorMessage {
+    final code = failure?.code.trim();
+    if (code != null && code.isNotEmpty && code != 'unknown') {
+      return code;
+    }
+    return failure?.errorMessage;
+  }
+
+  AddressCoveragePreviewState copyWith({
+    bool? isLoading,
+    bool? isSuccess,
+    AddressCoveragePreviewEntity? preview,
+    AddressPendingActionType? pendingAction,
+    String? targetAddressId,
+    CustomerAddressRequestEntity? pendingRequest,
+    Failure? failure,
+    bool clearPreview = false,
+    bool clearFailure = false,
+    bool clearPending = false,
+  }) {
+    return AddressCoveragePreviewState(
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      preview: clearPreview ? null : preview ?? this.preview,
+      pendingAction: clearPending ? null : pendingAction ?? this.pendingAction,
+      targetAddressId:
+          clearPending ? null : targetAddressId ?? this.targetAddressId,
+      pendingRequest:
+          clearPending ? null : pendingRequest ?? this.pendingRequest,
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }

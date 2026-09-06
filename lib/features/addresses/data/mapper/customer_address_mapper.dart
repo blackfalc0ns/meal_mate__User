@@ -1,7 +1,10 @@
+import 'package:meal_meat_user/features/addresses/data/models/request/address_coverage_preview_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_preview_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
@@ -204,6 +207,48 @@ extension LocationBlockResponseDtoMapper on LocationBlockResponseDto {
       code: code ?? '',
       nameAr: nameAr ?? '',
       nameEn: nameEn ?? '',
+    );
+  }
+}
+
+extension AddressCoveragePreviewResponseDtoMapper
+    on AddressCoveragePreviewResponseDto {
+  AddressCoveragePreviewEntity toEntity() {
+    return AddressCoveragePreviewEntity(
+      canSetAsDefault: canSetAsDefault,
+      isCurrentSubscriptionRestaurantCovered:
+          isCurrentSubscriptionRestaurantCovered,
+      uncoveredRestaurantNameAr: uncoveredRestaurantNameAr,
+      uncoveredRestaurantNameEn: uncoveredRestaurantNameEn,
+      conflictMessage: conflictMessage,
+      resolvedRegionId: resolvedRegionId,
+      resolvedRegionNameAr: resolvedRegionNameAr,
+      resolvedRegionNameEn: resolvedRegionNameEn,
+      governorate: governorate,
+      area: area,
+      block: block,
+      latitude: latitude,
+      longitude: longitude,
+      hasActiveSubscription: hasActiveSubscription,
+      restaurantCoverageNotice: restaurantCoverageNotice?.toEntity(),
+      servingRestaurants:
+          servingRestaurants.map((item) => item.toEntity()).toList(),
+    );
+  }
+}
+
+extension AddressCoveragePreviewRequestEntityMapper
+    on CustomerAddressRequestEntity {
+  AddressCoveragePreviewRequestDto toPreviewDto() {
+    return AddressCoveragePreviewRequestDto(
+      regionId: regionId,
+      blockRegionId: blockRegionId,
+      latitude: latitude,
+      longitude: longitude,
+      governorate: governorate,
+      area: area,
+      block: block,
+      isDefault: isDefault,
     );
   }
 }

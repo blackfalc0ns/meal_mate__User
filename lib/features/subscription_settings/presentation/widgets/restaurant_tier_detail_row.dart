@@ -31,13 +31,18 @@ class RestaurantTierDetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
       child: Row(
         children: [
-          Text(row.label, maxLines: 1, style: style),
-          Spacer(),
+          Expanded(
+            child: Text(
+              row.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: Spacing.xs),
           Text(
             row.value,
-
             maxLines: 1,
-
             style: style,
             semanticsLabel: locale.subscription_summary_restaurant_tier_label,
           ),

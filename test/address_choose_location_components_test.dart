@@ -122,9 +122,9 @@ void main() {
       expect(find.byType(AddressChooseLocationHeader), findsOneWidget);
       expect(find.byType(AddressChooseLocationSearchBar), findsOneWidget);
       expect(find.byType(AddressChooseLocationOptionsRow), findsOneWidget);
-      expect(find.text('تأكــــيـد المــوقـــع'), findsOneWidget);
+      expect(find.text('متابعة وتحقق من التغطية'), findsOneWidget);
 
-      await tester.tap(find.text('تأكــــيـد المــوقـــع'));
+      await tester.tap(find.text('متابعة وتحقق من التغطية'));
       await tester.pump();
 
       expect(confirmTapped, isTrue);

@@ -25,7 +25,22 @@ class RestaurantTierUpgradeRepositoryImpl
   }
 
   @override
-  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>> createUpgradeRequest(
+  Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
+    String subscriptionId,
+    String targetTier,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getUpgradeSummary(
+        subscriptionId,
+        targetTier,
+      );
+      return RestaurantTierUpgradeMapper.toSummaryEntity(response);
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>>
+  createUpgradeRequest(
     String subscriptionId,
     SubscriptionUpgradeRequestEntity request,
   ) {

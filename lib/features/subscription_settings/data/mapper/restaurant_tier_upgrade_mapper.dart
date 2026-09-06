@@ -3,6 +3,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/reques
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
 
@@ -42,6 +43,68 @@ abstract class RestaurantTierUpgradeMapper {
       unavailableReason: dto.unavailableReason,
       imageUrl: dto.imageUrl,
     );
+  }
+
+  static SubscriptionUpgradeSummaryEntity toSummaryEntity(
+    SubscriptionUpgradeSummaryResponseDto dto,
+  ) {
+    return SubscriptionUpgradeSummaryEntity(
+      subscriptionId: dto.subscriptionId ?? '',
+      currentTier: _toTierEntity(dto.currentTier),
+      targetTier: _toTierEntity(dto.targetTier),
+      currentTierRestaurants: _toRestaurantEntities(dto.currentTierRestaurants),
+      targetTierRestaurants: _toRestaurantEntities(dto.targetTierRestaurants),
+      newlyAddedRestaurants: _toRestaurantEntities(dto.newlyAddedRestaurants),
+      effectiveFromDate: dto.effectiveFromDate ?? '',
+      effectiveNoticeAr: dto.effectiveNoticeAr ?? '',
+      effectiveNoticeEn: dto.effectiveNoticeEn ?? '',
+      restaurantRepetition: SubscriptionUpgradeRestaurantRepetitionEntity(
+        limit: dto.restaurantRepetition?.limit ?? 0,
+        restaurantCount: dto.restaurantRepetition?.restaurantCount ?? 0,
+        durationDays: dto.restaurantRepetition?.durationDays ?? 0,
+      ),
+      currentRemainingCredit: dto.currentRemainingCredit ?? 0,
+      targetRemainingPrice: dto.targetRemainingPrice ?? 0,
+      priceDifference: dto.priceDifference ?? 0,
+      currencyCode: dto.currencyCode ?? 'KWD',
+      remainingServiceDays: dto.remainingServiceDays ?? 0,
+      totalServiceDays: dto.totalServiceDays ?? 0,
+      paymentMethods: (dto.paymentMethods ?? const [])
+          .map(toPaymentMethodEntity)
+          .where((method) => method.id > 0)
+          .toList(),
+      upgradeEndpoint: dto.upgradeEndpoint ?? '',
+    );
+  }
+
+  static SubscriptionUpgradeTierEntity _toTierEntity(
+    SubscriptionUpgradeTierResponseDto? dto,
+  ) {
+    return SubscriptionUpgradeTierEntity(
+      tier: dto?.tier ?? '',
+      tierNameAr: dto?.tierNameAr ?? '',
+      tierNameEn: dto?.tierNameEn ?? '',
+      logoUrl: dto?.logoUrl,
+      accessibleRestaurantCount: dto?.accessibleRestaurantCount ?? 0,
+    );
+  }
+
+  static List<SubscriptionUpgradeRestaurantEntity> _toRestaurantEntities(
+    List<SubscriptionUpgradeRestaurantResponseDto>? restaurants,
+  ) {
+    return (restaurants ?? const [])
+        .map(
+          (restaurant) => SubscriptionUpgradeRestaurantEntity(
+            id: restaurant.id ?? '',
+            nameAr: restaurant.nameAr ?? '',
+            nameEn: restaurant.nameEn ?? '',
+            logoUrl: restaurant.logoUrl,
+            rating: restaurant.rating ?? 0,
+            tier: restaurant.tier ?? '',
+          ),
+        )
+        .where((restaurant) => restaurant.id.isNotEmpty)
+        .toList();
   }
 
   static SubscriptionUpgradeOptionEntity toOptionEntity(

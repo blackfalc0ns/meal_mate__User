@@ -21,9 +21,11 @@ import 'package:meal_meat_user/features/auth/data/models/response/resend_phone_o
 import 'package:meal_meat_user/features/auth/data/models/response/reset_password_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_response_dto.dart';
 import 'package:meal_meat_user/features/change_password/data/models/request/change_customer_password_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/request/address_coverage_preview_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/map_geocode_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/map_reverse_geocode_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_preview_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/map_address_autofill_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_dietary_request_dto.dart';
@@ -71,6 +73,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/reques
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
 
@@ -188,6 +191,22 @@ abstract class ApiServices {
 
   @DELETE(EndPoints.customerAddress)
   Future<void> deleteCustomerAddress(@Path('addressId') String addressId);
+
+  @POST(EndPoints.customerAddressPreviewCoverage)
+  Future<AddressCoveragePreviewResponseDto> previewNewAddressCoverage(
+    @Body() AddressCoveragePreviewRequestDto request,
+  );
+
+  @GET(EndPoints.customerExistingAddressPreviewCoverage)
+  Future<AddressCoveragePreviewResponseDto> previewExistingAddressCoverage(
+    @Path('addressId') String addressId,
+  );
+
+  @POST(EndPoints.customerAddressSetDefault)
+  Future<CustomerAddressResponseDto> confirmSetDefaultAddress(
+    @Path('addressId') String addressId,
+    @Body() Map<String, dynamic> body,
+  );
 
   @POST(EndPoints.mapsGeocode)
   @Extra({TokenInterceptor.skipAuthKey: true})
@@ -511,6 +530,12 @@ abstract class ApiServices {
   @GET(EndPoints.customerSubscriptionUpgradeOptions)
   Future<SubscriptionUpgradeOptionsResponseDto> getSubscriptionUpgradeOptions(
     @Path('subscriptionId') String subscriptionId,
+  );
+
+  @GET(EndPoints.customerSubscriptionUpgradeSummary)
+  Future<SubscriptionUpgradeSummaryResponseDto> getSubscriptionUpgradeSummary(
+    @Path('subscriptionId') String subscriptionId,
+    @Query('targetTier') String targetTier,
   );
 
   @POST(EndPoints.customerSubscriptionUpgradeRequests)

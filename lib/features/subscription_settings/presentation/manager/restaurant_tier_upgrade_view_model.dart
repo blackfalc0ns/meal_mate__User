@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/re
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_state.dart';
@@ -15,6 +16,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
   RestaurantTierUpgradeViewModel(
     this._getSubscriptionUpgradeOptionsUseCase,
+    this._getSubscriptionUpgradeSummaryUseCase,
     this._createSubscriptionUpgradeRequestUseCase,
     this._getSubscriptionUpgradeStatusUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
@@ -22,6 +24,8 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
 
   final GetSubscriptionUpgradeOptionsUseCase
   _getSubscriptionUpgradeOptionsUseCase;
+  final GetSubscriptionUpgradeSummaryUseCase
+  _getSubscriptionUpgradeSummaryUseCase;
   final CreateSubscriptionUpgradeRequestUseCase
   _createSubscriptionUpgradeRequestUseCase;
   final GetSubscriptionUpgradeStatusUseCase
@@ -68,7 +72,9 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     }
   }
 
-  void _initConfirmation(RestaurantTierUpgradeConfirmationArgs args) {
+  Future<void> _initConfirmation(
+    RestaurantTierUpgradeConfirmationArgs args,
+  ) async {
     emit(
       state.copyWith(
         subscriptionId: args.subscriptionId,
@@ -76,7 +82,8 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
         bundleName: args.bundleName,
         optionsEntity: args.optionsEntity,
         selectedOption: args.selectedOption,
-        selectedPaymentMethod: _defaultPaymentMethod(args.optionsEntity),
+        isLoadingSummary: true,
+        clearSummaryFailure: true,
         uiData: RestaurantTierUpgradeMapper.toUiEntity(
           optionsEntity: args.optionsEntity,
           selectedOption: args.selectedOption,
@@ -85,6 +92,33 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
         ),
       ),
     );
+
+    final result = await _getSubscriptionUpgradeSummaryUseCase(
+      subscriptionId: args.subscriptionId,
+      targetTier: args.selectedOption.targetTier,
+    );
+
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        final selectedOption = _optionFromSummary(data, args.selectedOption);
+        emit(
+          state.copyWith(
+            isLoadingSummary: false,
+            upgradeSummary: data,
+            selectedOption: selectedOption,
+            selectedPaymentMethod: _defaultSummaryPaymentMethod(data),
+            uiData: RestaurantTierUpgradeMapper.toUiEntity(
+              optionsEntity: args.optionsEntity,
+              selectedOption: selectedOption,
+              programName: args.programName,
+              bundleName: args.bundleName,
+            ),
+            clearSummaryFailure: true,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        emit(state.copyWith(isLoadingSummary: false, summaryFailure: failure));
+    }
   }
 
   Future<void> _load(String? subscriptionId) async {
@@ -166,7 +200,6 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
             isLoadingOptions: false,
             optionsEntity: optionsEntity,
             selectedOption: selected,
-            selectedPaymentMethod: _defaultPaymentMethod(optionsEntity),
             uiData: uiData,
             clearOptionsFailure: true,
           ),
@@ -353,13 +386,34 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     }
   }
 
-  SubscriptionUpgradePaymentMethodEntity? _defaultPaymentMethod(
-    SubscriptionUpgradeOptionsEntity optionsEntity,
+  SubscriptionUpgradePaymentMethodEntity? _defaultSummaryPaymentMethod(
+    SubscriptionUpgradeSummaryEntity summary,
   ) {
-    for (final method in optionsEntity.paymentMethods) {
+    for (final method in summary.paymentMethods) {
       if (method.isAvailable) return method;
     }
-    if (optionsEntity.paymentMethods.isEmpty) return null;
-    return optionsEntity.paymentMethods.first;
+    return summary.paymentMethods.isEmpty ? null : summary.paymentMethods.first;
+  }
+
+  SubscriptionUpgradeOptionEntity _optionFromSummary(
+    SubscriptionUpgradeSummaryEntity summary,
+    SubscriptionUpgradeOptionEntity fallback,
+  ) {
+    return SubscriptionUpgradeOptionEntity(
+      targetTier: summary.targetTier.tier,
+      tierNameAr: summary.targetTier.tierNameAr,
+      tierNameEn: summary.targetTier.tierNameEn,
+      logoUrl: summary.targetTier.logoUrl,
+      isCurrent: false,
+      selectable: true,
+      accessibleRestaurantCount: summary.targetTier.accessibleRestaurantCount,
+      currentRemainingCredit: summary.currentRemainingCredit,
+      targetRemainingPrice: summary.targetRemainingPrice,
+      gatewayRecovery: 0,
+      priceDifference: summary.priceDifference,
+      currencyCode: summary.currencyCode.isEmpty
+          ? fallback.currencyCode
+          : summary.currencyCode,
+    );
   }
 }

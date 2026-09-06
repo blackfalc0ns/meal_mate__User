@@ -30,6 +30,8 @@ import '../../features/addresses/domain/repo/addresses_repository.dart'
     as _i556;
 import '../../features/addresses/domain/usecase/add_customer_address_usecase.dart'
     as _i898;
+import '../../features/addresses/domain/usecase/confirm_set_default_address_usecase.dart'
+    as _i267;
 import '../../features/addresses/domain/usecase/delete_customer_address_usecase.dart'
     as _i624;
 import '../../features/addresses/domain/usecase/geocode_address_usecase.dart'
@@ -38,6 +40,10 @@ import '../../features/addresses/domain/usecase/get_customer_addresses_usecase.d
     as _i945;
 import '../../features/addresses/domain/usecase/get_locations_catalog_usecase.dart'
     as _i2;
+import '../../features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart'
+    as _i577;
+import '../../features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart'
+    as _i1022;
 import '../../features/addresses/domain/usecase/reverse_geocode_location_usecase.dart'
     as _i1019;
 import '../../features/addresses/domain/usecase/update_customer_address_usecase.dart'
@@ -325,6 +331,8 @@ import '../../features/subscription_settings/domain/usecase/get_subscription_upg
     as _i990;
 import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart'
     as _i934;
+import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart'
+    as _i279;
 import '../../features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart'
     as _i528;
 import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source.dart'
@@ -787,6 +795,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i603.RestaurantTierUpgradeRepository>(),
       ),
     );
+    gh.factory<_i279.GetSubscriptionUpgradeSummaryUseCase>(
+      () => _i279.GetSubscriptionUpgradeSummaryUseCase(
+        gh<_i603.RestaurantTierUpgradeRepository>(),
+      ),
+    );
     gh.factory<_i964.FamilyProgramsRepository>(
       () => _i377.FamilyProgramsRepositoryImpl(
         gh<_i603.FamilyProgramsRemoteDataSource>(),
@@ -945,6 +958,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i898.AddCustomerAddressUseCase>(
       () => _i898.AddCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i267.ConfirmSetDefaultAddressUseCase>(
+      () => _i267.ConfirmSetDefaultAddressUseCase(
+        gh<_i556.AddressesRepository>(),
+      ),
+    );
     gh.factory<_i624.DeleteCustomerAddressUseCase>(
       () => _i624.DeleteCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
@@ -956,6 +974,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i2.GetLocationsCatalogUseCase>(
       () => _i2.GetLocationsCatalogUseCase(gh<_i556.AddressesRepository>()),
+    );
+    gh.factory<_i577.PreviewExistingAddressCoverageUseCase>(
+      () => _i577.PreviewExistingAddressCoverageUseCase(
+        gh<_i556.AddressesRepository>(),
+      ),
+    );
+    gh.factory<_i1022.PreviewNewAddressCoverageUseCase>(
+      () => _i1022.PreviewNewAddressCoverageUseCase(
+        gh<_i556.AddressesRepository>(),
+      ),
     );
     gh.factory<_i1019.ReverseGeocodeLocationUseCase>(
       () =>
@@ -1043,15 +1071,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
       ),
     );
-    gh.factory<_i524.AddressesViewModel>(
-      () => _i524.AddressesViewModel(
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i2.GetLocationsCatalogUseCase>(),
-        gh<_i898.AddCustomerAddressUseCase>(),
-        gh<_i241.UpdateCustomerAddressUseCase>(),
-        gh<_i624.DeleteCustomerAddressUseCase>(),
-        gh<_i563.GeocodeAddressUseCase>(),
-        gh<_i1019.ReverseGeocodeLocationUseCase>(),
+    gh.factory<_i528.RestaurantTierUpgradeViewModel>(
+      () => _i528.RestaurantTierUpgradeViewModel(
+        gh<_i990.GetSubscriptionUpgradeOptionsUseCase>(),
+        gh<_i279.GetSubscriptionUpgradeSummaryUseCase>(),
+        gh<_i261.CreateSubscriptionUpgradeRequestUseCase>(),
+        gh<_i934.GetSubscriptionUpgradeStatusUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
       ),
     );
     gh.factory<_i665.FamilyCheckoutViewModel>(
@@ -1071,14 +1097,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i148.DeviceIdService>(),
         gh<_i350.RegisterDeviceTokenUseCase>(),
         gh<_i546.UnregisterDeviceTokenUseCase>(),
-      ),
-    );
-    gh.factory<_i528.RestaurantTierUpgradeViewModel>(
-      () => _i528.RestaurantTierUpgradeViewModel(
-        gh<_i990.GetSubscriptionUpgradeOptionsUseCase>(),
-        gh<_i261.CreateSubscriptionUpgradeRequestUseCase>(),
-        gh<_i934.GetSubscriptionUpgradeStatusUseCase>(),
-        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
       ),
     );
     gh.factory<_i446.ProfileViewModel>(
@@ -1105,6 +1123,20 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
         gh<_i577.GetFamilyProgramsUseCase>(),
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
+      ),
+    );
+    gh.factory<_i524.AddressesViewModel>(
+      () => _i524.AddressesViewModel(
+        gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i2.GetLocationsCatalogUseCase>(),
+        gh<_i898.AddCustomerAddressUseCase>(),
+        gh<_i241.UpdateCustomerAddressUseCase>(),
+        gh<_i624.DeleteCustomerAddressUseCase>(),
+        gh<_i563.GeocodeAddressUseCase>(),
+        gh<_i1019.ReverseGeocodeLocationUseCase>(),
+        gh<_i1022.PreviewNewAddressCoverageUseCase>(),
+        gh<_i577.PreviewExistingAddressCoverageUseCase>(),
+        gh<_i267.ConfirmSetDefaultAddressUseCase>(),
       ),
     );
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(

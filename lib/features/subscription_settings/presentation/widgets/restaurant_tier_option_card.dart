@@ -112,7 +112,6 @@ class RestaurantTierOptionCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            
                             ],
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,7 +138,7 @@ class RestaurantTierOptionCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                           // const SizedBox(height: Spacing.sm),
+                            // const SizedBox(height: Spacing.sm),
                             Text(
                               description,
                               textAlign: TextAlign.center,

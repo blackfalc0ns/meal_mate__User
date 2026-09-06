@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/reques
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_summary_response_dto.dart';
 
 @Injectable(as: RestaurantTierUpgradeRemoteDataSource)
 class RestaurantTierUpgradeRemoteDataSourceImpl
@@ -18,6 +19,17 @@ class RestaurantTierUpgradeRemoteDataSourceImpl
     String subscriptionId,
   ) {
     return _apiServices.getSubscriptionUpgradeOptions(subscriptionId);
+  }
+
+  @override
+  Future<SubscriptionUpgradeSummaryResponseDto> getUpgradeSummary(
+    String subscriptionId,
+    String targetTier,
+  ) {
+    return _apiServices.getSubscriptionUpgradeSummary(
+      subscriptionId,
+      targetTier,
+    );
   }
 
   @override
@@ -36,9 +48,6 @@ class RestaurantTierUpgradeRemoteDataSourceImpl
     String subscriptionId,
     String upgradeId,
   ) {
-    return _apiServices.getSubscriptionUpgradeStatus(
-      subscriptionId,
-      upgradeId,
-    );
+    return _apiServices.getSubscriptionUpgradeStatus(subscriptionId, upgradeId);
   }
 }

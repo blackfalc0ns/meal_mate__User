@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/su
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart';
@@ -20,6 +21,7 @@ void main() {
     final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
     final viewModel = RestaurantTierUpgradeViewModel(
       GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+      GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
       CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
       GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
       GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
@@ -51,6 +53,7 @@ void main() {
       final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
       final viewModel = RestaurantTierUpgradeViewModel(
         GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
         GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
@@ -69,6 +72,33 @@ void main() {
       expect(upgradeRepository.statusUpgradeId, 'upgrade-from-web-view');
     },
   );
+
+  test('loads upgrade summary for the selected target tier', () async {
+    final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+    final viewModel = RestaurantTierUpgradeViewModel(
+      GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+      GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+      CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+      GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+      GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+    );
+    addTearDown(viewModel.close);
+
+    viewModel.doIntent(
+      InitUpgradeConfirmationEvent(
+        RestaurantTierUpgradeConfirmationArgs(
+          subscriptionId: 'sub-1',
+          selectedOption: _platinumOption,
+          optionsEntity: _upgradeOptions,
+        ),
+      ),
+    );
+    await Future<void>.delayed(Duration.zero);
+
+    expect(upgradeRepository.summarySubscriptionId, 'sub-1');
+    expect(upgradeRepository.summaryTargetTier, 'Platinum');
+    expect(viewModel.state.upgradeSummary?.priceDifference, 16.0);
+  });
 }
 
 const _platinumOption = SubscriptionUpgradeOptionEntity(
@@ -123,6 +153,18 @@ class _RestaurantTierUpgradeRepositoryFake
   SubscriptionUpgradeRequestEntity? submittedRequest;
   String? statusSubscriptionId;
   String? statusUpgradeId;
+  String? summarySubscriptionId;
+  String? summaryTargetTier;
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
+    String subscriptionId,
+    String targetTier,
+  ) async {
+    summarySubscriptionId = subscriptionId;
+    summaryTargetTier = targetTier;
+    return ApiSuccessResult(data: _upgradeSummary);
+  }
 
   @override
   Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
@@ -176,6 +218,41 @@ class _RestaurantTierUpgradeRepositoryFake
     );
   }
 }
+
+const _upgradeSummary = SubscriptionUpgradeSummaryEntity(
+  subscriptionId: 'sub-1',
+  currentTier: SubscriptionUpgradeTierEntity(
+    tier: 'Basic',
+    tierNameAr: 'أساسي',
+    tierNameEn: 'Basic',
+    accessibleRestaurantCount: 21,
+  ),
+  targetTier: SubscriptionUpgradeTierEntity(
+    tier: 'Platinum',
+    tierNameAr: 'بلاتينيوم',
+    tierNameEn: 'Platinum',
+    accessibleRestaurantCount: 39,
+  ),
+  currentTierRestaurants: [],
+  targetTierRestaurants: [],
+  newlyAddedRestaurants: [],
+  effectiveFromDate: '2026-09-10',
+  effectiveNoticeAr: 'يبدأ التفعيل بعد 72 ساعة.',
+  effectiveNoticeEn: 'Activation starts after 72 hours.',
+  restaurantRepetition: SubscriptionUpgradeRestaurantRepetitionEntity(
+    limit: 3,
+    restaurantCount: 39,
+    durationDays: 12,
+  ),
+  currentRemainingCredit: 70.5,
+  targetRemainingPrice: 86.5,
+  priceDifference: 16.0,
+  currencyCode: 'KWD',
+  remainingServiceDays: 12,
+  totalServiceDays: 26,
+  paymentMethods: [_madaPaymentMethod],
+  upgradeEndpoint: '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
+);
 
 class _ProfileRepositoryFake implements ProfileRepository {
   @override

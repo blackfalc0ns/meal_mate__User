@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_m
 import 'package:meal_meat_user/features/addresses/data/mapper/map_address_autofill_mapper.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/map_geocode_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/map_reverse_geocode_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
@@ -69,6 +70,42 @@ class AddressesRepositoryImpl implements AddressesRepository {
   Future<ApiResult<void>> deleteCustomerAddress(String addressId) {
     return safeApiCall(() async {
       await _remoteDataSource.deleteCustomerAddress(addressId);
+    });
+  }
+
+  @override
+  Future<ApiResult<AddressCoveragePreviewEntity>> previewNewAddressCoverage(
+    CustomerAddressRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.previewNewAddressCoverage(
+        request.toPreviewDto(),
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<AddressCoveragePreviewEntity>> previewExistingAddressCoverage(
+    String addressId,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.previewExistingAddressCoverage(
+        addressId,
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<CustomerAddressEntity>> confirmSetDefaultAddress(
+    String addressId,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.confirmSetDefaultAddress(
+        addressId,
+      );
+      return response.toEntity();
     });
   }
 

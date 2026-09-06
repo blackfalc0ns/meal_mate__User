@@ -73,3 +73,39 @@ class GeocodeAddressEvent extends AddressesEvent {
   final String address;
   final String countryCode;
 }
+
+class PreviewNewAddressCoverageEvent extends AddressesEvent {
+  const PreviewNewAddressCoverageEvent(this.request);
+
+  final CustomerAddressRequestEntity request;
+}
+
+class PreviewUpdateAddressCoverageEvent extends AddressesEvent {
+  const PreviewUpdateAddressCoverageEvent({
+    required this.addressId,
+    required this.request,
+  });
+
+  final String addressId;
+  final CustomerAddressRequestEntity request;
+}
+
+class PreviewExistingAddressCoverageEvent extends AddressesEvent {
+  const PreviewExistingAddressCoverageEvent(this.addressId);
+
+  final String addressId;
+}
+
+class ConfirmSetDefaultAddressEvent extends AddressesEvent {
+  const ConfirmSetDefaultAddressEvent(this.addressId);
+
+  final String addressId;
+}
+
+class ConfirmPendingAddressActionEvent extends AddressesEvent {
+  const ConfirmPendingAddressActionEvent();
+}
+
+class ClearCoveragePreviewEvent extends AddressesEvent {
+  const ClearCoveragePreviewEvent();
+}

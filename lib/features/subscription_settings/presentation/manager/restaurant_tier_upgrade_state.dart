@@ -12,6 +12,9 @@ class RestaurantTierUpgradeState {
     this.optionsEntity,
     this.selectedOption,
     this.selectedPaymentMethod,
+    this.isLoadingSummary = false,
+    this.summaryFailure,
+    this.upgradeSummary,
     this.uiData,
     this.isSubmitting = false,
     this.submitFailure,
@@ -32,6 +35,9 @@ class RestaurantTierUpgradeState {
   final SubscriptionUpgradeOptionsEntity? optionsEntity;
   final SubscriptionUpgradeOptionEntity? selectedOption;
   final SubscriptionUpgradePaymentMethodEntity? selectedPaymentMethod;
+  final bool isLoadingSummary;
+  final Failure? summaryFailure;
+  final SubscriptionUpgradeSummaryEntity? upgradeSummary;
   final RestaurantTierUpgradeEntity? uiData;
   final bool isSubmitting;
   final Failure? submitFailure;
@@ -53,6 +59,10 @@ class RestaurantTierUpgradeState {
     SubscriptionUpgradeOptionsEntity? optionsEntity,
     SubscriptionUpgradeOptionEntity? selectedOption,
     SubscriptionUpgradePaymentMethodEntity? selectedPaymentMethod,
+    bool? isLoadingSummary,
+    Failure? summaryFailure,
+    bool clearSummaryFailure = false,
+    SubscriptionUpgradeSummaryEntity? upgradeSummary,
     RestaurantTierUpgradeEntity? uiData,
     bool? isSubmitting,
     Failure? submitFailure,
@@ -80,6 +90,11 @@ class RestaurantTierUpgradeState {
       selectedOption: selectedOption ?? this.selectedOption,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
+      isLoadingSummary: isLoadingSummary ?? this.isLoadingSummary,
+      summaryFailure: clearSummaryFailure
+          ? null
+          : (summaryFailure ?? this.summaryFailure),
+      upgradeSummary: upgradeSummary ?? this.upgradeSummary,
       uiData: uiData ?? this.uiData,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       submitFailure: clearSubmitFailure

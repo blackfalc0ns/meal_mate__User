@@ -4635,4 +4635,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get address_coverage_notice_action => 'Got it';
+
+  @override
+  String get address_preview_check_button => 'Continue & Check Coverage';
+
+  @override
+  String get address_coverage_covered_title =>
+      'Your area is covered by your subscription';
+
+  @override
+  String get address_coverage_uncovered_title =>
+      'Area not covered by your subscription';
+
+  @override
+  String get address_coverage_confirm_save => 'Confirm & Save Address';
+
+  @override
+  String get address_coverage_confirm_set_default => 'Confirm Set as Default';
+
+  @override
+  String get address_coverage_choose_another => 'Choose Another Location';
+
+  @override
+  String get address_coverage_uncovered_desc =>
+      'Your current subscription restaurant does not deliver to this area.';
+
+  @override
+  String get upgrade_summary_operational_title => 'Upgrade activation details';
+
+  @override
+  String get upgrade_summary_effective_date => 'Activation start date';
+
+  @override
+  String upgrade_summary_repetition(int limit, int days) {
+    return 'You can repeat a restaurant up to $limit times during $days days';
+  }
+
+  @override
+  String get upgrade_summary_new_restaurants =>
+      'New restaurants joining your package';
+
+  @override
+  String get upgrade_summary_no_new_restaurants =>
+      'No additional restaurants in this tier';
+
+  @override
+  String get upgrade_summary_load_error =>
+      'Unable to load the upgrade summary. Please try again.';
 }

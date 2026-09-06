@@ -7,10 +7,13 @@ import 'package:meal_meat_user/features/addresses/domain/entities/customer_addre
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
@@ -26,6 +29,9 @@ class AddressesViewModel extends Cubit<AddressesState> {
     this._deleteCustomerAddressUseCase,
     this._geocodeAddressUseCase,
     this._reverseGeocodeLocationUseCase,
+    this._previewNewAddressCoverageUseCase,
+    this._previewExistingAddressCoverageUseCase,
+    this._confirmSetDefaultAddressUseCase,
   ) : super(const AddressesState());
 
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
@@ -35,6 +41,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
   final DeleteCustomerAddressUseCase _deleteCustomerAddressUseCase;
   final GeocodeAddressUseCase _geocodeAddressUseCase;
   final ReverseGeocodeLocationUseCase _reverseGeocodeLocationUseCase;
+  final PreviewNewAddressCoverageUseCase _previewNewAddressCoverageUseCase;
+  final PreviewExistingAddressCoverageUseCase
+      _previewExistingAddressCoverageUseCase;
+  final ConfirmSetDefaultAddressUseCase _confirmSetDefaultAddressUseCase;
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
     if (lat == null || lng == null) return false;
@@ -63,6 +73,18 @@ class AddressesViewModel extends Cubit<AddressesState> {
         _reverseGeocode(event.latitude, event.longitude);
       case GeocodeAddressEvent():
         _geocodeAddress(event.address, event.countryCode);
+      case PreviewNewAddressCoverageEvent():
+        _previewNewAddressCoverage(event.request);
+      case PreviewUpdateAddressCoverageEvent():
+        _previewUpdateAddressCoverage(event.addressId, event.request);
+      case PreviewExistingAddressCoverageEvent():
+        _previewExistingAddressCoverage(event.addressId);
+      case ConfirmSetDefaultAddressEvent():
+        _confirmSetDefaultAddress(event.addressId);
+      case ConfirmPendingAddressActionEvent():
+        _confirmPendingAddressAction();
+      case ClearCoveragePreviewEvent():
+        _clearCoveragePreview();
     }
   }
 
@@ -621,6 +643,214 @@ class AddressesViewModel extends Cubit<AddressesState> {
           ),
         );
     }
+  }
+
+  Future<void> _previewNewAddressCoverage(
+    CustomerAddressRequestEntity request,
+  ) async {
+    if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
+      emit(
+        state.copyWith(
+          coveragePreview: state.coveragePreview.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            failure: Failure(
+              errorMessage:
+                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              code: 'address.out_of_kuwait_bounds',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        coveragePreview: state.coveragePreview.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearPreview: true,
+          clearFailure: true,
+          pendingAction: AddressPendingActionType.add,
+          pendingRequest: request,
+        ),
+      ),
+    );
+
+    final result = await _previewNewAddressCoverageUseCase(request);
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              preview: result.data,
+              pendingAction: AddressPendingActionType.add,
+              pendingRequest: request,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _previewUpdateAddressCoverage(
+    String addressId,
+    CustomerAddressRequestEntity request,
+  ) async {
+    if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
+      emit(
+        state.copyWith(
+          coveragePreview: state.coveragePreview.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            failure: Failure(
+              errorMessage:
+                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              code: 'address.out_of_kuwait_bounds',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        coveragePreview: state.coveragePreview.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearPreview: true,
+          clearFailure: true,
+          pendingAction: AddressPendingActionType.update,
+          targetAddressId: addressId,
+          pendingRequest: request,
+        ),
+      ),
+    );
+
+    final result = await _previewNewAddressCoverageUseCase(request);
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              preview: result.data,
+              pendingAction: AddressPendingActionType.update,
+              targetAddressId: addressId,
+              pendingRequest: request,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _previewExistingAddressCoverage(String addressId) async {
+    emit(
+      state.copyWith(
+        coveragePreview: state.coveragePreview.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearPreview: true,
+          clearFailure: true,
+          pendingAction: AddressPendingActionType.setDefault,
+          targetAddressId: addressId,
+        ),
+      ),
+    );
+
+    final result = await _previewExistingAddressCoverageUseCase(addressId);
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              preview: result.data,
+              pendingAction: AddressPendingActionType.setDefault,
+              targetAddressId: addressId,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _confirmSetDefaultAddress(String addressId) async {
+    await _runAddressAction(() => _confirmSetDefaultAddressUseCase(addressId));
+    if (!isClosed && state.action.isSuccess) {
+      await _getCustomerAddresses();
+    }
+  }
+
+  Future<void> _confirmPendingAddressAction() async {
+    final pendingAction = state.coveragePreview.pendingAction;
+    final pendingRequest = state.coveragePreview.pendingRequest;
+    final targetId = state.coveragePreview.targetAddressId;
+
+    if (pendingAction == null) return;
+
+    switch (pendingAction) {
+      case AddressPendingActionType.add:
+        if (pendingRequest != null) {
+          await _addCustomerAddress(pendingRequest);
+        }
+      case AddressPendingActionType.update:
+        if (targetId != null && pendingRequest != null) {
+          await _updateCustomerAddress(targetId, pendingRequest);
+        }
+      case AddressPendingActionType.setDefault:
+        if (targetId != null) {
+          await _confirmSetDefaultAddress(targetId);
+        }
+    }
+  }
+
+  void _clearCoveragePreview() {
+    emit(
+      state.copyWith(
+        coveragePreview: const AddressCoveragePreviewState(),
+      ),
+    );
   }
 }
 

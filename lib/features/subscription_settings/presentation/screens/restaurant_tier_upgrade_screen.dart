@@ -56,96 +56,106 @@ class _RestaurantTierUpgradeScreenState
 
     return BlocProvider<RestaurantTierUpgradeViewModel>.value(
       value: _viewModel,
-      child: BlocBuilder<RestaurantTierUpgradeViewModel,
-          RestaurantTierUpgradeState>(
-        builder: (context, state) {
-          final title = state.uiData?.title ?? 'ترقية تصنيف المطاعم';
+      child:
+          BlocBuilder<
+            RestaurantTierUpgradeViewModel,
+            RestaurantTierUpgradeState
+          >(
+            builder: (context, state) {
+              final title = state.uiData?.title ?? 'ترقية تصنيف المطاعم';
 
-          if (state.isLoadingOptions) {
-            return Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-              body: const Center(child: CircularProgressIndicator()),
-            );
-          }
+              if (state.isLoadingOptions) {
+                return Scaffold(
+                  appBar: CustomAppBar(elevation: Spacing.zero, title: title),
+                  body: const Center(child: CircularProgressIndicator()),
+                );
+              }
 
-          if (state.optionsFailure != null) {
-            return Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-              body: ApiErrorWidget(
-                exception: state.optionsFailure!.exception,
-                onRetry: () => _viewModel.doIntent(
-                  LoadUpgradeOptionsEvent(
-                    subscriptionId: widget.args?.subscriptionId,
-                  ),
-                ),
-              ),
-            );
-          }
-
-          final optionsEntity = state.optionsEntity;
-          final uiData = state.uiData;
-
-          if (optionsEntity == null || uiData == null) {
-            return Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-              body: EmptyStateWidget(
-                title: title,
-                description: state.errorMessage ??
-                    'لا تتوفر خيارات ترقية للاشتراك الحالي حالياً',
-                icon: Icons.star_border_rounded,
-              ),
-            );
-          }
-
-          if (!optionsEntity.canUpgrade) {
-            return Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-              body: EmptyStateWidget(
-                title: title,
-                description: _unavailableReasonMessage(
-                  optionsEntity.unavailableReason,
-                ),
-                icon: Icons.info_outline_rounded,
-              ),
-            );
-          }
-
-          final selectedOption = state.selectedOption;
-          final canContinue = selectedOption != null && selectedOption.selectable;
-
-          return Semantics(
-            label: locale.nav_subscription,
-            child: Scaffold(
-              appBar: CustomAppBar(elevation: Spacing.zero, title: uiData.title),
-              bottomNavigationBar: canContinue
-                  ? RestaurantTierContinueButton(
-                      text: _continueLabel(selectedOption),
-                      onPressed: () => _navigateToConfirmation(
-                        state,
-                        selectedOption,
-                      ),
-                    )
-                  : null,
-              body: SafeArea(
-                top: false,
-                child: CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.screenH,
-                      ),
-                      sliver: SliverList.list(
-                        children: _selectionChildren(context, state, uiData),
+              if (state.optionsFailure != null) {
+                return Scaffold(
+                  appBar: CustomAppBar(elevation: Spacing.zero, title: title),
+                  body: ApiErrorWidget(
+                    exception: state.optionsFailure!.exception,
+                    onRetry: () => _viewModel.doIntent(
+                      LoadUpgradeOptionsEvent(
+                        subscriptionId: widget.args?.subscriptionId,
                       ),
                     ),
-                  ],
+                  ),
+                );
+              }
+
+              final optionsEntity = state.optionsEntity;
+              final uiData = state.uiData;
+
+              if (optionsEntity == null || uiData == null) {
+                return Scaffold(
+                  appBar: CustomAppBar(elevation: Spacing.zero, title: title),
+                  body: EmptyStateWidget(
+                    title: title,
+                    description:
+                        state.errorMessage ??
+                        'لا تتوفر خيارات ترقية للاشتراك الحالي حالياً',
+                    icon: Icons.star_border_rounded,
+                  ),
+                );
+              }
+
+              if (!optionsEntity.canUpgrade) {
+                return Scaffold(
+                  appBar: CustomAppBar(elevation: Spacing.zero, title: title),
+                  body: EmptyStateWidget(
+                    title: title,
+                    description: _unavailableReasonMessage(
+                      optionsEntity.unavailableReason,
+                    ),
+                    icon: Icons.info_outline_rounded,
+                  ),
+                );
+              }
+
+              final selectedOption = state.selectedOption;
+              final canContinue =
+                  selectedOption != null && selectedOption.selectable;
+
+              return Semantics(
+                label: locale.nav_subscription,
+                child: Scaffold(
+                  appBar: CustomAppBar(
+                    elevation: Spacing.zero,
+                    title: uiData.title,
+                  ),
+                  bottomNavigationBar: canContinue
+                      ? RestaurantTierContinueButton(
+                          text: _continueLabel(selectedOption),
+                          onPressed: () =>
+                              _navigateToConfirmation(state, selectedOption),
+                        )
+                      : null,
+                  body: SafeArea(
+                    top: false,
+                    child: CustomScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      slivers: [
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.screenH,
+                          ),
+                          sliver: SliverList.list(
+                            children: _selectionChildren(
+                              context,
+                              state,
+                              uiData,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
     );
   }
 
@@ -201,15 +211,21 @@ class _RestaurantTierUpgradeScreenState
     final isSelected = state.selectedOption?.targetTier == option.targetTier;
     final isCurrent = option.isCurrent;
 
-    final currency = option.currencyCode.isNotEmpty ? option.currencyCode : 'KWD';
+    final currency = option.currencyCode.isNotEmpty
+        ? option.currencyCode
+        : 'KWD';
     final currencyText = currency == 'KWD' ? 'د.ك' : currency;
     final priceText = option.isCurrent
         ? data.price
         : '${option.priceDifference.toStringAsFixed(3)} $currencyText';
 
     return RestaurantTierOptionCard(
-      title: option.tierNameAr.isNotEmpty ? option.tierNameAr : option.targetTier,
-      badgeAsset: RestaurantTierUpgradeMapper.badgeAssetForTier(option.targetTier),
+      title: option.tierNameAr.isNotEmpty
+          ? option.tierNameAr
+          : option.targetTier,
+      badgeAsset: RestaurantTierUpgradeMapper.badgeAssetForTier(
+        option.targetTier,
+      ),
       description: isCurrent
           ? 'كل تصنيف يضم مجموعة مختارة من المطاعم المميزة.'
           : 'يشمل كل مطاعم التصنيف الحالي + مطاعم إضافية',

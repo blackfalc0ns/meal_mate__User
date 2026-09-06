@@ -4561,4 +4561,48 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get address_coverage_notice_action => 'حسناً، فهمت';
+
+  @override
+  String get address_preview_check_button => 'متابعة وتحقق من التغطية';
+
+  @override
+  String get address_coverage_covered_title => 'منطقتك مغطاة بمطاعم اشتراكك';
+
+  @override
+  String get address_coverage_uncovered_title => 'المنطقة غير مغطاة باشتراكك';
+
+  @override
+  String get address_coverage_confirm_save => 'تأكيد وحفظ العنوان';
+
+  @override
+  String get address_coverage_confirm_set_default => 'تأكيد تعيين كافتراضي';
+
+  @override
+  String get address_coverage_choose_another => 'اختيار عنوان آخر';
+
+  @override
+  String get address_coverage_uncovered_desc =>
+      'مطعم اشتراكك الحالي لا يدعم التوصيل إلى هذه المنطقة.';
+
+  @override
+  String get upgrade_summary_operational_title => 'تفاصيل تفعيل الترقية';
+
+  @override
+  String get upgrade_summary_effective_date => 'تاريخ بدء التفعيل';
+
+  @override
+  String upgrade_summary_repetition(int limit, int days) {
+    return 'يمكن تكرار المطعم حتى $limit مرات خلال $days يومًا';
+  }
+
+  @override
+  String get upgrade_summary_new_restaurants => 'مطاعم جديدة تنضم لباقتك';
+
+  @override
+  String get upgrade_summary_no_new_restaurants =>
+      'لا توجد مطاعم إضافية في هذا التصنيف';
+
+  @override
+  String get upgrade_summary_load_error =>
+      'تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.';
 }

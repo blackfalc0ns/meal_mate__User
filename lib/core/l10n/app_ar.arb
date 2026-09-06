@@ -1646,5 +1646,19 @@
   "address_coverage_notice_title": "تنبيه تغطية المطاعم",
   "address_no_serving_restaurants": "لا توجد مطاعم تخدم هذه المنطقة حالياً",
   "address_serving_restaurants_title": "المطاعم التي تخدم منطقتك الجديدة",
-  "address_coverage_notice_action": "حسناً، فهمت"
+  "address_coverage_notice_action": "حسناً، فهمت",
+  "address_preview_check_button": "متابعة وتحقق من التغطية",
+  "address_coverage_covered_title": "منطقتك مغطاة بمطاعم اشتراكك",
+  "address_coverage_uncovered_title": "المنطقة غير مغطاة باشتراكك",
+  "address_coverage_confirm_save": "تأكيد وحفظ العنوان",
+  "address_coverage_confirm_set_default": "تأكيد تعيين كافتراضي",
+  "address_coverage_choose_another": "اختيار عنوان آخر",
+  "address_coverage_uncovered_desc": "مطعم اشتراكك الحالي لا يدعم التوصيل إلى هذه المنطقة.",
+  "upgrade_summary_operational_title": "تفاصيل تفعيل الترقية",
+  "upgrade_summary_effective_date": "تاريخ بدء التفعيل",
+  "upgrade_summary_repetition": "يمكن تكرار المطعم حتى {limit} مرات خلال {days} يومًا",
+  "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
+  "upgrade_summary_new_restaurants": "مطاعم جديدة تنضم لباقتك",
+  "upgrade_summary_no_new_restaurants": "لا توجد مطاعم إضافية في هذا التصنيف",
+  "upgrade_summary_load_error": "تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى."
 }

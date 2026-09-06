@@ -8743,6 +8743,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got it'**
   String get address_coverage_notice_action;
+
+  /// No description provided for @address_preview_check_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue & Check Coverage'**
+  String get address_preview_check_button;
+
+  /// No description provided for @address_coverage_covered_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your area is covered by your subscription'**
+  String get address_coverage_covered_title;
+
+  /// No description provided for @address_coverage_uncovered_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Area not covered by your subscription'**
+  String get address_coverage_uncovered_title;
+
+  /// No description provided for @address_coverage_confirm_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Save Address'**
+  String get address_coverage_confirm_save;
+
+  /// No description provided for @address_coverage_confirm_set_default.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Set as Default'**
+  String get address_coverage_confirm_set_default;
+
+  /// No description provided for @address_coverage_choose_another.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Another Location'**
+  String get address_coverage_choose_another;
+
+  /// No description provided for @address_coverage_uncovered_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current subscription restaurant does not deliver to this area.'**
+  String get address_coverage_uncovered_desc;
+
+  /// No description provided for @upgrade_summary_operational_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade activation details'**
+  String get upgrade_summary_operational_title;
+
+  /// No description provided for @upgrade_summary_effective_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation start date'**
+  String get upgrade_summary_effective_date;
+
+  /// No description provided for @upgrade_summary_repetition.
+  ///
+  /// In en, this message translates to:
+  /// **'You can repeat a restaurant up to {limit} times during {days} days'**
+  String upgrade_summary_repetition(int limit, int days);
+
+  /// No description provided for @upgrade_summary_new_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'New restaurants joining your package'**
+  String get upgrade_summary_new_restaurants;
+
+  /// No description provided for @upgrade_summary_no_new_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'No additional restaurants in this tier'**
+  String get upgrade_summary_no_new_restaurants;
+
+  /// No description provided for @upgrade_summary_load_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load the upgrade summary. Please try again.'**
+  String get upgrade_summary_load_error;
 }
 
 class _AppLocalizationsDelegate

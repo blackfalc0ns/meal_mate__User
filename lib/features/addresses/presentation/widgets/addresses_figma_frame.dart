@@ -325,7 +325,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     if (initialAddress != null && initialAddress.addressId.isNotEmpty) {
       context.read<AddressesViewModel>().doIntent(
-            UpdateCustomerAddressEvent(
+            PreviewUpdateAddressCoverageEvent(
               addressId: initialAddress.addressId,
               request: request,
             ),
@@ -334,7 +334,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     }
 
     context.read<AddressesViewModel>().doIntent(
-          AddCustomerAddressEvent(request),
+          PreviewNewAddressCoverageEvent(request),
         );
   }
 

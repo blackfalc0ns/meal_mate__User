@@ -7,7 +7,7 @@ class SubscriptionUpgradeOptionsEntity {
     required this.totalServiceDays,
     required this.upgradeEndpoint,
     required this.options,
-    required this.paymentMethods,
+    this.paymentMethods = const [],
   });
 
   final bool canUpgrade;
@@ -144,4 +144,89 @@ class SubscriptionUpgradeStatusEntity {
   final bool isFailed;
   final String? effectiveAtUtc;
   final String? paymentUrl;
+}
+
+class SubscriptionUpgradeSummaryEntity {
+  const SubscriptionUpgradeSummaryEntity({
+    required this.subscriptionId,
+    required this.currentTier,
+    required this.targetTier,
+    required this.currentTierRestaurants,
+    required this.targetTierRestaurants,
+    required this.newlyAddedRestaurants,
+    required this.effectiveFromDate,
+    required this.effectiveNoticeAr,
+    required this.effectiveNoticeEn,
+    required this.restaurantRepetition,
+    required this.currentRemainingCredit,
+    required this.targetRemainingPrice,
+    required this.priceDifference,
+    required this.currencyCode,
+    required this.remainingServiceDays,
+    required this.totalServiceDays,
+    required this.paymentMethods,
+    required this.upgradeEndpoint,
+  });
+
+  final String subscriptionId;
+  final SubscriptionUpgradeTierEntity currentTier;
+  final SubscriptionUpgradeTierEntity targetTier;
+  final List<SubscriptionUpgradeRestaurantEntity> currentTierRestaurants;
+  final List<SubscriptionUpgradeRestaurantEntity> targetTierRestaurants;
+  final List<SubscriptionUpgradeRestaurantEntity> newlyAddedRestaurants;
+  final String effectiveFromDate;
+  final String effectiveNoticeAr;
+  final String effectiveNoticeEn;
+  final SubscriptionUpgradeRestaurantRepetitionEntity restaurantRepetition;
+  final double currentRemainingCredit;
+  final double targetRemainingPrice;
+  final double priceDifference;
+  final String currencyCode;
+  final int remainingServiceDays;
+  final int totalServiceDays;
+  final List<SubscriptionUpgradePaymentMethodEntity> paymentMethods;
+  final String upgradeEndpoint;
+}
+
+class SubscriptionUpgradeTierEntity {
+  const SubscriptionUpgradeTierEntity({
+    required this.tier,
+    required this.tierNameAr,
+    required this.tierNameEn,
+    this.logoUrl,
+    required this.accessibleRestaurantCount,
+  });
+  final String tier;
+  final String tierNameAr;
+  final String tierNameEn;
+  final String? logoUrl;
+  final int accessibleRestaurantCount;
+}
+
+class SubscriptionUpgradeRestaurantEntity {
+  const SubscriptionUpgradeRestaurantEntity({
+    required this.id,
+    required this.nameAr,
+    required this.nameEn,
+    this.logoUrl,
+    required this.rating,
+    required this.tier,
+  });
+  final String id;
+  final String nameAr;
+  final String nameEn;
+  final String? logoUrl;
+  final double rating;
+  final String tier;
+}
+
+class SubscriptionUpgradeRestaurantRepetitionEntity {
+  const SubscriptionUpgradeRestaurantRepetitionEntity({
+    required this.limit,
+    required this.restaurantCount,
+    required this.durationDays,
+  });
+  final int limit;
+  final int restaurantCount;
+  final int durationDays;
 }

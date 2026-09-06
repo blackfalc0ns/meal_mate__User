@@ -28,6 +28,12 @@ abstract class EndPoints {
   static const String customerAddresses = '/api/v1/customers/me/addresses';
   static const String customerAddress =
       '/api/v1/customers/me/addresses/{addressId}';
+  static const String customerAddressPreviewCoverage =
+      '/api/v1/customers/me/addresses/preview-coverage';
+  static const String customerExistingAddressPreviewCoverage =
+      '/api/v1/customers/me/addresses/{addressId}/preview-coverage';
+  static const String customerAddressSetDefault =
+      '/api/v1/customers/me/addresses/{addressId}/set-default';
   static const String mapsGeocode = '/api/v1/maps/geocode';
   static const String mapsReverseGeocode = '/api/v1/maps/reverse-geocode';
   static const String customerPassword = '/api/v1/customers/me/password';
@@ -134,6 +140,8 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/checkout';
   static const String customerSubscriptionUpgradeOptions =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-options';
+  static const String customerSubscriptionUpgradeSummary =
+      '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-summary';
   static const String customerSubscriptionUpgradeRequests =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests';
   static const String customerSubscriptionUpgradeStatus =

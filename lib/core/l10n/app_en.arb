@@ -1646,5 +1646,19 @@
   "address_coverage_notice_title": "Restaurant Coverage Notice",
   "address_no_serving_restaurants": "No restaurants currently serve this area",
   "address_serving_restaurants_title": "Restaurants serving your new area",
-  "address_coverage_notice_action": "Got it"
+  "address_coverage_notice_action": "Got it",
+  "address_preview_check_button": "Continue & Check Coverage",
+  "address_coverage_covered_title": "Your area is covered by your subscription",
+  "address_coverage_uncovered_title": "Area not covered by your subscription",
+  "address_coverage_confirm_save": "Confirm & Save Address",
+  "address_coverage_confirm_set_default": "Confirm Set as Default",
+  "address_coverage_choose_another": "Choose Another Location",
+  "address_coverage_uncovered_desc": "Your current subscription restaurant does not deliver to this area.",
+  "upgrade_summary_operational_title": "Upgrade activation details",
+  "upgrade_summary_effective_date": "Activation start date",
+  "upgrade_summary_repetition": "You can repeat a restaurant up to {limit} times during {days} days",
+  "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
+  "upgrade_summary_new_restaurants": "New restaurants joining your package",
+  "upgrade_summary_no_new_restaurants": "No additional restaurants in this tier",
+  "upgrade_summary_load_error": "Unable to load the upgrade summary. Please try again."
 }

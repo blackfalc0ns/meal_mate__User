@@ -6,7 +6,13 @@ abstract interface class RestaurantTierUpgradeRepository {
     String subscriptionId,
   );
 
-  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>> createUpgradeRequest(
+  Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
+    String subscriptionId,
+    String targetTier,
+  );
+
+  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>>
+  createUpgradeRequest(
     String subscriptionId,
     SubscriptionUpgradeRequestEntity request,
   );

@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_quick_comparison_section.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_upgrade_actions.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_upgrade_hero_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_upgrade_summary_section.dart';
 
 class RestaurantTierUpgradeConfirmationScreen extends StatefulWidget {
   const RestaurantTierUpgradeConfirmationScreen({super.key, this.args});
@@ -131,6 +132,26 @@ class _RestaurantTierUpgradeConfirmationScreenState
                     bundleName: args.bundleName,
                   );
 
+              if (state.isLoadingSummary) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              if (state.summaryFailure != null) {
+                return Scaffold(
+                  appBar: CustomAppBar(
+                    elevation: Spacing.zero,
+                    title: data.title,
+                  ),
+                  body: EmptyStateWidget(
+                    title: data.title,
+                    description: locale.upgrade_summary_load_error,
+                    icon: Icons.error_outline_rounded,
+                  ),
+                );
+              }
+
               return Semantics(
                 label: locale.nav_subscription,
                 child: Scaffold(
@@ -186,13 +207,17 @@ class _RestaurantTierUpgradeConfirmationScreenState
       RestaurantTierUpgradeHeroCard(data: data),
       const SizedBox(height: Spacing.lg),
       RestaurantTierQuickComparisonSection(data: data),
+      if (state.upgradeSummary != null) ...[
+        const SizedBox(height: Spacing.lg),
+        RestaurantTierUpgradeSummarySection(summary: state.upgradeSummary!),
+      ],
       const SizedBox(height: Spacing.lg),
       RestaurantTierDetailsSection(data: data),
-      if ((state.optionsEntity?.paymentMethods ?? const []).isNotEmpty) ...[
+      if ((state.upgradeSummary?.paymentMethods ?? const []).isNotEmpty) ...[
         const SizedBox(height: Spacing.lg),
         RestaurantTierPaymentSection(
           title: data.paymentTitle,
-          paymentMethods: state.optionsEntity!.paymentMethods,
+          paymentMethods: state.upgradeSummary!.paymentMethods,
           selectedPaymentMethod: state.selectedPaymentMethod,
           onPaymentMethodSelected: (method) =>
               _viewModel.doIntent(SelectUpgradePaymentMethodEvent(method)),

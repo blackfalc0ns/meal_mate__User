@@ -14,12 +14,12 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_notice_sheet.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
@@ -46,13 +46,60 @@ class AddressesScreen extends StatelessWidget {
           showShadow: false,
         ),
         body: BlocConsumer<AddressesViewModel, AddressesState>(
-          listenWhen: (previous, current) => previous.action != current.action,
+          listenWhen: (previous, current) =>
+              previous.action != current.action ||
+              previous.coveragePreview != current.coveragePreview,
           listener: (context, state) async {
             final errorMessage = state.action.displayErrorMessage;
             if (errorMessage != null && errorMessage.isNotEmpty) {
               CustomSnackbar.showError(
                 context: context,
                 message: mapFailureMessage(context, errorMessage),
+              );
+            }
+
+            final previewError = state.coveragePreview.displayErrorMessage;
+            if (previewError != null && previewError.isNotEmpty) {
+              CustomSnackbar.showError(
+                context: context,
+                message: mapFailureMessage(context, previewError),
+              );
+            }
+
+            final isNewPreviewSuccess =
+                state.coveragePreview.isSuccess &&
+                state.coveragePreview.preview != null;
+
+            if (isNewPreviewSuccess) {
+              final preview = state.coveragePreview.preview!;
+              await showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: color.surface,
+                builder: (sheetContext) => BlocProvider.value(
+                  value: context.read<AddressesViewModel>(),
+                  child: BlocBuilder<AddressesViewModel, AddressesState>(
+                    builder: (innerContext, innerState) {
+                      return AddressCoveragePreviewBottomSheet(
+                        preview: preview,
+                        isSubmitting: innerState.action.isLoading,
+                        confirmButtonText:
+                            locale.address_coverage_confirm_set_default,
+                        onConfirm: () {
+                          innerContext.read<AddressesViewModel>().doIntent(
+                                const ConfirmPendingAddressActionEvent(),
+                              );
+                        },
+                        onChooseAnother: () {
+                          Navigator.of(sheetContext).pop();
+                          innerContext.read<AddressesViewModel>().doIntent(
+                                const ClearCoveragePreviewEvent(),
+                              );
+                        },
+                      );
+                    },
+                  ),
+                ),
               );
             }
 
@@ -63,6 +110,7 @@ class AddressesScreen extends StatelessWidget {
                   address?.servingRestaurants ?? const [];
 
               if (coverageNotice != null && coverageNotice.hasContent) {
+                if (!context.mounted) return;
                 await showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
@@ -75,6 +123,7 @@ class AddressesScreen extends StatelessWidget {
               } else {
                 final deliveryNotice = _deliveryNoticeForAction(state);
                 if (deliveryNotice != null) {
+                  if (!context.mounted) return;
                   await showDialog<void>(
                     context: context,
                     builder: (context) =>
@@ -233,10 +282,7 @@ class AddressesScreen extends StatelessWidget {
           onSetDefault: address.addressId.isEmpty || address.isDefault
               ? null
               : () => context.read<AddressesViewModel>().doIntent(
-                  UpdateCustomerAddressEvent(
-                    addressId: address.addressId,
-                    request: _defaultAddressRequest(address),
-                  ),
+                  PreviewExistingAddressCoverageEvent(address.addressId),
                 ),
           onDelete: address.addressId.isEmpty
               ? null
@@ -251,29 +297,6 @@ class AddressesScreen extends StatelessWidget {
     }
 
     return children;
-  }
-
-  CustomerAddressRequestEntity _defaultAddressRequest(
-    CustomerAddressEntity address,
-  ) {
-    return CustomerAddressRequestEntity(
-      label: address.label,
-      addressLine: address.addressLine,
-      regionId: address.regionId,
-      governorate: address.governorate,
-      area: address.area,
-      block: address.block,
-      blockRegionId: address.blockRegionId,
-      street: address.street,
-      building: address.building,
-      unit: address.unit,
-      floor: address.floor,
-      latitude: address.latitude,
-      longitude: address.longitude,
-      notes: address.notes,
-      isDefault: true,
-      notifyOnDelivery: address.notifyOnDelivery,
-    );
   }
 
   IconData _iconForAddress(CustomerAddressEntity address) {

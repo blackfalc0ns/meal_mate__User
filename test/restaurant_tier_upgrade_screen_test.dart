@@ -16,6 +16,7 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/su
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
@@ -30,6 +31,7 @@ void main() {
       final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
       return RestaurantTierUpgradeViewModel(
         GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
         GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
@@ -133,6 +135,61 @@ class _RestaurantTierUpgradeRepositoryFake
     String subscriptionId,
   ) async {
     return ApiSuccessResult(data: _upgradeOptions);
+  }
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
+    String subscriptionId,
+    String targetTier,
+  ) async {
+    return ApiSuccessResult(
+      data: const SubscriptionUpgradeSummaryEntity(
+        subscriptionId: 'sub-1',
+        currentTier: SubscriptionUpgradeTierEntity(
+          tier: 'Basic',
+          tierNameAr: 'Basic',
+          tierNameEn: 'Basic',
+          accessibleRestaurantCount: 12,
+        ),
+        targetTier: SubscriptionUpgradeTierEntity(
+          tier: 'Plus',
+          tierNameAr: 'Plus',
+          tierNameEn: 'Plus',
+          accessibleRestaurantCount: 24,
+        ),
+        currentTierRestaurants: [],
+        targetTierRestaurants: [],
+        newlyAddedRestaurants: [],
+        effectiveFromDate: '2026-09-10',
+        effectiveNoticeAr: 'يبدأ التفعيل بعد 72 ساعة.',
+        effectiveNoticeEn: 'Activation starts after 72 hours.',
+        restaurantRepetition: SubscriptionUpgradeRestaurantRepetitionEntity(
+          limit: 3,
+          restaurantCount: 24,
+          durationDays: 12,
+        ),
+        currentRemainingCredit: 40,
+        targetRemainingPrice: 52,
+        priceDifference: 12,
+        currencyCode: 'KWD',
+        remainingServiceDays: 12,
+        totalServiceDays: 12,
+        paymentMethods: [
+          SubscriptionUpgradePaymentMethodEntity(
+            id: 1,
+            code: 'kn',
+            title: 'KNET',
+            integrationType: 'MYFATOORAH_HOSTED',
+            serviceCharge: 0,
+            totalAmount: 12,
+            currencyCode: 'KWD',
+            isAvailable: true,
+          ),
+        ],
+        upgradeEndpoint:
+            '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
+      ),
+    );
   }
 
   @override
