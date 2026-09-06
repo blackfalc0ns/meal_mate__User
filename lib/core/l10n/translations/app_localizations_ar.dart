@@ -1075,6 +1075,19 @@ class AppLocalizationsAr extends AppLocalizations {
       'حدد موقعي الحالي كعنوان للبيت';
 
   @override
+  String get addresses_search_hint => 'ابحث عن عنوان أو منطقة أو شارع';
+
+  @override
+  String get addresses_choose_from_map => 'اختيار من الخريطة';
+
+  @override
+  String get addresses_choose_from_map_subtitle => 'حدد موقعك من الخريطة';
+
+  @override
+  String get addresses_use_current_location_desc =>
+      'يحدد موقعك الحالي تلقائياً';
+
+  @override
   String get address_active_delivery_cannot_delete =>
       'هذا العنوان مستخدم حاليًا للتوصيل. عيّن عنوانًا افتراضيًا آخر وانتظر 72 ساعة حتى يتم تفعيله قبل حذف هذا العنوان.';
 

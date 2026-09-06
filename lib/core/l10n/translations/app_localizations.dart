@@ -2090,6 +2090,30 @@ abstract class AppLocalizations {
   /// **'Set my current location as home address'**
   String get addresses_use_current_location_subtitle;
 
+  /// No description provided for @addresses_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for address, area or street'**
+  String get addresses_search_hint;
+
+  /// No description provided for @addresses_choose_from_map.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from map'**
+  String get addresses_choose_from_map;
+
+  /// No description provided for @addresses_choose_from_map_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your location on the map'**
+  String get addresses_choose_from_map_subtitle;
+
+  /// No description provided for @addresses_use_current_location_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically detects your current location'**
+  String get addresses_use_current_location_desc;
+
   /// No description provided for @address_active_delivery_cannot_delete.
   ///
   /// In en, this message translates to:

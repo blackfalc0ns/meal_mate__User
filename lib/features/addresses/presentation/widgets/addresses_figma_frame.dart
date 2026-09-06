@@ -6,18 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_gps_button.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/building_type_selector.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/current_location_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/location_confirmation_card.dart';
 
 class AddressesFigmaFrame extends StatefulWidget {
   const AddressesFigmaFrame({
@@ -27,23 +23,7 @@ class AddressesFigmaFrame extends StatefulWidget {
     this.initialAddress,
   });
 
-  static const double locationConfirmationCardHeight =
-      (Spacing.addressesChooseLocationCardPadding * 2) +
-      ((Spacing.addressesChooseLocationTitleSize +
-              Spacing.addressesChooseLocationSubtitleSize) *
-          Spacing.addressesChooseLocationLineHeight) +
-      Spacing.addressesChooseLocationHeaderGap +
-      Spacing.addressesChooseLocationLineHeight +
-      Spacing.addressesChooseLocationHeaderGap +
-      Spacing.addressesChooseLocationButtonHeight;
-  static const double frameHeight =
-      Spacing.addressesChooseLocationColumnTop +
-      locationConfirmationCardHeight +
-      Spacing.addressesChooseLocationColumnGap +
-      Spacing.addressesHomeFormHeight +
-      Spacing.addressesChooseLocationColumnGap +
-      Spacing.addressesCurrentLocationCardHeight +
-      Spacing.addressesChooseLocationBottomPadding;
+  static const double frameHeight = Spacing.addressesChooseLocationDesignHeight;
 
   final LocationsCatalogState locations;
   final bool isSubmitting;
@@ -64,14 +44,13 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   GoogleMapController? _mapController;
   Timer? _debounceTimer;
   bool _isInitialMapMove = true;
+  AddressLocationMode _selectedMode = AddressLocationMode.currentLocation;
 
+  final TextEditingController _searchController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _avenueController = TextEditingController();
-  final TextEditingController _floorController = TextEditingController();
   final TextEditingController _buildingNumberController =
       TextEditingController();
-  final TextEditingController _apartmentController = TextEditingController();
-  AddressBuildingType _buildingType = AddressBuildingType.home;
 
   @override
   void initState() {
@@ -85,11 +64,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   void dispose() {
     _debounceTimer?.cancel();
     _mapController?.dispose();
+    _searchController.dispose();
     _streetController.dispose();
     _avenueController.dispose();
-    _floorController.dispose();
     _buildingNumberController.dispose();
-    _apartmentController.dispose();
     super.dispose();
   }
 
@@ -113,142 +91,83 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
             if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
               _avenueController.text = autofill.avenue!;
             }
-            _buildingNumberController.clear();
-            _floorController.clear();
-            _apartmentController.clear();
+            if (autofill.formattedAddress.isNotEmpty) {
+              _searchController.text = autofill.formattedAddress;
+            }
           });
+          _mapController?.animateCamera(
+            CameraUpdate.newLatLng(
+              LatLng(autofill.latitude, autofill.longitude),
+            ),
+          );
         }
       },
       child: Semantics(
         label: locale.addresses_choose_location_title,
-        child: Container(
-          width: Spacing.addressesChooseLocationDesignWidth,
-          height: AddressesFigmaFrame.frameHeight,
-          color: color.surfaceContainerHighest,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                height: Spacing.addressesChooseLocationColumnTop + 60,
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(_currentLatitude, _currentLongitude),
-                    zoom: 16.0,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(_currentLatitude, _currentLongitude),
+                  zoom: 16.0,
+                ),
+                onMapCreated: _onMapCreated,
+                onCameraMove: _onCameraMove,
+                onCameraIdle: _onCameraIdle,
+                myLocationEnabled: false,
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                mapToolbarEnabled: false,
+                compassEnabled: false,
+                rotateGesturesEnabled: false,
+                tiltGesturesEnabled: false,
+                gestureRecognizers: {
+                  Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer(),
                   ),
-                  onMapCreated: _onMapCreated,
-                  onCameraMove: _onCameraMove,
-                  onCameraIdle: _onCameraIdle,
-                  myLocationEnabled: false,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  mapToolbarEnabled: false,
-                  compassEnabled: false,
-                  rotateGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  gestureRecognizers: {
-                    Factory<OneSequenceGestureRecognizer>(
-                      () => EagerGestureRecognizer(),
-                    ),
-                  },
+                },
+                circles: {
+                  Circle(
+                    circleId: const CircleId('delivery_radius'),
+                    center: LatLng(_currentLatitude, _currentLongitude),
+                    radius: 200,
+                    fillColor: color.primary.withValues(alpha: 0.12),
+                    strokeColor: color.primary.withValues(alpha: 0.28),
+                    strokeWidth: 1,
+                  ),
+                },
+              ),
+            ),
+            const Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: Spacing.bottomSheetRadius * 12,
+              child: Center(
+                child: IgnorePointer(
+                  child: AddressMapMarker(),
                 ),
               ),
-              Column(
-                children: [
-                  const SizedBox(height: Spacing.addressesChooseLocationGpsTop),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: Spacing.addressesChooseLocationGpsStart,
-                    ),
-                    child: Row(
-                      children: [
-                        AddressGpsButton(
-                          onTap: () => _onGpsPressed(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height:
-                        Spacing.addressesChooseLocationBadgeTop -
-                        Spacing.addressesChooseLocationGpsTop -
-                        Spacing.addressesChooseLocationGpsSize,
-                  ),
-                  const IgnorePointer(
-                    child: AddressMapMarker(),
-                  ),
-                  const SizedBox(
-                    height:
-                        Spacing.addressesChooseLocationColumnTop -
-                        Spacing.addressesChooseLocationPinTop -
-                        Spacing.addressesChooseLocationPinSize,
-                  ),
-                  Center(
-                    child: Column(
-                      children: [
-                        LocationConfirmationCard(
-                          isLoading: widget.isSubmitting,
-                          onConfirm: () => _submitAddress(context),
-                        ),
-                        const SizedBox(
-                          height: Spacing.addressesChooseLocationColumnGap,
-                        ),
-                        HomeAddressFormCard(
-                          governorates: widget.locations.governorates,
-                          areas: widget.locations.areas,
-                          blocks: widget.locations.blocks,
-                          selectedGovernorate:
-                              widget.locations.selectedGovernorate,
-                          selectedArea: widget.locations.selectedArea,
-                          selectedBlock: widget.locations.selectedBlock,
-                          streetController: _streetController,
-                          avenueController: _avenueController,
-                          floorController: _floorController,
-                          buildingNumberController: _buildingNumberController,
-                          apartmentController: _apartmentController,
-                          selectedBuildingType: _buildingType,
-                          onGovernorateSelected: (governorate) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressGovernorateEvent(governorate),
-                            );
-                          },
-                          onAreaSelected: (area) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressAreaEvent(area),
-                            );
-                          },
-                          onBlockSelected: (block) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressBlockEvent(block),
-                            );
-                          },
-                          onBuildingTypeChanged: (type) {
-                            setState(() {
-                              _buildingType = type;
-                              if (type == AddressBuildingType.building) {
-                                _floorController.clear();
-                                _apartmentController.clear();
-                              }
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: Spacing.addressesChooseLocationColumnGap,
-                        ),
-                        CurrentLocationCard(
-                          onTap: () => _onGpsPressed(context),
-                        ),
-                        const SizedBox(
-                          height: Spacing.addressesChooseLocationBottomPadding,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: AddressChooseLocationSheet(
+                selectedMode: _selectedMode,
+                isSubmitting: widget.isSubmitting,
+                searchController: _searchController,
+                onSearchSubmitted: _onSearchSubmitted,
+                onSearchChanged: _onSearchChanged,
+                onModeChanged: (mode) {
+                  setState(() => _selectedMode = mode);
+                },
+                onUseCurrentLocation: () => _onGpsPressed(context),
+                onConfirm: () => _submitAddress(context),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -284,6 +203,26 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _triggerReverseGeocode(context);
   }
 
+  void _onSearchSubmitted(String query) {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) return;
+    context.read<AddressesViewModel>().doIntent(
+          GeocodeAddressEvent(address: trimmed),
+        );
+  }
+
+  void _onSearchChanged(String query) {
+    _debounceTimer?.cancel();
+    final trimmed = query.trim();
+    if (trimmed.length < 3) return;
+    _debounceTimer = Timer(const Duration(milliseconds: 800), () {
+      if (!mounted) return;
+      context.read<AddressesViewModel>().doIntent(
+            GeocodeAddressEvent(address: trimmed),
+          );
+    });
+  }
+
   void _triggerReverseGeocode(BuildContext context) {
     if (_lastGeocodedLat != null && _lastGeocodedLng != null) {
       final latDiff = (_currentLatitude - _lastGeocodedLat!).abs();
@@ -296,11 +235,11 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _lastGeocodedLng = _currentLongitude;
 
     context.read<AddressesViewModel>().doIntent(
-      ReverseGeocodeEvent(
-        latitude: _currentLatitude,
-        longitude: _currentLongitude,
-      ),
-    );
+          ReverseGeocodeEvent(
+            latitude: _currentLatitude,
+            longitude: _currentLongitude,
+          ),
+        );
   }
 
   void _submitAddress(BuildContext context) {
@@ -308,50 +247,66 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     final locale = context.localization;
     final languageCode = Localizations.localeOf(context).languageCode;
-    final governorate = widget.locations.selectedGovernorate;
-    final area = widget.locations.selectedArea;
-    final block = widget.locations.selectedBlock;
-    final street = _streetController.text.trim();
-    final avenue = _avenueController.text.trim();
-    final floor = _floorController.text.trim();
-    final building = _buildingNumberController.text.trim();
-    final unit = _apartmentController.text.trim();
-    final isHome = _buildingType == AddressBuildingType.home;
-    final governorateName = governorate?.nameForLanguage(languageCode);
-    final areaName = area?.nameForLanguage(languageCode);
-    final blockName = block?.nameForLanguage(languageCode);
-    final governorateCode = _regionCode(governorate?.code);
-    final areaCode = _regionCode(area?.code);
-    final blockCode = _regionCode(block?.code);
+    final autofill =
+        context.read<AddressesViewModel>().state.mapAutofill.autofill;
+
+    var area = widget.locations.selectedArea;
+    var governorate = widget.locations.selectedGovernorate;
+    var block = widget.locations.selectedBlock;
+
+    if (area == null && autofill?.suggestedRegionId != null) {
+      for (final g in widget.locations.governorates) {
+        for (final a in g.areas) {
+          if (a.id == autofill!.suggestedRegionId) {
+            area = a;
+            governorate = g;
+            break;
+          }
+        }
+        if (area != null) break;
+      }
+    }
+
+    if (area == null && widget.locations.areas.isNotEmpty) {
+      area = widget.locations.areas.first;
+      governorate ??= widget.locations.governorates.firstOrNull;
+    }
+
+    final street = _streetController.text.trim().isNotEmpty
+        ? _streetController.text.trim()
+        : (autofill?.street?.trim() ?? '');
+    final avenue = _avenueController.text.trim().isNotEmpty
+        ? _avenueController.text.trim()
+        : (autofill?.avenue?.trim() ?? '');
+    final building = _buildingNumberController.text.trim().isNotEmpty
+        ? _buildingNumberController.text.trim()
+        : (autofill?.building?.trim() ?? '');
+
+    final governorateName =
+        governorate?.nameForLanguage(languageCode) ?? autofill?.governorate;
+    final areaName = area?.nameForLanguage(languageCode) ?? autofill?.area;
+    final blockName = block?.nameForLanguage(languageCode) ?? autofill?.block;
+    final governorateCode =
+        _regionCode(governorate?.code) ?? autofill?.governorate;
+    final areaCode = _regionCode(area?.code) ?? autofill?.area;
+    final blockCode = _regionCode(block?.code) ?? autofill?.block;
     final initialAddress = widget.initialAddress;
-    final label = isHome
-        ? locale.addresses_building_type_home
-        : locale.addresses_building_type_building;
+
     final addressLine = _addressLine([
       governorateName,
       areaName,
       blockName,
       street,
       avenue,
-      if (isHome) floor,
       building,
-      if (isHome) unit,
     ]);
 
-    if (area == null) {
-      CustomSnackbar.showError(
-        context: context,
-        message: locale.addresses_area_required,
-      );
-      return;
-    }
-
     final request = CustomerAddressRequestEntity(
-      label: label,
+      label: locale.addresses_current_home,
       addressLine: addressLine.isEmpty
-          ? locale.addresses_home_address_title
+          ? locale.addresses_choose_location_title
           : addressLine,
-      regionId: area.id,
+      regionId: area?.id ?? (autofill?.suggestedRegionId ?? 'default_region'),
       governorate: governorateCode,
       area: areaCode,
       block: blockCode,
@@ -359,8 +314,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       street: street.isEmpty ? null : street,
       avenue: avenue.isEmpty ? null : avenue,
       building: building.isEmpty ? null : building,
-      unit: isHome && unit.isNotEmpty ? unit : null,
-      floor: isHome && floor.isNotEmpty ? floor : null,
+      unit: null,
+      floor: null,
       latitude: _currentLatitude,
       longitude: _currentLongitude,
       notes: avenue.isEmpty ? null : avenue,
@@ -370,17 +325,17 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     if (initialAddress != null && initialAddress.addressId.isNotEmpty) {
       context.read<AddressesViewModel>().doIntent(
-        UpdateCustomerAddressEvent(
-          addressId: initialAddress.addressId,
-          request: request,
-        ),
-      );
+            UpdateCustomerAddressEvent(
+              addressId: initialAddress.addressId,
+              request: request,
+            ),
+          );
       return;
     }
 
     context.read<AddressesViewModel>().doIntent(
-      AddCustomerAddressEvent(request),
-    );
+          AddCustomerAddressEvent(request),
+        );
   }
 
   void _fillInitialAddress(CustomerAddressEntity? address) {
@@ -388,9 +343,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     _streetController.text = address.street ?? '';
     _avenueController.text = address.notes ?? '';
-    _floorController.text = address.floor ?? '';
     _buildingNumberController.text = address.building ?? '';
-    _apartmentController.text = address.unit ?? '';
   }
 
   String _addressLine(List<String?> parts) {

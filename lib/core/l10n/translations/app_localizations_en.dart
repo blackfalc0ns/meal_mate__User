@@ -1094,6 +1094,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set my current location as home address';
 
   @override
+  String get addresses_search_hint => 'Search for address, area or street';
+
+  @override
+  String get addresses_choose_from_map => 'Choose from map';
+
+  @override
+  String get addresses_choose_from_map_subtitle =>
+      'Select your location on the map';
+
+  @override
+  String get addresses_use_current_location_desc =>
+      'Automatically detects your current location';
+
+  @override
   String get address_active_delivery_cannot_delete =>
       'This address is currently used for delivery. Set another default address and wait 72 hours for it to activate before deleting this one.';
 

@@ -3,8 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/building_type_selector.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
 
 void main() {
   testWidgets('edit address form starts with the selected address values', (
@@ -28,10 +28,16 @@ void main() {
       notifyOnDelivery: true,
     );
 
+    final streetController = TextEditingController(text: address.street);
+    final avenueController = TextEditingController(text: address.notes);
+    final floorController = TextEditingController(text: address.floor);
+    final buildingController = TextEditingController(text: address.building);
+    final apartmentController = TextEditingController(text: address.unit);
+
     await tester.pumpWidget(
-      const MaterialApp(
-        locale: Locale('en'),
-        localizationsDelegates: [
+      MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -40,10 +46,20 @@ void main() {
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: SingleChildScrollView(
-            child: AddressesFigmaFrame(
-              locations: LocationsCatalogState(),
-              isSubmitting: false,
-              initialAddress: address,
+            child: HomeAddressFormCard(
+              governorates: const [],
+              areas: const [],
+              blocks: const [],
+              streetController: streetController,
+              avenueController: avenueController,
+              floorController: floorController,
+              buildingNumberController: buildingController,
+              apartmentController: apartmentController,
+              selectedBuildingType: AddressBuildingType.home,
+              onGovernorateSelected: (_) {},
+              onAreaSelected: (_) {},
+              onBlockSelected: (_) {},
+              onBuildingTypeChanged: (_) {},
             ),
           ),
         ),
