@@ -9,14 +9,19 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_state.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_prerequisite_destination.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_prerequisite_bottom_sheet.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_package_choice_card.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_packages_loading_skeleton.dart';
@@ -56,55 +61,86 @@ class _SubscriptionPackageSelectionScreenState
         }
         return viewModel;
       },
-      child: Scaffold(
-        backgroundColor: color.surface,
-        appBar: CustomAppBar(
-          titleWidget: const AppLogo(alignment: CrossAxisAlignment.center),
+      child: BlocConsumer<SubscriptionProgramsViewModel, SubscriptionProgramsState>(
+        listenWhen: (previous, current) =>
+            previous.prerequisitesCompleted != current.prerequisitesCompleted ||
+            previous.prerequisitesFailure != current.prerequisitesFailure,
+        listener: (context, state) async {
+          if (state.prerequisitesCompleted) {
+            _openSelectedPackage(state.bundles);
+            return;
+          }
+
+          final failure = state.prerequisitesFailure;
+          if (failure == null) return;
+          final destination = SubscriptionPrerequisiteDestination.fromErrorCode(
+            failure.code,
+          );
+          if (destination == null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: mapFailureMessage(context, failure.errorMessage),
+            );
+            return;
+          }
+
+          await _showPrerequisiteSheet(context, destination);
+        },
+        builder: (context, state) => Scaffold(
           backgroundColor: color.surface,
-          onBackPressed: () => Navigator.maybePop(context),
-        ),
-        bottomNavigationBar:
-            BlocBuilder<
-              SubscriptionProgramsViewModel,
-              SubscriptionProgramsState
-            >(
-              builder: (context, state) {
-                return SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.lg,
-                      vertical: Spacing.md,
-                    ),
-                    child: AppButton.filled(
-                      text: locale.subscription_choose_plan_button,
-                      onPressed:
-                          _selectedPlanDetailsIndex == null ||
-                              state.bundles.isEmpty
-                          ? null
-                          : () => _openSelectedPackage(state.bundles),
-                      borderRadius: Spacing.radiusPill,
-                      textColor: color.onPrimary,
-                      fontSize: FontSize.size12,
-                      iconWidget: Icon(
-                        Icons.chevron_right_rounded,
-                        color: color.onPrimary,
-                        size: Spacing.iconMd,
+          appBar: CustomAppBar(
+            titleWidget: const AppLogo(alignment: CrossAxisAlignment.center),
+            backgroundColor: color.surface,
+            onBackPressed: () => Navigator.maybePop(context),
+          ),
+          bottomNavigationBar:
+              BlocBuilder<
+                SubscriptionProgramsViewModel,
+                SubscriptionProgramsState
+              >(
+                builder: (context, state) {
+                  return SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.lg,
+                        vertical: Spacing.md,
+                      ),
+                      child: AppButton.filled(
+                        text: locale.subscription_choose_plan_button,
+                        onPressed:
+                            _selectedPlanDetailsIndex == null ||
+                                state.bundles.isEmpty
+                            ? null
+                            : () => context
+                                  .read<SubscriptionProgramsViewModel>()
+                                  .doIntent(
+                                    const CheckSubscriptionPrerequisitesEvent(),
+                                  ),
+                        isLoading: state.isPrerequisitesLoading,
+                        borderRadius: Spacing.radiusPill,
+                        textColor: color.onPrimary,
+                        fontSize: FontSize.size12,
+                        iconWidget: Icon(
+                          Icons.chevron_right_rounded,
+                          color: color.onPrimary,
+                          size: Spacing.iconMd,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-        body:
-            BlocBuilder<
-              SubscriptionProgramsViewModel,
-              SubscriptionProgramsState
-            >(
-              builder: (context, state) {
-                return _buildBody(context, state, selectedProgram);
-              },
-            ),
+                  );
+                },
+              ),
+          body:
+              BlocBuilder<
+                SubscriptionProgramsViewModel,
+                SubscriptionProgramsState
+              >(
+                builder: (context, state) {
+                  return _buildBody(context, state, selectedProgram);
+                },
+              ),
+        ),
       ),
     );
   }
@@ -246,5 +282,40 @@ class _SubscriptionPackageSelectionScreenState
         bundle: bundles[selectedPlanDetailsIndex],
       ),
     );
+  }
+
+  Future<void> _showPrerequisiteSheet(
+    BuildContext context,
+    SubscriptionPrerequisiteDestination destination,
+  ) {
+    return context.showAppBottomSheet<void>(
+      builder: (sheetContext) => SubscriptionPrerequisiteBottomSheet(
+        destination: destination,
+        onPressed: () async {
+          Navigator.of(sheetContext).pop();
+          final updated = await Navigator.of(context).pushNamed(
+            _routeForPrerequisite(destination),
+            arguments: const SubscriptionFlowArgs(),
+          );
+          if (updated == true && context.mounted) {
+            context.read<SubscriptionProgramsViewModel>().doIntent(
+              const CheckSubscriptionPrerequisitesEvent(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  String _routeForPrerequisite(
+    SubscriptionPrerequisiteDestination destination,
+  ) {
+    return switch (destination) {
+      SubscriptionPrerequisiteDestination.address =>
+        AppRoutes.addressChooseLocation,
+      SubscriptionPrerequisiteDestination.allergies => AppRoutes.addAllergy,
+      SubscriptionPrerequisiteDestination.dietaryPreferences =>
+        AppRoutes.dietaryPreferences,
+    };
   }
 }

@@ -170,12 +170,11 @@ extension FoodPreferencesAllergiesEntityMapper
           .map(
             (item) => FoodPreferencesAllergyRequestDto(
               code: item.code,
-              severity: item.severity,
+              nameAr: item.nameAr,
+              nameEn: item.nameEn,
             ),
           )
           .toList(),
-      confirmed: true,
-      noneSelected: selectedAllergies.isEmpty,
     );
   }
 }
@@ -203,8 +202,6 @@ extension FoodPreferencesDislikedIngredientsEntityMapper
 
     return FoodPreferencesDietaryRequestDto(
       dietaryPreferenceCodes: dietaryPreferenceCodes,
-      confirmed: true,
-      noneSelected: dietaryPreferenceCodes.isEmpty,
     );
   }
 }

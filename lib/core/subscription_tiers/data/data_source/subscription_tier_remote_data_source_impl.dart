@@ -12,6 +12,11 @@ class SubscriptionTierRemoteDataSourceImpl
   final ApiServices _apiServices;
 
   @override
+  Future<void> checkPrerequisites() {
+    return _apiServices.checkSubscriptionPrerequisites();
+  }
+
+  @override
   Future<List<SubscriptionTierResponseDto>> getTiers({
     required String programId,
     required String bundleId,

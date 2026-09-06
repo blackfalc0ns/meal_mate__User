@@ -401,6 +401,8 @@ import '../subscription_tiers/data/repo/subscription_tier_repository_impl.dart'
     as _i897;
 import '../subscription_tiers/domain/repo/subscription_tier_repository.dart'
     as _i317;
+import '../subscription_tiers/domain/usecase/check_subscription_prerequisites_usecase.dart'
+    as _i623;
 import '../subscription_tiers/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
     as _i726;
 import '../subscription_tiers/domain/usecase/get_subscription_tiers_usecase.dart'
@@ -607,6 +609,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i603.FamilyProgramsRemoteDataSource>(
       () => _i567.FamilyProgramsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i623.CheckSubscriptionPrerequisitesUseCase>(
+      () => _i623.CheckSubscriptionPrerequisitesUseCase(
+        gh<_i317.SubscriptionTierRepository>(),
+      ),
     );
     gh.factory<_i726.GetSubscriptionTierRestaurantsUseCase>(
       () => _i726.GetSubscriptionTierRestaurantsUseCase(
@@ -818,6 +825,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i556.AddressesRepository>(
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
+    );
+    gh.factory<_i420.SubscriptionProgramsViewModel>(
+      () => _i420.SubscriptionProgramsViewModel(
+        gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
+        gh<_i623.CheckSubscriptionPrerequisitesUseCase>(),
+      ),
     );
     gh.factory<_i873.AbandonFamilyDraftUseCase>(
       () => _i873.AbandonFamilyDraftUseCase(
@@ -1064,12 +1078,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i133.SetCalendarDayRestaurantUseCase>(
       () =>
           _i133.SetCalendarDayRestaurantUseCase(gh<_i333.CalendarRepository>()),
-    );
-    gh.factory<_i420.SubscriptionProgramsViewModel>(
-      () => _i420.SubscriptionProgramsViewModel(
-        gh<_i178.GetSubscriptionProgramsUseCase>(),
-        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-      ),
     );
     gh.factory<_i528.RestaurantTierUpgradeViewModel>(
       () => _i528.RestaurantTierUpgradeViewModel(

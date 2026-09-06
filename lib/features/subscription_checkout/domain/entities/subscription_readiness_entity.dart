@@ -112,9 +112,9 @@ class SubscriptionReadinessRestaurantEntity {
 }
 
 class SubscriptionFlowArgs {
-  const SubscriptionFlowArgs({required this.request});
+  const SubscriptionFlowArgs({this.request});
 
-  final SubscriptionSummaryRequestEntity request;
+  final SubscriptionSummaryRequestEntity? request;
 
   bool get isSubscriptionSource => true;
 }

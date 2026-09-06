@@ -14,6 +14,11 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
   final SubscriptionTierRemoteDataSource _remoteDataSource;
 
   @override
+  Future<ApiResult<void>> checkPrerequisites() {
+    return safeApiCall(_remoteDataSource.checkPrerequisites);
+  }
+
+  @override
   Future<ApiResult<List<SubscriptionTierEntity>>> getTiers({
     required String programId,
     required String bundleId,

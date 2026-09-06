@@ -299,6 +299,9 @@ abstract class ApiServices {
     @Query('includeFriday') bool includeFriday,
   );
 
+  @GET(EndPoints.subscriptionPrerequisites)
+  Future<void> checkSubscriptionPrerequisites();
+
   @GET(EndPoints.subscriptionTierRestaurants)
   Future<List<SubscriptionTierRestaurantBrowseResponseDto>>
   getSubscriptionTierRestaurants(
