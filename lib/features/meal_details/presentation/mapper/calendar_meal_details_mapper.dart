@@ -31,15 +31,11 @@ abstract final class CalendarMealDetailsMapper {
       restaurantLogo: restaurantInitials ?? _initials(restaurantName),
       restaurantLogoUrl: restaurantLogoUrl,
       headerImageUrl: headerImageUrl ?? meal.imageUrl,
-      ratingTitle: locale.localeName == 'ar'
-          ? 'تقييم المطعم'
-          : 'Restaurant rating',
+      ratingTitle: locale.meal_details_restaurant_rating,
       ratingValue: ratingValue,
-      programLabel: locale.localeName == 'ar' ? 'نوع الوجبة' : 'Meal type',
+      programLabel: locale.meal_details_meal_type,
       programValue: meal.mealType,
-      deliveryLabel: locale.localeName == 'ar'
-          ? 'وقت التوصيل'
-          : 'Delivery time',
+      deliveryLabel: locale.meal_details_delivery_time,
       deliveryValue: deliveryWindow,
       ingredientsTitle: locale.calendar_ingredients,
       ingredients: meal.ingredients
@@ -52,13 +48,11 @@ abstract final class CalendarMealDetailsMapper {
           )
           .where((ingredient) => ingredient.label.isNotEmpty)
           .toList(),
-      nutritionTitle: locale.localeName == 'ar'
-          ? 'القيم الغذائية'
-          : 'Nutrition facts',
+      nutritionTitle: locale.meal_details_nutrition_facts,
       nutritionItems: [
         MealDetailsNutritionEntity(
           value: _gramValue(null, locale.localeName),
-          label: locale.localeName == 'ar' ? 'ألياف' : 'Fiber',
+          label: locale.nutrition_details_fiber,
           type: MealDetailsNutritionType.fiber,
         ),
         MealDetailsNutritionEntity(
@@ -82,9 +76,7 @@ abstract final class CalendarMealDetailsMapper {
           type: MealDetailsNutritionType.calories,
         ),
       ],
-      macroDistributionTitle: locale.localeName == 'ar'
-          ? 'توزيع العناصر الغذائية'
-          : 'Macro distribution',
+      macroDistributionTitle: locale.meal_details_macro_distribution,
       macroItems: _macroItems(
         proteinG,
         carbsG,
@@ -95,9 +87,7 @@ abstract final class CalendarMealDetailsMapper {
         carbsPercentage: meal.carbsPercentage,
         fatPercentage: meal.fatPercentage,
       ),
-      allergensTitle: locale.localeName == 'ar'
-          ? 'مسببات الحساسية'
-          : 'Allergens',
+      allergensTitle: locale.meal_details_allergens,
       allergens: _mealDetailsAllergens(meal.allergens),
       onSelectMeal: onSelectMeal,
     );
