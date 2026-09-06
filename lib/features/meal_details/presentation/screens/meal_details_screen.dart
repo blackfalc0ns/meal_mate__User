@@ -16,9 +16,9 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/subscriptio
 import 'package:meal_meat_user/features/meal_details/presentation/manager/meal_details_event.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/manager/meal_details_state.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/manager/meal_details_view_model.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_content.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_header_image.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_rating_badge.dart';
-import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_sheet.dart';
 
 class MealDetailsScreen extends StatelessWidget {
   const MealDetailsScreen({super.key, this.meal, this.args});
@@ -130,47 +130,56 @@ class MealDetailsScreen extends StatelessWidget {
 
   Widget _buildDetails(BuildContext context, MealDetailsEntity details) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    final textDirection = locale.localeName == 'ar'
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-
-    return Directionality(
-      textDirection: textDirection,
-      child: Scaffold(
-        backgroundColor: color.surface,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return Stack(
+    const overlap =
+        Spacing.restaurantDetailsHeroHeight - Spacing.restaurantDetailsSheetTop;
+    const imageHeight = Spacing.xxxl * 4 + Spacing.xxl;
+    return Scaffold(
+      backgroundColor: color.surface,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Stack(
               children: [
-                MealDetailsHeaderImage(
-                  label: details.title,
-                  imageUrl: details.headerImageUrl,
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight:
-                          constraints.maxHeight -
-                          (Spacing.xxxl * 3 + Spacing.xl),
-                    ),
-                    child: MealDetailsSheet(meal: details),
-                  ),
-                ),
                 Positioned(
-                  left: Spacing.xl,
-                  bottom: constraints.maxHeight - (Spacing.xxxl * 3),
-                  child: MealDetailsRatingBadge(
-                    title: details.ratingTitle,
-                    value: details.ratingValue,
+                  top: Spacing.zero,
+                  left: Spacing.zero,
+                  right: Spacing.zero,
+                  child: Stack(
+                    children: [
+                      MealDetailsHeaderImage(
+                        label: details.title,
+                        imageUrl: details.headerImageUrl,
+                      ),
+                      Positioned(
+                        left: Spacing.xl,
+                        bottom: Spacing.xxl + overlap,
+                        child: MealDetailsRatingBadge(
+                          title: details.ratingTitle,
+                          value: details.ratingValue,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                CustomBackButton(onPressed: () => Navigator.maybePop(context)),
+                Padding(
+                  padding: const EdgeInsets.only(top: imageHeight - overlap),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(
+                        Spacing.restaurantDetailsSheetRadius,
+                      ),
+                    ),
+                    child: ColoredBox(
+                      color: color.surface,
+                      child: MealDetailsContent(meal: details),
+                    ),
+                  ),
+                ),
               ],
-            );
-          },
-        ),
+            ),
+          ),
+          CustomBackButton(onPressed: () => Navigator.maybePop(context)),
+        ],
       ),
     );
   }

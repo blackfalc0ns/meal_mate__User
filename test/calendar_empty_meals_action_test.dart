@@ -5,16 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('empty meals add button opens restaurant picker before meal picker', () {
     final source = File(
-      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+      'lib/features/calendar/presentation/widgets/calendar_day_content.dart',
     ).readAsStringSync();
-
     expect(
       source,
-      contains(
-        'onAddMeals: readOnly\n'
-        '                        ? null\n'
-        '                        : () => _openRestaurantPicker(context),',
-      ),
+      contains('onAddMeals: readOnly ? null : () => onSelectRestaurant()'),
+    );
+    final screen = File(
+      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+    ).readAsStringSync();
+    expect(
+      screen,
+      contains('onSelectRestaurant: () => _openRestaurantPicker(context)'),
     );
   });
 
@@ -88,41 +90,29 @@ void main() {
     );
   });
 
-  test(
-    'meal picker save button is selected separately from sheet rebuilds',
-    () {
-      final source = File(
-        'lib/features/calendar/presentation/screens/calendar_screen.dart',
-      ).readAsStringSync();
+  test('meal picker save button is selected separately from sheet rebuilds', () {
+    final source = File(
+      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+    ).readAsStringSync();
 
-      final openMealPickerIndex = source.indexOf(
-        'Future<void> _openMealPicker',
-      );
-      final closeMealPickerIndex = source.indexOf(
-        'void _closeMealPickerRoute',
-        openMealPickerIndex,
-      );
-      final openMealPickerSource = source.substring(
-        openMealPickerIndex,
-        closeMealPickerIndex,
-      );
+    final openMealPickerSource =
+        File(
+          'lib/features/calendar/presentation/screens/calendar_meal_selection_screen.dart',
+        ).readAsStringSync() +
+        File(
+          'lib/features/calendar/presentation/widgets/calendar_meal_save_button.dart',
+        ).readAsStringSync();
 
-      expect(openMealPickerIndex, isNonNegative);
-      expect(closeMealPickerIndex, isNonNegative);
-      expect(openMealPickerSource, contains('BlocSelector<'));
-      expect(openMealPickerSource, contains('CalendarViewModel,'));
-      expect(openMealPickerSource, contains('CalendarState,'));
-      expect(openMealPickerSource, contains('canSave: state.canSaveMeals'));
-      expect(openMealPickerSource, contains('isSaving: state.isSaving'));
-      expect(openMealPickerSource, contains('onSave: null,'));
-      expect(openMealPickerSource, contains('RoundedLoadingButton('));
-      expect(source, contains('RoundedLoadingButtonController()'));
-      expect(
-        openMealPickerSource,
-        contains('controller: _mealSaveButtonController'),
-      );
-      expect(openMealPickerSource, contains('animateOnTap: false'));
-      expect(openMealPickerSource, isNot(contains('return AppButton(')));
-    },
-  );
+    expect(openMealPickerSource, contains('BlocSelector<'));
+    expect(openMealPickerSource, contains('CalendarViewModel,'));
+    expect(openMealPickerSource, contains('CalendarState,'));
+    expect(openMealPickerSource, contains('canSave: state.canSaveMeals'));
+    expect(openMealPickerSource, contains('isSaving: state.isSaving'));
+    expect(openMealPickerSource, contains('onSave: null,'));
+    expect(openMealPickerSource, contains('RoundedLoadingButton('));
+    expect(source, contains('RoundedLoadingButtonController()'));
+    expect(openMealPickerSource, contains('controller: saveButtonController'));
+    expect(openMealPickerSource, contains('animateOnTap: false'));
+    expect(openMealPickerSource, isNot(contains('return AppButton(')));
+  });
 }

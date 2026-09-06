@@ -6,10 +6,56 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
-import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_sheet.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
+import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
 
 void main() {
+  testWidgets('standalone menu selects meals and returns to its caller', (
+    tester,
+  ) async {
+    String? selectedMeal;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => RestaurantMenuScreen(
+                    mode: RestaurantMenuMode.selection,
+                    availableMeals: _availableMeals(),
+                    onMealToggled: (id) => selectedMeal = id,
+                  ),
+                ),
+              ),
+              child: const Text('Open menu'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Open menu'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byType(RestaurantMenuScreen), findsOneWidget);
+    expect(find.byType(RestaurantMenuSheetHandle), findsNothing);
+    await tester.ensureVisible(_selectButtons);
+    await tester.tap(_selectButtons);
+    await tester.pump();
+    expect(selectedMeal, 'meal-1');
+    await tester.tap(find.byType(BackButtonIcon));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Open menu'), findsOneWidget);
+    expect(find.byType(RestaurantMenuScreen), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('preview restaurant menu hides meal selection controls', (
     tester,
   ) async {
@@ -66,7 +112,7 @@ void main() {
           if (settings.name == AppRoutes.mealDetails) {
             return MaterialPageRoute<void>(
               builder: (_) => Scaffold(
-                body: MealDetailsSheet(
+                body: MealDetailsScreen(
                   meal: settings.arguments! as MealDetailsEntity,
                 ),
               ),

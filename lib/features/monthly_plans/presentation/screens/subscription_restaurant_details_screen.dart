@@ -9,7 +9,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/subscription_restaurant_details_loading_skeleton.dart';
-import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
+import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
 
 class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
   const SubscriptionRestaurantDetailsScreen({super.key, this.args});
@@ -90,7 +90,7 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
                 );
               }
 
-              return RestaurantMenuView(
+              return RestaurantMenuScreen(
                 mode: RestaurantMenuMode.preview,
                 restaurantName: details.name(locale.localeName).isEmpty
                     ? detailsArgs.restaurantName

@@ -244,7 +244,7 @@ void main() {
       'restaurant_menu_header.dart',
     ).readAsStringSync();
     final sheetSource = File(
-      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart',
+      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_content.dart',
     ).readAsStringSync();
 
     expect(
@@ -256,20 +256,13 @@ void main() {
 
   test('full page meal picker keeps rounded sheet border over hero image', () {
     final sheetSource = File(
-      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart',
+      'lib/features/restaurant_menu/presentation/widgets/restaurant_menu_frame.dart',
     ).readAsStringSync();
 
+    expect(sheetSource, contains('top: Spacing.restaurantDetailsSheetTop,'));
     expect(
       sheetSource,
-      contains('final contentTop = Spacing.restaurantDetailsSheetTop;'),
-    );
-    expect(
-      sheetSource,
-      contains(
-        'final contentRadius = const BorderRadius.vertical(\n'
-        '      top: Radius.circular(Spacing.restaurantDetailsSheetRadius),\n'
-        '    );',
-      ),
+      contains('Radius.circular(Spacing.restaurantDetailsSheetRadius)'),
     );
     expect(sheetSource, isNot(contains('BorderRadius.zero')));
   });
