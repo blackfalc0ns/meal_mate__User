@@ -111,7 +111,6 @@ class ProfileScreen extends StatelessWidget {
                             isImageActionLoading: isImageActionLoading,
                             onEditImagePressed: onEditImagePressed,
                           ),
-                          const SizedBox(height: Spacing.profileStatsTopGap),
                           const ProfileStatsCard(),
                           const SizedBox(height: Spacing.profileSettingsTopGap),
                           const ProfileSettingsCard(),

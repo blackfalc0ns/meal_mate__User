@@ -44,13 +44,6 @@ class ProfileStatsCard extends StatelessWidget {
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.profileCardRadius),
         border: Border.all(color: color.outlineVariant),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withValues(alpha: 0.1),
-            blurRadius: Spacing.xs,
-            offset: const Offset(0, Spacing.xs),
-          ),
-        ],
       ),
       child: Row(
         textDirection: TextDirection.rtl,

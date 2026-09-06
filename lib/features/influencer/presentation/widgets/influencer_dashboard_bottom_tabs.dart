@@ -51,7 +51,7 @@ class InfluencerDashboardBottomTabs extends StatelessWidget {
     ];
 
     return AppBottomNavBar(
-      currentIndex: selectedTab.index,
+      currentIndex: tabs.indexWhere((tab) => tab.tab == selectedTab),
       activeColor: color.onPrimary,
       inactiveColor: color.onSurface,
       activeBackground: color.primary,
