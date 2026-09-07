@@ -19,11 +19,16 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     color.surface;
-    final members = state.members;
+    final memberEntries = state.members
+        .asMap()
+        .entries
+        .where((entry) => entry.value.hasProgram)
+        .toList();
+    final members = memberEntries.map((entry) => entry.value).toList();
     final selectedMember = state.selectedMember;
 
     final displayedMembers = members.asMap().entries.map((entry) {
-      final index = entry.key;
+      final index = memberEntries[entry.key].key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
       return FamilyProgramMemberUiModel(
@@ -66,7 +71,7 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
             members: displayedMembers,
             onSelectMember: (index) {
               context.read<FamilyPackageDaysViewModel>().doIntent(
-                SelectFamilyMemberPackageDaysEvent(index),
+                SelectFamilyMemberPackageDaysEvent(memberEntries[index].key),
               );
             },
           ),

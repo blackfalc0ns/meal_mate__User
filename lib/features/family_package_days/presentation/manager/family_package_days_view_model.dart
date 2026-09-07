@@ -76,6 +76,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
           tier: event.tier,
           durationDays: event.durationDays,
           includeFriday: event.includeFriday,
+          startDate: event.startDate,
         );
     }
   }
@@ -88,11 +89,16 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       case ApiSuccessResult():
         final flow = result.data;
         _syncConvertedDraftFlag(flow);
-        final selectedIndex =
-            (state.selectedMemberIndex >= 0 &&
-                state.selectedMemberIndex < flow.members.length)
+        final firstPlannedIndex = flow.members.indexWhere(
+          (member) => member.hasProgram,
+        );
+        final currentIndexIsPlanned =
+            state.selectedMemberIndex >= 0 &&
+            state.selectedMemberIndex < flow.members.length &&
+            flow.members[state.selectedMemberIndex].hasProgram;
+        final selectedIndex = currentIndexIsPlanned
             ? state.selectedMemberIndex
-            : 0;
+            : (firstPlannedIndex >= 0 ? firstPlannedIndex : 0);
         final member = flow.members.isNotEmpty
             ? flow.members[selectedIndex]
             : null;
@@ -558,6 +564,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     int? tier,
     int? durationDays,
     bool? includeFriday,
+    String? startDate,
   }) async {
     final member = state.members
         .where((item) => item.memberId == memberId)
@@ -571,6 +578,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       tier: tier,
       durationDays: durationDays,
       includeFriday: includeFriday,
+      startDate: startDate,
     );
     if (isClosed) return;
     switch (result) {
@@ -582,13 +590,33 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     }
   }
 
+  Future<void> saveMemberPlanAndWait({
+    required String memberId,
+    String? programId,
+    String? bundleId,
+    int? tier,
+    int? durationDays,
+    bool? includeFriday,
+    String? startDate,
+  }) => _saveMemberPlan(
+    memberId: memberId,
+    programId: programId,
+    bundleId: bundleId,
+    tier: tier,
+    durationDays: durationDays,
+    includeFriday: includeFriday,
+    startDate: startDate,
+  );
+
   void _syncConvertedDraftFlag(FamilyFlowCurrentEntity flow) {
-    if (flow.status == 2) {
+    if (flow.status == 3) {
       FamilyConversionDraftSession.clearConvertedFamilyDraft();
       return;
     }
     if (flow.managerPrepaid) {
       FamilyConversionDraftSession.markConvertedFamilyDraft();
+    } else {
+      FamilyConversionDraftSession.clearConvertedFamilyDraft();
     }
   }
 }

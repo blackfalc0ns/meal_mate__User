@@ -9,5 +9,6 @@ abstract class FamilyPackageDaysRepository {
     int? tier,
     int? durationDays,
     bool? includeFriday,
+    String? startDate,
   });
 }

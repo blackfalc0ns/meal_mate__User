@@ -12,11 +12,13 @@ class CheckoutFamilySubscriptionUseCase {
   Future<ApiResult<PaymentCheckoutEntity>> call({
     required String callbackUrl,
     required String errorUrl,
+    required String correlationId,
     required int paymentMethodId,
   }) {
     return _repository.checkoutFamilySubscription(
       callbackUrl: callbackUrl,
       errorUrl: errorUrl,
+      correlationId: correlationId,
       paymentMethodId: paymentMethodId,
     );
   }

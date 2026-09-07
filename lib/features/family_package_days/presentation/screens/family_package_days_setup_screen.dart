@@ -88,7 +88,11 @@ class _FamilyPackageDaysSetupScreenState
     );
   }
 
-  void _savePlanAndProceed(BuildContext context, FamilyPlanState state) {
+  Future<void> _savePlanAndProceed(
+    BuildContext context,
+    FamilyPlanState state,
+  ) async {
+    var latestState = state;
     final member =
         state.selectedMember ??
         (state.members.isNotEmpty ? state.members.first : null);
@@ -110,25 +114,25 @@ class _FamilyPackageDaysSetupScreenState
         durationDays > 0 &&
         tier != null) {
       final tierInt = int.tryParse(tier.tier) ?? 1;
-      context.read<FamilyPackageDaysViewModel>().doIntent(
-        SaveFamilyMemberPlanEvent(
-          memberId: member.memberId,
-          programId: programId,
-          bundleId: bundle.bundleId,
-          tier: tierInt,
-          durationDays: durationDays,
-          includeFriday: state.includeFriday,
-        ),
+      await context.read<FamilyPackageDaysViewModel>().saveMemberPlanAndWait(
+        memberId: member.memberId,
+        programId: programId,
+        bundleId: bundle.bundleId,
+        tier: tierInt,
+        durationDays: durationDays,
+        includeFriday: state.includeFriday,
       );
+      if (!context.mounted) return;
+      latestState = context.read<FamilyPackageDaysViewModel>().state;
     }
 
-    final hasUnreadyMembers = state.members.any(
+    final hasUnreadyMembers = latestState.plannedMembers.any(
       (m) => m.memberId != member?.memberId && !m.isReady,
     );
 
     if (hasUnreadyMembers) {
-      final nextIndex = state.members.indexWhere(
-        (m) => m.memberId != member?.memberId && !m.isReady,
+      final nextIndex = latestState.members.indexWhere(
+        (m) => m.hasProgram && m.memberId != member?.memberId && !m.isReady,
       );
       if (nextIndex != -1) {
         context.read<FamilyPackageDaysViewModel>().doIntent(
@@ -137,7 +141,7 @@ class _FamilyPackageDaysSetupScreenState
       }
       Navigator.maybePop(context);
     } else {
-      context.pushNamed(AppRoutes.familyPaymentSetup);
+      context.pushNamed(AppRoutes.familyAllergies);
     }
   }
 }

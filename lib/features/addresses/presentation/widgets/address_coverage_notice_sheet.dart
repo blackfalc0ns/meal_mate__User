@@ -107,8 +107,7 @@ class AddressCoverageNoticeSheet extends StatelessWidget {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: servingRestaurants.length,
-                separatorBuilder: (_, _) =>
-                    const SizedBox(width: Spacing.sm),
+                separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
                 itemBuilder: (context, index) {
                   final restaurant = servingRestaurants[index];
                   final name = restaurant.name(locale.localeName);
@@ -120,8 +119,7 @@ class AddressCoverageNoticeSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(Spacing.sm),
                     decoration: BoxDecoration(
                       color: color.surfaceContainerLowest,
-                      borderRadius:
-                          BorderRadius.circular(Spacing.radiusSm),
+                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
                       border: Border.all(
                         color: color.outlineVariant,
                         width: Spacing.hairline,
@@ -148,9 +146,7 @@ class AddressCoverageNoticeSheet extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                name.isNotEmpty
-                                    ? name.characters.first
-                                    : '',
+                                name.isNotEmpty ? name.characters.first : '',
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size14,

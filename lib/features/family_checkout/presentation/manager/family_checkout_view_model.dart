@@ -22,6 +22,8 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   final GetFamilySummaryUseCase _getFamilySummaryUseCase;
   final GetFamilyPaymentMethodsUseCase _getFamilyPaymentMethodsUseCase;
   final CheckoutFamilySubscriptionUseCase _checkoutFamilySubscriptionUseCase;
+  final String correlationId =
+      'family-pay-${DateTime.now().microsecondsSinceEpoch}';
 
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
@@ -35,6 +37,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         _checkoutFamilySubscription(
           callbackUrl: event.callbackUrl,
           errorUrl: event.errorUrl,
+          correlationId: event.correlationId,
           paymentMethodId: event.paymentMethodId,
         );
     }
@@ -45,10 +48,12 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
-        if (result.data.status == 2) {
+        if (result.data.status == 3) {
           FamilyConversionDraftSession.clearConvertedFamilyDraft();
         } else if (result.data.managerPrepaid) {
           FamilyConversionDraftSession.markConvertedFamilyDraft();
+        } else {
+          FamilyConversionDraftSession.clearConvertedFamilyDraft();
         }
         emit(
           state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
@@ -86,7 +91,9 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
             selectedSummaryMemberId: activeMemberId,
           ),
         );
-        _getFamilyPaymentMethods();
+        if (summary.canCheckout && summary.finalPrice > 0) {
+          _getFamilyPaymentMethods();
+        }
       case ApiErrorResult():
         emit(state.copyWith(isSummaryLoading: false, failure: result.failure));
     }
@@ -113,12 +120,14 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   Future<void> _checkoutFamilySubscription({
     required String callbackUrl,
     required String errorUrl,
+    required String correlationId,
     required int paymentMethodId,
   }) async {
     emit(state.copyWith(isCheckoutLoading: true, clearFailure: true));
     final result = await _checkoutFamilySubscriptionUseCase(
       callbackUrl: callbackUrl,
       errorUrl: errorUrl,
+      correlationId: correlationId,
       paymentMethodId: paymentMethodId,
     );
     switch (result) {
@@ -128,6 +137,9 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         );
       case ApiErrorResult():
         emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
+        if (result.failure.code == 'payment.initialization_failed') {
+          _getFamilySummary(memberId: state.selectedSummaryMemberId);
+        }
     }
   }
 }

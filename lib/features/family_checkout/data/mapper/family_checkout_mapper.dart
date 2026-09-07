@@ -32,6 +32,7 @@ extension FamilySelectedMemberSummaryDtoMapper
       durationLabelAr: durationLabelAr,
       selectedTier: selectedTier,
       tierNameAr: tierNameAr,
+      tierNameEn: tierNameEn,
       includeFriday: includeFriday ?? false,
       breakfast: breakfast ?? false,
       lunch: lunch ?? false,
@@ -62,6 +63,8 @@ extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
 extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
   FamilySummaryEntity toEntity() {
     return FamilySummaryEntity(
+      familyGroupId: familyGroupId,
+      familyName: familyName,
       subtotal: subtotal ?? 0.0,
       familyDiscountPercent: familyDiscountPercent ?? 0.0,
       familyDiscountAmount: familyDiscountAmount ?? 0.0,
@@ -77,6 +80,7 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       selectedMember: selectedMember?.toEntity(),
       mealOverview:
           mealOverview?.map((meal) => meal.toEntity()).toList() ?? const [],
+      checkoutEndpoint: checkoutEndpoint,
     );
   }
 }

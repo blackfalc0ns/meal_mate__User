@@ -4,8 +4,10 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/data_sour
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_lookup_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_flow_current_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_relationship_response_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_lookup_response_dto.dart';
 
 @Injectable(as: FamilySubscriptionSetupRemoteDataSource)
 class FamilySubscriptionSetupRemoteDataSourceImpl
@@ -48,6 +50,13 @@ class FamilySubscriptionSetupRemoteDataSourceImpl
     FamilyMemberWriteRequestDto request,
   ) {
     return _apiServices.addFamilyMember(request);
+  }
+
+  @override
+  Future<FamilyMemberLookupResponseDto> lookupFamilyMember(
+    FamilyMemberLookupRequestDto request,
+  ) {
+    return _apiServices.lookupFamilyMember(request);
   }
 
   @override

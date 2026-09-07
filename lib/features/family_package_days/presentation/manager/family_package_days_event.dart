@@ -76,6 +76,7 @@ class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
     this.tier,
     this.durationDays,
     this.includeFriday,
+    this.startDate,
   });
 
   final String memberId;
@@ -84,4 +85,5 @@ class SaveFamilyMemberPlanEvent extends FamilyPlanEvent {
   final int? tier;
   final int? durationDays;
   final bool? includeFriday;
+  final String? startDate;
 }

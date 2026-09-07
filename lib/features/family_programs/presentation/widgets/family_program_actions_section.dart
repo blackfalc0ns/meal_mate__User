@@ -7,14 +7,9 @@ import 'package:meal_meat_user/features/family_programs/presentation/manager/fam
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions.dart';
 
 class FamilyProgramActionsSection extends StatelessWidget {
-  const FamilyProgramActionsSection({
-    super.key,
-    required this.state,
-    required this.onSelectUnreadyMember,
-  });
+  const FamilyProgramActionsSection({super.key, required this.state});
 
   final FamilyPlanState state;
-  final ValueChanged<int> onSelectUnreadyMember;
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +23,18 @@ class FamilyProgramActionsSection extends StatelessWidget {
         FamilyProgramActions(
           nextText: locale.family_next_package_days,
           nextIcon: Icons.arrow_forward_ios_rounded,
-          onNextPressed: () {
-            final unreadyIndex = state.members.indexWhere(
-              (member) => member.programId == null || member.programId!.isEmpty,
-            );
-            if (unreadyIndex != -1) {
-              onSelectUnreadyMember(unreadyIndex);
-              return;
-            }
-            final firstProgramId =
-                state.members.firstOrNull?.programId ??
-                state.selectedProgram?.programId;
-            context.pushNamed(
-              AppRoutes.familyPackageDaysSetup,
-              arguments: firstProgramId,
-            );
-          },
+          onNextPressed:
+              state.isPlanSaving || state.selectedMember?.hasProgram != true
+              ? null
+              : () {
+                  final firstProgramId =
+                      state.selectedMember?.programId ??
+                      state.selectedProgram?.programId;
+                  context.pushNamed(
+                    AppRoutes.familyPackageDaysSetup,
+                    arguments: firstProgramId,
+                  );
+                },
         ),
       ],
     );

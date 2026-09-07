@@ -106,6 +106,30 @@ import '../../features/change_password/domain/repo/change_password_repository.da
     as _i229;
 import '../../features/change_password/domain/usecase/change_customer_password_usecase.dart'
     as _i845;
+import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source.dart'
+    as _i1040;
+import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source_impl.dart'
+    as _i517;
+import '../../features/family_addresses/data/repo/family_addresses_repository_impl.dart'
+    as _i52;
+import '../../features/family_addresses/domain/repo/family_addresses_repository.dart'
+    as _i982;
+import '../../features/family_addresses/domain/usecase/family_addresses_usecases.dart'
+    as _i643;
+import '../../features/family_addresses/presentation/manager/family_addresses_view_model.dart'
+    as _i603;
+import '../../features/family_allergies/data/data_source/family_allergies_remote_data_source.dart'
+    as _i322;
+import '../../features/family_allergies/data/data_source/family_allergies_remote_data_source_impl.dart'
+    as _i492;
+import '../../features/family_allergies/data/repo/family_allergies_repository_impl.dart'
+    as _i145;
+import '../../features/family_allergies/domain/repo/family_allergies_repository.dart'
+    as _i223;
+import '../../features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart'
+    as _i515;
+import '../../features/family_allergies/presentation/manager/family_allergies_view_model.dart'
+    as _i911;
 import '../../features/family_checkout/data/data_source/family_checkout_remote_data_source.dart'
     as _i714;
 import '../../features/family_checkout/data/data_source/family_checkout_remote_data_source_impl.dart'
@@ -178,6 +202,8 @@ import '../../features/family_subscription_setup/domain/usecase/get_family_flow_
     as _i34;
 import '../../features/family_subscription_setup/domain/usecase/get_family_relationships_usecase.dart'
     as _i804;
+import '../../features/family_subscription_setup/domain/usecase/lookup_family_member_usecase.dart'
+    as _i973;
 import '../../features/family_subscription_setup/domain/usecase/update_family_group_usecase.dart'
     as _i482;
 import '../../features/family_subscription_setup/domain/usecase/update_family_member_usecase.dart'
@@ -493,6 +519,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i804.ApiServices>(() => _i804.ApiServices(gh<_i361.Dio>()));
+    gh.factory<_i322.FamilyAllergiesRemoteDataSource>(
+      () => _i492.FamilyAllergiesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i155.SubscriptionSummaryRemoteDataSource>(
       () => _i846.SubscriptionSummaryRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
@@ -580,6 +609,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i408.GetFamilySummaryUseCase>(
       () => _i408.GetFamilySummaryUseCase(gh<_i802.FamilyCheckoutRepository>()),
     );
+    gh.factory<_i223.FamilyAllergiesRepository>(
+      () => _i145.FamilyAllergiesRepositoryImpl(
+        gh<_i322.FamilyAllergiesRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i735.SubscriptionTypesRemoteDataSource>(
       () =>
           _i200.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -605,6 +639,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i99.UploadFileRemoteDataSource>(
       () => _i963.UploadFileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i1040.FamilyAddressesRemoteDataSource>(
+      () => _i517.FamilyAddressesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i515.SaveFamilyMemberAllergiesUseCase>(
+      () => _i515.SaveFamilyMemberAllergiesUseCase(
+        gh<_i223.FamilyAllergiesRepository>(),
+      ),
     );
     gh.factory<_i998.ProfileRemoteDataSource>(
       () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -852,6 +894,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i306.FamilyPackageDaysRepository>(),
       ),
     );
+    gh.factory<_i982.FamilyAddressesRepository>(
+      () => _i52.FamilyAddressesRepositoryImpl(
+        gh<_i1040.FamilyAddressesRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i556.AddressesRepository>(
       () =>
           _i376.AddressesRepositoryImpl(gh<_i737.AddressesRemoteDataSource>()),
@@ -885,6 +932,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i804.GetFamilyRelationshipsUseCase>(
       () => _i804.GetFamilyRelationshipsUseCase(
+        gh<_i925.FamilySubscriptionSetupRepository>(),
+      ),
+    );
+    gh.factory<_i973.LookupFamilyMemberUseCase>(
+      () => _i973.LookupFamilyMemberUseCase(
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
@@ -1036,6 +1088,31 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i643.GetFamilyMemberAddressesUseCase>(
+      () => _i643.GetFamilyMemberAddressesUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
+    gh.factory<_i643.AddFamilyMemberAddressUseCase>(
+      () => _i643.AddFamilyMemberAddressUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
+    gh.factory<_i643.PreviewFamilyMemberAddressUseCase>(
+      () => _i643.PreviewFamilyMemberAddressUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
+    gh.factory<_i643.PreviewExistingFamilyMemberAddressUseCase>(
+      () => _i643.PreviewExistingFamilyMemberAddressUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
+    gh.factory<_i643.SetDefaultFamilyMemberAddressUseCase>(
+      () => _i643.SetDefaultFamilyMemberAddressUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
     gh.factory<_i448.GetFamilyProgramBundlesUseCase>(
       () => _i448.GetFamilyProgramBundlesUseCase(
         gh<_i964.FamilyProgramsRepository>(),
@@ -1061,18 +1138,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i766.GetSubscriptionTiersUseCase>(),
         gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
-      ),
-    );
-    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
-      () => _i693.FamilySubscriptionSetupViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i482.UpdateFamilyGroupUseCase>(),
-        gh<_i804.GetFamilyRelationshipsUseCase>(),
-        gh<_i843.AddFamilyMemberUseCase>(),
-        gh<_i237.UpdateFamilyMemberUseCase>(),
-        gh<_i880.DeleteFamilyMemberUseCase>(),
-        gh<_i873.AbandonFamilyDraftUseCase>(),
-        gh<_i945.GetCustomerAddressesUseCase>(),
       ),
     );
     gh.factory<_i502.PaymentViewModel>(
@@ -1152,6 +1217,31 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i148.DeviceIdService>(),
         gh<_i350.RegisterDeviceTokenUseCase>(),
         gh<_i546.UnregisterDeviceTokenUseCase>(),
+      ),
+    );
+    gh.factory<_i603.FamilyAddressesViewModel>(
+      () => _i603.FamilyAddressesViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+      ),
+    );
+    gh.factory<_i911.FamilyAllergiesViewModel>(
+      () => _i911.FamilyAllergiesViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
+        gh<_i515.SaveFamilyMemberAllergiesUseCase>(),
+      ),
+    );
+    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
+      () => _i693.FamilySubscriptionSetupViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i482.UpdateFamilyGroupUseCase>(),
+        gh<_i804.GetFamilyRelationshipsUseCase>(),
+        gh<_i843.AddFamilyMemberUseCase>(),
+        gh<_i237.UpdateFamilyMemberUseCase>(),
+        gh<_i880.DeleteFamilyMemberUseCase>(),
+        gh<_i873.AbandonFamilyDraftUseCase>(),
+        gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i973.LookupFamilyMemberUseCase>(),
       ),
     );
     gh.factory<_i293.MealDetailsViewModel>(

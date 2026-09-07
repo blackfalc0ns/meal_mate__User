@@ -21,6 +21,10 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
   FamilyMemberEntity toEntity() {
     return FamilyMemberEntity(
       memberId: memberId ?? '',
+      memberSubscriptionId: memberSubscriptionId,
+      phoneNumber: phoneNumber,
+      occupation: occupation,
+      startDate: startDate,
       role: role ?? 2,
       displayName: displayName ?? '',
       relationshipCode: relationshipCode ?? '',

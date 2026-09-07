@@ -241,6 +241,28 @@ class Spacing {
   static const double familyProgramMemberCardHeight = 60.152;
   static const double familyProgramMemberCardRadius = 9.927;
   static const double familyProgramMemberGap = 5.515;
+
+  // Family allergies Figma measurements.
+  static const double familyAllergiesSectionGap = 9.0;
+  static const double familyAllergiesCardRadius = 15.0;
+  static const double familyAllergiesCardPadding = 19.0;
+  static const double familyAllergiesSearchHeight = 34.0;
+  static const double familyAllergiesSearchRadius = 10.0;
+  static const double familyAllergiesChoiceHeight = 34.0;
+  static const double familyAllergiesChoiceRadius = 17.0;
+  static const double familyAllergiesChoiceGap = 5.0;
+  static const double familyAllergiesChoiceColumnGap = 12.0;
+  static const double familyAllergiesChoiceIndicatorSize = 20.0;
+  static const double familyAllergiesChoiceCheckSize = 10.0;
+  static const double familyAllergiesNoneHeight = 42.0;
+  static const double familyAllergiesNoneRadius = 12.0;
+  static const double familyAllergiesNoneIndicatorSize = 22.0;
+  static const double familyAllergiesNoticeHeight = 34.0;
+  static const double familyAllergiesNoticeRadius = 10.0;
+  static const double familyAllergiesActionsHeight = 42.0;
+  static const double familyAllergiesActionsRadius = 21.0;
+  static const double familyAllergiesSkipWidth = 128.0;
+  static const double familyAllergiesActionsGap = 10.0;
   static const double familyProgramMemberAvatarSize = 35.0;
   static const double familyProgramSummaryHeight = 62.0;
   static const double familyProgramSummaryRadius = 11.03;

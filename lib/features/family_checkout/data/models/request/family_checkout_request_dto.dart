@@ -7,11 +7,13 @@ class FamilyCheckoutRequestDto {
   const FamilyCheckoutRequestDto({
     required this.callbackUrl,
     required this.errorUrl,
+    required this.correlationId,
     required this.paymentMethodId,
   });
 
   final String callbackUrl;
   final String errorUrl;
+  final String correlationId;
   final int paymentMethodId;
 
   Map<String, dynamic> toJson() => _$FamilyCheckoutRequestDtoToJson(this);

@@ -6,6 +6,7 @@ import 'package:meal_meat_user/features/addresses/domain/entities/customer_addre
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_lookup_entity.dart';
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
@@ -23,6 +24,8 @@ class FamilyPlanState {
     this.relationships = const [],
     this.isAddressesLoading = false,
     this.addresses = const [],
+    this.isMemberLookupLoading = false,
+    this.memberLookup,
     this.isProgramsLoading = false,
     this.programs = const [],
     this.selectedProgramIndex,
@@ -68,6 +71,8 @@ class FamilyPlanState {
 
   final bool isAddressesLoading;
   final List<CustomerAddressEntity> addresses;
+  final bool isMemberLookupLoading;
+  final FamilyMemberLookupEntity? memberLookup;
 
   final bool isProgramsLoading;
   final List<SubscriptionProgramEntity> programs;
@@ -113,6 +118,7 @@ class FamilyPlanState {
   bool get isLoading =>
       isPackagesLoading ||
       isCurrentFlowLoading ||
+      isMemberLookupLoading ||
       isProgramsLoading ||
       isBundlesLoading ||
       isDurationsLoading ||
@@ -182,6 +188,9 @@ class FamilyPlanState {
     List<FamilyRelationshipEntity>? relationships,
     bool? isAddressesLoading,
     List<CustomerAddressEntity>? addresses,
+    bool? isMemberLookupLoading,
+    FamilyMemberLookupEntity? memberLookup,
+    bool clearMemberLookup = false,
     bool? isProgramsLoading,
     List<SubscriptionProgramEntity>? programs,
     int? selectedProgramIndex,
@@ -234,6 +243,11 @@ class FamilyPlanState {
       relationships: relationships ?? this.relationships,
       isAddressesLoading: isAddressesLoading ?? this.isAddressesLoading,
       addresses: addresses ?? this.addresses,
+      isMemberLookupLoading:
+          isMemberLookupLoading ?? this.isMemberLookupLoading,
+      memberLookup: clearMemberLookup
+          ? null
+          : (memberLookup ?? this.memberLookup),
       isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
       programs: programs ?? this.programs,
       selectedProgramIndex: clearSelectedProgram

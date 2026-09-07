@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 
 class AddressChooseLocationScreen extends StatefulWidget {
   const AddressChooseLocationScreen({super.key, this.args});
@@ -37,8 +38,21 @@ class _AddressChooseLocationScreenState
     final initialAddress = widget.args?.initialAddress;
 
     return BlocProvider<AddressesViewModel>(
-      create: (_) => getIt<AddressesViewModel>()
-        ..doIntent(GetLocationsCatalogEvent(initialAddress: initialAddress)),
+      create: (_) {
+        final viewModel = getIt<AddressesViewModel>();
+        final familyMemberId = widget.args?.familyMemberId;
+        if (familyMemberId != null) {
+          viewModel.configureFamilyMember(
+            familyMemberId,
+            previewAddress: getIt<PreviewFamilyMemberAddressUseCase>(),
+            addAddress: getIt<AddFamilyMemberAddressUseCase>(),
+          );
+        }
+        viewModel.doIntent(
+          GetLocationsCatalogEvent(initialAddress: initialAddress),
+        );
+        return viewModel;
+      },
       child: Scaffold(
         backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
@@ -56,6 +70,10 @@ class _AddressChooseLocationScreenState
                     _completed = true;
                     final navigator = Navigator.of(context);
                     final message = locale.addresses_save_success;
+                    if (widget.args?.familyMemberId != null) {
+                      navigator.pop(true);
+                      return;
+                    }
                     var foundAddresses = false;
                     navigator.popUntil((route) {
                       foundAddresses =
@@ -173,8 +191,10 @@ class AddressChooseLocationArgs {
   const AddressChooseLocationArgs({
     this.subscriptionFlowArgs,
     this.initialAddress,
+    this.familyMemberId,
   });
 
   final SubscriptionFlowArgs? subscriptionFlowArgs;
   final CustomerAddressEntity? initialAddress;
+  final String? familyMemberId;
 }

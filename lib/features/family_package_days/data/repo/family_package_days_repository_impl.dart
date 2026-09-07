@@ -20,6 +20,7 @@ class FamilyPackageDaysRepositoryImpl implements FamilyPackageDaysRepository {
     int? tier,
     int? durationDays,
     bool? includeFriday,
+    String? startDate,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.saveFamilyMemberPlan(
@@ -30,6 +31,7 @@ class FamilyPackageDaysRepositoryImpl implements FamilyPackageDaysRepository {
           tier: tier,
           durationDays: durationDays,
           includeFriday: includeFriday,
+          startDate: startDate,
         ),
       );
       return response.toEntity();

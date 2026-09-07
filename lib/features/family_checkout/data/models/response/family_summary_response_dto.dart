@@ -43,6 +43,7 @@ class FamilySelectedMemberSummaryDto {
     this.durationLabelAr,
     this.selectedTier,
     this.tierNameAr,
+    this.tierNameEn,
     this.includeFriday,
     this.breakfast,
     this.lunch,
@@ -70,6 +71,7 @@ class FamilySelectedMemberSummaryDto {
   @JsonKey(readValue: _readSelectedTier, fromJson: _nullableIntFromJson)
   final int? selectedTier;
   final String? tierNameAr;
+  final String? tierNameEn;
   final bool? includeFriday;
   final bool? breakfast;
   final bool? lunch;
@@ -117,6 +119,8 @@ class FamilyMealOverviewDto {
 @JsonSerializable(createToJson: false)
 class FamilySummaryResponseDto {
   const FamilySummaryResponseDto({
+    this.familyGroupId,
+    this.familyName,
     this.subtotal,
     this.familyDiscountPercent,
     this.familyDiscountAmount,
@@ -131,7 +135,11 @@ class FamilySummaryResponseDto {
     this.members,
     this.selectedMember,
     this.mealOverview,
+    this.checkoutEndpoint,
   });
+
+  final String? familyGroupId;
+  final String? familyName;
 
   @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? subtotal;
@@ -153,6 +161,7 @@ class FamilySummaryResponseDto {
   final List<FamilySummaryMemberDto>? members;
   final FamilySelectedMemberSummaryDto? selectedMember;
   final List<FamilyMealOverviewDto>? mealOverview;
+  final String? checkoutEndpoint;
 
   factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilySummaryResponseDtoFromJson(json);

@@ -41,10 +41,7 @@ class AddressChooseLocationModeCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(Spacing.sm),
-          border: Border.all(
-            color: borderColor,
-            width: isSelected ? 1.5 : 1.0,
-          ),
+          border: Border.all(color: borderColor, width: isSelected ? 1.5 : 1.0),
         ),
         child: Row(
           children: [

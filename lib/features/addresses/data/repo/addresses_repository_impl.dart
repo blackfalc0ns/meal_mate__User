@@ -86,9 +86,8 @@ class AddressesRepositoryImpl implements AddressesRepository {
   }
 
   @override
-  Future<ApiResult<AddressCoveragePreviewEntity>> previewExistingAddressCoverage(
-    String addressId,
-  ) {
+  Future<ApiResult<AddressCoveragePreviewEntity>>
+  previewExistingAddressCoverage(String addressId) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.previewExistingAddressCoverage(
         addressId,
@@ -129,10 +128,7 @@ class AddressesRepositoryImpl implements AddressesRepository {
   ) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.reverseGeocode(
-        MapReverseGeocodeRequestDto(
-          latitude: latitude,
-          longitude: longitude,
-        ),
+        MapReverseGeocodeRequestDto(latitude: latitude, longitude: longitude),
       );
       return response.toEntity();
     });

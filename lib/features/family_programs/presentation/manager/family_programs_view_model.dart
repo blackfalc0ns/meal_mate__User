@@ -151,15 +151,22 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     required String memberId,
     String? programId,
   }) async {
+    emit(state.copyWith(isPlanSaving: true, clearFailure: true));
     final result = await _saveFamilyMemberPlanUseCase(
       memberId: memberId,
       programId: programId,
     );
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(currentFlow: result.data, clearFailure: true));
+        emit(
+          state.copyWith(
+            isPlanSaving: false,
+            currentFlow: result.data,
+            clearFailure: true,
+          ),
+        );
       case ApiErrorResult():
-        emit(state.copyWith(failure: result.failure));
+        emit(state.copyWith(isPlanSaving: false, failure: result.failure));
     }
   }
 }

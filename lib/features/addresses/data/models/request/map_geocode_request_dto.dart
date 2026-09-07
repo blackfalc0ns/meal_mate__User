@@ -4,10 +4,7 @@ part 'map_geocode_request_dto.g.dart';
 
 @JsonSerializable(createFactory: false)
 class MapGeocodeRequestDto {
-  const MapGeocodeRequestDto({
-    required this.address,
-    this.countryCode = 'KW',
-  });
+  const MapGeocodeRequestDto({required this.address, this.countryCode = 'KW'});
 
   final String address;
   final String countryCode;

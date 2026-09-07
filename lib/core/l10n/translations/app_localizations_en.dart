@@ -2540,6 +2540,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_full_name_hint => 'Write the name here';
 
   @override
+  String get family_phone_number => 'Phone number';
+
+  @override
+  String get family_phone_number_hint => '+965 0000 0000';
+
+  @override
+  String get family_phone_lookup => 'Find member';
+
+  @override
+  String get family_occupation => 'Occupation';
+
+  @override
+  String get family_occupation_hint => 'Enter occupation (optional)';
+
+  @override
   String get family_relation => 'Relationship';
 
   @override
@@ -4807,4 +4822,76 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get family_packages_continue_button =>
       'Continue subscription selection';
+
+  @override
+  String get family_allergies_title => 'Allergies';
+
+  @override
+  String family_allergies_member(String name) {
+    return 'Allergies for $name';
+  }
+
+  @override
+  String get family_allergies_none => 'No allergies';
+
+  @override
+  String get family_allergies_save_next_member => 'Save and continue';
+
+  @override
+  String get family_allergies_next_location => 'Next: location';
+
+  @override
+  String get family_allergies_next_payment => 'Next: payment';
+
+  @override
+  String get family_allergies_food_title => 'Food allergies';
+
+  @override
+  String get family_allergies_food_subtitle =>
+      'Select the allergies that should be avoided for this member';
+
+  @override
+  String get family_allergies_common => 'Common allergies';
+
+  @override
+  String get family_allergies_search => 'Search for an allergy';
+
+  @override
+  String get family_allergies_rejected => 'Ingredients they dislike';
+
+  @override
+  String get family_allergies_ingredient_search => 'Search for an ingredient';
+
+  @override
+  String get family_allergies_information_note =>
+      'We use this information to personalize suitable meals for each member.';
+
+  @override
+  String get family_addresses_title => 'Delivery addresses';
+
+  @override
+  String family_addresses_member(String name) {
+    return 'Address for $name';
+  }
+
+  @override
+  String get family_addresses_add => 'Add address';
+
+  @override
+  String get family_addresses_use => 'Use this address';
+
+  @override
+  String get family_addresses_next_member => 'Save and continue';
+
+  @override
+  String get family_addresses_next_payment => 'Next: payment';
+
+  @override
+  String get family_addresses_label => 'Label';
+
+  @override
+  String get family_addresses_area => 'Area';
+
+  @override
+  String get family_addresses_line => 'Address details';
 }

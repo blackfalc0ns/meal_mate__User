@@ -24,10 +24,12 @@ class CheckoutFamilySubscriptionEvent extends FamilyPlanEvent {
   const CheckoutFamilySubscriptionEvent({
     required this.callbackUrl,
     required this.errorUrl,
+    required this.correlationId,
     required this.paymentMethodId,
   });
 
   final String callbackUrl;
   final String errorUrl;
+  final String correlationId;
   final int paymentMethodId;
 }

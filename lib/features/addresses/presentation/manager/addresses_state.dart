@@ -274,10 +274,12 @@ class AddressCoveragePreviewState {
       isSuccess: isSuccess ?? this.isSuccess,
       preview: clearPreview ? null : preview ?? this.preview,
       pendingAction: clearPending ? null : pendingAction ?? this.pendingAction,
-      targetAddressId:
-          clearPending ? null : targetAddressId ?? this.targetAddressId,
-      pendingRequest:
-          clearPending ? null : pendingRequest ?? this.pendingRequest,
+      targetAddressId: clearPending
+          ? null
+          : targetAddressId ?? this.targetAddressId,
+      pendingRequest: clearPending
+          ? null
+          : pendingRequest ?? this.pendingRequest,
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }

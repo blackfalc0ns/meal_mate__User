@@ -28,9 +28,8 @@ abstract interface class AddressesRepository {
     CustomerAddressRequestEntity request,
   );
 
-  Future<ApiResult<AddressCoveragePreviewEntity>> previewExistingAddressCoverage(
-    String addressId,
-  );
+  Future<ApiResult<AddressCoveragePreviewEntity>>
+  previewExistingAddressCoverage(String addressId);
 
   Future<ApiResult<CustomerAddressEntity>> confirmSetDefaultAddress(
     String addressId,

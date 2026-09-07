@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 
 @injectable
 class AddressesViewModel extends Cubit<AddressesState> {
@@ -45,6 +46,19 @@ class AddressesViewModel extends Cubit<AddressesState> {
   final PreviewExistingAddressCoverageUseCase
   _previewExistingAddressCoverageUseCase;
   final ConfirmSetDefaultAddressUseCase _confirmSetDefaultAddressUseCase;
+  PreviewFamilyMemberAddressUseCase? _previewFamilyMemberAddressUseCase;
+  AddFamilyMemberAddressUseCase? _addFamilyMemberAddressUseCase;
+  String? _familyMemberId;
+
+  void configureFamilyMember(
+    String memberId, {
+    required PreviewFamilyMemberAddressUseCase previewAddress,
+    required AddFamilyMemberAddressUseCase addAddress,
+  }) {
+    _familyMemberId = memberId;
+    _previewFamilyMemberAddressUseCase = previewAddress;
+    _addFamilyMemberAddressUseCase = addAddress;
+  }
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
     if (lat == null || lng == null) return false;
@@ -528,8 +542,13 @@ class AddressesViewModel extends Cubit<AddressesState> {
       return;
     }
 
-    await _runAddressAction(() => _addCustomerAddressUseCase(request));
-    if (!isClosed && state.action.isSuccess) {
+    final familyMemberId = _familyMemberId;
+    await _runAddressAction(
+      () => familyMemberId == null
+          ? _addCustomerAddressUseCase(request)
+          : _addFamilyMemberAddressUseCase!(familyMemberId, request),
+    );
+    if (!isClosed && state.action.isSuccess && familyMemberId == null) {
       await _getCustomerAddresses();
     }
   }
@@ -681,7 +700,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
       ),
     );
 
-    final result = await _previewNewAddressCoverageUseCase(request);
+    final familyMemberId = _familyMemberId;
+    final result = familyMemberId == null
+        ? await _previewNewAddressCoverageUseCase(request)
+        : await _previewFamilyMemberAddressUseCase!(familyMemberId, request);
     if (isClosed) return;
 
     switch (result) {

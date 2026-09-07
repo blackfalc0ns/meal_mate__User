@@ -10,6 +10,7 @@ class FamilyMemberPlanWriteRequestDto {
     this.tier,
     this.durationDays,
     this.includeFriday,
+    this.startDate,
   });
 
   final String? programId;
@@ -17,6 +18,7 @@ class FamilyMemberPlanWriteRequestDto {
   final int? tier;
   final int? durationDays;
   final bool? includeFriday;
+  final String? startDate;
 
   Map<String, dynamic> toJson() =>
       _$FamilyMemberPlanWriteRequestDtoToJson(this);

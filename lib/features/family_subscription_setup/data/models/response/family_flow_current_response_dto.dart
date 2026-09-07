@@ -47,8 +47,8 @@ int? _statusFromJson(dynamic value) {
   if (value is String) {
     final lower = value.toLowerCase();
     if (lower == 'draft') return 1;
-    if (lower == 'active') return 2;
-    if (lower == 'cancelled') return 3;
+    if (lower == 'checkoutpending' || lower == 'checkout_pending') return 2;
+    if (lower == 'active') return 3;
     return int.tryParse(value) ?? 1;
   }
   return null;

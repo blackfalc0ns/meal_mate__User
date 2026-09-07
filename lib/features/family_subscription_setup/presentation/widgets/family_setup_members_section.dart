@@ -119,7 +119,9 @@ class FamilySetupMembersSection extends StatelessWidget {
       addresses: state.addresses,
       onSubmit:
           ({
+            required String phone,
             required String displayName,
+            String? occupation,
             required String relationshipCode,
             required int gender,
             required int ageYears,
@@ -127,7 +129,9 @@ class FamilySetupMembersSection extends StatelessWidget {
           }) {
             context.read<FamilySubscriptionSetupViewModel>().doIntent(
               AddFamilyMemberEvent(
+                phone: phone,
                 displayName: displayName,
+                occupation: occupation,
                 relationshipCode: relationshipCode,
                 gender: gender,
                 ageYears: ageYears,
@@ -146,7 +150,9 @@ class FamilySetupMembersSection extends StatelessWidget {
       addresses: state.addresses,
       onSubmit:
           ({
+            required String phone,
             required String displayName,
+            String? occupation,
             required String relationshipCode,
             required int gender,
             required int ageYears,
@@ -155,7 +161,9 @@ class FamilySetupMembersSection extends StatelessWidget {
             context.read<FamilySubscriptionSetupViewModel>().doIntent(
               UpdateFamilyMemberEvent(
                 memberId: member.memberId,
+                phone: phone,
                 displayName: displayName,
+                occupation: occupation,
                 relationshipCode: relationshipCode,
                 gender: gender,
                 ageYears: ageYears,

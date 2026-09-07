@@ -44,10 +44,7 @@ extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
 extension CustomerAddressCoverageNoticeDtoMapper
     on CustomerAddressCoverageNoticeDto {
   CustomerAddressCoverageNoticeEntity toEntity() {
-    return CustomerAddressCoverageNoticeEntity(
-      ar: ar ?? '',
-      en: en ?? '',
-    );
+    return CustomerAddressCoverageNoticeEntity(ar: ar ?? '', en: en ?? '');
   }
 }
 
@@ -231,8 +228,9 @@ extension AddressCoveragePreviewResponseDtoMapper
       longitude: longitude,
       hasActiveSubscription: hasActiveSubscription,
       restaurantCoverageNotice: restaurantCoverageNotice?.toEntity(),
-      servingRestaurants:
-          servingRestaurants.map((item) => item.toEntity()).toList(),
+      servingRestaurants: servingRestaurants
+          .map((item) => item.toEntity())
+          .toList(),
     );
   }
 }

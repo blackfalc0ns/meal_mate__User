@@ -38,6 +38,7 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
   Future<ApiResult<PaymentCheckoutEntity>> checkoutFamilySubscription({
     required String callbackUrl,
     required String errorUrl,
+    required String correlationId,
     required int paymentMethodId,
   }) {
     return safeApiCall(() async {
@@ -45,6 +46,7 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
         FamilyCheckoutRequestDto(
           callbackUrl: callbackUrl,
           errorUrl: errorUrl,
+          correlationId: correlationId,
           paymentMethodId: paymentMethodId,
         ),
       );

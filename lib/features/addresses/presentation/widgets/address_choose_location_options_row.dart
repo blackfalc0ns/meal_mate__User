@@ -61,10 +61,7 @@ class AddressChooseLocationOptionsRow extends StatelessWidget {
               Assets.addressesIconGps,
               width: Spacing.iconLg,
               height: Spacing.iconLg,
-              colorFilter: ColorFilter.mode(
-                color.primary,
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
             ),
           ),
         ),

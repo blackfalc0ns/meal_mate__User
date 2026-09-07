@@ -12,12 +12,14 @@ class FamilyPaymentActions extends StatelessWidget {
     this.isLoading = false,
     this.checkoutBlockReason,
     this.onConfirmPayment,
+    this.onResolveBlocker,
   });
 
   final bool canCheckout;
   final bool isLoading;
   final String? checkoutBlockReason;
   final VoidCallback? onConfirmPayment;
+  final VoidCallback? onResolveBlocker;
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +33,39 @@ class FamilyPaymentActions extends StatelessWidget {
         if (!canCheckout &&
             checkoutBlockReason != null &&
             checkoutBlockReason!.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.xs,
-            ),
-            margin: const EdgeInsets.only(bottom: Spacing.sm),
-            decoration: BoxDecoration(
-              color: color.error.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-              border: Border.all(color: color.error.withValues(alpha: 0.3)),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.info_outline_rounded,
-                  color: color.error,
-                  size: Spacing.iconSm,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Expanded(
-                  child: Text(
-                    checkoutBlockReason!,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size9,
-                      color: color.error,
+          InkWell(
+            onTap: onResolveBlocker,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.sm,
+                vertical: Spacing.xs,
+              ),
+              margin: const EdgeInsets.only(bottom: Spacing.sm),
+              decoration: BoxDecoration(
+                color: color.error.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                border: Border.all(color: color.error.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    color: color.error,
+                    size: Spacing.iconSm,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Expanded(
+                    child: Text(
+                      checkoutBlockReason!,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
+                        color: color.error,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

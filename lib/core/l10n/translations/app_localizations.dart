@@ -4790,6 +4790,36 @@ abstract class AppLocalizations {
   /// **'Write the name here'**
   String get family_full_name_hint;
 
+  /// No description provided for @family_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get family_phone_number;
+
+  /// No description provided for @family_phone_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'+965 0000 0000'**
+  String get family_phone_number_hint;
+
+  /// No description provided for @family_phone_lookup.
+  ///
+  /// In en, this message translates to:
+  /// **'Find member'**
+  String get family_phone_lookup;
+
+  /// No description provided for @family_occupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation'**
+  String get family_occupation;
+
+  /// No description provided for @family_occupation_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter occupation (optional)'**
+  String get family_occupation_hint;
+
   /// No description provided for @family_relation.
   ///
   /// In en, this message translates to:
@@ -9037,6 +9067,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue subscription selection'**
   String get family_packages_continue_button;
+
+  /// No description provided for @family_allergies_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get family_allergies_title;
+
+  /// No description provided for @family_allergies_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies for {name}'**
+  String family_allergies_member(String name);
+
+  /// No description provided for @family_allergies_none.
+  ///
+  /// In en, this message translates to:
+  /// **'No allergies'**
+  String get family_allergies_none;
+
+  /// No description provided for @family_allergies_save_next_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and continue'**
+  String get family_allergies_save_next_member;
+
+  /// No description provided for @family_allergies_next_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: location'**
+  String get family_allergies_next_location;
+
+  /// No description provided for @family_allergies_next_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: payment'**
+  String get family_allergies_next_payment;
+
+  /// No description provided for @family_allergies_food_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Food allergies'**
+  String get family_allergies_food_title;
+
+  /// No description provided for @family_allergies_food_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the allergies that should be avoided for this member'**
+  String get family_allergies_food_subtitle;
+
+  /// No description provided for @family_allergies_common.
+  ///
+  /// In en, this message translates to:
+  /// **'Common allergies'**
+  String get family_allergies_common;
+
+  /// No description provided for @family_allergies_search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an allergy'**
+  String get family_allergies_search;
+
+  /// No description provided for @family_allergies_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingredients they dislike'**
+  String get family_allergies_rejected;
+
+  /// No description provided for @family_allergies_ingredient_search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an ingredient'**
+  String get family_allergies_ingredient_search;
+
+  /// No description provided for @family_allergies_information_note.
+  ///
+  /// In en, this message translates to:
+  /// **'We use this information to personalize suitable meals for each member.'**
+  String get family_allergies_information_note;
+
+  /// No description provided for @family_addresses_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery addresses'**
+  String get family_addresses_title;
+
+  /// No description provided for @family_addresses_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Address for {name}'**
+  String family_addresses_member(String name);
+
+  /// No description provided for @family_addresses_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add address'**
+  String get family_addresses_add;
+
+  /// No description provided for @family_addresses_use.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this address'**
+  String get family_addresses_use;
+
+  /// No description provided for @family_addresses_next_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and continue'**
+  String get family_addresses_next_member;
+
+  /// No description provided for @family_addresses_next_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: payment'**
+  String get family_addresses_next_payment;
+
+  /// No description provided for @family_addresses_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get family_addresses_label;
+
+  /// No description provided for @family_addresses_area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get family_addresses_area;
+
+  /// No description provided for @family_addresses_line.
+  ///
+  /// In en, this message translates to:
+  /// **'Address details'**
+  String get family_addresses_line;
 }
 
 class _AppLocalizationsDelegate

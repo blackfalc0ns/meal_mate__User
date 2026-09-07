@@ -6,6 +6,10 @@ part 'family_member_response_dto.g.dart';
 class FamilyMemberResponseDto {
   const FamilyMemberResponseDto({
     this.memberId,
+    this.memberSubscriptionId,
+    this.phoneNumber,
+    this.occupation,
+    this.startDate,
     this.role,
     this.displayName,
     this.relationshipCode,
@@ -22,6 +26,10 @@ class FamilyMemberResponseDto {
   });
 
   final String? memberId;
+  final String? memberSubscriptionId;
+  final String? phoneNumber;
+  final String? occupation;
+  final String? startDate;
   @JsonKey(fromJson: _roleFromJson)
   final int? role;
   final String? displayName;

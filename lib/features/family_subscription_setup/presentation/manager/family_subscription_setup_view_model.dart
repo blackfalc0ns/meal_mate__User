@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/delete_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_relationships_usecase.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/lookup_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/update_family_group_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/update_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_event.dart';
@@ -24,6 +25,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     this._deleteFamilyMemberUseCase,
     this._abandonFamilyDraftUseCase,
     this._getCustomerAddressesUseCase,
+    this._lookupFamilyMemberUseCase,
   ) : super(const FamilyPlanState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
@@ -34,6 +36,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   final DeleteFamilyMemberUseCase _deleteFamilyMemberUseCase;
   final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
+  final LookupFamilyMemberUseCase _lookupFamilyMemberUseCase;
 
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
@@ -52,7 +55,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
         _getFamilyAddresses();
       case AddFamilyMemberEvent():
         _addFamilyMember(
+          phone: event.phone,
           displayName: event.displayName,
+          occupation: event.occupation,
           relationshipCode: event.relationshipCode,
           gender: event.gender,
           ageYears: event.ageYears,
@@ -61,7 +66,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
       case UpdateFamilyMemberEvent():
         _updateFamilyMember(
           memberId: event.memberId,
+          phone: event.phone,
           displayName: event.displayName,
+          occupation: event.occupation,
           relationshipCode: event.relationshipCode,
           gender: event.gender,
           ageYears: event.ageYears,
@@ -71,6 +78,8 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
         _deleteFamilyMember(event.memberId);
       case AbandonFamilyDraftEvent():
         _abandonFamilyDraft();
+      case LookupFamilyMemberEvent():
+        _lookupFamilyMember(event.phone);
     }
   }
 
@@ -79,10 +88,12 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
-        if (result.data.status == 2) {
+        if (result.data.status == 3) {
           FamilyConversionDraftSession.clearConvertedFamilyDraft();
         } else if (result.data.managerPrepaid) {
           FamilyConversionDraftSession.markConvertedFamilyDraft();
+        } else {
+          FamilyConversionDraftSession.clearConvertedFamilyDraft();
         }
         emit(
           state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
@@ -136,7 +147,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _addFamilyMember({
+    required String phone,
     required String displayName,
+    String? occupation,
     required String relationshipCode,
     required int gender,
     required int ageYears,
@@ -144,7 +157,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }) async {
     emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _addFamilyMemberUseCase(
+      phone: phone,
       displayName: displayName,
+      occupation: occupation,
       relationshipCode: relationshipCode,
       gender: gender,
       ageYears: ageYears,
@@ -164,7 +179,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
 
   Future<void> _updateFamilyMember({
     required String memberId,
+    required String phone,
     required String displayName,
+    String? occupation,
     required String relationshipCode,
     required int gender,
     required int ageYears,
@@ -173,7 +190,9 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _updateFamilyMemberUseCase(
       memberId: memberId,
+      phone: phone,
       displayName: displayName,
+      occupation: occupation,
       relationshipCode: relationshipCode,
       gender: gender,
       ageYears: ageYears,
@@ -202,6 +221,30 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
       case ApiErrorResult():
         emit(
           state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+        );
+    }
+  }
+
+  Future<void> _lookupFamilyMember(String phone) async {
+    emit(
+      state.copyWith(
+        isMemberLookupLoading: true,
+        clearMemberLookup: true,
+        clearFailure: true,
+      ),
+    );
+    final result = await _lookupFamilyMemberUseCase(phone);
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            isMemberLookupLoading: false,
+            memberLookup: result.data,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(isMemberLookupLoading: false, failure: result.failure),
         );
     }
   }

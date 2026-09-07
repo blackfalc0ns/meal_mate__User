@@ -24,7 +24,9 @@ class CurrentLocationCard extends StatelessWidget {
       child: Container(
         width: Spacing.addressesChooseLocationCardWidth,
         height: Spacing.addressesCurrentLocationCardHeight,
-        padding: const EdgeInsets.all(Spacing.addressesChooseLocationCardPadding),
+        padding: const EdgeInsets.all(
+          Spacing.addressesChooseLocationCardPadding,
+        ),
         decoration: BoxDecoration(
           color: color.surface,
           borderRadius: BorderRadius.circular(

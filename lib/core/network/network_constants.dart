@@ -136,10 +136,24 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/group';
   static const String familySubscriptionFlowMembers =
       '/api/v1/customer/family-subscription-flow/members';
+  static const String familySubscriptionFlowMemberLookup =
+      '/api/v1/customer/family-subscription-flow/members/lookup';
   static const String familySubscriptionFlowMember =
       '/api/v1/customer/family-subscription-flow/members/{memberId}';
   static const String familySubscriptionFlowMemberPlan =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/plan';
+  static const String familySubscriptionFlowMemberAllergies =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/allergies';
+  static const String familyMemberAddresses =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses';
+  static const String familyMemberAddress =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/{addressId}';
+  static const String familyMemberAddressPreview =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/preview-coverage';
+  static const String familyMemberExistingAddressPreview =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/{addressId}/preview-coverage';
+  static const String familyMemberAddressSetDefault =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/{addressId}/set-default';
   static const String familySubscriptionFlowSummary =
       '/api/v1/customer/family-subscription-flow/summary';
   static const String familySubscriptionFlowPaymentMethods =

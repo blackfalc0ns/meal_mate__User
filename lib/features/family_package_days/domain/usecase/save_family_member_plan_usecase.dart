@@ -16,6 +16,7 @@ class SaveFamilyMemberPlanUseCase {
     int? tier,
     int? durationDays,
     bool? includeFriday,
+    String? startDate,
   }) {
     return _repository.saveFamilyMemberPlan(
       memberId: memberId,
@@ -24,6 +25,7 @@ class SaveFamilyMemberPlanUseCase {
       tier: tier,
       durationDays: durationDays,
       includeFriday: includeFriday,
+      startDate: startDate,
     );
   }
 }

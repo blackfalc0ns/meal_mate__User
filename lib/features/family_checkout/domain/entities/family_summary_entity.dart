@@ -31,6 +31,7 @@ class FamilySelectedMemberSummaryEntity {
   final String? durationLabelAr;
   final int? selectedTier;
   final String? tierNameAr;
+  final String? tierNameEn;
   final bool includeFriday;
   final bool breakfast;
   final bool lunch;
@@ -54,6 +55,7 @@ class FamilySelectedMemberSummaryEntity {
     this.durationLabelAr,
     this.selectedTier,
     this.tierNameAr,
+    this.tierNameEn,
     this.includeFriday = false,
     this.breakfast = false,
     this.lunch = false,
@@ -144,6 +146,8 @@ class FamilyMealOverviewEntity {
 }
 
 class FamilySummaryEntity {
+  final String? familyGroupId;
+  final String? familyName;
   final double subtotal;
   final double familyDiscountPercent;
   final double familyDiscountAmount;
@@ -158,8 +162,11 @@ class FamilySummaryEntity {
   final List<FamilySummaryMemberEntity> members;
   final FamilySelectedMemberSummaryEntity? selectedMember;
   final List<FamilyMealOverviewEntity> mealOverview;
+  final String? checkoutEndpoint;
 
   const FamilySummaryEntity({
+    this.familyGroupId,
+    this.familyName,
     required this.subtotal,
     required this.familyDiscountPercent,
     required this.familyDiscountAmount,
@@ -174,6 +181,7 @@ class FamilySummaryEntity {
     this.members = const [],
     this.selectedMember,
     this.mealOverview = const [],
+    this.checkoutEndpoint,
   });
 
   String get discountLabel {

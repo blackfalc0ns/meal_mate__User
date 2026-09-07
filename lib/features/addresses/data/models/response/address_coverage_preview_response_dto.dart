@@ -51,14 +51,18 @@ class AddressCoveragePreviewResponseDto {
       );
     }
     final str = value.toString().trim();
-    return str.isEmpty ? null : CustomerAddressCoverageNoticeDto(ar: str, en: str);
+    return str.isEmpty
+        ? null
+        : CustomerAddressCoverageNoticeDto(ar: str, en: str);
   }
 
   static List<ServingRestaurantDto> _parseServingRestaurants(dynamic value) {
     if (value is List) {
       return value
           .whereType<Map>()
-          .map((e) => ServingRestaurantDto.fromJson(Map<String, dynamic>.from(e)))
+          .map(
+            (e) => ServingRestaurantDto.fromJson(Map<String, dynamic>.from(e)),
+          )
           .toList();
     }
     return const [];

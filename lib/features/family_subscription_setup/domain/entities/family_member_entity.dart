@@ -1,5 +1,9 @@
 class FamilyMemberEntity {
   final String memberId;
+  final String? memberSubscriptionId;
+  final String? phoneNumber;
+  final String? occupation;
+  final String? startDate;
   final int role;
   final String displayName;
   final String relationshipCode;
@@ -16,6 +20,10 @@ class FamilyMemberEntity {
 
   const FamilyMemberEntity({
     required this.memberId,
+    this.memberSubscriptionId,
+    this.phoneNumber,
+    this.occupation,
+    this.startDate,
     required this.role,
     required this.displayName,
     required this.relationshipCode,
@@ -40,9 +48,15 @@ class FamilyMemberEntity {
       (durationDays != null && durationDays! > 0);
 
   bool get isReady => setupStatus == 3 || isPlanCompleted;
+  bool get isInCheckoutBasket =>
+      memberSubscriptionId == null && isPlanCompleted;
 
   FamilyMemberEntity copyWith({
     String? memberId,
+    String? memberSubscriptionId,
+    String? phoneNumber,
+    String? occupation,
+    String? startDate,
     int? role,
     String? displayName,
     String? relationshipCode,
@@ -63,6 +77,10 @@ class FamilyMemberEntity {
   }) {
     return FamilyMemberEntity(
       memberId: memberId ?? this.memberId,
+      memberSubscriptionId: memberSubscriptionId ?? this.memberSubscriptionId,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      occupation: occupation ?? this.occupation,
+      startDate: startDate ?? this.startDate,
       role: role ?? this.role,
       displayName: displayName ?? this.displayName,
       relationshipCode: relationshipCode ?? this.relationshipCode,

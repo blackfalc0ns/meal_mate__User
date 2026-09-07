@@ -38,6 +38,8 @@ import 'package:meal_meat_user/features/family_packages/domain/entities/family_s
 import 'package:meal_meat_user/features/family_packages/presentation/screens/family_package_selection_screen.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/screens/family_payment_setup_screen.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/screens/family_allergies_screen.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/screens/family_addresses_screen.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/screens/family_subscription_setup_screen.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/screens/family_program_setup_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
@@ -221,6 +223,16 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyPaymentSetupScreen(),
+        );
+      case AppRoutes.familyAllergies:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyAllergiesScreen(),
+        );
+      case AppRoutes.familyAddresses:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyAddressesScreen(),
         );
       case AppRoutes.calendar:
         final subscriptionId = settings.arguments is String

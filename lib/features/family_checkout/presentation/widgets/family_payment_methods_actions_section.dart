@@ -5,6 +5,8 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_event.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
+import 'package:meal_meat_user/features/family_checkout/domain/entities/family_checkout_blocker_destination.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_actions.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_methods_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
@@ -49,12 +51,21 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
           canCheckout: state.summary?.canCheckout ?? false,
           isLoading: state.isCheckoutLoading,
           checkoutBlockReason: state.summary?.checkoutBlockReason,
+          onResolveBlocker: () {
+            final route = familyCheckoutBlockerRoute(
+              state.summary?.checkoutBlockReason,
+            );
+            if (route != null) context.pushReplacementNamed(route);
+          },
           onConfirmPayment: () {
             final methodId = state.selectedPaymentMethod?.id ?? 1;
             context.read<FamilyCheckoutViewModel>().doIntent(
               CheckoutFamilySubscriptionEvent(
                 callbackUrl: 'mealmate://checkout/success',
                 errorUrl: 'mealmate://checkout/error',
+                correlationId: context
+                    .read<FamilyCheckoutViewModel>()
+                    .correlationId,
                 paymentMethodId: methodId,
               ),
             );

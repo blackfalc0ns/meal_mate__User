@@ -128,6 +128,9 @@ class FamilyPlanState {
 
   List<FamilyMemberEntity> get members => currentFlow?.members ?? const [];
 
+  List<FamilyMemberEntity> get plannedMembers =>
+      members.where((member) => member.hasProgram).toList();
+
   FamilyMemberEntity? get selectedMember {
     final list = members;
     if (list.isEmpty ||
@@ -139,7 +142,7 @@ class FamilyPlanState {
   }
 
   bool get isConvertedFamilyDraft =>
-      currentFlow?.managerPrepaid == true ||
+      currentFlow?.managerPrepaid ??
       FamilyConversionDraftSession.isConvertedFamilyDraft;
 
   bool get isSelectedManagerPlanLocked =>

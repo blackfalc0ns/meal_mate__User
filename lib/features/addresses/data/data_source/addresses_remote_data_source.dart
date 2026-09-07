@@ -34,13 +34,9 @@ abstract interface class AddressesRemoteDataSource {
     String addressId,
   );
 
-  Future<CustomerAddressResponseDto> confirmSetDefaultAddress(
-    String addressId,
-  );
+  Future<CustomerAddressResponseDto> confirmSetDefaultAddress(String addressId);
 
-  Future<MapAddressAutofillResponseDto> geocode(
-    MapGeocodeRequestDto request,
-  );
+  Future<MapAddressAutofillResponseDto> geocode(MapGeocodeRequestDto request);
 
   Future<MapAddressAutofillResponseDto> reverseGeocode(
     MapReverseGeocodeRequestDto request,

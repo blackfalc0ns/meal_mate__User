@@ -31,6 +31,8 @@ abstract class AppRoutes {
   static const String familyProgramSetup = '/family-program-setup';
   static const String familyPackageDaysSetup = '/family-package-days-setup';
   static const String familyPaymentSetup = '/family-payment-setup';
+  static const String familyAllergies = '/family-allergies';
+  static const String familyAddresses = '/family-addresses';
   static const String calendar = '/calendar';
   static const String mealDetails = '/meal-details';
   static const String nutritionDetails = '/nutrition-details';

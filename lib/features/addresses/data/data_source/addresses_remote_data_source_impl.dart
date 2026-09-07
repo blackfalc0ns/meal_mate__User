@@ -71,9 +71,7 @@ class AddressesRemoteDataSourceImpl implements AddressesRemoteDataSource {
   }
 
   @override
-  Future<MapAddressAutofillResponseDto> geocode(
-    MapGeocodeRequestDto request,
-  ) {
+  Future<MapAddressAutofillResponseDto> geocode(MapGeocodeRequestDto request) {
     return _apiServices.geocode(request);
   }
 

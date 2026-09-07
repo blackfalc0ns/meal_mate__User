@@ -67,18 +67,22 @@ class CustomerAddressResponseDto {
     }
     if (value is Map) {
       final map = Map<String, dynamic>.from(value);
-      final ar = (map['ar'] as String?) ??
+      final ar =
+          (map['ar'] as String?) ??
           (map['message'] as String?) ??
           (map['text'] as String?) ??
           (map['notice'] as String?);
-      final en = (map['en'] as String?) ??
+      final en =
+          (map['en'] as String?) ??
           (map['message'] as String?) ??
           (map['text'] as String?) ??
           (map['notice'] as String?);
       return CustomerAddressCoverageNoticeDto(ar: ar, en: en);
     }
     final str = value.toString().trim();
-    return str.isEmpty ? null : CustomerAddressCoverageNoticeDto(ar: str, en: str);
+    return str.isEmpty
+        ? null
+        : CustomerAddressCoverageNoticeDto(ar: str, en: str);
   }
 
   static List<ServingRestaurantDto>? _parseServingRestaurants(dynamic value) {
@@ -87,9 +91,7 @@ class CustomerAddressResponseDto {
       return value
           .whereType<Map>()
           .map(
-            (e) => ServingRestaurantDto.fromJson(
-              Map<String, dynamic>.from(e),
-            ),
+            (e) => ServingRestaurantDto.fromJson(Map<String, dynamic>.from(e)),
           )
           .toList();
     }
@@ -101,10 +103,7 @@ class CustomerAddressResponseDto {
 }
 
 class CustomerAddressCoverageNoticeDto {
-  const CustomerAddressCoverageNoticeDto({
-    this.ar,
-    this.en,
-  });
+  const CustomerAddressCoverageNoticeDto({this.ar, this.en});
 
   final String? ar;
   final String? en;
@@ -112,11 +111,13 @@ class CustomerAddressCoverageNoticeDto {
   factory CustomerAddressCoverageNoticeDto.fromJson(
     Map<String, dynamic> json,
   ) => CustomerAddressCoverageNoticeDto(
-    ar: (json['ar'] as String?) ??
+    ar:
+        (json['ar'] as String?) ??
         (json['message'] as String?) ??
         (json['text'] as String?) ??
         (json['notice'] as String?),
-    en: (json['en'] as String?) ??
+    en:
+        (json['en'] as String?) ??
         (json['message'] as String?) ??
         (json['text'] as String?) ??
         (json['notice'] as String?),
@@ -143,10 +144,12 @@ class ServingRestaurantDto {
   factory ServingRestaurantDto.fromJson(Map<String, dynamic> json) =>
       ServingRestaurantDto(
         id: json['id'] as String?,
-        nameAr: (json['nameAr'] as String?) ??
+        nameAr:
+            (json['nameAr'] as String?) ??
             (json['name'] as String?) ??
             (json['name_ar'] as String?),
-        nameEn: (json['nameEn'] as String?) ??
+        nameEn:
+            (json['nameEn'] as String?) ??
             (json['name'] as String?) ??
             (json['name_en'] as String?),
         name: json['name'] as String?,

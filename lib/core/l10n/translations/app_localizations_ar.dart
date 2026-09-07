@@ -2498,6 +2498,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_full_name_hint => 'اكتب الاسم هنا';
 
   @override
+  String get family_phone_number => 'رقم الموبايل';
+
+  @override
+  String get family_phone_number_hint => '+965 0000 0000';
+
+  @override
+  String get family_phone_lookup => 'بحث عن الفرد';
+
+  @override
+  String get family_occupation => 'المهنة';
+
+  @override
+  String get family_occupation_hint => 'اكتب المهنة (اختياري)';
+
+  @override
   String get family_relation => 'صلة القرابة';
 
   @override
@@ -4724,4 +4739,76 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_packages_continue_button => 'متابعة اختيار الاشتراك';
+
+  @override
+  String get family_allergies_title => 'الحساسية';
+
+  @override
+  String family_allergies_member(String name) {
+    return 'حساسية $name';
+  }
+
+  @override
+  String get family_allergies_none => 'بدون حساسية';
+
+  @override
+  String get family_allergies_save_next_member => 'حفظ والمتابعة';
+
+  @override
+  String get family_allergies_next_location => 'التالي: الموقع';
+
+  @override
+  String get family_allergies_next_payment => 'التالي: الدفع';
+
+  @override
+  String get family_allergies_food_title => 'الحساسية الغذائية';
+
+  @override
+  String get family_allergies_food_subtitle =>
+      'حدد المكونات التي يجب تجنبها لهذا الفرد';
+
+  @override
+  String get family_allergies_common => 'الحساسيات الشائعة';
+
+  @override
+  String get family_allergies_search => 'ابحث عن حساسية';
+
+  @override
+  String get family_allergies_rejected => 'مكونات لا يفضلها';
+
+  @override
+  String get family_allergies_ingredient_search => 'ابحث عن مكونات';
+
+  @override
+  String get family_allergies_information_note =>
+      'نستخدم هذه المعلومات لتخصيص الوجبات المناسبة لكل فرد.';
+
+  @override
+  String get family_addresses_title => 'عناوين التوصيل';
+
+  @override
+  String family_addresses_member(String name) {
+    return 'عنوان $name';
+  }
+
+  @override
+  String get family_addresses_add => 'إضافة عنوان';
+
+  @override
+  String get family_addresses_use => 'استخدام هذا العنوان';
+
+  @override
+  String get family_addresses_next_member => 'حفظ والمتابعة';
+
+  @override
+  String get family_addresses_next_payment => 'التالي: الدفع';
+
+  @override
+  String get family_addresses_label => 'اسم العنوان';
+
+  @override
+  String get family_addresses_area => 'المنطقة';
+
+  @override
+  String get family_addresses_line => 'تفاصيل العنوان';
 }

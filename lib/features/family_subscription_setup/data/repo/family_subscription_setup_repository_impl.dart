@@ -5,8 +5,10 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/mapper/fa
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_lookup_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_lookup_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart';
 
 @Injectable(as: FamilySubscriptionSetupRepository)
@@ -73,7 +75,9 @@ class FamilySubscriptionSetupRepositoryImpl
 
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> addFamilyMember({
+    required String phone,
     required String displayName,
+    String? occupation,
     required String relationshipCode,
     required int gender,
     required int ageYears,
@@ -82,7 +86,9 @@ class FamilySubscriptionSetupRepositoryImpl
     return safeApiCall(() async {
       final response = await _remoteDataSource.addFamilyMember(
         FamilyMemberWriteRequestDto(
+          phone: phone,
           displayName: displayName,
+          occupation: occupation,
           relationshipCode: relationshipCode,
           gender: gender,
           ageYears: ageYears,
@@ -96,7 +102,9 @@ class FamilySubscriptionSetupRepositoryImpl
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> updateFamilyMember({
     required String memberId,
+    required String phone,
     required String displayName,
+    String? occupation,
     required String relationshipCode,
     required int gender,
     required int ageYears,
@@ -106,7 +114,9 @@ class FamilySubscriptionSetupRepositoryImpl
       final response = await _remoteDataSource.updateFamilyMember(
         memberId,
         FamilyMemberWriteRequestDto(
+          phone: phone,
           displayName: displayName,
+          occupation: occupation,
           relationshipCode: relationshipCode,
           gender: gender,
           ageYears: ageYears,
@@ -123,6 +133,16 @@ class FamilySubscriptionSetupRepositoryImpl
   ) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.deleteFamilyMember(memberId);
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<FamilyMemberLookupEntity>> lookupFamilyMember(String phone) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.lookupFamilyMember(
+        FamilyMemberLookupRequestDto(phone: phone),
+      );
       return response.toEntity();
     });
   }

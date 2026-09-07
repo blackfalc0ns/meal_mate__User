@@ -64,10 +64,13 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_lookup_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_flow_current_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_relationship_response_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_lookup_response_dto.dart';
 import 'package:meal_meat_user/features/family_packages/data/models/response/family_size_package_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
+import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_conversion_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_upgrade_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
@@ -511,6 +514,11 @@ abstract class ApiServices {
     @Body() FamilyMemberWriteRequestDto request,
   );
 
+  @POST(EndPoints.familySubscriptionFlowMemberLookup)
+  Future<FamilyMemberLookupResponseDto> lookupFamilyMember(
+    @Body() FamilyMemberLookupRequestDto request,
+  );
+
   @PUT(EndPoints.familySubscriptionFlowMember)
   Future<FamilyFlowCurrentResponseDto> updateFamilyMember(
     @Path('memberId') String memberId,
@@ -534,6 +542,49 @@ abstract class ApiServices {
   Future<FamilyFlowCurrentResponseDto> saveFamilyMemberPlan(
     @Path('memberId') String memberId,
     @Body() FamilyMemberPlanWriteRequestDto request,
+  );
+
+  @PUT(EndPoints.familySubscriptionFlowMemberAllergies)
+  Future<bool> saveFamilyMemberAllergies(
+    @Path('memberId') String memberId,
+    @Body() FamilyMemberAllergiesRequestDto request,
+  );
+
+  @GET(EndPoints.familyMemberAddresses)
+  Future<List<CustomerAddressResponseDto>> getFamilyMemberAddresses(
+    @Path('memberId') String memberId,
+  );
+
+  @POST(EndPoints.familyMemberAddresses)
+  Future<CustomerAddressResponseDto> addFamilyMemberAddress(
+    @Path('memberId') String memberId,
+    @Body() CustomerAddressRequestDto request,
+  );
+
+  @PUT(EndPoints.familyMemberAddress)
+  Future<CustomerAddressResponseDto> updateFamilyMemberAddress(
+    @Path('memberId') String memberId,
+    @Path('addressId') String addressId,
+    @Body() CustomerAddressRequestDto request,
+  );
+
+  @POST(EndPoints.familyMemberAddressPreview)
+  Future<AddressCoveragePreviewResponseDto> previewFamilyMemberAddress(
+    @Path('memberId') String memberId,
+    @Body() AddressCoveragePreviewRequestDto request,
+  );
+
+  @GET(EndPoints.familyMemberExistingAddressPreview)
+  Future<AddressCoveragePreviewResponseDto> previewExistingFamilyMemberAddress(
+    @Path('memberId') String memberId,
+    @Path('addressId') String addressId,
+  );
+
+  @POST(EndPoints.familyMemberAddressSetDefault)
+  Future<CustomerAddressResponseDto> setDefaultFamilyMemberAddress(
+    @Path('memberId') String memberId,
+    @Path('addressId') String addressId,
+    @Body() Map<String, dynamic> body,
   );
 
   @GET(EndPoints.familySubscriptionFlowSummary)

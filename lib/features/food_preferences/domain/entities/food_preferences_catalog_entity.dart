@@ -24,4 +24,9 @@ class FoodPreferenceCatalogItemEntity {
   final String nameEn;
   final String? category;
   final List<String> allergenCodes;
+
+  String name(String localeName) {
+    if (localeName.startsWith('ar')) return nameAr.isNotEmpty ? nameAr : nameEn;
+    return nameEn.isNotEmpty ? nameEn : nameAr;
+  }
 }

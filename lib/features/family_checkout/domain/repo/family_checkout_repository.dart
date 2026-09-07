@@ -10,6 +10,7 @@ abstract class FamilyCheckoutRepository {
   Future<ApiResult<PaymentCheckoutEntity>> checkoutFamilySubscription({
     required String callbackUrl,
     required String errorUrl,
+    required String correlationId,
     required int paymentMethodId,
   });
 }

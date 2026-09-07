@@ -31,14 +31,18 @@ class GetFamilyAddressesEvent extends FamilyPlanEvent {
 
 class AddFamilyMemberEvent extends FamilyPlanEvent {
   const AddFamilyMemberEvent({
+    required this.phone,
     required this.displayName,
+    this.occupation,
     required this.relationshipCode,
     required this.gender,
     required this.ageYears,
     this.deliveryAddressId,
   });
 
+  final String phone;
   final String displayName;
+  final String? occupation;
   final String relationshipCode;
   final int gender;
   final int ageYears;
@@ -48,7 +52,9 @@ class AddFamilyMemberEvent extends FamilyPlanEvent {
 class UpdateFamilyMemberEvent extends FamilyPlanEvent {
   const UpdateFamilyMemberEvent({
     required this.memberId,
+    required this.phone,
     required this.displayName,
+    this.occupation,
     required this.relationshipCode,
     required this.gender,
     required this.ageYears,
@@ -56,11 +62,19 @@ class UpdateFamilyMemberEvent extends FamilyPlanEvent {
   });
 
   final String memberId;
+  final String phone;
   final String displayName;
+  final String? occupation;
   final String relationshipCode;
   final int gender;
   final int ageYears;
   final String? deliveryAddressId;
+}
+
+class LookupFamilyMemberEvent extends FamilyPlanEvent {
+  const LookupFamilyMemberEvent(this.phone);
+
+  final String phone;
 }
 
 class DeleteFamilyMemberEvent extends FamilyPlanEvent {
