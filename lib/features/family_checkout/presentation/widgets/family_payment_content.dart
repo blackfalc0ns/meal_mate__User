@@ -34,7 +34,7 @@ class FamilyPaymentContent extends StatelessWidget {
               FamilySetupHeaderBadge(title: state.currentFlow?.name),
               const SizedBox(height: Spacing.familyProgramProgressTopGap),
               const FamilyProgramStepper(
-                currentStep: 3,
+                currentStep: 5,
                 includeFamilyCreationStep: true,
               ),
               const SizedBox(height: Spacing.familyProgramMemberTopGap),

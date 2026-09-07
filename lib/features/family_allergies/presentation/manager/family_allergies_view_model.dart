@@ -24,9 +24,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     final catalogResult = await _getCatalog();
     if (flowResult is ApiSuccessResult<FamilyFlowCurrentEntity> &&
         catalogResult is ApiSuccessResult<FoodPreferencesCatalogEntity>) {
-      final members = flowResult.data.members
-          .where((member) => member.isInCheckoutBasket)
-          .toList();
+      final members = flowResult.data.members;
       emit(
         state.copyWith(
           isLoading: false,
@@ -70,6 +68,21 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     final next = <String>{...state.rejectedCodes};
     next.contains(code) ? next.remove(code) : next.add(code);
     emit(state.copyWith(rejectedCodes: next));
+  }
+
+  void selectMember(int index) {
+    if (state.isSaving || index < 0 || index >= state.members.length) return;
+    if (index == state.currentIndex) return;
+    emit(
+      state.copyWith(
+        currentIndex: index,
+        selectedCodes: const {},
+        rejectedCodes: const {},
+        allergySearch: '',
+        ingredientSearch: '',
+        clearError: true,
+      ),
+    );
   }
 
   Future<void> saveCurrent() async {

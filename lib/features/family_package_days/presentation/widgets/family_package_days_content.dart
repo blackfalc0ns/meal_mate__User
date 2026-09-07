@@ -40,7 +40,7 @@ class FamilyPackageDaysContent extends StatelessWidget {
               FamilySetupHeaderBadge(title: state.currentFlow?.name),
               const SizedBox(height: Spacing.familyProgramProgressTopGap),
               const FamilyProgramStepper(
-                currentStep: 2,
+                currentStep: 4,
                 includeFamilyCreationStep: true,
               ),
               const SizedBox(height: Spacing.familyProgramMemberTopGap),

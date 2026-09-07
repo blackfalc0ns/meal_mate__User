@@ -141,7 +141,7 @@ class _FamilyPackageDaysSetupScreenState
       }
       Navigator.maybePop(context);
     } else {
-      context.pushNamed(AppRoutes.familyAllergies);
+      context.pushNamed(AppRoutes.familyPaymentSetup);
     }
   }
 }

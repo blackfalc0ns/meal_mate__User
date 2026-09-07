@@ -2604,10 +2604,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_step_program => 'البرنامج';
 
   @override
+  String get family_step_location => 'الموقع';
+
+  @override
+  String get family_step_allergies => 'الحساسية';
+
+  @override
   String get family_step_package_days => 'الباقة والأيام';
 
   @override
   String get family_step_payment => 'الدفع';
+
+  @override
+  String get family_setup_step_four => '4';
+
+  @override
+  String get family_setup_step_five => '5';
 
   @override
   String get family_member_not_started => 'لم يبدأ';

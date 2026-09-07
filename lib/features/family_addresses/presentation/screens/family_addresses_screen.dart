@@ -2,58 +2,98 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/loading_widget.dart';
-import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_location_stage.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
 
-class FamilyAddressesScreen extends StatefulWidget {
+class FamilyAddressesScreen extends StatelessWidget {
   const FamilyAddressesScreen({super.key});
 
   @override
-  State<FamilyAddressesScreen> createState() => _FamilyAddressesScreenState();
-}
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
 
-class _FamilyAddressesScreenState extends State<FamilyAddressesScreen> {
-  String? _openedMemberId;
+    return BlocProvider(
+      create: (_) => getIt<FamilyAddressesViewModel>()..load(),
+      child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
+        listenWhen: (previous, current) =>
+            !previous.completed && current.completed,
+        listener: (context, state) =>
+            context.pushReplacementNamed(AppRoutes.familyAllergies),
+        builder: (context, state) {
+          final member = state.currentMember;
+          if (state.isLoading || member == null) {
+            return const LoadingWidget.fullScreen();
+          }
 
-  @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<FamilyAddressesViewModel>()..load(),
-    child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
-      listenWhen: (previous, current) =>
-          previous.currentMember?.memberId != current.currentMember?.memberId ||
-          previous.completed != current.completed ||
-          previous.isLoading != current.isLoading,
-      listener: _handleState,
-      builder: (context, state) => const LoadingWidget.fullScreen(),
-    ),
-  );
+          final members = state.members.asMap().entries.map((entry) {
+            return FamilyProgramMemberUiModel(
+              name: entry.value.displayName,
+              imageAsset: '',
+              status: entry.key < state.currentIndex
+                  ? locale.family_member_completed
+                  : locale.family_member_in_progress,
+              isSelected: entry.key == state.currentIndex,
+              isInProgress: entry.key >= state.currentIndex,
+            );
+          }).toList();
 
-  Future<void> _handleState(
-    BuildContext context,
-    FamilyAddressesState state,
-  ) async {
-    if (state.completed) {
-      context.pushReplacementNamed(AppRoutes.familyPaymentSetup);
-      return;
-    }
-    final member = state.currentMember;
-    if (state.isLoading ||
-        member == null ||
-        _openedMemberId == member.memberId) {
-      return;
-    }
-    _openedMemberId = member.memberId;
-    final saved = await context.pushNamed(
-      AppRoutes.addressChooseLocation,
-      arguments: AddressChooseLocationArgs(familyMemberId: member.memberId),
+          return Scaffold(
+            backgroundColor: color.surfaceContainerHighest,
+            appBar: CustomAppBar(
+              title: locale.family_setup_title,
+              showBackButton: true,
+            ),
+            body: Column(
+              children: [
+                ColoredBox(
+                  color: color.surface,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: Spacing.familySetupHorizontalPadding,
+                      end: Spacing.familySetupHorizontalPadding,
+                      top: Spacing.sm,
+                      bottom: Spacing.md,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const FamilySetupHeaderBadge(),
+                        const SizedBox(height: Spacing.md),
+                        const FamilyProgramStepper(
+                          currentStep: 2,
+                          includeFamilyCreationStep: true,
+                        ),
+                        const SizedBox(height: Spacing.lg),
+                        FamilyProgramMemberStrip(members: members),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: FamilyAddressLocationStage(
+                    key: ValueKey(member.memberId),
+                    memberId: member.memberId,
+                    onSaved: context
+                        .read<FamilyAddressesViewModel>()
+                        .addressSaved,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
-    if (!context.mounted) return;
-    _openedMemberId = null;
-    if (saved == true) {
-      context.read<FamilyAddressesViewModel>().addressSaved();
-    }
   }
 }

@@ -5000,6 +5000,18 @@ abstract class AppLocalizations {
   /// **'Program'**
   String get family_step_program;
 
+  /// No description provided for @family_step_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get family_step_location;
+
+  /// No description provided for @family_step_allergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get family_step_allergies;
+
   /// No description provided for @family_step_package_days.
   ///
   /// In en, this message translates to:
@@ -5011,6 +5023,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment'**
   String get family_step_payment;
+
+  /// No description provided for @family_setup_step_four.
+  ///
+  /// In en, this message translates to:
+  /// **'4'**
+  String get family_setup_step_four;
+
+  /// No description provided for @family_setup_step_five.
+  ///
+  /// In en, this message translates to:
+  /// **'5'**
+  String get family_setup_step_five;
 
   /// No description provided for @family_member_not_started.
   ///

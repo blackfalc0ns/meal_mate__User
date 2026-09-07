@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/addresses/presentation/widgets/address_c
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 
 class AddressChooseLocationScreen extends StatefulWidget {
   const AddressChooseLocationScreen({super.key, this.args});
@@ -169,6 +170,19 @@ class _AddressChooseLocationScreenState
                 },
               ),
             ),
+            if (widget.args?.familyMemberId != null)
+              PositionedDirectional(
+                top: Spacing.familySetupContentTop,
+                start: Spacing.familySetupHorizontalPadding,
+                end: Spacing.familySetupHorizontalPadding,
+                child: ColoredBox(
+                  color: color.surface,
+                  child: const FamilyProgramStepper(
+                    currentStep: 2,
+                    includeFamilyCreationStep: true,
+                  ),
+                ),
+              ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsetsDirectional.only(

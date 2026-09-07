@@ -60,11 +60,14 @@ class FamilyAllergiesContent extends StatelessWidget {
           const FamilySetupHeaderBadge(),
           const SizedBox(height: Spacing.md),
           const FamilyProgramStepper(
-            currentStep: 2,
+            currentStep: 3,
             includeFamilyCreationStep: true,
           ),
           const SizedBox(height: Spacing.lg),
-          FamilyProgramMemberStrip(members: members),
+          FamilyProgramMemberStrip(
+            members: members,
+            onSelectMember: viewModel.selectMember,
+          ),
           const SizedBox(height: Spacing.lg),
           Text(
             locale.family_allergies_food_title,
@@ -132,7 +135,7 @@ class FamilyAllergiesContent extends StatelessWidget {
           const SizedBox(height: Spacing.md),
           FamilyAllergiesActions(
             nextText: state.currentIndex == state.members.length - 1
-                ? locale.family_allergies_next_location
+                ? locale.family_next_package_days
                 : locale.family_allergies_save_next_member,
             isLoading: state.isSaving,
             onNext: state.canSave ? viewModel.saveCurrent : null,

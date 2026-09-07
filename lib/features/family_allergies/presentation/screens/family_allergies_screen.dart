@@ -5,10 +5,10 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_content.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_loading_skeleton.dart';
 
 class FamilyAllergiesScreen extends StatelessWidget {
   const FamilyAllergiesScreen({super.key});
@@ -24,9 +24,11 @@ class FamilyAllergiesScreen extends StatelessWidget {
         listenWhen: (previous, current) =>
             !previous.completed && current.completed,
         listener: (context, state) =>
-            context.pushReplacementNamed(AppRoutes.familyAddresses),
+            context.pushReplacementNamed(AppRoutes.familyPackageDaysSetup),
         builder: (context, state) {
-          if (state.isLoading) return const LoadingWidget.fullScreen();
+          if (state.isLoading && state.members.isEmpty) {
+            return const FamilyAllergiesLoadingSkeleton();
+          }
           return Scaffold(
             backgroundColor: color.surface,
             appBar: CustomAppBar(

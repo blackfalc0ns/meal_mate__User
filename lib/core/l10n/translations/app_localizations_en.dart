@@ -2647,10 +2647,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_step_program => 'Program';
 
   @override
+  String get family_step_location => 'Location';
+
+  @override
+  String get family_step_allergies => 'Allergies';
+
+  @override
   String get family_step_package_days => 'Package and days';
 
   @override
   String get family_step_payment => 'Payment';
+
+  @override
+  String get family_setup_step_four => '4';
+
+  @override
+  String get family_setup_step_five => '5';
 
   @override
   String get family_member_not_started => 'Not started';

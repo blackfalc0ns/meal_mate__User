@@ -29,7 +29,7 @@ class FamilyProgramStepper extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final stepCount = includeFamilyCreationStep ? 4 : 3;
+        final stepCount = includeFamilyCreationStep ? 6 : 5;
         final stepSectionWidth = constraints.maxWidth / stepCount;
         final lineInset = stepSectionWidth / 2;
         final lineWidth = constraints.maxWidth - (lineInset * 2);
@@ -89,8 +89,8 @@ class FamilyProgramStepper extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: FamilyProgramStepperItem(
-                      label: locale.family_step_package_days,
-                      value: locale.family_step_package_days,
+                      label: locale.family_step_location,
+                      value: locale.family_step_location,
                       number: locale.family_setup_step_two,
                       width: itemWidth,
                       labelFontSize: labelFontSize,
@@ -102,13 +102,39 @@ class FamilyProgramStepper extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: FamilyProgramStepperItem(
-                      label: locale.family_step_payment,
-                      value: locale.family_step_payment,
+                      label: locale.family_step_allergies,
+                      value: locale.family_step_allergies,
                       number: locale.family_setup_step_three,
                       width: itemWidth,
                       labelFontSize: labelFontSize,
                       selected: currentStep == 3,
-                      completed: currentStep >= 3,
+                      completed: currentStep > 3,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: FamilyProgramStepperItem(
+                      label: locale.family_step_package_days,
+                      value: locale.family_step_package_days,
+                      number: locale.family_setup_step_four,
+                      width: itemWidth,
+                      labelFontSize: labelFontSize,
+                      selected: currentStep == 4,
+                      completed: currentStep > 4,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: FamilyProgramStepperItem(
+                      label: locale.family_step_payment,
+                      value: locale.family_step_payment,
+                      number: locale.family_setup_step_five,
+                      width: itemWidth,
+                      labelFontSize: labelFontSize,
+                      selected: currentStep == 5,
+                      completed: currentStep >= 5,
                     ),
                   ),
                 ),

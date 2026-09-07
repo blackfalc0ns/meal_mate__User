@@ -21,19 +21,13 @@ class FamilyProgramActionsSection extends StatelessWidget {
       children: [
         const SizedBox(height: Spacing.lg),
         FamilyProgramActions(
-          nextText: locale.family_next_package_days,
+          nextText: locale.family_allergies_next_location,
           nextIcon: Icons.arrow_forward_ios_rounded,
           onNextPressed:
               state.isPlanSaving || state.selectedMember?.hasProgram != true
               ? null
               : () {
-                  final firstProgramId =
-                      state.selectedMember?.programId ??
-                      state.selectedProgram?.programId;
-                  context.pushNamed(
-                    AppRoutes.familyPackageDaysSetup,
-                    arguments: firstProgramId,
-                  );
+                  context.pushNamed(AppRoutes.familyAddresses);
                 },
         ),
       ],

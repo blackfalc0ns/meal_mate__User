@@ -18,9 +18,8 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         final missingAddressMembers = result.data.members
             .where(
               (member) =>
-                  member.isInCheckoutBasket &&
-                  (member.deliveryAddressId == null ||
-                      member.deliveryAddressId!.isEmpty),
+                  member.deliveryAddressId == null ||
+                  member.deliveryAddressId!.isEmpty,
             )
             .toList();
         emit(
