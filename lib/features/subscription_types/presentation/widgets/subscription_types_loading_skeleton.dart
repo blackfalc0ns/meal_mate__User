@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
-import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
   const SubscriptionTypesLoadingSkeleton({
@@ -17,7 +14,6 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     return Semantics(
@@ -46,32 +42,46 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     const Center(
-                      child: AppLogo(
-                        size: Spacing.subscriptionTypeLogoHeight,
-                        alignment: CrossAxisAlignment.center,
+                      child: FractionallySizedBox(
+                        widthFactor: 0.38,
+                        child: ShimmerPlaceholder.rect(
+                          height: Spacing.subscriptionTypeLogoHeight,
+                          borderRadius: Spacing.radiusSm,
+                        ),
                       ),
                     ),
                     const SizedBox(height: Spacing.sm),
-                    const ShimmerPlaceholder.rect(
-                      height: Spacing.subscriptionTypeMobileCardHeight,
-                      borderRadius: Spacing.subscriptionProgramCardRadius,
-                    ),
-                    const SizedBox(height: Spacing.sm),
-                    Text(
-                      locale.subscription_type_title,
-                      textAlign: TextAlign.center,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size20,
-                        color: color.onSurface,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        Spacing.subscriptionProgramCardRadius,
+                      ),
+                      child: const AspectRatio(
+                        aspectRatio:
+                            Spacing.subscriptionTypeHeroWidth /
+                            Spacing.subscriptionTypeHeroHeight,
+                        child: ShimmerPlaceholder.rect(
+                          borderRadius: Spacing.subscriptionProgramCardRadius,
+                        ),
                       ),
                     ),
                     const SizedBox(height: Spacing.sm),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: Spacing.xl),
-                      child: ShimmerPlaceholder.rect(
-                        height: Spacing.base,
-                        borderRadius: Spacing.radiusSm,
+                    const Center(
+                      child: FractionallySizedBox(
+                        widthFactor: 0.5,
+                        child: ShimmerPlaceholder.rect(
+                          height: Spacing.xl,
+                          borderRadius: Spacing.radiusSm,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    const Center(
+                      child: FractionallySizedBox(
+                        widthFactor: 0.75,
+                        child: ShimmerPlaceholder.rect(
+                          height: Spacing.base,
+                          borderRadius: Spacing.radiusSm,
+                        ),
                       ),
                     ),
                     const SizedBox(height: Spacing.sm),
@@ -86,7 +96,7 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
                     }),
                     const SizedBox(height: Spacing.base),
                     const ShimmerPlaceholder.rect(
-                      height: Spacing.subscriptionTypeNoticeHeight,
+                      height: Spacing.subscriptionInfoHeight,
                       borderRadius: Spacing.subscriptionProgramCardRadius,
                     ),
                     const SizedBox(height: Spacing.md),
@@ -104,3 +114,4 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
     );
   }
 }
+

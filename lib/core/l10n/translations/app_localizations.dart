@@ -1712,6 +1712,36 @@ abstract class AppLocalizations {
   /// **'Your subscription details will appear here once you subscribe.'**
   String get billing_no_subscription_description;
 
+  /// No description provided for @billing_no_active_subscription_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscription'**
+  String get billing_no_active_subscription_title;
+
+  /// No description provided for @billing_no_active_subscription_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t subscribed to any package yet.\nChoose the right package and start your healthy journey.'**
+  String get billing_no_active_subscription_desc;
+
+  /// No description provided for @billing_browse_subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Subscriptions'**
+  String get billing_browse_subscriptions;
+
+  /// No description provided for @billing_no_invoices_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices yet'**
+  String get billing_no_invoices_title;
+
+  /// No description provided for @billing_no_invoices_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription invoices will appear here after completing your first payment.'**
+  String get billing_no_invoices_desc;
+
   /// No description provided for @billing_manage_subscription.
   ///
   /// In en, this message translates to:

@@ -62,6 +62,12 @@ class Assets {
       '$_images/profile/profile_billing_upgrade_tier.svg';
   static const String profileBillingCancel =
       '$_images/profile/profile_billing_cancel.svg';
+  static const String billingEmptySubscriptionBox =
+      '$_images/subscriptions/figma/billing_empty_subscription_box.png';
+  static const String billingEmptySubscriptionKit =
+      '$_images/subscriptions/figma/billing_empty_subscription_kit.png';
+  static const String billingEmptyInvoices =
+      '$_images/subscriptions/figma/billing_empty_invoices.png';
   static const String dietaryPreferencesHero =
       '$_images/fake/dietary_preferences_hero.png';
   static const String dietaryPreferencesSelectedCheck =

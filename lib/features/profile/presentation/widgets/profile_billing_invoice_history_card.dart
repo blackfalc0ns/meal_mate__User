@@ -7,6 +7,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_empty_invoices_card.dart';
 
 class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
   const ProfileBillingInvoiceHistoryCard({required this.invoices, super.key});
@@ -19,9 +20,10 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
     final locale = context.localization;
     final visibleInvoices = invoices.take(3).toList();
     final dateFormatter = DateFormat.yMMMd(locale.localeName);
+    final isEmpty = invoices.isEmpty;
 
     return Container(
-      height: Spacing.profileBillingInvoicesHeight,
+      height: isEmpty ? null : Spacing.profileBillingInvoicesHeight,
       padding: const EdgeInsets.all(Spacing.base),
       decoration: BoxDecoration(
         color: color.surface,
@@ -36,6 +38,7 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -64,10 +67,13 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.xs),
-          Expanded(
-            child: Column(
-              children: List.generate(visibleInvoices.length, (index) {
+          if (isEmpty) ...[
+            const ProfileBillingEmptyInvoicesCard(),
+          ] else ...[
+            const SizedBox(height: Spacing.xs),
+            Expanded(
+              child: Column(
+                children: List.generate(visibleInvoices.length, (index) {
                 final invoice = visibleInvoices[index];
                 final issuedAt = DateTime.tryParse(invoice.issuedAtUtc);
                 final dateText = issuedAt == null
@@ -144,9 +150,10 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                     ],
                   ),
                 );
-              }),
+                }),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

@@ -8,7 +8,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
-import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_empty_subscription_card.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
@@ -94,10 +94,17 @@ class ProfileBillingScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     if (subscription == null)
-                      EmptyStateWidget(
-                        title: locale.billing_no_subscription_title,
-                        description: locale.billing_no_subscription_description,
-                        icon: Icons.receipt_long_rounded,
+                      ProfileBillingEmptySubscriptionCard(
+                        hasUncompletedSubscriptions:
+                            billing?.uncompletedSubscriptions.isNotEmpty ==
+                            true,
+                        onBrowseSubscriptions: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            AppRoutes.home,
+                            (route) => false,
+                            arguments: 3,
+                          );
+                        },
                       )
                     else
                       ProfileBillingPlanCard(
@@ -195,40 +202,41 @@ class ProfileBillingScreen extends StatelessWidget {
                     ProfileBillingInvoiceHistoryCard(
                       invoices: billing?.invoices ?? const [],
                     ),
-                    const SizedBox(height: Spacing.md),
-                    CustomWarningWidget(
-                      icon: Icons.info_rounded,
-                      message: freezeMessage?.isEmpty ?? true
-                          ? locale.billing_notice
-                          : freezeMessage!,
-                      isWarning: true,
-                      height: Spacing.profileBillingNoticeHeight,
-                      backgroundColor: color.secondary.withValues(alpha: 0.06),
-                      borderColor: color.secondary.withValues(alpha: 0.25),
-                      horizontalPadding: Spacing.sm,
-                      iconTextSpacing: Spacing.sm,
-                      borderRadius: Spacing.radiusMd,
-                      messageFontSize: FontSize.size11,
-                      maxMessageLines: 3,
-                    ),
-                    const SizedBox(height: Spacing.lg),
-                    SizedBox(
-                      width: double.infinity,
-                      height: Spacing.profileBillingButtonHeight,
-                      child: AppButton(
-                        text: locale.billing_manage_subscription,
-                        onPressed: subscription == null
-                            ? null
-                            : () => context.pushNamed(
-                                AppRoutes.familySubscriptionSettings,
-                              ),
-                        height: Spacing.profileBillingButtonHeight,
-                        borderRadius: Spacing.radiusPill,
-                        color: color.primary,
-                        textColor: color.onPrimary,
-                        fontSize: FontSize.size12,
+                    if (subscription != null) ...[
+                      const SizedBox(height: Spacing.md),
+                      CustomWarningWidget(
+                        icon: Icons.info_rounded,
+                        message: freezeMessage?.isEmpty ?? true
+                            ? locale.billing_notice
+                            : freezeMessage!,
+                        isWarning: true,
+                        height: Spacing.profileBillingNoticeHeight,
+                        backgroundColor:
+                            color.secondary.withValues(alpha: 0.06),
+                        borderColor: color.secondary.withValues(alpha: 0.25),
+                        horizontalPadding: Spacing.sm,
+                        iconTextSpacing: Spacing.sm,
+                        borderRadius: Spacing.radiusMd,
+                        messageFontSize: FontSize.size11,
+                        maxMessageLines: 3,
                       ),
-                    ),
+                      const SizedBox(height: Spacing.lg),
+                      SizedBox(
+                        width: double.infinity,
+                        height: Spacing.profileBillingButtonHeight,
+                        child: AppButton(
+                          text: locale.billing_manage_subscription,
+                          onPressed: () => context.pushNamed(
+                            AppRoutes.familySubscriptionSettings,
+                          ),
+                          height: Spacing.profileBillingButtonHeight,
+                          borderRadius: Spacing.radiusPill,
+                          color: color.primary,
+                          textColor: color.onPrimary,
+                          fontSize: FontSize.size12,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

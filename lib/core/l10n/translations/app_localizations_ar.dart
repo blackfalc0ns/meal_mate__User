@@ -864,6 +864,23 @@ class AppLocalizationsAr extends AppLocalizations {
       'ستظهر تفاصيل اشتراكك هنا بعد الاشتراك.';
 
   @override
+  String get billing_no_active_subscription_title => 'لا يوجد اشتراك نشط';
+
+  @override
+  String get billing_no_active_subscription_desc =>
+      'لم تشترك في أي باقة حتى الآن.\nاختر الباقة المناسبة لك وابدأ رحلتك الصحية.';
+
+  @override
+  String get billing_browse_subscriptions => 'استعرض الاشتراكات';
+
+  @override
+  String get billing_no_invoices_title => 'لا يوجد فواتير بعد';
+
+  @override
+  String get billing_no_invoices_desc =>
+      'ستظهر فواتير اشتراكك هنا بعد إتمام أول عملية دفع.';
+
+  @override
   String get billing_manage_subscription => 'إدارة الاشتراك';
 
   @override

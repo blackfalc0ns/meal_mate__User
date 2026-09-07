@@ -881,6 +881,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your subscription details will appear here once you subscribe.';
 
   @override
+  String get billing_no_active_subscription_title => 'No active subscription';
+
+  @override
+  String get billing_no_active_subscription_desc =>
+      'You haven\'t subscribed to any package yet.\nChoose the right package and start your healthy journey.';
+
+  @override
+  String get billing_browse_subscriptions => 'Explore Subscriptions';
+
+  @override
+  String get billing_no_invoices_title => 'No invoices yet';
+
+  @override
+  String get billing_no_invoices_desc =>
+      'Your subscription invoices will appear here after completing your first payment.';
+
+  @override
   String get billing_manage_subscription => 'Manage subscription';
 
   @override
