@@ -72,3 +72,27 @@ class CancelSubscriptionEvent extends ProfileEvent {
 class ResetBillingActionEvent extends ProfileEvent {
   const ResetBillingActionEvent();
 }
+
+class DeleteUncompletedSubscriptionEvent extends ProfileEvent {
+  const DeleteUncompletedSubscriptionEvent(this.subscriptionId);
+
+  final String subscriptionId;
+}
+
+class GetSubscriptionResumePreviewEvent extends ProfileEvent {
+  const GetSubscriptionResumePreviewEvent(this.subscriptionId);
+
+  final String subscriptionId;
+}
+
+class ResumeSubscriptionEvent extends ProfileEvent {
+  const ResumeSubscriptionEvent({
+    required this.subscriptionId,
+    this.startDate,
+    this.paymentMethodId,
+  });
+
+  final String subscriptionId;
+  final String? startDate;
+  final int? paymentMethodId;
+}

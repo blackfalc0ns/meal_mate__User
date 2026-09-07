@@ -2,6 +2,98 @@ import 'package:meal_meat_user/features/profile/data/models/request/profile_bill
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 
+extension ProfileBillingUncompletedSubscriptionResponseDtoMapper
+    on ProfileBillingUncompletedSubscriptionResponseDto {
+  ProfileBillingUncompletedSubscriptionEntity toEntity() {
+    return ProfileBillingUncompletedSubscriptionEntity(
+      subscriptionId: subscriptionId ?? '',
+      status: status ?? '',
+      statusNameAr: statusNameAr ?? '',
+      programId: programId ?? '',
+      programNameAr: programNameAr ?? '',
+      programNameEn: programNameEn ?? '',
+      bundleId: bundleId ?? '',
+      bundleNameAr: bundleNameAr ?? '',
+      bundleNameEn: bundleNameEn ?? '',
+      tier: tier ?? '',
+      tierNameAr: tierNameAr ?? '',
+      tierNameEn: tierNameEn ?? '',
+      tierLogoUrl: tierLogoUrl ?? '',
+      mealsPerDay: mealsPerDay ?? 0,
+      imageUrl: imageUrl ?? '',
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
+      durationDays: durationDays ?? 0,
+      includeFriday: includeFriday ?? false,
+      amount: amount ?? 0,
+      currencyCode: currencyCode ?? '',
+      deliveryAddress: deliveryAddress ?? '',
+      createdAtUtc: createdAtUtc,
+      isHoldActive: isHoldActive ?? false,
+      holdRemainingSeconds: holdRemainingSeconds,
+      holdExpiresAtUtc: holdExpiresAtUtc,
+      actions:
+          actions?.toEntity() ??
+          const ProfileBillingUncompletedActionsEntity(
+            canDelete: false,
+            canResume: false,
+            deleteEndpoint: '',
+            resumeEndpoint: '',
+          ),
+    );
+  }
+}
+
+extension ProfileBillingUncompletedActionsResponseDtoMapper
+    on ProfileBillingUncompletedActionsResponseDto {
+  ProfileBillingUncompletedActionsEntity toEntity() {
+    return ProfileBillingUncompletedActionsEntity(
+      canDelete: canDelete ?? false,
+      canResume: canResume ?? false,
+      deleteEndpoint: deleteEndpoint ?? '',
+      resumeEndpoint: resumeEndpoint ?? '',
+    );
+  }
+}
+
+extension ProfileBillingResumePreviewResponseDtoMapper
+    on ProfileBillingResumePreviewResponseDto {
+  ProfileBillingResumePreviewEntity toEntity() {
+    return ProfileBillingResumePreviewEntity(
+      subscriptionId: subscriptionId ?? '',
+      status: status ?? '',
+      statusNameAr: statusNameAr ?? '',
+      programId: programId ?? '',
+      programNameAr: programNameAr ?? '',
+      bundleNameAr: bundleNameAr ?? '',
+      tier: tier ?? '',
+      tierNameAr: tierNameAr ?? '',
+      durationDays: durationDays ?? 0,
+      amount: amount ?? 0,
+      currencyCode: currencyCode ?? '',
+      canPayDirectly: canPayDirectly ?? false,
+      reason: reason,
+      holdRemainingSeconds: holdRemainingSeconds,
+      holdExpiresAtUtc: holdExpiresAtUtc,
+      suggestedStartDate: suggestedStartDate ?? '',
+      resumeEndpoint: resumeEndpoint ?? '',
+    );
+  }
+}
+
+extension ProfileBillingResumeResponseDtoMapper
+    on ProfileBillingResumeResponseDto {
+  ProfileBillingResumeEntity toEntity() {
+    return ProfileBillingResumeEntity(
+      subscriptionId: subscriptionId ?? '',
+      paymentUrl: paymentUrl ?? '',
+      holdExpiresAtUtc: holdExpiresAtUtc,
+      finalPrice: finalPrice ?? 0,
+      paymentStatus: paymentStatus ?? '',
+    );
+  }
+}
+
 extension ProfileBillingCurrentResponseDtoMapper
     on ProfileBillingCurrentResponseDto {
   ProfileBillingCurrentEntity toEntity() {

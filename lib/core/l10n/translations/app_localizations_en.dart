@@ -4705,4 +4705,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get upgrade_summary_load_error =>
       'Unable to load the upgrade summary. Please try again.';
+
+  @override
+  String get billing_uncompleted_title => 'Incomplete subscriptions';
+
+  @override
+  String get billing_uncompleted_hold_active =>
+      'Your reservation is held temporarily';
+
+  @override
+  String get billing_uncompleted_hold_expired => 'Reservation hold expired';
+
+  @override
+  String get billing_uncompleted_duration => 'Subscription duration';
+
+  @override
+  String get billing_uncompleted_days => 'days';
+
+  @override
+  String get billing_uncompleted_delete => 'Delete';
+
+  @override
+  String get billing_uncompleted_resume => 'Complete subscription';
+
+  @override
+  String get billing_uncompleted_delete_title =>
+      'Delete incomplete subscription?';
+
+  @override
+  String get billing_uncompleted_delete_message =>
+      'This draft and its temporary reservation will be cancelled.';
+
+  @override
+  String get billing_uncompleted_delete_success =>
+      'Incomplete subscription deleted';
+
+  @override
+  String get billing_uncompleted_resume_title =>
+      'Confirm subscription start date';
+
+  @override
+  String get billing_uncompleted_resume_message =>
+      'The temporary reservation expired. Continue with the suggested start date?';
+
+  @override
+  String get billing_uncompleted_resume_success =>
+      'Continue in the payment page';
+
+  @override
+  String get billing_uncompleted_action_failed =>
+      'The request could not be completed. Please try again.';
 }

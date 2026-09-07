@@ -4628,4 +4628,51 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get upgrade_summary_load_error =>
       'تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get billing_uncompleted_title => 'اشتراكات غير مكتملة';
+
+  @override
+  String get billing_uncompleted_hold_active => 'حجزك محفوظ مؤقتًا';
+
+  @override
+  String get billing_uncompleted_hold_expired => 'انتهت مهلة حجز المقاعد';
+
+  @override
+  String get billing_uncompleted_duration => 'مدة الاشتراك';
+
+  @override
+  String get billing_uncompleted_days => 'يومًا';
+
+  @override
+  String get billing_uncompleted_delete => 'حذف';
+
+  @override
+  String get billing_uncompleted_resume => 'إكمال الاشتراك';
+
+  @override
+  String get billing_uncompleted_delete_title => 'حذف الاشتراك غير المكتمل؟';
+
+  @override
+  String get billing_uncompleted_delete_message =>
+      'سيتم إلغاء المسودة وفك الحجز المؤقت المرتبط بها.';
+
+  @override
+  String get billing_uncompleted_delete_success =>
+      'تم حذف الاشتراك غير المكتمل';
+
+  @override
+  String get billing_uncompleted_resume_title => 'تأكيد تاريخ بدء الاشتراك';
+
+  @override
+  String get billing_uncompleted_resume_message =>
+      'انتهت مهلة الحجز المؤقت. هل تريد المتابعة بتاريخ البدء المقترح؟';
+
+  @override
+  String get billing_uncompleted_resume_success =>
+      'تابع إتمام الدفع في صفحة الدفع';
+
+  @override
+  String get billing_uncompleted_action_failed =>
+      'تعذر إتمام الطلب. حاول مرة أخرى.';
 }

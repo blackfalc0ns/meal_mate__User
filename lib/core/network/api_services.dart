@@ -425,6 +425,27 @@ abstract class ApiServices {
   @GET(EndPoints.customerSubscriptionCurrent)
   Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
 
+  @GET(EndPoints.customerUncompletedSubscriptions)
+  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
+  getUncompletedCustomerSubscriptions();
+
+  @DELETE(EndPoints.customerSubscription)
+  Future<void> deleteUncompletedCustomerSubscription(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @GET(EndPoints.customerSubscriptionResume)
+  Future<ProfileBillingResumePreviewResponseDto>
+  getCustomerSubscriptionResumePreview(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @POST(EndPoints.customerSubscriptionResume)
+  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() ProfileBillingResumeRequestDto request,
+  );
+
   @GET(EndPoints.customerSubscriptionCurrentFreezeDetails)
   Future<ProfileBillingFreezeDetailsResponseDto>
   getCurrentCustomerSubscriptionFreezeDetails();

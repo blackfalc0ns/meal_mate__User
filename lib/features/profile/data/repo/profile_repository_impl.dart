@@ -80,8 +80,15 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<ApiResult<ProfileBillingEntity>> getProfileBilling() {
     return safeApiCall(() async {
-      final (current, invoices, paymentMethod, freezePolicy) = await (
+      final (
+        current,
+        uncompleted,
+        invoices,
+        paymentMethod,
+        freezePolicy,
+      ) = await (
         _remoteDataSource.getCurrentCustomerSubscription(),
+        _remoteDataSource.getUncompletedCustomerSubscriptions(),
         _remoteDataSource.getCustomerInvoices(),
         _remoteDataSource.getDefaultCustomerPaymentMethod(),
         _remoteDataSource.getCustomerSubscriptionFreezePolicy(),
@@ -89,6 +96,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       return ProfileBillingEntity(
         current: current.toEntity(),
+        uncompletedSubscriptions: uncompleted
+            .map((subscription) => subscription.toEntity())
+            .toList(),
         invoices: invoices.map((invoice) => invoice.toEntity()).toList(),
         paymentMethod: paymentMethod.toEntity(),
         freezePolicy: freezePolicy.toEntity(),

@@ -97,6 +97,12 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/complete';
   static const String customerSubscriptionCurrent =
       '/api/v1/customer/subscriptions/current';
+  static const String customerUncompletedSubscriptions =
+      '/api/v1/customer/subscriptions/uncompleted';
+  static const String customerSubscription =
+      '/api/v1/customer/subscriptions/{subscriptionId}';
+  static const String customerSubscriptionResume =
+      '/api/v1/customer/subscriptions/{subscriptionId}/resume';
   static const String customerSubscriptionCurrentFreezeDetails =
       '/api/v1/customer/subscriptions/current/freeze-details';
   static const String customerSubscriptionFreezeDetails =

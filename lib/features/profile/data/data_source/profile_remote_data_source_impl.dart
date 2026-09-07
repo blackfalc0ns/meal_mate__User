@@ -39,6 +39,31 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
+  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
+  getUncompletedCustomerSubscriptions() {
+    return _apiServices.getUncompletedCustomerSubscriptions();
+  }
+
+  @override
+  Future<void> deleteUncompletedCustomerSubscription(String subscriptionId) {
+    return _apiServices.deleteUncompletedCustomerSubscription(subscriptionId);
+  }
+
+  @override
+  Future<ProfileBillingResumePreviewResponseDto>
+  getCustomerSubscriptionResumePreview(String subscriptionId) {
+    return _apiServices.getCustomerSubscriptionResumePreview(subscriptionId);
+  }
+
+  @override
+  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
+    String subscriptionId,
+    ProfileBillingResumeRequestDto request,
+  ) {
+    return _apiServices.resumeCustomerSubscription(subscriptionId, request);
+  }
+
+  @override
   Future<ProfileBillingFreezeDetailsResponseDto>
   getCurrentCustomerSubscriptionFreezeDetails() {
     return _apiServices.getCurrentCustomerSubscriptionFreezeDetails();

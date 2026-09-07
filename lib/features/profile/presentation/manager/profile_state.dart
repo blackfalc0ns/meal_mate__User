@@ -134,6 +134,9 @@ class ProfileBillingActionState {
     this.freezeResult,
     this.pendingFreezeRequest,
     this.pendingFreezeSubscriptionId,
+    this.resumePreview,
+    this.resumeResult,
+    this.subscriptionId,
   });
 
   final String? type;
@@ -146,6 +149,9 @@ class ProfileBillingActionState {
   final ProfileBillingFreezeResponseEntity? freezeResult;
   final ProfileBillingFreezeRequestEntity? pendingFreezeRequest;
   final String? pendingFreezeSubscriptionId;
+  final ProfileBillingResumePreviewEntity? resumePreview;
+  final ProfileBillingResumeEntity? resumeResult;
+  final String? subscriptionId;
 
   ProfileBillingActionState copyWith({
     String? type,
@@ -158,12 +164,17 @@ class ProfileBillingActionState {
     ProfileBillingFreezeResponseEntity? freezeResult,
     ProfileBillingFreezeRequestEntity? pendingFreezeRequest,
     String? pendingFreezeSubscriptionId,
+    ProfileBillingResumePreviewEntity? resumePreview,
+    ProfileBillingResumeEntity? resumeResult,
+    String? subscriptionId,
     bool clearError = false,
     bool clearQuote = false,
     bool clearResult = false,
     bool clearFreezeResult = false,
     bool clearType = false,
     bool clearPendingFreeze = false,
+    bool clearResumePreview = false,
+    bool clearResumeResult = false,
   }) {
     return ProfileBillingActionState(
       type: clearType ? null : type ?? this.type,
@@ -186,6 +197,13 @@ class ProfileBillingActionState {
       pendingFreezeSubscriptionId: clearPendingFreeze
           ? null
           : pendingFreezeSubscriptionId ?? this.pendingFreezeSubscriptionId,
+      resumePreview: clearResumePreview
+          ? null
+          : resumePreview ?? this.resumePreview,
+      resumeResult: clearResumeResult
+          ? null
+          : resumeResult ?? this.resumeResult,
+      subscriptionId: subscriptionId ?? this.subscriptionId,
     );
   }
 }

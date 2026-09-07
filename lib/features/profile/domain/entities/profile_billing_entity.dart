@@ -1,15 +1,148 @@
 class ProfileBillingEntity {
   const ProfileBillingEntity({
     required this.current,
+    this.uncompletedSubscriptions = const [],
     required this.invoices,
     required this.paymentMethod,
     required this.freezePolicy,
   });
 
   final ProfileBillingCurrentEntity current;
+  final List<ProfileBillingUncompletedSubscriptionEntity>
+  uncompletedSubscriptions;
   final List<ProfileBillingInvoiceEntity> invoices;
   final ProfileBillingPaymentMethodEntity paymentMethod;
   final ProfileBillingFreezePolicyEntity freezePolicy;
+}
+
+class ProfileBillingUncompletedSubscriptionEntity {
+  const ProfileBillingUncompletedSubscriptionEntity({
+    required this.subscriptionId,
+    required this.status,
+    required this.statusNameAr,
+    required this.programId,
+    required this.programNameAr,
+    required this.programNameEn,
+    required this.bundleId,
+    required this.bundleNameAr,
+    required this.bundleNameEn,
+    required this.tier,
+    required this.tierNameAr,
+    required this.tierNameEn,
+    required this.tierLogoUrl,
+    required this.mealsPerDay,
+    required this.imageUrl,
+    required this.startDate,
+    required this.endDate,
+    required this.durationDays,
+    required this.includeFriday,
+    required this.amount,
+    required this.currencyCode,
+    required this.deliveryAddress,
+    required this.createdAtUtc,
+    required this.isHoldActive,
+    required this.holdRemainingSeconds,
+    required this.holdExpiresAtUtc,
+    required this.actions,
+  });
+
+  final String subscriptionId;
+  final String status;
+  final String statusNameAr;
+  final String programId;
+  final String programNameAr;
+  final String programNameEn;
+  final String bundleId;
+  final String bundleNameAr;
+  final String bundleNameEn;
+  final String tier;
+  final String tierNameAr;
+  final String tierNameEn;
+  final String tierLogoUrl;
+  final int mealsPerDay;
+  final String imageUrl;
+  final String startDate;
+  final String endDate;
+  final int durationDays;
+  final bool includeFriday;
+  final double amount;
+  final String currencyCode;
+  final String deliveryAddress;
+  final DateTime? createdAtUtc;
+  final bool isHoldActive;
+  final int? holdRemainingSeconds;
+  final DateTime? holdExpiresAtUtc;
+  final ProfileBillingUncompletedActionsEntity actions;
+}
+
+class ProfileBillingUncompletedActionsEntity {
+  const ProfileBillingUncompletedActionsEntity({
+    required this.canDelete,
+    required this.canResume,
+    required this.deleteEndpoint,
+    required this.resumeEndpoint,
+  });
+
+  final bool canDelete;
+  final bool canResume;
+  final String deleteEndpoint;
+  final String resumeEndpoint;
+}
+
+class ProfileBillingResumePreviewEntity {
+  const ProfileBillingResumePreviewEntity({
+    required this.subscriptionId,
+    required this.status,
+    required this.statusNameAr,
+    required this.programId,
+    required this.programNameAr,
+    required this.bundleNameAr,
+    required this.tier,
+    required this.tierNameAr,
+    required this.durationDays,
+    required this.amount,
+    required this.currencyCode,
+    required this.canPayDirectly,
+    required this.reason,
+    required this.holdRemainingSeconds,
+    required this.holdExpiresAtUtc,
+    required this.suggestedStartDate,
+    required this.resumeEndpoint,
+  });
+
+  final String subscriptionId;
+  final String status;
+  final String statusNameAr;
+  final String programId;
+  final String programNameAr;
+  final String bundleNameAr;
+  final String tier;
+  final String tierNameAr;
+  final int durationDays;
+  final double amount;
+  final String currencyCode;
+  final bool canPayDirectly;
+  final String? reason;
+  final int? holdRemainingSeconds;
+  final DateTime? holdExpiresAtUtc;
+  final String suggestedStartDate;
+  final String resumeEndpoint;
+}
+
+class ProfileBillingResumeEntity {
+  const ProfileBillingResumeEntity({
+    required this.subscriptionId,
+    required this.paymentUrl,
+    required this.holdExpiresAtUtc,
+    required this.finalPrice,
+    required this.paymentStatus,
+  });
+
+  final String subscriptionId;
+  final String paymentUrl;
+  final DateTime? holdExpiresAtUtc;
+  final double finalPrice;
+  final String paymentStatus;
 }
 
 class ProfileBillingCurrentEntity {

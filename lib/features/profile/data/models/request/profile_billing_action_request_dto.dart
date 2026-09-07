@@ -40,3 +40,25 @@ class ProfileBillingCancellationRequestDto {
   Map<String, dynamic> toJson() =>
       _$ProfileBillingCancellationRequestDtoToJson(this);
 }
+
+@JsonSerializable()
+class ProfileBillingResumeRequestDto {
+  const ProfileBillingResumeRequestDto({
+    this.startDate,
+    this.callbackUrl = 'mealmate://checkout/callback',
+    this.errorUrl = 'mealmate://checkout/error',
+    this.paymentMethodId,
+  });
+
+  @JsonKey(includeIfNull: false)
+  final String? startDate;
+  final String callbackUrl;
+  final String errorUrl;
+  @JsonKey(includeIfNull: false)
+  final int? paymentMethodId;
+
+  factory ProfileBillingResumeRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ProfileBillingResumeRequestDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProfileBillingResumeRequestDtoToJson(this);
+}

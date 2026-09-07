@@ -8863,6 +8863,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to load the upgrade summary. Please try again.'**
   String get upgrade_summary_load_error;
+
+  /// No description provided for @billing_uncompleted_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete subscriptions'**
+  String get billing_uncompleted_title;
+
+  /// No description provided for @billing_uncompleted_hold_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reservation is held temporarily'**
+  String get billing_uncompleted_hold_active;
+
+  /// No description provided for @billing_uncompleted_hold_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation hold expired'**
+  String get billing_uncompleted_hold_expired;
+
+  /// No description provided for @billing_uncompleted_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription duration'**
+  String get billing_uncompleted_duration;
+
+  /// No description provided for @billing_uncompleted_days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get billing_uncompleted_days;
+
+  /// No description provided for @billing_uncompleted_delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get billing_uncompleted_delete;
+
+  /// No description provided for @billing_uncompleted_resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete subscription'**
+  String get billing_uncompleted_resume;
+
+  /// No description provided for @billing_uncompleted_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete incomplete subscription?'**
+  String get billing_uncompleted_delete_title;
+
+  /// No description provided for @billing_uncompleted_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This draft and its temporary reservation will be cancelled.'**
+  String get billing_uncompleted_delete_message;
+
+  /// No description provided for @billing_uncompleted_delete_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete subscription deleted'**
+  String get billing_uncompleted_delete_success;
+
+  /// No description provided for @billing_uncompleted_resume_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm subscription start date'**
+  String get billing_uncompleted_resume_title;
+
+  /// No description provided for @billing_uncompleted_resume_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The temporary reservation expired. Continue with the suggested start date?'**
+  String get billing_uncompleted_resume_message;
+
+  /// No description provided for @billing_uncompleted_resume_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue in the payment page'**
+  String get billing_uncompleted_resume_success;
+
+  /// No description provided for @billing_uncompleted_action_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The request could not be completed. Please try again.'**
+  String get billing_uncompleted_action_failed;
 }
 
 class _AppLocalizationsDelegate

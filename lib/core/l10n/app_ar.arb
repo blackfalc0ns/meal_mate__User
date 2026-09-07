@@ -1674,5 +1674,19 @@
   "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
   "upgrade_summary_new_restaurants": "مطاعم جديدة تنضم لباقتك",
   "upgrade_summary_no_new_restaurants": "لا توجد مطاعم إضافية في هذا التصنيف",
-  "upgrade_summary_load_error": "تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى."
+  "upgrade_summary_load_error": "تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.",
+  "billing_uncompleted_title": "اشتراكات غير مكتملة",
+  "billing_uncompleted_hold_active": "حجزك محفوظ مؤقتًا",
+  "billing_uncompleted_hold_expired": "انتهت مهلة حجز المقاعد",
+  "billing_uncompleted_duration": "مدة الاشتراك",
+  "billing_uncompleted_days": "يومًا",
+  "billing_uncompleted_delete": "حذف",
+  "billing_uncompleted_resume": "إكمال الاشتراك",
+  "billing_uncompleted_delete_title": "حذف الاشتراك غير المكتمل؟",
+  "billing_uncompleted_delete_message": "سيتم إلغاء المسودة وفك الحجز المؤقت المرتبط بها.",
+  "billing_uncompleted_delete_success": "تم حذف الاشتراك غير المكتمل",
+  "billing_uncompleted_resume_title": "تأكيد تاريخ بدء الاشتراك",
+  "billing_uncompleted_resume_message": "انتهت مهلة الحجز المؤقت. هل تريد المتابعة بتاريخ البدء المقترح؟",
+  "billing_uncompleted_resume_success": "تابع إتمام الدفع في صفحة الدفع",
+  "billing_uncompleted_action_failed": "تعذر إتمام الطلب. حاول مرة أخرى."
 }

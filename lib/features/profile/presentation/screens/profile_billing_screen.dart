@@ -26,6 +26,9 @@ import 'package:meal_meat_user/features/profile/presentation/widgets/profile_bil
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_loading_skeleton.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_payment_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_plan_card.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_uncompleted_subscription_card.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 class ProfileBillingScreen extends StatelessWidget {
   const ProfileBillingScreen({super.key});
@@ -148,6 +151,40 @@ class ProfileBillingScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ],
+                    if (billing?.uncompletedSubscriptions.isNotEmpty ==
+                        true) ...[
+                      const SizedBox(height: Spacing.lg),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          locale.billing_uncompleted_title,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size15,
+                            color: color.onSurface,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.sm),
+                      for (final item in billing!.uncompletedSubscriptions) ...[
+                        ProfileBillingUncompletedSubscriptionCard(
+                          subscription: item,
+                          isLoading:
+                              state.billingAction.isLoading &&
+                              state.billingAction.subscriptionId ==
+                                  item.subscriptionId,
+                          onDelete: () =>
+                              _confirmDeleteUncompleted(context, item),
+                          onResume: () =>
+                              context.read<ProfileViewModel>().doIntent(
+                                GetSubscriptionResumePreviewEvent(
+                                  item.subscriptionId,
+                                ),
+                              ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                      ],
                     ],
                     if (paymentMethod != null &&
                         paymentMethod.hasSavedMethod) ...[
@@ -506,7 +543,100 @@ class ProfileBillingScreen extends StatelessWidget {
           message: locale.billing_cancel_success,
         );
         break;
+      case 'deleteUncompleted':
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_uncompleted_delete_success,
+        );
+        break;
+      case 'resumePreview':
+        final preview = actionState.resumePreview;
+        if (preview != null) {
+          _handleResumePreview(context, preview);
+        }
+        break;
+      case 'resume':
+        final result = actionState.resumeResult;
+        if (result != null && result.paymentUrl.isNotEmpty) {
+          context.pushNamed(
+            AppRoutes.paymentWebView,
+            arguments: PaymentWebViewArgs(
+              checkout: PaymentCheckoutEntity(
+                subscriptionId: result.subscriptionId,
+                paymentUrl: result.paymentUrl,
+                holdExpiresAtUtc:
+                    result.holdExpiresAtUtc?.toIso8601String() ?? '',
+                chosenStartDate: '',
+                startDate: '',
+                finalPrice: result.finalPrice,
+                priceSnapshotId: '',
+                restaurantPoolSnapshotId: '',
+                paymentStatus: result.paymentStatus,
+              ),
+            ),
+          );
+        }
+        break;
     }
+  }
+
+  Future<void> _confirmDeleteUncompleted(
+    BuildContext context,
+    ProfileBillingUncompletedSubscriptionEntity subscription,
+  ) async {
+    final locale = context.localization;
+    final color = context.colorScheme;
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_uncompleted_delete_title,
+      message: locale.billing_uncompleted_delete_message,
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_uncompleted_delete,
+      icon: Icons.delete_outline_rounded,
+      iconColor: color.error,
+      confirmTextColor: color.error,
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+    if (!context.mounted || confirmed != true) {
+      return;
+    }
+    context.read<ProfileViewModel>().doIntent(
+      DeleteUncompletedSubscriptionEvent(subscription.subscriptionId),
+    );
+  }
+
+  Future<void> _handleResumePreview(
+    BuildContext context,
+    ProfileBillingResumePreviewEntity preview,
+  ) async {
+    if (preview.canPayDirectly) {
+      context.read<ProfileViewModel>().doIntent(
+        ResumeSubscriptionEvent(subscriptionId: preview.subscriptionId),
+      );
+      return;
+    }
+
+    final locale = context.localization;
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.billing_uncompleted_resume_title,
+      message:
+          '${locale.billing_uncompleted_resume_message}\n'
+          '${preview.suggestedStartDate}',
+      cancelText: locale.billing_dismiss,
+      confirmText: locale.billing_confirm,
+      icon: Icons.event_available_rounded,
+      onCancel: () => false,
+      onConfirm: () => true,
+    );
+    if (!context.mounted || confirmed != true) {
+      return;
+    }
+    context.read<ProfileViewModel>().doIntent(
+      ResumeSubscriptionEvent(
+        subscriptionId: preview.subscriptionId,
+        startDate: preview.suggestedStartDate,
+      ),
+    );
   }
 
   Future<void> _handleConfirmOverwriteSelections(

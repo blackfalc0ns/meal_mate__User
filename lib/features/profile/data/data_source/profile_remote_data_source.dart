@@ -15,6 +15,19 @@ abstract interface class ProfileRemoteDataSource {
 
   Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
 
+  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
+  getUncompletedCustomerSubscriptions();
+
+  Future<void> deleteUncompletedCustomerSubscription(String subscriptionId);
+
+  Future<ProfileBillingResumePreviewResponseDto>
+  getCustomerSubscriptionResumePreview(String subscriptionId);
+
+  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
+    String subscriptionId,
+    ProfileBillingResumeRequestDto request,
+  );
+
   Future<ProfileBillingFreezeDetailsResponseDto>
   getCurrentCustomerSubscriptionFreezeDetails();
 

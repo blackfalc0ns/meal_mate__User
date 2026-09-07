@@ -3,6 +3,167 @@ import 'package:json_annotation/json_annotation.dart';
 part 'profile_billing_response_dto.g.dart';
 
 @JsonSerializable()
+class ProfileBillingUncompletedSubscriptionResponseDto {
+  const ProfileBillingUncompletedSubscriptionResponseDto({
+    this.subscriptionId,
+    this.status,
+    this.statusNameAr,
+    this.programId,
+    this.programNameAr,
+    this.programNameEn,
+    this.bundleId,
+    this.bundleNameAr,
+    this.bundleNameEn,
+    this.tier,
+    this.tierNameAr,
+    this.tierNameEn,
+    this.tierLogoUrl,
+    this.mealsPerDay,
+    this.imageUrl,
+    this.startDate,
+    this.endDate,
+    this.durationDays,
+    this.includeFriday,
+    this.amount,
+    this.currencyCode,
+    this.deliveryAddress,
+    this.createdAtUtc,
+    this.isHoldActive,
+    this.holdRemainingSeconds,
+    this.holdExpiresAtUtc,
+    this.actions,
+  });
+
+  final String? subscriptionId;
+  final String? status;
+  final String? statusNameAr;
+  final String? programId;
+  final String? programNameAr;
+  final String? programNameEn;
+  final String? bundleId;
+  final String? bundleNameAr;
+  final String? bundleNameEn;
+  final String? tier;
+  final String? tierNameAr;
+  final String? tierNameEn;
+  final String? tierLogoUrl;
+  final int? mealsPerDay;
+  final String? imageUrl;
+  final String? startDate;
+  final String? endDate;
+  final int? durationDays;
+  final bool? includeFriday;
+  final double? amount;
+  final String? currencyCode;
+  final String? deliveryAddress;
+  final DateTime? createdAtUtc;
+  final bool? isHoldActive;
+  final int? holdRemainingSeconds;
+  final DateTime? holdExpiresAtUtc;
+  final ProfileBillingUncompletedActionsResponseDto? actions;
+
+  factory ProfileBillingUncompletedSubscriptionResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingUncompletedSubscriptionResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingUncompletedSubscriptionResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingUncompletedActionsResponseDto {
+  const ProfileBillingUncompletedActionsResponseDto({
+    this.canDelete,
+    this.canResume,
+    this.deleteEndpoint,
+    this.resumeEndpoint,
+  });
+
+  final bool? canDelete;
+  final bool? canResume;
+  final String? deleteEndpoint;
+  final String? resumeEndpoint;
+
+  factory ProfileBillingUncompletedActionsResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingUncompletedActionsResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingUncompletedActionsResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingResumePreviewResponseDto {
+  const ProfileBillingResumePreviewResponseDto({
+    this.subscriptionId,
+    this.status,
+    this.statusNameAr,
+    this.programId,
+    this.programNameAr,
+    this.bundleNameAr,
+    this.tier,
+    this.tierNameAr,
+    this.durationDays,
+    this.amount,
+    this.currencyCode,
+    this.canPayDirectly,
+    this.reason,
+    this.holdRemainingSeconds,
+    this.holdExpiresAtUtc,
+    this.suggestedStartDate,
+    this.resumeEndpoint,
+  });
+
+  final String? subscriptionId;
+  final String? status;
+  final String? statusNameAr;
+  final String? programId;
+  final String? programNameAr;
+  final String? bundleNameAr;
+  final String? tier;
+  final String? tierNameAr;
+  final int? durationDays;
+  final double? amount;
+  final String? currencyCode;
+  final bool? canPayDirectly;
+  final String? reason;
+  final int? holdRemainingSeconds;
+  final DateTime? holdExpiresAtUtc;
+  final String? suggestedStartDate;
+  final String? resumeEndpoint;
+
+  factory ProfileBillingResumePreviewResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProfileBillingResumePreviewResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingResumePreviewResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class ProfileBillingResumeResponseDto {
+  const ProfileBillingResumeResponseDto({
+    this.subscriptionId,
+    this.paymentUrl,
+    this.holdExpiresAtUtc,
+    this.finalPrice,
+    this.paymentStatus,
+  });
+
+  final String? subscriptionId;
+  final String? paymentUrl;
+  final DateTime? holdExpiresAtUtc;
+  final double? finalPrice;
+  final String? paymentStatus;
+
+  factory ProfileBillingResumeResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$ProfileBillingResumeResponseDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ProfileBillingResumeResponseDtoToJson(this);
+}
+
+@JsonSerializable()
 class ProfileBillingCurrentResponseDto {
   const ProfileBillingCurrentResponseDto({
     this.subscription,

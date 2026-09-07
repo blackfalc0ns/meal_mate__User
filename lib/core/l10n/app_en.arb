@@ -1674,5 +1674,19 @@
   "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
   "upgrade_summary_new_restaurants": "New restaurants joining your package",
   "upgrade_summary_no_new_restaurants": "No additional restaurants in this tier",
-  "upgrade_summary_load_error": "Unable to load the upgrade summary. Please try again."
+  "upgrade_summary_load_error": "Unable to load the upgrade summary. Please try again.",
+  "billing_uncompleted_title": "Incomplete subscriptions",
+  "billing_uncompleted_hold_active": "Your reservation is held temporarily",
+  "billing_uncompleted_hold_expired": "Reservation hold expired",
+  "billing_uncompleted_duration": "Subscription duration",
+  "billing_uncompleted_days": "days",
+  "billing_uncompleted_delete": "Delete",
+  "billing_uncompleted_resume": "Complete subscription",
+  "billing_uncompleted_delete_title": "Delete incomplete subscription?",
+  "billing_uncompleted_delete_message": "This draft and its temporary reservation will be cancelled.",
+  "billing_uncompleted_delete_success": "Incomplete subscription deleted",
+  "billing_uncompleted_resume_title": "Confirm subscription start date",
+  "billing_uncompleted_resume_message": "The temporary reservation expired. Continue with the suggested start date?",
+  "billing_uncompleted_resume_success": "Continue in the payment page",
+  "billing_uncompleted_action_failed": "The request could not be completed. Please try again."
 }

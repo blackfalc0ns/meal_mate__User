@@ -10,8 +10,11 @@ import 'package:meal_meat_user/features/profile/domain/usecase/create_subscripti
 import 'package:meal_meat_user/features/profile/domain/usecase/create_subscription_freeze_request_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/create_subscription_renewal_request_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/delete_customer_profile_image_usecase.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/delete_uncompleted_subscription_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_customer_profile_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_profile_billing_usecase.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/get_subscription_resume_preview_usecase.dart';
+import 'package:meal_meat_user/features/profile/domain/usecase/resume_subscription_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_subscription_cancellation_quote_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/update_customer_profile_image_usecase.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/update_customer_profile_usecase.dart';
@@ -31,6 +34,9 @@ class ProfileViewModel extends Cubit<ProfileState> {
     this._uploadFileUseCase,
     this._updateCustomerProfileImageUseCase,
     this._deleteCustomerProfileImageUseCase,
+    this._deleteUncompletedSubscriptionUseCase,
+    this._getSubscriptionResumePreviewUseCase,
+    this._resumeSubscriptionUseCase,
   ) : super(const ProfileState());
 
   final GetCustomerProfileUseCase _getCustomerProfileUseCase;
@@ -47,6 +53,11 @@ class ProfileViewModel extends Cubit<ProfileState> {
   final UploadFileUseCase _uploadFileUseCase;
   final UpdateCustomerProfileImageUseCase _updateCustomerProfileImageUseCase;
   final DeleteCustomerProfileImageUseCase _deleteCustomerProfileImageUseCase;
+  final DeleteUncompletedSubscriptionUseCase
+  _deleteUncompletedSubscriptionUseCase;
+  final GetSubscriptionResumePreviewUseCase
+  _getSubscriptionResumePreviewUseCase;
+  final ResumeSubscriptionUseCase _resumeSubscriptionUseCase;
 
   void doIntent(ProfileEvent event) {
     switch (event) {
@@ -78,6 +89,16 @@ class ProfileViewModel extends Cubit<ProfileState> {
         );
       case ResetBillingActionEvent():
         emit(state.copyWith(billingAction: const ProfileBillingActionState()));
+      case DeleteUncompletedSubscriptionEvent():
+        _deleteUncompletedSubscription(event.subscriptionId);
+      case GetSubscriptionResumePreviewEvent():
+        _getResumePreview(event.subscriptionId);
+      case ResumeSubscriptionEvent():
+        _resumeSubscription(
+          subscriptionId: event.subscriptionId,
+          startDate: event.startDate,
+          paymentMethodId: event.paymentMethodId,
+        );
     }
   }
 
@@ -406,6 +427,107 @@ class ProfileViewModel extends Cubit<ProfileState> {
           state.copyWith(
             billingAction: state.billingAction.copyWith(
               type: type,
+              isLoading: false,
+              isSuccess: false,
+              errorMessage: result.failure.errorMessage,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _deleteUncompletedSubscription(String subscriptionId) async {
+    await _runBillingAction(
+      type: 'deleteUncompleted',
+      action: () => _deleteUncompletedSubscriptionUseCase(subscriptionId),
+    );
+    if (state.billingAction.isSuccess) {
+      _getProfileBilling();
+    }
+  }
+
+  Future<void> _getResumePreview(String subscriptionId) async {
+    emit(
+      state.copyWith(
+        billingAction: state.billingAction.copyWith(
+          type: 'resumePreview',
+          subscriptionId: subscriptionId,
+          isLoading: true,
+          isSuccess: false,
+          clearError: true,
+          clearResumePreview: true,
+          clearResumeResult: true,
+        ),
+      ),
+    );
+    final result = await _getSubscriptionResumePreviewUseCase(subscriptionId);
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            billingAction: state.billingAction.copyWith(
+              type: 'resumePreview',
+              isLoading: false,
+              isSuccess: true,
+              resumePreview: result.data,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            billingAction: state.billingAction.copyWith(
+              type: 'resumePreview',
+              isLoading: false,
+              isSuccess: false,
+              errorMessage: result.failure.errorMessage,
+              failure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<void> _resumeSubscription({
+    required String subscriptionId,
+    String? startDate,
+    int? paymentMethodId,
+  }) async {
+    emit(
+      state.copyWith(
+        billingAction: state.billingAction.copyWith(
+          type: 'resume',
+          subscriptionId: subscriptionId,
+          isLoading: true,
+          isSuccess: false,
+          clearError: true,
+          clearResumeResult: true,
+        ),
+      ),
+    );
+    final result = await _resumeSubscriptionUseCase(
+      subscriptionId: subscriptionId,
+      startDate: startDate,
+      paymentMethodId: paymentMethodId,
+    );
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            billingAction: state.billingAction.copyWith(
+              type: 'resume',
+              isLoading: false,
+              isSuccess: true,
+              resumeResult: result.data,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            billingAction: state.billingAction.copyWith(
+              type: 'resume',
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
