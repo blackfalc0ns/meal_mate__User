@@ -35,83 +35,111 @@ class FamilySizePackageCard extends StatelessWidget {
             vertical: Spacing.md,
           ),
           decoration: BoxDecoration(
-            color: isSelected
-                ? color.primary.withValues(alpha: 0.05)
-                : color.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(Spacing.radiusLg),
+            color: isSelected ? color.surface : color.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(
+              Spacing.subscriptionProgramCardRadius,
+            ),
             border: Border.all(
               color: isSelected ? color.primary : color.outlineVariant,
               width: isSelected ? 2.0 : 1.0,
             ),
           ),
-          child: Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _buildPackageImage(context),
-              const SizedBox(width: Spacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            package.name(locale.localeName),
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size14,
-                              color: color.onSurface,
-                            ),
-                          ),
-                        ),
-                        if (package.discountPercent > 0) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.xs,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.primary,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusPill,
-                              ),
-                            ),
-                            child: Text(
-                              locale.family_package_discount_badge(
-                                package.discountLabel,
-                              ),
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size9,
-                                color: color.onPrimary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      locale.family_package_members_range(
-                        package.minMembers,
-                        package.maxMembers,
+              Row(
+                children: [
+                  _buildSelectionIndicator(context),
+                  const SizedBox(width: Spacing.sm),
+                  if (package.discountPercent > 0) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: Spacing.hairline * 3,
                       ),
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
+                      decoration: BoxDecoration(
+                        color: color.primary.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      ),
+                      child: Text(
+                        locale.family_package_discount_badge(
+                          package.discountLabel,
+                        ),
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.primary,
+                        ),
                       ),
                     ),
                   ],
-                ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        package.name(locale.localeName),
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size15,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.hairline * 2),
+                      Text(
+                        locale.family_package_members_range(
+                          package.minMembers,
+                          package.maxMembers,
+                        ),
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: Spacing.md),
+                  _buildIconBox(context),
+                ],
               ),
-              const SizedBox(width: Spacing.sm),
-              Icon(
-                isSelected
-                    ? Icons.check_circle_rounded
-                    : Icons.radio_button_unchecked_rounded,
-                color: isSelected ? color.primary : color.outline,
-                size: Spacing.iconMd,
+              const SizedBox(height: Spacing.md),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.groups_outlined,
+                    size: Spacing.iconSm,
+                    color: color.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.family_packages_members_count(
+                      package.minMembers,
+                      package.maxMembers,
+                    ),
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size11,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: Spacing.iconSm,
+                    color: color.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.family_packages_default_meals_range,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size11,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -120,7 +148,37 @@ class FamilySizePackageCard extends StatelessWidget {
     );
   }
 
-  Widget _buildPackageImage(BuildContext context) {
+  Widget _buildSelectionIndicator(BuildContext context) {
+    final color = context.colorScheme;
+    if (isSelected) {
+      return Container(
+        width: Spacing.iconMd,
+        height: Spacing.iconMd,
+        decoration: BoxDecoration(
+          color: color.primary,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.check_rounded,
+          color: color.onPrimary,
+          size: Spacing.iconSm,
+        ),
+      );
+    }
+    return Container(
+      width: Spacing.iconMd,
+      height: Spacing.iconMd,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: color.outlineVariant,
+          width: 1.5,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconBox(BuildContext context) {
     final imageUrl = package.imageUrl;
 
     if (imageUrl != null && imageUrl.isNotEmpty) {
@@ -147,14 +205,12 @@ class FamilySizePackageCard extends StatelessWidget {
       width: Spacing.familyPackageCardImageSize,
       height: Spacing.familyPackageCardImageSize,
       decoration: BoxDecoration(
-        color: isSelected
-            ? color.primary.withValues(alpha: 0.12)
-            : color.surfaceContainerHighest,
+        color: color.primary.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
       ),
       child: Icon(
         Icons.groups_2_rounded,
-        color: isSelected ? color.primary : color.onSurfaceVariant,
+        color: color.primary,
         size: Spacing.iconLg,
       ),
     );

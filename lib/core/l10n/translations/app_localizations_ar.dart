@@ -4695,4 +4695,33 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get billing_uncompleted_action_failed =>
       'تعذر إتمام الطلب. حاول مرة أخرى.';
+
+  @override
+  String get family_packages_header_title => 'اشتراكات عائلية';
+
+  @override
+  String get family_packages_header_subtitle => 'اختر الاشتراك الذي يناسبك';
+
+  @override
+  String get family_packages_hero_badge => 'وجبات تكفي الجميع';
+
+  @override
+  String get family_packages_hero_title => 'خطط متكاملة من 2 إلى 8 أفراد';
+
+  @override
+  String get family_packages_hero_subtitle => 'بأشتراكات مناسبة وتوصيل سريع';
+
+  @override
+  String get family_packages_section_title => 'اختر نوع الاشتراك';
+
+  @override
+  String get family_packages_default_meals_range => '2-4 وجبات';
+
+  @override
+  String family_packages_members_count(int min, int max) {
+    return '$min-$max أفراد';
+  }
+
+  @override
+  String get family_packages_continue_button => 'متابعة اختيار الاشتراك';
 }

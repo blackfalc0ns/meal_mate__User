@@ -4775,4 +4775,36 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get billing_uncompleted_action_failed =>
       'The request could not be completed. Please try again.';
+
+  @override
+  String get family_packages_header_title => 'Family Subscriptions';
+
+  @override
+  String get family_packages_header_subtitle =>
+      'Choose the subscription that suits you';
+
+  @override
+  String get family_packages_hero_badge => 'Meals for everyone';
+
+  @override
+  String get family_packages_hero_title => 'Complete plans from 2 to 8 members';
+
+  @override
+  String get family_packages_hero_subtitle =>
+      'With suitable subscriptions and fast delivery';
+
+  @override
+  String get family_packages_section_title => 'Choose subscription type';
+
+  @override
+  String get family_packages_default_meals_range => '2-4 meals';
+
+  @override
+  String family_packages_members_count(int min, int max) {
+    return '$min-$max members';
+  }
+
+  @override
+  String get family_packages_continue_button =>
+      'Continue subscription selection';
 }

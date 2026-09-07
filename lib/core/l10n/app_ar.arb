@@ -1694,5 +1694,24 @@
   "billing_uncompleted_resume_title": "تأكيد تاريخ بدء الاشتراك",
   "billing_uncompleted_resume_message": "انتهت مهلة الحجز المؤقت. هل تريد المتابعة بتاريخ البدء المقترح؟",
   "billing_uncompleted_resume_success": "تابع إتمام الدفع في صفحة الدفع",
-  "billing_uncompleted_action_failed": "تعذر إتمام الطلب. حاول مرة أخرى."
+  "billing_uncompleted_action_failed": "تعذر إتمام الطلب. حاول مرة أخرى.",
+  "family_packages_header_title": "اشتراكات عائلية",
+  "family_packages_header_subtitle": "اختر الاشتراك الذي يناسبك",
+  "family_packages_hero_badge": "وجبات تكفي الجميع",
+  "family_packages_hero_title": "خطط متكاملة من 2 إلى 8 أفراد",
+  "family_packages_hero_subtitle": "بأشتراكات مناسبة وتوصيل سريع",
+  "family_packages_section_title": "اختر نوع الاشتراك",
+  "family_packages_default_meals_range": "2-4 وجبات",
+  "family_packages_members_count": "{min}-{max} أفراد",
+  "@family_packages_members_count": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_packages_continue_button": "متابعة اختيار الاشتراك"
 }

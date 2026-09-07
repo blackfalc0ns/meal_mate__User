@@ -1694,5 +1694,24 @@
   "billing_uncompleted_resume_title": "Confirm subscription start date",
   "billing_uncompleted_resume_message": "The temporary reservation expired. Continue with the suggested start date?",
   "billing_uncompleted_resume_success": "Continue in the payment page",
-  "billing_uncompleted_action_failed": "The request could not be completed. Please try again."
+  "billing_uncompleted_action_failed": "The request could not be completed. Please try again.",
+  "family_packages_header_title": "Family Subscriptions",
+  "family_packages_header_subtitle": "Choose the subscription that suits you",
+  "family_packages_hero_badge": "Meals for everyone",
+  "family_packages_hero_title": "Complete plans from 2 to 8 members",
+  "family_packages_hero_subtitle": "With suitable subscriptions and fast delivery",
+  "family_packages_section_title": "Choose subscription type",
+  "family_packages_default_meals_range": "2-4 meals",
+  "family_packages_members_count": "{min}-{max} members",
+  "@family_packages_members_count": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "family_packages_continue_button": "Continue subscription selection"
 }

@@ -14,8 +14,11 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/manager/family_packages_event.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/manager/family_packages_state.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/manager/family_packages_view_model.dart';
+import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_package_hero_card.dart';
+import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_package_section_header.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_package_selection_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_size_package_list.dart';
+import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class FamilyPackageSelectionScreen extends StatelessWidget {
   const FamilyPackageSelectionScreen({super.key});
@@ -31,27 +34,13 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
             ..doIntent(const GetFamilySizePackagesEvent()),
       child: Scaffold(
         backgroundColor: color.surface,
-        appBar: CustomAppBar(
+        appBar: const CustomAppBar(
           showBackButton: true,
-          titleWidget: Column(
-            children: [
-              Text(
-                locale.family_setup_title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onSurface,
-                ),
-              ),
-              Text(
-                locale.family_setup_subtitle,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-            ],
+          showShadow: false,
+          centerTitle: true,
+          titleWidget: AppLogo(
+            size: Spacing.subscriptionTypeLogoHeight,
+            alignment: CrossAxisAlignment.center,
           ),
         ),
         body: SafeArea(
@@ -90,48 +79,51 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final selectedPackage = state.selectedPackage;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
-    return Padding(
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.sm),
           Text(
-            locale.family_packages_selection_title,
+            locale.family_packages_header_title,
+            textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size18,
+              fontSize: FontSize.size22,
+              color: color.primary,
+            ),
+          ),
+          const SizedBox(height: Spacing.hairline * 2),
+          Text(
+            locale.family_packages_header_subtitle,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size16,
               color: color.onSurface,
             ),
           ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            locale.family_packages_selection_subtitle,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
-              color: color.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: Spacing.lg),
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: FamilySizePackageList(
-                packages: state.packages,
-                selectedPackageId: selectedPackage?.id,
-                onSelectPackage: (pkg) {
-                  context.read<FamilyPackagesViewModel>().doIntent(
-                    SelectFamilySizePackageEvent(pkg),
-                  );
-                },
-              ),
-            ),
+          const SizedBox(height: Spacing.md),
+          const FamilyPackageHeroCard(),
+          const SizedBox(height: Spacing.md),
+          const FamilyPackageSectionHeader(),
+          const SizedBox(height: Spacing.sm),
+          FamilySizePackageList(
+            packages: state.packages,
+            selectedPackageId: selectedPackage?.id,
+            onSelectPackage: (pkg) {
+              context.read<FamilyPackagesViewModel>().doIntent(
+                SelectFamilySizePackageEvent(pkg),
+              );
+            },
           ),
           const SizedBox(height: Spacing.md),
           AppButton.filled(
-            text: locale.family_package_continue_button,
+            text: locale.family_packages_continue_button,
             onPressed: selectedPackage == null
                 ? null
                 : () {
@@ -142,11 +134,21 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
                   },
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,
-            fontSize: FontSize.size12,
-            iconWidget: Icon(
-              Icons.chevron_right_rounded,
-              color: color.onPrimary,
-              size: Spacing.iconMd,
+            fontSize: FontSize.size13,
+            iconWidget: Container(
+              width: Spacing.iconLg,
+              height: Spacing.iconLg,
+              decoration: BoxDecoration(
+                color: color.onPrimary,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isRtl
+                    ? Icons.arrow_back_rounded
+                    : Icons.arrow_forward_rounded,
+                color: color.primary,
+                size: Spacing.iconSm,
+              ),
             ),
           ),
           const SizedBox(height: Spacing.base),

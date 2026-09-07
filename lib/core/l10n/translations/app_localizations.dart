@@ -8983,6 +8983,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The request could not be completed. Please try again.'**
   String get billing_uncompleted_action_failed;
+
+  /// No description provided for @family_packages_header_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Subscriptions'**
+  String get family_packages_header_title;
+
+  /// No description provided for @family_packages_header_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the subscription that suits you'**
+  String get family_packages_header_subtitle;
+
+  /// No description provided for @family_packages_hero_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals for everyone'**
+  String get family_packages_hero_badge;
+
+  /// No description provided for @family_packages_hero_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete plans from 2 to 8 members'**
+  String get family_packages_hero_title;
+
+  /// No description provided for @family_packages_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'With suitable subscriptions and fast delivery'**
+  String get family_packages_hero_subtitle;
+
+  /// No description provided for @family_packages_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose subscription type'**
+  String get family_packages_section_title;
+
+  /// No description provided for @family_packages_default_meals_range.
+  ///
+  /// In en, this message translates to:
+  /// **'2-4 meals'**
+  String get family_packages_default_meals_range;
+
+  /// No description provided for @family_packages_members_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{min}-{max} members'**
+  String family_packages_members_count(int min, int max);
+
+  /// No description provided for @family_packages_continue_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue subscription selection'**
+  String get family_packages_continue_button;
 }
 
 class _AppLocalizationsDelegate
