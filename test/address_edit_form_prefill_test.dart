@@ -55,11 +55,9 @@ void main() {
               floorController: floorController,
               buildingNumberController: buildingController,
               apartmentController: apartmentController,
-              selectedBuildingType: AddressBuildingType.home,
               onGovernorateSelected: (_) {},
               onAreaSelected: (_) {},
               onBlockSelected: (_) {},
-              onBuildingTypeChanged: (_) {},
             ),
           ),
         ),
@@ -71,5 +69,6 @@ void main() {
     expect(find.text('33'), findsOneWidget);
     expect(find.text('32'), findsOneWidget);
     expect(find.text('1201'), findsOneWidget);
+    expect(find.byType(BuildingTypeSelector), findsNothing);
   });
 }

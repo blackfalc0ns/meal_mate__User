@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -14,16 +15,26 @@ import 'package:meal_meat_user/features/addresses/presentation/widgets/address_c
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
-class AddressChooseLocationScreen extends StatelessWidget {
+class AddressChooseLocationScreen extends StatefulWidget {
   const AddressChooseLocationScreen({super.key, this.args});
 
   final AddressChooseLocationArgs? args;
 
   @override
+  State<AddressChooseLocationScreen> createState() =>
+      _AddressChooseLocationScreenState();
+}
+
+class _AddressChooseLocationScreenState
+    extends State<AddressChooseLocationScreen> {
+  Object? _shownPreview;
+  bool _completed = false;
+
+  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final initialAddress = args?.initialAddress;
+    final initialAddress = widget.args?.initialAddress;
 
     return BlocProvider<AddressesViewModel>(
       create: (_) => getIt<AddressesViewModel>()
@@ -40,6 +51,26 @@ class AddressChooseLocationScreen extends StatelessWidget {
                     previous.action != current.action ||
                     previous.coveragePreview != current.coveragePreview,
                 listener: (context, state) async {
+                  if (_completed) return;
+                  if (state.action.isSuccess) {
+                    _completed = true;
+                    final navigator = Navigator.of(context);
+                    final message = locale.addresses_save_success;
+                    var foundAddresses = false;
+                    navigator.popUntil((route) {
+                      foundAddresses =
+                          route.settings.name == AppRoutes.addresses;
+                      return foundAddresses || route.isFirst;
+                    });
+                    if (!foundAddresses) {
+                      navigator.pushNamed(AppRoutes.addresses);
+                    }
+                    CustomSnackbar.showSuccess(
+                      context: navigator.context,
+                      message: message,
+                    );
+                    return;
+                  }
                   final actionError = state.action.displayErrorMessage;
                   if (actionError != null && actionError.isNotEmpty) {
                     CustomSnackbar.showError(
@@ -59,10 +90,17 @@ class AddressChooseLocationScreen extends StatelessWidget {
 
                   final isNewPreviewSuccess =
                       state.coveragePreview.isSuccess &&
-                      state.coveragePreview.preview != null;
+                      !identical(
+                        _shownPreview,
+                        state.coveragePreview.preview,
+                      ) &&
+                      state.coveragePreview.preview != null &&
+                      !state.action.isLoading &&
+                      !state.action.isSuccess;
 
                   if (isNewPreviewSuccess) {
                     final preview = state.coveragePreview.preview!;
+                    _shownPreview = preview;
                     await showModalBottomSheet<void>(
                       context: context,
                       isScrollControlled: true,
@@ -77,13 +115,18 @@ class AddressChooseLocationScreen extends StatelessWidget {
                               confirmButtonText:
                                   locale.address_coverage_confirm_save,
                               onConfirm: () {
-                                innerContext.read<AddressesViewModel>().doIntent(
-                                      const ConfirmPendingAddressActionEvent(),
-                                    );
+                                final viewModel = innerContext
+                                    .read<AddressesViewModel>();
+                                Navigator.of(sheetContext).pop();
+                                viewModel.doIntent(
+                                  const ConfirmPendingAddressActionEvent(),
+                                );
                               },
                               onChooseAnother: () {
                                 Navigator.of(sheetContext).pop();
-                                innerContext.read<AddressesViewModel>().doIntent(
+                                innerContext
+                                    .read<AddressesViewModel>()
+                                    .doIntent(
                                       const ClearCoveragePreviewEvent(),
                                     );
                               },
@@ -93,12 +136,6 @@ class AddressChooseLocationScreen extends StatelessWidget {
                       ),
                     );
                   }
-
-                  if (state.action.isSuccess) {
-                    if (context.mounted) {
-                      Navigator.of(context).pop(true);
-                    }
-                  }
                 },
                 buildWhen: (previous, current) =>
                     previous.locations != current.locations ||
@@ -107,7 +144,8 @@ class AddressChooseLocationScreen extends StatelessWidget {
                 builder: (context, state) {
                   return AddressesFigmaFrame(
                     locations: state.locations,
-                    isSubmitting: state.action.isLoading ||
+                    isSubmitting:
+                        state.action.isLoading ||
                         state.coveragePreview.isLoading,
                     initialAddress: initialAddress,
                   );

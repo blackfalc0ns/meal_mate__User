@@ -14,6 +14,8 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/location_confirmation_card.dart';
 
 class AddressesFigmaFrame extends StatefulWidget {
   const AddressesFigmaFrame({
@@ -44,19 +46,23 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   GoogleMapController? _mapController;
   Timer? _debounceTimer;
   bool _isInitialMapMove = true;
-  AddressLocationMode _selectedMode = AddressLocationMode.currentLocation;
+  AddressLocationMode? _selectedMode;
+  late bool _showAddressDetails;
 
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _avenueController = TextEditingController();
   final TextEditingController _buildingNumberController =
       TextEditingController();
+  final TextEditingController _floorController = TextEditingController();
+  final TextEditingController _apartmentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _currentLatitude = widget.initialAddress?.latitude ?? _defaultLatitude;
     _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
+    _showAddressDetails = widget.initialAddress != null;
     _fillInitialAddress(widget.initialAddress);
   }
 
@@ -68,6 +74,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _streetController.dispose();
     _avenueController.dispose();
     _buildingNumberController.dispose();
+    _floorController.dispose();
+    _apartmentController.dispose();
     super.dispose();
   }
 
@@ -144,29 +152,76 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
               right: 0,
               top: 0,
               bottom: Spacing.bottomSheetRadius * 12,
-              child: Center(
-                child: IgnorePointer(
-                  child: AddressMapMarker(),
+              child: Center(child: IgnorePointer(child: AddressMapMarker())),
+            ),
+            if (_showAddressDetails)
+              Positioned.fill(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.lg,
+                      vertical: Spacing.xxl,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.bottomCenter,
+                      child: LocationConfirmationCard(
+                        isLoading: widget.isSubmitting,
+                        onConfirm: () => _submitAddress(context),
+                        content: HomeAddressFormCard(
+                          governorates: widget.locations.governorates,
+                          areas: widget.locations.areas,
+                          blocks: widget.locations.blocks,
+                          selectedGovernorate:
+                              widget.locations.selectedGovernorate,
+                          selectedArea: widget.locations.selectedArea,
+                          selectedBlock: widget.locations.selectedBlock,
+                          streetController: _streetController,
+                          avenueController: _avenueController,
+                          floorController: _floorController,
+                          buildingNumberController: _buildingNumberController,
+                          apartmentController: _apartmentController,
+                          onGovernorateSelected: (governorate) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressGovernorateEvent(governorate),
+                            );
+                          },
+                          onAreaSelected: (area) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressAreaEvent(area),
+                            );
+                          },
+                          onBlockSelected: (block) {
+                            context.read<AddressesViewModel>().doIntent(
+                              SelectAddressBlockEvent(block),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            else
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: AddressChooseLocationSheet(
+                  selectedMode: _selectedMode,
+                  isSubmitting: widget.isSubmitting,
+                  searchController: _searchController,
+                  onSearchSubmitted: _onSearchSubmitted,
+                  onSearchChanged: _onSearchChanged,
+                  onModeChanged: (mode) {
+                    setState(() => _selectedMode = mode);
+                  },
+                  onUseCurrentLocation: () => _onGpsPressed(context),
+                  onConfirm: () {
+                    setState(() => _showAddressDetails = true);
+                  },
                 ),
               ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: AddressChooseLocationSheet(
-                selectedMode: _selectedMode,
-                isSubmitting: widget.isSubmitting,
-                searchController: _searchController,
-                onSearchSubmitted: _onSearchSubmitted,
-                onSearchChanged: _onSearchChanged,
-                onModeChanged: (mode) {
-                  setState(() => _selectedMode = mode);
-                },
-                onUseCurrentLocation: () => _onGpsPressed(context),
-                onConfirm: () => _submitAddress(context),
-              ),
-            ),
           ],
         ),
       ),
@@ -196,9 +251,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
   void _onGpsPressed(BuildContext context) {
     _mapController?.animateCamera(
-      CameraUpdate.newLatLng(
-        LatLng(_currentLatitude, _currentLongitude),
-      ),
+      CameraUpdate.newLatLng(LatLng(_currentLatitude, _currentLongitude)),
     );
     _triggerReverseGeocode(context);
   }
@@ -207,8 +260,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return;
     context.read<AddressesViewModel>().doIntent(
-          GeocodeAddressEvent(address: trimmed),
-        );
+      GeocodeAddressEvent(address: trimmed),
+    );
   }
 
   void _onSearchChanged(String query) {
@@ -218,8 +271,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _debounceTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
       context.read<AddressesViewModel>().doIntent(
-            GeocodeAddressEvent(address: trimmed),
-          );
+        GeocodeAddressEvent(address: trimmed),
+      );
     });
   }
 
@@ -235,11 +288,11 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _lastGeocodedLng = _currentLongitude;
 
     context.read<AddressesViewModel>().doIntent(
-          ReverseGeocodeEvent(
-            latitude: _currentLatitude,
-            longitude: _currentLongitude,
-          ),
-        );
+      ReverseGeocodeEvent(
+        latitude: _currentLatitude,
+        longitude: _currentLongitude,
+      ),
+    );
   }
 
   void _submitAddress(BuildContext context) {
@@ -247,8 +300,11 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     final locale = context.localization;
     final languageCode = Localizations.localeOf(context).languageCode;
-    final autofill =
-        context.read<AddressesViewModel>().state.mapAutofill.autofill;
+    final autofill = context
+        .read<AddressesViewModel>()
+        .state
+        .mapAutofill
+        .autofill;
 
     var area = widget.locations.selectedArea;
     var governorate = widget.locations.selectedGovernorate;
@@ -281,6 +337,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final building = _buildingNumberController.text.trim().isNotEmpty
         ? _buildingNumberController.text.trim()
         : (autofill?.building?.trim() ?? '');
+    final unit = _apartmentController.text.trim();
+    final floor = _floorController.text.trim();
 
     final governorateName =
         governorate?.nameForLanguage(languageCode) ?? autofill?.governorate;
@@ -314,8 +372,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       street: street.isEmpty ? null : street,
       avenue: avenue.isEmpty ? null : avenue,
       building: building.isEmpty ? null : building,
-      unit: null,
-      floor: null,
+      unit: unit.isEmpty ? null : unit,
+      floor: floor.isEmpty ? null : floor,
       latitude: _currentLatitude,
       longitude: _currentLongitude,
       notes: avenue.isEmpty ? null : avenue,
@@ -325,17 +383,17 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     if (initialAddress != null && initialAddress.addressId.isNotEmpty) {
       context.read<AddressesViewModel>().doIntent(
-            PreviewUpdateAddressCoverageEvent(
-              addressId: initialAddress.addressId,
-              request: request,
-            ),
-          );
+        PreviewUpdateAddressCoverageEvent(
+          addressId: initialAddress.addressId,
+          request: request,
+        ),
+      );
       return;
     }
 
     context.read<AddressesViewModel>().doIntent(
-          PreviewNewAddressCoverageEvent(request),
-        );
+      PreviewNewAddressCoverageEvent(request),
+    );
   }
 
   void _fillInitialAddress(CustomerAddressEntity? address) {
@@ -344,6 +402,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _streetController.text = address.street ?? '';
     _avenueController.text = address.notes ?? '';
     _buildingNumberController.text = address.building ?? '';
+    _floorController.text = address.floor ?? '';
+    _apartmentController.text = address.unit ?? '';
   }
 
   String _addressLine(List<String?> parts) {

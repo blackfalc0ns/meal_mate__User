@@ -369,6 +369,7 @@
   "addresses_add_new": "إضافة عنوان جديد",
   "addresses_availability_notice": "قد تختلف الوجبات والمطاعم المتاحة بناءً على منطقة التوصيل",
   "addresses_save": "حفظ العنوان",
+  "addresses_save_success": "تم حفظ العنوان بنجاح.",
   "addresses_choose_location_title": "اختيار موقع البيت",
   "addresses_choose_location_subtitle": "اختر موقع التوصيل الأساسي للمنزل",
   "addresses_confirm_location": "تأكــــيـد المــوقـــع",

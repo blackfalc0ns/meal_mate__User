@@ -369,6 +369,7 @@
   "addresses_add_new": "Add new address",
   "addresses_availability_notice": "Available meals and restaurants may vary by delivery area",
   "addresses_save": "Save address",
+  "addresses_save_success": "Address saved successfully.",
   "addresses_choose_location_title": "Choose home location",
   "addresses_choose_location_subtitle": "Choose the main delivery location for home",
   "addresses_confirm_location": "Confirm location",

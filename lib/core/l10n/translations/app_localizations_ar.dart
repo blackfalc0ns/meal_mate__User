@@ -1011,6 +1011,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addresses_save => 'حفظ العنوان';
 
   @override
+  String get addresses_save_success => 'تم حفظ العنوان بنجاح.';
+
+  @override
   String get addresses_choose_location_title => 'اختيار موقع البيت';
 
   @override

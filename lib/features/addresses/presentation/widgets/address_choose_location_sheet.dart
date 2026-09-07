@@ -20,7 +20,7 @@ class AddressChooseLocationSheet extends StatelessWidget {
     this.onConfirm,
   });
 
-  final AddressLocationMode selectedMode;
+  final AddressLocationMode? selectedMode;
   final bool isSubmitting;
   final TextEditingController? searchController;
   final ValueChanged<String>? onSearchSubmitted;

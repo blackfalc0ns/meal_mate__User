@@ -12,10 +12,16 @@ class LocationConfirmationCard extends StatelessWidget {
     super.key,
     required this.onConfirm,
     required this.isLoading,
+    this.content,
+    this.secondaryButtonText,
+    this.onSecondaryPressed,
   });
 
   final VoidCallback onConfirm;
   final bool isLoading;
+  final Widget? content;
+  final String? secondaryButtonText;
+  final VoidCallback? onSecondaryPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +98,25 @@ class LocationConfirmationCard extends StatelessWidget {
             height: Spacing.addressesChooseLocationLineHeight,
             thickness: Spacing.addressesChooseLocationLineHeight,
           ),
+          if (content != null) ...[
+            const SizedBox(height: Spacing.addressesChooseLocationHeaderGap),
+            content!,
+          ],
           const SizedBox(height: Spacing.addressesChooseLocationHeaderGap),
+          if (secondaryButtonText != null && onSecondaryPressed != null) ...[
+            TextButton(
+              onPressed: isLoading ? null : onSecondaryPressed,
+              child: Text(
+                secondaryButtonText!,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: Spacing.addressesChooseLocationSubtitleSize,
+                  color: color.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+          ],
           SizedBox(
             height: Spacing.addressesChooseLocationButtonHeight,
             child: ElevatedButton(

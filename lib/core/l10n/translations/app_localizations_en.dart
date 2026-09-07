@@ -1030,6 +1030,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addresses_save => 'Save address';
 
   @override
+  String get addresses_save_success => 'Address saved successfully.';
+
+  @override
   String get addresses_choose_location_title => 'Choose home location';
 
   @override

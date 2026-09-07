@@ -15,7 +15,7 @@ class AddressChooseLocationOptionsRow extends StatelessWidget {
     this.onUseCurrentLocation,
   });
 
-  final AddressLocationMode selectedMode;
+  final AddressLocationMode? selectedMode;
   final ValueChanged<AddressLocationMode>? onModeChanged;
   final VoidCallback? onUseCurrentLocation;
 

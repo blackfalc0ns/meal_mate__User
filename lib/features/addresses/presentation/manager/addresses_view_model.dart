@@ -43,7 +43,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   final ReverseGeocodeLocationUseCase _reverseGeocodeLocationUseCase;
   final PreviewNewAddressCoverageUseCase _previewNewAddressCoverageUseCase;
   final PreviewExistingAddressCoverageUseCase
-      _previewExistingAddressCoverageUseCase;
+  _previewExistingAddressCoverageUseCase;
   final ConfirmSetDefaultAddressUseCase _confirmSetDefaultAddressUseCase;
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
@@ -446,7 +446,9 @@ class AddressesViewModel extends Cubit<AddressesState> {
     }
   }
 
-  Future<void> _applyAutofillToCatalog(MapAddressAutofillEntity autofill) async {
+  Future<void> _applyAutofillToCatalog(
+    MapAddressAutofillEntity autofill,
+  ) async {
     final catalog = state.locations.data;
     if (catalog == null) return;
 
@@ -476,23 +478,22 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
     if (selection.governorate == null && selection.area == null) return;
 
-    final countryCode = catalog.countryCode.isNotEmpty ? catalog.countryCode : 'KW';
+    final countryCode = catalog.countryCode.isNotEmpty
+        ? catalog.countryCode
+        : 'KW';
     final currentArea = state.locations.selectedArea;
-    final areaWithBlocks = (currentArea != null &&
+    final areaWithBlocks =
+        (currentArea != null &&
             currentArea.id == selection.area?.id &&
             currentArea.blocks.isNotEmpty)
         ? currentArea
         : (selection.area != null
-            ? await _loadAreaBlocks(countryCode, selection.area!.id)
-            : null);
+              ? await _loadAreaBlocks(countryCode, selection.area!.id)
+              : null);
 
     final selectedArea = areaWithBlocks ?? selection.area;
     final selectedBlock = selectedArea != null
-        ? _findInitialBlock(
-            selectedArea,
-            tempAddress,
-            autofill: autofill,
-          )
+        ? _findInitialBlock(selectedArea, tempAddress, autofill: autofill)
         : null;
 
     if (!isClosed) {
@@ -517,7 +518,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
             isSuccess: false,
             errorMessage: 'address.out_of_kuwait_bounds',
             failure: Failure(
-              errorMessage: 'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              errorMessage:
+                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
               code: 'address.out_of_kuwait_bounds',
             ),
           ),
@@ -544,7 +546,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
             isSuccess: false,
             errorMessage: 'address.out_of_kuwait_bounds',
             failure: Failure(
-              errorMessage: 'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
+              errorMessage:
+                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
               code: 'address.out_of_kuwait_bounds',
             ),
           ),
@@ -829,6 +832,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     if (pendingAction == null) return;
 
+    emit(state.copyWith(coveragePreview: const AddressCoveragePreviewState()));
+
     switch (pendingAction) {
       case AddressPendingActionType.add:
         if (pendingRequest != null) {
@@ -846,11 +851,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   void _clearCoveragePreview() {
-    emit(
-      state.copyWith(
-        coveragePreview: const AddressCoveragePreviewState(),
-      ),
-    );
+    emit(state.copyWith(coveragePreview: const AddressCoveragePreviewState()));
   }
 }
 

@@ -1964,6 +1964,12 @@ abstract class AppLocalizations {
   /// **'Save address'**
   String get addresses_save;
 
+  /// No description provided for @addresses_save_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Address saved successfully.'**
+  String get addresses_save_success;
+
   /// No description provided for @addresses_choose_location_title.
   ///
   /// In en, this message translates to:

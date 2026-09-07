@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -30,10 +31,12 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
     final locale = context.localization;
 
     final isCovered = preview.canSetAsDefault;
-    final noticeText =
-        preview.restaurantCoverageNotice?.text(locale.localeName);
+    final noticeText = preview.restaurantCoverageNotice?.text(
+      locale.localeName,
+    );
     final uncoveredName = preview.uncoveredRestaurantName(locale.localeName);
-    final conflictText = preview.conflictMessage ??
+    final conflictText =
+        preview.conflictMessage ??
         (uncoveredName != null && uncoveredName.isNotEmpty
             ? '${locale.address_coverage_uncovered_desc} ($uncoveredName)'
             : locale.address_coverage_uncovered_desc);
@@ -49,7 +52,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
         left: Spacing.xl,
         right: Spacing.xl,
         top: Spacing.md,
-        bottom: MediaQuery.paddingOf(context).bottom + Spacing.lg,
+        //   bottom: MediaQuery.paddingOf(context).bottom + Spacing.lg,
       ),
       child: SafeArea(
         top: false,
@@ -85,10 +88,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Spacing.sm),
-              _buildServingRestaurantsList(
-                context,
-                preview.servingRestaurants,
-              ),
+              _buildServingRestaurantsList(context, preview.servingRestaurants),
             ] else if (isCovered) ...[
               _buildNoRestaurantsNotice(context),
             ],
@@ -260,41 +260,21 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
               color: color.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
               border: Border.all(
-                color: color.outlineVariant,
+                color: AppColors.addressesInputLabel,
+                //color.outlineVariant,
                 width: Spacing.hairline,
               ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (logoUrl != null && logoUrl.isNotEmpty)
-                  AppCachedNetworkImage(
-                    imageUrl: logoUrl,
-                    width: 38,
-                    height: 38,
-                    fit: BoxFit.contain,
-                    semanticLabel: name,
-                  )
-                else
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: color.primaryContainer,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        name.isNotEmpty ? name.characters.first : '',
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size14,
-                          color: color.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: Spacing.xs),
+                AppCachedNetworkImage(
+                  imageUrl: logoUrl,
+                  width: 38,
+                  height: 38,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: Spacing.xs),
                 Text(
                   name,
                   maxLines: 1,
@@ -311,11 +291,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.star_rounded,
-                        color: color.primary,
-                        size: 14,
-                      ),
+                      Icon(Icons.star_rounded, color: color.primary, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         rating.toStringAsFixed(1),

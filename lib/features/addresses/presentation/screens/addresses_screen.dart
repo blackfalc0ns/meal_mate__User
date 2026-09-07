@@ -190,9 +190,7 @@ class AddressesScreen extends StatelessWidget {
                     SizedBox(
                       height: Spacing.addressesAddButtonHeight,
                       child: OutlinedButton.icon(
-                        onPressed: () => Navigator.of(
-                          context,
-                        ).pushNamed(AppRoutes.addressChooseLocation),
+                        onPressed: () => _openAddressEditor(context),
                         icon: Icon(
                           Icons.add_circle_rounded,
                           color: color.primary,
@@ -275,10 +273,7 @@ class AddressesScreen extends StatelessWidget {
           title: address.label,
           address: address.addressLine,
           canDelete: address.canDelete,
-          onEdit: () => Navigator.of(context).pushNamed(
-            AppRoutes.addressChooseLocation,
-            arguments: AddressChooseLocationArgs(initialAddress: address),
-          ),
+          onEdit: () => _openAddressEditor(context, initialAddress: address),
           onSetDefault: address.addressId.isEmpty || address.isDefault
               ? null
               : () => context.read<AddressesViewModel>().doIntent(
@@ -297,6 +292,22 @@ class AddressesScreen extends StatelessWidget {
     }
 
     return children;
+  }
+
+  Future<void> _openAddressEditor(
+    BuildContext context, {
+    CustomerAddressEntity? initialAddress,
+  }) async {
+    await Navigator.of(context).pushNamed(
+      AppRoutes.addressChooseLocation,
+      arguments: AddressChooseLocationArgs(initialAddress: initialAddress),
+    );
+
+    if (!context.mounted) return;
+
+    context.read<AddressesViewModel>().doIntent(
+      const GetCustomerAddressesEvent(),
+    );
   }
 
   IconData _iconForAddress(CustomerAddressEntity address) {
