@@ -136,29 +136,7 @@ class ProfileBillingScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                    if (subscription?.pendingUpgrade != null) ...[
-                      const SizedBox(height: Spacing.md),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.md,
-                          vertical: Spacing.sm,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color.inverseSurface,
-                          borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                        ),
-                        child: Text(
-                          locale.billing_pending_upgrade_notice,
-                          textAlign: TextAlign.center,
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.onInverseSurface,
-                          ),
-                        ),
-                      ),
-                    ],
+
                     if (billing?.uncompletedSubscriptions.isNotEmpty ==
                         true) ...[
                       const SizedBox(height: Spacing.lg),

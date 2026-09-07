@@ -23,7 +23,6 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
     final isEmpty = invoices.isEmpty;
 
     return Container(
-      height: isEmpty ? null : Spacing.profileBillingInvoicesHeight,
       padding: const EdgeInsets.all(Spacing.base),
       decoration: BoxDecoration(
         color: color.surface,
@@ -56,7 +55,6 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-
               Text(
                 locale.billing_invoices,
                 style: getBoldStyle(
@@ -70,89 +68,86 @@ class ProfileBillingInvoiceHistoryCard extends StatelessWidget {
           if (isEmpty) ...[
             const ProfileBillingEmptyInvoicesCard(),
           ] else ...[
-            const SizedBox(height: Spacing.xs),
-            Expanded(
-              child: Column(
-                children: List.generate(visibleInvoices.length, (index) {
-                final invoice = visibleInvoices[index];
-                final issuedAt = DateTime.tryParse(invoice.issuedAtUtc);
-                final dateText = issuedAt == null
-                    ? invoice.issuedAtUtc
-                    : dateFormatter.format(issuedAt.toLocal());
-                final statusText = invoice.statusNameAr.isEmpty
-                    ? locale.billing_paid
-                    : invoice.statusNameAr;
-                final amountText =
-                    '${invoice.amount.toStringAsFixed(2)} ${invoice.currencyCode}';
+            const SizedBox(height: Spacing.sm),
+            for (int index = 0; index < visibleInvoices.length; index++) ...[
+              Builder(
+                builder: (context) {
+                  final invoice = visibleInvoices[index];
+                  final issuedAt = DateTime.tryParse(invoice.issuedAtUtc);
+                  final dateText = issuedAt == null
+                      ? invoice.issuedAtUtc
+                      : dateFormatter.format(issuedAt.toLocal());
+                  final statusText = invoice.statusNameAr.isEmpty
+                      ? locale.billing_paid
+                      : invoice.statusNameAr;
+                  final amountText =
+                      '${invoice.amount.toStringAsFixed(2)} ${invoice.currencyCode}';
 
-                return Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            amountText,
-                            style: getBoldStyle(
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+                    child: Row(
+                      children: [
+                        Text(
+                          amountText,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.xs,
+                            vertical: Spacing.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: color.primaryContainer,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusXs,
+                            ),
+                          ),
+                          child: Text(
+                            statusText,
+                            style: getMediumStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size11,
-                              color: color.onSurface,
+                              fontSize: FontSize.size10,
+                              color: color.primary,
                             ),
                           ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.xs,
-                              vertical: Spacing.xs,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.primaryContainer,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusXs,
-                              ),
-                            ),
-                            child: Text(
-                              statusText,
-                              style: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.primary,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            invoice.displayNumber,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size11,
-                              color: color.onSurfaceVariant,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            dateText,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size11,
-                              color: color.onSurfaceVariant,
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Icon(
-                            Icons.chevron_right_rounded,
-                            size: Spacing.iconSm,
+                        ),
+                        const Spacer(),
+                        Text(
+                          invoice.displayNumber,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
                             color: color.onSurfaceVariant,
                           ),
-                        ],
-                      ),
-                      if (index != visibleInvoices.length - 1)
-                        Divider(color: color.outlineVariant),
-                    ],
-                  ),
-                );
-                }),
+                        ),
+                        const Spacer(),
+                        Text(
+                          dateText,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          size: Spacing.iconSm,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ),
+              if (index != visibleInvoices.length - 1)
+                Divider(color: color.outlineVariant),
+            ],
           ],
         ],
       ),
