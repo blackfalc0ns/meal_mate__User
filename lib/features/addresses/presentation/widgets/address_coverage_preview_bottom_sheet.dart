@@ -96,7 +96,12 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
             AppButton.filled(
               text: confirmButtonText,
               isLoading: isSubmitting,
-              onPressed: isCovered && !isSubmitting ? onConfirm : null,
+              onPressed: isCovered && !isSubmitting
+                  ? () {
+                      Navigator.of(context).pop();
+                      onConfirm();
+                    }
+                  : null,
               height: Spacing.buttonHeight,
               borderRadius: Spacing.radiusPill,
               color: isCovered ? color.primary : color.outlineVariant,

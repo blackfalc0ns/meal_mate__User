@@ -4,6 +4,49 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_address_tile.dart';
 
 void main() {
+  testWidgets('default saved address is visually identified', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: SavedAddressTile(
+            icon: Icons.home_rounded,
+            title: 'Home',
+            address: 'Capital, Rawda, Block 1',
+            isDefault: true,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Default'), findsOneWidget);
+    expect(find.byKey(const Key('default_saved_address_tile')), findsOneWidget);
+  });
+
+  testWidgets('non-default saved address has no default marker', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: SavedAddressTile(
+            icon: Icons.home_rounded,
+            title: 'Home',
+            address: 'Capital, Rawda, Block 1',
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Default'), findsNothing);
+    expect(find.byKey(const Key('default_saved_address_tile')), findsNothing);
+  });
+
   testWidgets('saved address delete action requires confirmation', (
     tester,
   ) async {

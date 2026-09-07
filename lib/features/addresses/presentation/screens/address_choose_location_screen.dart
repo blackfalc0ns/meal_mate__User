@@ -117,7 +117,6 @@ class _AddressChooseLocationScreenState
                               onConfirm: () {
                                 final viewModel = innerContext
                                     .read<AddressesViewModel>();
-                                Navigator.of(sheetContext).pop();
                                 viewModel.doIntent(
                                   const ConfirmPendingAddressActionEvent(),
                                 );

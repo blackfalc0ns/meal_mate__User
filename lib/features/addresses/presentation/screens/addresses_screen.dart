@@ -18,9 +18,7 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_notice_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_delivery_notice_dialog.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_address_tile.dart';
@@ -103,34 +101,11 @@ class AddressesScreen extends StatelessWidget {
               );
             }
 
-            if (state.action.isSuccess) {
-              final address = state.action.address;
-              final coverageNotice = address?.restaurantCoverageNotice;
-              final servingRestaurants =
-                  address?.servingRestaurants ?? const [];
-
-              if (coverageNotice != null && coverageNotice.hasContent) {
-                if (!context.mounted) return;
-                await showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: color.surface,
-                  builder: (sheetContext) => AddressCoverageNoticeSheet(
-                    notice: coverageNotice,
-                    servingRestaurants: servingRestaurants,
-                  ),
-                );
-              } else {
-                final deliveryNotice = _deliveryNoticeForAction(state);
-                if (deliveryNotice != null) {
-                  if (!context.mounted) return;
-                  await showDialog<void>(
-                    context: context,
-                    builder: (context) =>
-                        AddressDeliveryNoticeDialog(message: deliveryNotice),
-                  );
-                }
-              }
+            if (state.action.isSuccess && state.action.address != null) {
+              CustomSnackbar.showSuccess(
+                context: context,
+                message: locale.addresses_save_success,
+              );
             }
           },
           buildWhen: (previous, current) =>
@@ -248,17 +223,6 @@ class AddressesScreen extends StatelessWidget {
     );
   }
 
-  String? _deliveryNoticeForAction(AddressesState state) {
-    final actionNotice = state.action.deliveryChangeNotice;
-    if (!state.action.isSuccess ||
-        state.action.address == null ||
-        actionNotice == null ||
-        actionNotice.isEmpty) {
-      return null;
-    }
-    return actionNotice;
-  }
-
   List<Widget> _buildAddressTiles(
     BuildContext context,
     List<CustomerAddressEntity> addresses,
@@ -272,6 +236,7 @@ class AddressesScreen extends StatelessWidget {
           icon: _iconForAddress(address),
           title: address.label,
           address: address.addressLine,
+          isDefault: address.isDefault,
           canDelete: address.canDelete,
           onEdit: () => _openAddressEditor(context, initialAddress: address),
           onSetDefault: address.addressId.isEmpty || address.isDefault

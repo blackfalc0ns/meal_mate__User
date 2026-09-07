@@ -11,6 +11,7 @@ class SavedAddressTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.address,
+    this.isDefault = false,
     this.canDelete = true,
     this.onEdit,
     this.onSetDefault,
@@ -20,6 +21,7 @@ class SavedAddressTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String address;
+  final bool isDefault;
   final bool canDelete;
   final VoidCallback? onEdit;
   final VoidCallback? onSetDefault;
@@ -28,8 +30,10 @@ class SavedAddressTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
     return Container(
+      key: isDefault ? const Key('default_saved_address_tile') : null,
       height: Spacing.addressesSavedTileHeight,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.addressesCardContentPadding,
@@ -37,7 +41,9 @@ class SavedAddressTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.addressesCardRadius),
-        border: Border.all(color: color.outlineVariant),
+        border: Border.all(
+          color: isDefault ? color.primary : color.outlineVariant,
+        ),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.07),
@@ -63,13 +69,53 @@ class SavedAddressTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onSurface,
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size12,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ),
+                    if (isDefault) ...[
+                      const SizedBox(width: Spacing.sm),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.xs,
+                          vertical: Spacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.secondaryContainer,
+                          borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: color.primary,
+                              size: Spacing.xs,
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Text(
+                              locale.addresses_default,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size8,
+                                color: color.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: Spacing.xs),
                 Text(
