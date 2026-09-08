@@ -1736,6 +1736,8 @@
   "family_allergies_search": "Search for an allergy",
   "family_allergies_rejected": "Ingredients they dislike",
   "family_allergies_ingredient_search": "Search for an ingredient",
+  "family_allergies_show_more": "Show more",
+  "family_allergies_show_less": "Show less",
   "family_allergies_information_note": "We use this information to personalize suitable meals for each member.",
   "family_addresses_title": "Delivery addresses",
   "family_addresses_member": "Address for {name}",

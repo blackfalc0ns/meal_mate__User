@@ -68,6 +68,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         currentIndex: nextIndex,
         completedMemberIds: completedMemberIds,
         completed: isComplete,
+        addressSaveRevision: state.addressSaveRevision + 1,
         clearError: true,
       ),
     );

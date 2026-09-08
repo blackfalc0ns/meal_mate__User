@@ -4792,6 +4792,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_allergies_ingredient_search => 'ابحث عن مكونات';
 
   @override
+  String get family_allergies_show_more => 'عرض المزيد';
+
+  @override
+  String get family_allergies_show_less => 'عرض أقل';
+
+  @override
   String get family_allergies_information_note =>
       'نستخدم هذه المعلومات لتخصيص الوجبات المناسبة لكل فرد.';
 

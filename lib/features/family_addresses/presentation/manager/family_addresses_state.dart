@@ -12,6 +12,7 @@ class FamilyAddressesState {
     this.completedMemberIds = const {},
     this.errorMessage,
     this.completed = false,
+    this.addressSaveRevision = 0,
   });
   final String? familyName;
   final bool isLoading;
@@ -22,6 +23,7 @@ class FamilyAddressesState {
   final Set<String> completedMemberIds;
   final String? errorMessage;
   final bool completed;
+  final int addressSaveRevision;
   FamilyMemberEntity? get currentMember =>
       members.isEmpty ? null : members[currentIndex];
 
@@ -36,6 +38,7 @@ class FamilyAddressesState {
     String? errorMessage,
     bool clearError = false,
     bool? completed,
+    int? addressSaveRevision,
   }) => FamilyAddressesState(
     familyName: familyName ?? this.familyName,
     isLoading: isLoading ?? this.isLoading,
@@ -46,5 +49,6 @@ class FamilyAddressesState {
     completedMemberIds: completedMemberIds ?? this.completedMemberIds,
     errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     completed: completed ?? this.completed,
+    addressSaveRevision: addressSaveRevision ?? this.addressSaveRevision,
   );
 }

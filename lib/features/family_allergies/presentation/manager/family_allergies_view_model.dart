@@ -88,7 +88,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   Future<void> saveCurrent() async {
     final member = state.currentMember;
     if (member == null || !state.canSave) return;
-    emit(state.copyWith(isSaving: true, clearError: true));
+    emit(state.copyWith(isSaving: true, completed: false, clearError: true));
     final result = await _save(
       memberId: member.memberId,
       allergies: state.selectedCodes

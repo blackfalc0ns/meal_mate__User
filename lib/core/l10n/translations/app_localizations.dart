@@ -9164,6 +9164,18 @@ abstract class AppLocalizations {
   /// **'Search for an ingredient'**
   String get family_allergies_ingredient_search;
 
+  /// No description provided for @family_allergies_show_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get family_allergies_show_more;
+
+  /// No description provided for @family_allergies_show_less.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get family_allergies_show_less;
+
   /// No description provided for @family_allergies_information_note.
   ///
   /// In en, this message translates to:

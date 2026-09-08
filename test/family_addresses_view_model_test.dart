@@ -35,6 +35,11 @@ void main() {
     viewModel.addressSaved();
 
     expect(viewModel.state.completed, isTrue);
+    expect(viewModel.state.addressSaveRevision, 1);
+
+    viewModel.addressSaved();
+
+    expect(viewModel.state.addressSaveRevision, 2);
     await viewModel.close();
   });
 

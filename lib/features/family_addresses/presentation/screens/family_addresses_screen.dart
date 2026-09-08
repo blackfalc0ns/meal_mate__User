@@ -29,7 +29,8 @@ class FamilyAddressesScreen extends StatelessWidget {
       create: (_) => getIt<FamilyAddressesViewModel>()..load(),
       child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
         listenWhen: (previous, current) =>
-            !previous.completed && current.completed,
+            current.completed &&
+            previous.addressSaveRevision != current.addressSaveRevision,
         listener: (context, state) =>
             context.pushNamed(AppRoutes.familyAllergies),
         builder: (context, state) {

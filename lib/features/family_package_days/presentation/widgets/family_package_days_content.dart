@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/widgets
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_member_content_loading_skeleton.dart';
 
 class FamilyPackageDaysContent extends StatelessWidget {
   const FamilyPackageDaysContent({
@@ -29,6 +30,10 @@ class FamilyPackageDaysContent extends StatelessWidget {
     color.surface;
     locale.localeName;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
+    final isMemberSwitchLoading =
+        state.isBundlesLoading ||
+        state.isDurationsLoading ||
+        state.isTiersLoading;
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -48,16 +53,24 @@ class FamilyPackageDaysContent extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: Spacing.familyProgramMemberTopGap),
-              FamilyPackageDaysMemberSection(state: state),
-              FamilyPackageDaysPackageSection(state: state),
-              const SizedBox(height: Spacing.md),
-              const FamilyPackageDaysDurationSection(),
-              const SizedBox(height: Spacing.md),
-              FamilyPackageDaysPlanSection(
+              FamilyPackageDaysMemberSection(
                 state: state,
-                programId: programId,
-                onNextPressed: onNextPressed,
+                showSummary: !isMemberSwitchLoading,
+                isLoading: isMemberSwitchLoading,
               ),
+              if (isMemberSwitchLoading)
+                const FamilyMemberContentLoadingSkeleton()
+              else ...[
+                FamilyPackageDaysPackageSection(state: state),
+                const SizedBox(height: Spacing.md),
+                const FamilyPackageDaysDurationSection(),
+                const SizedBox(height: Spacing.md),
+                FamilyPackageDaysPlanSection(
+                  state: state,
+                  programId: programId,
+                  onNextPressed: onNextPressed,
+                ),
+              ],
               const SizedBox(height: Spacing.xxxl),
             ]),
           ),

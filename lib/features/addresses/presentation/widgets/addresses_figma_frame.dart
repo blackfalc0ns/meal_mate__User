@@ -9,6 +9,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
+import 'package:meal_meat_user/features/addresses/presentation/manager/address_entry_flow_controller.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
@@ -23,6 +24,7 @@ class AddressesFigmaFrame extends StatefulWidget {
     required this.locations,
     required this.isSubmitting,
     this.initialAddress,
+    this.flowController,
   });
 
   static const double frameHeight = Spacing.addressesChooseLocationDesignHeight;
@@ -30,6 +32,7 @@ class AddressesFigmaFrame extends StatefulWidget {
   final LocationsCatalogState locations;
   final bool isSubmitting;
   final CustomerAddressEntity? initialAddress;
+  final AddressEntryFlowController? flowController;
 
   @override
   State<AddressesFigmaFrame> createState() => _AddressesFigmaFrameState();
@@ -47,7 +50,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   Timer? _debounceTimer;
   bool _isInitialMapMove = true;
   AddressLocationMode? _selectedMode;
-  late bool _showAddressDetails;
+  late final AddressEntryFlowController _flowController;
+  late final bool _ownsFlowController;
 
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
@@ -62,7 +66,12 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     super.initState();
     _currentLatitude = widget.initialAddress?.latitude ?? _defaultLatitude;
     _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
-    _showAddressDetails = widget.initialAddress != null;
+    _ownsFlowController = widget.flowController == null;
+    _flowController = widget.flowController ?? AddressEntryFlowController();
+    if (widget.initialAddress != null) {
+      _flowController.showAddressDetails();
+    }
+    _flowController.addListener(_onFlowStageChanged);
     _fillInitialAddress(widget.initialAddress);
   }
 
@@ -76,6 +85,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _buildingNumberController.dispose();
     _floorController.dispose();
     _apartmentController.dispose();
+    _flowController.removeListener(_onFlowStageChanged);
+    if (_ownsFlowController) _flowController.dispose();
     super.dispose();
   }
 
@@ -154,7 +165,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
               bottom: Spacing.bottomSheetRadius * 12,
               child: Center(child: IgnorePointer(child: AddressMapMarker())),
             ),
-            if (_showAddressDetails)
+            if (_flowController.stage == AddressEntryStage.details)
               Positioned.fill(
                 child: SafeArea(
                   child: Padding(
@@ -218,7 +229,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                   },
                   onUseCurrentLocation: () => _onGpsPressed(context),
                   onConfirm: () {
-                    setState(() => _showAddressDetails = true);
+                    _flowController.showAddressDetails();
                   },
                 ),
               ),
@@ -226,6 +237,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
         ),
       ),
     );
+  }
+
+  void _onFlowStageChanged() {
+    if (mounted) setState(() {});
   }
 
   void _onMapCreated(GoogleMapController controller) {

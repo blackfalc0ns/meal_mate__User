@@ -13,17 +13,8 @@ class FamilyPackageSectionHeader extends StatelessWidget {
     final locale = context.localization;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
-          locale.family_packages_section_title,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size16,
-            color: color.onSurface,
-          ),
-        ),
-        const SizedBox(width: Spacing.sm),
         Container(
           width: Spacing.avatarSm,
           height: Spacing.avatarSm,
@@ -35,6 +26,16 @@ class FamilyPackageSectionHeader extends StatelessWidget {
             Icons.groups_rounded,
             color: color.onPrimary,
             size: Spacing.iconSm,
+          ),
+        ),
+        const SizedBox(width: Spacing.sm),
+
+        Text(
+          locale.family_packages_section_title,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size16,
+            color: color.onSurface,
           ),
         ),
       ],

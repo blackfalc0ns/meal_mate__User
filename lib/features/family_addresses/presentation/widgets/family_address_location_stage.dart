@@ -5,6 +5,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
+import 'package:meal_meat_user/features/addresses/presentation/manager/address_entry_flow_controller.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
@@ -30,7 +31,10 @@ class _FamilyAddressLocationStageState
     extends State<FamilyAddressLocationStage> {
   late final AddressesViewModel _viewModel;
   Object? _shownPreview;
-  bool _completed = false;
+  final AddressEntryFlowController _entryFlowController =
+      AddressEntryFlowController();
+  final AddressActionSuccessTracker _successTracker =
+      AddressActionSuccessTracker();
 
   @override
   void initState() {
@@ -50,7 +54,6 @@ class _FamilyAddressLocationStageState
     if (oldWidget.memberId == widget.memberId) return;
 
     _shownPreview = null;
-    _completed = false;
     _viewModel.invalidateFamilyMemberOperations();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || oldWidget.memberId == widget.memberId) return;
@@ -65,6 +68,7 @@ class _FamilyAddressLocationStageState
   @override
   void dispose() {
     _viewModel.close();
+    _entryFlowController.dispose();
     super.dispose();
   }
 
@@ -80,8 +84,11 @@ class _FamilyAddressLocationStageState
             previous.action != current.action ||
             previous.coveragePreview != current.coveragePreview,
         listener: (context, state) async {
-          if (!_completed && state.action.isSuccess) {
-            _completed = true;
+          if (_successTracker.shouldHandle(
+            state.action,
+            isSuccess: state.action.isSuccess,
+          )) {
+            _entryFlowController.addressSaved();
             widget.onSaved();
             return;
           }
@@ -140,6 +147,7 @@ class _FamilyAddressLocationStageState
         builder: (context, state) => AddressesFigmaFrame(
           key: ValueKey(widget.memberId),
           locations: state.locations,
+          flowController: _entryFlowController,
           isSubmitting:
               state.action.isLoading || state.coveragePreview.isLoading,
         ),

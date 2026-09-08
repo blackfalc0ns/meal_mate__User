@@ -10,9 +10,16 @@ import 'package:meal_meat_user/features/family_shared/presentation/widgets/famil
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_summary_card.dart';
 
 class FamilyPackageDaysMemberSection extends StatelessWidget {
-  const FamilyPackageDaysMemberSection({super.key, required this.state});
+  const FamilyPackageDaysMemberSection({
+    super.key,
+    required this.state,
+    this.showSummary = true,
+    this.isLoading = false,
+  });
 
   final FamilyPlanState state;
+  final bool showSummary;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +76,19 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
         if (displayedMembers.isNotEmpty) ...[
           FamilyProgramMemberStrip(
             members: displayedMembers,
-            onSelectMember: (index) {
-              context.read<FamilyPackageDaysViewModel>().doIntent(
-                SelectFamilyMemberPackageDaysEvent(memberEntries[index].key),
-              );
-            },
+            onSelectMember: isLoading
+                ? null
+                : (index) {
+                    context.read<FamilyPackageDaysViewModel>().doIntent(
+                      SelectFamilyMemberPackageDaysEvent(
+                        memberEntries[index].key,
+                      ),
+                    );
+                  },
           ),
           const SizedBox(height: Spacing.familyProgramSummaryTopGap),
         ],
-        if (activeMemberDetails != null) ...[
+        if (showSummary && activeMemberDetails != null) ...[
           FamilyProgramSummaryCard(member: activeMemberDetails),
           const SizedBox(height: Spacing.familyPackageTitleTopGap),
         ],

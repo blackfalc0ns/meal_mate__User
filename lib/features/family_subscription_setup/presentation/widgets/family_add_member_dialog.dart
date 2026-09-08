@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_event.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_relationship_options.dart';
 
 class FamilyAddMemberDialog extends StatefulWidget {
   const FamilyAddMemberDialog({
@@ -104,15 +105,16 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     );
     _gender = member?.gender ?? 1;
 
-    final availableRelationships = widget.relationships
-        .where((r) => r.forDependents)
-        .toList();
-
-    _selectedRelationshipCode = member?.relationshipCode.isNotEmpty == true
-        ? member!.relationshipCode
-        : (availableRelationships.isNotEmpty
-              ? availableRelationships.first.code
-              : 'other');
+    final memberRelationshipCode = member?.relationshipCode;
+    final availableRelationships = buildFamilyRelationshipOptions(
+      widget.relationships,
+      selectedCode: memberRelationshipCode,
+      includeSelectedRelationship: member != null,
+    );
+    _selectedRelationshipCode = resolveFamilyRelationshipSelection(
+      availableRelationships,
+      selectedCode: memberRelationshipCode,
+    );
 
     _selectedAddressId =
         member?.deliveryAddressId ??
@@ -159,9 +161,15 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final color = context.colorScheme;
     final screenHeight = MediaQuery.sizeOf(context).height;
     final panelHeight = math.min(680.0, screenHeight - 24);
-    final availableRelationships = widget.relationships
-        .where((r) => r.forDependents)
-        .toList();
+    final availableRelationships = buildFamilyRelationshipOptions(
+      widget.relationships,
+      selectedCode: _selectedRelationshipCode,
+      includeSelectedRelationship: widget.member != null,
+    );
+    final selectedRelationshipCode = resolveFamilyRelationshipSelection(
+      availableRelationships,
+      selectedCode: _selectedRelationshipCode,
+    );
 
     return BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
       listenWhen: (previous, current) =>
@@ -342,7 +350,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton<String>(
                                         isExpanded: true,
-                                        value: _selectedRelationshipCode,
+                                        value: selectedRelationshipCode,
                                         dropdownColor: color.surface,
                                         items: availableRelationships.map((r) {
                                           return DropdownMenuItem<String>(

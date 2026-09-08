@@ -4875,6 +4875,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_allergies_ingredient_search => 'Search for an ingredient';
 
   @override
+  String get family_allergies_show_more => 'Show more';
+
+  @override
+  String get family_allergies_show_less => 'Show less';
+
+  @override
   String get family_allergies_information_note =>
       'We use this information to personalize suitable meals for each member.';
 

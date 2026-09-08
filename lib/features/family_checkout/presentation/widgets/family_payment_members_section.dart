@@ -35,17 +35,19 @@ class FamilyPaymentMembersSection extends StatelessWidget {
 
     return FamilyProgramMemberStrip(
       members: displayedMembers,
-      onSelectMember: (index) {
-        final memberId = _memberIdAt(
-          index: index,
-          summaryMembers: summaryMembers,
-          fallbackMembers: fallbackMembers,
-        );
-        if (memberId == null) return;
-        context.read<FamilyCheckoutViewModel>().doIntent(
-          GetFamilySummaryEvent(memberId: memberId),
-        );
-      },
+      onSelectMember: state.isSummaryLoading
+          ? null
+          : (index) {
+              final memberId = _memberIdAt(
+                index: index,
+                summaryMembers: summaryMembers,
+                fallbackMembers: fallbackMembers,
+              );
+              if (memberId == null) return;
+              context.read<FamilyCheckoutViewModel>().doIntent(
+                GetFamilySummaryEvent(memberId: memberId),
+              );
+            },
     );
   }
 

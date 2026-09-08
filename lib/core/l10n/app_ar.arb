@@ -1736,6 +1736,8 @@
   "family_allergies_search": "ابحث عن حساسية",
   "family_allergies_rejected": "مكونات لا يفضلها",
   "family_allergies_ingredient_search": "ابحث عن مكونات",
+  "family_allergies_show_more": "عرض المزيد",
+  "family_allergies_show_less": "عرض أقل",
   "family_allergies_information_note": "نستخدم هذه المعلومات لتخصيص الوجبات المناسبة لكل فرد.",
   "family_addresses_title": "عناوين التوصيل",
   "family_addresses_member": "عنوان {name}",
