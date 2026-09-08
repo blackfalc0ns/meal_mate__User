@@ -79,6 +79,7 @@ class FamilyDayMealCard extends StatelessWidget {
             ),
             const SizedBox(height: Spacing.md),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(
@@ -86,37 +87,45 @@ class FamilyDayMealCard extends StatelessWidget {
                   ),
                   child: Image.asset(
                     meal.imageAsset,
-                    width: 80,
-                    height: 80,
+                    width: 88,
+                    height: 88,
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: Spacing.md),
-                Column(
-                  children: [
-                    Text(
-                      meal.mealName,
-                      locale: Locale(locale.localeName),
-                      textAlign: TextAlign.center,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size16,
-                        color: color.onSurface,
+                const SizedBox(width: Spacing.sm),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        meal.mealName,
+                        locale: Locale(locale.localeName),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size16,
+                          color: color.onSurface,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: Spacing.md),
-                    AppNutritionRow(
-                      calories: meal.calories,
-                      carbs: meal.carbs,
-                      protein: meal.protein,
-                      fat: meal.fat,
-                      caloriesLabel: meal.caloriesLabel,
-                      carbsLabel: meal.carbsLabel,
-                      proteinLabel: meal.proteinLabel,
-                      fatLabel: meal.fatLabel,
-                      order: NutritionOrder.caloriesCarbsProteinFat,
-                    ),
-                  ],
+                      const SizedBox(height: Spacing.sm),
+                      AppNutritionRow(
+                        calories: meal.calories,
+                        carbs: meal.carbs,
+                        protein: meal.protein,
+                        fat: meal.fat,
+                        caloriesLabel: meal.caloriesLabel,
+                        carbsLabel: meal.carbsLabel,
+                        proteinLabel: meal.proteinLabel,
+                        fatLabel: meal.fatLabel,
+                        order: NutritionOrder.caloriesCarbsProteinFat,
+                        animationSize: 18.0,
+                        height: 44.0,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

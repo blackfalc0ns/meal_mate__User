@@ -21,6 +21,7 @@ class AppNutritionRow extends StatelessWidget {
     this.fatLabel,
     this.order = NutritionOrder.caloriesProteinCarbsFat,
     this.textDirection = TextDirection.rtl,
+    this.animationSize = 20.0,
     this.height = 46.0,
   });
 
@@ -34,6 +35,7 @@ class AppNutritionRow extends StatelessWidget {
   final String? fatLabel;
   final NutritionOrder order;
   final TextDirection? textDirection;
+  final double animationSize;
   final double height;
 
   @override
@@ -46,6 +48,7 @@ class AppNutritionRow extends StatelessWidget {
       animationAsset: Assets.fireAnimation,
       value: calories,
       label: caloriesLabel ?? locale.calendar_calories,
+      animationSize: animationSize,
     );
 
     final proteinItem = AppNutritionItem(
@@ -53,6 +56,7 @@ class AppNutritionRow extends StatelessWidget {
       animationAsset: Assets.muscleAnimation,
       value: protein,
       label: proteinLabel ?? locale.calendar_protein,
+      animationSize: animationSize,
     );
 
     final carbsItem = AppNutritionItem(
@@ -60,6 +64,7 @@ class AppNutritionRow extends StatelessWidget {
       animationAsset: Assets.wheatAnimation,
       value: carbs,
       label: carbsLabel ?? locale.calendar_carbs,
+      animationSize: animationSize,
     );
 
     final fatItem = AppNutritionItem(
@@ -67,6 +72,7 @@ class AppNutritionRow extends StatelessWidget {
       animationAsset: Assets.dropletAnimation,
       value: fat,
       label: fatLabel ?? locale.calendar_fat,
+      animationSize: animationSize,
     );
 
     final items = switch (order) {

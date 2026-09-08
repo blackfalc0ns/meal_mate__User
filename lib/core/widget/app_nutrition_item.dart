@@ -13,6 +13,8 @@ class AppNutritionItem extends StatelessWidget {
     required this.value,
     required this.label,
     this.iconColor,
+    this.animationSize = 20.0,
+    this.iconSize = 14.0,
   });
 
   final IconData? icon;
@@ -20,6 +22,8 @@ class AppNutritionItem extends StatelessWidget {
   final String value;
   final String label;
   final Color? iconColor;
+  final double animationSize;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +44,11 @@ class AppNutritionItem extends StatelessWidget {
                 animationAsset!,
                 fit: BoxFit.contain,
                 repeat: true,
-                width: 30,
-                height: 30,
+                width: animationSize,
+                height: animationSize,
               )
             else if (icon != null)
-              Icon(icon, size: 14, color: iconColor ?? color.primary),
+              Icon(icon, size: iconSize, color: iconColor ?? color.primary),
             const SizedBox(width: Spacing.xs - 2),
             Flexible(
               child: FittedBox(
