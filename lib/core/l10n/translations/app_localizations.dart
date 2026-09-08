@@ -9769,6 +9769,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Spicy Food'**
   String get family_review_tag_not_spicy;
+
+  /// No description provided for @subscription_upgrade_target_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected tier is not valid for upgrade.'**
+  String get subscription_upgrade_target_invalid;
+
+  /// No description provided for @upgrade_redirect_urls_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment redirect information is incomplete.'**
+  String get upgrade_redirect_urls_required;
+
+  /// No description provided for @upgrade_customer_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer information is incomplete for payment.'**
+  String get upgrade_customer_not_found;
+
+  /// No description provided for @subscription_upgrade_not_available.
+  ///
+  /// In en, this message translates to:
+  /// **'The subscription is currently not available for upgrade.'**
+  String get subscription_upgrade_not_available;
+
+  /// No description provided for @subscription_upgrade_request_already_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'An upgrade request is already pending review.'**
+  String get subscription_upgrade_request_already_pending;
+
+  /// No description provided for @subscription_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription not found.'**
+  String get subscription_not_found;
+
+  /// No description provided for @subscription_upgrade_default_error.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while initiating the upgrade, please try again.'**
+  String get subscription_upgrade_default_error;
+
+  /// No description provided for @restaurant_tier_upgrade_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier upgraded successfully and the updated subscription is active immediately.'**
+  String get restaurant_tier_upgrade_success;
+
+  /// No description provided for @restaurant_tier_upgrade_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Tier Upgrade'**
+  String get restaurant_tier_upgrade_confirm_title;
+
+  /// No description provided for @restaurant_tier_upgrade_no_data.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available for upgrade request.'**
+  String get restaurant_tier_upgrade_no_data;
 }
 
 class _AppLocalizationsDelegate

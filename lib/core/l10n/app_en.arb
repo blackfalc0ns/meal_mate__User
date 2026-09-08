@@ -1882,5 +1882,15 @@
   "family_review_meal_4_name": "Greek Yogurt with Berries & Honey",
   "family_review_tag_no_nuts": "No Nuts",
   "family_review_tag_brown_rice": "Prefers Brown Rice",
-  "family_review_tag_not_spicy": "No Spicy Food"
+  "family_review_tag_not_spicy": "No Spicy Food",
+  "subscription_upgrade_target_invalid": "The selected tier is not valid for upgrade.",
+  "upgrade_redirect_urls_required": "Payment redirect information is incomplete.",
+  "upgrade_customer_not_found": "Customer information is incomplete for payment.",
+  "subscription_upgrade_not_available": "The subscription is currently not available for upgrade.",
+  "subscription_upgrade_request_already_pending": "An upgrade request is already pending review.",
+  "subscription_not_found": "Subscription not found.",
+  "subscription_upgrade_default_error": "An error occurred while initiating the upgrade, please try again.",
+  "restaurant_tier_upgrade_success": "Tier upgraded successfully and the updated subscription is active immediately.",
+  "restaurant_tier_upgrade_confirm_title": "Confirm Tier Upgrade",
+  "restaurant_tier_upgrade_no_data": "No data available for upgrade request."
 }

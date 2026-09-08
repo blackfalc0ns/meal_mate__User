@@ -5230,4 +5230,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_review_tag_not_spicy => 'No Spicy Food';
+
+  @override
+  String get subscription_upgrade_target_invalid =>
+      'The selected tier is not valid for upgrade.';
+
+  @override
+  String get upgrade_redirect_urls_required =>
+      'Payment redirect information is incomplete.';
+
+  @override
+  String get upgrade_customer_not_found =>
+      'Customer information is incomplete for payment.';
+
+  @override
+  String get subscription_upgrade_not_available =>
+      'The subscription is currently not available for upgrade.';
+
+  @override
+  String get subscription_upgrade_request_already_pending =>
+      'An upgrade request is already pending review.';
+
+  @override
+  String get subscription_not_found => 'Subscription not found.';
+
+  @override
+  String get subscription_upgrade_default_error =>
+      'An error occurred while initiating the upgrade, please try again.';
+
+  @override
+  String get restaurant_tier_upgrade_success =>
+      'Tier upgraded successfully and the updated subscription is active immediately.';
+
+  @override
+  String get restaurant_tier_upgrade_confirm_title => 'Confirm Tier Upgrade';
+
+  @override
+  String get restaurant_tier_upgrade_no_data =>
+      'No data available for upgrade request.';
 }

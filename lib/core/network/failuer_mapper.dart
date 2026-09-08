@@ -114,6 +114,18 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.addresses_out_of_kuwait_bounds;
     case 'error_server':
       return locale.error_server;
+    case 'subscription.upgrade_target_invalid':
+      return locale.subscription_upgrade_target_invalid;
+    case 'upgrade.redirect_urls_required':
+      return locale.upgrade_redirect_urls_required;
+    case 'upgrade.customer_not_found':
+      return locale.upgrade_customer_not_found;
+    case 'subscription.upgrade_not_available':
+      return locale.subscription_upgrade_not_available;
+    case 'subscription.upgrade_request_already_pending':
+      return locale.subscription_upgrade_request_already_pending;
+    case 'subscription.not_found':
+      return locale.subscription_not_found;
     default:
       return message;
   }

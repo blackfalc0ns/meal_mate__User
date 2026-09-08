@@ -13,13 +13,11 @@ class FamilyRestaurantLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     final foreground = restaurant.darkLogo ? color.surface : color.primary;
     final background = restaurant.darkLogo
         ? color.onSurface
-        : color.surfaceContainerLowest;
+        : color.surface;
 
     return Container(
       width: Spacing.familyRestaurantsLogoSize,
@@ -40,7 +38,7 @@ class FamilyRestaurantLogo extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size7,
               color: foreground,
             ),
           ),
@@ -50,7 +48,7 @@ class FamilyRestaurantLogo extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size7,
               color: foreground,
             ),
           ),
@@ -61,7 +59,7 @@ class FamilyRestaurantLogo extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size8,
+                fontSize: FontSize.size6,
                 color: foreground,
               ),
             ),

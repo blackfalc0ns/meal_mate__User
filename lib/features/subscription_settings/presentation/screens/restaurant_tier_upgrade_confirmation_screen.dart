@@ -4,9 +4,11 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/mapper/restaurant_tier_upgrade_mapper.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_entity.dart';
@@ -60,11 +62,11 @@ class _RestaurantTierUpgradeConfirmationScreenState
       return Scaffold(
         appBar: CustomAppBar(
           elevation: Spacing.zero,
-          title: 'تأكيد ترقية التصنيف',
+          title: locale.restaurant_tier_upgrade_confirm_title,
         ),
-        body: const EmptyStateWidget(
-          title: 'تأكيد ترقية التصنيف',
-          description: 'لا توجد بيانات متاحة لطلب الترقية.',
+        body: EmptyStateWidget(
+          title: locale.restaurant_tier_upgrade_confirm_title,
+          description: locale.restaurant_tier_upgrade_no_data,
           icon: Icons.error_outline_rounded,
         ),
       );
@@ -83,13 +85,9 @@ class _RestaurantTierUpgradeConfirmationScreenState
                 previous.submitFailure != current.submitFailure,
             listener: (context, state) {
               if (state.isUpgradeSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً',
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
+                CustomSnackbar.showSuccess(
+                  context: context,
+                  message: locale.restaurant_tier_upgrade_success,
                 );
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 return;
@@ -111,15 +109,11 @@ class _RestaurantTierUpgradeConfirmationScreenState
               }
 
               if (state.submitFailure != null) {
-                final failure = state.submitFailure!;
-                final message = _mapErrorCodeToMessage(
-                  failure.code.isNotEmpty
-                      ? failure.code
-                      : failure.exception.backendErrorCode,
+                final message = ErrorMessagePresenter.fromFailure(
+                  context,
+                  state.submitFailure!,
                 );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(message), backgroundColor: Colors.red),
-                );
+                CustomSnackbar.showError(context: context, message: message);
               }
             },
             builder: (context, state) {
@@ -236,24 +230,5 @@ class _RestaurantTierUpgradeConfirmationScreenState
       ),
       SizedBox(height: MediaQuery.paddingOf(context).bottom + Spacing.xl),
     ];
-  }
-
-  String _mapErrorCodeToMessage(String? code) {
-    switch (code) {
-      case 'subscription.upgrade_target_invalid':
-        return 'الطبقة المختارة غير صالحة للترقية.';
-      case 'upgrade.redirect_urls_required':
-        return 'بيانات إعادة التوجيه للدفع غير مكتملة.';
-      case 'upgrade.customer_not_found':
-        return 'بيانات العميل غير مكتملة لعملية الدفع.';
-      case 'subscription.upgrade_not_available':
-        return 'الاشتراك غير متاح للترقية حالياً.';
-      case 'subscription.upgrade_request_already_pending':
-        return 'يوجد طلب ترقية معلق قيد المتابعة بالفعل.';
-      case 'subscription.not_found':
-        return 'لم يتم العثور على الاشتراك.';
-      default:
-        return 'حدث خطأ أثناء بدء عملية الترقية، يرجى المحاولة مرة أخرى.';
-    }
   }
 }

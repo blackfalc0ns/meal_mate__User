@@ -19,12 +19,13 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Container(
       height: Spacing.familyRestaurantsSummaryHeight,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.md,
+        vertical: Spacing.xs,
+      ),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(
@@ -33,7 +34,7 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
         boxShadow: [
           BoxShadow(
-            color: color.shadow.withValues(alpha: 0.08),
+            color: color.shadow.withValues(alpha: 0.06),
             offset: const Offset(0, Spacing.xs),
             blurRadius: Spacing.xs,
           ),
@@ -58,28 +59,26 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
                 memberName,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size17,
+                  fontSize: FontSize.size15,
                   color: color.onSurface,
                 ),
               ),
             ],
           ),
-          const SizedBox(width: Spacing.lg),
+          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Row(
               children: [
                 FamilyRestaurantsSummaryMetric(
-                  value: summary.programLabel,
+                  value: '',
                   label: summary.programLabel,
                   icon: Icons.balance_rounded,
                 ),
-                VerticalDivider(color: color.outlineVariant),
                 FamilyRestaurantsSummaryMetric(
                   value: summary.calories,
                   label: summary.caloriesLabel,
                   icon: Icons.local_fire_department_rounded,
                 ),
-                VerticalDivider(color: color.outlineVariant),
                 FamilyRestaurantsSummaryMetric(
                   value: summary.dailyMeals,
                   label: summary.dailyMealsLabel,
@@ -88,21 +87,21 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: Spacing.sm),
-          SizedBox.square(
-            dimension: Spacing.avatarLg,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CircularProgressIndicator(
-                  value: 0.67,
-                  strokeWidth: Spacing.sm,
-                  backgroundColor: color.surfaceContainerHighest,
-                  color: color.primary,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(width: Spacing.xs),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox.square(
+                dimension: 42.0,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
+                    CircularProgressIndicator(
+                      value: 0.5,
+                      strokeWidth: Spacing.xxs + 1,
+                      backgroundColor: color.surfaceContainerHighest,
+                      color: color.primary,
+                    ),
                     Text.rich(
                       TextSpan(
                         text: summary.selectedMeals,
@@ -111,7 +110,7 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
                             text: summary.selectedMealsTotal,
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size15,
+                              fontSize: FontSize.size13,
                               color: color.primary,
                             ),
                           ),
@@ -119,22 +118,23 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
                       ),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size15,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      summary.selectedMealsLabel,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size9,
+                        fontSize: FontSize.size13,
                         color: color.onSurface,
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: Spacing.xxs),
+              Text(
+                summary.selectedMealsLabel,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size10,
+                  color: color.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
         ],
       ),

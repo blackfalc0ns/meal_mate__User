@@ -5140,4 +5140,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_review_tag_not_spicy => 'لا طعام حار';
+
+  @override
+  String get subscription_upgrade_target_invalid =>
+      'الطبقة المختارة غير صالحة للترقية.';
+
+  @override
+  String get upgrade_redirect_urls_required =>
+      'بيانات إعادة التوجيه للدفع غير مكتملة.';
+
+  @override
+  String get upgrade_customer_not_found =>
+      'بيانات العميل غير مكتملة لعملية الدفع.';
+
+  @override
+  String get subscription_upgrade_not_available =>
+      'الاشتراك غير متاح للترقية حالياً.';
+
+  @override
+  String get subscription_upgrade_request_already_pending =>
+      'يوجد طلب ترقية معلق قيد المتابعة بالفعل.';
+
+  @override
+  String get subscription_not_found => 'لم يتم العثور على الاشتراك.';
+
+  @override
+  String get subscription_upgrade_default_error =>
+      'حدث خطأ أثناء بدء عملية الترقية، يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get restaurant_tier_upgrade_success =>
+      'تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً';
+
+  @override
+  String get restaurant_tier_upgrade_confirm_title => 'تأكيد ترقية التصنيف';
+
+  @override
+  String get restaurant_tier_upgrade_no_data =>
+      'لا توجد بيانات متاحة لطلب الترقية.';
 }

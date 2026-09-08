@@ -21,17 +21,15 @@ class FamilyRestaurantsMemberSelectorItem extends StatelessWidget {
       height: Spacing.familyDayMemberSelectorHeight,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: member.isSelected ? color.primaryContainer : color.surface,
+          color: color.surface,
           border: Border.all(
             color: member.isSelected ? color.primary : color.outlineVariant,
             width: member.isSelected
                 ? Spacing.familySelectedBorderWidth
-                : Spacing.familyDayMealCardBorderWidth,
+                : Spacing.border,
           ),
           borderRadius: BorderRadius.circular(
-            member.isSelected
-                ? Spacing.familyDayMemberSelectorSelectedRadius
-                : Spacing.familyDayMemberSelectorRadius,
+            Spacing.familyDayMemberSelectorSelectedRadius,
           ),
         ),
         child: Column(
@@ -61,11 +59,21 @@ class FamilyRestaurantsMemberSelectorItem extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Icon(
-              Icons.check_circle_rounded,
-              size: Spacing.familyDayMemberSelectorCheckSize,
-              color: member.isSelected ? color.primary : color.outlineVariant,
-            ),
+            if (member.isSelected)
+              Icon(
+                Icons.check_circle_rounded,
+                size: Spacing.familyDayMemberSelectorCheckSize,
+                color: color.primary,
+              )
+            else
+              Container(
+                width: 6.0,
+                height: 6.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color.outlineVariant,
+                ),
+              ),
             const SizedBox(height: Spacing.familyDayMemberSelectorCheckBottom),
           ],
         ),

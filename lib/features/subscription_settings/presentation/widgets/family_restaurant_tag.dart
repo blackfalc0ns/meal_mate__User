@@ -13,12 +13,10 @@ class FamilyRestaurantTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Container(
       height: Spacing.familyRestaurantsTagHeight,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
       decoration: BoxDecoration(
         color: color.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(
@@ -28,6 +26,10 @@ class FamilyRestaurantTag extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (tag.icon != null) ...[
+            Icon(tag.icon, color: color.primary, size: Spacing.iconXs),
+            const SizedBox(width: Spacing.xxs),
+          ],
           Flexible(
             child: Text(
               tag.label,
@@ -40,10 +42,6 @@ class FamilyRestaurantTag extends StatelessWidget {
               ),
             ),
           ),
-          if (tag.icon != null) ...[
-            const SizedBox(width: Spacing.xs),
-            Icon(tag.icon, color: color.primary, size: Spacing.iconSm),
-          ],
         ],
       ),
     );

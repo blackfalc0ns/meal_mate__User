@@ -1882,5 +1882,15 @@
   "family_review_meal_4_name": "زبادي يوناني مع توت وعسل",
   "family_review_tag_no_nuts": "بدون مكسرات",
   "family_review_tag_brown_rice": "يفضل الأرز البني",
-  "family_review_tag_not_spicy": "لا طعام حار"
+  "family_review_tag_not_spicy": "لا طعام حار",
+  "subscription_upgrade_target_invalid": "الطبقة المختارة غير صالحة للترقية.",
+  "upgrade_redirect_urls_required": "بيانات إعادة التوجيه للدفع غير مكتملة.",
+  "upgrade_customer_not_found": "بيانات العميل غير مكتملة لعملية الدفع.",
+  "subscription_upgrade_not_available": "الاشتراك غير متاح للترقية حالياً.",
+  "subscription_upgrade_request_already_pending": "يوجد طلب ترقية معلق قيد المتابعة بالفعل.",
+  "subscription_not_found": "لم يتم العثور على الاشتراك.",
+  "subscription_upgrade_default_error": "حدث خطأ أثناء بدء عملية الترقية، يرجى المحاولة مرة أخرى.",
+  "restaurant_tier_upgrade_success": "تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً",
+  "restaurant_tier_upgrade_confirm_title": "تأكيد ترقية التصنيف",
+  "restaurant_tier_upgrade_no_data": "لا توجد بيانات متاحة لطلب الترقية."
 }

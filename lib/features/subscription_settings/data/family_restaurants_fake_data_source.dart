@@ -44,28 +44,20 @@ class FamilyRestaurantsFakeDataSource {
       ),
       filters: [
         FamilyRestaurantsFilterData(
-          label: locale.family_restaurants_filter_dinner,
-          icon: Icons.nightlight_round,
-        ),
-        FamilyRestaurantsFilterData(
-          label: locale.family_restaurants_filter_lunch,
-          icon: Icons.wb_sunny_rounded,
+          label: locale.family_restaurants_filter_all,
+          isSelected: true,
         ),
         FamilyRestaurantsFilterData(
           label: locale.family_restaurants_filter_breakfast,
           icon: Icons.wb_sunny_rounded,
         ),
         FamilyRestaurantsFilterData(
-          label: locale.family_restaurants_filter_balanced,
-          icon: Icons.balance_rounded,
+          label: locale.family_restaurants_filter_lunch,
+          icon: Icons.wb_sunny_rounded,
         ),
         FamilyRestaurantsFilterData(
-          label: locale.family_restaurants_filter_high_protein,
-          icon: Icons.eco_rounded,
-        ),
-        FamilyRestaurantsFilterData(
-          label: locale.family_restaurants_filter_all,
-          isSelected: true,
+          label: locale.family_restaurants_filter_dinner,
+          icon: Icons.nightlight_round,
         ),
       ],
       restaurants: [

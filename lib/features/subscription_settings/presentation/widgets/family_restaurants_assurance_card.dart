@@ -17,12 +17,13 @@ class FamilyRestaurantsAssuranceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Container(
       height: Spacing.familyRestaurantsAssuranceHeight,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.md,
+        vertical: Spacing.xs,
+      ),
       decoration: BoxDecoration(
         color: color.primaryContainer,
         borderRadius: BorderRadius.circular(
@@ -37,32 +38,32 @@ class FamilyRestaurantsAssuranceCard extends StatelessWidget {
             color: color.primary,
             size: Spacing.iconLg,
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.start,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size11,
                     color: color.onSurface,
                   ),
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.xxs),
                 Text(
                   subtitle,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.start,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size8,
+                    fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),
                 ),

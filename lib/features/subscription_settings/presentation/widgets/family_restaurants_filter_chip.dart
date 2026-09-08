@@ -13,49 +13,39 @@ class FamilyRestaurantsFilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Container(
       height: Spacing.familyRestaurantsFilterHeight,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
       decoration: BoxDecoration(
-        color: filter.isSelected ? color.surfaceContainerLowest : color.surface,
+        color: color.surface,
         borderRadius: BorderRadius.circular(
           Spacing.familyRestaurantsFilterRadius,
         ),
         border: Border.all(
           color: filter.isSelected ? color.primary : color.outlineVariant,
+          width: filter.isSelected ? Spacing.familySelectedBorderWidth : Spacing.border,
         ),
-        boxShadow: filter.isSelected
-            ? null
-            : [
-                BoxShadow(
-                  color: color.shadow.withValues(alpha: 0.08),
-                  offset: const Offset(0, Spacing.xs),
-                  blurRadius: Spacing.xs,
-                ),
-              ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (filter.icon != null) ...[
+            Icon(
+              filter.icon,
+              size: Spacing.iconSm,
+              color: filter.isSelected ? color.primary : color.onSurfaceVariant,
+            ),
+            const SizedBox(width: Spacing.xs),
+          ],
           Text(
             filter.label,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size9,
+              fontSize: FontSize.size11,
               color: filter.isSelected ? color.primary : color.onSurface,
             ),
           ),
-          if (filter.icon != null) ...[
-            const SizedBox(width: Spacing.xs),
-            Icon(
-              filter.icon,
-              size: Spacing.iconSm,
-              color: filter.isSelected ? color.primary : color.primary,
-            ),
-          ],
         ],
       ),
     );

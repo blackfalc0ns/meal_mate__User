@@ -12,8 +12,6 @@ class FamilyRestaurantsSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Container(
       height: Spacing.familyRestaurantsSearchHeight,
@@ -26,7 +24,7 @@ class FamilyRestaurantsSearchField extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
         boxShadow: [
           BoxShadow(
-            color: color.shadow.withValues(alpha: 0.08),
+            color: color.shadow.withValues(alpha: 0.06),
             offset: const Offset(0, Spacing.xs),
             blurRadius: Spacing.xss,
           ),
@@ -39,15 +37,16 @@ class FamilyRestaurantsSearchField extends StatelessWidget {
             size: Spacing.iconMd,
             color: color.onSurfaceVariant,
           ),
+          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Text(
               hint,
-              textAlign: TextAlign.end,
+              textAlign: TextAlign.start,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
+                fontSize: FontSize.size12,
                 color: color.onSurfaceVariant,
               ),
             ),

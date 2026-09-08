@@ -19,32 +19,33 @@ class FamilyRestaurantsSummaryMetric extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    locale.localeName;
 
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size15,
-                    color: color.onSurface,
+          if (value.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size14,
+                      color: color.onSurface,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: Spacing.xs),
-              Icon(icon, color: color.primary, size: Spacing.iconSm),
-            ],
-          ),
+                const SizedBox(width: Spacing.xxs),
+                Icon(icon, color: color.primary, size: Spacing.iconSm),
+              ],
+            )
+          else
+            Icon(icon, color: color.primary, size: Spacing.iconMd),
           const SizedBox(height: Spacing.xs),
           Text(
             label,
@@ -53,8 +54,10 @@ class FamilyRestaurantsSummaryMetric extends StatelessWidget {
             textAlign: TextAlign.center,
             style: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size9,
-              color: color.onSurface,
+              fontSize: FontSize.size10,
+              color: value.isNotEmpty
+                  ? color.onSurfaceVariant
+                  : color.onSurface,
             ),
           ),
         ],

@@ -9,6 +9,7 @@ class Spacing {
   static const double unit = 4.0;
 
   // ── Named sizes ──
+  static const double xxs = 2.0;
   static const double xs = 4.0; // unit × 1
   static const double xss = 6.0; // unit × 1.5
   static const double sm = 8.0; // unit × 2
@@ -53,6 +54,7 @@ class Spacing {
   static const double avatarLg = 72.0;
 
   // ── Icon ──
+  static const double iconXs = 12.0;
   static const double iconSm = 16.0;
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
@@ -302,33 +304,33 @@ class Spacing {
   static const double familyRestaurantsDateTop = 92.0;
   static const double familyRestaurantsDateWithMembersTop = 219.0;
   static const double familyRestaurantsDateWidth = 95.0;
-  static const double familyRestaurantsDateHeight = 20.0;
+  static const double familyRestaurantsDateHeight = 24.0;
   static const double familyRestaurantsSummaryTop = 117.19;
-  static const double familyRestaurantsSummaryHeight = 97.49;
-  static const double familyRestaurantsSummaryRadius = 15.724;
-  static const double familyRestaurantsSearchTopGap = 10.0;
-  static const double familyRestaurantsSearchHeight = 33.54;
-  static const double familyRestaurantsSearchRadius = 14.528;
-  static const double familyRestaurantsFilterTopGap = 9.74;
-  static const double familyRestaurantsFilterHeight = 27.41;
-  static const double familyRestaurantsFilterGap = 9.487;
-  static const double familyRestaurantsFilterRadius = 10.542;
+  static const double familyRestaurantsSummaryHeight = 104.0;
+  static const double familyRestaurantsSummaryRadius = 16.0;
+  static const double familyRestaurantsSearchTopGap = 12.0;
+  static const double familyRestaurantsSearchHeight = 40.0;
+  static const double familyRestaurantsSearchRadius = 14.0;
+  static const double familyRestaurantsFilterTopGap = 12.0;
+  static const double familyRestaurantsFilterHeight = 32.0;
+  static const double familyRestaurantsFilterGap = 10.0;
+  static const double familyRestaurantsFilterRadius = 10.0;
   static const double familyRestaurantsTitleTopGap = 20.0;
-  static const double familyRestaurantsGridTopGap = 10.96;
-  static const double familyRestaurantsGridGap = 4.905;
-  static const double familyRestaurantsCardHeight = 165.97;
-  static const double familyRestaurantsCardRadius = 16.494;
-  static const double familyRestaurantsCardPadding = 8.25;
+  static const double familyRestaurantsGridTopGap = 12.0;
+  static const double familyRestaurantsGridGap = 10.0;
+  static const double familyRestaurantsCardHeight = 252.0;
+  static const double familyRestaurantsCardRadius = 16.0;
+  static const double familyRestaurantsCardPadding = 8.0;
   static const double familyRestaurantsMealImageWidth = 116.49;
-  static const double familyRestaurantsMealImageHeight = 73.19;
-  static const double familyRestaurantsLogoSize = 56.6;
-  static const double familyRestaurantsRatingWidth = 36.08;
-  static const double familyRestaurantsRatingHeight = 17.53;
-  static const double familyRestaurantsTagHeight = 22.39;
-  static const double familyRestaurantsCtaHeight = 18.81;
-  static const double familyRestaurantsAssuranceTopGap = 7.8;
-  static const double familyRestaurantsAssuranceHeight = 49.36;
-  static const double familyRestaurantsBottomSpace = 108.0;
+  static const double familyRestaurantsMealImageHeight = 112.0;
+  static const double familyRestaurantsLogoSize = 38.0;
+  static const double familyRestaurantsRatingWidth = 44.0;
+  static const double familyRestaurantsRatingHeight = 22.0;
+  static const double familyRestaurantsTagHeight = 24.0;
+  static const double familyRestaurantsCtaHeight = 36.0;
+  static const double familyRestaurantsAssuranceTopGap = 14.0;
+  static const double familyRestaurantsAssuranceHeight = 64.0;
+  static const double familyRestaurantsBottomSpace = 40.0;
   static const double familySelectedBorderWidth = 1.5;
   static const double familyManageDesignWidth = 390.0;
   static const double familyManageHorizontalPadding = 14.0;
