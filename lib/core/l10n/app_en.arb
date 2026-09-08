@@ -836,6 +836,66 @@
   "family_member_permission_replace_meal": "Replace meal",
   "family_member_permission_view_reports_and_payments": "View reports and payments",
   "family_member_permission_leave_family_plan": "Leave family plan",
+  "family_member_access_title": "Access management for {memberName}",
+  "@family_member_access_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_status_title": "Account Status",
+  "family_member_access_status_active": "Active",
+  "family_member_access_status_paused": "Paused",
+  "family_member_access_permissions_tile_title": "App Usage Permissions",
+  "family_member_access_permissions_tile_subtitle": "Control meal selection, replacement, and address editing",
+  "family_member_access_last_login": "Last login {timeAgo}",
+  "@family_member_access_last_login": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_credentials_section": "Login Credentials",
+  "family_member_access_email_label": "Email",
+  "family_member_access_password_label": "Password",
+  "family_member_access_edit": "Edit",
+  "family_member_access_independent_title": "Has Independent Account",
+  "family_member_access_independent_subtitle": "When enabled, {memberName} can log in and independently manage meals and settings",
+  "@family_member_access_independent_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_membership_section": "Membership Management",
+  "family_member_access_membership_subtitle": "Control {memberName}'s membership status in the family plan",
+  "@family_member_access_membership_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_active_desc": "Can access all features and use the plan",
+  "family_member_access_paused_desc": "Access is temporarily suspended while retaining data and settings",
+  "family_member_access_deactivate_button": "Deactivate Account",
+  "family_member_access_deactivate_confirm_title": "Deactivate Member Account",
+  "family_member_access_deactivate_confirm_desc": "Are you sure you want to deactivate {memberName}'s account? Access to the plan will be suspended.",
+  "@family_member_access_deactivate_confirm_desc": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_deactivate_cancel": "Cancel",
+  "family_member_access_deactivate_confirm_action": "Confirm Deactivation",
+  "family_member_access_save_button": "Save Changes",
+  "family_member_access_save_success": "Access changes saved successfully",
+  "family_member_permissions_save_success": "Permissions saved successfully",
   "family_members_title": "Members",
   "family_members_search_hint": "Search for a member",
   "family_members_add_member": "Add member",

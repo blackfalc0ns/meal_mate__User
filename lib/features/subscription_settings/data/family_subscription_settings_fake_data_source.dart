@@ -256,4 +256,15 @@ class FamilySubscriptionSettingsFakeDataSource {
       ],
     );
   }
+
+  FamilyMemberAccessEntity getMemberAccess() {
+    return const FamilyMemberAccessEntity(
+      memberName: 'أحمد',
+      memberImageAsset: AssetsFake.familyMemberAhmed,
+      status: FamilyMemberAccessStatus.active,
+      lastLogin: 'منذ ساعتين',
+      email: 'ahmed@example.com',
+      hasIndependentAccount: true,
+    );
+  }
 }

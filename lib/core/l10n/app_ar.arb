@@ -836,6 +836,66 @@
   "family_member_permission_replace_meal": "استبدال وجبة",
   "family_member_permission_view_reports_and_payments": "عرض التقارير والمدفوعات",
   "family_member_permission_leave_family_plan": "مغادرة الباقة العائلية",
+  "family_member_access_title": "إدارة الوصول لـ {memberName}",
+  "@family_member_access_title": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_status_title": "حالة الحساب",
+  "family_member_access_status_active": "نشط",
+  "family_member_access_status_paused": "متوقف مؤقتاً",
+  "family_member_access_permissions_tile_title": "صلاحيات استخدام التطبيق",
+  "family_member_access_permissions_tile_subtitle": "تحكم في اختيار واستبدال الوجبات وتعديل العنوان",
+  "family_member_access_last_login": "آخر تسجيل دخول {timeAgo}",
+  "@family_member_access_last_login": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_credentials_section": "بيانات الدخول",
+  "family_member_access_email_label": "البريد الإلكتروني",
+  "family_member_access_password_label": "كلمة المرور",
+  "family_member_access_edit": "تعديل",
+  "family_member_access_independent_title": "لديه حساب مستقل",
+  "family_member_access_independent_subtitle": "عند تفعيل هذا الخيار ، يمكن لـ {memberName} تسجيل الدخول والإدارة المستقلة لوجباته وإعداداته",
+  "@family_member_access_independent_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_membership_section": "إدارة العضوية",
+  "family_member_access_membership_subtitle": "تحكم في حالة عضوية {memberName} ضمن الباقة العائلية",
+  "@family_member_access_membership_subtitle": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_active_desc": "يستطيع الوصول إلى جميع الميزات واستخدام الباقة",
+  "family_member_access_paused_desc": "يتم تعليق الوصول مؤقتاً مع الاحتفاظ بالبيانات والإعدادات",
+  "family_member_access_deactivate_button": "إيقاف الحساب",
+  "family_member_access_deactivate_confirm_title": "إيقاف حساب العضو",
+  "family_member_access_deactivate_confirm_desc": "هل أنت متأكد من رغبتك في إيقاف حساب {memberName}؟ سيتم تعليق وصوله للباقة وإلغاء وجباته المجدولة.",
+  "@family_member_access_deactivate_confirm_desc": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_access_deactivate_cancel": "إلغاء",
+  "family_member_access_deactivate_confirm_action": "تأكيد الإيقاف",
+  "family_member_access_save_button": "حفظ التغييرات",
+  "family_member_access_save_success": "تم حفظ تغييرات الوصول بنجاح",
+  "family_member_permissions_save_success": "تم حفظ الصلاحيات بنجاح",
   "family_members_title": "الأفراد",
   "family_members_search_hint": "ابحث عن فرد",
   "family_members_add_member": "إضافة فرد",

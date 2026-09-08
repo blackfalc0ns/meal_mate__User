@@ -19,7 +19,6 @@ class FamilyMemberDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
     final member = _dataSource.getMemberDetail();
 
     return Scaffold(
@@ -27,7 +26,6 @@ class FamilyMemberDetailScreen extends StatelessWidget {
       appBar: CustomAppBar(
         titleWidget: Text(
           member.title,
-          locale: Locale(locale.localeName),
           textAlign: TextAlign.center,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,

@@ -220,3 +220,23 @@ enum FamilySubscriptionListMemberStatus { active, setup }
 enum FamilySubscriptionListMemberNoteStatus { success, warning, error }
 
 enum FamilySubscriptionListMemberGoal { balanced, weightLoss, muscleGain }
+
+enum FamilyMemberAccessStatus { active, paused }
+
+class FamilyMemberAccessEntity {
+  const FamilyMemberAccessEntity({
+    required this.memberName,
+    required this.memberImageAsset,
+    required this.status,
+    required this.lastLogin,
+    required this.email,
+    required this.hasIndependentAccount,
+  });
+
+  final String memberName;
+  final String memberImageAsset;
+  final FamilyMemberAccessStatus status;
+  final String lastLogin;
+  final String email;
+  final bool hasIndependentAccount;
+}

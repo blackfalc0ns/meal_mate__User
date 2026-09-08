@@ -56,7 +56,7 @@ extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
 extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
   PaymentCheckoutEntity toEntity() {
     return PaymentCheckoutEntity(
-      subscriptionId: subscriptionId ?? '',
+      subscriptionId: subscriptionId ?? paymentAnchorSubscriptionId ?? '',
       paymentUrl: paymentUrl ?? '',
       holdExpiresAtUtc: holdExpiresAtUtc ?? '',
       chosenStartDate: chosenStartDate ?? '',

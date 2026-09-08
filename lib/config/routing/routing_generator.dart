@@ -55,6 +55,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_access_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
@@ -199,6 +200,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyMemberPermissionsScreen(),
+        );
+      case AppRoutes.familyMemberAccess:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyMemberAccessScreen(),
         );
       case AppRoutes.familyProgramSetup:
       case AppRoutes.familyPackageDaysSetup:

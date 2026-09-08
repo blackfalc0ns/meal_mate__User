@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -64,7 +65,12 @@ class FamilyMemberDetailPackageCard extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          FamilyMemberDetailActionButton(label: member.editPackageLabel),
+          FamilyMemberDetailActionButton(
+            label: member.editPackageLabel,
+            onPressed: () => Navigator.of(
+              context,
+            ).pushNamed(AppRoutes.familyPackageDaysSetup),
+          ),
         ],
       ),
     );

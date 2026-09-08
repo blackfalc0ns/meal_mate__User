@@ -100,7 +100,24 @@ class _FamilyMemberPermissionsScreenState
               ),
               child: AppButton.filled(
                 text: locale.family_member_permissions_save,
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        locale.family_member_permissions_save_success,
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size12,
+                          color: color.onPrimary,
+                        ),
+                      ),
+                      backgroundColor: color.primary,
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                  Navigator.maybePop(context);
+                },
                 height: Spacing.familyPermissionsSaveButtonHeight,
                 borderRadius: Spacing.familyDayReviewButtonRadius,
                 gradient: LinearGradient(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -52,7 +53,9 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                   width: Spacing.familyMemberDetailCalendarButtonWidth,
                   height: Spacing.familyMemberDetailCalendarButtonHeight,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pushNamed(AppRoutes.familyMemberDailyMeals),
                     style: OutlinedButton.styleFrom(
                       backgroundColor: color.primaryContainer.withValues(
                         alpha: 0.22,

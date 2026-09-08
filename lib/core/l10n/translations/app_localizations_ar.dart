@@ -2362,6 +2362,96 @@ class AppLocalizationsAr extends AppLocalizations {
       'مغادرة الباقة العائلية';
 
   @override
+  String family_member_access_title(String memberName) {
+    return 'إدارة الوصول لـ $memberName';
+  }
+
+  @override
+  String get family_member_access_status_title => 'حالة الحساب';
+
+  @override
+  String get family_member_access_status_active => 'نشط';
+
+  @override
+  String get family_member_access_status_paused => 'متوقف مؤقتاً';
+
+  @override
+  String get family_member_access_permissions_tile_title =>
+      'صلاحيات استخدام التطبيق';
+
+  @override
+  String get family_member_access_permissions_tile_subtitle =>
+      'تحكم في اختيار واستبدال الوجبات وتعديل العنوان';
+
+  @override
+  String family_member_access_last_login(String timeAgo) {
+    return 'آخر تسجيل دخول $timeAgo';
+  }
+
+  @override
+  String get family_member_access_credentials_section => 'بيانات الدخول';
+
+  @override
+  String get family_member_access_email_label => 'البريد الإلكتروني';
+
+  @override
+  String get family_member_access_password_label => 'كلمة المرور';
+
+  @override
+  String get family_member_access_edit => 'تعديل';
+
+  @override
+  String get family_member_access_independent_title => 'لديه حساب مستقل';
+
+  @override
+  String family_member_access_independent_subtitle(String memberName) {
+    return 'عند تفعيل هذا الخيار ، يمكن لـ $memberName تسجيل الدخول والإدارة المستقلة لوجباته وإعداداته';
+  }
+
+  @override
+  String get family_member_access_membership_section => 'إدارة العضوية';
+
+  @override
+  String family_member_access_membership_subtitle(String memberName) {
+    return 'تحكم في حالة عضوية $memberName ضمن الباقة العائلية';
+  }
+
+  @override
+  String get family_member_access_active_desc =>
+      'يستطيع الوصول إلى جميع الميزات واستخدام الباقة';
+
+  @override
+  String get family_member_access_paused_desc =>
+      'يتم تعليق الوصول مؤقتاً مع الاحتفاظ بالبيانات والإعدادات';
+
+  @override
+  String get family_member_access_deactivate_button => 'إيقاف الحساب';
+
+  @override
+  String get family_member_access_deactivate_confirm_title =>
+      'إيقاف حساب العضو';
+
+  @override
+  String family_member_access_deactivate_confirm_desc(String memberName) {
+    return 'هل أنت متأكد من رغبتك في إيقاف حساب $memberName؟ سيتم تعليق وصوله للباقة وإلغاء وجباته المجدولة.';
+  }
+
+  @override
+  String get family_member_access_deactivate_cancel => 'إلغاء';
+
+  @override
+  String get family_member_access_deactivate_confirm_action => 'تأكيد الإيقاف';
+
+  @override
+  String get family_member_access_save_button => 'حفظ التغييرات';
+
+  @override
+  String get family_member_access_save_success => 'تم حفظ تغييرات الوصول بنجاح';
+
+  @override
+  String get family_member_permissions_save_success => 'تم حفظ الصلاحيات بنجاح';
+
+  @override
   String get family_members_title => 'الأفراد';
 
   @override

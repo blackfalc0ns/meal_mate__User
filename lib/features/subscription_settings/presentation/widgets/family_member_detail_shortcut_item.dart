@@ -24,7 +24,7 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
       ).pushNamed(AppRoutes.familyMemberDailyMeals),
       FamilyMemberDetailShortcutType.permissions => () => Navigator.of(
         context,
-      ).pushNamed(AppRoutes.familyMemberPermissions),
+      ).pushNamed(AppRoutes.familyMemberAccess),
     };
 
     return Expanded(

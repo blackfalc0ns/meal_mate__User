@@ -2403,6 +2403,100 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_member_permission_leave_family_plan => 'Leave family plan';
 
   @override
+  String family_member_access_title(String memberName) {
+    return 'Access management for $memberName';
+  }
+
+  @override
+  String get family_member_access_status_title => 'Account Status';
+
+  @override
+  String get family_member_access_status_active => 'Active';
+
+  @override
+  String get family_member_access_status_paused => 'Paused';
+
+  @override
+  String get family_member_access_permissions_tile_title =>
+      'App Usage Permissions';
+
+  @override
+  String get family_member_access_permissions_tile_subtitle =>
+      'Control meal selection, replacement, and address editing';
+
+  @override
+  String family_member_access_last_login(String timeAgo) {
+    return 'Last login $timeAgo';
+  }
+
+  @override
+  String get family_member_access_credentials_section => 'Login Credentials';
+
+  @override
+  String get family_member_access_email_label => 'Email';
+
+  @override
+  String get family_member_access_password_label => 'Password';
+
+  @override
+  String get family_member_access_edit => 'Edit';
+
+  @override
+  String get family_member_access_independent_title =>
+      'Has Independent Account';
+
+  @override
+  String family_member_access_independent_subtitle(String memberName) {
+    return 'When enabled, $memberName can log in and independently manage meals and settings';
+  }
+
+  @override
+  String get family_member_access_membership_section => 'Membership Management';
+
+  @override
+  String family_member_access_membership_subtitle(String memberName) {
+    return 'Control $memberName\'s membership status in the family plan';
+  }
+
+  @override
+  String get family_member_access_active_desc =>
+      'Can access all features and use the plan';
+
+  @override
+  String get family_member_access_paused_desc =>
+      'Access is temporarily suspended while retaining data and settings';
+
+  @override
+  String get family_member_access_deactivate_button => 'Deactivate Account';
+
+  @override
+  String get family_member_access_deactivate_confirm_title =>
+      'Deactivate Member Account';
+
+  @override
+  String family_member_access_deactivate_confirm_desc(String memberName) {
+    return 'Are you sure you want to deactivate $memberName\'s account? Access to the plan will be suspended.';
+  }
+
+  @override
+  String get family_member_access_deactivate_cancel => 'Cancel';
+
+  @override
+  String get family_member_access_deactivate_confirm_action =>
+      'Confirm Deactivation';
+
+  @override
+  String get family_member_access_save_button => 'Save Changes';
+
+  @override
+  String get family_member_access_save_success =>
+      'Access changes saved successfully';
+
+  @override
+  String get family_member_permissions_save_success =>
+      'Permissions saved successfully';
+
+  @override
   String get family_members_title => 'Members';
 
   @override

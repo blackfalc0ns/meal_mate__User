@@ -4520,6 +4520,156 @@ abstract class AppLocalizations {
   /// **'Leave family plan'**
   String get family_member_permission_leave_family_plan;
 
+  /// No description provided for @family_member_access_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Access management for {memberName}'**
+  String family_member_access_title(String memberName);
+
+  /// No description provided for @family_member_access_status_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Status'**
+  String get family_member_access_status_title;
+
+  /// No description provided for @family_member_access_status_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get family_member_access_status_active;
+
+  /// No description provided for @family_member_access_status_paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get family_member_access_status_paused;
+
+  /// No description provided for @family_member_access_permissions_tile_title.
+  ///
+  /// In en, this message translates to:
+  /// **'App Usage Permissions'**
+  String get family_member_access_permissions_tile_title;
+
+  /// No description provided for @family_member_access_permissions_tile_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control meal selection, replacement, and address editing'**
+  String get family_member_access_permissions_tile_subtitle;
+
+  /// No description provided for @family_member_access_last_login.
+  ///
+  /// In en, this message translates to:
+  /// **'Last login {timeAgo}'**
+  String family_member_access_last_login(String timeAgo);
+
+  /// No description provided for @family_member_access_credentials_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Login Credentials'**
+  String get family_member_access_credentials_section;
+
+  /// No description provided for @family_member_access_email_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get family_member_access_email_label;
+
+  /// No description provided for @family_member_access_password_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get family_member_access_password_label;
+
+  /// No description provided for @family_member_access_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get family_member_access_edit;
+
+  /// No description provided for @family_member_access_independent_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Has Independent Account'**
+  String get family_member_access_independent_title;
+
+  /// No description provided for @family_member_access_independent_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When enabled, {memberName} can log in and independently manage meals and settings'**
+  String family_member_access_independent_subtitle(String memberName);
+
+  /// No description provided for @family_member_access_membership_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership Management'**
+  String get family_member_access_membership_section;
+
+  /// No description provided for @family_member_access_membership_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control {memberName}\'s membership status in the family plan'**
+  String family_member_access_membership_subtitle(String memberName);
+
+  /// No description provided for @family_member_access_active_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Can access all features and use the plan'**
+  String get family_member_access_active_desc;
+
+  /// No description provided for @family_member_access_paused_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Access is temporarily suspended while retaining data and settings'**
+  String get family_member_access_paused_desc;
+
+  /// No description provided for @family_member_access_deactivate_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Account'**
+  String get family_member_access_deactivate_button;
+
+  /// No description provided for @family_member_access_deactivate_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Member Account'**
+  String get family_member_access_deactivate_confirm_title;
+
+  /// No description provided for @family_member_access_deactivate_confirm_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate {memberName}\'s account? Access to the plan will be suspended.'**
+  String family_member_access_deactivate_confirm_desc(String memberName);
+
+  /// No description provided for @family_member_access_deactivate_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get family_member_access_deactivate_cancel;
+
+  /// No description provided for @family_member_access_deactivate_confirm_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deactivation'**
+  String get family_member_access_deactivate_confirm_action;
+
+  /// No description provided for @family_member_access_save_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get family_member_access_save_button;
+
+  /// No description provided for @family_member_access_save_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Access changes saved successfully'**
+  String get family_member_access_save_success;
+
+  /// No description provided for @family_member_permissions_save_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions saved successfully'**
+  String get family_member_permissions_save_success;
+
   /// No description provided for @family_members_title.
   ///
   /// In en, this message translates to:

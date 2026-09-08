@@ -5,9 +5,14 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class FamilyMemberDetailActionButton extends StatelessWidget {
-  const FamilyMemberDetailActionButton({super.key, required this.label});
+  const FamilyMemberDetailActionButton({
+    super.key,
+    required this.label,
+    this.onPressed,
+  });
 
   final String label;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class FamilyMemberDetailActionButton extends StatelessWidget {
 
     return AppButton.outlined(
       text: label,
-      onPressed: () {},
+      onPressed: onPressed ?? () {},
       height: Spacing.familyMemberDetailButtonHeight,
       borderRadius: Spacing.familyMemberDetailButtonRadius,
       color: color.primary,

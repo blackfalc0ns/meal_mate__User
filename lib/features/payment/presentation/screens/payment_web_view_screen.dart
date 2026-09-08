@@ -64,8 +64,8 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRoutes.home,
               (route) => false,
-              arguments: 1,
             );
+            Navigator.of(context).pushNamed(AppRoutes.profileBilling);
             return;
           }
 
