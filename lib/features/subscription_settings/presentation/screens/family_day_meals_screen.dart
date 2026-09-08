@@ -94,7 +94,9 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                 const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
                 FamilyDayReviewButton(
                   label: details.reviewButtonLabel,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.familyReviewMemberMeals);
+                  },
                 ),
                 const SizedBox(height: Spacing.familyDaySelectedTopGap),
                 FamilyDaySelectedStatus(label: details.selectedMealsLabel),

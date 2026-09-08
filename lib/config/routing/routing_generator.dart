@@ -57,6 +57,8 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_access_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_meal_selection_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_review_member_meals_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
@@ -195,6 +197,16 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const FamilyRestaurantsScreen(),
+        );
+      case AppRoutes.familyMealSelection:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyMealSelectionScreen(),
+        );
+      case AppRoutes.familyReviewMemberMeals:
+        return _buildRoute(
+          settings: settings,
+          page: const FamilyReviewMemberMealsScreen(),
         );
       case AppRoutes.familyMemberPermissions:
         return _buildRoute(

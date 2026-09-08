@@ -27,6 +27,8 @@ abstract class AppRoutes {
   static const String familyMemberDailyMeals = '/family-member-daily-meals';
   static const String familyMemberDayDetails = '/family-member-day-details';
   static const String familyRestaurants = '/family-restaurants';
+  static const String familyMealSelection = '/family-meal-selection';
+  static const String familyReviewMemberMeals = '/family-review-member-meals';
   static const String familyMemberPermissions = '/family-member-permissions';
   static const String familyMemberAccess = '/family-member-access';
   static const String familyProgramSetup = '/family-program-setup';

@@ -9385,6 +9385,390 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address details'**
   String get family_addresses_line;
+
+  /// No description provided for @family_meal_selection_title.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s Meals'**
+  String family_meal_selection_title(String name);
+
+  /// No description provided for @family_meal_selection_context.
+  ///
+  /// In en, this message translates to:
+  /// **'{restaurant} • {slot}'**
+  String family_meal_selection_context(String restaurant, String slot);
+
+  /// No description provided for @family_meal_stepper_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Restaurant'**
+  String get family_meal_stepper_restaurant;
+
+  /// No description provided for @family_meal_stepper_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Meal'**
+  String get family_meal_stepper_meal;
+
+  /// No description provided for @family_meal_stepper_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get family_meal_stepper_review;
+
+  /// No description provided for @family_meal_macros_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Macros Summary'**
+  String get family_meal_macros_title;
+
+  /// No description provided for @family_meal_macros_selected_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'From selected meals'**
+  String get family_meal_macros_selected_badge;
+
+  /// No description provided for @family_meal_macros_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates automatically based on chosen meals'**
+  String get family_meal_macros_subtitle;
+
+  /// No description provided for @family_meal_macros_calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories'**
+  String get family_meal_macros_calories;
+
+  /// No description provided for @family_meal_macros_carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get family_meal_macros_carbs;
+
+  /// No description provided for @family_meal_macros_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get family_meal_macros_protein;
+
+  /// No description provided for @family_meal_macros_fat.
+  ///
+  /// In en, this message translates to:
+  /// **'Fats'**
+  String get family_meal_macros_fat;
+
+  /// No description provided for @family_meal_gram_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}g'**
+  String family_meal_gram_unit(String count);
+
+  /// No description provided for @family_meal_calorie_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} kcal'**
+  String family_meal_calorie_unit(String count);
+
+  /// No description provided for @family_meal_tab_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get family_meal_tab_all;
+
+  /// No description provided for @family_meal_tab_breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get family_meal_tab_breakfast;
+
+  /// No description provided for @family_meal_tab_lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get family_meal_tab_lunch;
+
+  /// No description provided for @family_meal_tab_dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get family_meal_tab_dinner;
+
+  /// No description provided for @family_meal_status_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get family_meal_status_selected;
+
+  /// No description provided for @family_meal_button_select.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Meal'**
+  String get family_meal_button_select;
+
+  /// No description provided for @family_meal_selected_counter.
+  ///
+  /// In en, this message translates to:
+  /// **'{selected} of {total} meals selected'**
+  String family_meal_selected_counter(int selected, int total);
+
+  /// No description provided for @family_meal_continue_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Review'**
+  String get family_meal_continue_review;
+
+  /// No description provided for @family_review_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Review {name}\'s Meals'**
+  String family_review_title(String name);
+
+  /// No description provided for @family_review_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review today\'s choices before confirmation'**
+  String get family_review_subtitle;
+
+  /// No description provided for @family_review_status_ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to confirm'**
+  String get family_review_status_ready;
+
+  /// No description provided for @family_review_selected_day_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Day'**
+  String get family_review_selected_day_label;
+
+  /// No description provided for @family_review_goal_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get family_review_goal_label;
+
+  /// No description provided for @family_review_goal_balanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get family_review_goal_balanced;
+
+  /// No description provided for @family_review_selected_meals_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Meals'**
+  String get family_review_selected_meals_section;
+
+  /// No description provided for @family_slot_breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get family_slot_breakfast;
+
+  /// No description provided for @family_slot_lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get family_slot_lunch;
+
+  /// No description provided for @family_slot_dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get family_slot_dinner;
+
+  /// No description provided for @family_slot_snack.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack'**
+  String get family_slot_snack;
+
+  /// No description provided for @family_review_edit_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get family_review_edit_button;
+
+  /// No description provided for @family_review_nutrition_summary_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutritional Summary'**
+  String get family_review_nutrition_summary_section;
+
+  /// No description provided for @family_review_calories_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {target} kcal'**
+  String family_review_calories_progress(String current, String target);
+
+  /// No description provided for @family_review_grams_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {target}g'**
+  String family_review_grams_progress(String current, String target);
+
+  /// No description provided for @family_review_member_instructions_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Member Instructions'**
+  String get family_review_member_instructions_section;
+
+  /// No description provided for @family_review_preferences_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Your preferences will be respected if any meal needs replacement'**
+  String get family_review_preferences_note;
+
+  /// No description provided for @family_review_cutoff_title.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit today\'s meals until cutoff time'**
+  String get family_review_cutoff_title;
+
+  /// No description provided for @family_review_cutoff_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Once cutoff is reached, meals will be prepared and cannot be edited or canceled.'**
+  String get family_review_cutoff_desc;
+
+  /// No description provided for @family_review_cutoff_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time remaining: {time}'**
+  String family_review_cutoff_time(String time);
+
+  /// No description provided for @family_review_cutoff_disclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'If remaining meals are not chosen, they will be assigned automatically based on preferences'**
+  String get family_review_cutoff_disclaimer;
+
+  /// No description provided for @family_review_edit_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Meals'**
+  String get family_review_edit_meals_button;
+
+  /// No description provided for @family_review_confirm_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm {name}\'s Meals'**
+  String family_review_confirm_meals_button(String name);
+
+  /// No description provided for @family_review_success_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals confirmed successfully'**
+  String get family_review_success_message;
+
+  /// No description provided for @family_meal_item_1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Herb-Grilled Chicken'**
+  String get family_meal_item_1_title;
+
+  /// No description provided for @family_meal_item_1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Herb-marinated grilled chicken with brown rice and mixed vegetables'**
+  String get family_meal_item_1_desc;
+
+  /// No description provided for @family_meal_item_2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Lemon-Grilled Salmon'**
+  String get family_meal_item_2_title;
+
+  /// No description provided for @family_meal_item_2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled salmon with quinoa, roasted vegetables, and lemon sauce'**
+  String get family_meal_item_2_desc;
+
+  /// No description provided for @family_meal_item_3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Meat Kofta in Tomato Sauce'**
+  String get family_meal_item_3_title;
+
+  /// No description provided for @family_meal_item_3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Beef kofta in tomato sauce with mashed potatoes and broccoli'**
+  String get family_meal_item_3_desc;
+
+  /// No description provided for @family_meal_item_4_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced Vegan Bowl'**
+  String get family_meal_item_4_title;
+
+  /// No description provided for @family_meal_item_4_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant-based bowl with chickpeas, quinoa, greens, and tahini sauce'**
+  String get family_meal_item_4_desc;
+
+  /// No description provided for @family_meal_tag_gluten_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten-Free'**
+  String get family_meal_tag_gluten_free;
+
+  /// No description provided for @family_meal_tag_contains_nuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contains Nuts'**
+  String get family_meal_tag_contains_nuts;
+
+  /// No description provided for @family_meal_tag_omega3.
+  ///
+  /// In en, this message translates to:
+  /// **'Omega-3 Source'**
+  String get family_meal_tag_omega3;
+
+  /// No description provided for @family_review_meal_1_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Oatmeal with Honey & Banana'**
+  String get family_review_meal_1_name;
+
+  /// No description provided for @family_review_meal_2_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Grilled Chicken with Brown Rice & Veggies'**
+  String get family_review_meal_2_name;
+
+  /// No description provided for @family_review_meal_3_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Lemon Salmon with Quinoa & Green Salad'**
+  String get family_review_meal_3_name;
+
+  /// No description provided for @family_review_meal_4_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Greek Yogurt with Berries & Honey'**
+  String get family_review_meal_4_name;
+
+  /// No description provided for @family_review_tag_no_nuts.
+  ///
+  /// In en, this message translates to:
+  /// **'No Nuts'**
+  String get family_review_tag_no_nuts;
+
+  /// No description provided for @family_review_tag_brown_rice.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefers Brown Rice'**
+  String get family_review_tag_brown_rice;
+
+  /// No description provided for @family_review_tag_not_spicy.
+  ///
+  /// In en, this message translates to:
+  /// **'No Spicy Food'**
+  String get family_review_tag_not_spicy;
 }
 
 class _AppLocalizationsDelegate

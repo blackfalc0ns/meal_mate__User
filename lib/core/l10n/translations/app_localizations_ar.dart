@@ -4919,4 +4919,225 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_addresses_line => 'تفاصيل العنوان';
+
+  @override
+  String family_meal_selection_title(String name) {
+    return 'وجبات $name';
+  }
+
+  @override
+  String family_meal_selection_context(String restaurant, String slot) {
+    return '$restaurant • $slot';
+  }
+
+  @override
+  String get family_meal_stepper_restaurant => 'اختيار المطعم';
+
+  @override
+  String get family_meal_stepper_meal => 'اختيار الوجبة';
+
+  @override
+  String get family_meal_stepper_review => 'المراجعة';
+
+  @override
+  String get family_meal_macros_title => 'ملخص الماكروز';
+
+  @override
+  String get family_meal_macros_selected_badge => 'من وجبات مختارة';
+
+  @override
+  String get family_meal_macros_subtitle =>
+      'يتحدث تلقائياً حسب الوجبات المختارة';
+
+  @override
+  String get family_meal_macros_calories => 'السعرات';
+
+  @override
+  String get family_meal_macros_carbs => 'الكربوهيدرات';
+
+  @override
+  String get family_meal_macros_protein => 'البروتين';
+
+  @override
+  String get family_meal_macros_fat => 'الدهون';
+
+  @override
+  String family_meal_gram_unit(String count) {
+    return '$count جم';
+  }
+
+  @override
+  String family_meal_calorie_unit(String count) {
+    return '$count سعرة';
+  }
+
+  @override
+  String get family_meal_tab_all => 'الكل';
+
+  @override
+  String get family_meal_tab_breakfast => 'إفطار';
+
+  @override
+  String get family_meal_tab_lunch => 'غداء';
+
+  @override
+  String get family_meal_tab_dinner => 'عشاء';
+
+  @override
+  String get family_meal_status_selected => 'تم الاختيار';
+
+  @override
+  String get family_meal_button_select => 'اختيار الوجبة';
+
+  @override
+  String family_meal_selected_counter(int selected, int total) {
+    return 'تم اختيار $selected من $total وجبات';
+  }
+
+  @override
+  String get family_meal_continue_review => 'متابعة المراجعة';
+
+  @override
+  String family_review_title(String name) {
+    return 'مراجعة وجبات $name';
+  }
+
+  @override
+  String get family_review_subtitle => 'راجع اختيارات اليوم قبل التأكيد';
+
+  @override
+  String get family_review_status_ready => 'جاهز للتأكيد';
+
+  @override
+  String get family_review_selected_day_label => 'اليوم المحدد';
+
+  @override
+  String get family_review_goal_label => 'الهدف';
+
+  @override
+  String get family_review_goal_balanced => 'متوازن';
+
+  @override
+  String get family_review_selected_meals_section => 'الوجبات المختارة';
+
+  @override
+  String get family_slot_breakfast => 'الإفطار';
+
+  @override
+  String get family_slot_lunch => 'الغداء';
+
+  @override
+  String get family_slot_dinner => 'العشاء';
+
+  @override
+  String get family_slot_snack => 'سناك';
+
+  @override
+  String get family_review_edit_button => 'تعديل';
+
+  @override
+  String get family_review_nutrition_summary_section => 'ملخص القيم الغذائية';
+
+  @override
+  String family_review_calories_progress(String current, String target) {
+    return '$current من $target سعرة';
+  }
+
+  @override
+  String family_review_grams_progress(String current, String target) {
+    return '$current من $target جم';
+  }
+
+  @override
+  String get family_review_member_instructions_section => 'تعليمات الفرد';
+
+  @override
+  String get family_review_preferences_note =>
+      'سيتم مراعاة تفضيلاتك في حال احتياج استبدال أي وجبة';
+
+  @override
+  String get family_review_cutoff_title =>
+      'يمكنك تعديل وجبات اليوم حتى وقت القفل';
+
+  @override
+  String get family_review_cutoff_desc =>
+      'بمجرد وصول وقت القفل، سيتم تجهيز وجباتك رسمياً ولا يمكن إلغاء أو تعديل بعد ذلك.';
+
+  @override
+  String family_review_cutoff_time(String time) {
+    return 'الوقت المتبقي: $time';
+  }
+
+  @override
+  String get family_review_cutoff_disclaimer =>
+      'في حال لم تكتمل الوجبات المتبقية، سيتم تعيينها تلقائياً بناءً على التفضيلات';
+
+  @override
+  String get family_review_edit_meals_button => 'تعديل الوجبات';
+
+  @override
+  String family_review_confirm_meals_button(String name) {
+    return 'تأكيد وجبات $name';
+  }
+
+  @override
+  String get family_review_success_message => 'تم تأكيد الوجبات بنجاح';
+
+  @override
+  String get family_meal_item_1_title => 'دجاج مشوي بالأعشاب';
+
+  @override
+  String get family_meal_item_1_desc =>
+      'دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة';
+
+  @override
+  String get family_meal_item_2_title => 'سلمون مشوي بالليمون';
+
+  @override
+  String get family_meal_item_2_desc =>
+      'سلمون مشوي مع كينوا وخضار مشوية وصوص الليمون';
+
+  @override
+  String get family_meal_item_3_title => 'كفتة لحم بصلصة الطماطم';
+
+  @override
+  String get family_meal_item_3_desc =>
+      'كفتة لحم بقري بصوص الطماطم مع بطاطس مهروسة وبروكلي';
+
+  @override
+  String get family_meal_item_4_title => 'طبق نباتي متوازن';
+
+  @override
+  String get family_meal_item_4_desc =>
+      'كفتة نباتية مع حمص، كينوا، خضار مثلجة، وصوص طحينة';
+
+  @override
+  String get family_meal_tag_gluten_free => 'خالي من الجلوتين';
+
+  @override
+  String get family_meal_tag_contains_nuts => 'يحتوي على مكسرات';
+
+  @override
+  String get family_meal_tag_omega3 => 'مصدر أوميغا 3';
+
+  @override
+  String get family_review_meal_1_name => 'إفطار شوفان بالعسل والموز';
+
+  @override
+  String get family_review_meal_2_name => 'دجاج مشوي مع أرز بني وخضار مشوية';
+
+  @override
+  String get family_review_meal_3_name => 'سلمون بالليمون مع كينوا وسلطة خضراء';
+
+  @override
+  String get family_review_meal_4_name => 'زبادي يوناني مع توت وعسل';
+
+  @override
+  String get family_review_tag_no_nuts => 'بدون مكسرات';
+
+  @override
+  String get family_review_tag_brown_rice => 'يفضل الأرز البني';
+
+  @override
+  String get family_review_tag_not_spicy => 'لا طعام حار';
 }

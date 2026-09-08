@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -18,7 +20,14 @@ class FamilyRestaurantCard extends StatelessWidget {
     final locale = context.localization;
     locale.localeName;
 
-    return Container(
+    return InkWell(
+      onTap: () {
+        context.pushNamed(AppRoutes.familyMealSelection);
+      },
+      borderRadius: BorderRadius.circular(
+        Spacing.familyRestaurantsCardRadius,
+      ),
+      child: Container(
       height: Spacing.familyRestaurantsCardHeight,
       padding: const EdgeInsets.all(Spacing.familyRestaurantsCardPadding),
       decoration: BoxDecoration(
@@ -164,6 +173,7 @@ class FamilyRestaurantCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -5006,4 +5006,228 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_addresses_line => 'Address details';
+
+  @override
+  String family_meal_selection_title(String name) {
+    return '$name\'s Meals';
+  }
+
+  @override
+  String family_meal_selection_context(String restaurant, String slot) {
+    return '$restaurant • $slot';
+  }
+
+  @override
+  String get family_meal_stepper_restaurant => 'Select Restaurant';
+
+  @override
+  String get family_meal_stepper_meal => 'Select Meal';
+
+  @override
+  String get family_meal_stepper_review => 'Review';
+
+  @override
+  String get family_meal_macros_title => 'Macros Summary';
+
+  @override
+  String get family_meal_macros_selected_badge => 'From selected meals';
+
+  @override
+  String get family_meal_macros_subtitle =>
+      'Updates automatically based on chosen meals';
+
+  @override
+  String get family_meal_macros_calories => 'Calories';
+
+  @override
+  String get family_meal_macros_carbs => 'Carbs';
+
+  @override
+  String get family_meal_macros_protein => 'Protein';
+
+  @override
+  String get family_meal_macros_fat => 'Fats';
+
+  @override
+  String family_meal_gram_unit(String count) {
+    return '${count}g';
+  }
+
+  @override
+  String family_meal_calorie_unit(String count) {
+    return '$count kcal';
+  }
+
+  @override
+  String get family_meal_tab_all => 'All';
+
+  @override
+  String get family_meal_tab_breakfast => 'Breakfast';
+
+  @override
+  String get family_meal_tab_lunch => 'Lunch';
+
+  @override
+  String get family_meal_tab_dinner => 'Dinner';
+
+  @override
+  String get family_meal_status_selected => 'Selected';
+
+  @override
+  String get family_meal_button_select => 'Select Meal';
+
+  @override
+  String family_meal_selected_counter(int selected, int total) {
+    return '$selected of $total meals selected';
+  }
+
+  @override
+  String get family_meal_continue_review => 'Continue to Review';
+
+  @override
+  String family_review_title(String name) {
+    return 'Review $name\'s Meals';
+  }
+
+  @override
+  String get family_review_subtitle =>
+      'Review today\'s choices before confirmation';
+
+  @override
+  String get family_review_status_ready => 'Ready to confirm';
+
+  @override
+  String get family_review_selected_day_label => 'Selected Day';
+
+  @override
+  String get family_review_goal_label => 'Goal';
+
+  @override
+  String get family_review_goal_balanced => 'Balanced';
+
+  @override
+  String get family_review_selected_meals_section => 'Selected Meals';
+
+  @override
+  String get family_slot_breakfast => 'Breakfast';
+
+  @override
+  String get family_slot_lunch => 'Lunch';
+
+  @override
+  String get family_slot_dinner => 'Dinner';
+
+  @override
+  String get family_slot_snack => 'Snack';
+
+  @override
+  String get family_review_edit_button => 'Edit';
+
+  @override
+  String get family_review_nutrition_summary_section => 'Nutritional Summary';
+
+  @override
+  String family_review_calories_progress(String current, String target) {
+    return '$current of $target kcal';
+  }
+
+  @override
+  String family_review_grams_progress(String current, String target) {
+    return '$current of ${target}g';
+  }
+
+  @override
+  String get family_review_member_instructions_section => 'Member Instructions';
+
+  @override
+  String get family_review_preferences_note =>
+      'Your preferences will be respected if any meal needs replacement';
+
+  @override
+  String get family_review_cutoff_title =>
+      'You can edit today\'s meals until cutoff time';
+
+  @override
+  String get family_review_cutoff_desc =>
+      'Once cutoff is reached, meals will be prepared and cannot be edited or canceled.';
+
+  @override
+  String family_review_cutoff_time(String time) {
+    return 'Time remaining: $time';
+  }
+
+  @override
+  String get family_review_cutoff_disclaimer =>
+      'If remaining meals are not chosen, they will be assigned automatically based on preferences';
+
+  @override
+  String get family_review_edit_meals_button => 'Edit Meals';
+
+  @override
+  String family_review_confirm_meals_button(String name) {
+    return 'Confirm $name\'s Meals';
+  }
+
+  @override
+  String get family_review_success_message => 'Meals confirmed successfully';
+
+  @override
+  String get family_meal_item_1_title => 'Herb-Grilled Chicken';
+
+  @override
+  String get family_meal_item_1_desc =>
+      'Herb-marinated grilled chicken with brown rice and mixed vegetables';
+
+  @override
+  String get family_meal_item_2_title => 'Lemon-Grilled Salmon';
+
+  @override
+  String get family_meal_item_2_desc =>
+      'Grilled salmon with quinoa, roasted vegetables, and lemon sauce';
+
+  @override
+  String get family_meal_item_3_title => 'Meat Kofta in Tomato Sauce';
+
+  @override
+  String get family_meal_item_3_desc =>
+      'Beef kofta in tomato sauce with mashed potatoes and broccoli';
+
+  @override
+  String get family_meal_item_4_title => 'Balanced Vegan Bowl';
+
+  @override
+  String get family_meal_item_4_desc =>
+      'Plant-based bowl with chickpeas, quinoa, greens, and tahini sauce';
+
+  @override
+  String get family_meal_tag_gluten_free => 'Gluten-Free';
+
+  @override
+  String get family_meal_tag_contains_nuts => 'Contains Nuts';
+
+  @override
+  String get family_meal_tag_omega3 => 'Omega-3 Source';
+
+  @override
+  String get family_review_meal_1_name => 'Oatmeal with Honey & Banana';
+
+  @override
+  String get family_review_meal_2_name =>
+      'Grilled Chicken with Brown Rice & Veggies';
+
+  @override
+  String get family_review_meal_3_name =>
+      'Lemon Salmon with Quinoa & Green Salad';
+
+  @override
+  String get family_review_meal_4_name => 'Greek Yogurt with Berries & Honey';
+
+  @override
+  String get family_review_tag_no_nuts => 'No Nuts';
+
+  @override
+  String get family_review_tag_brown_rice => 'Prefers Brown Rice';
+
+  @override
+  String get family_review_tag_not_spicy => 'No Spicy Food';
 }
