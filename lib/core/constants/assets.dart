@@ -229,7 +229,8 @@ class Assets {
       '$_images/subscriptions/figma/family_manage_alert.svg';
   static const String fireAnimation = 'assets/animations/fire_animation.json';
   static const String wheatAnimation = 'assets/animations/wheat_animation.json';
-  static const String muscleAnimation = 'assets/animations/muscle_animation.json';
+  static const String muscleAnimation =
+      'assets/animations/muscle_animation.json';
   static const String dropletAnimation =
       'assets/animations/droplet_animation.json';
 

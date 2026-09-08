@@ -40,6 +40,14 @@ class FamilyDayMealEntity {
     required this.actionLabel,
     required this.imageAsset,
     required this.iconType,
+    this.calories = '480',
+    this.carbs = '48',
+    this.protein = '42',
+    this.fat = '12',
+    this.caloriesLabel,
+    this.carbsLabel,
+    this.proteinLabel,
+    this.fatLabel,
   });
 
   final String mealType;
@@ -48,4 +56,13 @@ class FamilyDayMealEntity {
   final String actionLabel;
   final String imageAsset;
   final FamilyDayMealIconType iconType;
+  final String calories;
+  final String carbs;
+  final String protein;
+  final String fat;
+  final String? caloriesLabel;
+  final String? carbsLabel;
+  final String? proteinLabel;
+  final String? fatLabel;
 }
+
