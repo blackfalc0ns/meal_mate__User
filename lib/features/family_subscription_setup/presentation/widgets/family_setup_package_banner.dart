@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -64,8 +63,10 @@ class FamilySetupPackageBanner extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () =>
-                context.pushNamed(AppRoutes.familyPackageSelection),
+            onPressed: () => Navigator.of(
+              context,
+              rootNavigator: true,
+            ).pushNamed(AppRoutes.familyPackageSelection),
             child: Text(
               locale.family_change_package,
               style: getBoldStyle(

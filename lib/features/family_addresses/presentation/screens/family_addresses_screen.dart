@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyAddressesScreen extends StatelessWidget {
   const FamilyAddressesScreen({super.key});
@@ -22,6 +23,7 @@ class FamilyAddressesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider(
       create: (_) => getIt<FamilyAddressesViewModel>()..load(),
@@ -29,7 +31,7 @@ class FamilyAddressesScreen extends StatelessWidget {
         listenWhen: (previous, current) =>
             !previous.completed && current.completed,
         listener: (context, state) =>
-            context.pushReplacementNamed(AppRoutes.familyAllergies),
+            context.pushNamed(AppRoutes.familyAllergies),
         builder: (context, state) {
           final member = state.currentMember;
           if (state.isLoading || member == null) {
@@ -40,13 +42,65 @@ class FamilyAddressesScreen extends StatelessWidget {
             return FamilyProgramMemberUiModel(
               name: entry.value.displayName,
               imageAsset: '',
-              status: entry.key < state.currentIndex
+              status: state.completedMemberIds.contains(entry.value.memberId)
                   ? locale.family_member_completed
                   : locale.family_member_in_progress,
               isSelected: entry.key == state.currentIndex,
-              isInProgress: entry.key >= state.currentIndex,
+              isInProgress: !state.completedMemberIds.contains(
+                entry.value.memberId,
+              ),
             );
           }).toList();
+
+          final content = Column(
+            children: [
+              ColoredBox(
+                color: color.surface,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: Spacing.familySetupHorizontalPadding,
+                    end: Spacing.familySetupHorizontalPadding,
+                    top: Spacing.sm,
+                    bottom: Spacing.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FamilySetupHeaderBadge(title: state.familyName),
+                      if (!isInFamilyFlow) ...[
+                        const SizedBox(height: Spacing.md),
+                        const FamilyProgramStepper(
+                          currentStep: 2,
+                          includeFamilyCreationStep: true,
+                        ),
+                        const SizedBox(height: Spacing.lg),
+                      ],
+                      FamilyProgramMemberStrip(
+                        members: members,
+                        onSelectMember: context
+                            .read<FamilyAddressesViewModel>()
+                            .selectMember,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: FamilyAddressLocationStage(
+                  memberId: member.memberId,
+                  onSaved: context
+                      .read<FamilyAddressesViewModel>()
+                      .addressSaved,
+                ),
+              ),
+            ],
+          );
+          if (isInFamilyFlow) {
+            return ColoredBox(
+              color: color.surfaceContainerHighest,
+              child: content,
+            );
+          }
 
           return Scaffold(
             backgroundColor: color.surfaceContainerHighest,
@@ -54,43 +108,7 @@ class FamilyAddressesScreen extends StatelessWidget {
               title: locale.family_setup_title,
               showBackButton: true,
             ),
-            body: Column(
-              children: [
-                ColoredBox(
-                  color: color.surface,
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: Spacing.familySetupHorizontalPadding,
-                      end: Spacing.familySetupHorizontalPadding,
-                      top: Spacing.sm,
-                      bottom: Spacing.md,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const FamilySetupHeaderBadge(),
-                        const SizedBox(height: Spacing.md),
-                        const FamilyProgramStepper(
-                          currentStep: 2,
-                          includeFamilyCreationStep: true,
-                        ),
-                        const SizedBox(height: Spacing.lg),
-                        FamilyProgramMemberStrip(members: members),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: FamilyAddressLocationStage(
-                    key: ValueKey(member.memberId),
-                    memberId: member.memberId,
-                    onSaved: context
-                        .read<FamilyAddressesViewModel>()
-                        .addressSaved,
-                  ),
-                ),
-              ],
-            ),
+            body: content,
           );
         },
       ),

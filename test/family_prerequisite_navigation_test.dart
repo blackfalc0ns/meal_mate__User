@@ -9,12 +9,7 @@ void main() {
     ).readAsStringSync();
 
     expect(source, contains('FamilyProgramMemberStrip('));
-    expect(
-      source,
-      contains(
-        'Expanded(\n                  child: FamilyAddressLocationStage(',
-      ),
-    );
+    expect(source, contains('child: FamilyAddressLocationStage('));
     expect(source, contains('FamilyAddressLocationStage('));
     expect(source, isNot(contains('fit: StackFit.expand')));
     expect(source, isNot(contains('CustomBackButton(')));
@@ -48,7 +43,7 @@ void main() {
 
     expect(source, contains('FamilyAddressLocationStage'));
     expect(source, contains('FamilyProgramStepper'));
-    expect(source, isNot(contains('context.pushNamed(')));
+    expect(source, isNot(contains('AppRoutes.addressChooseLocation')));
   });
 
   test('family addresses continue to allergies after the last member', () {
@@ -58,6 +53,11 @@ void main() {
     ).readAsStringSync();
 
     expect(source, contains('AppRoutes.familyAllergies'));
+    expect(source, contains('context.pushNamed(AppRoutes.familyAllergies)'));
+    expect(
+      source,
+      isNot(contains('pushReplacementNamed(AppRoutes.familyAllergies)')),
+    );
     expect(source, isNot(contains('AppRoutes.familyPaymentSetup')));
   });
 
@@ -70,6 +70,16 @@ void main() {
       ).readAsStringSync();
 
       expect(source, contains('AppRoutes.familyPackageDaysSetup'));
+      expect(
+        source,
+        contains('context.pushNamed(AppRoutes.familyPackageDaysSetup)'),
+      );
+      expect(
+        source,
+        isNot(
+          contains('pushReplacementNamed(AppRoutes.familyPackageDaysSetup)'),
+        ),
+      );
       expect(source, isNot(contains('AppRoutes.familyPaymentSetup')));
       expect(source, isNot(contains('family_skip')));
     },

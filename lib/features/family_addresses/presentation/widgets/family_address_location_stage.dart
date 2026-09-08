@@ -28,22 +28,53 @@ class FamilyAddressLocationStage extends StatefulWidget {
 
 class _FamilyAddressLocationStageState
     extends State<FamilyAddressLocationStage> {
+  late final AddressesViewModel _viewModel;
   Object? _shownPreview;
   bool _completed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = getIt<AddressesViewModel>()
+      ..configureFamilyMember(
+        widget.memberId,
+        previewAddress: getIt<PreviewFamilyMemberAddressUseCase>(),
+        addAddress: getIt<AddFamilyMemberAddressUseCase>(),
+      )
+      ..doIntent(const GetLocationsCatalogEvent());
+  }
+
+  @override
+  void didUpdateWidget(covariant FamilyAddressLocationStage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.memberId == widget.memberId) return;
+
+    _shownPreview = null;
+    _completed = false;
+    _viewModel.invalidateFamilyMemberOperations();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || oldWidget.memberId == widget.memberId) return;
+      _viewModel.configureFamilyMember(
+        widget.memberId,
+        previewAddress: getIt<PreviewFamilyMemberAddressUseCase>(),
+        addAddress: getIt<AddFamilyMemberAddressUseCase>(),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _viewModel.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return BlocProvider<AddressesViewModel>(
-      create: (_) => getIt<AddressesViewModel>()
-        ..configureFamilyMember(
-          widget.memberId,
-          previewAddress: getIt<PreviewFamilyMemberAddressUseCase>(),
-          addAddress: getIt<AddFamilyMemberAddressUseCase>(),
-        )
-        ..doIntent(const GetLocationsCatalogEvent()),
+    return BlocProvider<AddressesViewModel>.value(
+      value: _viewModel,
       child: BlocConsumer<AddressesViewModel, AddressesState>(
         listenWhen: (previous, current) =>
             previous.action != current.action ||
@@ -107,6 +138,7 @@ class _FamilyAddressLocationStageState
           );
         },
         builder: (context, state) => AddressesFigmaFrame(
+          key: ValueKey(widget.memberId),
           locations: state.locations,
           isSubmitting:
               state.action.isLoading || state.coveragePreview.isLoading,

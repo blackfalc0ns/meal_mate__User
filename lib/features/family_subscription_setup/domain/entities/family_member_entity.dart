@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
+
 class FamilyMemberEntity {
   final String memberId;
   final String? memberSubscriptionId;
@@ -17,6 +20,14 @@ class FamilyMemberEntity {
   final int? durationDays;
   final bool includeFriday;
   final bool isCurrentUser;
+  final CustomerAddressEntity? deliveryAddress;
+  final List<FoodPreferenceItemEntity> allergies;
+  final bool allergiesCompleted;
+  final List<FoodPreferenceItemEntity> dislikedFoods;
+  final List<FoodPreferenceItemEntity> dietaryPreferences;
+  final bool dietaryCompleted;
+  final bool hasNoAllergies;
+  final bool hasNoDietaryRestriction;
 
   const FamilyMemberEntity({
     required this.memberId,
@@ -37,6 +48,14 @@ class FamilyMemberEntity {
     this.durationDays,
     required this.includeFriday,
     required this.isCurrentUser,
+    this.deliveryAddress,
+    this.allergies = const [],
+    this.allergiesCompleted = false,
+    this.dislikedFoods = const [],
+    this.dietaryPreferences = const [],
+    this.dietaryCompleted = false,
+    this.hasNoAllergies = false,
+    this.hasNoDietaryRestriction = false,
   });
 
   bool get isManager => role == 1 || isCurrentUser;
@@ -70,6 +89,14 @@ class FamilyMemberEntity {
     int? durationDays,
     bool? includeFriday,
     bool? isCurrentUser,
+    CustomerAddressEntity? deliveryAddress,
+    List<FoodPreferenceItemEntity>? allergies,
+    bool? allergiesCompleted,
+    List<FoodPreferenceItemEntity>? dislikedFoods,
+    List<FoodPreferenceItemEntity>? dietaryPreferences,
+    bool? dietaryCompleted,
+    bool? hasNoAllergies,
+    bool? hasNoDietaryRestriction,
     bool clearProgramId = false,
     bool clearBundleId = false,
     bool clearSelectedTier = false,
@@ -98,6 +125,15 @@ class FamilyMemberEntity {
           : (durationDays ?? this.durationDays),
       includeFriday: includeFriday ?? this.includeFriday,
       isCurrentUser: isCurrentUser ?? this.isCurrentUser,
+      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      allergies: allergies ?? this.allergies,
+      allergiesCompleted: allergiesCompleted ?? this.allergiesCompleted,
+      dislikedFoods: dislikedFoods ?? this.dislikedFoods,
+      dietaryPreferences: dietaryPreferences ?? this.dietaryPreferences,
+      dietaryCompleted: dietaryCompleted ?? this.dietaryCompleted,
+      hasNoAllergies: hasNoAllergies ?? this.hasNoAllergies,
+      hasNoDietaryRestriction:
+          hasNoDietaryRestriction ?? this.hasNoDietaryRestriction,
     );
   }
 }

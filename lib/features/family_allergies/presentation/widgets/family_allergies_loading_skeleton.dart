@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyAllergiesLoadingSkeleton extends StatelessWidget {
   const FamilyAllergiesLoadingSkeleton({super.key});
@@ -10,6 +11,7 @@ class FamilyAllergiesLoadingSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return Semantics(
       label: locale.family_allergies_title,
@@ -21,10 +23,10 @@ class FamilyAllergiesLoadingSkeleton extends StatelessWidget {
             horizontal: Spacing.familySetupHorizontalPadding,
             vertical: Spacing.md,
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
+              const Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: ShimmerPlaceholder.rect(
                   width: Spacing.familyAllergiesSkipWidth,
@@ -32,40 +34,42 @@ class FamilyAllergiesLoadingSkeleton extends StatelessWidget {
                   borderRadius: Spacing.xss,
                 ),
               ),
-              SizedBox(height: Spacing.md),
-              ShimmerPlaceholder.rect(
-                height: Spacing.familyProgramStepCircleSize,
-                borderRadius: Spacing.radiusPill,
-              ),
-              SizedBox(height: Spacing.lg),
-              ShimmerPlaceholder.rect(
+              if (!isInFamilyFlow) ...[
+                const SizedBox(height: Spacing.md),
+                const ShimmerPlaceholder.rect(
+                  height: Spacing.familyProgramStepCircleSize,
+                  borderRadius: Spacing.radiusPill,
+                ),
+                const SizedBox(height: Spacing.lg),
+              ],
+              const ShimmerPlaceholder.rect(
                 height: Spacing.familyProgramMemberCardHeight,
                 borderRadius: Spacing.familySetupMemberCardRadius,
               ),
-              SizedBox(height: Spacing.lg),
-              ShimmerPlaceholder.rect(
+              const SizedBox(height: Spacing.lg),
+              const ShimmerPlaceholder.rect(
                 width: Spacing.familyAllergiesSkipWidth,
                 height: Spacing.lg,
                 borderRadius: Spacing.radiusSm,
               ),
-              SizedBox(height: Spacing.sm),
-              ShimmerPlaceholder.rect(
+              const SizedBox(height: Spacing.sm),
+              const ShimmerPlaceholder.rect(
                 width: Spacing.familyProgramNextButtonWidth,
                 height: Spacing.md,
                 borderRadius: Spacing.radiusSm,
               ),
-              SizedBox(height: Spacing.md),
-              ShimmerPlaceholder.rect(
+              const SizedBox(height: Spacing.md),
+              const ShimmerPlaceholder.rect(
                 height: Spacing.addAllergyPopularHeight,
                 borderRadius: Spacing.familyAllergiesCardRadius,
               ),
-              SizedBox(height: Spacing.familyAllergiesSectionGap),
-              ShimmerPlaceholder.rect(
+              const SizedBox(height: Spacing.familyAllergiesSectionGap),
+              const ShimmerPlaceholder.rect(
                 height: Spacing.familyAllergiesNoneHeight,
                 borderRadius: Spacing.familyAllergiesNoneRadius,
               ),
-              SizedBox(height: Spacing.familyAllergiesSectionGap),
-              ShimmerPlaceholder.rect(
+              const SizedBox(height: Spacing.familyAllergiesSectionGap),
+              const ShimmerPlaceholder.rect(
                 height: Spacing.addAllergySummaryHeight,
                 borderRadius: Spacing.familyAllergiesCardRadius,
               ),

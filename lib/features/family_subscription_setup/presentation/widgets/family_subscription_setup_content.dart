@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_setup_members_section.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_setup_name_section.dart';
@@ -26,6 +27,7 @@ class FamilySubscriptionSetupContent extends StatelessWidget {
     final locale = context.localization;
     color.surface;
     locale.localeName;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -33,13 +35,15 @@ class FamilySubscriptionSetupContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: Spacing.md),
-          const FamilyProgramStepper(
-            currentStep: 0,
-            completedSteps: 1,
-            includeFamilyCreationStep: true,
-          ),
-          const SizedBox(height: Spacing.lg),
+          if (!isInFamilyFlow) ...[
+            const SizedBox(height: Spacing.md),
+            const FamilyProgramStepper(
+              currentStep: 0,
+              completedSteps: 1,
+              includeFamilyCreationStep: true,
+            ),
+            const SizedBox(height: Spacing.lg),
+          ],
           FamilySetupPackageBanner(state: state),
           const SizedBox(height: Spacing.md),
           FamilySetupNameSection(

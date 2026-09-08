@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -14,6 +13,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/manager/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_content.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyPaymentSetupScreen extends StatelessWidget {
   const FamilyPaymentSetupScreen({super.key});
@@ -22,66 +22,73 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider<FamilyCheckoutViewModel>(
       create: (_) => getIt<FamilyCheckoutViewModel>()
         ..doIntent(const GetFamilySubscriptionCurrentEvent())
         ..doIntent(const GetFamilySummaryEvent()),
-      child: Scaffold(
-        appBar: CustomAppBar(
-          showBackButton: true,
-          titleWidget: Column(
-            children: [
-              Text(
-                locale.family_setup_title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onSurface,
+      child: isInFamilyFlow
+          ? BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
+              listener: _onStateChanged,
+              builder: _buildContent,
+            )
+          : Scaffold(
+              appBar: CustomAppBar(
+                showBackButton: true,
+                titleWidget: Column(
+                  children: [
+                    Text(
+                      locale.family_setup_title,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size13,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    Text(
+                      locale.family_setup_subtitle,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                locale.family_setup_subtitle,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: color.onSurfaceVariant,
+              body: SafeArea(
+                child: BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
+                  listener: _onStateChanged,
+                  builder: _buildContent,
                 ),
               ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child: BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
-            listener: (context, state) {
-              if (state.checkoutResult != null) {
-                context.pushNamed(
-                  AppRoutes.paymentWebView,
-                  arguments: PaymentWebViewArgs(
-                    checkout: state.checkoutResult!,
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state.isSummaryLoading && state.summary == null) {
-                return const FamilyPaymentSetupLoadingSkeleton();
-              }
-
-              if (state.failure != null && state.summary == null) {
-                return ApiErrorWidget(
-                  exception: state.failure!.exception,
-                  onRetry: () => context
-                      .read<FamilyCheckoutViewModel>()
-                      .doIntent(const GetFamilySummaryEvent()),
-                );
-              }
-
-              return FamilyPaymentContent(state: state);
-            },
-          ),
-        ),
-      ),
+            ),
     );
+  }
+
+  void _onStateChanged(BuildContext context, FamilyPlanState state) {
+    if (state.checkoutResult == null) return;
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRoutes.paymentWebView,
+      arguments: PaymentWebViewArgs(checkout: state.checkoutResult!),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+    if (state.isSummaryLoading && state.summary == null) {
+      return const FamilyPaymentSetupLoadingSkeleton();
+    }
+
+    if (state.failure != null && state.summary == null) {
+      return ApiErrorWidget(
+        exception: state.failure!.exception,
+        onRetry: () => context.read<FamilyCheckoutViewModel>().doIntent(
+          const GetFamilySummaryEvent(),
+        ),
+      );
+    }
+
+    return FamilyPaymentContent(state: state);
   }
 }

@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_allergies/presentation/manager/fa
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_content.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyAllergiesScreen extends StatelessWidget {
   const FamilyAllergiesScreen({super.key});
@@ -17,6 +18,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider(
       create: (_) => getIt<FamilyAllergiesViewModel>()..load(),
@@ -24,10 +26,13 @@ class FamilyAllergiesScreen extends StatelessWidget {
         listenWhen: (previous, current) =>
             !previous.completed && current.completed,
         listener: (context, state) =>
-            context.pushReplacementNamed(AppRoutes.familyPackageDaysSetup),
+            context.pushNamed(AppRoutes.familyPackageDaysSetup),
         builder: (context, state) {
           if (state.isLoading && state.members.isEmpty) {
             return const FamilyAllergiesLoadingSkeleton();
+          }
+          if (isInFamilyFlow) {
+            return FamilyAllergiesContent(state: state);
           }
           return Scaffold(
             backgroundColor: color.surface,

@@ -25,8 +25,11 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         emit(
           state.copyWith(
             isLoading: false,
-            members: missingAddressMembers,
-            completed: missingAddressMembers.isEmpty,
+            familyName: result.data.name,
+            members: missingAddressMembers.isEmpty
+                ? result.data.members
+                : missingAddressMembers,
+            completed: result.data.members.isEmpty,
           ),
         );
       case ApiErrorResult():
@@ -39,13 +42,32 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     }
   }
 
+  void selectMember(int index) {
+    if (index < 0 ||
+        index >= state.members.length ||
+        index == state.currentIndex) {
+      return;
+    }
+    emit(state.copyWith(currentIndex: index, clearError: true));
+  }
+
   void addressSaved() {
     if (state.members.isEmpty) return;
-    final isLast = state.currentIndex == state.members.length - 1;
+    final completedMemberIds = {
+      ...state.completedMemberIds,
+      state.currentMember!.memberId,
+    };
+    final isComplete = completedMemberIds.length == state.members.length;
+    final nextIndex = isComplete
+        ? state.currentIndex
+        : state.members.indexWhere(
+            (member) => !completedMemberIds.contains(member.memberId),
+          );
     emit(
       state.copyWith(
-        currentIndex: isLast ? state.currentIndex : state.currentIndex + 1,
-        completed: isLast,
+        currentIndex: nextIndex,
+        completedMemberIds: completedMemberIds,
+        completed: isComplete,
         clearError: true,
       ),
     );

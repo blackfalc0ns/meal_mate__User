@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_subscription_setup_content.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_subscription_setup_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilySubscriptionSetupScreen extends StatefulWidget {
   const FamilySubscriptionSetupScreen({super.key, this.selectedPackage});
@@ -56,6 +57,7 @@ class _FamilySubscriptionSetupScreenState
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider<FamilySubscriptionSetupViewModel>(
       create: (_) {
@@ -69,61 +71,64 @@ class _FamilySubscriptionSetupScreenState
         vm.doIntent(const GetFamilyAddressesEvent());
         return vm;
       },
-      child: Scaffold(
-        appBar: CustomAppBar(
-          showBackButton: true,
-          titleWidget: Column(
-            children: [
-              Text(
-                locale.family_setup_title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onSurface,
+      child: isInFamilyFlow
+          ? BlocConsumer<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+              listener: _onStateChanged,
+              builder: _buildContent,
+            )
+          : Scaffold(
+              appBar: CustomAppBar(
+                showBackButton: true,
+                titleWidget: Column(
+                  children: [
+                    Text(
+                      locale.family_setup_title,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size13,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    Text(
+                      locale.family_setup_subtitle,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size8,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                locale.family_setup_subtitle,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
-                  color: color.onSurfaceVariant,
-                ),
+              body: SafeArea(
+                child:
+                    BlocConsumer<
+                      FamilySubscriptionSetupViewModel,
+                      FamilyPlanState
+                    >(listener: _onStateChanged, builder: _buildContent),
               ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child:
-              BlocConsumer<FamilySubscriptionSetupViewModel, FamilyPlanState>(
-                listener: _onStateChanged,
-                builder: (context, state) {
-                  if (state.isCurrentFlowLoading && state.currentFlow == null) {
-                    return const FamilySubscriptionSetupLoadingSkeleton();
-                  }
+            ),
+    );
+  }
 
-                  if (state.failure != null && state.currentFlow == null) {
-                    return ApiErrorWidget(
-                      exception: state.failure!.exception,
-                      onRetry: () {
-                        context
-                            .read<FamilySubscriptionSetupViewModel>()
-                            .doIntent(
-                              const GetFamilySubscriptionCurrentEvent(),
-                            );
-                      },
-                    );
-                  }
+  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+    if (state.isCurrentFlowLoading && state.currentFlow == null) {
+      return const FamilySubscriptionSetupLoadingSkeleton();
+    }
 
-                  return FamilySubscriptionSetupContent(
-                    state: state,
-                    familyNameController: _familyNameController,
-                    onSaveFamilyName: () => _onSaveFamilyName(context),
-                  );
-                },
-              ),
-        ),
-      ),
+    if (state.failure != null && state.currentFlow == null) {
+      return ApiErrorWidget(
+        exception: state.failure!.exception,
+        onRetry: () => context
+            .read<FamilySubscriptionSetupViewModel>()
+            .doIntent(const GetFamilySubscriptionCurrentEvent()),
+      );
+    }
+
+    return FamilySubscriptionSetupContent(
+      state: state,
+      familyNameController: _familyNameController,
+      onSaveFamilyName: () => _onSaveFamilyName(context),
     );
   }
 

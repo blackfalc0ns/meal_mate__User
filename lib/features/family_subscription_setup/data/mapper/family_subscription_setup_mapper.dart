@@ -4,6 +4,8 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
+import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_mapper.dart';
+import 'package:meal_meat_user/features/food_preferences/data/mapper/food_preferences_mapper.dart';
 
 extension FamilyRelationshipResponseDtoMapper on FamilyRelationshipResponseDto {
   FamilyRelationshipEntity toEntity() {
@@ -38,6 +40,17 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
       durationDays: durationDays,
       includeFriday: includeFriday ?? false,
       isCurrentUser: isCurrentUser ?? false,
+      deliveryAddress: deliveryAddress?.toEntity(),
+      allergies: allergies?.map((item) => item.toEntity()).toList() ?? const [],
+      allergiesCompleted: allergiesCompleted ?? false,
+      dislikedFoods:
+          dislikedFoods?.map((item) => item.toEntity()).toList() ?? const [],
+      dietaryPreferences:
+          dietaryPreferences?.map((item) => item.toEntity()).toList() ??
+          const [],
+      dietaryCompleted: dietaryCompleted ?? false,
+      hasNoAllergies: hasNoAllergies ?? false,
+      hasNoDietaryRestriction: hasNoDietaryRestriction ?? false,
     );
   }
 }
@@ -49,8 +62,8 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
       name: name,
       status: status,
       selectedFamilyPackageId: selectedFamilyPackageId,
-      packageNameAr: packageNameAr,
-      packageNameEn: packageNameEn,
+      packageNameAr: packageNameAr ?? packageName,
+      packageNameEn: packageNameEn ?? packageName,
       minMembers: minMembers,
       maxMembers: maxMembers,
       discountPercent: discountPercent,

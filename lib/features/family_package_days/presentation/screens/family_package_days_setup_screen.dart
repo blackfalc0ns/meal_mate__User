@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_view_model.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_content.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_setup_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({super.key, this.programId});
@@ -29,6 +30,7 @@ class _FamilyPackageDaysSetupScreenState
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider<FamilyPackageDaysViewModel>(
       create: (_) {
@@ -41,50 +43,54 @@ class _FamilyPackageDaysSetupScreenState
         }
         return vm;
       },
-      child: Scaffold(
-        appBar: CustomAppBar(
-          showBackButton: true,
-          titleWidget: Column(
-            children: [
-              Text(
-                locale.family_setup_title,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onSurface,
+      child: isInFamilyFlow
+          ? BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
+              builder: _buildContent,
+            )
+          : Scaffold(
+              appBar: CustomAppBar(
+                showBackButton: true,
+                titleWidget: Column(
+                  children: [
+                    Text(
+                      locale.family_setup_title,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size13,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    Text(
+                      locale.family_setup_subtitle,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                locale.family_setup_subtitle,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: color.onSurfaceVariant,
+              body: SafeArea(
+                child: BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
+                  builder: _buildContent,
                 ),
               ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          child: BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
-            builder: (context, state) {
-              if ((state.isLoading || state.isCurrentFlowLoading) &&
-                  state.bundles.isEmpty &&
-                  state.members.isEmpty) {
-                return const FamilyPackageDaysSetupLoadingSkeleton();
-              }
+            ),
+    );
+  }
 
-              return FamilyPackageDaysContent(
-                state: state,
-                programId: widget.programId,
-                onNextPressed: () {
-                  _savePlanAndProceed(context, state);
-                },
-              );
-            },
-          ),
-        ),
-      ),
+  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+    if ((state.isLoading || state.isCurrentFlowLoading) &&
+        state.bundles.isEmpty &&
+        state.members.isEmpty) {
+      return const FamilyPackageDaysSetupLoadingSkeleton();
+    }
+
+    return FamilyPackageDaysContent(
+      state: state,
+      programId: widget.programId,
+      onNextPressed: () => _savePlanAndProceed(context, state),
     );
   }
 

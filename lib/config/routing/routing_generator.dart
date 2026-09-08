@@ -34,14 +34,8 @@ import 'package:meal_meat_user/features/profile/presentation/screens/health_goal
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
-import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/screens/family_package_selection_screen.dart';
-import 'package:meal_meat_user/features/family_package_days/presentation/screens/family_package_days_setup_screen.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/screens/family_payment_setup_screen.dart';
-import 'package:meal_meat_user/features/family_allergies/presentation/screens/family_allergies_screen.dart';
-import 'package:meal_meat_user/features/family_addresses/presentation/screens/family_addresses_screen.dart';
-import 'package:meal_meat_user/features/family_subscription_setup/presentation/screens/family_subscription_setup_screen.dart';
-import 'package:meal_meat_user/features/family_programs/presentation/screens/family_program_setup_screen.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/screens/family_subscription_flow_screen.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/screens/subscription_plan_details_screen.dart';
@@ -169,12 +163,12 @@ class RouteGenerator {
           page: const FamilyPackageSelectionScreen(),
         );
       case AppRoutes.familySubscriptionSetup:
-        final selectedPackage = settings.arguments is FamilySizePackageEntity
-            ? settings.arguments! as FamilySizePackageEntity
-            : null;
         return _buildRoute(
           settings: settings,
-          page: FamilySubscriptionSetupScreen(selectedPackage: selectedPackage),
+          page: FamilySubscriptionFlowScreen(
+            initialRoute: settings.name!,
+            initialArguments: settings.arguments,
+          ),
         );
       case AppRoutes.familySubscriptionMembers:
         return _buildRoute(
@@ -207,32 +201,16 @@ class RouteGenerator {
           page: const FamilyMemberPermissionsScreen(),
         );
       case AppRoutes.familyProgramSetup:
-        return _buildRoute(
-          settings: settings,
-          page: const FamilyProgramSetupScreen(),
-        );
       case AppRoutes.familyPackageDaysSetup:
-        final programId = settings.arguments is String
-            ? settings.arguments as String
-            : null;
-        return _buildRoute(
-          settings: settings,
-          page: FamilyPackageDaysSetupScreen(programId: programId),
-        );
       case AppRoutes.familyPaymentSetup:
-        return _buildRoute(
-          settings: settings,
-          page: const FamilyPaymentSetupScreen(),
-        );
       case AppRoutes.familyAllergies:
-        return _buildRoute(
-          settings: settings,
-          page: const FamilyAllergiesScreen(),
-        );
       case AppRoutes.familyAddresses:
         return _buildRoute(
           settings: settings,
-          page: const FamilyAddressesScreen(),
+          page: FamilySubscriptionFlowScreen(
+            initialRoute: settings.name!,
+            initialArguments: settings.arguments,
+          ),
         );
       case AppRoutes.calendar:
         final subscriptionId = settings.arguments is String

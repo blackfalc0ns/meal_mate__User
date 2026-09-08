@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 
 part 'family_member_response_dto.g.dart';
 
@@ -23,6 +25,14 @@ class FamilyMemberResponseDto {
     this.durationDays,
     this.includeFriday,
     this.isCurrentUser,
+    this.deliveryAddress,
+    this.allergies,
+    this.allergiesCompleted,
+    this.dislikedFoods,
+    this.dietaryPreferences,
+    this.dietaryCompleted,
+    this.hasNoAllergies,
+    this.hasNoDietaryRestriction,
   });
 
   final String? memberId;
@@ -48,6 +58,14 @@ class FamilyMemberResponseDto {
   final int? durationDays;
   final bool? includeFriday;
   final bool? isCurrentUser;
+  final CustomerAddressResponseDto? deliveryAddress;
+  final List<FoodPreferenceItemResponseDto>? allergies;
+  final bool? allergiesCompleted;
+  final List<FoodPreferenceItemResponseDto>? dislikedFoods;
+  final List<FoodPreferenceItemResponseDto>? dietaryPreferences;
+  final bool? dietaryCompleted;
+  final bool? hasNoAllergies;
+  final bool? hasNoDietaryRestriction;
 
   factory FamilyMemberResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberResponseDtoFromJson(json);

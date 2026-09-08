@@ -12,6 +12,7 @@ class FamilyFlowCurrentResponseDto {
     this.selectedFamilyPackageId,
     this.packageNameAr,
     this.packageNameEn,
+    this.packageName,
     this.minMembers,
     this.maxMembers,
     this.discountPercent,
@@ -27,6 +28,7 @@ class FamilyFlowCurrentResponseDto {
   final String? selectedFamilyPackageId;
   final String? packageNameAr;
   final String? packageNameEn;
+  final String? packageName;
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? minMembers;
   @JsonKey(fromJson: _nullableIntFromJson)

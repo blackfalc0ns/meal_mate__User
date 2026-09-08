@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/widgets
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_plan_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyPackageDaysContent extends StatelessWidget {
   const FamilyPackageDaysContent({
@@ -27,6 +28,7 @@ class FamilyPackageDaysContent extends StatelessWidget {
     final locale = context.localization;
     color.surface;
     locale.localeName;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -38,11 +40,13 @@ class FamilyPackageDaysContent extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
               FamilySetupHeaderBadge(title: state.currentFlow?.name),
-              const SizedBox(height: Spacing.familyProgramProgressTopGap),
-              const FamilyProgramStepper(
-                currentStep: 4,
-                includeFamilyCreationStep: true,
-              ),
+              if (!isInFamilyFlow) ...[
+                const SizedBox(height: Spacing.familyProgramProgressTopGap),
+                const FamilyProgramStepper(
+                  currentStep: 4,
+                  includeFamilyCreationStep: true,
+                ),
+              ],
               const SizedBox(height: Spacing.familyProgramMemberTopGap),
               FamilyPackageDaysMemberSection(state: state),
               FamilyPackageDaysPackageSection(state: state),

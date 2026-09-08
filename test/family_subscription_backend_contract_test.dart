@@ -41,6 +41,60 @@ void main() {
       expect(entity.members.single.startDate, '2026-09-20');
     });
 
+    test('maps the expanded current family response', () {
+      final entity = FamilyFlowCurrentResponseDto.fromJson({
+        'familyGroupId': 'family-1',
+        'name': 'My family',
+        'status': 'Draft',
+        'packageName': 'Family package',
+        'members': [
+          {
+            'memberId': 'member-1',
+            'role': 'Manager',
+            'displayName': 'Ahmed',
+            'relationshipCode': 'self',
+            'gender': 'Male',
+            'ageYears': 30,
+            'setupStatus': 'NotStarted',
+            'includeFriday': false,
+            'isCurrentUser': true,
+            'deliveryAddress': {
+              'id': 'address-1',
+              'label': 'Home',
+              'addressLine': 'Salmiya, block 4',
+              'regionId': 'region-1',
+              'latitude': 29.34,
+              'longitude': 48.07,
+              'isDefault': true,
+              'notifyOnDelivery': true,
+            },
+            'allergies': [],
+            'allergiesCompleted': true,
+            'dislikedFoods': [],
+            'dietaryPreferences': [],
+            'dietaryCompleted': false,
+            'hasNoAllergies': true,
+            'hasNoDietaryRestriction': false,
+          },
+        ],
+      }).toEntity();
+
+      final member = entity.members.single;
+      expect(entity.packageName('en'), 'Family package');
+      expect(member.role, 1);
+      expect(member.gender, 1);
+      expect(member.setupStatus, 1);
+      expect(member.deliveryAddress?.addressId, 'address-1');
+      expect(member.deliveryAddress?.addressLine, 'Salmiya, block 4');
+      expect(member.allergies, isEmpty);
+      expect(member.dislikedFoods, isEmpty);
+      expect(member.dietaryPreferences, isEmpty);
+      expect(member.allergiesCompleted, isTrue);
+      expect(member.dietaryCompleted, isFalse);
+      expect(member.hasNoAllergies, isTrue);
+      expect(member.hasNoDietaryRestriction, isFalse);
+    });
+
     test('serializes lookup and member write requests exactly', () {
       expect(
         const FamilyMemberLookupRequestDto(phone: '+96551111111').toJson(),

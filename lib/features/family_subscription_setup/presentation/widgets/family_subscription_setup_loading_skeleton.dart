@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilySubscriptionSetupLoadingSkeleton extends StatelessWidget {
   const FamilySubscriptionSetupLoadingSkeleton({super.key});
@@ -10,6 +11,7 @@ class FamilySubscriptionSetupLoadingSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return Semantics(
       label: locale.family_setup_title,
@@ -19,48 +21,48 @@ class FamilySubscriptionSetupLoadingSkeleton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: Spacing.md),
-
-            // Stepper skeleton
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.md,
-                vertical: Spacing.sm,
-              ),
-              decoration: BoxDecoration(
-                color: color.surfaceContainerLow,
-                borderRadius: BorderRadius.circular(Spacing.radiusLg),
-                border: Border.all(color: color.outlineVariant),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ShimmerPlaceholder.circle(size: Spacing.avatarSm),
-                  Expanded(
-                    child: ShimmerPlaceholder.rect(
-                      height: 2,
-                      margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+            if (!isInFamilyFlow) ...[
+              const SizedBox(height: Spacing.md),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.md,
+                  vertical: Spacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: color.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                  border: Border.all(color: color.outlineVariant),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ShimmerPlaceholder.circle(size: Spacing.avatarSm),
+                    Expanded(
+                      child: ShimmerPlaceholder.rect(
+                        height: 2,
+                        margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+                      ),
                     ),
-                  ),
-                  ShimmerPlaceholder.circle(size: Spacing.avatarSm),
-                  Expanded(
-                    child: ShimmerPlaceholder.rect(
-                      height: 2,
-                      margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+                    ShimmerPlaceholder.circle(size: Spacing.avatarSm),
+                    Expanded(
+                      child: ShimmerPlaceholder.rect(
+                        height: 2,
+                        margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+                      ),
                     ),
-                  ),
-                  ShimmerPlaceholder.circle(size: Spacing.avatarSm),
-                  Expanded(
-                    child: ShimmerPlaceholder.rect(
-                      height: 2,
-                      margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+                    ShimmerPlaceholder.circle(size: Spacing.avatarSm),
+                    Expanded(
+                      child: ShimmerPlaceholder.rect(
+                        height: 2,
+                        margin: EdgeInsets.symmetric(horizontal: Spacing.xs),
+                      ),
                     ),
-                  ),
-                  ShimmerPlaceholder.circle(size: Spacing.avatarSm),
-                ],
+                    ShimmerPlaceholder.circle(size: Spacing.avatarSm),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: Spacing.lg),
+              const SizedBox(height: Spacing.lg),
+            ],
 
             // Package Banner skeleton
             Container(

@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/widgets/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_price_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyPaymentContent extends StatelessWidget {
   const FamilyPaymentContent({super.key, required this.state});
@@ -21,6 +22,7 @@ class FamilyPaymentContent extends StatelessWidget {
     final locale = context.localization;
     color.surface;
     locale.localeName;
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -32,11 +34,13 @@ class FamilyPaymentContent extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
               FamilySetupHeaderBadge(title: state.currentFlow?.name),
-              const SizedBox(height: Spacing.familyProgramProgressTopGap),
-              const FamilyProgramStepper(
-                currentStep: 5,
-                includeFamilyCreationStep: true,
-              ),
+              if (!isInFamilyFlow) ...[
+                const SizedBox(height: Spacing.familyProgramProgressTopGap),
+                const FamilyProgramStepper(
+                  currentStep: 5,
+                  includeFamilyCreationStep: true,
+                ),
+              ],
               const SizedBox(height: Spacing.familyProgramMemberTopGap),
               FamilyPaymentMembersSection(state: state),
               const SizedBox(height: Spacing.md),

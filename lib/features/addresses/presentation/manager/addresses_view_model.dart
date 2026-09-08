@@ -49,15 +49,38 @@ class AddressesViewModel extends Cubit<AddressesState> {
   PreviewFamilyMemberAddressUseCase? _previewFamilyMemberAddressUseCase;
   AddFamilyMemberAddressUseCase? _addFamilyMemberAddressUseCase;
   String? _familyMemberId;
+  int _familyMemberGeneration = 0;
 
   void configureFamilyMember(
     String memberId, {
     required PreviewFamilyMemberAddressUseCase previewAddress,
     required AddFamilyMemberAddressUseCase addAddress,
   }) {
+    final memberChanged =
+        _familyMemberId != null && _familyMemberId != memberId;
+    if (memberChanged) {
+      _familyMemberGeneration++;
+      emit(
+        state.copyWith(
+          locations: state.locations.copyWith(
+            clearSelectedGovernorate: true,
+            clearSelectedArea: true,
+            clearSelectedBlock: true,
+            clearFailure: true,
+          ),
+          action: const AddressesActionState(),
+          mapAutofill: const MapAutofillState(),
+          coveragePreview: const AddressCoveragePreviewState(),
+        ),
+      );
+    }
     _familyMemberId = memberId;
     _previewFamilyMemberAddressUseCase = previewAddress;
     _addFamilyMemberAddressUseCase = addAddress;
+  }
+
+  void invalidateFamilyMemberOperations() {
+    _familyMemberGeneration++;
   }
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
@@ -146,6 +169,11 @@ class AddressesViewModel extends Cubit<AddressesState> {
     String countryCode,
     CustomerAddressEntity? initialAddress,
   ) async {
+    final loadedCountryCode = state.locations.data?.countryCode;
+    if (initialAddress == null &&
+        (state.locations.isLoading || loadedCountryCode == countryCode)) {
+      return;
+    }
     emit(
       state.copyWith(
         locations: state.locations.copyWith(
@@ -212,6 +240,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _selectArea(LocationAreaEntity area) async {
+    final memberGeneration = _familyMemberGeneration;
     emit(
       state.copyWith(
         locations: state.locations.copyWith(
@@ -229,6 +258,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       countryCode,
       areaId: area.id,
     );
+    if (isClosed || memberGeneration != _familyMemberGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -370,6 +400,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _reverseGeocode(double latitude, double longitude) async {
+    final memberGeneration = _familyMemberGeneration;
     if (isClosed) return;
 
     emit(
@@ -383,13 +414,16 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await _reverseGeocodeLocationUseCase(latitude, longitude);
-    if (isClosed) return;
+    if (isClosed || memberGeneration != _familyMemberGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
-        await _applyAutofillToCatalog(autofill);
-        if (!isClosed) {
+        await _applyAutofillToCatalog(
+          autofill,
+          memberGeneration: memberGeneration,
+        );
+        if (!isClosed && memberGeneration == _familyMemberGeneration) {
           emit(
             state.copyWith(
               mapAutofill: state.mapAutofill.copyWith(
@@ -414,6 +448,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _geocodeAddress(String address, String countryCode) async {
+    final memberGeneration = _familyMemberGeneration;
     if (isClosed) return;
 
     emit(
@@ -430,13 +465,16 @@ class AddressesViewModel extends Cubit<AddressesState> {
       address,
       countryCode: countryCode,
     );
-    if (isClosed) return;
+    if (isClosed || memberGeneration != _familyMemberGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
-        await _applyAutofillToCatalog(autofill);
-        if (!isClosed) {
+        await _applyAutofillToCatalog(
+          autofill,
+          memberGeneration: memberGeneration,
+        );
+        if (!isClosed && memberGeneration == _familyMemberGeneration) {
           emit(
             state.copyWith(
               mapAutofill: state.mapAutofill.copyWith(
@@ -461,8 +499,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _applyAutofillToCatalog(
-    MapAddressAutofillEntity autofill,
-  ) async {
+    MapAddressAutofillEntity autofill, {
+    required int memberGeneration,
+  }) async {
+    if (memberGeneration != _familyMemberGeneration) return;
     final catalog = state.locations.data;
     if (catalog == null) return;
 
@@ -510,7 +550,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
         ? _findInitialBlock(selectedArea, tempAddress, autofill: autofill)
         : null;
 
-    if (!isClosed) {
+    if (!isClosed && memberGeneration == _familyMemberGeneration) {
       emit(
         state.copyWith(
           locations: state.locations.copyWith(
@@ -593,6 +633,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   Future<void> _runAddressAction(
     Future<ApiResult<CustomerAddressEntity>> Function() action,
   ) async {
+    final memberGeneration = _familyMemberGeneration;
     emit(
       state.copyWith(
         action: state.action.copyWith(
@@ -605,6 +646,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await action();
+    if (isClosed || memberGeneration != _familyMemberGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -670,6 +712,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   Future<void> _previewNewAddressCoverage(
     CustomerAddressRequestEntity request,
   ) async {
+    final memberGeneration = _familyMemberGeneration;
     if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
       emit(
         state.copyWith(
@@ -704,7 +747,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     final result = familyMemberId == null
         ? await _previewNewAddressCoverageUseCase(request)
         : await _previewFamilyMemberAddressUseCase!(familyMemberId, request);
-    if (isClosed) return;
+    if (isClosed || memberGeneration != _familyMemberGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():

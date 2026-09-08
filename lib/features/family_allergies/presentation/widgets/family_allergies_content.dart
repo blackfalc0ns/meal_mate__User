@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 
 class FamilyAllergiesContent extends StatelessWidget {
@@ -26,6 +27,7 @@ class FamilyAllergiesContent extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final viewModel = context.read<FamilyAllergiesViewModel>();
+    final isInFamilyFlow = FamilyFlowScope.isActive(context);
     final allergyItems = _filter(
       state.catalog,
       state.allergySearch,
@@ -58,12 +60,14 @@ class FamilyAllergiesContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const FamilySetupHeaderBadge(),
-          const SizedBox(height: Spacing.md),
-          const FamilyProgramStepper(
-            currentStep: 3,
-            includeFamilyCreationStep: true,
-          ),
-          const SizedBox(height: Spacing.lg),
+          if (!isInFamilyFlow) ...[
+            const SizedBox(height: Spacing.md),
+            const FamilyProgramStepper(
+              currentStep: 3,
+              includeFamilyCreationStep: true,
+            ),
+            const SizedBox(height: Spacing.lg),
+          ],
           FamilyProgramMemberStrip(
             members: members,
             onSelectMember: viewModel.selectMember,
