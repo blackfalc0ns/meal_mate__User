@@ -300,6 +300,7 @@ abstract class ApiServices {
     @Path('bundleId') String bundleId,
     @Query('durationDays') int? durationDays,
     @Query('includeFriday') bool includeFriday,
+    @Query('familyMemberId') String? familyMemberId,
   );
 
   @GET(EndPoints.subscriptionPrerequisites)
@@ -311,6 +312,7 @@ abstract class ApiServices {
     @Path('programId') String programId,
     @Path('bundleId') String bundleId,
     @Path('tier') String tier,
+    @Query('familyMemberId') String? familyMemberId,
   );
 
   @GET(EndPoints.subscriptionRestaurantDetails)

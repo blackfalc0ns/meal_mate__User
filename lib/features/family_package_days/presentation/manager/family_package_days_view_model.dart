@@ -173,6 +173,8 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         clearSelectedBundle: true,
         clearSelectedDuration: true,
         clearSelectedTier: true,
+        tiers: const [],
+        clearBrowseRestaurants: true,
         customDurationDays: member.durationDays,
         includeFriday: member.includeFriday,
         isRestaurantsView: false,
@@ -253,6 +255,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       bundleId: bundleId,
       durationDays: member.durationDays,
       includeFriday: member.includeFriday,
+      familyMemberId: member.memberId,
     );
     if (isClosed) return;
     final durations = durationsResult is ApiSuccessResult
@@ -338,11 +341,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       _saveMemberPlan(memberId: member.memberId, bundleId: bundle.bundleId);
     }
     final progId = state.selectedProgram?.programId ?? member?.programId;
-    if (progId != null) {
+    if (progId != null && member != null) {
       _getDurations(
         programId: progId,
         bundleId: bundle.bundleId,
         includeFriday: state.includeFriday,
+        familyMemberId: member.memberId,
       );
     }
   }
@@ -351,6 +355,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     required String programId,
     required String bundleId,
     required bool includeFriday,
+    required String familyMemberId,
   }) async {
     _emit(
       state.copyWith(
@@ -370,6 +375,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       bundleId: bundleId,
       durationDays: state.selectedDurationDays,
       includeFriday: includeFriday,
+      familyMemberId: familyMemberId,
     );
     if (isClosed) return;
     _emit(
@@ -411,6 +417,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         durationDays: days,
         includeFriday: state.includeFriday,
       );
+      _reloadTiersForMember(member: member, durationDays: days);
     }
   }
 
@@ -433,6 +440,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         durationDays: days,
         includeFriday: state.includeFriday,
       );
+      _reloadTiersForMember(member: member, durationDays: days);
     }
   }
 
@@ -456,11 +464,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     }
     final progId = state.selectedProgram?.programId ?? member?.programId;
     final selectedBundle = state.selectedBundle;
-    if (progId != null && selectedBundle != null) {
+    if (progId != null && selectedBundle != null && member != null) {
       _getDurations(
         programId: progId,
         bundleId: selectedBundle.bundleId,
         includeFriday: include,
+        familyMemberId: member.memberId,
       );
     }
   }
@@ -523,7 +532,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       }
     }
     bundle ??= state.bundles.isNotEmpty ? state.bundles.first : null;
-    if (programId.isEmpty || bundle == null) return;
+    if (programId.isEmpty || bundle == null || member == null) return;
     _emit(
       state.copyWith(
         isBrowseRestaurantsLoading: true,
@@ -537,6 +546,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       programId: programId,
       bundleId: bundle.bundleId,
       tier: selectedTier.tier,
+      familyMemberId: member.memberId,
     );
     if (isClosed) return;
     switch (result) {
@@ -554,6 +564,31 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
             browseRestaurantsFailure: result.failure,
           ),
         );
+    }
+  }
+
+  Future<void> _reloadTiersForMember({
+    required FamilyMemberEntity member,
+    required int durationDays,
+  }) async {
+    final programId = state.selectedProgram?.programId ?? member.programId;
+    final bundleId = state.selectedBundle?.bundleId ?? member.bundleId;
+    if (programId == null || bundleId == null) return;
+
+    _emit(state.copyWith(isTiersLoading: true, clearFailure: true));
+    final result = await _getSubscriptionTiersUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      durationDays: durationDays,
+      includeFriday: state.includeFriday,
+      familyMemberId: member.memberId,
+    );
+    if (isClosed || state.selectedMember?.memberId != member.memberId) return;
+    switch (result) {
+      case ApiSuccessResult():
+        _emit(state.copyWith(isTiersLoading: false, tiers: result.data));
+      case ApiErrorResult():
+        _emit(state.copyWith(isTiersLoading: false, failure: result.failure));
     }
   }
 

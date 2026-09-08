@@ -1193,11 +1193,13 @@ class _ApiServices implements ApiServices {
     String bundleId,
     int? durationDays,
     bool includeFriday,
+    String? familyMemberId,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'durationDays': durationDays,
       r'includeFriday': includeFriday,
+      r'familyMemberId': familyMemberId,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -1253,9 +1255,13 @@ class _ApiServices implements ApiServices {
     String programId,
     String bundleId,
     String tier,
+    String? familyMemberId,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'familyMemberId': familyMemberId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =

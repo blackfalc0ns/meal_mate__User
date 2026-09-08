@@ -9,11 +9,13 @@ abstract class SubscriptionTierRemoteDataSource {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? familyMemberId,
   });
 
   Future<List<SubscriptionTierRestaurantBrowseResponseDto>> getTierRestaurants({
     required String programId,
     required String bundleId,
     required String tier,
+    String? familyMemberId,
   });
 }

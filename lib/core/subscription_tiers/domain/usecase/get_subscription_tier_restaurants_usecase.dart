@@ -13,11 +13,13 @@ class GetSubscriptionTierRestaurantsUseCase {
     required String programId,
     required String bundleId,
     required String tier,
+    String? familyMemberId,
   }) {
     return _repository.getTierRestaurants(
       programId: programId,
       bundleId: bundleId,
       tier: tier,
+      familyMemberId: familyMemberId,
     );
   }
 }

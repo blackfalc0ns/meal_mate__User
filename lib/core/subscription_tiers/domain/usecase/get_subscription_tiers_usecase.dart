@@ -14,12 +14,14 @@ class GetSubscriptionTiersUseCase {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? familyMemberId,
   }) {
     return _repository.getTiers(
       programId: programId,
       bundleId: bundleId,
       durationDays: durationDays,
       includeFriday: includeFriday,
+      familyMemberId: familyMemberId,
     );
   }
 }

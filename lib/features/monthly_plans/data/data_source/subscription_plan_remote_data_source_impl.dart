@@ -38,6 +38,7 @@ class SubscriptionPlanRemoteDataSourceImpl
       bundleId,
       durationDays,
       includeFriday,
+      null,
     );
   }
 
@@ -51,6 +52,7 @@ class SubscriptionPlanRemoteDataSourceImpl
       programId,
       bundleId,
       tier,
+      null,
     );
   }
 

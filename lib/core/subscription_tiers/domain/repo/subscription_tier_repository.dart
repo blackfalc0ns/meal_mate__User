@@ -10,6 +10,7 @@ abstract class SubscriptionTierRepository {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? familyMemberId,
   });
 
   Future<ApiResult<List<SubscriptionTierRestaurantBrowseEntity>>>
@@ -17,5 +18,6 @@ abstract class SubscriptionTierRepository {
     required String programId,
     required String bundleId,
     required String tier,
+    String? familyMemberId,
   });
 }

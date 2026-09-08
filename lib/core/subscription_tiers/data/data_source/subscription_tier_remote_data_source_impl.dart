@@ -22,12 +22,14 @@ class SubscriptionTierRemoteDataSourceImpl
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? familyMemberId,
   }) {
     return _apiServices.getSubscriptionTiers(
       programId,
       bundleId,
       durationDays,
       includeFriday,
+      familyMemberId,
     );
   }
 
@@ -36,11 +38,13 @@ class SubscriptionTierRemoteDataSourceImpl
     required String programId,
     required String bundleId,
     required String tier,
+    String? familyMemberId,
   }) {
     return _apiServices.getSubscriptionTierRestaurants(
       programId,
       bundleId,
       tier,
+      familyMemberId,
     );
   }
 }
