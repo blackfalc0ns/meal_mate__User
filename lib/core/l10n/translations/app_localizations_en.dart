@@ -5477,4 +5477,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_member_choose_meal => 'Choose meal';
+
+  @override
+  String get family_day_screen_title => 'Day Details';
+
+  @override
+  String get family_day_current_restaurant_subtitle => 'Current restaurant';
+
+  @override
+  String get family_day_review_meals_button => 'Review day meals';
+
+  @override
+  String get family_day_all_meals_selected => 'All meals selected';
+
+  @override
+  String get family_day_default_restaurant_name => 'Green Chef Restaurant';
 }

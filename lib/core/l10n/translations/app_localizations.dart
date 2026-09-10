@@ -10177,6 +10177,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose meal'**
   String get family_member_choose_meal;
+
+  /// No description provided for @family_day_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Details'**
+  String get family_day_screen_title;
+
+  /// No description provided for @family_day_current_restaurant_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current restaurant'**
+  String get family_day_current_restaurant_subtitle;
+
+  /// No description provided for @family_day_review_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Review day meals'**
+  String get family_day_review_meals_button;
+
+  /// No description provided for @family_day_all_meals_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'All meals selected'**
+  String get family_day_all_meals_selected;
+
+  /// No description provided for @family_day_default_restaurant_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Green Chef Restaurant'**
+  String get family_day_default_restaurant_name;
 }
 
 class _AppLocalizationsDelegate

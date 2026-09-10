@@ -1959,4 +1959,9 @@
   ,"@family_member_selected_meals_subtitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}}
   ,"family_member_meal_chosen": "Selected"
   ,"family_member_choose_meal": "Choose meal"
+  ,"family_day_screen_title": "Day Details"
+  ,"family_day_current_restaurant_subtitle": "Current restaurant"
+  ,"family_day_review_meals_button": "Review day meals"
+  ,"family_day_all_meals_selected": "All meals selected"
+  ,"family_day_default_restaurant_name": "Green Chef Restaurant"
 }

@@ -22,8 +22,10 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/fa
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_current_restaurant_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_header.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meals_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
@@ -283,9 +285,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
           final restaurantName = day?.restaurant?.name ?? '';
           final dayMeals = day?.meals ?? const [];
 
-          final title = restaurantName.isNotEmpty
-              ? '${locale.calendar_title} — $restaurantName'
-              : locale.calendar_title;
+          final title = locale.family_day_screen_title;
 
           return Scaffold(
             backgroundColor: color.surface,
@@ -335,22 +335,13 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                     ),
                     FamilyDayMemberCard(member: selectedMember),
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
-                    FamilyDayReviewButton(
-                      label: locale.calendar_change_restaurant,
-                      onPressed: () => _openRestaurants(),
+                    FamilyDayCurrentRestaurantCard(
+                      restaurantName: restaurantName,
+                      onChangeRestaurant: () => _openRestaurants(),
                     ),
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
                     if (state.isLoadingCalendar && !state.hasCalendarData)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: Spacing.xxl,
-                        ),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: color.primary,
-                          ),
-                        ),
-                      )
+                      const FamilyDayMealsLoadingSkeleton()
                     else if (state.calendarFailure != null &&
                         !state.hasCalendarData)
                       ApiErrorWidget(
@@ -407,7 +398,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                       ],
                     const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
                     FamilyDayReviewButton(
-                      label: locale.family_member_day_details_button,
+                      label: locale.family_day_review_meals_button,
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                           AppRoutes.familyReviewMemberMeals,
@@ -429,7 +420,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                     const SizedBox(height: Spacing.familyDaySelectedTopGap),
                     FamilyDaySelectedStatus(
                       label: dayMeals.isNotEmpty
-                          ? locale.calendar_meals_save_success
+                          ? locale.family_day_all_meals_selected
                           : locale.family_member_no_meals_selected,
                     ),
                   ],
@@ -463,7 +454,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
       backgroundColor: color.surface,
       appBar: CustomAppBar(
         titleWidget: Text(
-          details.title,
+          locale.family_day_screen_title,
           locale: Locale(locale.localeName),
           textAlign: TextAlign.center,
           style: getBoldStyle(
@@ -485,7 +476,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
             bottom: Spacing.xl,
           ),
           child: Semantics(
-            label: details.title,
+            label: locale.family_day_screen_title,
             child: Column(
               children: [
                 FamilyDayMemberSelector(
@@ -503,6 +494,13 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                 ),
                 FamilyDayMemberCard(member: selectedMember),
                 const SizedBox(height: Spacing.familyDayMemberTopGap),
+                FamilyDayCurrentRestaurantCard(
+                  restaurantName: details.meals.isNotEmpty
+                      ? details.meals.first.restaurantName
+                      : '',
+                  onChangeRestaurant: _openRestaurants,
+                ),
+                const SizedBox(height: Spacing.familyDayMemberTopGap),
                 for (final meal in details.meals) ...[
                   FamilyDayMealCard(
                     meal: meal,
@@ -512,7 +510,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                 ],
                 const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
                 FamilyDayReviewButton(
-                  label: details.reviewButtonLabel,
+                  label: locale.family_day_review_meals_button,
                   onPressed: () {
                     Navigator.of(
                       context,
@@ -520,7 +518,9 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                   },
                 ),
                 const SizedBox(height: Spacing.familyDaySelectedTopGap),
-                FamilyDaySelectedStatus(label: details.selectedMealsLabel),
+                FamilyDaySelectedStatus(
+                  label: locale.family_day_all_meals_selected,
+                ),
               ],
             ),
           ),

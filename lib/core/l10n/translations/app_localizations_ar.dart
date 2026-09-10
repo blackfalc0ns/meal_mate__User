@@ -5382,4 +5382,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_member_choose_meal => 'اختار وجبة';
+
+  @override
+  String get family_day_screen_title => 'تفاصيل يوم';
+
+  @override
+  String get family_day_current_restaurant_subtitle => 'المطعم الحالي';
+
+  @override
+  String get family_day_review_meals_button => 'مراجعة وجبات اليوم';
+
+  @override
+  String get family_day_all_meals_selected => 'تم اختيار جميع الوجبات';
+
+  @override
+  String get family_day_default_restaurant_name => 'مطعم جرين شيف';
 }

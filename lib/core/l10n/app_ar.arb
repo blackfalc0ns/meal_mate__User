@@ -1958,4 +1958,9 @@
   ,"@family_member_selected_meals_subtitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}}
   ,"family_member_meal_chosen": "تم الاختيار"
   ,"family_member_choose_meal": "اختار وجبة"
+  ,"family_day_screen_title": "تفاصيل يوم"
+  ,"family_day_current_restaurant_subtitle": "المطعم الحالي"
+  ,"family_day_review_meals_button": "مراجعة وجبات اليوم"
+  ,"family_day_all_meals_selected": "تم اختيار جميع الوجبات"
+  ,"family_day_default_restaurant_name": "مطعم جرين شيف"
 }
