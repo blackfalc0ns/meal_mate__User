@@ -323,7 +323,7 @@ class Spacing {
   static const double familyRestaurantsCardPadding = 8.0;
   static const double familyRestaurantsMealImageWidth = 116.49;
   static const double familyRestaurantsMealImageHeight = 112.0;
-  static const double familyRestaurantsLogoSize = 38.0;
+  static const double familyRestaurantsLogoSize = 46.0;
   static const double familyRestaurantsRatingWidth = 44.0;
   static const double familyRestaurantsRatingHeight = 22.0;
   static const double familyRestaurantsTagHeight = 24.0;

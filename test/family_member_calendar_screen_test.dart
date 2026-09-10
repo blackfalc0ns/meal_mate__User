@@ -3,41 +3,64 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_empty_meals.dart';
 
 void main() {
-  testWidgets('family member calendar screen renders fallback without DI', (
-    tester,
-  ) async {
-    final previousOnError = FlutterError.onError;
-    FlutterError.onError = (details) {
-      final exception = details.exception;
-      if (exception is FlutterError &&
-          exception.message.contains('A RenderFlex overflowed')) {
-        return;
-      }
-      previousOnError?.call(details);
-    };
-    addTearDown(() => FlutterError.onError = previousOnError);
+  testWidgets(
+    'family member calendar screen renders empty state when no active plan',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const FamilyMemberCalendarScreen(),
+        ),
+      );
 
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        locale: const Locale('ar'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: const FamilyMemberCalendarScreen(),
-      ),
-    );
+      expect(find.byType(EmptyStateWidget), findsOneWidget);
+    },
+  );
 
-    expect(find.byType(FamilyDayMemberSelector), findsOneWidget);
-    expect(find.byType(CalendarPickerPanel), findsOneWidget);
-    expect(find.byType(FamilyDayReviewButton), findsOneWidget);
-  });
+  testWidgets(
+    'family member calendar screen renders member selector when member provided',
+    (tester) async {
+      final previousOnError = FlutterError.onError;
+      FlutterError.onError = (details) {
+        final exception = details.exception;
+        if (exception is FlutterError &&
+            exception.message.contains('A RenderFlex overflowed')) {
+          return;
+        }
+        previousOnError?.call(details);
+      };
+      addTearDown(() => FlutterError.onError = previousOnError);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const FamilyMemberCalendarScreen(
+            args: FamilyMemberCalendarArgs(
+              subscriptionId: 'sub-1',
+              displayName: 'أحمد',
+              memberId: 'mem-1',
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(FamilyDayMemberSelector), findsOneWidget);
+      expect(find.text('أحمد'), findsWidgets);
+    },
+  );
 
   testWidgets('FamilyMemberCalendarEmptyMeals renders illustration and text', (
     tester,
@@ -48,9 +71,7 @@ void main() {
         locale: const Locale('ar'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const Scaffold(
-          body: FamilyMemberCalendarEmptyMeals(),
-        ),
+        home: const Scaffold(body: FamilyMemberCalendarEmptyMeals()),
       ),
     );
 

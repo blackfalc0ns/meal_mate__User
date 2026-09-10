@@ -40,45 +40,57 @@ class FamilyRestaurantCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             Spacing.familyRestaurantsCardRadius,
           ),
-          border: Border.all(color: color.outlineVariant),
+          border: Border.all(
+            color: color.outlineVariant.withValues(alpha: 0.6),
+          ),
           boxShadow: [
             BoxShadow(
-              color: color.shadow.withValues(alpha: 0.06),
-              offset: const Offset(0, Spacing.xs),
+              color: color.shadow.withValues(alpha: 0.04),
+              offset: const Offset(0, Spacing.xxs),
               blurRadius: Spacing.xs,
             ),
           ],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               height: Spacing.familyRestaurantsMealImageHeight,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      Spacing.familyDayMemberSelectorRadius,
-                    ),
-                    child:
-                        restaurant.imageUrl != null &&
-                            restaurant.imageUrl!.isNotEmpty
-                        ? AppCachedNetworkImage(
-                            imageUrl: restaurant.imageUrl!,
-                            width: double.infinity,
-                            height: Spacing.familyRestaurantsMealImageHeight,
-                            fit: BoxFit.cover,
-                          )
-                        : ColoredBox(
-                            color: color.surfaceContainerHighest,
-                            child: Center(
-                              child: Icon(
-                                Icons.restaurant_rounded,
-                                color: color.onSurfaceVariant,
-                                size: Spacing.iconXl,
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        Spacing.familyRestaurantsCardRadius,
+                      ),
+                      child:
+                          restaurant.imageUrl != null &&
+                              restaurant.imageUrl!.isNotEmpty
+                          ? (restaurant.imageUrl!.startsWith('assets/')
+                                ? Image.asset(
+                                    restaurant.imageUrl!,
+                                    width: double.infinity,
+                                    height: Spacing
+                                        .familyRestaurantsMealImageHeight,
+                                    fit: BoxFit.cover,
+                                  )
+                                : AppCachedNetworkImage(
+                                    imageUrl: restaurant.imageUrl!,
+                                    width: double.infinity,
+                                    height: Spacing
+                                        .familyRestaurantsMealImageHeight,
+                                    fit: BoxFit.cover,
+                                  ))
+                          : ColoredBox(
+                              color: color.surfaceContainerHighest,
+                              child: Center(
+                                child: Icon(
+                                  Icons.restaurant_rounded,
+                                  color: color.onSurfaceVariant,
+                                  size: Spacing.iconXl,
+                                ),
                               ),
                             ),
-                          ),
+                    ),
                   ),
                   PositionedDirectional(
                     top: Spacing.xs,
@@ -121,33 +133,31 @@ class FamilyRestaurantCard extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Text(
-                  restaurant.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size13,
-                    color: color.onSurface,
-                  ),
-                ),
-                const SizedBox(height: Spacing.xxs),
-                Text(
-                  restaurant.subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
-              ],
+            const SizedBox(height: Spacing.xs),
+            Text(
+              restaurant.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size13,
+                color: color.onSurface,
+              ),
             ),
+            const SizedBox(height: Spacing.xxs),
+            Text(
+              restaurant.subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size9,
+                color: color.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: Spacing.xs),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -163,12 +173,14 @@ class FamilyRestaurantCard extends StatelessWidget {
                 ],
               ],
             ),
+            const Spacer(),
             AppButton(
               text: restaurant.buttonLabel,
               height: Spacing.familyRestaurantsCtaHeight,
               color: color.primary,
-              borderRadius: Spacing.familyRestaurantsFilterRadius,
+              borderRadius: Spacing.radiusPill,
               fontSize: FontSize.size11,
+              fontWeight: FontWeightManger.bold,
               onPressed:
                   onSelect ??
                   () {

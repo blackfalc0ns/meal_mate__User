@@ -18,7 +18,7 @@ class FamilyRestaurantTag extends StatelessWidget {
       height: Spacing.familyRestaurantsTagHeight,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
       decoration: BoxDecoration(
-        color: color.surfaceContainerLowest,
+        color: color.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(
           Spacing.familyRestaurantsFilterRadius,
         ),
@@ -27,7 +27,11 @@ class FamilyRestaurantTag extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (tag.icon != null) ...[
-            Icon(tag.icon, color: color.primary, size: Spacing.iconXs),
+            Icon(
+              tag.icon,
+              color: tag.iconColor ?? color.primary,
+              size: Spacing.iconXs,
+            ),
             const SizedBox(width: Spacing.xxs),
           ],
           Flexible(

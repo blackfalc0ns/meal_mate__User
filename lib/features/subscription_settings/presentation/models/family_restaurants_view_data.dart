@@ -36,11 +36,13 @@ class FamilyRestaurantsFilterData {
   const FamilyRestaurantsFilterData({
     required this.label,
     this.icon,
+    this.iconColor,
     this.isSelected = false,
   });
 
   final String label;
   final IconData? icon;
+  final Color? iconColor;
   final bool isSelected;
 }
 
@@ -53,10 +55,12 @@ class FamilyRestaurantCardData {
     required this.tags,
     required this.buttonLabel,
     this.imageUrl,
+    this.logoUrl,
   });
 
   final String id;
   final String? imageUrl;
+  final String? logoUrl;
   final String name;
   final String subtitle;
   final String rating;

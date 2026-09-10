@@ -12,10 +12,8 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_days_builder.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_member_calendar_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
@@ -25,7 +23,6 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_day_summary_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_empty_meals.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_loading_skeleton.dart';
@@ -35,9 +32,10 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyMemberCalendarScreen extends StatefulWidget {
-  const FamilyMemberCalendarScreen({super.key, this.args});
+  const FamilyMemberCalendarScreen({super.key, this.args, this.viewModel});
 
   final FamilyMemberCalendarArgs? args;
+  final FamilyCalendarViewModel? viewModel;
 
   @override
   State<FamilyMemberCalendarScreen> createState() =>
@@ -46,25 +44,18 @@ class FamilyMemberCalendarScreen extends StatefulWidget {
 
 class _FamilyMemberCalendarScreenState
     extends State<FamilyMemberCalendarScreen> {
-  FamilyCalendarViewModel? _viewModel;
+  late final FamilyCalendarViewModel _viewModel;
   bool _isCalendarExpanded = false;
   bool _initialized = false;
-
-  // Fallback state for tests without DI
-  int _fakeSelectedMemberIndex = 3;
-  int _fakeSelectedDay = 20;
-  DateTime _fakeVisibleMonth = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    if (getIt.isRegistered<FamilyCalendarViewModel>()) {
-      _viewModel = getIt<FamilyCalendarViewModel>();
-    } else {
-      _fakeVisibleMonth = const FamilyMemberCalendarFakeDataSource()
-          .getCalendar()
-          .month;
-    }
+    _viewModel =
+        widget.viewModel ??
+        (getIt.isRegistered<FamilyCalendarViewModel>()
+            ? getIt<FamilyCalendarViewModel>()
+            : FamilyCalendarViewModel());
   }
 
   @override
@@ -73,20 +64,18 @@ class _FamilyMemberCalendarScreenState
     if (_initialized) return;
     _initialized = true;
 
-    if (_viewModel != null) {
-      _viewModel!.doIntent(
-        InitFamilyCalendarEvent(
-          args: widget.args,
-          initialDate: widget.args?.date,
-          localeName: context.localization.localeName,
-        ),
-      );
-    }
+    _viewModel.doIntent(
+      InitFamilyCalendarEvent(
+        args: widget.args,
+        initialDate: widget.args?.date,
+        localeName: context.localization.localeName,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _viewModel?.close();
+    _viewModel.close();
     super.dispose();
   }
 
@@ -134,12 +123,8 @@ class _FamilyMemberCalendarScreenState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    if (_viewModel == null) {
-      return _buildFakeFallbackScaffold(context);
-    }
-
     return BlocProvider<FamilyCalendarViewModel>.value(
-      value: _viewModel!,
+      value: _viewModel,
       child: BlocBuilder<FamilyCalendarViewModel, FamilyCalendarState>(
         builder: (context, state) {
           final selectorMembers = _buildSelectorMembers(context, state);
@@ -191,7 +176,7 @@ class _FamilyMemberCalendarScreenState
                           members: selectorMembers,
                           selectedIndex: safeSelectedMemberIndex,
                           onMemberSelected: (index) {
-                            _viewModel!.doIntent(
+                            _viewModel.doIntent(
                               SelectFamilyMemberEvent(
                                 index: index,
                                 localeName: locale.localeName,
@@ -242,7 +227,7 @@ class _FamilyMemberCalendarScreenState
         child: ApiErrorWidget(
           exception: state.calendarFailure!.exception,
           onRetry: () {
-            _viewModel!.doIntent(
+            _viewModel.doIntent(
               RetryFamilyCalendarEvent(localeName: locale.localeName),
             );
           },
@@ -255,24 +240,25 @@ class _FamilyMemberCalendarScreenState
 
     // Subscription range clamping:
     // Only subscription days are active and selectable
-    final validDates = state.days
-        .map((d) => d.date)
-        .whereType<DateTime>()
-        .toList()
-      ..sort();
+    final validDates =
+        state.days.map((d) => d.date).whereType<DateTime>().toList()..sort();
 
     final DateTime? minDate = validDates.isNotEmpty ? validDates.first : null;
     final DateTime? maxDate = validDates.isNotEmpty ? validDates.last : null;
 
-    final canGoPrevious = minDate == null ||
-        DateTime(visibleMonth.year, visibleMonth.month).isAfter(
-          DateTime(minDate.year, minDate.month),
-        );
+    final canGoPrevious =
+        minDate == null ||
+        DateTime(
+          visibleMonth.year,
+          visibleMonth.month,
+        ).isAfter(DateTime(minDate.year, minDate.month));
 
-    final canGoNext = maxDate == null ||
-        DateTime(visibleMonth.year, visibleMonth.month).isBefore(
-          DateTime(maxDate.year, maxDate.month),
-        );
+    final canGoNext =
+        maxDate == null ||
+        DateTime(
+          visibleMonth.year,
+          visibleMonth.month,
+        ).isBefore(DateTime(maxDate.year, maxDate.month));
 
     final calendarDays = _isCalendarExpanded
         ? CalendarDaysBuilder.monthDays(
@@ -339,13 +325,11 @@ class _FamilyMemberCalendarScreenState
           onMonthChanged: (months) {
             if (months < 0 && !canGoPrevious) return;
             if (months > 0 && !canGoNext) return;
-            _viewModel!.doIntent(
-              ChangeFamilyCalendarMonthEvent(months: months),
-            );
+            _viewModel.doIntent(ChangeFamilyCalendarMonthEvent(months: months));
           },
           onDaySelected: (day) {
             if (day.isMuted) return;
-            _viewModel!.doIntent(
+            _viewModel.doIntent(
               SelectFamilyCalendarDayEvent(
                 day: day,
                 localeName: locale.localeName,
@@ -426,7 +410,8 @@ class _FamilyMemberCalendarScreenState
                             subscriptionId: activeSubId,
                             date: selectedDate,
                             memberName: state.displayName,
-                            memberId: state.currentMember?.memberId ??
+                            memberId:
+                                state.currentMember?.memberId ??
                                 widget.args?.memberId,
                             members: state.members,
                             viewModel: _viewModel,
@@ -438,7 +423,8 @@ class _FamilyMemberCalendarScreenState
                         if (activeSubId == null || activeSubId.isEmpty) return;
 
                         final memberId =
-                            state.currentMember?.memberId ?? widget.args?.memberId;
+                            state.currentMember?.memberId ??
+                            widget.args?.memberId;
 
                         Navigator.of(context).pushNamed(
                           AppRoutes.familyMemberDayDetails,
@@ -458,228 +444,6 @@ class _FamilyMemberCalendarScreenState
             ),
           ),
       ],
-    );
-  }
-
-  Widget _buildFakeFallbackScaffold(BuildContext context) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-    final calendar = const FamilyMemberCalendarFakeDataSource().getCalendar();
-
-    final selectorMembers = calendar.members;
-    final safeSelectedMemberIndex = selectorMembers.isEmpty
-        ? 0
-        : _fakeSelectedMemberIndex.clamp(0, selectorMembers.length - 1).toInt();
-
-    final selectedDate = DateTime(
-      _fakeVisibleMonth.year,
-      _fakeVisibleMonth.month,
-      _fakeSelectedDay,
-    );
-    final calendarDays = _isCalendarExpanded
-        ? _fakeMonthDays(
-            focusedMonth: _fakeVisibleMonth,
-            selectedDate: selectedDate,
-          )
-        : _fakeServiceDays(selectedDate: selectedDate);
-
-    final hasMeals = calendar.selectedMeals.isNotEmpty;
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        titleWidget: Text(
-          calendar.title,
-          locale: Locale(locale.localeName),
-          textAlign: TextAlign.center,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size18,
-            color: color.onSurface,
-          ),
-        ),
-        onBackPressed: () => Navigator.maybePop(context),
-      ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsetsDirectional.only(
-            start: Spacing.familyMemberCalendarHorizontalPadding,
-            end: Spacing.familyMemberCalendarHorizontalPadding,
-            top: Spacing.familyMemberCalendarTopGap,
-            bottom: Spacing.xl,
-          ),
-          child: Column(
-            children: [
-              FamilyDayMemberSelector(
-                members: selectorMembers,
-                selectedIndex: safeSelectedMemberIndex,
-                onMemberSelected: (index) {
-                  setState(() => _fakeSelectedMemberIndex = index);
-                },
-              ),
-              const SizedBox(height: Spacing.familyMemberCalendarMonthTopGap),
-              CalendarPickerPanel(
-                monthTitle: intl.DateFormat.yMMMM(
-                  locale.localeName,
-                ).format(_fakeVisibleMonth),
-                days: calendarDays,
-                isExpanded: _isCalendarExpanded,
-                backgroundColor: color.surface,
-                showBottomBorder: false,
-                onToggleExpanded: () {
-                  setState(() => _isCalendarExpanded = !_isCalendarExpanded);
-                },
-                onMonthChanged: (months) {
-                  setState(() {
-                    _fakeVisibleMonth = DateTime(
-                      _fakeVisibleMonth.year,
-                      _fakeVisibleMonth.month + months,
-                    );
-                  });
-                },
-                onDaySelected: (day) {
-                  if (day.isMuted) return;
-                  setState(() {
-                    _fakeSelectedDay = day.dayNumber;
-                    final date = day.date;
-                    if (date != null &&
-                        (_fakeVisibleMonth.year != date.year ||
-                            _fakeVisibleMonth.month != date.month)) {
-                      _fakeVisibleMonth = DateTime(date.year, date.month);
-                    }
-                  });
-                },
-              ),
-              const SizedBox(
-                height: Spacing.familyMemberCalendarSelectedMealsTopGap,
-              ),
-              PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 320),
-                transitionBuilder:
-                    (child, primaryAnimation, secondaryAnimation) {
-                  return FadeThroughTransition(
-                    animation: primaryAnimation,
-                    secondaryAnimation: secondaryAnimation,
-                    fillColor: color.surface,
-                    child: child,
-                  );
-                },
-                child: KeyedSubtree(
-                  key: ValueKey(
-                    '${safeSelectedMemberIndex}_${selectedDate.year}_${selectedDate.month}_${selectedDate.day}_$hasMeals',
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (hasMeals) ...[
-                        StaggeredSlideItem(
-                          key: ValueKey('fallback_meals_${selectedDate.day}'),
-                          index: 0,
-                          child: FamilyMemberSelectedMealsCard(
-                            title: calendar.selectedMealsTitle,
-                            subtitle: calendar.selectedMealsSubtitle,
-                            countLabel: calendar.selectedMealsCountLabel,
-                            meals: calendar.selectedMeals,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: Spacing.familyMemberCalendarDaySummaryTopGap,
-                        ),
-                        StaggeredSlideItem(
-                          key: ValueKey('fallback_summary_${selectedDate.day}'),
-                          index: 1,
-                          child: FamilyMemberCalendarDaySummaryCard(
-                            summary: calendar.daySummary,
-                            dayNumber: selectedDate.day,
-                          ),
-                        ),
-                      ] else ...[
-                        StaggeredSlideItem(
-                          key: ValueKey('fallback_empty_${selectedDate.day}'),
-                          index: 0,
-                          child: const FamilyMemberCalendarEmptyMeals(),
-                        ),
-                      ],
-                      const SizedBox(
-                        height: Spacing.familyMemberCalendarButtonTopGap,
-                      ),
-                      StaggeredSlideItem(
-                        key: ValueKey('fallback_btn_${selectedDate.day}'),
-                        index: hasMeals ? 2 : 1,
-                        child: FamilyDayReviewButton(
-                          label: calendar.detailsButtonLabel,
-                          onPressed: () => Navigator.of(
-                            context,
-                          ).pushNamed(AppRoutes.familyMemberDayDetails),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<CalendarDayEntity> _fakeServiceDays({required DateTime selectedDate}) {
-    final firstDay = selectedDate.subtract(const Duration(days: 4));
-
-    return List.generate(7, (index) {
-      final date = firstDay.add(Duration(days: index));
-      return _fakeCalendarDay(date, selectedDate: selectedDate);
-    });
-  }
-
-  List<CalendarDayEntity> _fakeMonthDays({
-    required DateTime focusedMonth,
-    required DateTime selectedDate,
-  }) {
-    final firstDay = DateTime(focusedMonth.year, focusedMonth.month);
-    final leadingDays = (firstDay.weekday + 1) % 7;
-    final gridStart = firstDay.subtract(Duration(days: leadingDays));
-    final daysInMonth = DateTime(
-      focusedMonth.year,
-      focusedMonth.month + 1,
-      0,
-    ).day;
-    final totalCells = ((leadingDays + daysInMonth + 6) ~/ 7) * 7;
-
-    return List.generate(totalCells, (index) {
-      final date = DateTime(
-        gridStart.year,
-        gridStart.month,
-        gridStart.day + index,
-      );
-
-      return _fakeCalendarDay(
-        date,
-        selectedDate: selectedDate,
-        isMuted: date.month != focusedMonth.month,
-      );
-    });
-  }
-
-  CalendarDayEntity _fakeCalendarDay(
-    DateTime date, {
-    required DateTime selectedDate,
-    bool isMuted = false,
-  }) {
-    return CalendarDayEntity(
-      dayNumber: date.day,
-      weekday: intl.DateFormat.E(context.localization.localeName).format(date),
-      date: date,
-      isSelected:
-          date.year == selectedDate.year &&
-          date.month == selectedDate.month &&
-          date.day == selectedDate.day,
-      isMuted: isMuted,
-      hasMeals: date.day % 5 == 0 || date.day == selectedDate.day,
     );
   }
 }

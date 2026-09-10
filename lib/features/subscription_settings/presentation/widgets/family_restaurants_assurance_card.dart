@@ -25,7 +25,7 @@ class FamilyRestaurantsAssuranceCard extends StatelessWidget {
         vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
-        color: color.primaryContainer,
+        color: color.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(
           Spacing.familyRestaurantsSearchRadius,
         ),
@@ -33,12 +33,6 @@ class FamilyRestaurantsAssuranceCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.verified_user_rounded,
-            color: color.primary,
-            size: Spacing.iconLg,
-          ),
-          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +63,12 @@ class FamilyRestaurantsAssuranceCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(width: Spacing.sm),
+          Icon(
+            Icons.check_circle_rounded,
+            color: color.primary,
+            size: Spacing.iconLg,
           ),
         ],
       ),

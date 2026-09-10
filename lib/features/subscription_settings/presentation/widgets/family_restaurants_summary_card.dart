@@ -20,6 +20,13 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
+    final selectedInt = int.tryParse(summary.selectedMeals) ?? 0;
+    final totalInt =
+        int.tryParse(summary.selectedMealsTotal.replaceAll(RegExp(r'[^\d]'), '')) ??
+        1;
+    final progressValue =
+        totalInt > 0 ? (selectedInt / totalInt).clamp(0.0, 1.0) : 0.0;
+
     return Container(
       height: Spacing.familyRestaurantsSummaryHeight,
       padding: const EdgeInsets.symmetric(
@@ -45,81 +52,37 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: Spacing.iconLg,
-                backgroundColor: color.surfaceContainerHighest,
-                child: Icon(
-                  Icons.person_rounded,
-                  size: Spacing.iconXl,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: Spacing.xs),
-              Text(
-                memberName,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size15,
-                  color: color.onSurface,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(width: Spacing.sm),
-          Expanded(
-            child: Row(
-              children: [
-                FamilyRestaurantsSummaryMetric(
-                  value: '',
-                  label: summary.programLabel,
-                  icon: Icons.balance_rounded,
-                ),
-                FamilyRestaurantsSummaryMetric(
-                  value: summary.calories,
-                  label: summary.caloriesLabel,
-                  icon: Icons.local_fire_department_rounded,
-                ),
-                FamilyRestaurantsSummaryMetric(
-                  value: summary.dailyMeals,
-                  label: summary.dailyMealsLabel,
-                  icon: Icons.restaurant_rounded,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: Spacing.xs),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
               SizedBox.square(
-                dimension: 42.0,
+                dimension: 44.0,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     CircularProgressIndicator(
-                      value: 0.5,
-                      strokeWidth: Spacing.xxs + 1,
+                      value: progressValue,
+                      strokeWidth: 3.5,
                       backgroundColor: color.surfaceContainerHighest,
                       color: color.primary,
                     ),
                     Text.rich(
                       TextSpan(
-                        text: summary.selectedMeals,
                         children: [
                           TextSpan(
-                            text: summary.selectedMealsTotal,
+                            text: summary.selectedMeals,
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size13,
                               color: color.primary,
                             ),
                           ),
+                          TextSpan(
+                            text: summary.selectedMealsTotal,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size13,
+                              color: color.onSurface,
+                            ),
+                          ),
                         ],
-                      ),
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
                       ),
                     ),
                   ],
@@ -136,8 +99,71 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(width: Spacing.xs),
+          Expanded(
+            child: Row(
+              children: [
+                FamilyRestaurantsSummaryMetric(
+                  value: summary.dailyMeals,
+                  label: summary.dailyMealsLabel,
+                  icon: Icons.restaurant_rounded,
+                ),
+                SizedBox(
+                  height: 30,
+                  child: VerticalDivider(
+                    width: Spacing.unit,
+                    thickness: Spacing.border,
+                    color: color.outlineVariant,
+                  ),
+                ),
+                FamilyRestaurantsSummaryMetric(
+                  value: summary.calories,
+                  label: summary.caloriesLabel,
+                  icon: Icons.local_fire_department_rounded,
+                ),
+                SizedBox(
+                  height: 30,
+                  child: VerticalDivider(
+                    width: Spacing.unit,
+                    thickness: Spacing.border,
+                    color: color.outlineVariant,
+                  ),
+                ),
+                FamilyRestaurantsSummaryMetric(
+                  value: '',
+                  label: summary.programLabel,
+                  icon: Icons.balance_rounded,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: Spacing.xs),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: color.surfaceContainerHighest,
+                child: Icon(
+                  Icons.person_rounded,
+                  size: Spacing.iconLg,
+                  color: color.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: Spacing.xxs),
+              Text(
+                memberName,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
+

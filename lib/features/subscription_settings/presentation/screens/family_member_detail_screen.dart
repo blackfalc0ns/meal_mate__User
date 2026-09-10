@@ -18,7 +18,6 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_view_model.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_package_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_profile_card.dart';
@@ -141,7 +140,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           ? locale.family_member_manager_label
           : locale.family_member_member_label,
       programTitle: locale.family_member_program_title,
-      programImageAsset: AssetsFake.searchSalad,
+      programImageAsset: Assets.homeBreakfast,
       programName: detail.hasPlan
           ? detail.programName
           : locale.family_member_no_plan,

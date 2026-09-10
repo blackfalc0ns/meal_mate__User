@@ -24,18 +24,18 @@ class CalendarDayTile extends StatelessWidget {
     final textColor = selected && !isFrozen
         ? color.onPrimary
         : isFrozen
-            ? color.onSurface
-            : day.isMuted
-                ? color.onSurface.withValues(alpha: 0.25)
-                : color.onSurface;
+        ? color.onSurface
+        : day.isMuted
+        ? color.onSurface.withValues(alpha: 0.25)
+        : color.onSurface;
 
     final backgroundColor = isFrozen
         ? const Color(0xFFEBF5FA)
         : selected
-            ? color.primary
-            : compact
-                ? color.surface.withValues(alpha: 0)
-                : color.surface;
+        ? color.primary
+        : compact
+        ? color.surface.withValues(alpha: 0)
+        : color.surface;
 
     final borderRadius = BorderRadius.circular(compact ? 14 : 12);
 
@@ -67,16 +67,17 @@ class CalendarDayTile extends StatelessWidget {
                 children: [
                   Text(
                     '${day.dayNumber}',
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: compact ? 16 : (selected ? 17 : 14),
-                      color: textColor,
-                    ).copyWith(
-                      height: 1,
-                      fontWeight: compact && selected
-                          ? FontWeight.w600
-                          : FontWeight.w700,
-                    ),
+                    style:
+                        getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: compact ? 16 : (selected ? 17 : 14),
+                          color: textColor,
+                        ).copyWith(
+                          height: 1,
+                          fontWeight: compact && selected
+                              ? FontWeight.w600
+                              : FontWeight.w700,
+                        ),
                   ),
                   if (!compact) ...[
                     const SizedBox(height: 3),
@@ -84,18 +85,19 @@ class CalendarDayTile extends StatelessWidget {
                       day.weekday,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: (selected && !isFrozen
-                              ? getMediumStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size10,
-                                  color: textColor,
-                                )
-                              : getRegularStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size10,
-                                  color: textColor,
-                                ))
-                          .copyWith(height: 1),
+                      style:
+                          (selected && !isFrozen
+                                  ? getMediumStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size10,
+                                      color: textColor,
+                                    )
+                                  : getRegularStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size10,
+                                      color: textColor,
+                                    ))
+                              .copyWith(height: 1),
                     ),
                   ],
                   SizedBox(height: compact ? 4 : (selected ? 4 : 3)),

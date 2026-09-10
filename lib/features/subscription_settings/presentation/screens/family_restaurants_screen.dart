@@ -15,12 +15,12 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_assurance_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_filter_strip.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_grid.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_header.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_search_field.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_summary_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyRestaurantsScreen extends StatefulWidget {
   const FamilyRestaurantsScreen({super.key, this.args});
@@ -103,35 +103,16 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
       caloriesLabel: locale.family_restaurants_summary_calories_label,
       programLabel: state.currentMember?.programName ?? '',
     );
-    final filters = [
-      FamilyRestaurantsFilterData(
-        label: locale.family_restaurants_filter_all,
-        isSelected: true,
-      ),
-      FamilyRestaurantsFilterData(
-        label: locale.family_restaurants_filter_breakfast,
-        icon: Icons.wb_sunny_rounded,
-      ),
-      FamilyRestaurantsFilterData(
-        label: locale.family_restaurants_filter_lunch,
-        icon: Icons.wb_sunny_rounded,
-      ),
-      FamilyRestaurantsFilterData(
-        label: locale.family_restaurants_filter_dinner,
-        icon: Icons.nightlight_round,
-      ),
-    ];
     final restaurants = state.filteredRestaurants
         .map(
           (restaurant) => FamilyRestaurantCardData(
             id: restaurant.id,
             name: restaurant.name,
             subtitle: restaurant.description,
-            imageUrl: restaurant.logoUrl,
+            imageUrl: _resolveRestaurantMealImage(restaurant),
+            logoUrl: restaurant.logoUrl,
             rating: restaurant.rating,
-            tags: restaurant.tierName.isEmpty
-                ? const []
-                : [FamilyRestaurantsFilterData(label: restaurant.tierName)],
+            tags: _resolveRestaurantTags(restaurant, state, locale, color),
             buttonLabel: locale.family_restaurants_browse_meals,
           ),
         )
@@ -149,37 +130,44 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
           ),
           child: Column(
             children: [
-              FamilyRestaurantsHeader(
-                title: locale.family_restaurants_title(memberName),
-                dateLabel: intl.DateFormat.yMMMMEEEEd(
-                  locale.localeName,
-                ).format(date),
-                members: members,
-                onMemberSelected: (index) {
-                  _viewModel!.doIntent(
-                    SelectFamilyMemberEvent(
-                      index: index,
-                      localeName: locale.localeName,
-                    ),
-                  );
-                },
-                onBackPressed: () => Navigator.maybePop(context),
+              StaggeredSlideItem(
+                index: 0,
+                child: FamilyRestaurantsHeader(
+                  title: locale.family_restaurants_title(memberName),
+                  dateLabel: intl.DateFormat.yMMMMEEEEd(
+                    locale.localeName,
+                  ).format(date),
+                  members: members,
+                  onMemberSelected: (index) {
+                    _viewModel!.doIntent(
+                      SelectFamilyMemberEvent(
+                        index: index,
+                        localeName: locale.localeName,
+                      ),
+                    );
+                  },
+                  onBackPressed: () => Navigator.maybePop(context),
+                ),
               ),
               const SizedBox(height: Spacing.md),
-              FamilyRestaurantsSummaryCard(
-                memberName: memberName,
-                summary: summary,
+              StaggeredSlideItem(
+                index: 1,
+                child: FamilyRestaurantsSummaryCard(
+                  memberName: memberName,
+                  summary: summary,
+                ),
               ),
               const SizedBox(height: Spacing.familyRestaurantsSearchTopGap),
-              FamilyRestaurantsSearchField(
-                hint: locale.family_restaurants_search_hint,
-                onChanged: (query) =>
-                    _loadRestaurants(locale.localeName, query),
+              StaggeredSlideItem(
+                index: 2,
+                child: FamilyRestaurantsSearchField(
+                  hint: locale.family_restaurants_search_hint,
+                  onChanged: (query) =>
+                      _loadRestaurants(locale.localeName, query),
+                ),
               ),
-              const SizedBox(height: Spacing.familyRestaurantsFilterTopGap),
-              FamilyRestaurantsFilterStrip(filters: filters),
               const SizedBox(height: Spacing.familyRestaurantsGridTopGap),
-              if (state.isLoadingRestaurants && restaurants.isEmpty)
+              if (state.isLoadingRestaurants)
                 const FamilyRestaurantsLoadingSkeleton()
               else if (state.restaurantsFailure != null && restaurants.isEmpty)
                 ApiErrorWidget(
@@ -205,9 +193,12 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
                   ),
                 ),
               const SizedBox(height: Spacing.familyRestaurantsAssuranceTopGap),
-              FamilyRestaurantsAssuranceCard(
-                title: locale.family_restaurants_assurance_title,
-                subtitle: locale.family_restaurants_assurance_subtitle,
+              StaggeredSlideItem(
+                index: 3,
+                child: FamilyRestaurantsAssuranceCard(
+                  title: locale.family_restaurants_assurance_title,
+                  subtitle: locale.family_restaurants_assurance_subtitle,
+                ),
               ),
             ],
           ),
@@ -260,5 +251,67 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
         viewModel: _viewModel,
       ),
     );
+  }
+
+  String? _resolveRestaurantMealImage(
+    CalendarRestaurantOptionEntity restaurant,
+  ) {
+    if (restaurant.logoUrl != null &&
+        restaurant.logoUrl!.isNotEmpty &&
+        (restaurant.logoUrl!.startsWith('http://') ||
+            restaurant.logoUrl!.startsWith('https://'))) {
+      return restaurant.logoUrl;
+    }
+    return restaurant.logoUrl;
+  }
+
+  List<FamilyRestaurantsFilterData> _resolveRestaurantTags(
+    CalendarRestaurantOptionEntity restaurant,
+    FamilyCalendarState state,
+    dynamic locale,
+    ColorScheme color,
+  ) {
+    final tags = <FamilyRestaurantsFilterData>[];
+
+    final programName = state.currentMember?.programName.isNotEmpty == true
+        ? state.currentMember!.programName
+        : (restaurant.tierName.isNotEmpty ? restaurant.tierName : 'متوازن');
+    tags.add(
+      FamilyRestaurantsFilterData(
+        label: programName,
+        icon: Icons.balance_rounded,
+        iconColor: color.primary,
+      ),
+    );
+
+    final slotReqs = state.selectedDay?.slotRequirements ?? const [];
+    if (slotReqs.isNotEmpty) {
+      for (final req in slotReqs) {
+        tags.add(
+          FamilyRestaurantsFilterData(
+            label: req.slot,
+            icon: Icons.wb_sunny_rounded,
+            iconColor: color.secondary,
+          ),
+        );
+      }
+    } else {
+      tags.add(
+        FamilyRestaurantsFilterData(
+          label: locale.family_restaurants_filter_breakfast,
+          icon: Icons.wb_sunny_rounded,
+          iconColor: color.secondary,
+        ),
+      );
+      tags.add(
+        FamilyRestaurantsFilterData(
+          label: locale.family_restaurants_filter_lunch,
+          icon: Icons.wb_sunny_rounded,
+          iconColor: color.secondary,
+        ),
+      );
+    }
+
+    return tags;
   }
 }

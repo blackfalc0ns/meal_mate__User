@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
 
 class FamilyMemberSelectedMealItem extends StatelessWidget {
@@ -25,8 +26,8 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
 
     final typeLower = meal.typeLabel.toLowerCase();
     if (typeLower.contains('فطور') || typeLower.contains('breakfast')) {
-      tagBgColor = color.errorContainer;
-      tagTextColor = color.onErrorContainer;
+      tagBgColor = color.secondaryContainer;
+      tagTextColor = color.secondary;
     } else if (typeLower.contains('عشاء') || typeLower.contains('dinner')) {
       tagBgColor = color.tertiaryContainer;
       tagTextColor = color.onTertiaryContainer;
@@ -41,6 +42,47 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           child: Row(
             children: [
+              AppCachedNetworkImage(
+                imageUrl: meal.imageUrl,
+                width: Spacing.familyMemberCalendarSelectedMealImageSize,
+                height: Spacing.familyMemberCalendarSelectedMealImageSize,
+                borderRadius: BorderRadius.circular(
+                  Spacing.familyMemberCalendarSelectedMealImageRadius,
+                ),
+                fit: BoxFit.cover,
+                errorWidget: meal.imageAsset.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          Spacing.familyMemberCalendarSelectedMealImageRadius,
+                        ),
+                        child: Image.asset(
+                          meal.imageAsset,
+                          width: Spacing
+                              .familyMemberCalendarSelectedMealImageSize,
+                          height: Spacing
+                              .familyMemberCalendarSelectedMealImageSize,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(
+                        width: Spacing
+                            .familyMemberCalendarSelectedMealImageSize,
+                        height: Spacing
+                            .familyMemberCalendarSelectedMealImageSize,
+                        decoration: BoxDecoration(
+                          color: color.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(
+                            Spacing.familyMemberCalendarSelectedMealImageRadius,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.restaurant_rounded,
+                          color: color.onSurfaceVariant,
+                          size: Spacing.iconMd,
+                        ),
+                      ),
+              ),
+              const SizedBox(width: Spacing.sm),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -108,13 +150,16 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
               const SizedBox(width: Spacing.sm),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: color.primaryContainer,
+                  color: color.primary.withValues(alpha: 0.05),
+                  border: Border.all(
+                    color: color.primary.withValues(alpha: 0.35),
+                  ),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.sm,
-                    vertical: 4,
+                    vertical: Spacing.xs,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -145,11 +190,12 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
         ),
         if (showDivider)
           Divider(
-            height: Spacing.border,
+            height: Spacing.sm,
             thickness: Spacing.border,
-            color: color.outlineVariant,
+            color: color.outlineVariant.withValues(alpha: 0.6),
           ),
       ],
     );
   }
 }
+

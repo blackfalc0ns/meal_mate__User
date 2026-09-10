@@ -12,7 +12,6 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_day_details_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
@@ -32,28 +31,28 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_selected_status.dart';
 
 class FamilyDayMealsScreen extends StatefulWidget {
-  const FamilyDayMealsScreen({super.key, this.args});
+  const FamilyDayMealsScreen({super.key, this.args, this.viewModel});
 
   final FamilyDayMealsArgs? args;
+  final FamilyCalendarViewModel? viewModel;
 
   @override
   State<FamilyDayMealsScreen> createState() => _FamilyDayMealsScreenState();
 }
 
 class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
-  FamilyCalendarViewModel? _viewModel;
+  late final FamilyCalendarViewModel _viewModel;
   late DateTime _selectedDate;
   bool _initialized = false;
-
-  // Fallback state for tests without DI
-  int _fakeSelectedMemberIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    if (getIt.isRegistered<FamilyCalendarViewModel>()) {
-      _viewModel = getIt<FamilyCalendarViewModel>();
-    }
+    _viewModel =
+        widget.viewModel ??
+        (getIt.isRegistered<FamilyCalendarViewModel>()
+            ? getIt<FamilyCalendarViewModel>()
+            : FamilyCalendarViewModel());
     _selectedDate = DateUtils.dateOnly(widget.args?.date ?? DateTime.now());
   }
 
@@ -63,26 +62,24 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
     if (_initialized) return;
     _initialized = true;
 
-    if (_viewModel != null) {
-      _viewModel!.doIntent(
-        InitFamilyCalendarEvent(
-          args: FamilyMemberCalendarArgs(
-            memberId: widget.args?.memberId,
-            displayName: widget.args?.memberName,
-            subscriptionId: widget.args?.subscriptionId,
-            members: widget.args?.members ?? const [],
-            date: _selectedDate,
-          ),
-          initialDate: _selectedDate,
-          localeName: context.localization.localeName,
+    _viewModel.doIntent(
+      InitFamilyCalendarEvent(
+        args: FamilyMemberCalendarArgs(
+          memberId: widget.args?.memberId,
+          displayName: widget.args?.memberName,
+          subscriptionId: widget.args?.subscriptionId,
+          members: widget.args?.members ?? const [],
+          date: _selectedDate,
         ),
-      );
-    }
+        initialDate: _selectedDate,
+        localeName: context.localization.localeName,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _viewModel?.close();
+    _viewModel.close();
     super.dispose();
   }
 
@@ -95,7 +92,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
     });
 
     final locale = context.localization;
-    _viewModel?.doIntent(
+    _viewModel.doIntent(
       SelectFamilyCalendarDayEvent(
         day: CalendarDayEntity(
           dayNumber: nextDate.day,
@@ -126,7 +123,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
       _selectedDate = cleanDate;
     });
 
-    _viewModel?.doIntent(
+    _viewModel.doIntent(
       SelectFamilyCalendarDayEvent(
         day: CalendarDayEntity(
           dayNumber: cleanDate.day,
@@ -140,7 +137,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
 
   void _openRestaurants([String? slot]) {
     final subId =
-        _viewModel?.state.activeSubscriptionId ?? widget.args?.subscriptionId;
+        _viewModel.state.activeSubscriptionId ?? widget.args?.subscriptionId;
     if (subId == null || subId.isEmpty) return;
 
     Navigator.of(context).pushNamed(
@@ -148,11 +145,14 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
       arguments: FamilyRestaurantsArgs(
         subscriptionId: subId,
         date: _selectedDate,
-        memberName:
-            _viewModel?.state.displayName ?? widget.args?.memberName ?? '',
+        memberName: _viewModel.state.displayName.isNotEmpty
+            ? _viewModel.state.displayName
+            : (widget.args?.memberName ?? ''),
         memberId:
-            _viewModel?.state.currentMember?.memberId ?? widget.args?.memberId,
-        members: _viewModel?.state.members ?? widget.args?.members ?? const [],
+            _viewModel.state.currentMember?.memberId ?? widget.args?.memberId,
+        members: _viewModel.state.members.isNotEmpty
+            ? _viewModel.state.members
+            : (widget.args?.members ?? const []),
         slot: slot ?? '',
         viewModel: _viewModel,
       ),
@@ -160,11 +160,10 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
   }
 
   void _openMeals(String slot) {
-    final state = _viewModel?.state;
-    final restaurant = state?.selectedDay?.restaurant;
-    final subId = state?.activeSubscriptionId ?? widget.args?.subscriptionId;
-    if (state == null ||
-        restaurant == null ||
+    final state = _viewModel.state;
+    final restaurant = state.selectedDay?.restaurant;
+    final subId = state.activeSubscriptionId ?? widget.args?.subscriptionId;
+    if (restaurant == null ||
         restaurant.id.isEmpty ||
         subId == null ||
         subId.isEmpty) {
@@ -241,7 +240,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
       ];
     }
 
-    return const FamilyDayDetailsFakeDataSource().getDetails().members;
+    return const [];
   }
 
   FamilyDayMealIconType _mapSlotToIconType(String slot) {
@@ -258,12 +257,8 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    if (_viewModel == null) {
-      return _buildFakeFallbackScaffold(context);
-    }
-
     return BlocProvider<FamilyCalendarViewModel>.value(
-      value: _viewModel!,
+      value: _viewModel,
       child: BlocBuilder<FamilyCalendarViewModel, FamilyCalendarState>(
         builder: (context, state) {
           final selectorMembers = _buildSelectorMembers(context, state);
@@ -319,7 +314,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                         members: selectorMembers,
                         selectedIndex: safeSelectedMemberIndex,
                         onMemberSelected: (index) {
-                          _viewModel!.doIntent(
+                          _viewModel.doIntent(
                             SelectFamilyMemberEvent(
                               index: index,
                               localeName: locale.localeName,
@@ -347,7 +342,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                       ApiErrorWidget(
                         exception: state.calendarFailure!.exception,
                         onRetry: () {
-                          _viewModel!.doIntent(
+                          _viewModel.doIntent(
                             RetryFamilyCalendarEvent(
                               localeName: locale.localeName,
                             ),
@@ -429,102 +424,6 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildFakeFallbackScaffold(BuildContext context) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-    final details = const FamilyDayDetailsFakeDataSource().getDetails();
-    final selectorMembers = details.members;
-    final safeSelectedMemberIndex = selectorMembers.isEmpty
-        ? 0
-        : _fakeSelectedMemberIndex.clamp(0, selectorMembers.length - 1).toInt();
-    final selectedMember = selectorMembers.isNotEmpty
-        ? selectorMembers[safeSelectedMemberIndex]
-        : FamilyDayMemberEntity(
-            name: '',
-            ageLabel: '',
-            statusLabel: locale.family_member_active_label,
-            imageAsset: Assets.profileAvatar,
-          );
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        titleWidget: Text(
-          locale.family_day_screen_title,
-          locale: Locale(locale.localeName),
-          textAlign: TextAlign.center,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size18,
-            color: color.onSurface,
-          ),
-        ),
-        onBackPressed: () => Navigator.maybePop(context),
-      ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsetsDirectional.only(
-            start: Spacing.familyDayHorizontalPadding,
-            end: Spacing.familyDayHorizontalPadding,
-            bottom: Spacing.xl,
-          ),
-          child: Semantics(
-            label: locale.family_day_screen_title,
-            child: Column(
-              children: [
-                FamilyDayMemberSelector(
-                  members: selectorMembers,
-                  selectedIndex: safeSelectedMemberIndex,
-                  onMemberSelected: (index) {
-                    setState(() => _fakeSelectedMemberIndex = index);
-                  },
-                ),
-                FamilyDayHeader(
-                  dateLabel: _formatDate(context, _selectedDate),
-                  onPreviousDay: () => _changeDay(-1),
-                  onNextDay: () => _changeDay(1),
-                  onDatePressed: _openDatePicker,
-                ),
-                FamilyDayMemberCard(member: selectedMember),
-                const SizedBox(height: Spacing.familyDayMemberTopGap),
-                FamilyDayCurrentRestaurantCard(
-                  restaurantName: details.meals.isNotEmpty
-                      ? details.meals.first.restaurantName
-                      : '',
-                  onChangeRestaurant: _openRestaurants,
-                ),
-                const SizedBox(height: Spacing.familyDayMemberTopGap),
-                for (final meal in details.meals) ...[
-                  FamilyDayMealCard(
-                    meal: meal,
-                    onEditPressed: _openRestaurants,
-                  ),
-                  const SizedBox(height: Spacing.familyDayMealListGap),
-                ],
-                const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
-                FamilyDayReviewButton(
-                  label: locale.family_day_review_meals_button,
-                  onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(AppRoutes.familyReviewMemberMeals);
-                  },
-                ),
-                const SizedBox(height: Spacing.familyDaySelectedTopGap),
-                FamilyDaySelectedStatus(
-                  label: locale.family_day_all_meals_selected,
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
