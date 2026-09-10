@@ -48,9 +48,49 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
           ),
           Expanded(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox.square(
+                  dimension: Spacing.familyMemberDetailProgressRingSize,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox.square(
+                        dimension: Spacing.familyMemberDetailProgressRingSize,
+                        child: CircularProgressIndicator(
+                          value: member.progress,
+                          strokeWidth: Spacing.sm,
+                          backgroundColor: color.outlineVariant,
+                          color: color.primary,
+                          strokeCap: StrokeCap.butt,
+                        ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            member.completedValue,
+                            locale: Locale(locale.localeName),
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size15,
+                              color: color.onSurface,
+                            ),
+                          ),
+                          Text(
+                            member.completedLabel,
+                            locale: Locale(locale.localeName),
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size9,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
                 SizedBox(
                   width: Spacing.familyMemberDetailCalendarButtonWidth,
                   height: Spacing.familyMemberDetailCalendarButtonHeight,
@@ -98,48 +138,6 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                         color: color.primary,
                       ),
                     ),
-                  ),
-                ),
-                const Spacer(),
-                SizedBox.square(
-                  dimension: Spacing.familyMemberDetailProgressRingSize,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox.square(
-                        dimension: Spacing.familyMemberDetailProgressRingSize,
-                        child: CircularProgressIndicator(
-                          value: member.progress,
-                          strokeWidth: Spacing.sm,
-                          backgroundColor: color.outlineVariant,
-                          color: color.primary,
-                          strokeCap: StrokeCap.butt,
-                        ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            member.completedValue,
-                            locale: Locale(locale.localeName),
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size15,
-                              color: color.onSurface,
-                            ),
-                          ),
-                          Text(
-                            member.completedLabel,
-                            locale: Locale(locale.localeName),
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size9,
-                              color: color.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
                 ),
               ],
