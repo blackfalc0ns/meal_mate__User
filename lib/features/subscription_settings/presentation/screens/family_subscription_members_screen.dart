@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_add_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_list_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_search_field.dart';
 
 class FamilySubscriptionMembersScreen extends StatefulWidget {
@@ -75,7 +76,7 @@ class _FamilySubscriptionMembersScreenState
           body: SafeArea(
             top: false,
             child: state.isLoading && state.members.isEmpty
-                ? Center(child: CircularProgressIndicator(color: color.primary))
+                ? const FamilyMembersLoadingSkeleton()
                 : RefreshIndicator(
                     color: color.primary,
                     onRefresh: () async {

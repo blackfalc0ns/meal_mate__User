@@ -26,6 +26,8 @@ class FamilyPlanState {
     this.addresses = const [],
     this.isMemberLookupLoading = false,
     this.memberLookup,
+    this.memberLookupPhone,
+    this.memberLookupFailure,
     this.isProgramsLoading = false,
     this.programs = const [],
     this.selectedProgramIndex,
@@ -73,6 +75,8 @@ class FamilyPlanState {
   final List<CustomerAddressEntity> addresses;
   final bool isMemberLookupLoading;
   final FamilyMemberLookupEntity? memberLookup;
+  final String? memberLookupPhone;
+  final Failure? memberLookupFailure;
 
   final bool isProgramsLoading;
   final List<SubscriptionProgramEntity> programs;
@@ -191,6 +195,10 @@ class FamilyPlanState {
     bool? isMemberLookupLoading,
     FamilyMemberLookupEntity? memberLookup,
     bool clearMemberLookup = false,
+    String? memberLookupPhone,
+    bool clearMemberLookupPhone = false,
+    Failure? memberLookupFailure,
+    bool clearMemberLookupFailure = false,
     bool? isProgramsLoading,
     List<SubscriptionProgramEntity>? programs,
     int? selectedProgramIndex,
@@ -248,6 +256,12 @@ class FamilyPlanState {
       memberLookup: clearMemberLookup
           ? null
           : (memberLookup ?? this.memberLookup),
+      memberLookupPhone: clearMemberLookupPhone
+          ? null
+          : (memberLookupPhone ?? this.memberLookupPhone),
+      memberLookupFailure: clearMemberLookupFailure
+          ? null
+          : (memberLookupFailure ?? this.memberLookupFailure),
       isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
       programs: programs ?? this.programs,
       selectedProgramIndex: clearSelectedProgram

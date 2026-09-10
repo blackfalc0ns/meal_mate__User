@@ -29,18 +29,18 @@ class FamilySubscriptionQuickAccessSection extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.md),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (int index = 0; index < actions.length; index++) ...[
-                if (index > 0) const SizedBox(width: 30),
-                Expanded(
+              for (final action in actions)
+                SizedBox(
+                  width: Spacing.familyManageQuickTileWidth,
                   child: FamilySubscriptionQuickAccessTile(
-                    action: actions[index],
+                    action: action,
                     onTap: onActionTap == null
                         ? null
-                        : () => onActionTap!(actions[index]),
+                        : () => onActionTap!(action),
                   ),
                 ),
-              ],
             ],
           ),
         ],

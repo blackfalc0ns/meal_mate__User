@@ -37,6 +37,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
   final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
   final LookupFamilyMemberUseCase _lookupFamilyMemberUseCase;
+  int _memberLookupRequestId = 0;
 
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
@@ -226,25 +227,34 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _lookupFamilyMember(String phone) async {
+    final requestId = ++_memberLookupRequestId;
     emit(
       state.copyWith(
         isMemberLookupLoading: true,
         clearMemberLookup: true,
+        clearMemberLookupPhone: true,
+        clearMemberLookupFailure: true,
         clearFailure: true,
       ),
     );
     final result = await _lookupFamilyMemberUseCase(phone);
+    if (isClosed || requestId != _memberLookupRequestId) return;
     switch (result) {
       case ApiSuccessResult():
         emit(
           state.copyWith(
             isMemberLookupLoading: false,
             memberLookup: result.data,
+            memberLookupPhone: phone,
+            clearMemberLookupFailure: true,
           ),
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(isMemberLookupLoading: false, failure: result.failure),
+          state.copyWith(
+            isMemberLookupLoading: false,
+            memberLookupFailure: result.failure,
+          ),
         );
     }
   }

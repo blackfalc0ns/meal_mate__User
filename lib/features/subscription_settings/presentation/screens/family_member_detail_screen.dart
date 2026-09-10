@@ -191,7 +191,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           subtitle: locale.family_member_shortcut_permissions_subtitle,
           type: ui.FamilyMemberDetailShortcutType.permissions,
           onTap: () => Navigator.of(context).pushNamed(
-            AppRoutes.familyMemberPermissions,
+            AppRoutes.familyMemberAccess,
             arguments: (detail.memberId, detail.isManager, detail.displayName),
           ),
         ),

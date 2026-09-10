@@ -6,8 +6,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
@@ -15,6 +19,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_relationship_options.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_member_phone_field.dart';
 
 class FamilyAddMemberDialog extends StatefulWidget {
   const FamilyAddMemberDialog({
@@ -64,8 +69,16 @@ class FamilyAddMemberDialog extends StatefulWidget {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: color.surface.withValues(alpha: 0),
-      builder: (_) => BlocProvider<FamilySubscriptionSetupViewModel>.value(
-        value: viewModel,
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<FamilySubscriptionSetupViewModel>.value(
+            value: viewModel,
+          ),
+          BlocProvider<AuthViewModel>(
+            create: (_) =>
+                getIt<AuthViewModel>()..doIntent(const GetCallingCodesEvent()),
+          ),
+        ],
         child: FamilyAddMemberDialog(
           member: member,
           relationships: relationships,
@@ -88,6 +101,9 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   String? _selectedRelationshipCode;
   String? _selectedAddressId;
   int _gender = 1; // 1 Male, 2 Female
+  String? _resolvedPhone;
+  String? _phoneError;
+  bool _phoneLookupBlocked = false;
 
   @override
   void initState() {
@@ -95,6 +111,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final member = widget.member;
     _nameController = TextEditingController(text: member?.displayName ?? '');
     _phoneController = TextEditingController(text: member?.phoneNumber ?? '');
+    _resolvedPhone = member?.phoneNumber;
     _occupationController = TextEditingController(
       text: member?.occupation ?? '',
     );
@@ -132,12 +149,30 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
 
   void _handleSubmit() {
     final name = _nameController.text.trim();
-    final phone = _phoneController.text.trim();
+    final phone = _resolvedPhone?.trim() ?? '';
     final age = int.tryParse(_ageController.text.trim()) ?? 0;
     final relCode = _selectedRelationshipCode ?? 'other';
 
-    if (phone.isEmpty || name.isEmpty || age < 1 || age > 120) {
+    if (phone.isEmpty ||
+        _phoneLookupBlocked ||
+        name.isEmpty ||
+        age < 1 ||
+        age > 120) {
       return;
+    }
+
+    if (widget.member == null) {
+      final lookupState = context
+          .read<FamilySubscriptionSetupViewModel>()
+          .state;
+      final lookupIsCurrent =
+          lookupState.memberLookupPhone == phone &&
+          lookupState.memberLookup != null &&
+          lookupState.memberLookupFailure == null;
+      if (!lookupIsCurrent) {
+        if (!lookupState.isMemberLookupLoading) _lookupPhone(phone);
+        return;
+      }
     }
 
     widget.onSubmit?.call(
@@ -173,16 +208,41 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
 
     return BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
       listenWhen: (previous, current) =>
-          previous.memberLookup != current.memberLookup,
+          previous.memberLookup != current.memberLookup ||
+          previous.memberLookupFailure != current.memberLookupFailure ||
+          previous.isMemberLookupLoading != current.isMemberLookupLoading,
       listener: (context, state) {
+        final failure = state.memberLookupFailure;
+        if (failure != null) {
+          setState(() {
+            _phoneError = mapFailureMessage(context, failure.code);
+            _phoneLookupBlocked = failure.code == 'family.already_in_family';
+          });
+          return;
+        }
+        if (state.isMemberLookupLoading) {
+          if (_phoneError != null || _phoneLookupBlocked) {
+            setState(() {
+              _phoneError = null;
+              _phoneLookupBlocked = false;
+            });
+          }
+          return;
+        }
         final lookup = state.memberLookup;
         if (lookup == null) return;
         setState(() {
-          _nameController.text = lookup.found ? lookup.displayName ?? '' : '';
-          _ageController.text = lookup.found
-              ? lookup.ageYears?.toString() ?? ''
-              : '';
-          _gender = lookup.found ? lookup.gender ?? 1 : 1;
+          _phoneError = null;
+          _phoneLookupBlocked = false;
+          if (lookup.found) {
+            if (lookup.displayName != null) {
+              _nameController.text = lookup.displayName!;
+            }
+            if (lookup.ageYears != null) {
+              _ageController.text = lookup.ageYears.toString();
+            }
+            if (lookup.gender != null) _gender = lookup.gender!;
+          }
         });
       },
       child: Align(
@@ -256,25 +316,21 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                           ),
                         ),
                         const SizedBox(height: Spacing.xs),
-                        AppTextField(
-                          controller: _phoneController,
-                          hint: l10n.family_phone_number_hint,
-                          keyboardType: TextInputType.phone,
-                          textInputAction: TextInputAction.search,
-                          enabled: widget.member == null,
-                          onSubmitted: (_) => _lookupPhone(),
-                          prefixIcon: Icon(
-                            Icons.phone_outlined,
-                            color: color.onSurfaceVariant,
-                            size: Spacing.iconSm,
-                          ),
-                          suffixIcon: IconButton(
-                            tooltip: l10n.family_phone_lookup,
-                            onPressed: widget.member == null
-                                ? _lookupPhone
-                                : null,
-                            icon: const Icon(Icons.search_rounded),
-                          ),
+                        BlocSelector<
+                          FamilySubscriptionSetupViewModel,
+                          FamilyPlanState,
+                          bool
+                        >(
+                          selector: (state) => state.isMemberLookupLoading,
+                          builder: (context, isLoading) =>
+                              FamilyMemberPhoneField(
+                                controller: _phoneController,
+                                enabled: widget.member == null,
+                                isLoading: isLoading,
+                                errorText: _phoneError,
+                                onPhoneChanged: _handlePhoneChanged,
+                                onLookup: _lookupPhone,
+                              ),
                         ),
                         const SizedBox(height: Spacing.md),
                         // Full name
@@ -532,12 +588,19 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     );
   }
 
-  void _lookupPhone() {
-    final phone = _phoneController.text.trim();
-    if (phone.isEmpty) return;
+  void _lookupPhone(String phone) {
     context.read<FamilySubscriptionSetupViewModel>().doIntent(
       LookupFamilyMemberEvent(phone),
     );
+  }
+
+  void _handlePhoneChanged(String? phone) {
+    _resolvedPhone = phone;
+    if (_phoneError == null && !_phoneLookupBlocked) return;
+    setState(() {
+      _phoneError = null;
+      _phoneLookupBlocked = false;
+    });
   }
 }
 

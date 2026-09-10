@@ -31,64 +31,57 @@ class FamilySubscriptionMealsStatusItem extends StatelessWidget {
           ),
         ),
         const SizedBox(width: Spacing.xs),
-        Text(
-          status.memberName,
-          locale: Locale(locale.localeName),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: getSemiBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size9,
-            color: color.onSurface,
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 42),
+          child: Text(
+            status.memberName,
+            locale: Locale(locale.localeName),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: getSemiBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size9,
+              color: color.onSurface,
+            ),
           ),
         ),
-        const SizedBox(width: Spacing.sm),
+        const SizedBox(width: Spacing.xs),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: Spacing.xss,
-                    height: Spacing.xss,
-                    decoration: BoxDecoration(
+                  if (status.status == FamilySubscriptionMealStatus.completed)
+                    Icon(
+                      Icons.check_circle,
+                      size: 11,
                       color: statusColor,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    status.statusLabel,
-                    locale: Locale(locale.localeName),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size8,
-                      color: statusColor,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: Spacing.xs),
-              Row(
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadiusDirectional.circular(
-                        Spacing.radiusPill,
+                    )
+                  else
+                    Container(
+                      width: 5,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: statusColor,
+                        shape: BoxShape.circle,
                       ),
-                      child: LinearProgressIndicator(
-                        value: status.progress,
-                        minHeight: Spacing.xs,
-                        backgroundColor: color.outlineVariant,
-                        valueColor: AlwaysStoppedAnimation<Color>(statusColor),
+                    ),
+                  const SizedBox(width: 3),
+                  Flexible(
+                    child: Text(
+                      status.statusLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size8,
+                        color: statusColor,
                       ),
                     ),
                   ),
-                  const SizedBox(width: Spacing.xs),
+                  const Spacer(),
                   Text(
                     status.mealsLabel,
                     locale: Locale(locale.localeName),
@@ -97,10 +90,25 @@ class FamilySubscriptionMealsStatusItem extends StatelessWidget {
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size8,
-                      color: statusColor,
+                      color: status.status ==
+                              FamilySubscriptionMealStatus.completed
+                          ? color.primary
+                          : color.onSurfaceVariant,
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 3),
+              ClipRRect(
+                borderRadius: BorderRadiusDirectional.circular(
+                  Spacing.radiusPill,
+                ),
+                child: LinearProgressIndicator(
+                  value: status.progress,
+                  minHeight: 3.5,
+                  backgroundColor: color.outlineVariant,
+                  valueColor: AlwaysStoppedAnimation<Color>(statusColor),
+                ),
               ),
             ],
           ),

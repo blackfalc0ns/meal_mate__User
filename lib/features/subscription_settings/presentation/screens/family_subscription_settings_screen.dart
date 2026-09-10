@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart'
     as ui;
@@ -21,6 +22,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_members_section.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_plan_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_section.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_warning_card.dart';
 
 class FamilySubscriptionSettingsScreen extends StatefulWidget {
   const FamilySubscriptionSettingsScreen({super.key});
@@ -76,6 +78,7 @@ class _FamilySubscriptionSettingsScreenState
               titleFontSize: FontSize.size14,
               backgroundColor: color.surface,
               showShadow: false,
+              actions: [NotificationButton(onTap: () {})],
             ),
             body: home == null && state.failure != null
                 ? ApiErrorWidget(
@@ -106,6 +109,10 @@ class _FamilySubscriptionSettingsScreenState
 
   Widget _content(BuildContext context, FamilyHomeEntity home) {
     final locale = context.localization;
+    final hasIncompleteMeals = home.todaySchedule.any(
+      (m) =>
+          m.todayRequiredCount > 0 && m.todayFilledCount < m.todayRequiredCount,
+    );
     final settings = ui.FamilySubscriptionSettingsEntity(
       title: home.name,
       subtitle: home.packageName,
@@ -123,10 +130,8 @@ class _FamilySubscriptionSettingsScreenState
               statusLabel:
                   member.todayFilledCount >= member.todayRequiredCount &&
                       member.todayRequiredCount > 0
-                  ? locale.family_review_status_ready
-                  : member.hasPlan
-                  ? locale.family_member_active_label
-                  : locale.family_member_no_plan,
+                  ? locale.family_member_completed
+                  : locale.family_manage_missing_selection,
               isComplete:
                   member.todayFilledCount >= member.todayRequiredCount &&
                   member.todayRequiredCount > 0,
@@ -146,23 +151,44 @@ class _FamilySubscriptionSettingsScreenState
         final required = member.todayRequiredCount;
         final filled = member.todayFilledCount;
         final complete = required > 0 && filled >= required;
+        final isStarted = filled > 0;
+        final String statusLabel = complete
+            ? locale.family_manage_completed_status
+            : isStarted
+            ? locale.family_manage_selected_status
+            : (member.todayUiStatus?.trim().isNotEmpty == true
+                  ? member.todayUiStatus!
+                  : locale.family_manage_not_started_status);
+        final String mealsLabel = required <= 0
+            ? '$filled/$required'
+            : filled == 0
+            ? locale.family_manage_meal_count_0.replaceFirst(
+                '0/4',
+                '$filled/$required',
+              )
+            : locale.family_manage_meal_count_4.replaceFirst(
+                '4/4',
+                '$filled/$required',
+              );
         return ui.FamilySubscriptionMealStatusEntity(
           memberName: member.displayName,
           memberImageAsset: Assets.profileAvatar,
-          mealsLabel: '$filled/$required',
-          statusLabel: complete
-              ? locale.family_review_status_ready
-              : member.todayUiStatus ?? '',
+          mealsLabel: mealsLabel,
+          statusLabel: statusLabel,
           progress: required <= 0 ? 0 : (filled / required).clamp(0, 1),
           status: complete
               ? ui.FamilySubscriptionMealStatus.completed
-              : filled > 0
+              : isStarted
               ? ui.FamilySubscriptionMealStatus.selected
               : ui.FamilySubscriptionMealStatus.missing,
         );
       }).toList(),
-      warningTitle: '',
-      warningMessage: '',
+      warningTitle: hasIncompleteMeals
+          ? locale.family_manage_warning_title
+          : '',
+      warningMessage: hasIncompleteMeals
+          ? locale.family_manage_warning_message
+          : '',
     );
     return SafeArea(
       top: false,
@@ -194,6 +220,10 @@ class _FamilySubscriptionSettingsScreenState
             const SizedBox(height: Spacing.xl),
             FamilySubscriptionMealsStatusCard(statuses: settings.mealStatuses),
           ],
+          if (settings.warningTitle.isNotEmpty) ...[
+            const SizedBox(height: Spacing.md),
+            FamilySubscriptionWarningCard(settings: settings),
+          ],
           const SizedBox(height: Spacing.xl),
         ],
       ),
@@ -203,17 +233,19 @@ class _FamilySubscriptionSettingsScreenState
   String _shortcutLabel(BuildContext context, String code) {
     final locale = context.localization;
     return switch (code) {
-      'calendar' => locale.family_member_show_calendar,
-      'meals' => locale.family_meal_stepper_meal,
-      'subscriptions' => locale.family_member_package_title,
+      'calendar' || 'meals' => locale.family_manage_meals,
+      'subscriptions' || 'subscription' => locale.family_manage_subscription,
+      'invoice' || 'bills' => locale.family_manage_invoice,
+      'permissions' => locale.family_manage_permissions,
       _ => code,
     };
   }
 
   String _shortcutIcon(String code) => switch (code) {
-    'calendar' => Assets.familyManageMeals,
-    'meals' => Assets.familyManageMeals,
-    'subscriptions' => Assets.familyManageSubscription,
+    'calendar' || 'meals' => Assets.familyManageMeals,
+    'subscriptions' || 'subscription' => Assets.familyManageSubscription,
+    'invoice' || 'bills' => Assets.familyManageInvoice,
+    'permissions' => Assets.familyManagePermissions,
     _ => Assets.familyManagePermissions,
   };
 }

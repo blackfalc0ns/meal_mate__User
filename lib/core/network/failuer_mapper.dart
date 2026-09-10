@@ -130,6 +130,8 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.family_error_cannot_remove_manager;
     case 'family.member_not_found':
       return locale.family_error_member_not_found;
+    case 'family.already_in_family':
+      return locale.family_error_already_in_family;
     case 'family.not_manager':
       return locale.family_error_not_manager;
     case 'family.use_checkout_flow':

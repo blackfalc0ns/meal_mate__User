@@ -39,7 +39,7 @@ class FamilySetupMemberTile extends StatelessWidget {
             radius: 18,
             backgroundColor: color.primary.withValues(alpha: 0.1),
             child: Icon(
-              member.gender == 2 ? Icons.female_rounded : Icons.male_rounded,
+              member.gender == 2 ? Icons.person : Icons.person_outline,
               color: color.primary,
               size: 20,
             ),
@@ -59,6 +59,7 @@ class FamilySetupMemberTile extends StatelessWidget {
                         color: color.onSurface,
                       ),
                     ),
+                    Spacer(),
                     if (member.isManager) ...[
                       const SizedBox(width: Spacing.xs),
                       Container(

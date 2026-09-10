@@ -26,14 +26,13 @@ class FamilySubscriptionWarningCard extends StatelessWidget {
         borderRadius: BorderRadiusDirectional.circular(13.31),
       ),
       child: Row(
-        textDirection: TextDirection.rtl,
         children: [
           SvgPicture.asset(
             Assets.familyManageAlert,
             width: 29.04,
             height: 29.04,
           ),
-          const SizedBox(width: Spacing.xxl),
+          const SizedBox(width: Spacing.md),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

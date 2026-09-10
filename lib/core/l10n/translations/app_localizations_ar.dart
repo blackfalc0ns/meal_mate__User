@@ -2464,6 +2464,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_members_add_member => 'إضافة فرد';
 
   @override
+  String get family_member_has_account => 'لديه حساب';
+
+  @override
+  String get family_member_all_meals_manager => 'جميع الوجبات يديرها المسؤول';
+
+  @override
+  String get family_member_some_meals_customized => 'تم تخصيص بعض الوجبات';
+
+  @override
+  String get family_member_no_plan_selected => 'لم يتم اختيار النظام';
+
+  @override
   String get family_plan_feature_group_delivery => 'توصيل مجمع';
 
   @override
@@ -2598,6 +2610,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_phone_lookup => 'بحث عن الفرد';
+
+  @override
+  String get family_error_already_in_family =>
+      'This phone number already belongs to another family.';
 
   @override
   String get family_occupation => 'المهنة';

@@ -18,7 +18,6 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      height: Spacing.familyManageMealsStatusHeight,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.base,
         vertical: Spacing.md,
@@ -36,24 +35,23 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 locale.family_manage_today_meals_status,
-
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
                   color: color.onSurface,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: Spacing.xss),
               Text(
                 locale.family_manage_today_date,
-
                 style: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size9,
@@ -63,25 +61,24 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Spacing.md),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: 31,
-                crossAxisSpacing: Spacing.lg,
-                mainAxisSpacing: Spacing.md,
-              ),
-              itemCount: statuses.length,
-              itemBuilder: (context, index) {
-                return FamilySubscriptionMealsStatusItem(
-                  status: statuses[index],
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 34,
+              crossAxisSpacing: Spacing.lg,
+              mainAxisSpacing: Spacing.md,
             ),
+            itemCount: statuses.length,
+            itemBuilder: (context, index) {
+              return FamilySubscriptionMealsStatusItem(
+                status: statuses[index],
+              );
+            },
           ),
-          //  const SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.base),
           AppButton(
             text: locale.family_manage_complete_missing_meals,
             onPressed: () {},

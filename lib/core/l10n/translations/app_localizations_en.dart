@@ -2510,6 +2510,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_members_add_member => 'Add member';
 
   @override
+  String get family_member_has_account => 'Has account';
+
+  @override
+  String get family_member_all_meals_manager => 'All meals managed by manager';
+
+  @override
+  String get family_member_some_meals_customized => 'Some meals customized';
+
+  @override
+  String get family_member_no_plan_selected => 'No plan selected';
+
+  @override
   String get family_plan_feature_group_delivery => 'Group delivery';
 
   @override
@@ -2645,6 +2657,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_phone_lookup => 'Find member';
+
+  @override
+  String get family_error_already_in_family =>
+      'This phone number already belongs to another family.';
 
   @override
   String get family_occupation => 'Occupation';

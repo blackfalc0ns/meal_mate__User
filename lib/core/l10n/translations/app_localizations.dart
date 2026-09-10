@@ -4694,6 +4694,30 @@ abstract class AppLocalizations {
   /// **'Add member'**
   String get family_members_add_member;
 
+  /// No description provided for @family_member_has_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Has account'**
+  String get family_member_has_account;
+
+  /// No description provided for @family_member_all_meals_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'All meals managed by manager'**
+  String get family_member_all_meals_manager;
+
+  /// No description provided for @family_member_some_meals_customized.
+  ///
+  /// In en, this message translates to:
+  /// **'Some meals customized'**
+  String get family_member_some_meals_customized;
+
+  /// No description provided for @family_member_no_plan_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan selected'**
+  String get family_member_no_plan_selected;
+
   /// No description provided for @family_plan_feature_group_delivery.
   ///
   /// In en, this message translates to:
@@ -4963,6 +4987,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find member'**
   String get family_phone_lookup;
+
+  /// No description provided for @family_error_already_in_family.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number already belongs to another family.'**
+  String get family_error_already_in_family;
 
   /// No description provided for @family_occupation.
   ///
