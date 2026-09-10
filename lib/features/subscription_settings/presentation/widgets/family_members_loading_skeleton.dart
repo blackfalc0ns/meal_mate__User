@@ -51,32 +51,48 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const ShimmerPlaceholder.rect(
-                          width: 80,
-                          height: 14,
-                          borderRadius: Spacing.radiusXs,
+                        Row(
+                          children: const [
+                            ShimmerPlaceholder.rect(
+                              width: 80,
+                              height: 14,
+                              borderRadius: Spacing.radiusXs,
+                            ),
+                            Spacer(),
+                            ShimmerPlaceholder.rect(
+                              width: 48,
+                              height: Spacing.familyMembersStatusChipHeight,
+                              borderRadius: Spacing.radiusPill,
+                            ),
+                          ],
                         ),
                         const SizedBox(height: Spacing.xs),
                         const ShimmerPlaceholder.rect(
                           width: 60,
-                          height: 10,
+                          height: 12,
                           borderRadius: Spacing.radiusXs,
                         ),
                         const SizedBox(height: Spacing.xs),
-                        const ShimmerPlaceholder.rect(
-                          width: 100,
-                          height: 10,
-                          borderRadius: Spacing.radiusXs,
+                        Row(
+                          children: const [
+                            Expanded(
+                              child: ShimmerPlaceholder.rect(
+                                height: 24,
+                                borderRadius: Spacing.radiusSm,
+                              ),
+                            ),
+                            SizedBox(width: Spacing.xs),
+                            Expanded(
+                              child: ShimmerPlaceholder.rect(
+                                height: 24,
+                                borderRadius: Spacing.radiusSm,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: Spacing.xs),
                         const ShimmerPlaceholder.rect(
-                          width: 48,
-                          height: Spacing.familyMembersStatusChipHeight,
-                          borderRadius: Spacing.radiusPill,
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        const ShimmerPlaceholder.rect(
-                          width: 130,
+                          width: 140,
                           height: Spacing.familyMembersNoteChipHeight,
                           borderRadius: Spacing.radiusPill,
                         ),

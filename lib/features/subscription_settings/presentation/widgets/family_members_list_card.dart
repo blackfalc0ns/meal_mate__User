@@ -55,8 +55,21 @@ class FamilyMembersListCard extends StatelessWidget {
       noteColor = color.secondary;
     }
 
-    final mealsDaysText =
-        '${member.todayRequiredCount > 0 ? member.todayRequiredCount : 4} ${locale.family_manage_meals.replaceFirst('ال', '')} • ${member.remainingDays > 0 ? member.remainingDays : 7} ${locale.family_days_7.replaceAll(RegExp(r'[0-9]'), '').trim()}';
+    final accountBadgeLabel = member.isManager
+        ? locale.family_member_manager_label
+        : member.hasPlan
+        ? locale.family_member_has_account
+        : locale.family_member_member_label;
+
+    final accountBadgeColor = member.isManager
+        ? color.primary
+        : member.hasPlan
+        ? color.primary
+        : color.onSurfaceVariant;
+
+    final hasActivePlan =
+        member.hasPlan &&
+        (member.todayRequiredCount > 0 || member.remainingDays > 0);
 
     return Material(
       color: color.surface,
@@ -79,25 +92,79 @@ class FamilyMembersListCard extends StatelessWidget {
             ),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.chevron_right_rounded,
-                size: Spacing.iconSm,
-                color: color.onSurfaceVariant,
-              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      member.displayName,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size14,
-                        color: color.onSurface,
-                      ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            member.displayName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size14,
+                              color: color.onSurface,
+                            ),
+                          ),
+                        ),
+                        if (member.ageYears != null && member.ageYears! > 0) ...[
+                          const SizedBox(width: Spacing.xs),
+                          Text(
+                            '• ${locale.family_member_age_years(member.ageYears!)}',
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                        const Spacer(),
+                        Container(
+                          height: Spacing.familyMembersStatusChipHeight,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.sm,
+                          ),
+                          decoration: BoxDecoration(
+                            color: statusColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 5,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: statusColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: Spacing.xs),
+                              Text(
+                                statusLabel,
+                                style: getSemiBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: statusColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Icon(
+                          Icons.chevron_left_rounded,
+                          size: Spacing.iconSm,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: Spacing.xs),
                     Row(
@@ -110,70 +177,156 @@ class FamilyMembersListCard extends StatelessWidget {
                         ),
                         const SizedBox(width: Spacing.xs),
                         Text(
-                          member.hasPlan
+                          member.programName.trim().isNotEmpty
                               ? member.programName
                               : locale.family_member_no_plan,
-                          style: getRegularStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
+                            fontSize: FontSize.size10,
                             color: color.onSurfaceVariant,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: Spacing.xs),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          mealsDaysText,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
-                            color: color.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Icon(
-                          Icons.chevron_right_rounded,
-                          size: Spacing.iconSm,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Container(
-                      height: Spacing.familyMembersStatusChipHeight,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                      ),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                    if (hasActivePlan)
+                      Row(
                         children: [
-                          Container(
-                            width: 5,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.sm,
+                                vertical: Spacing.xs,
+                              ),
+                              decoration: BoxDecoration(
+                                color: color.primary.withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusSm,
+                                ),
+                                border: Border.all(
+                                  color: color.outlineVariant.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                  width: Spacing.border,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.restaurant_rounded,
+                                    size: Spacing.iconXs,
+                                    color: color.primary,
+                                  ),
+                                  const SizedBox(width: Spacing.xs),
+                                  Expanded(
+                                    child: Text(
+                                      member.todayRequiredCount > 0
+                                          ? '${member.todayRequiredCount} ${locale.family_manage_meals.replaceFirst('ال', '')}'
+                                          : locale.family_member_no_plan,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: getMediumStyle(
+                                        fontFamily: FontConstant.alexandria,
+                                        fontSize: FontSize.size9,
+                                        color: color.onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(width: Spacing.xs),
-                          Text(
-                            statusLabel,
-                            style: getSemiBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size9,
-                              color: statusColor,
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.sm,
+                                vertical: Spacing.xs,
+                              ),
+                              decoration: BoxDecoration(
+                                color: color.secondary.withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusSm,
+                                ),
+                                border: Border.all(
+                                  color: color.outlineVariant.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                  width: Spacing.border,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_rounded,
+                                    size: Spacing.iconXs,
+                                    color: color.secondary,
+                                  ),
+                                  const SizedBox(width: Spacing.xs),
+                                  Expanded(
+                                    child: Text(
+                                      member.remainingDays > 0
+                                          ? locale.family_member_days_remaining(
+                                              member.remainingDays,
+                                            )
+                                          : locale.family_member_no_plan,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: getMediumStyle(
+                                        fontFamily: FontConstant.alexandria,
+                                        fontSize: FontSize.size9,
+                                        color: color.onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
+                      )
+                    else
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                          vertical: Spacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.outlineVariant.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusSm,
+                          ),
+                          border: Border.all(
+                            color: color.outlineVariant.withValues(alpha: 0.5),
+                            width: Spacing.border,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline_rounded,
+                              size: Spacing.iconXs,
+                              color: color.onSurfaceVariant,
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Expanded(
+                              child: Text(
+                                locale.family_member_no_plan_selected,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getRegularStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: color.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     const SizedBox(height: Spacing.xs),
                     Container(
                       height: Spacing.familyMembersNoteChipHeight,
@@ -182,18 +335,34 @@ class FamilyMembersListCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: noteColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                        borderRadius: BorderRadius.circular(
+                          Spacing.radiusPill,
+                        ),
                       ),
-                      child: Center(
-                        widthFactor: 1.0,
-                        child: Text(
-                          noteText,
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size8,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            member.isManager
+                                ? Icons.shield_rounded
+                                : Icons.tune_rounded,
+                            size: Spacing.iconXs,
                             color: noteColor,
                           ),
-                        ),
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              noteText,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size8,
+                                color: noteColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -213,19 +382,23 @@ class FamilyMembersListCard extends StatelessWidget {
                   const SizedBox(height: Spacing.xs),
                   Container(
                     height: Spacing.familyMembersAccountChipHeight,
-                    padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.sm,
+                    ),
                     decoration: BoxDecoration(
-                      color: color.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      color: accountBadgeColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(
+                        Spacing.radiusPill,
+                      ),
                     ),
                     child: Center(
                       widthFactor: 1.0,
                       child: Text(
-                        locale.family_member_has_account,
+                        accountBadgeLabel,
                         style: getMediumStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size8,
-                          color: color.primary,
+                          color: accountBadgeColor,
                         ),
                       ),
                     ),

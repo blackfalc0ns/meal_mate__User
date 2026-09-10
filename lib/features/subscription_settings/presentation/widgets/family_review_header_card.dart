@@ -48,33 +48,6 @@ class FamilyReviewHeaderCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipOval(
-            child: avatarUrl != null && avatarUrl!.isNotEmpty
-                ? AppCachedNetworkImage(
-                    imageUrl: avatarUrl!,
-                    width: Spacing.avatarMd + Spacing.xs,
-                    height: Spacing.avatarMd + Spacing.xs,
-                    fit: BoxFit.cover,
-                  )
-                : (avatarAsset.isNotEmpty
-                      ? Image.asset(
-                          avatarAsset,
-                          width: Spacing.avatarMd + Spacing.xs,
-                          height: Spacing.avatarMd + Spacing.xs,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          width: Spacing.avatarMd + Spacing.xs,
-                          height: Spacing.avatarMd + Spacing.xs,
-                          color: color.surfaceContainerHighest,
-                          child: Icon(
-                            Icons.person_rounded,
-                            color: color.onSurfaceVariant,
-                            size: Spacing.iconLg,
-                          ),
-                        )),
-          ),
-          const SizedBox(width: Spacing.md),
           Expanded(
             child: Row(
               children: [
@@ -204,6 +177,33 @@ class FamilyReviewHeaderCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(width: Spacing.md),
+          ClipOval(
+            child: avatarUrl != null && avatarUrl!.isNotEmpty
+                ? AppCachedNetworkImage(
+                    imageUrl: avatarUrl!,
+                    width: Spacing.avatarMd + Spacing.xs,
+                    height: Spacing.avatarMd + Spacing.xs,
+                    fit: BoxFit.cover,
+                  )
+                : (avatarAsset.isNotEmpty
+                      ? Image.asset(
+                          avatarAsset,
+                          width: Spacing.avatarMd + Spacing.xs,
+                          height: Spacing.avatarMd + Spacing.xs,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          width: Spacing.avatarMd + Spacing.xs,
+                          height: Spacing.avatarMd + Spacing.xs,
+                          color: color.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.person_rounded,
+                            color: color.onSurfaceVariant,
+                            size: Spacing.iconLg,
+                          ),
+                        )),
           ),
         ],
       ),
