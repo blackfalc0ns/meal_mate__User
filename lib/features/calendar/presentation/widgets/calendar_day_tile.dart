@@ -56,7 +56,7 @@ class CalendarDayTile extends StatelessWidget {
           ),
           child: InkWell(
             borderRadius: borderRadius,
-            onTap: onPressed,
+            onTap: day.isMuted ? null : onPressed,
             child: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: compact ? 4 : 3,

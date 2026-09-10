@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_selected_meal_item.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyMemberSelectedMealsCard extends StatelessWidget {
   const FamilyMemberSelectedMealsCard({
@@ -129,9 +130,13 @@ class FamilyMemberSelectedMealsCard extends StatelessWidget {
               )
             else
               for (var index = 0; index < meals.length; index++)
-                FamilyMemberSelectedMealItem(
-                  meal: meals[index],
-                  showDivider: index < meals.length - 1,
+                StaggeredSlideItem(
+                  key: ValueKey('${meals[index].name}_$index'),
+                  index: index,
+                  child: FamilyMemberSelectedMealItem(
+                    meal: meals[index],
+                    showDivider: index < meals.length - 1,
+                  ),
                 ),
           ],
         ),

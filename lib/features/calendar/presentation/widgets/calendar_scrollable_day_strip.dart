@@ -18,13 +18,21 @@ class CalendarScrollableDayStrip extends StatefulWidget {
 }
 
 class CalendarScrollableDayStripState
-    extends State<CalendarScrollableDayStrip> {
+    extends State<CalendarScrollableDayStrip>
+    with SingleTickerProviderStateMixin {
   static const _tileWidth = 46.0;
   static const _tileGap = 8.0;
+
+  late final AnimationController _staggerController;
 
   @override
   void initState() {
     super.initState();
+    _staggerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 380),
+    );
+    _staggerController.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
   }
 
@@ -32,12 +40,21 @@ class CalendarScrollableDayStripState
   void didUpdateWidget(covariant CalendarScrollableDayStrip oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.days != widget.days) {
+      _staggerController.forward(from: 0.0);
       WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
     }
   }
 
   @override
+  void dispose() {
+    _staggerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final total = widget.days.length;
+
     return ListView.separated(
       controller: widget.controller,
       scrollDirection: Axis.horizontal,
@@ -47,14 +64,24 @@ class CalendarScrollableDayStripState
       separatorBuilder: (_, _) => const SizedBox(width: _tileGap),
       itemBuilder: (context, index) {
         final day = widget.days[index];
-        return CalendarDayTile(
-          day: day,
-          width: _tileWidth,
-          height: 59.0,
-          onPressed: () {
-            widget.onDaySelected(day);
-            _centerDay(index);
-          },
+        final start = (index / (total > 0 ? total : 1) * 0.45).clamp(0.0, 0.6);
+        final end = (start + 0.4).clamp(0.0, 1.0);
+        final tileAnimation = CurvedAnimation(
+          parent: _staggerController,
+          curve: Interval(start, end, curve: Curves.easeOutCubic),
+        );
+
+        return FadeScaleTransition(
+          animation: tileAnimation,
+          child: CalendarDayTile(
+            day: day,
+            width: _tileWidth,
+            height: 59.0,
+            onPressed: () {
+              widget.onDaySelected(day);
+              _centerDay(index);
+            },
+          ),
         );
       },
     );

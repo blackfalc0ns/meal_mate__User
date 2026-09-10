@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -24,6 +25,8 @@ class CalendarPickerPanel extends StatefulWidget {
     required this.onToggleExpanded,
     required this.onMonthChanged,
     required this.onDaySelected,
+    this.backgroundColor,
+    this.showBottomBorder = true,
   });
 
   final String monthTitle;
@@ -32,6 +35,8 @@ class CalendarPickerPanel extends StatefulWidget {
   final VoidCallback onToggleExpanded;
   final ValueChanged<int> onMonthChanged;
   final ValueChanged<CalendarDayEntity> onDaySelected;
+  final Color? backgroundColor;
+  final bool showBottomBorder;
 
   @override
   State<CalendarPickerPanel> createState() => CalendarPickerPanelState();
@@ -43,11 +48,23 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
   late final ScrollController _weekController;
   bool _calendarGripDragHandled = false;
   double _calendarGripDragDistance = 0;
+  int _monthDirection = 1;
+  bool _isMonthTransition = false;
 
   @override
   void initState() {
     super.initState();
     _weekController = ScrollController();
+  }
+
+  @override
+  void didUpdateWidget(covariant CalendarPickerPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.monthTitle != widget.monthTitle) {
+      _isMonthTransition = true;
+    } else if (oldWidget.isExpanded != widget.isExpanded) {
+      _isMonthTransition = false;
+    }
   }
 
   @override
@@ -75,10 +92,12 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
               padding: const EdgeInsets.only(bottom: Spacing.lg),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: color.surfaceContainerHighest,
-                  border: Border(
-                    bottom: BorderSide(color: color.outlineVariant),
-                  ),
+                  color: widget.backgroundColor ?? color.surfaceContainerHighest,
+                  border: widget.showBottomBorder
+                      ? Border(
+                          bottom: BorderSide(color: color.outlineVariant),
+                        )
+                      : null,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -115,54 +134,41 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                       curve: Curves.easeInOutCubic,
                       height: widget.isExpanded ? 6 : 1,
                     ),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 520),
-                      reverseDuration: const Duration(milliseconds: 500),
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeInOutCubic,
-                      transitionBuilder: (child, animation) {
-                        final slide = Tween<Offset>(
-                          begin: const Offset(0, -0.035),
-                          end: Offset.zero,
-                        ).animate(animation);
-
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: slide,
-                            child: AnimatedBuilder(
-                              animation: animation,
-                              child: child,
-                              builder: (context, child) {
-                                return Align(
-                                  alignment: Alignment.topCenter,
-                                  heightFactor: animation.value,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                      layoutBuilder: (currentChild, previousChildren) {
-                        return Stack(
-                          alignment: Alignment.topCenter,
-                          children: [...previousChildren, ?currentChild],
+                    PageTransitionSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      reverse: _isMonthTransition
+                          ? (_monthDirection < 0)
+                          : !widget.isExpanded,
+                      transitionBuilder: (
+                        child,
+                        primaryAnimation,
+                        secondaryAnimation,
+                      ) {
+                        return SharedAxisTransition(
+                          animation: primaryAnimation,
+                          secondaryAnimation: secondaryAnimation,
+                          transitionType: _isMonthTransition
+                              ? SharedAxisTransitionType.horizontal
+                              : SharedAxisTransitionType.vertical,
+                          fillColor: widget.backgroundColor ?? color.surface,
+                          child: child,
                         );
                       },
                       child: AnimatedPadding(
-                        key: ValueKey(widget.isExpanded),
-                        duration: const Duration(milliseconds: 520),
+                        key: ValueKey('${widget.monthTitle}_${widget.isExpanded}'),
+                        duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOutCubic,
                         padding: EdgeInsets.symmetric(
                           horizontal: widget.isExpanded ? 18 : 31,
                         ),
                         child: widget.isExpanded
                             ? CalendarMonthGrid(
+                                key: ValueKey('month_${widget.monthTitle}'),
                                 days: widget.days,
                                 onDaySelected: widget.onDaySelected,
                               )
                             : CalendarWeekStrip(
+                                key: ValueKey('week_${widget.monthTitle}'),
                                 controller: _weekController,
                                 days: widget.days,
                                 onDaySelected: widget.onDaySelected,
@@ -258,7 +264,9 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
   }
 
   void _handleMonthArrow(int direction) {
+    _monthDirection = direction;
     if (widget.isExpanded) {
+      _isMonthTransition = true;
       widget.onMonthChanged(direction);
       return;
     }

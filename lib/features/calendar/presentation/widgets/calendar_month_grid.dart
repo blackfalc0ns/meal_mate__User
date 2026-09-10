@@ -1,6 +1,6 @@
 part of 'calendar_picker_panel.dart';
 
-class CalendarMonthGrid extends StatelessWidget {
+class CalendarMonthGrid extends StatefulWidget {
   const CalendarMonthGrid({
     super.key,
     required this.days,
@@ -9,6 +9,38 @@ class CalendarMonthGrid extends StatelessWidget {
 
   final List<CalendarDayEntity> days;
   final ValueChanged<CalendarDayEntity> onDaySelected;
+
+  @override
+  State<CalendarMonthGrid> createState() => _CalendarMonthGridState();
+}
+
+class _CalendarMonthGridState extends State<CalendarMonthGrid>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _staggerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _staggerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 380),
+    );
+    _staggerController.forward();
+  }
+
+  @override
+  void didUpdateWidget(covariant CalendarMonthGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.days != widget.days) {
+      _staggerController.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _staggerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +54,7 @@ class CalendarMonthGrid extends StatelessWidget {
       locale.calendar_weekday_thu_short,
       locale.calendar_weekday_fri_short,
     ];
+    final totalDays = widget.days.length;
 
     return SizedBox(
       key: const ValueKey('month-grid'),
@@ -31,7 +64,7 @@ class CalendarMonthGrid extends StatelessWidget {
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: weekdays.length + days.length,
+          itemCount: weekdays.length + widget.days.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 7,
             mainAxisSpacing: 10,
@@ -40,14 +73,32 @@ class CalendarMonthGrid extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             if (index < weekdays.length) {
-              return CalendarMonthWeekdayLabel(label: weekdays[index]);
+              return FadeScaleTransition(
+                animation: CurvedAnimation(
+                  parent: _staggerController,
+                  curve: const Interval(0.0, 0.35, curve: Curves.easeOutCubic),
+                ),
+                child: CalendarMonthWeekdayLabel(label: weekdays[index]),
+              );
             }
 
-            final day = days[index - weekdays.length];
-            return CalendarDayTile(
-              day: day,
-              compact: true,
-              onPressed: () => onDaySelected(day),
+            final dayIndex = index - weekdays.length;
+            final day = widget.days[dayIndex];
+            final start =
+                (dayIndex / (totalDays > 0 ? totalDays : 1) * 0.45).clamp(0.0, 0.6);
+            final end = (start + 0.35).clamp(0.0, 1.0);
+            final tileAnimation = CurvedAnimation(
+              parent: _staggerController,
+              curve: Interval(start, end, curve: Curves.easeOutCubic),
+            );
+
+            return FadeScaleTransition(
+              animation: tileAnimation,
+              child: CalendarDayTile(
+                day: day,
+                compact: true,
+                onPressed: () => widget.onDaySelected(day),
+              ),
             );
           },
         ),
