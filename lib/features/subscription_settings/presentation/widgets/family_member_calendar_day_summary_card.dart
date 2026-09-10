@@ -6,36 +6,53 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
 
 class FamilyMemberCalendarDaySummaryCard extends StatelessWidget {
-  const FamilyMemberCalendarDaySummaryCard({super.key, required this.summary});
+  const FamilyMemberCalendarDaySummaryCard({
+    super.key,
+    required this.summary,
+    this.dayNumber,
+  });
 
   final FamilyCalendarDaySummaryEntity summary;
+  final int? dayNumber;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final resolvedDayNumber = dayNumber ?? _extractDay(summary.title);
+
     return SizedBox(
       height: Spacing.familyMemberCalendarDaySummaryHeight,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color.surface,
-          border: Border.all(color: color.outline),
+          border: Border.all(color: color.outlineVariant),
           borderRadius: BorderRadius.circular(
             Spacing.familyMemberCalendarCardRadius,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: color.shadow.withValues(alpha: 0.04),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
           child: Row(
             children: [
               CircleAvatar(
-                radius: Spacing.xl,
+                radius: 20,
                 backgroundColor: color.primary,
-                child: Icon(
-                  Icons.calendar_today_rounded,
-                  size: Spacing.iconMd,
-                  color: color.onPrimary,
+                child: Text(
+                  resolvedDayNumber != null ? '$resolvedDayNumber' : '',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size16,
+                    color: color.onPrimary,
+                  ),
                 ),
               ),
               const SizedBox(width: Spacing.md),
@@ -75,5 +92,10 @@ class FamilyMemberCalendarDaySummaryCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int? _extractDay(String text) {
+    final match = RegExp(r'\d+').firstMatch(text);
+    return match != null ? int.tryParse(match.group(0)!) : null;
   }
 }

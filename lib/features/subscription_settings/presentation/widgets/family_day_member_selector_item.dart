@@ -86,11 +86,21 @@ class FamilyDayMemberSelectorItem extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Icon(
-                Icons.check_circle_rounded,
-                size: Spacing.familyDayMemberSelectorCheckSize,
-                color: isSelected ? color.primary : color.outlineVariant,
-              ),
+              if (isSelected)
+                Icon(
+                  Icons.check_circle_rounded,
+                  size: Spacing.familyDayMemberSelectorCheckSize,
+                  color: color.primary,
+                )
+              else
+                Container(
+                  width: 7,
+                  height: 7,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color.outlineVariant,
+                  ),
+                ),
               const SizedBox(
                 height: Spacing.familyDayMemberSelectorCheckBottom,
               ),

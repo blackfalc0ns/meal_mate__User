@@ -13,7 +13,6 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_days_builder.dart';
-import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/family_member_calendar_fake_data_source.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
@@ -26,7 +25,9 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_day_summary_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_empty_meals.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_loading_skeleton.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_month_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_primary_action.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_selected_meals_card.dart';
 
@@ -43,7 +44,6 @@ class FamilyMemberCalendarScreen extends StatefulWidget {
 class _FamilyMemberCalendarScreenState
     extends State<FamilyMemberCalendarScreen> {
   FamilyCalendarViewModel? _viewModel;
-  bool _isCalendarExpanded = false;
   bool _initialized = false;
 
   // Fallback state for tests without DI
@@ -177,23 +177,29 @@ class _FamilyMemberCalendarScreenState
                 ),
                 child: Column(
                   children: [
-                    if (selectorMembers.isNotEmpty)
-                      FamilyDayMemberSelector(
-                        members: selectorMembers,
-                        selectedIndex: safeSelectedMemberIndex,
-                        onMemberSelected: (index) {
-                          _viewModel!.doIntent(
-                            SelectFamilyMemberEvent(
-                              index: index,
-                              localeName: locale.localeName,
-                            ),
-                          );
-                        },
+                    if (state.isLoadingMembers)
+                      const FamilyMemberCalendarLoadingSkeleton(
+                        includeMemberSelector: true,
+                      )
+                    else ...[
+                      if (selectorMembers.isNotEmpty)
+                        FamilyDayMemberSelector(
+                          members: selectorMembers,
+                          selectedIndex: safeSelectedMemberIndex,
+                          onMemberSelected: (index) {
+                            _viewModel!.doIntent(
+                              SelectFamilyMemberEvent(
+                                index: index,
+                                localeName: locale.localeName,
+                              ),
+                            );
+                          },
+                        ),
+                      const SizedBox(
+                        height: Spacing.familyMemberCalendarMonthTopGap,
                       ),
-                    const SizedBox(
-                      height: Spacing.familyMemberCalendarMonthTopGap,
-                    ),
-                    _buildBody(context, state),
+                      _buildBody(context, state),
+                    ],
                   ],
                 ),
               ),
@@ -208,10 +214,6 @@ class _FamilyMemberCalendarScreenState
     final locale = context.localization;
     final subId = state.activeSubscriptionId;
 
-    if (state.isLoadingMembers) {
-      return const FamilyMemberCalendarLoadingSkeleton();
-    }
-
     if (subId == null || subId.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: Spacing.xl),
@@ -224,7 +226,9 @@ class _FamilyMemberCalendarScreenState
     }
 
     if (state.isLoadingCalendar && !state.hasCalendarData) {
-      return const FamilyMemberCalendarLoadingSkeleton();
+      return const FamilyMemberCalendarLoadingSkeleton(
+        includeMemberSelector: false,
+      );
     }
 
     if (state.calendarFailure != null && !state.hasCalendarData) {
@@ -244,16 +248,32 @@ class _FamilyMemberCalendarScreenState
     final selectedDate = state.selectedDate ?? DateTime.now();
     final visibleMonth = state.visibleMonth ?? selectedDate;
 
-    final calendarDays = _isCalendarExpanded
-        ? CalendarDaysBuilder.monthDays(
-            focusedMonth: visibleMonth,
-            selectedDate: state.selectedDate,
-            serviceDays: state.days,
-          )
-        : CalendarDaysBuilder.serviceDays(
-            state.days,
-            selectedDate: state.selectedDate,
-          );
+    // Subscription range clamping:
+    // Only subscription days are active and selectable
+    final validDates = state.days
+        .map((d) => d.date)
+        .whereType<DateTime>()
+        .toList()
+      ..sort();
+
+    final DateTime? minDate = validDates.isNotEmpty ? validDates.first : null;
+    final DateTime? maxDate = validDates.isNotEmpty ? validDates.last : null;
+
+    final canGoPrevious = minDate == null ||
+        DateTime(visibleMonth.year, visibleMonth.month).isAfter(
+          DateTime(minDate.year, minDate.month),
+        );
+
+    final canGoNext = maxDate == null ||
+        DateTime(visibleMonth.year, visibleMonth.month).isBefore(
+          DateTime(maxDate.year, maxDate.month),
+        );
+
+    final calendarDays = CalendarDaysBuilder.monthDays(
+      focusedMonth: visibleMonth,
+      selectedDate: state.selectedDate,
+      serviceDays: state.days,
+    );
 
     final selectedDay = state.selectedDay;
     final dayMeals = selectedDay?.meals ?? const [];
@@ -291,23 +311,26 @@ class _FamilyMemberCalendarScreenState
       locale.localeName,
     ).format(selectedDate);
 
+    final hasMeals = selectedMealEntities.isNotEmpty;
+
     return Column(
       children: [
-        CalendarPickerPanel(
-          monthTitle: intl.DateFormat.yMMMM(
-            locale.localeName,
-          ).format(visibleMonth),
+        FamilyMemberCalendarMonthCard(
+          visibleMonth: visibleMonth,
+          selectedDate: state.selectedDate,
           days: calendarDays,
-          isExpanded: _isCalendarExpanded,
-          onToggleExpanded: () {
-            setState(() => _isCalendarExpanded = !_isCalendarExpanded);
-          },
+          subscriptionDays: state.days,
+          canGoPrevious: canGoPrevious,
+          canGoNext: canGoNext,
           onMonthChanged: (months) {
+            if (months < 0 && !canGoPrevious) return;
+            if (months > 0 && !canGoNext) return;
             _viewModel!.doIntent(
               ChangeFamilyCalendarMonthEvent(months: months),
             );
           },
           onDaySelected: (day) {
+            if (day.isMuted) return;
             _viewModel!.doIntent(
               SelectFamilyCalendarDayEvent(
                 day: day,
@@ -317,22 +340,29 @@ class _FamilyMemberCalendarScreenState
           },
         ),
         const SizedBox(height: Spacing.familyMemberCalendarSelectedMealsTopGap),
-        FamilyMemberSelectedMealsCard(
-          title: locale.family_member_selected_meals_title,
-          subtitle: locale.family_member_selected_meals_subtitle(
-            state.displayName,
-            formattedShortDate,
+        if (hasMeals) ...[
+          FamilyMemberSelectedMealsCard(
+            title: locale.family_member_selected_meals_title,
+            subtitle: locale.family_member_selected_meals_subtitle(
+              state.displayName,
+              formattedShortDate,
+            ),
+            countLabel: locale.family_member_selected_meals_count(
+              selectedMealEntities.length,
+            ),
+            meals: selectedMealEntities,
           ),
-          countLabel: locale.family_member_selected_meals_count(
-            selectedMealEntities.length,
+          const SizedBox(height: Spacing.familyMemberCalendarDaySummaryTopGap),
+          FamilyMemberCalendarDaySummaryCard(
+            summary: daySummary,
+            dayNumber: selectedDate.day,
           ),
-          meals: selectedMealEntities,
-        ),
-        const SizedBox(height: Spacing.familyMemberCalendarDaySummaryTopGap),
-        FamilyMemberCalendarDaySummaryCard(summary: daySummary),
+        ] else ...[
+          const FamilyMemberCalendarEmptyMeals(),
+        ],
         const SizedBox(height: Spacing.familyMemberCalendarButtonTopGap),
         FamilyMemberCalendarPrimaryAction(
-          hasMeals: selectedMealEntities.isNotEmpty,
+          hasMeals: hasMeals,
           canEdit: selectedDay?.isEditable == true,
           onChooseMeals: () {
             final activeSubId = state.activeSubscriptionId;
@@ -388,12 +418,12 @@ class _FamilyMemberCalendarScreenState
       _fakeVisibleMonth.month,
       _fakeSelectedDay,
     );
-    final calendarDays = _isCalendarExpanded
-        ? _fakeMonthDays(
-            focusedMonth: _fakeVisibleMonth,
-            selectedDate: selectedDate,
-          )
-        : _fakeServiceDays(selectedDate: selectedDate);
+    final calendarDays = _fakeMonthDays(
+      focusedMonth: _fakeVisibleMonth,
+      selectedDate: selectedDate,
+    );
+
+    final hasMeals = calendar.selectedMeals.isNotEmpty;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -431,15 +461,11 @@ class _FamilyMemberCalendarScreenState
                 },
               ),
               const SizedBox(height: Spacing.familyMemberCalendarMonthTopGap),
-              CalendarPickerPanel(
-                monthTitle: intl.DateFormat.yMMMM(
-                  locale.localeName,
-                ).format(_fakeVisibleMonth),
+              FamilyMemberCalendarMonthCard(
+                visibleMonth: _fakeVisibleMonth,
+                selectedDate: selectedDate,
                 days: calendarDays,
-                isExpanded: _isCalendarExpanded,
-                onToggleExpanded: () {
-                  setState(() => _isCalendarExpanded = !_isCalendarExpanded);
-                },
+                subscriptionDays: const [],
                 onMonthChanged: (months) {
                   setState(() {
                     _fakeVisibleMonth = DateTime(
@@ -449,6 +475,7 @@ class _FamilyMemberCalendarScreenState
                   });
                 },
                 onDaySelected: (day) {
+                  if (day.isMuted) return;
                   setState(() {
                     _fakeSelectedDay = day.dayNumber;
                     final date = day.date;
@@ -463,16 +490,23 @@ class _FamilyMemberCalendarScreenState
               const SizedBox(
                 height: Spacing.familyMemberCalendarSelectedMealsTopGap,
               ),
-              FamilyMemberSelectedMealsCard(
-                title: calendar.selectedMealsTitle,
-                subtitle: calendar.selectedMealsSubtitle,
-                countLabel: calendar.selectedMealsCountLabel,
-                meals: calendar.selectedMeals,
-              ),
-              const SizedBox(
-                height: Spacing.familyMemberCalendarDaySummaryTopGap,
-              ),
-              FamilyMemberCalendarDaySummaryCard(summary: calendar.daySummary),
+              if (hasMeals) ...[
+                FamilyMemberSelectedMealsCard(
+                  title: calendar.selectedMealsTitle,
+                  subtitle: calendar.selectedMealsSubtitle,
+                  countLabel: calendar.selectedMealsCountLabel,
+                  meals: calendar.selectedMeals,
+                ),
+                const SizedBox(
+                  height: Spacing.familyMemberCalendarDaySummaryTopGap,
+                ),
+                FamilyMemberCalendarDaySummaryCard(
+                  summary: calendar.daySummary,
+                  dayNumber: selectedDate.day,
+                ),
+              ] else ...[
+                const FamilyMemberCalendarEmptyMeals(),
+              ],
               const SizedBox(height: Spacing.familyMemberCalendarButtonTopGap),
               FamilyDayReviewButton(
                 label: calendar.detailsButtonLabel,
@@ -485,15 +519,6 @@ class _FamilyMemberCalendarScreenState
         ),
       ),
     );
-  }
-
-  List<CalendarDayEntity> _fakeServiceDays({required DateTime selectedDate}) {
-    final firstDay = selectedDate.subtract(const Duration(days: 4));
-
-    return List.generate(7, (index) {
-      final date = firstDay.add(Duration(days: index));
-      return _fakeCalendarDay(date, selectedDate: selectedDate);
-    });
   }
 
   List<CalendarDayEntity> _fakeMonthDays({

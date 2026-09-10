@@ -28,10 +28,17 @@ class FamilyMemberSelectedMealsCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: color.surface,
-        border: Border.all(color: color.outline),
+        border: Border.all(color: color.outlineVariant),
         borderRadius: BorderRadius.circular(
           Spacing.familyMemberCalendarSelectedMealsRadius,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(
@@ -64,7 +71,7 @@ class FamilyMemberSelectedMealsCard extends StatelessWidget {
                           color: color.onSurface,
                         ),
                       ),
-                      const SizedBox(height: Spacing.xs),
+                      const SizedBox(height: Spacing.xxs),
                       Text(
                         subtitle,
                         locale: Locale(locale.localeName),
@@ -72,35 +79,32 @@ class FamilyMemberSelectedMealsCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size8,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: Spacing.familyMemberCalendarCountPillHeight,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: color.primaryContainer,
-                      border: Border.all(color: color.primaryContainer),
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: color.primaryContainer,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.sm,
+                      vertical: 4,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-                      child: Center(
-                        child: Text(
-                          countLabel,
-                          locale: Locale(locale.localeName),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getSemiBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size8,
-                            color: color.primary,
-                          ),
-                        ),
+                    child: Text(
+                      countLabel,
+                      locale: Locale(locale.localeName),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.primary,
                       ),
                     ),
                   ),
@@ -117,7 +121,7 @@ class FamilyMemberSelectedMealsCard extends StatelessWidget {
                     locale: Locale(locale.localeName),
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
+                      fontSize: FontSize.size11,
                       color: color.onSurfaceVariant,
                     ),
                   ),

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
 
 class FamilyMemberSelectedMealItem extends StatelessWidget {
@@ -22,74 +20,77 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final Color tagBgColor;
+    final Color tagTextColor;
+
+    final typeLower = meal.typeLabel.toLowerCase();
+    if (typeLower.contains('فطور') || typeLower.contains('breakfast')) {
+      tagBgColor = color.errorContainer;
+      tagTextColor = color.onErrorContainer;
+    } else if (typeLower.contains('عشاء') || typeLower.contains('dinner')) {
+      tagBgColor = color.tertiaryContainer;
+      tagTextColor = color.onTertiaryContainer;
+    } else {
+      tagBgColor = color.primaryContainer;
+      tagTextColor = color.primary;
+    }
+
     return Column(
       children: [
-        SizedBox(
-          height: Spacing.familyMemberCalendarSelectedMealRowHeight,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  Spacing.familyMemberCalendarSelectedMealImageRadius,
-                ),
-                child: meal.imageUrl?.isNotEmpty == true
-                    ? AppCachedNetworkImage(
-                        imageUrl: meal.imageUrl!,
-                        width: Spacing.familyMemberCalendarSelectedMealImageSize,
-                        height: Spacing.familyMemberCalendarSelectedMealImageSize,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        meal.imageAsset.isNotEmpty
-                            ? meal.imageAsset
-                            : Assets.profileBillingPlanBottle,
-                        width: Spacing.familyMemberCalendarSelectedMealImageSize,
-                        height: Spacing.familyMemberCalendarSelectedMealImageSize,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              const SizedBox(width: Spacing.xs),
-              SizedBox(
-                width: Spacing.familyMemberCalendarSelectedMealTypeWidth,
-                height: Spacing.familyMemberCalendarSelectedMealTypeHeight,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: color.tertiaryContainer,
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                  ),
-                  child: Center(
-                    child: Text(
-                      meal.typeLabel,
-                      locale: Locale(locale.localeName),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size7,
-                        color: color.onTertiaryContainer,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      meal.name,
-                      locale: Locale(locale.localeName),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurface,
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: tagBgColor,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.xs,
+                              vertical: 2,
+                            ),
+                            child: Text(
+                              meal.typeLabel,
+                              locale: Locale(locale.localeName),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getSemiBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size9,
+                                color: tagTextColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: Text(
+                            meal.name,
+                            locale: Locale(locale.localeName),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size12,
+                              color: color.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: Spacing.xxs),
                     Text(
                       meal.description,
                       locale: Locale(locale.localeName),
@@ -97,7 +98,7 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
+                        fontSize: FontSize.size10,
                         color: color.onSurfaceVariant,
                       ),
                     ),
@@ -105,17 +106,18 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.sm),
-              SizedBox(
-                width: Spacing.familyMemberCalendarChosenPillWidth,
-                height: Spacing.familyMemberCalendarChosenPillHeight,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: color.primaryContainer,
-                    border: Border.all(color: color.primaryContainer),
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: color.primaryContainer,
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: 4,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.check_circle_rounded,
@@ -123,17 +125,15 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
                         color: color.primary,
                       ),
                       const SizedBox(width: Spacing.xs),
-                      Flexible(
-                        child: Text(
-                          meal.chosenLabel,
-                          locale: Locale(locale.localeName),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getSemiBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size7,
-                            color: color.primary,
-                          ),
+                      Text(
+                        meal.chosenLabel,
+                        locale: Locale(locale.localeName),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.primary,
                         ),
                       ),
                     ],
