@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_location_loading_skeleton.dart';
 
 class FamilyAddressLocationStage extends StatefulWidget {
   const FamilyAddressLocationStage({
@@ -144,13 +145,19 @@ class _FamilyAddressLocationStageState
             ),
           );
         },
-        builder: (context, state) => AddressesFigmaFrame(
-          key: ValueKey(widget.memberId),
-          locations: state.locations,
-          flowController: _entryFlowController,
-          isSubmitting:
-              state.action.isLoading || state.coveragePreview.isLoading,
-        ),
+        builder: (context, state) {
+          if (state.locations.isLoading && state.locations.data == null) {
+            return const FamilyAddressLocationLoadingSkeleton();
+          }
+
+          return AddressesFigmaFrame(
+            key: ValueKey(widget.memberId),
+            locations: state.locations,
+            flowController: _entryFlowController,
+            isSubmitting:
+                state.action.isLoading || state.coveragePreview.isLoading,
+          );
+        },
       ),
     );
   }

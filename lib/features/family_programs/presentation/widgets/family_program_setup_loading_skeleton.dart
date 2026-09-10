@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_grid_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyProgramSetupLoadingSkeleton extends StatelessWidget {
@@ -94,30 +95,47 @@ class FamilyProgramSetupLoadingSkeleton extends StatelessWidget {
 
                 // Member strip skeleton
                 SizedBox(
-                  height: 74,
+                  height: Spacing.familyProgramMemberCardHeight,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 4,
+                    itemCount: 3,
                     separatorBuilder: (_, _) =>
-                        const SizedBox(width: Spacing.sm),
+                        const SizedBox(width: Spacing.familyProgramMemberGap),
                     itemBuilder: (_, _) => Container(
-                      width: 64,
-                      padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+                      width: Spacing.familyProgramMemberCardWidth,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: Spacing.xs,
+                      ),
                       decoration: BoxDecoration(
                         color: color.surfaceContainerLow,
-                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                        borderRadius: BorderRadius.circular(
+                          Spacing.familyProgramMemberCardRadius,
+                        ),
                         border: Border.all(color: color.outlineVariant),
                       ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: const Row(
                         children: [
-                          ShimmerPlaceholder.circle(size: 32),
-                          SizedBox(height: Spacing.xs),
-                          ShimmerPlaceholder.rect(
-                            width: 44,
-                            height: 8,
-                            borderRadius: Spacing.radiusSm,
+                          ShimmerPlaceholder.circle(
+                            size: Spacing.familyProgramMemberAvatarSize,
+                          ),
+                          SizedBox(width: Spacing.xs),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ShimmerPlaceholder.rect(
+                                  height: Spacing.sm,
+                                  borderRadius: Spacing.radiusSm,
+                                ),
+                                SizedBox(height: Spacing.xs),
+                                ShimmerPlaceholder.rect(
+                                  height: Spacing.xss,
+                                  borderRadius: Spacing.radiusSm,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -128,7 +146,8 @@ class FamilyProgramSetupLoadingSkeleton extends StatelessWidget {
 
                 // Member summary card skeleton
                 Container(
-                  padding: const EdgeInsets.all(Spacing.md),
+                  height: Spacing.familyProgramSummaryHeight,
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
                   decoration: BoxDecoration(
                     color: color.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(Spacing.radiusMd),
@@ -136,7 +155,9 @@ class FamilyProgramSetupLoadingSkeleton extends StatelessWidget {
                   ),
                   child: const Row(
                     children: [
-                      ShimmerPlaceholder.circle(size: 40),
+                      ShimmerPlaceholder.circle(
+                        size: Spacing.familyProgramSummaryAvatarSize,
+                      ),
                       SizedBox(width: Spacing.sm),
                       Expanded(
                         child: Column(
@@ -177,48 +198,7 @@ class FamilyProgramSetupLoadingSkeleton extends StatelessWidget {
                 const SizedBox(height: Spacing.familyProgramGridTopGap),
 
                 // Programs Grid skeleton
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: Spacing.sm,
-                    mainAxisSpacing: Spacing.sm,
-                    childAspectRatio: 0.85,
-                  ),
-                  itemCount: 4,
-                  itemBuilder: (_, _) => Container(
-                    padding: const EdgeInsets.all(Spacing.sm),
-                    decoration: BoxDecoration(
-                      color: color.surfaceContainerLow,
-                      borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                      border: Border.all(color: color.outlineVariant),
-                    ),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ShimmerPlaceholder.rect(
-                            width: double.infinity,
-                            borderRadius: Spacing.radiusSm,
-                          ),
-                        ),
-                        SizedBox(height: Spacing.sm),
-                        ShimmerPlaceholder.rect(
-                          width: 80,
-                          height: Spacing.sm,
-                          borderRadius: Spacing.radiusSm,
-                        ),
-                        SizedBox(height: Spacing.xs),
-                        ShimmerPlaceholder.rect(
-                          width: double.infinity,
-                          height: 8,
-                          borderRadius: Spacing.radiusSm,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                const FamilyProgramGridLoadingSkeleton(),
                 const SizedBox(height: Spacing.lg),
 
                 // Bottom actions skeleton

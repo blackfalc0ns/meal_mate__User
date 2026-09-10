@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_programs/presentation/manager/fam
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_grid.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_grid_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 
 class FamilyProgramSelectionSection extends StatelessWidget {
@@ -51,7 +52,9 @@ class FamilyProgramSelectionSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Spacing.familyProgramGridTopGap),
-        if (displayedPrograms.isEmpty)
+        if (state.isProgramsLoading && displayedPrograms.isEmpty)
+          const FamilyProgramGridLoadingSkeleton()
+        else if (displayedPrograms.isEmpty)
           EmptyStateWidget(
             title: locale.family_program_choose_title,
             description: locale.family_packages_selection_subtitle,
