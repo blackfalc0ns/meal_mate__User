@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_subscription_settings_fake_data_source.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_header.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_note.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_section_card.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_event.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_view_model.dart';
 
 class FamilyMemberPermissionsScreen extends StatefulWidget {
-  const FamilyMemberPermissionsScreen({super.key});
-
+  const FamilyMemberPermissionsScreen({
+    super.key,
+    required this.memberId,
+    required this.isManager,
+    required this.memberName,
+  });
+  final String memberId;
+  final bool isManager;
+  final String memberName;
   @override
   State<FamilyMemberPermissionsScreen> createState() =>
       _FamilyMemberPermissionsScreenState();
@@ -20,119 +28,120 @@ class FamilyMemberPermissionsScreen extends StatefulWidget {
 
 class _FamilyMemberPermissionsScreenState
     extends State<FamilyMemberPermissionsScreen> {
-  static const _dataSource = FamilySubscriptionSettingsFakeDataSource();
-  late final _permissions = _dataSource.getMemberPermissions();
-  late final List<List<bool>> _values = [
-    for (final section in _permissions.sections)
-      [for (final permission in section.permissions) permission.enabled],
-  ];
+  late final FamilyManagementViewModel _viewModel;
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = getIt<FamilyManagementViewModel>();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_viewModel.state.permissions == null) {
+      _viewModel.doIntent(
+        LoadFamilyMemberPermissionsEvent(
+          widget.memberId,
+          context.localization.localeName,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _viewModel.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        titleWidget: Text(
-          locale.family_member_permissions_title(_permissions.memberName),
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size15,
-            color: color.onSurface,
-          ),
-        ),
-        onBackPressed: () => Navigator.maybePop(context),
-      ),
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsetsDirectional.only(
-                  start: Spacing.familyPermissionsHorizontalPadding,
-                  end: Spacing.familyPermissionsHorizontalPadding,
-                  top: Spacing.familyPermissionsHeaderTopGap,
-                ),
-                child: Column(
-                  children: [
-                    FamilyMemberPermissionsHeader(permissions: _permissions),
-                    const SizedBox(height: Spacing.xs),
-                    for (
-                      int index = 0;
-                      index < _permissions.sections.length;
-                      index++
-                    )
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FamilyMemberPermissionsSectionCard(
-                            section: _permissions.sections[index],
-                            values: _values[index],
-                            onPermissionChanged: (permissionIndex, value) {
-                              setState(() {
-                                _values[index][permissionIndex] = value;
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            height: Spacing.familyPermissionsSectionGap,
-                          ),
-                        ],
-                      ),
-                    SizedBox(height: Spacing.md),
-                    FamilyMemberPermissionsNote(
-                      note: locale.family_member_permissions_note,
-                    ),
-                    SizedBox(height: Spacing.md),
-                  ],
-                ),
-              ),
+    return BlocProvider.value(
+      value: _viewModel,
+      child: BlocConsumer<FamilyManagementViewModel, FamilyManagementState>(
+        listenWhen: (previous, current) =>
+            previous.saveSuccessCount != current.saveSuccessCount ||
+            previous.failure != current.failure ||
+            previous.saveFailure != current.saveFailure,
+        listener: (context, state) {
+          final failure = state.saveFailure ?? state.failure;
+          if (failure != null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(context, failure),
+            );
+          }
+          if (state.saveSuccessCount > 0) {
+            CustomSnackbar.showSuccess(
+              context: context,
+              message: locale.family_member_permissions_save_success,
+            );
+          }
+        },
+        builder: (context, state) {
+          final permissions = state.permissions;
+          return Scaffold(
+            backgroundColor: color.surface,
+            appBar: CustomAppBar(
+              title: locale.family_member_permissions_title(widget.memberName),
+              backgroundColor: color.surface,
             ),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: Spacing.familyPermissionsHorizontalPadding,
-                end: Spacing.familyPermissionsHorizontalPadding,
-                top: Spacing.familyPermissionsSaveTopGap,
-              ),
-              child: AppButton.filled(
-                text: locale.family_member_permissions_save,
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        locale.family_member_permissions_save_success,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
-                          color: color.onPrimary,
+            body: permissions == null
+                ? Center(child: CircularProgressIndicator(color: color.primary))
+                : ListView(
+                    padding: const EdgeInsets.all(Spacing.md),
+                    children: [
+                      Text(
+                        locale.family_member_permissions_subtitle(
+                          widget.memberName,
                         ),
                       ),
-                      backgroundColor: color.primary,
-                      behavior: SnackBarBehavior.floating,
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                  Navigator.maybePop(context);
-                },
-                height: Spacing.familyPermissionsSaveButtonHeight,
-                borderRadius: Spacing.familyDayReviewButtonRadius,
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [color.tertiary, color.primary],
-                ),
-                textColor: color.onPrimary,
-                fontSize: FontSize.size18,
-                fontWeight: FontWeightManger.semiBold,
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ],
-        ),
+                      const SizedBox(height: Spacing.md),
+                      for (final group in permissions.groups) ...[
+                        Text(group.label),
+                        const SizedBox(height: Spacing.xs),
+                        Card(
+                          color: color.surface,
+                          child: Column(
+                            children: [
+                              for (final permission in group.permissions)
+                                SwitchListTile(
+                                  title: Text(permission.label),
+                                  value:
+                                      state.permissionValues[permission.key] ??
+                                      permission.value,
+                                  onChanged: widget.isManager
+                                      ? null
+                                      : (value) => _viewModel.doIntent(
+                                          ToggleFamilyPermissionEvent(
+                                            permission.key,
+                                            value,
+                                          ),
+                                        ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.md),
+                      ],
+                      AppButton(
+                        text: locale.family_member_permissions_save,
+                        onPressed: widget.isManager || state.isSaving
+                            ? null
+                            : () => _viewModel.doIntent(
+                                UpdateFamilyMemberPermissionsEvent(
+                                  widget.memberId,
+                                  state.permissionValues,
+                                  locale.localeName,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+          );
+        },
       ),
     );
   }

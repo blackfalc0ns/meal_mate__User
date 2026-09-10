@@ -24,12 +24,18 @@ class FamilyDayMemberEntity {
     required this.ageLabel,
     required this.statusLabel,
     required this.imageAsset,
+    this.memberId,
+    this.subscriptionId,
+    this.imageUrl,
   });
 
   final String name;
   final String ageLabel;
   final String statusLabel;
   final String imageAsset;
+  final String? memberId;
+  final String? subscriptionId;
+  final String? imageUrl;
 }
 
 class FamilyDayMealEntity {
@@ -48,6 +54,8 @@ class FamilyDayMealEntity {
     this.carbsLabel,
     this.proteinLabel,
     this.fatLabel,
+    this.imageUrl,
+    this.isEmpty = false,
   });
 
   final String mealType;
@@ -64,5 +72,7 @@ class FamilyDayMealEntity {
   final String? carbsLabel;
   final String? proteinLabel;
   final String? fatLabel;
+  final String? imageUrl;
+  final bool isEmpty;
 }
 

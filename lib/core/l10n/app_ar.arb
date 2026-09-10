@@ -896,6 +896,7 @@
   "family_member_access_save_button": "حفظ التغييرات",
   "family_member_access_save_success": "تم حفظ تغييرات الوصول بنجاح",
   "family_member_permissions_save_success": "تم حفظ الصلاحيات بنجاح",
+  "family_member_renewal_success": "تم إرسال طلب التجديد بنجاح",
   "family_members_title": "الأفراد",
   "family_members_search_hint": "ابحث عن فرد",
   "family_members_add_member": "إضافة فرد",
@@ -1155,6 +1156,7 @@
   "calendar_change_restaurant": "تغيير المطعم",
   "calendar_meals_changed": "تم تغيير الوجبة",
   "calendar_selection_locked_before_72_hours": "آخر تعديل قبل التوصيل بـ 72 ساعة",
+  "family_member_day_closed_button": "تم الإغلاق",
   "calendar_pick_restaurant_first": "اختيار ",
   "calendar_pick_restaurant_second": "مطعم",
   "calendar_done": "تم",
@@ -1892,5 +1894,60 @@
   "subscription_upgrade_default_error": "حدث خطأ أثناء بدء عملية الترقية، يرجى المحاولة مرة أخرى.",
   "restaurant_tier_upgrade_success": "تمت ترقية التصنيف بنجاح وتفعيل الاشتراك المحدث فوراً",
   "restaurant_tier_upgrade_confirm_title": "تأكيد ترقية التصنيف",
-  "restaurant_tier_upgrade_no_data": "لا توجد بيانات متاحة لطلب الترقية."
+  "restaurant_tier_upgrade_no_data": "لا توجد بيانات متاحة لطلب الترقية.",
+  "family_error_cannot_remove_manager": "لا يمكن حذف مدير العائلة.",
+  "family_error_member_not_found": "لم يتم العثور على فرد العائلة.",
+  "family_error_not_manager": "هذا الإجراء متاح لمدير العائلة فقط.",
+  "family_error_use_checkout_flow": "أضف أفراد العائلة من خلال خطوات الاشتراك والدفع.",
+  "family_error_manager_permissions_immutable": "لا يمكن تغيير صلاحيات مدير العائلة.",
+  "family_error_member_paused": "هذا الفرد موقوف حالياً.",
+  "family_error_permission_denied": "هذا الفرد لا يملك صلاحية تعديل الوجبات.",
+  "family_error_renewal_not_available": "لا يمكن تجديد هذا الاشتراك حالياً.",
+  "family_error_subscription_not_found": "لم يتم العثور على اشتراك الفرد المطلوب.",
+  "family_error_customer_only": "هذا الإجراء متاح للعملاء فقط.",
+  "family_member_no_plan": "من غير خطة",
+  "family_member_paused_label": "موقوف",
+  "family_member_active_label": "نشط",
+  "family_member_days_remaining": "متبقي {count} أيام",
+  "@family_member_days_remaining": {"placeholders": {"count": {"type": "int"}}},
+  "family_member_age_years": "{count} سنة",
+  "@family_member_age_years": {"placeholders": {"count": {"type": "int"}}}
+  ,"family_member_details_title": "تفاصيل {name}"
+  ,"@family_member_details_title": {"placeholders": {"name": {"type": "String"}}}
+  ,"family_member_manager_label": "مدير العائلة"
+  ,"family_member_member_label": "فرد في العائلة"
+  ,"family_member_program_title": "البرنامج الغذائي"
+  ,"family_member_change_program": "تغيير البرنامج"
+  ,"family_member_package_title": "الاشتراك"
+  ,"family_member_subscription_dates": "{start} – {end}"
+  ,"@family_member_subscription_dates": {"placeholders": {"start": {"type": "String"}, "end": {"type": "String"}}}
+  ,"family_member_renew_subscription": "تجديد الاشتراك"
+  ,"family_member_today_nutrition": "تغذية اليوم"
+  ,"family_member_calories_value": "{count} سعرة"
+  ,"@family_member_calories_value": {"placeholders": {"count": {"type": "String"}}}
+  ,"family_member_show_calendar": "عرض التقويم"
+  ,"family_member_access_phone_label": "رقم الموبايل"
+  ,"family_member_access_pause_label": "إيقاف الفرد"
+  ,"family_member_access_remove_label": "حذف الفرد"
+  ,"family_member_access_generated_password_title": "كلمة مرور لمرة واحدة"
+  ,"family_member_access_generated_password_message": "شارك كلمة المرور الآن، لن يتم عرضها مرة أخرى."
+  ,"family_member_access_existing_login": "رقم الموبايل لديه حساب MealMate بالفعل، ويمكن للفرد الدخول بكلمة المرور الحالية."
+  ,"family_member_access_copy": "نسخ"
+  ,"family_member_shortcut_daily_meals": "الوجبات اليومية"
+  ,"family_member_shortcut_daily_meals_subtitle": "عرض الوجبات والخطط"
+  ,"family_member_shortcut_permissions": "الصلاحيات"
+  ,"family_member_shortcut_permissions_subtitle": "عرض وإدارة الصلاحيات"
+  ,"family_member_calendar_title": "تقويم {name}"
+  ,"@family_member_calendar_title": {"placeholders": {"name": {"type": "String"}}}
+  ,"family_member_no_active_subscription": "هذا الفرد ليس لديه اشتراك نشط حالياً."
+  ,"family_member_no_meals_selected": "لا توجد وجبات مختارة لهذا اليوم."
+  ,"family_member_selected_meals_count": "{count} وجبات مختارة"
+  ,"@family_member_selected_meals_count": {"placeholders": {"count": {"type": "int"}}}
+  ,"family_member_day_details_button": "عرض تفاصيل اليوم"
+  ,"family_member_choose_meals_button": "اختيار الوجبات"
+  ,"family_member_selected_meals_title": "الوجبات المختارة"
+  ,"family_member_selected_meals_subtitle": "الوجبات المختارة لـ{name} يوم {date}"
+  ,"@family_member_selected_meals_subtitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}}
+  ,"family_member_meal_chosen": "تم الاختيار"
+  ,"family_member_choose_meal": "اختار وجبة"
 }

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_meal_selection_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_meal_selection_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_bottom_bar.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_category_chips.dart';
@@ -14,9 +22,9 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_stepper.dart';
 
 class FamilyMealSelectionScreen extends StatefulWidget {
-  const FamilyMealSelectionScreen({super.key});
+  const FamilyMealSelectionScreen({super.key, this.args});
 
-  static const _dataSource = FamilyMealSelectionFakeDataSource();
+  final FamilyMealSelectionArgs? args;
 
   @override
   State<FamilyMealSelectionScreen> createState() =>
@@ -24,97 +32,253 @@ class FamilyMealSelectionScreen extends StatefulWidget {
 }
 
 class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
-  int _selectedCategoryIndex = 0;
-  String _selectedMealId = '1';
+  FamilyCalendarViewModel? _viewModel;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.args?.viewModel != null) {
+      _viewModel = widget.args!.viewModel;
+    } else if (getIt.isRegistered<FamilyCalendarViewModel>()) {
+      _viewModel = getIt<FamilyCalendarViewModel>();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
+
+    if (_viewModel != null) {
+      final locale = context.localization;
+      final restaurant = widget.args?.restaurant;
+      if (restaurant != null &&
+          _viewModel!.state.selectedRestaurant?.id != restaurant.id) {
+        _viewModel!.doIntent(
+          SelectFamilyRestaurantEvent(
+            restaurant: restaurant,
+            localeName: locale.localeName,
+          ),
+        );
+      } else {
+        _viewModel!.doIntent(
+          LoadFamilyAvailableMealsEvent(
+            slot: widget.args?.slot,
+            localeName: locale.localeName,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final data = FamilyMealSelectionScreen._dataSource.getContent(locale);
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        titleWidget: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              locale.family_meal_selection_title(data.memberName),
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size16,
-                color: color.onSurface,
-              ),
-            ),
-            const SizedBox(height: Spacing.xs / 2),
-            Text(
-              locale.family_meal_selection_context(
-                data.restaurantName,
-                data.slotName,
-              ),
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
-                color: color.onSurfaceVariant,
-              ),
-            ),
-          ],
+    if (_viewModel == null) {
+      return Scaffold(
+        backgroundColor: color.surface,
+        body: EmptyStateWidget(
+          title: locale.calendar_empty_meals_title,
+          description: locale.calendar_empty_meals_description,
+          icon: Icons.restaurant_menu_rounded,
         ),
-        onBackPressed: () => Navigator.maybePop(context),
-      ),
-      bottomNavigationBar: FamilyMealSelectionBottomBar(
-        selectedCount: data.selectedCount,
-        totalCount: data.totalCount,
-        slotAndDateLabel: '${data.slotName} • ${data.dateLabel}',
-        onContinue: () {
-          context.pushNamed(AppRoutes.familyReviewMemberMeals);
+      );
+    }
+
+    return BlocProvider<FamilyCalendarViewModel>.value(
+      value: _viewModel!,
+      child: BlocBuilder<FamilyCalendarViewModel, FamilyCalendarState>(
+        builder: (context, state) {
+          final activeMemberName = state.displayName.isNotEmpty
+              ? state.displayName
+              : (widget.args?.memberName ?? '');
+
+          final restaurantName =
+              state.selectedRestaurant?.name.isNotEmpty == true
+              ? state.selectedRestaurant!.name
+              : (state.availableMeals?.restaurant?.name.isNotEmpty == true
+                    ? state.availableMeals!.restaurant!.name
+                    : (widget.args?.restaurantName ?? ''));
+
+          final slotName = widget.args?.slot.isNotEmpty == true
+              ? widget.args!.slot
+              : '';
+
+          final selectedDate =
+              state.selectedDate ?? widget.args?.date ?? DateTime.now();
+          final formattedShortDate = intl.DateFormat.MMMMd(
+            locale.localeName,
+          ).format(selectedDate);
+
+          final availableMeals = state.availableMeals?.meals ?? const [];
+          final slotRequirements =
+              state.selectedDay?.slotRequirements.isNotEmpty == true
+              ? state.selectedDay!.slotRequirements
+              : (state.availableMeals?.slotRequirements ?? const []);
+          final availableSlots = slotRequirements
+              .map((requirement) => requirement.slot.trim().toLowerCase())
+              .where((slot) => slot.isNotEmpty)
+              .toSet();
+          final requiredCount = state.availableMeals?.requiredMealsCount ?? 0;
+          final selectedCount = state.selectedMealsForDay.length;
+
+          return Scaffold(
+            backgroundColor: color.surface,
+            appBar: CustomAppBar(
+              titleWidget: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    locale.family_meal_selection_title(activeMemberName),
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size16,
+                      color: color.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: Spacing.xs / 2),
+                  Text(
+                    locale.family_meal_selection_context(
+                      restaurantName,
+                      slotName,
+                    ),
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size10,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+              onBackPressed: () => Navigator.maybePop(context),
+            ),
+            bottomNavigationBar: FamilyMealSelectionBottomBar(
+              selectedCount: selectedCount,
+              totalCount: requiredCount,
+              slotAndDateLabel: '$slotName • $formattedShortDate',
+              onContinue: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.familyReviewMemberMeals,
+                  arguments: FamilyReviewMemberMealsArgs(
+                    subscriptionId:
+                        state.activeSubscriptionId ??
+                        widget.args?.subscriptionId ??
+                        '',
+                    date: selectedDate,
+                    memberName: activeMemberName,
+                    memberId: state.currentMember?.memberId,
+                    viewModel: _viewModel,
+                  ),
+                );
+              },
+            ),
+            body: SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.screenH,
+                  vertical: Spacing.sm,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const FamilyMealSelectionStepper(currentStep: 2),
+                    const SizedBox(height: Spacing.md),
+                    FamilyMealSelectionMacrosCard(
+                      macros: state.selectedNutritionTotals,
+                    ),
+                    const SizedBox(height: Spacing.base),
+                    FamilyMealSelectionCategoryChips(
+                      selectedIndex: state.selectedCategoryIndex,
+                      availableSlots: availableSlots,
+                      onSelected: (index) {
+                        _viewModel!.doIntent(
+                          SelectFamilyMealCategoryEvent(
+                            index: index,
+                            localeName: locale.localeName,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: Spacing.base),
+                    if (state.isLoadingAvailableMeals && availableMeals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: Spacing.xxl,
+                        ),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: color.primary,
+                          ),
+                        ),
+                      )
+                    else if (state.availableMealsFailure != null &&
+                        availableMeals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: Spacing.lg,
+                        ),
+                        child: ApiErrorWidget(
+                          exception: state.availableMealsFailure!.exception,
+                          onRetry: () {
+                            _viewModel!.doIntent(
+                              LoadFamilyAvailableMealsEvent(
+                                slot: _slotForCategory(
+                                  state.selectedCategoryIndex,
+                                ),
+                                localeName: locale.localeName,
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    else if (availableMeals.isNotEmpty)
+                      for (final meal in availableMeals)
+                        FamilyMealSelectionCard(
+                          meal: meal.copyWith(
+                            selected:
+                                meal.selected ||
+                                state.selectedMealsForDay.any(
+                                  (selectedMeal) => selectedMeal.id == meal.id,
+                                ),
+                          ),
+                          onSelect: () {
+                            _viewModel!.doIntent(
+                              SelectMealForSlotEvent(
+                                meal: meal,
+                                slot: meal.slot,
+                              ),
+                            );
+                          },
+                        )
+                    else
+                      EmptyStateWidget(
+                        title: locale.calendar_empty_meals_title,
+                        description: locale.calendar_empty_meals_description,
+                        icon: Icons.restaurant_menu_rounded,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
         },
       ),
-      body: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.screenH,
-            vertical: Spacing.sm,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const FamilyMealSelectionStepper(currentStep: 2),
-              const SizedBox(height: Spacing.md),
-              FamilyMealSelectionMacrosCard(macros: data.macros),
-              const SizedBox(height: Spacing.base),
-              FamilyMealSelectionCategoryChips(
-                selectedIndex: _selectedCategoryIndex,
-                onSelected: (index) {
-                  setState(() => _selectedCategoryIndex = index);
-                },
-              ),
-              const SizedBox(height: Spacing.base),
-              for (final meal in data.meals)
-                FamilyMealSelectionCard(
-                  meal: FamilyMealItemData(
-                    id: meal.id,
-                    title: meal.title,
-                    description: meal.description,
-                    calories: meal.calories,
-                    protein: meal.protein,
-                    carbs: meal.carbs,
-                    fat: meal.fat,
-                    tags: meal.tags,
-                    imageAsset: meal.imageAsset,
-                    isSelected: meal.id == _selectedMealId,
-                  ),
-                  onSelect: () {
-                    setState(() => _selectedMealId = meal.id);
-                  },
-                ),
-            ],
-          ),
-        ),
-      ),
     );
+  }
+
+  String? _slotForCategory(int index) {
+    return switch (index) {
+      1 => 'breakfast',
+      2 => 'lunch',
+      3 => 'dinner',
+      4 => 'snack',
+      _ => null,
+    };
   }
 }

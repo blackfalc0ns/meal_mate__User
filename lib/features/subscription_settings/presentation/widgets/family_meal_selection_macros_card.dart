@@ -3,15 +3,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_meal_selection_fake_data_source.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 
 class FamilyMealSelectionMacrosCard extends StatelessWidget {
-  const FamilyMealSelectionMacrosCard({
-    super.key,
-    required this.macros,
-  });
+  const FamilyMealSelectionMacrosCard({super.key, required this.macros});
 
-  final FamilyMacrosSummaryData macros;
+  final CalendarNutritionTotalsEntity macros;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +111,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs),
                       Text(
-                        locale.family_meal_calorie_unit(macros.calories.toString()),
+                        locale.family_meal_calorie_unit(
+                          macros.calories.toString(),
+                        ),
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -149,7 +148,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs),
                       Text(
-                        locale.family_meal_gram_unit(macros.carbs.toString()),
+                        locale.family_meal_gram_unit(macros.carbsG.toString()),
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -184,7 +183,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs),
                       Text(
-                        locale.family_meal_gram_unit(macros.protein.toString()),
+                        locale.family_meal_gram_unit(
+                          macros.proteinG.toString(),
+                        ),
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
@@ -219,7 +220,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs),
                       Text(
-                        locale.family_meal_gram_unit(macros.fat.toString()),
+                        locale.family_meal_gram_unit(macros.fatG.toString()),
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,

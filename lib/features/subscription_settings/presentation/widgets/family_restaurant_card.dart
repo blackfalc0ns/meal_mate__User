@@ -6,26 +6,32 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_restaurants_fake_data_source.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurant_logo.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurant_tag.dart';
 
 class FamilyRestaurantCard extends StatelessWidget {
-  const FamilyRestaurantCard({super.key, required this.restaurant});
+  const FamilyRestaurantCard({
+    super.key,
+    required this.restaurant,
+    this.onSelect,
+  });
 
   final FamilyRestaurantCardData restaurant;
+  final VoidCallback? onSelect;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
     return InkWell(
-      onTap: () {
-        context.pushNamed(AppRoutes.familyMealSelection);
-      },
-      borderRadius: BorderRadius.circular(
-        Spacing.familyRestaurantsCardRadius,
-      ),
+      onTap:
+          onSelect ??
+          () {
+            context.pushNamed(AppRoutes.familyMealSelection);
+          },
+      borderRadius: BorderRadius.circular(Spacing.familyRestaurantsCardRadius),
       child: Container(
         height: Spacing.familyRestaurantsCardHeight,
         padding: const EdgeInsets.all(Spacing.familyRestaurantsCardPadding),
@@ -54,18 +60,25 @@ class FamilyRestaurantCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       Spacing.familyDayMemberSelectorRadius,
                     ),
-                    child: Image.asset(
-                      restaurant.imageAsset,
-                      width: double.infinity,
-                      height: Spacing.familyRestaurantsMealImageHeight,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: Spacing.familyRestaurantsMealImageHeight,
-                        );
-                      },
-                    ),
+                    child:
+                        restaurant.imageUrl != null &&
+                            restaurant.imageUrl!.isNotEmpty
+                        ? AppCachedNetworkImage(
+                            imageUrl: restaurant.imageUrl!,
+                            width: double.infinity,
+                            height: Spacing.familyRestaurantsMealImageHeight,
+                            fit: BoxFit.cover,
+                          )
+                        : ColoredBox(
+                            color: color.surfaceContainerHighest,
+                            child: Center(
+                              child: Icon(
+                                Icons.restaurant_rounded,
+                                color: color.onSurfaceVariant,
+                                size: Spacing.iconXl,
+                              ),
+                            ),
+                          ),
                   ),
                   PositionedDirectional(
                     top: Spacing.xs,
@@ -77,9 +90,7 @@ class FamilyRestaurantCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.primary,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -140,7 +151,11 @@ class FamilyRestaurantCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int index = 0; index < restaurant.tags.length; index++) ...[
+                for (
+                  int index = 0;
+                  index < restaurant.tags.length;
+                  index++
+                ) ...[
                   if (index > 0) const SizedBox(width: Spacing.xxs),
                   Flexible(
                     child: FamilyRestaurantTag(tag: restaurant.tags[index]),
@@ -154,9 +169,11 @@ class FamilyRestaurantCard extends StatelessWidget {
               color: color.primary,
               borderRadius: Spacing.familyRestaurantsFilterRadius,
               fontSize: FontSize.size11,
-              onPressed: () {
-                context.pushNamed(AppRoutes.familyMealSelection);
-              },
+              onPressed:
+                  onSelect ??
+                  () {
+                    context.pushNamed(AppRoutes.familyMealSelection);
+                  },
             ),
           ],
         ),

@@ -3,15 +3,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_review_meals_fake_data_source.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 
 class FamilyReviewMacrosCard extends StatelessWidget {
-  const FamilyReviewMacrosCard({
-    super.key,
-    required this.nutrition,
-  });
+  const FamilyReviewMacrosCard({super.key, required this.nutrition});
 
-  final FamilyReviewNutritionalProgressData nutrition;
+  final CalendarNutritionTotalsEntity nutrition;
 
   @override
   Widget build(BuildContext context) {
@@ -58,48 +55,34 @@ class FamilyReviewMacrosCard extends StatelessWidget {
           _buildProgressRow(
             context,
             label: locale.family_meal_macros_calories,
-            progressText: locale.family_review_calories_progress(
-              nutrition.caloriesCurrent.toString(),
-              nutrition.caloriesTarget.toString(),
+            valueText: locale.family_meal_calorie_unit(
+              nutrition.calories.toString(),
             ),
-            fraction: (nutrition.caloriesCurrent / nutrition.caloriesTarget)
-                .clamp(0.0, 1.0),
           ),
           const SizedBox(height: Spacing.sm),
           // Protein Progress
           _buildProgressRow(
             context,
             label: locale.family_meal_macros_protein,
-            progressText: locale.family_review_grams_progress(
-              nutrition.proteinCurrent.toString(),
-              nutrition.proteinTarget.toString(),
+            valueText: locale.family_meal_gram_unit(
+              nutrition.proteinG.toString(),
             ),
-            fraction: (nutrition.proteinCurrent / nutrition.proteinTarget)
-                .clamp(0.0, 1.0),
           ),
           const SizedBox(height: Spacing.sm),
           // Carbs Progress
           _buildProgressRow(
             context,
             label: locale.family_meal_macros_carbs,
-            progressText: locale.family_review_grams_progress(
-              nutrition.carbsCurrent.toString(),
-              nutrition.carbsTarget.toString(),
+            valueText: locale.family_meal_gram_unit(
+              nutrition.carbsG.toString(),
             ),
-            fraction: (nutrition.carbsCurrent / nutrition.carbsTarget)
-                .clamp(0.0, 1.0),
           ),
           const SizedBox(height: Spacing.sm),
           // Fat Progress
           _buildProgressRow(
             context,
             label: locale.family_meal_macros_fat,
-            progressText: locale.family_review_grams_progress(
-              nutrition.fatCurrent.toString(),
-              nutrition.fatTarget.toString(),
-            ),
-            fraction:
-                (nutrition.fatCurrent / nutrition.fatTarget).clamp(0.0, 1.0),
+            valueText: locale.family_meal_gram_unit(nutrition.fatG.toString()),
           ),
         ],
       ),
@@ -109,8 +92,7 @@ class FamilyReviewMacrosCard extends StatelessWidget {
   Widget _buildProgressRow(
     BuildContext context, {
     required String label,
-    required String progressText,
-    required double fraction,
+    required String valueText,
   }) {
     final color = context.colorScheme;
 
@@ -129,7 +111,7 @@ class FamilyReviewMacrosCard extends StatelessWidget {
               ),
             ),
             Text(
-              progressText,
+              valueText,
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,
@@ -137,16 +119,6 @@ class FamilyReviewMacrosCard extends StatelessWidget {
               ),
             ),
           ],
-        ),
-        const SizedBox(height: Spacing.xs / 2),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(Spacing.radiusPill),
-          child: LinearProgressIndicator(
-            value: fraction,
-            minHeight: Spacing.xs,
-            backgroundColor: color.surfaceContainerHighest,
-            valueColor: AlwaysStoppedAnimation<Color>(color.primary),
-          ),
         ),
       ],
     );

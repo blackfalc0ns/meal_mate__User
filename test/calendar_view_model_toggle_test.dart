@@ -107,6 +107,100 @@ void main() {
     },
   );
 
+  test('saving selected meals does not auto-complete the day', () async {
+    SharedPreferences.setMockInitialValues({});
+    final calendarRepository = _CalendarRepositoryFake();
+    final profileRepository = _ProfileRepositoryFake();
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final viewModel = _TestCalendarViewModel(
+      GetCalendarUseCase(calendarRepository),
+      GetCalendarDayUseCase(calendarRepository),
+      GetCalendarRestaurantsUseCase(calendarRepository),
+      SetCalendarDayRestaurantUseCase(calendarRepository),
+      GetCalendarAvailableMealsUseCase(calendarRepository),
+      SaveCalendarDayMealsUseCase(calendarRepository),
+      AutoSelectCalendarDayUseCase(calendarRepository),
+      GetCurrentCustomerSubscriptionUseCase(profileRepository),
+      SharedPrefHelper(sharedPreferences),
+    );
+    final serviceDate = DateTime.now().add(const Duration(days: 10));
+    final meal = _meal(id: 'meal-1', slot: 'lunch');
+    viewModel.seed(
+      CalendarState(
+        subscriptionId: 'subscription-1',
+        selectedDate: serviceDate,
+        days: [
+          CalendarDayEntity(
+            dayNumber: serviceDate.day,
+            weekday: 'Mon',
+            date: serviceDate,
+            canEdit: true,
+          ),
+        ],
+        availableMeals: CalendarAvailableMealsEntity(
+          restaurant: null,
+          meals: [meal],
+          requiredCount: 1,
+          slotRequirements: const [
+            CalendarSlotRequirementEntity(
+              slot: 'lunch',
+              displayName: 'Lunch',
+              slotNameAr: 'الغداء',
+              slotNameEn: 'Lunch',
+              count: 1,
+            ),
+          ],
+        ),
+        localSelectedMealIds: const ['meal-1'],
+      ),
+    );
+
+    viewModel.doIntent(const SaveCalendarDayMealsEvent(localeName: 'en'));
+    await Future<void>.delayed(Duration.zero);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(calendarRepository.saveCalls, 1);
+    expect(calendarRepository.autoSelectCalls, 0);
+    expect(viewModel.state.saveSuccessCount, 1);
+    await viewModel.close();
+  });
+
+  test('selecting an empty editable day loads its details', () async {
+    SharedPreferences.setMockInitialValues({});
+    final calendarRepository = _CalendarRepositoryFake();
+    final profileRepository = _ProfileRepositoryFake();
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final viewModel = _TestCalendarViewModel(
+      GetCalendarUseCase(calendarRepository),
+      GetCalendarDayUseCase(calendarRepository),
+      GetCalendarRestaurantsUseCase(calendarRepository),
+      SetCalendarDayRestaurantUseCase(calendarRepository),
+      GetCalendarAvailableMealsUseCase(calendarRepository),
+      SaveCalendarDayMealsUseCase(calendarRepository),
+      AutoSelectCalendarDayUseCase(calendarRepository),
+      GetCurrentCustomerSubscriptionUseCase(profileRepository),
+      SharedPrefHelper(sharedPreferences),
+    );
+    final date = DateTime(2026, 9, 8);
+    final emptyDay = CalendarDayEntity(
+      dayNumber: date.day,
+      weekday: 'Tue',
+      date: date,
+      hasMeals: false,
+      canEdit: true,
+    );
+    viewModel.seed(
+      CalendarState(subscriptionId: 'subscription-1', days: [emptyDay]),
+    );
+
+    viewModel.doIntent(SelectCalendarDayEvent(day: emptyDay, localeName: 'en'));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(calendarRepository.getDayCalls, 1);
+    expect(viewModel.state.selectedDate, date);
+    await viewModel.close();
+  });
+
   test('deserializes calendar available meals JSON with slots and pagination', () {
     final json = <String, dynamic>{
       "restaurantId": "8ff16c1f-70ca-42f9-ae42-3c803da87744",
@@ -364,6 +458,9 @@ class _TestCalendarViewModel extends CalendarViewModel {
 
 class _CalendarRepositoryFake implements CalendarRepository {
   String? lastRestaurantQuery;
+  int autoSelectCalls = 0;
+  int saveCalls = 0;
+  int getDayCalls = 0;
 
   @override
   Future<ApiResult<CalendarDayEntity>> autoSelect({
@@ -371,7 +468,16 @@ class _CalendarRepositoryFake implements CalendarRepository {
     required String date,
     required String localeName,
   }) {
-    throw UnimplementedError();
+    autoSelectCalls++;
+    return Future.value(
+      ApiSuccessResult(
+        data: CalendarDayEntity(
+          dayNumber: DateTime.now().day,
+          weekday: 'Mon',
+          date: DateTime.now(),
+        ),
+      ),
+    );
   }
 
   @override
@@ -401,7 +507,19 @@ class _CalendarRepositoryFake implements CalendarRepository {
     required String date,
     required String localeName,
   }) {
-    throw UnimplementedError();
+    getDayCalls++;
+    final serviceDate = DateTime.parse(date);
+    return Future.value(
+      ApiSuccessResult(
+        data: CalendarDayEntity(
+          dayNumber: serviceDate.day,
+          weekday: 'Tue',
+          date: serviceDate,
+          hasMeals: false,
+          canEdit: true,
+        ),
+      ),
+    );
   }
 
   @override
@@ -422,7 +540,20 @@ class _CalendarRepositoryFake implements CalendarRepository {
     required List<CalendarMealEntity> meals,
     required String localeName,
   }) {
-    throw UnimplementedError();
+    saveCalls++;
+    final savedDate = DateTime.tryParse(date)!;
+    return Future.value(
+      ApiSuccessResult(
+        data: CalendarDayEntity(
+          dayNumber: savedDate.day,
+          weekday: 'Mon',
+          date: savedDate,
+          meals: meals,
+          selectedMealIds: meals.map((meal) => meal.id).toList(),
+          canEdit: true,
+        ),
+      ),
+    );
   }
 
   @override

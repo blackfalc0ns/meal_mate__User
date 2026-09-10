@@ -38,6 +38,9 @@ class FamilySubscriptionMembersPageEntity {
 
 class FamilyMemberDetailEntity {
   const FamilyMemberDetailEntity({
+    this.memberId = '',
+    this.subscriptionId,
+    this.isManager = false,
     required this.title,
     required this.name,
     required this.imageAsset,
@@ -59,6 +62,10 @@ class FamilyMemberDetailEntity {
     required this.showCalendarLabel,
     required this.shortcuts,
   });
+
+  final String memberId;
+  final String? subscriptionId;
+  final bool isManager;
 
   final String title;
   final String name;
@@ -87,11 +94,13 @@ class FamilyMemberDetailShortcutEntity {
     required this.title,
     required this.subtitle,
     required this.type,
+    this.onTap,
   });
 
   final String title;
   final String subtitle;
   final FamilyMemberDetailShortcutType type;
+  final void Function()? onTap;
 }
 
 enum FamilyMemberDetailShortcutType { dailyMeals, permissions }
@@ -187,10 +196,12 @@ class FamilySubscriptionMemberEntity {
 
 class FamilySubscriptionQuickActionEntity {
   const FamilySubscriptionQuickActionEntity({
+    this.code = '',
     required this.label,
     required this.iconAsset,
   });
 
+  final String code;
   final String label;
   final String iconAsset;
 }

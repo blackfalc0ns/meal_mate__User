@@ -115,10 +115,12 @@ class CalendarViewModel extends Cubit<CalendarState> {
       case ApiSuccessResult():
         final days = result.data.days;
         final selectedDate = _initialSelectedDate(days);
-        await _sharedPrefHelper.saveData(
-          key: StorageKeys.currentSubscriptionId,
-          val: resolvedSubscriptionId,
-        );
+        if (subscriptionId == null || subscriptionId.trim().isEmpty) {
+          await _sharedPrefHelper.saveData(
+            key: StorageKeys.currentSubscriptionId,
+            val: resolvedSubscriptionId,
+          );
+        }
         emit(
           state.copyWith(
             calendar: result.data,
@@ -131,7 +133,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
         );
         await _loadSelectedDayDetails(localeName);
       case ApiErrorResult():
-        if (retryWithCurrentOnNotFound && _isNotFound(result.failure)) {
+        if (retryWithCurrentOnNotFound &&
+            _isNotFound(result.failure) &&
+            (subscriptionId == null || subscriptionId.trim().isEmpty)) {
           await _sharedPrefHelper.removeData(
             key: StorageKeys.currentSubscriptionId,
           );
@@ -316,10 +320,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
     }
 
     emit(
-      state.copyWith(
-        isLoadingMoreMeals: true,
-        clearLoadMoreMealsFailure: true,
-      ),
+      state.copyWith(isLoadingMoreMeals: true, clearLoadMoreMealsFailure: true),
     );
 
     final nextPage = currentSlotEntity.page + 1;
@@ -432,17 +433,14 @@ class CalendarViewModel extends Cubit<CalendarState> {
 
     final allMergedMeals = updatedSlots.expand((s) => s.meals).toList();
 
-    return current.copyWith(
-      slots: updatedSlots,
-      meals: allMergedMeals,
-    );
+    return current.copyWith(slots: updatedSlots, meals: allMergedMeals);
   }
 
   void _selectDay({
     required CalendarDayEntity day,
     required String localeName,
   }) {
-    if (day.date == null || !day.hasMeals) return;
+    if (day.date == null) return;
     emit(
       state.copyWith(
         selectedDate: day.date,
@@ -535,21 +533,6 @@ class CalendarViewModel extends Cubit<CalendarState> {
     switch (result) {
       case ApiSuccessResult():
         _replaceDay(result.data);
-        final completeResult = await _autoSelectDayUseCase(
-          subscriptionId: state.subscriptionId,
-          date: date,
-          localeName: localeName,
-        );
-        if (isClosed) return;
-        if (completeResult case ApiErrorResult()) {
-          emit(
-            state.copyWith(
-              isSaving: false,
-              saveFailure: completeResult.failure,
-            ),
-          );
-          return;
-        }
         emit(
           state.copyWith(
             isSaving: false,
@@ -558,9 +541,6 @@ class CalendarViewModel extends Cubit<CalendarState> {
             clearSaveFailure: true,
           ),
         );
-        if (completeResult case ApiSuccessResult()) {
-          _replaceDay(completeResult.data);
-        }
       case ApiErrorResult():
         emit(state.copyWith(isSaving: false, saveFailure: result.failure));
     }

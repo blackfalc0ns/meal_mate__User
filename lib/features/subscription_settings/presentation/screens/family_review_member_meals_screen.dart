@@ -1,29 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_review_meals_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_actions_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_cutoff_banner.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_header_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_instructions_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_macros_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_meal_slot_card.dart';
 
-class FamilyReviewMemberMealsScreen extends StatelessWidget {
-  const FamilyReviewMemberMealsScreen({super.key});
+class FamilyReviewMemberMealsScreen extends StatefulWidget {
+  const FamilyReviewMemberMealsScreen({super.key, this.args});
 
-  static const _dataSource = FamilyReviewMealsFakeDataSource();
+  final FamilyReviewMemberMealsArgs? args;
+
+  @override
+  State<FamilyReviewMemberMealsScreen> createState() =>
+      _FamilyReviewMemberMealsScreenState();
+}
+
+class _FamilyReviewMemberMealsScreenState
+    extends State<FamilyReviewMemberMealsScreen> {
+  FamilyCalendarViewModel? _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = widget.args?.viewModel;
+  }
+
+  void _onConfirm(BuildContext context, String localeName) {
+    _viewModel?.doIntent(SaveFamilyDayMealsEvent(localeName: localeName));
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_viewModel != null) {
+      return BlocProvider<FamilyCalendarViewModel>.value(
+        value: _viewModel!,
+        child: BlocConsumer<FamilyCalendarViewModel, FamilyCalendarState>(
+          listenWhen: (previous, current) =>
+              previous.saveMealsSuccess != current.saveMealsSuccess ||
+              previous.saveMealsFailure != current.saveMealsFailure,
+          listener: (context, state) {
+            final color = context.colorScheme;
+            final locale = context.localization;
+
+            if (state.saveMealsSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    locale.family_review_success_message,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onPrimary,
+                    ),
+                  ),
+                  backgroundColor: color.primary,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+              Navigator.of(context).popUntil((route) {
+                return route.settings.name ==
+                        AppRoutes.familyMemberDayDetails ||
+                    route.isFirst;
+              });
+            } else if (state.saveMealsFailure != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    ErrorMessagePresenter.fromFailure(
+                      context,
+                      state.saveMealsFailure!,
+                    ),
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onError,
+                    ),
+                  ),
+                  backgroundColor: color.error,
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            return _buildContent(context, state: state);
+          },
+        ),
+      );
+    }
+
     final color = context.colorScheme;
     final locale = context.localization;
-    final data = _dataSource.getContent(locale);
+    return Scaffold(
+      backgroundColor: color.surface,
+      body: EmptyStateWidget(
+        title: locale.calendar_empty_meals_title,
+        description: locale.calendar_empty_meals_description,
+        icon: Icons.restaurant_menu_rounded,
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context, {
+    required FamilyCalendarState state,
+  }) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+    final memberName = state.displayName.isNotEmpty
+        ? state.displayName
+        : (widget.args?.memberName.isNotEmpty == true
+              ? widget.args!.memberName
+              : '');
+
+    final restaurantName = state.selectedRestaurant?.name.isNotEmpty == true
+        ? state.selectedRestaurant!.name
+        : (state.selectedDay?.restaurant?.name ?? '');
+    final meals = state.selectedMealsForDay;
+    final nutrition = state.selectedNutritionTotals;
+
+    final isSaving = state.isSavingMeals;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -32,7 +138,7 @@ class FamilyReviewMemberMealsScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              locale.family_review_title(data.memberName),
+              locale.family_review_title(memberName),
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size16,
@@ -53,27 +159,10 @@ class FamilyReviewMemberMealsScreen extends StatelessWidget {
         onBackPressed: () => Navigator.maybePop(context),
       ),
       bottomNavigationBar: FamilyReviewActionsBar(
-        memberName: data.memberName,
-        onEdit: () {
-          context.pushNamed(AppRoutes.familyRestaurants);
-        },
-        onConfirm: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                locale.family_review_success_message,
-                style: getMediumStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onPrimary,
-                ),
-              ),
-              backgroundColor: color.primary,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-          Navigator.maybePop(context);
-        },
+        memberName: memberName,
+        isLoading: isSaving,
+        onEdit: () => Navigator.maybePop(context),
+        onConfirm: () => _onConfirm(context, locale.localeName),
       ),
       body: SafeArea(
         top: false,
@@ -86,14 +175,6 @@ class FamilyReviewMemberMealsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FamilyReviewHeaderCard(
-                memberName: data.memberName,
-                avatarAsset: data.avatarAsset,
-                statusLabel: data.statusLabel,
-                dateLabel: data.dateLabel,
-                goalLabel: data.goalLabel,
-              ),
-              const SizedBox(height: Spacing.base),
               Row(
                 children: [
                   Icon(
@@ -113,27 +194,20 @@ class FamilyReviewMemberMealsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Spacing.sm),
-              for (final slot in data.slots)
+              for (final meal in meals)
                 FamilyReviewMealSlotCard(
-                  slot: slot,
-                  onEdit: () {
-                    context.pushNamed(AppRoutes.familyMealSelection);
-                  },
+                  meal: meal,
+                  restaurantName: restaurantName,
+                  onEdit: () => Navigator.maybePop(context),
+                ),
+              if (meals.isEmpty)
+                EmptyStateWidget(
+                  title: locale.calendar_empty_meals_title,
+                  description: locale.calendar_empty_meals_description,
+                  icon: Icons.restaurant_menu_rounded,
                 ),
               const SizedBox(height: Spacing.base),
-              FamilyReviewMacrosCard(nutrition: data.nutrition),
-              const SizedBox(height: Spacing.base),
-              FamilyReviewInstructionsCard(
-                instructions: data.instructions,
-                note: data.instructionsNote,
-              ),
-              const SizedBox(height: Spacing.base),
-              FamilyReviewCutoffBanner(
-                title: data.cutoffTitle,
-                description: data.cutoffDescription,
-                remainingTime: data.cutoffRemainingTime,
-                disclaimer: data.cutoffDisclaimer,
-              ),
+              FamilyReviewMacrosCard(nutrition: nutrition),
               const SizedBox(height: Spacing.xl),
             ],
           ),

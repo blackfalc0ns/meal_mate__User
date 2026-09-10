@@ -5,7 +5,9 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class FamilyMembersAddButton extends StatelessWidget {
-  const FamilyMembersAddButton({super.key});
+  const FamilyMembersAddButton({super.key, this.onPressed});
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class FamilyMembersAddButton extends StatelessWidget {
       height: Spacing.familyMembersAddButtonHeight,
       child: AppButton(
         text: locale.family_members_add_member,
-        onPressed: () {},
+        onPressed: onPressed,
         height: Spacing.familyMembersAddButtonHeight,
         borderRadius: Spacing.familyMembersAddButtonRadius,
         gradient: LinearGradient(

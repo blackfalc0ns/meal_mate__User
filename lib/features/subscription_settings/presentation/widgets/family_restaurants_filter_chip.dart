@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_restaurants_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
 
 class FamilyRestaurantsFilterChip extends StatelessWidget {
   const FamilyRestaurantsFilterChip({super.key, required this.filter});
@@ -24,7 +24,9 @@ class FamilyRestaurantsFilterChip extends StatelessWidget {
         ),
         border: Border.all(
           color: filter.isSelected ? color.primary : color.outlineVariant,
-          width: filter.isSelected ? Spacing.familySelectedBorderWidth : Spacing.border,
+          width: filter.isSelected
+              ? Spacing.familySelectedBorderWidth
+              : Spacing.border,
         ),
       ),
       child: Row(

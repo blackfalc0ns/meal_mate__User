@@ -51,14 +51,20 @@ import 'package:meal_meat_user/features/subscription_types/domain/entities/conve
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/conversion_options_page.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_access_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_review_member_meals_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_meal_selection_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_review_member_meals_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_restaurants_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_meal_selection_args.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
@@ -179,44 +185,125 @@ class RouteGenerator {
           page: const FamilySubscriptionMembersScreen(),
         );
       case AppRoutes.familySubscriptionMemberDetails:
+        final member = settings.arguments is FamilyMemberSummaryEntity
+            ? settings.arguments! as FamilyMemberSummaryEntity
+            : null;
+        if (member == null) {
+          return _buildRoute(
+            settings: settings,
+            page: const FamilySubscriptionMembersScreen(),
+          );
+        }
         return _buildRoute(
           settings: settings,
-          page: const FamilyMemberDetailScreen(),
+          page: FamilyMemberDetailScreen(member: member),
         );
       case AppRoutes.familyMemberDailyMeals:
+        final calendarArgs = switch (settings.arguments) {
+          final FamilyMemberCalendarArgs args => args,
+          final FamilyMemberDetailEntity detail => FamilyMemberCalendarArgs(
+            memberId: detail.memberId,
+            displayName: detail.displayName,
+            subscriptionId: detail.subscriptionId,
+            isManager: detail.isManager,
+          ),
+          final FamilyMemberSummaryEntity summary => FamilyMemberCalendarArgs(
+            memberId: summary.memberId,
+            displayName: summary.displayName,
+            subscriptionId: summary.subscriptionId,
+            isManager: summary.isManager,
+          ),
+          final String subscriptionId => FamilyMemberCalendarArgs(
+            subscriptionId: subscriptionId,
+          ),
+          _ => null,
+        };
         return _buildRoute(
           settings: settings,
-          page: const FamilyMemberCalendarScreen(),
+          page: FamilyMemberCalendarScreen(args: calendarArgs),
         );
       case AppRoutes.familyMemberDayDetails:
+        final dayMealsArgs = switch (settings.arguments) {
+          final FamilyDayMealsArgs args => args,
+          (final String subId, final DateTime date) => FamilyDayMealsArgs(
+            subscriptionId: subId,
+            date: date,
+          ),
+          final String subId => FamilyDayMealsArgs(
+            subscriptionId: subId,
+            date: DateTime.now(),
+          ),
+          _ => null,
+        };
         return _buildRoute(
           settings: settings,
-          page: const FamilyDayMealsScreen(),
+          page: FamilyDayMealsScreen(args: dayMealsArgs),
         );
       case AppRoutes.familyRestaurants:
+        final restaurantArgs = settings.arguments is FamilyRestaurantsArgs
+            ? settings.arguments! as FamilyRestaurantsArgs
+            : (settings.arguments is String
+                ? FamilyRestaurantsArgs(
+                    subscriptionId: settings.arguments! as String,
+                    date: DateTime.now(),
+                    memberName: '',
+                  )
+                : null);
         return _buildRoute(
           settings: settings,
-          page: const FamilyRestaurantsScreen(),
+          page: FamilyRestaurantsScreen(args: restaurantArgs),
         );
       case AppRoutes.familyMealSelection:
+        final mealArgs = settings.arguments is FamilyMealSelectionArgs
+            ? settings.arguments! as FamilyMealSelectionArgs
+            : (settings.arguments is String
+                ? FamilyMealSelectionArgs(
+                    subscriptionId: settings.arguments! as String,
+                    date: DateTime.now(),
+                    memberName: '',
+                  )
+                : null);
         return _buildRoute(
           settings: settings,
-          page: const FamilyMealSelectionScreen(),
+          page: FamilyMealSelectionScreen(args: mealArgs),
         );
       case AppRoutes.familyReviewMemberMeals:
+        final reviewArgs = settings.arguments is FamilyReviewMemberMealsArgs
+            ? settings.arguments! as FamilyReviewMemberMealsArgs
+            : (settings.arguments is String
+                ? FamilyReviewMemberMealsArgs(
+                    subscriptionId: settings.arguments! as String,
+                    date: DateTime.now(),
+                    memberName: '',
+                  )
+                : null);
         return _buildRoute(
           settings: settings,
-          page: const FamilyReviewMemberMealsScreen(),
+          page: FamilyReviewMemberMealsScreen(args: reviewArgs),
         );
       case AppRoutes.familyMemberPermissions:
+        final permissionArgs = settings.arguments is (String, bool, String)
+            ? settings.arguments! as (String, bool, String)
+            : ('', false, '');
         return _buildRoute(
           settings: settings,
-          page: const FamilyMemberPermissionsScreen(),
+          page: FamilyMemberPermissionsScreen(
+            memberId: permissionArgs.$1,
+            isManager: permissionArgs.$2,
+            memberName: permissionArgs.$3,
+          ),
         );
       case AppRoutes.familyMemberAccess:
+        final accessArgs = settings.arguments is (String, bool, String)
+            ? settings.arguments! as (String, bool, String)
+            : ('', false, '');
         return _buildRoute(
           settings: settings,
-          page: const FamilyMemberAccessScreen(),
+          page: FamilyMemberAccessScreen(
+            memberId: accessArgs.$1,
+            isManager: accessArgs.$2,
+            memberName: accessArgs.$3,
+          ),
         );
       case AppRoutes.familyProgramSetup:
       case AppRoutes.familyPackageDaysSetup:

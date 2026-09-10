@@ -19,7 +19,12 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
     final locale = context.localization;
 
     return InkWell(
-      onTap: () => context.pushNamed(AppRoutes.familyMemberAccess),
+      onTap: member.memberId.isEmpty
+          ? null
+          : () => context.pushNamed(
+              AppRoutes.familyMemberAccess,
+              arguments: (member.memberId, member.isManager, member.name),
+            ),
       borderRadius: BorderRadius.circular(Spacing.familyMemberDetailCardRadius),
       child: FamilyMemberDetailSectionCard(
         height: Spacing.familyMemberDetailProfileHeight,

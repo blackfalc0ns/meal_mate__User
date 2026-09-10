@@ -42,6 +42,52 @@ class CalendarMealEntity {
   final double? proteinPercentage;
   final double? carbsPercentage;
   final double? fatPercentage;
+
+  CalendarMealEntity copyWith({
+    String? id,
+    String? slot,
+    String? imageUrl,
+    String? blockReason,
+    bool? selected,
+    String? description,
+    String? mealType,
+    String? title,
+    String? time,
+    String? calories,
+    String? protein,
+    String? carbs,
+    String? fat,
+    List<CalendarMealIngredientEntity>? ingredients,
+    String? imageAsset,
+    String? actionLabel,
+    List<CalendarMealAllergenEntity>? allergens,
+    double? proteinPercentage,
+    double? carbsPercentage,
+    double? fatPercentage,
+  }) {
+    return CalendarMealEntity(
+      id: id ?? this.id,
+      slot: slot ?? this.slot,
+      imageUrl: imageUrl ?? this.imageUrl,
+      blockReason: blockReason ?? this.blockReason,
+      selected: selected ?? this.selected,
+      description: description ?? this.description,
+      mealType: mealType ?? this.mealType,
+      title: title ?? this.title,
+      time: time ?? this.time,
+      calories: calories ?? this.calories,
+      protein: protein ?? this.protein,
+      carbs: carbs ?? this.carbs,
+      fat: fat ?? this.fat,
+      ingredients: ingredients ?? this.ingredients,
+      imageAsset: imageAsset ?? this.imageAsset,
+      actionLabel: actionLabel ?? this.actionLabel,
+      allergens: allergens ?? this.allergens,
+      proteinPercentage: proteinPercentage ?? this.proteinPercentage,
+      carbsPercentage: carbsPercentage ?? this.carbsPercentage,
+      fatPercentage: fatPercentage ?? this.fatPercentage,
+    );
+  }
 }
 
 class CalendarMealAllergenEntity {

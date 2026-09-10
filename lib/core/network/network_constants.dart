@@ -160,6 +160,14 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/payment-methods';
   static const String familySubscriptionFlowCheckout =
       '/api/v1/customer/family-subscription-flow/checkout';
+  static const String familyHome = '/api/v1/customer/family/home';
+  static const String familyMembers = '/api/v1/customer/family/members';
+  static const String familyMember =
+      '/api/v1/customer/family/members/{memberId}';
+  static const String familyMemberAccess =
+      '/api/v1/customer/family/members/{memberId}/access';
+  static const String familyMemberPermissions =
+      '/api/v1/customer/family/members/{memberId}/permissions';
   static const String customerSubscriptionUpgradeOptions =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-options';
   static const String customerSubscriptionUpgradeSummary =

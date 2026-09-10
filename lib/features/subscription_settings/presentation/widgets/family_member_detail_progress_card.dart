@@ -4,6 +4,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_header_icon.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_section_card.dart';
@@ -53,9 +55,25 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                   width: Spacing.familyMemberDetailCalendarButtonWidth,
                   height: Spacing.familyMemberDetailCalendarButtonHeight,
                   child: OutlinedButton(
-                    onPressed: () => Navigator.of(
-                      context,
-                    ).pushNamed(AppRoutes.familyMemberDailyMeals),
+                    onPressed: () {
+                      if (member.subscriptionId == null ||
+                          member.subscriptionId!.isEmpty) {
+                        CustomSnackbar.showError(
+                          context: context,
+                          message: locale.family_member_no_active_subscription,
+                        );
+                        return;
+                      }
+                      Navigator.of(context).pushNamed(
+                        AppRoutes.familyMemberDailyMeals,
+                        arguments: FamilyMemberCalendarArgs(
+                          memberId: member.memberId,
+                          displayName: member.name,
+                          subscriptionId: member.subscriptionId,
+                          isManager: member.isManager,
+                        ),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: color.primaryContainer.withValues(
                         alpha: 0.22,

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_restaurants_fake_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurant_card.dart';
 
 class FamilyRestaurantsGrid extends StatelessWidget {
-  const FamilyRestaurantsGrid({super.key, required this.restaurants});
+  const FamilyRestaurantsGrid({
+    super.key,
+    required this.restaurants,
+    this.onRestaurantSelected,
+  });
 
   final List<FamilyRestaurantCardData> restaurants;
+  final ValueChanged<FamilyRestaurantCardData>? onRestaurantSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,13 @@ class FamilyRestaurantsGrid extends StatelessWidget {
       ),
       itemCount: restaurants.length,
       itemBuilder: (context, index) {
-        return FamilyRestaurantCard(restaurant: restaurants[index]);
+        final restaurant = restaurants[index];
+        return FamilyRestaurantCard(
+          restaurant: restaurant,
+          onSelect: onRestaurantSelected != null
+              ? () => onRestaurantSelected!(restaurant)
+              : null,
+        );
       },
     );
   }

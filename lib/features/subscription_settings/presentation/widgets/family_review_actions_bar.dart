@@ -10,11 +10,13 @@ class FamilyReviewActionsBar extends StatelessWidget {
     required this.memberName,
     required this.onEdit,
     required this.onConfirm,
+    this.isLoading = false,
   });
 
   final String memberName;
   final VoidCallback onEdit;
   final VoidCallback onConfirm;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +46,9 @@ class FamilyReviewActionsBar extends StatelessWidget {
         child: Row(
           children: [
             OutlinedButton(
-              onPressed: onEdit,
+              onPressed: isLoading ? null : onEdit,
               style: OutlinedButton.styleFrom(
+                minimumSize: const Size(0, Spacing.buttonHeight),
                 side: BorderSide(color: color.outline),
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.lg,
@@ -67,8 +70,9 @@ class FamilyReviewActionsBar extends StatelessWidget {
             const SizedBox(width: Spacing.sm),
             Expanded(
               child: FilledButton(
-                onPressed: onConfirm,
+                onPressed: isLoading ? null : onConfirm,
                 style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, Spacing.buttonHeight),
                   backgroundColor: color.primary,
                   padding: const EdgeInsets.symmetric(
                     vertical: Spacing.md,
@@ -77,14 +81,23 @@ class FamilyReviewActionsBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(Spacing.radiusPill),
                   ),
                 ),
-                child: Text(
-                  locale.family_review_confirm_meals_button(memberName),
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onPrimary,
-                  ),
-                ),
+                child: isLoading
+                    ? SizedBox(
+                        height: Spacing.iconSm,
+                        width: Spacing.iconSm,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: color.onPrimary,
+                        ),
+                      )
+                    : Text(
+                        locale.family_review_confirm_meals_button(memberName),
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size12,
+                          color: color.onPrimary,
+                        ),
+                      ),
               ),
             ),
           ],

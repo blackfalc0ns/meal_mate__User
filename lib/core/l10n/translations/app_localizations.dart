@@ -4670,6 +4670,12 @@ abstract class AppLocalizations {
   /// **'Permissions saved successfully'**
   String get family_member_permissions_save_success;
 
+  /// No description provided for @family_member_renewal_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Renewal request submitted successfully'**
+  String get family_member_renewal_success;
+
   /// No description provided for @family_members_title.
   ///
   /// In en, this message translates to:
@@ -6139,6 +6145,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last change is 72 hours before delivery'**
   String get calendar_selection_locked_before_72_hours;
+
+  /// No description provided for @family_member_day_closed_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get family_member_day_closed_button;
 
   /// No description provided for @calendar_pick_restaurant_first.
   ///
@@ -9829,6 +9841,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data available for upgrade request.'**
   String get restaurant_tier_upgrade_no_data;
+
+  /// No description provided for @family_error_cannot_remove_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'The family manager cannot be removed.'**
+  String get family_error_cannot_remove_manager;
+
+  /// No description provided for @family_error_member_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'This family member could not be found.'**
+  String get family_error_member_not_found;
+
+  /// No description provided for @family_error_not_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the family manager can perform this action.'**
+  String get family_error_not_manager;
+
+  /// No description provided for @family_error_use_checkout_flow.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family members through the subscription checkout flow.'**
+  String get family_error_use_checkout_flow;
+
+  /// No description provided for @family_error_manager_permissions_immutable.
+  ///
+  /// In en, this message translates to:
+  /// **'The family manager\'s permissions cannot be changed.'**
+  String get family_error_manager_permissions_immutable;
+
+  /// No description provided for @family_error_member_paused.
+  ///
+  /// In en, this message translates to:
+  /// **'This family member is paused.'**
+  String get family_error_member_paused;
+
+  /// No description provided for @family_error_permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'This family member does not have permission to edit meals.'**
+  String get family_error_permission_denied;
+
+  /// No description provided for @family_error_renewal_not_available.
+  ///
+  /// In en, this message translates to:
+  /// **'This subscription cannot be renewed right now.'**
+  String get family_error_renewal_not_available;
+
+  /// No description provided for @family_error_subscription_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested family subscription was not found.'**
+  String get family_error_subscription_not_found;
+
+  /// No description provided for @family_error_customer_only.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is only available to customers.'**
+  String get family_error_customer_only;
+
+  /// No description provided for @family_member_no_plan.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan'**
+  String get family_member_no_plan;
+
+  /// No description provided for @family_member_paused_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get family_member_paused_label;
+
+  /// No description provided for @family_member_active_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get family_member_active_label;
+
+  /// No description provided for @family_member_days_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days remaining'**
+  String family_member_days_remaining(int count);
+
+  /// No description provided for @family_member_age_years.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} years'**
+  String family_member_age_years(int count);
+
+  /// No description provided for @family_member_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Details for {name}'**
+  String family_member_details_title(String name);
+
+  /// No description provided for @family_member_manager_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Family manager'**
+  String get family_member_manager_label;
+
+  /// No description provided for @family_member_member_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Family member'**
+  String get family_member_member_label;
+
+  /// No description provided for @family_member_program_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition program'**
+  String get family_member_program_title;
+
+  /// No description provided for @family_member_change_program.
+  ///
+  /// In en, this message translates to:
+  /// **'Change program'**
+  String get family_member_change_program;
+
+  /// No description provided for @family_member_package_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get family_member_package_title;
+
+  /// No description provided for @family_member_subscription_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String family_member_subscription_dates(String start, String end);
+
+  /// No description provided for @family_member_renew_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew subscription'**
+  String get family_member_renew_subscription;
+
+  /// No description provided for @family_member_today_nutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s nutrition'**
+  String get family_member_today_nutrition;
+
+  /// No description provided for @family_member_calories_value.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} kcal'**
+  String family_member_calories_value(String count);
+
+  /// No description provided for @family_member_show_calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Show calendar'**
+  String get family_member_show_calendar;
+
+  /// No description provided for @family_member_access_phone_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get family_member_access_phone_label;
+
+  /// No description provided for @family_member_access_pause_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause member'**
+  String get family_member_access_pause_label;
+
+  /// No description provided for @family_member_access_remove_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get family_member_access_remove_label;
+
+  /// No description provided for @family_member_access_generated_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time password'**
+  String get family_member_access_generated_password_title;
+
+  /// No description provided for @family_member_access_generated_password_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this password now. It will not be shown again.'**
+  String get family_member_access_generated_password_message;
+
+  /// No description provided for @family_member_access_existing_login.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number already has a MealMate account. The member can use the existing password.'**
+  String get family_member_access_existing_login;
+
+  /// No description provided for @family_member_access_copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get family_member_access_copy;
+
+  /// No description provided for @family_member_shortcut_daily_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Meals'**
+  String get family_member_shortcut_daily_meals;
+
+  /// No description provided for @family_member_shortcut_daily_meals_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View meals and plans'**
+  String get family_member_shortcut_daily_meals_subtitle;
+
+  /// No description provided for @family_member_shortcut_permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get family_member_shortcut_permissions;
+
+  /// No description provided for @family_member_shortcut_permissions_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage permissions'**
+  String get family_member_shortcut_permissions_subtitle;
+
+  /// No description provided for @family_member_calendar_title.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s Calendar'**
+  String family_member_calendar_title(String name);
+
+  /// No description provided for @family_member_no_active_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'This member currently has no active subscription.'**
+  String get family_member_no_active_subscription;
+
+  /// No description provided for @family_member_no_meals_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals selected for this day.'**
+  String get family_member_no_meals_selected;
+
+  /// No description provided for @family_member_selected_meals_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} meals selected'**
+  String family_member_selected_meals_count(int count);
+
+  /// No description provided for @family_member_day_details_button.
+  ///
+  /// In en, this message translates to:
+  /// **'View Day Details'**
+  String get family_member_day_details_button;
+
+  /// No description provided for @family_member_choose_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Meals'**
+  String get family_member_choose_meals_button;
+
+  /// No description provided for @family_member_selected_meals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Meals'**
+  String get family_member_selected_meals_title;
+
+  /// No description provided for @family_member_selected_meals_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected meals for {name} on {date}'**
+  String family_member_selected_meals_subtitle(String name, String date);
+
+  /// No description provided for @family_member_meal_chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get family_member_meal_chosen;
+
+  /// No description provided for @family_member_choose_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose meal'**
+  String get family_member_choose_meal;
 }
 
 class _AppLocalizationsDelegate

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/app_nutrition_row.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_icon.dart';
@@ -78,57 +80,103 @@ class FamilyDayMealCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: Spacing.md),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    Spacing.familyDayMealImageRadius,
+            if (meal.isEmpty)
+              InkWell(
+                onTap: onEditPressed,
+                borderRadius: BorderRadius.circular(Spacing.md),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.md),
+                  decoration: BoxDecoration(
+                    color: color.surfaceContainerHighest.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(Spacing.md),
+                    border: Border.all(
+                      color: color.outlineVariant,
+                      style: BorderStyle.solid,
+                    ),
                   ),
-                  child: Image.asset(
-                    meal.imageAsset,
-                    width: 88,
-                    height: 88,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: Spacing.sm),
-                Expanded(
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Icon(
+                        Icons.add_circle_outline_rounded,
+                        color: color.primary,
+                        size: Spacing.iconMd,
+                      ),
+                      const SizedBox(width: Spacing.sm),
                       Text(
                         meal.mealName,
                         locale: Locale(locale.localeName),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getBoldStyle(
+                        style: getSemiBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size16,
-                          color: color.onSurface,
+                          fontSize: FontSize.size14,
+                          color: color.primary,
                         ),
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      AppNutritionRow(
-                        calories: meal.calories,
-                        carbs: meal.carbs,
-                        protein: meal.protein,
-                        fat: meal.fat,
-                        caloriesLabel: meal.caloriesLabel,
-                        carbsLabel: meal.carbsLabel,
-                        proteinLabel: meal.proteinLabel,
-                        fatLabel: meal.fatLabel,
-                        order: NutritionOrder.caloriesCarbsProteinFat,
-                        animationSize: 18.0,
-                        height: 44.0,
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              )
+            else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      Spacing.familyDayMealImageRadius,
+                    ),
+                    child: meal.imageUrl?.isNotEmpty == true
+                        ? AppCachedNetworkImage(
+                            imageUrl: meal.imageUrl!,
+                            width: 88,
+                            height: 88,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            meal.imageAsset.isNotEmpty
+                                ? meal.imageAsset
+                                : Assets.profileBillingPlanBottle,
+                            width: 88,
+                            height: 88,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          meal.mealName,
+                          locale: Locale(locale.localeName),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size16,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        AppNutritionRow(
+                          calories: meal.calories,
+                          carbs: meal.carbs,
+                          protein: meal.protein,
+                          fat: meal.fat,
+                          caloriesLabel: meal.caloriesLabel,
+                          carbsLabel: meal.carbsLabel,
+                          proteinLabel: meal.proteinLabel,
+                          fatLabel: meal.fatLabel,
+                          order: NutritionOrder.caloriesCarbsProteinFat,
+                          animationSize: 18.0,
+                          height: 44.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

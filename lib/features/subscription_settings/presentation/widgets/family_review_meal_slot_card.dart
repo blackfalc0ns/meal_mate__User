@@ -3,16 +3,19 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_review_meals_fake_data_source.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 
 class FamilyReviewMealSlotCard extends StatelessWidget {
   const FamilyReviewMealSlotCard({
     super.key,
-    required this.slot,
+    required this.meal,
+    required this.restaurantName,
     required this.onEdit,
   });
 
-  final FamilyReviewMealSlotData slot;
+  final CalendarMealEntity meal;
+  final String restaurantName;
   final VoidCallback onEdit;
 
   @override
@@ -32,24 +35,23 @@ class FamilyReviewMealSlotCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(Spacing.radiusSm),
-            child: Image.asset(
-              slot.imageAsset,
-              width: Spacing.avatarMd,
-              height: Spacing.avatarMd,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: Spacing.avatarMd,
-                  height: Spacing.avatarMd,
-                  color: color.surfaceContainerHighest,
-                  child: Icon(
-                    Icons.fastfood_rounded,
-                    color: color.onSurfaceVariant,
-                    size: Spacing.iconMd,
+            child: (meal.imageUrl != null && meal.imageUrl!.isNotEmpty)
+                ? AppCachedNetworkImage(
+                    imageUrl: meal.imageUrl!,
+                    width: Spacing.avatarMd,
+                    height: Spacing.avatarMd,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    width: Spacing.avatarMd,
+                    height: Spacing.avatarMd,
+                    color: color.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.fastfood_rounded,
+                      color: color.onSurfaceVariant,
+                      size: Spacing.iconMd,
+                    ),
                   ),
-                );
-              },
-            ),
           ),
           const SizedBox(width: Spacing.md),
           Expanded(
@@ -66,7 +68,7 @@ class FamilyReviewMealSlotCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(Spacing.radiusXs),
                   ),
                   child: Text(
-                    slot.slotType,
+                    meal.slot.isNotEmpty ? meal.slot : meal.mealType,
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
@@ -76,7 +78,7 @@ class FamilyReviewMealSlotCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs / 2),
                 Text(
-                  slot.mealName,
+                  meal.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
@@ -87,7 +89,7 @@ class FamilyReviewMealSlotCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs / 4),
                 Text(
-                  slot.restaurantName,
+                  restaurantName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getRegularStyle(

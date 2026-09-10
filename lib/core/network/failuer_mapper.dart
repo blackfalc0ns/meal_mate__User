@@ -126,6 +126,28 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.subscription_upgrade_request_already_pending;
     case 'subscription.not_found':
       return locale.subscription_not_found;
+    case 'family.cannot_remove_manager':
+      return locale.family_error_cannot_remove_manager;
+    case 'family.member_not_found':
+      return locale.family_error_member_not_found;
+    case 'family.not_manager':
+      return locale.family_error_not_manager;
+    case 'family.use_checkout_flow':
+      return locale.family_error_use_checkout_flow;
+    case 'family.manager_permissions_immutable':
+      return locale.family_error_manager_permissions_immutable;
+    case 'family.member_paused':
+      return locale.family_error_member_paused;
+    case 'family.permission_denied':
+      return locale.family_error_permission_denied;
+    case 'subscription.renewal_not_available':
+      return locale.family_error_renewal_not_available;
+    case 'common.not_found':
+      return locale.family_error_subscription_not_found;
+    case 'errors.common.not_found':
+      return locale.error_not_found;
+    case 'auth.forbidden':
+      return locale.family_error_customer_only;
     default:
       return message;
   }

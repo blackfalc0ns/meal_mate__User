@@ -9,9 +9,11 @@ class FamilySubscriptionQuickAccessSection extends StatelessWidget {
   const FamilySubscriptionQuickAccessSection({
     super.key,
     required this.actions,
+    this.onActionTap,
   });
 
   final List<FamilySubscriptionQuickActionEntity> actions;
+  final ValueChanged<FamilySubscriptionQuickActionEntity>? onActionTap;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,9 @@ class FamilySubscriptionQuickAccessSection extends StatelessWidget {
                 Expanded(
                   child: FamilySubscriptionQuickAccessTile(
                     action: actions[index],
+                    onTap: onActionTap == null
+                        ? null
+                        : () => onActionTap!(actions[index]),
                   ),
                 ),
               ],

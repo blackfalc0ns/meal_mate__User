@@ -353,22 +353,46 @@ import '../../features/subscription_programs/domain/usecase/get_subscription_pro
     as _i178;
 import '../../features/subscription_programs/presentation/manager/subscription_programs_view_model.dart'
     as _i420;
+import '../../features/subscription_settings/data/data_source/family_management_remote_data_source.dart'
+    as _i322;
+import '../../features/subscription_settings/data/data_source/family_management_remote_data_source_impl.dart'
+    as _i751;
 import '../../features/subscription_settings/data/data_source/restaurant_tier_upgrade_remote_data_source.dart'
     as _i549;
 import '../../features/subscription_settings/data/data_source/restaurant_tier_upgrade_remote_data_source_impl.dart'
     as _i798;
+import '../../features/subscription_settings/data/repo/family_management_repository_impl.dart'
+    as _i1014;
 import '../../features/subscription_settings/data/repo/restaurant_tier_upgrade_repository_impl.dart'
     as _i859;
+import '../../features/subscription_settings/domain/repo/family_management_repository.dart'
+    as _i851;
 import '../../features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart'
     as _i603;
 import '../../features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart'
     as _i261;
+import '../../features/subscription_settings/domain/usecase/get_family_home_usecase.dart'
+    as _i576;
+import '../../features/subscription_settings/domain/usecase/get_family_member_usecase.dart'
+    as _i201;
+import '../../features/subscription_settings/domain/usecase/get_family_members_usecase.dart'
+    as _i897;
 import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart'
     as _i990;
 import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart'
     as _i934;
 import '../../features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart'
     as _i279;
+import '../../features/subscription_settings/domain/usecase/manage_family_member_access_usecase.dart'
+    as _i977;
+import '../../features/subscription_settings/domain/usecase/manage_family_member_permissions_usecase.dart'
+    as _i671;
+import '../../features/subscription_settings/domain/usecase/renew_family_member_subscription_usecase.dart'
+    as _i141;
+import '../../features/subscription_settings/presentation/manager/family_calendar_view_model.dart'
+    as _i888;
+import '../../features/subscription_settings/presentation/manager/family_management_view_model.dart'
+    as _i69;
 import '../../features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart'
     as _i528;
 import '../../features/subscription_types/data/data_source/subscription_types_remote_data_source.dart'
@@ -532,6 +556,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.factory<_i322.FamilyManagementRemoteDataSource>(
+      () => _i751.FamilyManagementRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i986.FamilyPackagesRemoteDataSource>(
       () => _i854.FamilyPackagesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -571,6 +598,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1060.SubscriptionSummaryRepository>(
       () => _i636.SubscriptionSummaryRepositoryImpl(
         gh<_i155.SubscriptionSummaryRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i851.FamilyManagementRepository>(
+      () => _i1014.FamilyManagementRepositoryImpl(
+        gh<_i322.FamilyManagementRemoteDataSource>(),
       ),
     );
     gh.factory<_i317.SubscriptionTierRepository>(
@@ -677,6 +709,32 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i317.SubscriptionTierRepository>(),
       ),
     );
+    gh.factory<_i576.GetFamilyHomeUseCase>(
+      () => _i576.GetFamilyHomeUseCase(gh<_i851.FamilyManagementRepository>()),
+    );
+    gh.factory<_i201.GetFamilyMemberUseCase>(
+      () =>
+          _i201.GetFamilyMemberUseCase(gh<_i851.FamilyManagementRepository>()),
+    );
+    gh.factory<_i897.GetFamilyMembersUseCase>(
+      () =>
+          _i897.GetFamilyMembersUseCase(gh<_i851.FamilyManagementRepository>()),
+    );
+    gh.factory<_i977.ManageFamilyMemberAccessUseCase>(
+      () => _i977.ManageFamilyMemberAccessUseCase(
+        gh<_i851.FamilyManagementRepository>(),
+      ),
+    );
+    gh.factory<_i671.ManageFamilyMemberPermissionsUseCase>(
+      () => _i671.ManageFamilyMemberPermissionsUseCase(
+        gh<_i851.FamilyManagementRepository>(),
+      ),
+    );
+    gh.factory<_i141.RenewFamilyMemberSubscriptionUseCase>(
+      () => _i141.RenewFamilyMemberSubscriptionUseCase(
+        gh<_i851.FamilyManagementRepository>(),
+      ),
+    );
     gh.factory<_i978.SubscriptionPackagesRemoteDataSource>(
       () => _i461.SubscriptionPackagesRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
@@ -708,6 +766,27 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i809.GetSubscriptionDurationsUseCase>(
       () => _i809.GetSubscriptionDurationsUseCase(
         gh<_i395.SubscriptionDurationRepository>(),
+      ),
+    );
+    gh.factory<_i69.FamilyManagementViewModel>(
+      () => _i69.FamilyManagementViewModel(
+        gh<_i576.GetFamilyHomeUseCase>(),
+        gh<_i897.GetFamilyMembersUseCase>(),
+        gh<_i201.GetFamilyMemberUseCase>(),
+        gh<_i977.ManageFamilyMemberAccessUseCase>(),
+        gh<_i671.ManageFamilyMemberPermissionsUseCase>(),
+        gh<_i141.RenewFamilyMemberSubscriptionUseCase>(),
+      ),
+    );
+    gh.factory<_i888.FamilyCalendarViewModel>(
+      () => _i888.FamilyCalendarViewModel(
+        gh<_i897.GetFamilyMembersUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
       ),
     );
     gh.factory<_i462.GetSubscriptionReadinessUseCase>(

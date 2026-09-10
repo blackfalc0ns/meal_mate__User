@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
 
 class FamilyMemberSelectedMealItem extends StatelessWidget {
@@ -30,12 +32,21 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   Spacing.familyMemberCalendarSelectedMealImageRadius,
                 ),
-                child: Image.asset(
-                  meal.imageAsset,
-                  width: Spacing.familyMemberCalendarSelectedMealImageSize,
-                  height: Spacing.familyMemberCalendarSelectedMealImageSize,
-                  fit: BoxFit.cover,
-                ),
+                child: meal.imageUrl?.isNotEmpty == true
+                    ? AppCachedNetworkImage(
+                        imageUrl: meal.imageUrl!,
+                        width: Spacing.familyMemberCalendarSelectedMealImageSize,
+                        height: Spacing.familyMemberCalendarSelectedMealImageSize,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        meal.imageAsset.isNotEmpty
+                            ? meal.imageAsset
+                            : Assets.profileBillingPlanBottle,
+                        width: Spacing.familyMemberCalendarSelectedMealImageSize,
+                        height: Spacing.familyMemberCalendarSelectedMealImageSize,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(width: Spacing.xs),
               SizedBox(

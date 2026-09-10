@@ -5,9 +5,14 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyRestaurantsSearchField extends StatelessWidget {
-  const FamilyRestaurantsSearchField({super.key, required this.hint});
+  const FamilyRestaurantsSearchField({
+    super.key,
+    required this.hint,
+    this.onChanged,
+  });
 
   final String hint;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +44,24 @@ class FamilyRestaurantsSearchField extends StatelessWidget {
           ),
           const SizedBox(width: Spacing.sm),
           Expanded(
-            child: Text(
-              hint,
+            child: TextField(
+              onChanged: onChanged,
               textAlign: TextAlign.start,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
               style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size12,
-                color: color.onSurfaceVariant,
+                color: color.onSurface,
+              ),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurfaceVariant,
+                ),
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
               ),
             ),
           ),

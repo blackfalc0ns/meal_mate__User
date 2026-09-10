@@ -77,6 +77,13 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_summary_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_access_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_home_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_access_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
 
@@ -477,6 +484,11 @@ abstract class ApiServices {
     @Path('subscriptionId') String subscriptionId,
   );
 
+  @POST('{renewalPath}')
+  Future<void> createFamilyMemberRenewalRequest(
+    @Path('renewalPath') String renewalPath,
+  );
+
   @POST(EndPoints.customerSubscriptionFreezeRequests)
   Future<ProfileBillingFreezeResponseDto>
   createCustomerSubscriptionFreezeRequest(
@@ -602,6 +614,39 @@ abstract class ApiServices {
   @POST(EndPoints.familySubscriptionFlowCheckout)
   Future<PaymentCheckoutResponseDto> checkoutFamilySubscription(
     @Body() FamilyCheckoutRequestDto request,
+  );
+
+  @GET(EndPoints.familyHome)
+  Future<FamilyHomeResponseDto> getFamilyHome();
+
+  @GET(EndPoints.familyMembers)
+  Future<List<FamilyMemberSummaryResponseDto>> getFamilyMembers();
+
+  @GET(EndPoints.familyMember)
+  Future<FamilyMemberDetailResponseDto> getFamilyMember(
+    @Path('memberId') String memberId,
+  );
+
+  @GET(EndPoints.familyMemberAccess)
+  Future<FamilyMemberAccessResponseDto> getFamilyMemberAccess(
+    @Path('memberId') String memberId,
+  );
+
+  @PUT(EndPoints.familyMemberAccess)
+  Future<FamilyMemberAccessResponseDto> updateFamilyMemberAccess(
+    @Path('memberId') String memberId,
+    @Body() FamilyMemberAccessRequestDto request,
+  );
+
+  @GET(EndPoints.familyMemberPermissions)
+  Future<FamilyMemberPermissionsResponseDto> getFamilyMemberPermissions(
+    @Path('memberId') String memberId,
+  );
+
+  @PUT(EndPoints.familyMemberPermissions)
+  Future<FamilyMemberPermissionsResponseDto> updateFamilyMemberPermissions(
+    @Path('memberId') String memberId,
+    @Body() FamilyMemberPermissionsRequestDto request,
   );
 
   @GET(EndPoints.customerSubscriptionUpgradeOptions)

@@ -5,7 +5,9 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyMembersSearchField extends StatelessWidget {
-  const FamilyMembersSearchField({super.key});
+  const FamilyMembersSearchField({super.key, this.onChanged});
+
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,7 @@ class FamilyMembersSearchField extends StatelessWidget {
     return SizedBox(
       height: Spacing.familyMembersSearchHeight,
       child: TextField(
+        onChanged: onChanged,
         textAlign: TextAlign.start,
         style: getRegularStyle(
           fontFamily: FontConstant.alexandria,

@@ -48,3 +48,10 @@ app.*.map.json
 **/*.g.dart
 **/*.freezed.dart
 **/*.config.dart
+!lib/features/subscription_settings/data/models/request/family_member_access_request_dto.g.dart
+!lib/features/subscription_settings/data/models/request/family_member_permissions_request_dto.g.dart
+!lib/features/subscription_settings/data/models/response/family_home_response_dto.g.dart
+!lib/features/subscription_settings/data/models/response/family_member_access_response_dto.g.dart
+!lib/features/subscription_settings/data/models/response/family_member_detail_response_dto.g.dart
+!lib/features/subscription_settings/data/models/response/family_member_permissions_response_dto.g.dart
+!lib/features/subscription_settings/data/models/response/family_member_summary_response_dto.g.dart

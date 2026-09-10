@@ -3,7 +3,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_meal_selection_fake_data_source.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 
 class FamilyMealSelectionCard extends StatelessWidget {
   const FamilyMealSelectionCard({
@@ -12,7 +13,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
     required this.onSelect,
   });
 
-  final FamilyMealItemData meal;
+  final CalendarMealEntity meal;
   final VoidCallback onSelect;
 
   @override
@@ -27,10 +28,10 @@ class FamilyMealSelectionCard extends StatelessWidget {
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
         border: Border.all(
-          color: meal.isSelected
+          color: meal.selected
               ? color.primary.withValues(alpha: 0.5)
               : color.outlineVariant,
-          width: meal.isSelected ? Spacing.border * 1.5 : Spacing.border,
+          width: meal.selected ? Spacing.border * 1.5 : Spacing.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -48,24 +49,23 @@ class FamilyMealSelectionCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                child: Image.asset(
-                  meal.imageAsset,
-                  width: Spacing.avatarLg,
-                  height: Spacing.avatarLg,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: Spacing.avatarLg,
-                      height: Spacing.avatarLg,
-                      color: color.surfaceContainerHighest,
-                      child: Icon(
-                        Icons.restaurant_rounded,
-                        color: color.onSurfaceVariant,
-                        size: Spacing.iconLg,
+                child: meal.imageUrl != null && meal.imageUrl!.isNotEmpty
+                    ? AppCachedNetworkImage(
+                        imageUrl: meal.imageUrl!,
+                        width: Spacing.avatarLg,
+                        height: Spacing.avatarLg,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        width: Spacing.avatarLg,
+                        height: Spacing.avatarLg,
+                        color: color.surfaceContainerHighest,
+                        child: Icon(
+                          Icons.restaurant_rounded,
+                          color: color.onSurfaceVariant,
+                          size: Spacing.iconLg,
+                        ),
                       ),
-                    );
-                  },
-                ),
               ),
               const SizedBox(width: Spacing.md),
               Expanded(
@@ -112,7 +112,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      locale.family_meal_calorie_unit(meal.calories.toString()),
+                      locale.family_meal_calorie_unit(meal.calories),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
@@ -137,7 +137,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      locale.family_meal_gram_unit(meal.carbs.toString()),
+                      locale.family_meal_gram_unit(meal.carbs),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
@@ -162,7 +162,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      locale.family_meal_gram_unit(meal.protein.toString()),
+                      locale.family_meal_gram_unit(meal.protein),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
@@ -187,7 +187,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      locale.family_meal_gram_unit(meal.fat.toString()),
+                      locale.family_meal_gram_unit(meal.fat),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
@@ -207,12 +207,12 @@ class FamilyMealSelectionCard extends StatelessWidget {
               ],
             ),
           ),
-          if (meal.tags.isNotEmpty) ...[
+          if (meal.allergens.isNotEmpty) ...[
             const SizedBox(height: Spacing.sm),
             Wrap(
               spacing: Spacing.xs,
               runSpacing: Spacing.xs,
-              children: meal.tags.map((tag) {
+              children: meal.allergens.map((allergen) {
                 return Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.sm,
@@ -232,7 +232,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                       ),
                       const SizedBox(width: Spacing.xs / 2),
                       Text(
-                        tag,
+                        allergen.label,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size9,
@@ -249,7 +249,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: Spacing.buttonSmallHeight,
-            child: meal.isSelected
+            child: meal.selected
                 ? Container(
                     decoration: BoxDecoration(
                       color: color.primary,

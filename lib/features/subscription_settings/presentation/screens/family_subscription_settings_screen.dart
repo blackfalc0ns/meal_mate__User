@@ -1,68 +1,219 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/family_subscription_settings_fake_data_source.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart'
+    as ui;
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_event.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_meals_status_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_members_section.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_plan_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_section.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_warning_card.dart';
 
-class FamilySubscriptionSettingsScreen extends StatelessWidget {
+class FamilySubscriptionSettingsScreen extends StatefulWidget {
   const FamilySubscriptionSettingsScreen({super.key});
+  @override
+  State<FamilySubscriptionSettingsScreen> createState() =>
+      _FamilySubscriptionSettingsScreenState();
+}
 
-  static const _dataSource = FamilySubscriptionSettingsFakeDataSource();
+class _FamilySubscriptionSettingsScreenState
+    extends State<FamilySubscriptionSettingsScreen> {
+  late final FamilyManagementViewModel _viewModel;
+  bool _loaded = false;
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = getIt<FamilyManagementViewModel>();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_loaded) {
+      _loaded = true;
+      _viewModel.doIntent(LoadFamilyHomeEvent(context.localization.localeName));
+    }
+  }
+
+  @override
+  void dispose() {
+    _viewModel.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final settings = _dataSource.getSettings();
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: CustomAppBar(
-        title: locale.family_manage_title,
-        titleFontSize: FontSize.size14,
-        backgroundColor: color.surface,
-        showShadow: false,
-      ),
-      body: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.familyManageHorizontalPadding,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: Spacing.md),
-              FamilySubscriptionPlanCard(settings: settings),
-              const SizedBox(height: Spacing.xl),
-              FamilySubscriptionMembersSection(
-                members: settings.members,
-                onShowAllTap: () =>
-                    context.pushNamed(AppRoutes.familySubscriptionMembers),
-              ),
-              const SizedBox(height: Spacing.xl),
-              FamilySubscriptionQuickAccessSection(
-                actions: settings.quickActions,
-              ),
-              const SizedBox(height: Spacing.xl),
-              FamilySubscriptionMealsStatusCard(
-                statuses: settings.mealStatuses,
-              ),
-              const SizedBox(height: Spacing.xl),
-              FamilySubscriptionWarningCard(settings: settings),
-              const SizedBox(height: Spacing.xl),
-            ],
-          ),
+    return BlocProvider.value(
+      value: _viewModel,
+      child: BlocConsumer<FamilyManagementViewModel, FamilyManagementState>(
+        listenWhen: (previous, current) =>
+            previous.failure != current.failure && current.failure != null,
+        listener: (context, state) => CustomSnackbar.showError(
+          context: context,
+          message: ErrorMessagePresenter.fromFailure(context, state.failure!),
         ),
+        builder: (context, state) {
+          final home = state.home;
+          return Scaffold(
+            backgroundColor: color.surface,
+            appBar: CustomAppBar(
+              title: locale.family_manage_title,
+              titleFontSize: FontSize.size14,
+              backgroundColor: color.surface,
+              showShadow: false,
+            ),
+            body: home == null && state.failure != null
+                ? ApiErrorWidget(
+                    exception: state.failure!.exception,
+                    onRetry: () => _viewModel.doIntent(
+                      LoadFamilyHomeEvent(locale.localeName),
+                    ),
+                  )
+                : home == null
+                ? Center(child: CircularProgressIndicator(color: color.primary))
+                : RefreshIndicator(
+                    color: color.primary,
+                    onRefresh: () async {
+                      _viewModel.doIntent(
+                        LoadFamilyHomeEvent(locale.localeName),
+                      );
+                      await _viewModel.stream.firstWhere(
+                        (next) => !next.isLoading,
+                      );
+                    },
+                    child: _content(context, home),
+                  ),
+          );
+        },
       ),
     );
   }
+
+  Widget _content(BuildContext context, FamilyHomeEntity home) {
+    final locale = context.localization;
+    final settings = ui.FamilySubscriptionSettingsEntity(
+      title: home.name,
+      subtitle: home.packageName,
+      statusLabel: locale.family_member_active_label,
+      originalPrice: home.price.toStringAsFixed(3),
+      discountedPrice: home.price.toStringAsFixed(3),
+      currency: home.currencyCode,
+      endsOn: '',
+      heroImageAsset: Assets.familyManagePlanCard,
+      members: home.members
+          .map(
+            (member) => ui.FamilySubscriptionMemberEntity(
+              name: member.displayName,
+              imageAsset: Assets.profileAvatar,
+              statusLabel:
+                  member.todayFilledCount >= member.todayRequiredCount &&
+                      member.todayRequiredCount > 0
+                  ? locale.family_review_status_ready
+                  : member.hasPlan
+                  ? locale.family_member_active_label
+                  : locale.family_member_no_plan,
+              isComplete:
+                  member.todayFilledCount >= member.todayRequiredCount &&
+                  member.todayRequiredCount > 0,
+            ),
+          )
+          .toList(),
+      quickActions: home.shortcuts
+          .map(
+            (action) => ui.FamilySubscriptionQuickActionEntity(
+              code: action.code,
+              label: _shortcutLabel(context, action.code),
+              iconAsset: _shortcutIcon(action.code),
+            ),
+          )
+          .toList(),
+      mealStatuses: home.todaySchedule.map((member) {
+        final required = member.todayRequiredCount;
+        final filled = member.todayFilledCount;
+        final complete = required > 0 && filled >= required;
+        return ui.FamilySubscriptionMealStatusEntity(
+          memberName: member.displayName,
+          memberImageAsset: Assets.profileAvatar,
+          mealsLabel: '$filled/$required',
+          statusLabel: complete
+              ? locale.family_review_status_ready
+              : member.todayUiStatus ?? '',
+          progress: required <= 0 ? 0 : (filled / required).clamp(0, 1),
+          status: complete
+              ? ui.FamilySubscriptionMealStatus.completed
+              : filled > 0
+              ? ui.FamilySubscriptionMealStatus.selected
+              : ui.FamilySubscriptionMealStatus.missing,
+        );
+      }).toList(),
+      warningTitle: '',
+      warningMessage: '',
+    );
+    return SafeArea(
+      top: false,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.familyManageHorizontalPadding,
+        ),
+        children: [
+          const SizedBox(height: Spacing.md),
+          FamilySubscriptionPlanCard(settings: settings),
+          const SizedBox(height: Spacing.xl),
+          FamilySubscriptionMembersSection(
+            members: settings.members,
+            onShowAllTap: () =>
+                context.pushNamed(AppRoutes.familySubscriptionMembers),
+          ),
+          if (settings.quickActions.isNotEmpty) ...[
+            const SizedBox(height: Spacing.xl),
+            FamilySubscriptionQuickAccessSection(
+              actions: settings.quickActions,
+              onActionTap: (_) =>
+                  context.pushNamed(AppRoutes.familySubscriptionMembers),
+            ),
+          ],
+          if (settings.mealStatuses.isNotEmpty) ...[
+            const SizedBox(height: Spacing.xl),
+            FamilySubscriptionMealsStatusCard(statuses: settings.mealStatuses),
+          ],
+          const SizedBox(height: Spacing.xl),
+        ],
+      ),
+    );
+  }
+
+  String _shortcutLabel(BuildContext context, String code) {
+    final locale = context.localization;
+    return switch (code) {
+      'calendar' => locale.family_member_show_calendar,
+      'meals' => locale.family_meal_stepper_meal,
+      'subscriptions' => locale.family_member_package_title,
+      _ => code,
+    };
+  }
+
+  String _shortcutIcon(String code) => switch (code) {
+    'calendar' => Assets.familyManageMeals,
+    'meals' => Assets.familyManageMeals,
+    'subscriptions' => Assets.familyManageSubscription,
+    _ => Assets.familyManagePermissions,
+  };
 }

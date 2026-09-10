@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
 
 class FamilyDayMemberSelectorItem extends StatelessWidget {
@@ -55,12 +57,21 @@ class FamilyDayMemberSelectorItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   Spacing.familyDayMemberSelectorAvatarRadius,
                 ),
-                child: Image.asset(
-                  member.imageAsset,
-                  width: Spacing.familyDayMemberSelectorAvatarWidth,
-                  height: Spacing.familyDayMemberSelectorAvatarHeight,
-                  fit: BoxFit.cover,
-                ),
+                child: member.imageUrl?.isNotEmpty == true
+                    ? AppCachedNetworkImage(
+                        imageUrl: member.imageUrl!,
+                        width: Spacing.familyDayMemberSelectorAvatarWidth,
+                        height: Spacing.familyDayMemberSelectorAvatarHeight,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        member.imageAsset.isNotEmpty
+                            ? member.imageAsset
+                            : Assets.profileAvatar,
+                        width: Spacing.familyDayMemberSelectorAvatarWidth,
+                        height: Spacing.familyDayMemberSelectorAvatarHeight,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(height: Spacing.familyDayMemberSelectorNameTopGap),
               Text(

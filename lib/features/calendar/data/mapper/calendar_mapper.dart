@@ -58,7 +58,10 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
       dayNumber: parsedDate?.day ?? 0,
       weekday: parsedDate == null ? '' : _formatWeekday(parsedDate, localeName),
       date: parsedDate,
-      hasMeals: true,
+      hasMeals:
+          ((filledCount ?? 0) > 0) ||
+          sortedDayMeals.isNotEmpty ||
+          resolvedSelectedMealIds.isNotEmpty,
     );
   }
 

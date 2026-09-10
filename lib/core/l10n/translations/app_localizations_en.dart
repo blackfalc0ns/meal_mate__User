@@ -2497,6 +2497,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Permissions saved successfully';
 
   @override
+  String get family_member_renewal_success =>
+      'Renewal request submitted successfully';
+
+  @override
   String get family_members_title => 'Members';
 
   @override
@@ -3253,6 +3257,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calendar_selection_locked_before_72_hours =>
       'Last change is 72 hours before delivery';
+
+  @override
+  String get family_member_day_closed_button => 'Closed';
 
   @override
   String get calendar_pick_restaurant_first => 'Choose ';
@@ -5268,4 +5275,177 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get restaurant_tier_upgrade_no_data =>
       'No data available for upgrade request.';
+
+  @override
+  String get family_error_cannot_remove_manager =>
+      'The family manager cannot be removed.';
+
+  @override
+  String get family_error_member_not_found =>
+      'This family member could not be found.';
+
+  @override
+  String get family_error_not_manager =>
+      'Only the family manager can perform this action.';
+
+  @override
+  String get family_error_use_checkout_flow =>
+      'Add family members through the subscription checkout flow.';
+
+  @override
+  String get family_error_manager_permissions_immutable =>
+      'The family manager\'s permissions cannot be changed.';
+
+  @override
+  String get family_error_member_paused => 'This family member is paused.';
+
+  @override
+  String get family_error_permission_denied =>
+      'This family member does not have permission to edit meals.';
+
+  @override
+  String get family_error_renewal_not_available =>
+      'This subscription cannot be renewed right now.';
+
+  @override
+  String get family_error_subscription_not_found =>
+      'The requested family subscription was not found.';
+
+  @override
+  String get family_error_customer_only =>
+      'This action is only available to customers.';
+
+  @override
+  String get family_member_no_plan => 'No plan';
+
+  @override
+  String get family_member_paused_label => 'Paused';
+
+  @override
+  String get family_member_active_label => 'Active';
+
+  @override
+  String family_member_days_remaining(int count) {
+    return '$count days remaining';
+  }
+
+  @override
+  String family_member_age_years(int count) {
+    return '$count years';
+  }
+
+  @override
+  String family_member_details_title(String name) {
+    return 'Details for $name';
+  }
+
+  @override
+  String get family_member_manager_label => 'Family manager';
+
+  @override
+  String get family_member_member_label => 'Family member';
+
+  @override
+  String get family_member_program_title => 'Nutrition program';
+
+  @override
+  String get family_member_change_program => 'Change program';
+
+  @override
+  String get family_member_package_title => 'Subscription';
+
+  @override
+  String family_member_subscription_dates(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get family_member_renew_subscription => 'Renew subscription';
+
+  @override
+  String get family_member_today_nutrition => 'Today\'s nutrition';
+
+  @override
+  String family_member_calories_value(String count) {
+    return '$count kcal';
+  }
+
+  @override
+  String get family_member_show_calendar => 'Show calendar';
+
+  @override
+  String get family_member_access_phone_label => 'Mobile number';
+
+  @override
+  String get family_member_access_pause_label => 'Pause member';
+
+  @override
+  String get family_member_access_remove_label => 'Remove member';
+
+  @override
+  String get family_member_access_generated_password_title =>
+      'One-time password';
+
+  @override
+  String get family_member_access_generated_password_message =>
+      'Share this password now. It will not be shown again.';
+
+  @override
+  String get family_member_access_existing_login =>
+      'This phone number already has a MealMate account. The member can use the existing password.';
+
+  @override
+  String get family_member_access_copy => 'Copy';
+
+  @override
+  String get family_member_shortcut_daily_meals => 'Daily Meals';
+
+  @override
+  String get family_member_shortcut_daily_meals_subtitle =>
+      'View meals and plans';
+
+  @override
+  String get family_member_shortcut_permissions => 'Permissions';
+
+  @override
+  String get family_member_shortcut_permissions_subtitle =>
+      'View and manage permissions';
+
+  @override
+  String family_member_calendar_title(String name) {
+    return '$name\'s Calendar';
+  }
+
+  @override
+  String get family_member_no_active_subscription =>
+      'This member currently has no active subscription.';
+
+  @override
+  String get family_member_no_meals_selected =>
+      'No meals selected for this day.';
+
+  @override
+  String family_member_selected_meals_count(int count) {
+    return '$count meals selected';
+  }
+
+  @override
+  String get family_member_day_details_button => 'View Day Details';
+
+  @override
+  String get family_member_choose_meals_button => 'Choose Meals';
+
+  @override
+  String get family_member_selected_meals_title => 'Selected Meals';
+
+  @override
+  String family_member_selected_meals_subtitle(String name, String date) {
+    return 'Selected meals for $name on $date';
+  }
+
+  @override
+  String get family_member_meal_chosen => 'Selected';
+
+  @override
+  String get family_member_choose_meal => 'Choose meal';
 }

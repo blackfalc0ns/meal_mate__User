@@ -43,6 +43,7 @@ class FamilyCalendarSelectedMealEntity {
     required this.description,
     required this.chosenLabel,
     required this.imageAsset,
+    this.imageUrl,
   });
 
   final String typeLabel;
@@ -50,4 +51,5 @@ class FamilyCalendarSelectedMealEntity {
   final String description;
   final String chosenLabel;
   final String imageAsset;
+  final String? imageUrl;
 }

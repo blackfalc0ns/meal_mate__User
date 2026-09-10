@@ -37,68 +37,7 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
       date,
       query,
     );
-    final dayRestaurants = response.restaurants ?? const [];
-    if (dayRestaurants.isEmpty) return dayRestaurants;
-
-    final poolResponse = await _apiServices.getSubscriptionCalendarRestaurants(
-      subscriptionId,
-      query,
-    );
-    final poolLogos = <String, String>{};
-    for (final restaurant in poolResponse.restaurants ?? const []) {
-      final id = restaurant.restaurantId ?? restaurant.id;
-      final logo = restaurant.logoUrl ?? restaurant.imageUrl;
-      if (id == null || id.isEmpty || logo == null || logo.isEmpty) continue;
-      poolLogos[id] = logo;
-    }
-    if (poolLogos.isEmpty) return dayRestaurants;
-
-    return dayRestaurants.map((restaurant) {
-      if (restaurant.logoUrl?.isNotEmpty == true ||
-          restaurant.imageUrl?.isNotEmpty == true) {
-        return restaurant;
-      }
-      final id = restaurant.restaurantId ?? restaurant.id;
-      final logo = id == null ? null : poolLogos[id];
-      if (logo == null || logo.isEmpty) return restaurant;
-      return CalendarRestaurantResponseDto(
-        id: restaurant.id,
-        restaurantId: restaurant.restaurantId,
-        name: restaurant.name,
-        nameAr: restaurant.nameAr,
-        nameEn: restaurant.nameEn,
-        description: restaurant.description,
-        descriptionAr: restaurant.descriptionAr,
-        descriptionEn: restaurant.descriptionEn,
-        category: restaurant.category,
-        categoryAr: restaurant.categoryAr,
-        categoryEn: restaurant.categoryEn,
-        rating: restaurant.rating,
-        ratingCount: restaurant.ratingCount,
-        logoUrl: logo,
-        imageUrl: restaurant.imageUrl,
-        mealCount: restaurant.mealCount,
-        safeMealCount: restaurant.safeMealCount,
-        limit: restaurant.limit,
-        usedCount: restaurant.usedCount,
-        remainingCount: restaurant.remainingCount,
-        isBusy: restaurant.isBusy,
-        isQuotaExhausted: restaurant.isQuotaExhausted,
-        isEnabled: restaurant.isEnabled,
-        disabledReason: restaurant.disabledReason,
-        deliveryDuration: restaurant.deliveryDuration,
-        deliveryWindow: restaurant.deliveryWindow,
-        deliveryWindowStart: restaurant.deliveryWindowStart,
-        deliveryWindowEnd: restaurant.deliveryWindowEnd,
-        deliveryTimeText: restaurant.deliveryTimeText,
-        tier: restaurant.tier,
-        tierNameAr: restaurant.tierNameAr,
-        tierNameEn: restaurant.tierNameEn,
-        tierName: restaurant.tierName,
-        tierLogoUrl: restaurant.tierLogoUrl,
-        maxUsageCount: restaurant.maxUsageCount,
-      );
-    }).toList();
+    return response.restaurants ?? const [];
   }
 
   @override

@@ -10,9 +10,16 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_section_card.dart';
 
 class FamilyMemberDetailPackageCard extends StatelessWidget {
-  const FamilyMemberDetailPackageCard({super.key, required this.member});
+  const FamilyMemberDetailPackageCard({
+    super.key,
+    required this.member,
+    this.onAction,
+    this.showAction = true,
+  });
 
   final FamilyMemberDetailEntity member;
+  final VoidCallback? onAction;
+  final bool showAction;
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +72,15 @@ class FamilyMemberDetailPackageCard extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          FamilyMemberDetailActionButton(
-            label: member.editPackageLabel,
-            onPressed: () => Navigator.of(
-              context,
-            ).pushNamed(AppRoutes.familyPackageDaysSetup),
-          ),
+          if (showAction)
+            FamilyMemberDetailActionButton(
+              label: member.editPackageLabel,
+              onPressed:
+                  onAction ??
+                  () => Navigator.of(
+                    context,
+                  ).pushNamed(AppRoutes.familyPackageDaysSetup),
+            ),
         ],
       ),
     );

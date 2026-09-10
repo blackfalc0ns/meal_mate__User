@@ -2452,6 +2452,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_member_permissions_save_success => 'تم حفظ الصلاحيات بنجاح';
 
   @override
+  String get family_member_renewal_success => 'تم إرسال طلب التجديد بنجاح';
+
+  @override
   String get family_members_title => 'الأفراد';
 
   @override
@@ -3201,6 +3204,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get calendar_selection_locked_before_72_hours =>
       'آخر تعديل قبل التوصيل بـ 72 ساعة';
+
+  @override
+  String get family_member_day_closed_button => 'تم الإغلاق';
 
   @override
   String get calendar_pick_restaurant_first => 'اختيار ';
@@ -5178,4 +5184,173 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get restaurant_tier_upgrade_no_data =>
       'لا توجد بيانات متاحة لطلب الترقية.';
+
+  @override
+  String get family_error_cannot_remove_manager => 'لا يمكن حذف مدير العائلة.';
+
+  @override
+  String get family_error_member_not_found => 'لم يتم العثور على فرد العائلة.';
+
+  @override
+  String get family_error_not_manager => 'هذا الإجراء متاح لمدير العائلة فقط.';
+
+  @override
+  String get family_error_use_checkout_flow =>
+      'أضف أفراد العائلة من خلال خطوات الاشتراك والدفع.';
+
+  @override
+  String get family_error_manager_permissions_immutable =>
+      'لا يمكن تغيير صلاحيات مدير العائلة.';
+
+  @override
+  String get family_error_member_paused => 'هذا الفرد موقوف حالياً.';
+
+  @override
+  String get family_error_permission_denied =>
+      'هذا الفرد لا يملك صلاحية تعديل الوجبات.';
+
+  @override
+  String get family_error_renewal_not_available =>
+      'لا يمكن تجديد هذا الاشتراك حالياً.';
+
+  @override
+  String get family_error_subscription_not_found =>
+      'لم يتم العثور على اشتراك الفرد المطلوب.';
+
+  @override
+  String get family_error_customer_only => 'هذا الإجراء متاح للعملاء فقط.';
+
+  @override
+  String get family_member_no_plan => 'من غير خطة';
+
+  @override
+  String get family_member_paused_label => 'موقوف';
+
+  @override
+  String get family_member_active_label => 'نشط';
+
+  @override
+  String family_member_days_remaining(int count) {
+    return 'متبقي $count أيام';
+  }
+
+  @override
+  String family_member_age_years(int count) {
+    return '$count سنة';
+  }
+
+  @override
+  String family_member_details_title(String name) {
+    return 'تفاصيل $name';
+  }
+
+  @override
+  String get family_member_manager_label => 'مدير العائلة';
+
+  @override
+  String get family_member_member_label => 'فرد في العائلة';
+
+  @override
+  String get family_member_program_title => 'البرنامج الغذائي';
+
+  @override
+  String get family_member_change_program => 'تغيير البرنامج';
+
+  @override
+  String get family_member_package_title => 'الاشتراك';
+
+  @override
+  String family_member_subscription_dates(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get family_member_renew_subscription => 'تجديد الاشتراك';
+
+  @override
+  String get family_member_today_nutrition => 'تغذية اليوم';
+
+  @override
+  String family_member_calories_value(String count) {
+    return '$count سعرة';
+  }
+
+  @override
+  String get family_member_show_calendar => 'عرض التقويم';
+
+  @override
+  String get family_member_access_phone_label => 'رقم الموبايل';
+
+  @override
+  String get family_member_access_pause_label => 'إيقاف الفرد';
+
+  @override
+  String get family_member_access_remove_label => 'حذف الفرد';
+
+  @override
+  String get family_member_access_generated_password_title =>
+      'كلمة مرور لمرة واحدة';
+
+  @override
+  String get family_member_access_generated_password_message =>
+      'شارك كلمة المرور الآن، لن يتم عرضها مرة أخرى.';
+
+  @override
+  String get family_member_access_existing_login =>
+      'رقم الموبايل لديه حساب MealMate بالفعل، ويمكن للفرد الدخول بكلمة المرور الحالية.';
+
+  @override
+  String get family_member_access_copy => 'نسخ';
+
+  @override
+  String get family_member_shortcut_daily_meals => 'الوجبات اليومية';
+
+  @override
+  String get family_member_shortcut_daily_meals_subtitle =>
+      'عرض الوجبات والخطط';
+
+  @override
+  String get family_member_shortcut_permissions => 'الصلاحيات';
+
+  @override
+  String get family_member_shortcut_permissions_subtitle =>
+      'عرض وإدارة الصلاحيات';
+
+  @override
+  String family_member_calendar_title(String name) {
+    return 'تقويم $name';
+  }
+
+  @override
+  String get family_member_no_active_subscription =>
+      'هذا الفرد ليس لديه اشتراك نشط حالياً.';
+
+  @override
+  String get family_member_no_meals_selected =>
+      'لا توجد وجبات مختارة لهذا اليوم.';
+
+  @override
+  String family_member_selected_meals_count(int count) {
+    return '$count وجبات مختارة';
+  }
+
+  @override
+  String get family_member_day_details_button => 'عرض تفاصيل اليوم';
+
+  @override
+  String get family_member_choose_meals_button => 'اختيار الوجبات';
+
+  @override
+  String get family_member_selected_meals_title => 'الوجبات المختارة';
+
+  @override
+  String family_member_selected_meals_subtitle(String name, String date) {
+    return 'الوجبات المختارة لـ$name يوم $date';
+  }
+
+  @override
+  String get family_member_meal_chosen => 'تم الاختيار';
+
+  @override
+  String get family_member_choose_meal => 'اختار وجبة';
 }
