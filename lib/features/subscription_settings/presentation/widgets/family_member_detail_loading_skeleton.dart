@@ -23,7 +23,9 @@ class FamilyMemberDetailLoadingSkeleton extends StatelessWidget {
           // 1. Profile Card Skeleton
           Container(
             height: Spacing.familyMemberDetailProfileHeight,
-            padding: const EdgeInsets.all(Spacing.familyMemberDetailCardPadding),
+            padding: const EdgeInsets.all(
+              Spacing.familyMemberDetailCardPadding,
+            ),
             decoration: BoxDecoration(
               color: color.surface,
               borderRadius: BorderRadius.circular(
@@ -83,7 +85,9 @@ class FamilyMemberDetailLoadingSkeleton extends StatelessWidget {
           // 2. Program Card Skeleton
           Container(
             height: Spacing.familyMemberDetailStandardCardHeight + Spacing.xxl,
-            padding: const EdgeInsets.all(Spacing.familyMemberDetailCardPadding),
+            padding: const EdgeInsets.all(
+              Spacing.familyMemberDetailCardPadding,
+            ),
             decoration: BoxDecoration(
               color: color.surface,
               borderRadius: BorderRadius.circular(
@@ -140,7 +144,9 @@ class FamilyMemberDetailLoadingSkeleton extends StatelessWidget {
           // 3. Package Card Skeleton
           Container(
             height: Spacing.familyMemberDetailStandardCardHeight,
-            padding: const EdgeInsets.all(Spacing.familyMemberDetailCardPadding),
+            padding: const EdgeInsets.all(
+              Spacing.familyMemberDetailCardPadding,
+            ),
             decoration: BoxDecoration(
               color: color.surface,
               borderRadius: BorderRadius.circular(

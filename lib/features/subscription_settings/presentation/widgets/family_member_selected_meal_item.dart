@@ -57,18 +57,18 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
                         ),
                         child: Image.asset(
                           meal.imageAsset,
-                          width: Spacing
-                              .familyMemberCalendarSelectedMealImageSize,
-                          height: Spacing
-                              .familyMemberCalendarSelectedMealImageSize,
+                          width:
+                              Spacing.familyMemberCalendarSelectedMealImageSize,
+                          height:
+                              Spacing.familyMemberCalendarSelectedMealImageSize,
                           fit: BoxFit.cover,
                         ),
                       )
                     : Container(
-                        width: Spacing
-                            .familyMemberCalendarSelectedMealImageSize,
-                        height: Spacing
-                            .familyMemberCalendarSelectedMealImageSize,
+                        width:
+                            Spacing.familyMemberCalendarSelectedMealImageSize,
+                        height:
+                            Spacing.familyMemberCalendarSelectedMealImageSize,
                         decoration: BoxDecoration(
                           color: color.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(
@@ -198,4 +198,3 @@ class FamilyMemberSelectedMealItem extends StatelessWidget {
     );
   }
 }
-

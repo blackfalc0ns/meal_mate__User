@@ -73,9 +73,7 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
             ),
             itemCount: statuses.length,
             itemBuilder: (context, index) {
-              return FamilySubscriptionMealsStatusItem(
-                status: statuses[index],
-              );
+              return FamilySubscriptionMealsStatusItem(status: statuses[index]);
             },
           ),
           const SizedBox(height: Spacing.base),

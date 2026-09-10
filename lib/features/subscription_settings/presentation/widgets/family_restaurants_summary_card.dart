@@ -22,10 +22,13 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
 
     final selectedInt = int.tryParse(summary.selectedMeals) ?? 0;
     final totalInt =
-        int.tryParse(summary.selectedMealsTotal.replaceAll(RegExp(r'[^\d]'), '')) ??
+        int.tryParse(
+          summary.selectedMealsTotal.replaceAll(RegExp(r'[^\d]'), ''),
+        ) ??
         1;
-    final progressValue =
-        totalInt > 0 ? (selectedInt / totalInt).clamp(0.0, 1.0) : 0.0;
+    final progressValue = totalInt > 0
+        ? (selectedInt / totalInt).clamp(0.0, 1.0)
+        : 0.0;
 
     return Container(
       height: Spacing.familyRestaurantsSummaryHeight,
@@ -166,4 +169,3 @@ class FamilyRestaurantsSummaryCard extends StatelessWidget {
     );
   }
 }
-

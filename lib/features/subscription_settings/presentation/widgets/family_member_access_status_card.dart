@@ -32,10 +32,7 @@ class FamilyMemberAccessStatusCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusLg),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,10 +174,7 @@ class FamilyMemberAccessStatusCard extends StatelessWidget {
               height: Spacing.buttonSmallHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                border: Border.all(
-                  color: color.error,
-                  width: Spacing.border,
-                ),
+                border: Border.all(color: color.error, width: Spacing.border),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

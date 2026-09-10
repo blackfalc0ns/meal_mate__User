@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -13,8 +14,13 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_actions_bar.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_cutoff_banner.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_header_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_instructions_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_macros_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_meal_slot_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyReviewMemberMealsScreen extends StatefulWidget {
   const FamilyReviewMemberMealsScreen({super.key, this.args});
@@ -130,6 +136,58 @@ class _FamilyReviewMemberMealsScreenState
     final nutrition = state.selectedNutritionTotals;
 
     final isSaving = state.isSavingMeals;
+    final isLoading =
+        state.isLoadingDay ||
+        (meals.isEmpty &&
+            (state.isLoadingAvailableMeals || state.isLoadingRestaurants));
+
+    DateTime? parsedServiceDate;
+    if (state.availableMeals?.serviceDate != null) {
+      parsedServiceDate = DateTime.tryParse(state.availableMeals!.serviceDate!);
+    }
+    final selectedDate =
+        state.selectedDate ?? state.selectedDay?.date ?? parsedServiceDate;
+    final dateLabel = selectedDate != null
+        ? intl.DateFormat.MMMMEEEEd(locale.localeName).format(selectedDate)
+        : (state.selectedDay != null
+              ? '${state.selectedDay!.weekday} ${state.selectedDay!.dayNumber}'
+              : '');
+
+    final programFromApi =
+        state.availableMeals?.restaurant?.category.isNotEmpty == true
+            ? state.availableMeals!.restaurant!.category
+            : (state.selectedDay?.restaurant?.category.isNotEmpty == true
+                  ? state.selectedDay!.restaurant!.category
+                  : (state.currentMember?.programName.isNotEmpty == true
+                        ? state.currentMember!.programName
+                        : ''));
+
+    final goalLabel = programFromApi.isNotEmpty
+        ? programFromApi
+        : locale.family_review_goal_balanced;
+
+    final defaultInstructions = locale.localeName == 'ar'
+        ? const ['لا طعام حار', 'يفضل الأرز البني', 'بدون مكسرات']
+        : const ['No spicy food', 'Prefers brown rice', 'Nut-free'];
+
+    final editDeadlineUtc = state.selectedDay?.editDeadlineUtc;
+    final String remainingTime;
+    if (editDeadlineUtc != null) {
+      final diff = editDeadlineUtc.difference(DateTime.now().toUtc());
+      if (!diff.isNegative) {
+        remainingTime = locale.localeName == 'ar'
+            ? '${diff.inHours} ساعة و ${diff.inMinutes % 60} دقيقة'
+            : '${diff.inHours}h ${diff.inMinutes % 60}m';
+      } else {
+        remainingTime = locale.localeName == 'ar'
+            ? '22 ساعة و 18 دقيقة'
+            : '22 hours and 18 minutes';
+      }
+    } else {
+      remainingTime = locale.localeName == 'ar'
+          ? '22 ساعة و 18 دقيقة'
+          : '22 hours and 18 minutes';
+    }
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -164,55 +222,82 @@ class _FamilyReviewMemberMealsScreenState
         onEdit: () => Navigator.maybePop(context),
         onConfirm: () => _onConfirm(context, locale.localeName),
       ),
-      body: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.screenH,
-            vertical: Spacing.sm,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.restaurant_menu_rounded,
-                    size: Spacing.iconMd,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.family_review_selected_meals_section,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
-                      color: color.onSurface,
+      body: isLoading
+          ? const FamilyReviewLoadingSkeleton()
+          : SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.screenH,
+                  vertical: Spacing.sm,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FamilyReviewHeaderCard(
+                      memberName: memberName,
+                      dateLabel: dateLabel,
+                      statusLabel: locale.family_review_status_ready,
+                      goalLabel: goalLabel,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: Spacing.md),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.restaurant_menu_rounded,
+                          size: Spacing.iconMd,
+                          color: color.primary,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          locale.family_review_selected_meals_section,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size13,
+                            color: color.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                    for (var i = 0; i < meals.length; i++) ...[
+                      StaggeredSlideItem(
+                        index: i,
+                        child: FamilyReviewMealSlotCard(
+                          meal: meals[i],
+                          restaurantName: restaurantName,
+                          onEdit: () => Navigator.maybePop(context),
+                        ),
+                      ),
+                      if (i < meals.length - 1)
+                        const SizedBox(height: Spacing.xs),
+                    ],
+                    if (meals.isEmpty)
+                      EmptyStateWidget(
+                        title: locale.calendar_empty_meals_title,
+                        description: locale.calendar_empty_meals_description,
+                        icon: Icons.restaurant_menu_rounded,
+                      ),
+                    const SizedBox(height: Spacing.md),
+                    FamilyReviewMacrosCard(nutrition: nutrition),
+                    const SizedBox(height: Spacing.md),
+                    FamilyReviewInstructionsCard(
+                      instructions: defaultInstructions,
+                      note: locale.family_review_preferences_note,
+                    ),
+                    const SizedBox(height: Spacing.md),
+                    FamilyReviewCutoffBanner(
+                      title: locale.family_review_cutoff_title,
+                      description: locale.family_review_cutoff_desc,
+                      remainingTime: remainingTime,
+                      disclaimer: locale.family_review_cutoff_disclaimer,
+                    ),
+                    const SizedBox(height: Spacing.xl),
+                  ],
+                ),
               ),
-              const SizedBox(height: Spacing.sm),
-              for (final meal in meals)
-                FamilyReviewMealSlotCard(
-                  meal: meal,
-                  restaurantName: restaurantName,
-                  onEdit: () => Navigator.maybePop(context),
-                ),
-              if (meals.isEmpty)
-                EmptyStateWidget(
-                  title: locale.calendar_empty_meals_title,
-                  description: locale.calendar_empty_meals_description,
-                  icon: Icons.restaurant_menu_rounded,
-                ),
-              const SizedBox(height: Spacing.base),
-              FamilyReviewMacrosCard(nutrition: nutrition),
-              const SizedBox(height: Spacing.xl),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

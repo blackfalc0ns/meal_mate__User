@@ -37,8 +37,9 @@ class _StaggeredSlideItemState extends State<StaggeredSlideItem>
       duration: Duration(milliseconds: totalDurationMs),
     );
 
-    final startFraction =
-        totalDurationMs > 0 ? (delayMs / totalDurationMs).clamp(0.0, 0.95) : 0.0;
+    final startFraction = totalDurationMs > 0
+        ? (delayMs / totalDurationMs).clamp(0.0, 0.95)
+        : 0.0;
 
     _curve = CurvedAnimation(
       parent: _controller,
@@ -70,10 +71,7 @@ class _StaggeredSlideItemState extends State<StaggeredSlideItem>
 
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: slideAnimation,
-        child: widget.child,
-      ),
+      child: SlideTransition(position: slideAnimation, child: widget.child),
     );
   }
 }

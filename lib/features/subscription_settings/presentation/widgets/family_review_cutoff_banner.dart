@@ -10,114 +10,109 @@ class FamilyReviewCutoffBanner extends StatelessWidget {
     required this.title,
     required this.description,
     required this.remainingTime,
-    required this.disclaimer,
+    this.disclaimer,
   });
 
   final String title;
   final String description;
   final String remainingTime;
-  final String disclaimer;
+  final String? disclaimer;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
-      padding: const EdgeInsets.all(Spacing.cardPadding),
-      decoration: BoxDecoration(
-        color: color.error.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.error.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.md,
+            vertical: Spacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: color.secondary.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(11.0),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(Spacing.sm),
-                decoration: BoxDecoration(
-                  color: color.error.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Icon(
-                  Icons.alarm_rounded,
-                  size: Spacing.iconMd,
-                  color: color.error,
-                ),
-              ),
-              const SizedBox(width: Spacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
-                        color: color.onSurface,
+                        fontSize: FontSize.size11,
+                        color: color.secondary,
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: Spacing.xs / 2),
                     Text(
                       description,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
+                        fontSize: FontSize.size9,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.xs / 2),
+                    Text(
+                      locale.family_review_cutoff_time(remainingTime),
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: Spacing.sm),
+              Image.asset(
+                'assets/images/subscriptions/figma/family_review_cutoff_clock.png',
+                width: 68.0,
+                height: 61.0,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.access_time_rounded,
+                  size: Spacing.iconLg,
+                  color: color.secondary,
+                ),
+              ),
             ],
           ),
+        ),
+        if (disclaimer != null && disclaimer!.isNotEmpty) ...[
           const SizedBox(height: Spacing.sm),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.md,
-              vertical: Spacing.xs,
-            ),
-            decoration: BoxDecoration(
-              color: color.error.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(Spacing.radiusPill),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.schedule_rounded,
-                  size: Spacing.iconSm,
-                  color: color.error,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  locale.family_review_cutoff_time(remainingTime),
-                  style: getBoldStyle(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.info_outline_rounded,
+                size: 13.0,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                child: Text(
+                  disclaimer!,
+                  style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size11,
-                    color: color.error,
+                    fontSize: FontSize.size9,
+                    color: color.onSurfaceVariant,
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            disclaimer,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size9,
-              color: color.onSurfaceVariant,
-            ),
+              ),
+            ],
           ),
         ],
-      ),
+      ],
     );
   }
 }

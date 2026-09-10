@@ -43,4 +43,3 @@ class FamilyRestaurantsGrid extends StatelessWidget {
     );
   }
 }
-

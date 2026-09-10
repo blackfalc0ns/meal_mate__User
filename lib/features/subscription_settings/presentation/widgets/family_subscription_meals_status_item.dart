@@ -54,11 +54,7 @@ class FamilySubscriptionMealsStatusItem extends StatelessWidget {
               Row(
                 children: [
                   if (status.status == FamilySubscriptionMealStatus.completed)
-                    Icon(
-                      Icons.check_circle,
-                      size: 11,
-                      color: statusColor,
-                    )
+                    Icon(Icons.check_circle, size: 11, color: statusColor)
                   else
                     Container(
                       width: 5,
@@ -90,7 +86,8 @@ class FamilySubscriptionMealsStatusItem extends StatelessWidget {
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size8,
-                      color: status.status ==
+                      color:
+                          status.status ==
                               FamilySubscriptionMealStatus.completed
                           ? color.primary
                           : color.onSurfaceVariant,

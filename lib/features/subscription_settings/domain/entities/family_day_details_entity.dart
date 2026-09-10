@@ -75,4 +75,3 @@ class FamilyDayMealEntity {
   final String? imageUrl;
   final bool isEmpty;
 }
-

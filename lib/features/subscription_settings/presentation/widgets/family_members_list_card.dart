@@ -78,13 +78,15 @@ class FamilyMembersListCard extends StatelessWidget {
               width: Spacing.familyMembersCardBorder,
             ),
           ),
-          child: Row(mainAxisAlignment: MainAxisAlignment.start,  
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [  Icon(
-                          Icons.chevron_right_rounded,
-                          size: Spacing.iconSm,
-                          color: color.onSurfaceVariant,
-                        ),
+            children: [
+              Icon(
+                Icons.chevron_right_rounded,
+                size: Spacing.iconSm,
+                color: color.onSurfaceVariant,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,9 +149,7 @@ class FamilyMembersListCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: statusColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -182,9 +182,7 @@ class FamilyMembersListCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: noteColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Center(
                         widthFactor: 1.0,
@@ -215,14 +213,10 @@ class FamilyMembersListCard extends StatelessWidget {
                   const SizedBox(height: Spacing.xs),
                   Container(
                     height: Spacing.familyMembersAccountChipHeight,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.sm,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
                     decoration: BoxDecoration(
                       color: color.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(
-                        Spacing.radiusPill,
-                      ),
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
                     ),
                     child: Center(
                       widthFactor: 1.0,

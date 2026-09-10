@@ -8,9 +8,20 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 
 class FamilyMealSelectionMacrosCard extends StatelessWidget {
-  const FamilyMealSelectionMacrosCard({super.key, required this.macros});
+  const FamilyMealSelectionMacrosCard({
+    super.key,
+    required this.macros,
+    this.targetCalories = 2000,
+    this.targetProtein = 120,
+    this.targetCarbs = 260,
+    this.targetFat = 70,
+  });
 
   final CalendarNutritionTotalsEntity macros;
+  final int targetCalories;
+  final int targetProtein;
+  final int targetCarbs;
+  final int targetFat;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +121,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                     macros.calories.toString(),
                   ),
                   barColor: color.primary,
-                  fillFraction: 0.85,
+                  fillFraction: targetCalories > 0 && macros.calories > 0
+                      ? (macros.calories / targetCalories).clamp(0.0, 1.0)
+                      : 0.0,
                   color: color,
                 ),
               ),
@@ -123,7 +136,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                     macros.proteinG.toString(),
                   ),
                   barColor: color.secondary,
-                  fillFraction: 0.75,
+                  fillFraction: targetProtein > 0 && macros.proteinG > 0
+                      ? (macros.proteinG / targetProtein).clamp(0.0, 1.0)
+                      : 0.0,
                   color: color,
                 ),
               ),
@@ -134,7 +149,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                   label: locale.family_meal_macros_carbs,
                   value: locale.family_meal_gram_unit(macros.carbsG.toString()),
                   barColor: color.tertiary,
-                  fillFraction: 0.65,
+                  fillFraction: targetCarbs > 0 && macros.carbsG > 0
+                      ? (macros.carbsG / targetCarbs).clamp(0.0, 1.0)
+                      : 0.0,
                   color: color,
                 ),
               ),
@@ -145,7 +162,9 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                   label: locale.family_meal_macros_fat,
                   value: locale.family_meal_gram_unit(macros.fatG.toString()),
                   barColor: color.error,
-                  fillFraction: 0.50,
+                  fillFraction: targetFat > 0 && macros.fatG > 0
+                      ? (macros.fatG / targetFat).clamp(0.0, 1.0)
+                      : 0.0,
                   color: color,
                 ),
               ),

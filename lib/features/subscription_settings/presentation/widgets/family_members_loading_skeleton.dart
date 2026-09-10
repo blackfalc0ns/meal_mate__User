@@ -15,8 +15,7 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
       padding: const EdgeInsetsDirectional.only(
         start: Spacing.familyMembersHorizontalPadding,
         end: Spacing.familyMembersHorizontalPadding,
-        bottom:
-            Spacing.bottomNavHeight + Spacing.familyMembersBottomNavTopGap,
+        bottom: Spacing.bottomNavHeight + Spacing.familyMembersBottomNavTopGap,
       ),
       children: [
         const SizedBox(height: Spacing.familyMembersSearchTopGap),
