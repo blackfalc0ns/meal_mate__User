@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 
@@ -102,8 +104,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildMacroColumn(
-                  icon: Icons.local_fire_department_rounded,
-                  iconColor: color.primary,
+                  animationAsset: Assets.fireAnimation,
                   label: locale.family_meal_macros_calories,
                   value: locale.family_meal_calorie_unit(
                     macros.calories.toString(),
@@ -116,8 +117,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
               _buildDivider(color),
               Expanded(
                 child: _buildMacroColumn(
-                  icon: Icons.fitness_center_rounded,
-                  iconColor: color.secondary,
+                  animationAsset: Assets.muscleAnimation,
                   label: locale.family_meal_macros_protein,
                   value: locale.family_meal_gram_unit(
                     macros.proteinG.toString(),
@@ -130,8 +130,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
               _buildDivider(color),
               Expanded(
                 child: _buildMacroColumn(
-                  icon: Icons.grain_rounded,
-                  iconColor: color.tertiary,
+                  animationAsset: Assets.wheatAnimation,
                   label: locale.family_meal_macros_carbs,
                   value: locale.family_meal_gram_unit(macros.carbsG.toString()),
                   barColor: color.tertiary,
@@ -142,8 +141,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
               _buildDivider(color),
               Expanded(
                 child: _buildMacroColumn(
-                  icon: Icons.water_drop_rounded,
-                  iconColor: color.error,
+                  animationAsset: Assets.dropletAnimation,
                   label: locale.family_meal_macros_fat,
                   value: locale.family_meal_gram_unit(macros.fatG.toString()),
                   barColor: color.error,
@@ -168,8 +166,7 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
   }
 
   Widget _buildMacroColumn({
-    required IconData icon,
-    required Color iconColor,
+    required String animationAsset,
     required String label,
     required String value,
     required Color barColor,
@@ -183,7 +180,13 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: Spacing.iconXs, color: iconColor),
+            Lottie.asset(
+              animationAsset,
+              width: 20,
+              height: 25,
+              fit: BoxFit.contain,
+              repeat: true,
+            ),
             const SizedBox(width: Spacing.xs / 2),
             Text(
               label,
@@ -206,16 +209,16 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xs),
         Container(
-          height: Spacing.xs / 1.5,
+          height: Spacing.sm,
           decoration: BoxDecoration(
-            color: color.outlineVariant.withValues(alpha: 0.5),
+            color: color.outlineVariant,
             borderRadius: BorderRadius.circular(Spacing.radiusPill),
           ),
           alignment: AlignmentDirectional.centerStart,
           child: FractionallySizedBox(
             widthFactor: fillFraction.clamp(0.1, 1.0),
             child: Container(
-              height: Spacing.xs / 1.5,
+              height: Spacing.sm,
               decoration: BoxDecoration(
                 color: barColor,
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),

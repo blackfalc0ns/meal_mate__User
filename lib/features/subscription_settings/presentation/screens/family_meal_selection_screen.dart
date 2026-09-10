@@ -233,7 +233,7 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                       },
                     ),
                     const SizedBox(height: Spacing.base),
-                    if (state.isLoadingAvailableMeals && availableMeals.isEmpty)
+                    if (state.isLoadingAvailableMeals)
                       const FamilyMealSelectionLoadingSkeleton()
                     else if (state.availableMealsFailure != null &&
                         availableMeals.isEmpty)

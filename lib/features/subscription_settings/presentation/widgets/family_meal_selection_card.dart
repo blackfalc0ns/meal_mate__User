@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
@@ -75,32 +77,28 @@ class FamilyMealSelectionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildStatItem(
-                      icon: Icons.local_fire_department_rounded,
-                      iconColor: color.primary,
+                      animationAsset: Assets.fireAnimation,
                       value: meal.calories,
                       unit: locale.family_meal_macros_calories,
                       color: color,
                     ),
                     _buildStatDivider(color),
                     _buildStatItem(
-                      icon: Icons.grain_rounded,
-                      iconColor: color.tertiary,
+                      animationAsset: Assets.wheatAnimation,
                       value: meal.carbs,
                       unit: locale.family_meal_macros_carbs,
                       color: color,
                     ),
                     _buildStatDivider(color),
                     _buildStatItem(
-                      icon: Icons.fitness_center_rounded,
-                      iconColor: color.secondary,
+                      animationAsset: Assets.muscleAnimation,
                       value: meal.protein,
                       unit: locale.family_meal_macros_protein,
                       color: color,
                     ),
                     _buildStatDivider(color),
                     _buildStatItem(
-                      icon: Icons.water_drop_rounded,
-                      iconColor: color.error,
+                      animationAsset: Assets.dropletAnimation,
                       value: meal.fat,
                       unit: locale.family_meal_macros_fat,
                       color: color,
@@ -291,33 +289,42 @@ class FamilyMealSelectionCard extends StatelessWidget {
   }
 
   Widget _buildStatItem({
-    required IconData icon,
-    required Color iconColor,
+    required String animationAsset,
     required String value,
     required String unit,
     required ColorScheme color,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Row(
       children: [
-        Icon(icon, size: Spacing.iconXs, color: iconColor),
-        const SizedBox(height: Spacing.xs / 2),
-        Text(
-          value,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
-            color: color.onSurface,
-          ),
+        Lottie.asset(
+          animationAsset,
+          width: 20,
+          height: 25,
+          fit: BoxFit.contain,
+          repeat: true,
         ),
-        Text(
-          unit,
-          style: getRegularStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size8,
-            color: color.onSurfaceVariant,
-          ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: Spacing.xs / 2),
+            Text(
+              value,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onSurface,
+              ),
+            ),
+            Text(
+              unit,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size8,
+                color: color.onSurfaceVariant,
+              ),
+            ),
+          ],
         ),
       ],
     );
