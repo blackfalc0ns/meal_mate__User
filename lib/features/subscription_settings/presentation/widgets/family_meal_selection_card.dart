@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 
@@ -31,7 +32,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
           color: meal.selected
               ? color.primary.withValues(alpha: 0.5)
               : color.outlineVariant,
-          width: meal.selected ? Spacing.border * 1.5 : Spacing.border,
+          width: Spacing.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -150,90 +151,131 @@ class FamilyMealSelectionCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.md),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
+          _buildImageAndButtonStack(context, color, locale),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageAndButtonStack(
+    BuildContext context,
+    ColorScheme color,
+    AppLocalizations locale,
+  ) {
+    const stackWidth = Spacing.familyMealSelectionImageWidth;
+    const stackHeight = 118.0;
+    const imageHeight = 102.0;
+    const buttonHeight = 28.0;
+
+    return SizedBox(
+      width: stackWidth,
+      height: stackHeight,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: imageHeight,
+            child: GestureDetector(
+              onTap: onSelect,
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                child: SizedBox(
-                  width: Spacing.familyMealSelectionImageWidth,
-                  height: Spacing.familyMealSelectionImageHeight - 20.0,
-                  child: meal.imageUrl != null && meal.imageUrl!.isNotEmpty
-                      ? AppCachedNetworkImage(
-                          imageUrl: meal.imageUrl!,
-                          width: Spacing.familyMealSelectionImageWidth,
-                          height: Spacing.familyMealSelectionImageHeight - 20.0,
-                          fit: BoxFit.cover,
-                        )
-                      : (meal.imageAsset.isNotEmpty
-                            ? Image.asset(
-                                meal.imageAsset,
-                                width: Spacing.familyMealSelectionImageWidth,
-                                height:
-                                    Spacing.familyMealSelectionImageHeight -
-                                    20.0,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(
-                                color: color.surfaceContainerHighest,
-                                child: Icon(
-                                  Icons.restaurant_rounded,
-                                  color: color.onSurfaceVariant,
-                                  size: Spacing.iconLg,
-                                ),
-                              )),
-                ),
-              ),
-              const SizedBox(height: Spacing.xs),
-              InkWell(
-                onTap: onSelect,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: Spacing.familyMealSelectionImageWidth,
-                  height: Spacing.buttonSmallHeight * 0.72,
-                  decoration: BoxDecoration(
-                    color: meal.selected
-                        ? color.primary
-                        : color.onSurface.withValues(alpha: 0.75),
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (meal.selected) ...[
-                            Icon(
-                              Icons.check_rounded,
-                              size: Spacing.iconXs,
-                              color: color.onPrimary,
-                            ),
-                            const SizedBox(width: Spacing.xs / 2),
-                          ],
-                          Flexible(
-                            child: Text(
-                              meal.selected
-                                  ? locale.family_meal_status_selected
-                                  : locale.family_meal_button_select,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: meal.selected ? color.onPrimary : color.surface,
+                child: meal.imageUrl != null && meal.imageUrl!.isNotEmpty
+                    ? AppCachedNetworkImage(
+                        imageUrl: meal.imageUrl!,
+                        width: stackWidth,
+                        height: imageHeight,
+                        fit: BoxFit.cover,
+                      )
+                    : (meal.imageAsset.isNotEmpty
+                          ? Image.asset(
+                              meal.imageAsset,
+                              width: stackWidth,
+                              height: imageHeight,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              color: color.surfaceContainerHighest,
+                              child: Icon(
+                                Icons.restaurant_rounded,
+                                color: color.onSurfaceVariant,
+                                size: Spacing.iconLg,
                               ),
+                            )),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: buttonHeight,
+            child: GestureDetector(
+              onTap: onSelect,
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                  color: meal.selected
+                      ? color.primary
+                      : color.onSurface.withValues(alpha: 0.75),
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  border: Border.all(color: color.surface, width: Spacing.xxs),
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                    child: meal.selected
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 15.0,
+                                height: 15.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color.surface,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.check_rounded,
+                                    size: 11.0,
+                                    color: color.primary,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: Spacing.sm),
+                              Flexible(
+                                child: Text(
+                                  locale.family_meal_status_selected,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size10,
+                                    color: color.onPrimary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Text(
+                            locale.family_meal_button_select,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: color.surface,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
