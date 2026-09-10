@@ -212,16 +212,29 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _deleteFamilyMember(String memberId) async {
-    emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
+    emit(
+      state.copyWith(
+        isDeletingMember: true,
+        deleteMemberSuccess: false,
+        clearDeleteMemberFailure: true,
+      ),
+    );
     final result = await _deleteFamilyMemberUseCase(memberId);
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
+          state.copyWith(
+            isDeletingMember: false,
+            deleteMemberSuccess: true,
+            currentFlow: result.data,
+          ),
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+          state.copyWith(
+            isDeletingMember: false,
+            deleteMemberFailure: result.failure,
+          ),
         );
     }
   }

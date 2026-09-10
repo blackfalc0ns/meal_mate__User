@@ -238,7 +238,7 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
         .state
         .callingCodes
         .selected;
-    final phone = _formatPhoneForLogin(
+    final phone = normalizeLoginPhone(
       _phoneController.text.trim(),
       selectedCallingCode?.dialCode ?? '+20',
     );
@@ -253,11 +253,16 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
       ),
     );
   }
+}
 
-  String _formatPhoneForLogin(String phone, String dialCode) {
-    if (phone.startsWith('+')) {
-      return phone;
-    }
-    return '$dialCode $phone';
+String normalizeLoginPhone(String phone, String dialCode) {
+  final digits = phone.replaceAll(RegExp(r'\D'), '');
+  final dialCodeDigits = dialCode.replaceAll(RegExp(r'\D'), '');
+  var localDigits = digits;
+
+  if (phone.trimLeft().startsWith('+') && digits.startsWith(dialCodeDigits)) {
+    localDigits = digits.substring(dialCodeDigits.length);
   }
+
+  return '+$dialCodeDigits$localDigits';
 }

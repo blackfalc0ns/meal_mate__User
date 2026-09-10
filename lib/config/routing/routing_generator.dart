@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/core/screens/loading_preview_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
@@ -76,6 +77,11 @@ import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_trans
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.loadingPreview:
+        return _buildRoute(
+          settings: settings,
+          page: const LoadingPreviewScreen(),
+        );
       case AppRoutes.home:
         final initialTabIndex = settings.arguments is int
             ? settings.arguments! as int

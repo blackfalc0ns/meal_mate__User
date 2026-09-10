@@ -18,6 +18,8 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_event.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_address_options.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_member_form_validation.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_relationship_options.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_member_phone_field.dart';
 
@@ -103,6 +105,8 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   int _gender = 1; // 1 Male, 2 Female
   String? _resolvedPhone;
   String? _phoneError;
+  String? _nameError;
+  String? _ageError;
   bool _phoneLookupBlocked = false;
 
   @override
@@ -133,9 +137,14 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
       selectedCode: memberRelationshipCode,
     );
 
-    _selectedAddressId =
-        member?.deliveryAddressId ??
-        (widget.addresses.isNotEmpty ? widget.addresses.first.addressId : null);
+    final availableAddresses = buildFamilyAddressOptions(
+      widget.addresses,
+      selectedAddress: member?.deliveryAddress,
+    );
+    _selectedAddressId = resolveFamilyAddressSelection(
+      availableAddresses,
+      selectedAddressId: member?.deliveryAddressId,
+    );
   }
 
   @override
@@ -148,16 +157,26 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   }
 
   void _handleSubmit() {
+    final locale = context.localization;
     final name = _nameController.text.trim();
     final phone = _resolvedPhone?.trim() ?? '';
-    final age = int.tryParse(_ageController.text.trim()) ?? 0;
+    final ageText = _ageController.text.trim();
+    final age = int.tryParse(ageText) ?? 0;
     final relCode = _selectedRelationshipCode ?? 'other';
+    final phoneIsInvalid = validateFamilyMemberPhone(_resolvedPhone) != null;
+    final nameIsInvalid = validateFamilyMemberName(name) != null;
+    final ageIsInvalid = validateFamilyMemberAge(ageText) != null;
 
-    if (phone.isEmpty ||
-        _phoneLookupBlocked ||
-        name.isEmpty ||
-        age < 1 ||
-        age > 120) {
+    if (phoneIsInvalid || nameIsInvalid || ageIsInvalid) {
+      setState(() {
+        _phoneError = phoneIsInvalid ? locale.phone_number_is_not_valid : null;
+        _nameError = nameIsInvalid ? locale.name_is_required : null;
+        _ageError = ageIsInvalid ? locale.family_age_invalid : null;
+      });
+      return;
+    }
+
+    if (_phoneLookupBlocked) {
       return;
     }
 
@@ -204,6 +223,14 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final selectedRelationshipCode = resolveFamilyRelationshipSelection(
       availableRelationships,
       selectedCode: _selectedRelationshipCode,
+    );
+    final availableAddresses = buildFamilyAddressOptions(
+      widget.addresses,
+      selectedAddress: widget.member?.deliveryAddress,
+    );
+    final selectedAddressId = resolveFamilyAddressSelection(
+      availableAddresses,
+      selectedAddressId: _selectedAddressId,
     );
 
     return BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
@@ -346,6 +373,11 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                         AppTextField(
                           controller: _nameController,
                           hint: l10n.family_full_name_hint,
+                          errorText: _nameError,
+                          onChanged: (_) {
+                            if (_nameError == null) return;
+                            setState(() => _nameError = null);
+                          },
                           prefixIcon: Icon(
                             Icons.person_outline_rounded,
                             color: color.onSurfaceVariant,
@@ -453,6 +485,11 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                                   AppTextField(
                                     controller: _ageController,
                                     hint: l10n.family_age_hint,
+                                    errorText: _ageError,
+                                    onChanged: (_) {
+                                      if (_ageError == null) return;
+                                      setState(() => _ageError = null);
+                                    },
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
@@ -502,7 +539,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                         const SizedBox(height: Spacing.md),
 
                         // Delivery address
-                        if (widget.addresses.isNotEmpty) ...[
+                        if (availableAddresses.isNotEmpty) ...[
                           Text(
                             l10n.family_address_select,
                             style: getBoldStyle(
@@ -526,9 +563,9 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 isExpanded: true,
-                                value: _selectedAddressId,
+                                value: selectedAddressId,
                                 dropdownColor: color.surface,
-                                items: widget.addresses.map((a) {
+                                items: availableAddresses.map((a) {
                                   final title = a.label.isNotEmpty
                                       ? a.label
                                       : a.addressLine;

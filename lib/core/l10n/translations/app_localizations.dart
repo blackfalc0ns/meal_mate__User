@@ -5030,6 +5030,12 @@ abstract class AppLocalizations {
   /// **'Enter age'**
   String get family_age_hint;
 
+  /// No description provided for @family_age_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an age between 1 and 120'**
+  String get family_age_invalid;
+
   /// No description provided for @family_year.
   ///
   /// In en, this message translates to:
@@ -5101,6 +5107,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get family_cancel;
+
+  /// No description provided for @family_delete_member_confirmation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete member?'**
+  String get family_delete_member_confirmation_title;
+
+  /// No description provided for @family_delete_member_confirmation_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this member?'**
+  String get family_delete_member_confirmation_message;
+
+  /// No description provided for @family_delete_member_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member deleted successfully'**
+  String get family_delete_member_success;
 
   /// No description provided for @family_setup_title.
   ///

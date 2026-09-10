@@ -134,21 +134,13 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
                   },
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,
-            fontSize: FontSize.size13,
-            iconWidget: Container(
-              width: Spacing.iconLg,
-              height: Spacing.iconLg,
-              decoration: BoxDecoration(
-                color: color.onPrimary,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                isRtl
-                    ? Icons.arrow_back_rounded
-                    : Icons.arrow_forward_rounded,
-                color: color.primary,
-                size: Spacing.iconSm,
-              ),
+            fontSize: FontSize.size14,
+            iconWidget: Icon(
+              isRtl
+                  ? Icons.arrow_circle_left_outlined
+                  : Icons.arrow_circle_right_outlined,
+              color: color.onPrimary,
+              size: Spacing.iconLg,
             ),
           ),
           const SizedBox(height: Spacing.base),

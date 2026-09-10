@@ -2634,6 +2634,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_age_hint => 'ادخل العمر';
 
   @override
+  String get family_age_invalid => 'أدخل عمرًا من 1 إلى 120';
+
+  @override
   String get family_year => 'سنة';
 
   @override
@@ -2669,6 +2672,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_cancel => 'إلغاء';
+
+  @override
+  String get family_delete_member_confirmation_title => 'حذف الفرد؟';
+
+  @override
+  String get family_delete_member_confirmation_message =>
+      'هل أنت متأكد من حذف هذا الفرد؟';
+
+  @override
+  String get family_delete_member_success => 'تم حذف الفرد بنجاح';
 
   @override
   String get family_setup_title => 'إعداد اشتراك العائلة';

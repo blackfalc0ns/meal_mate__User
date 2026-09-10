@@ -239,4 +239,5 @@ class Assets {
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';
   static const String notificationBold = '$_svg/notification_bold.svg';
+  static const String loadingLogo = 'assets/animations/logo-loading.json';
 }

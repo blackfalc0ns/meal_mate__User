@@ -85,14 +85,14 @@ class FamilySetupMemberTile extends StatelessWidget {
                     ],
                   ],
                 ),
-                Text(
-                  '${member.ageYears} ${locale.family_year} · ${member.relationshipCode}',
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
+                // Text(
+                //   '${member.ageYears} ${locale.family_year} · ${member.relationshipCode}',
+                //   style: getRegularStyle(
+                //     fontFamily: FontConstant.alexandria,
+                //     fontSize: FontSize.size10,
+                //     color: color.onSurfaceVariant,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -105,14 +105,15 @@ class FamilySetupMemberTile extends StatelessWidget {
               ),
               onPressed: onEdit,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.delete_outline_rounded,
-                color: color.error,
-                size: 18,
+            if (member.canDeleteFromSetupFlow)
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  color: color.error,
+                  size: 18,
+                ),
+                onPressed: onDelete,
               ),
-              onPressed: onDelete,
-            ),
           ],
         ],
       ),

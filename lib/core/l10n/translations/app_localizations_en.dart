@@ -2681,6 +2681,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_age_hint => 'Enter age';
 
   @override
+  String get family_age_invalid => 'Enter an age between 1 and 120';
+
+  @override
   String get family_year => 'Year';
 
   @override
@@ -2716,6 +2719,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_cancel => 'Cancel';
+
+  @override
+  String get family_delete_member_confirmation_title => 'Delete member?';
+
+  @override
+  String get family_delete_member_confirmation_message =>
+      'Are you sure you want to delete this member?';
+
+  @override
+  String get family_delete_member_success => 'Member deleted successfully';
 
   @override
   String get family_setup_title => 'Family subscription setup';

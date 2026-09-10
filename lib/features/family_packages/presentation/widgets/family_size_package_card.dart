@@ -48,44 +48,22 @@ class FamilySizePackageCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _buildSelectionIndicator(context),
+                  _buildIconBox(context),
                   const SizedBox(width: Spacing.sm),
-                  if (package.discountPercent > 0) ...[
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.hairline * 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.primary.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Text(
-                        locale.family_package_discount_badge(
-                          package.discountLabel,
-                        ),
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.primary,
-                        ),
-                      ),
-                    ),
-                  ],
-                  const Spacer(),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         package.name(locale.localeName),
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size15,
+                          fontSize: FontSize.size14,
                           color: color.onSurface,
                         ),
                       ),
-                      const SizedBox(height: Spacing.hairline * 2),
+                      const SizedBox(height: Spacing.xs),
                       Text(
                         locale.family_package_members_range(
                           package.minMembers,
@@ -99,14 +77,63 @@ class FamilySizePackageCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: Spacing.md),
-                  _buildIconBox(context),
+
+                  const Spacer(),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildSelectionIndicator(context),
+                      if (package.discountPercent > 0) ...[
+                        const SizedBox(height: Spacing.xs),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.sm,
+                            vertical: Spacing.hairline * 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: color.primary.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
+                          ),
+                          child: Text(
+                            locale.family_package_discount_badge(
+                              package.discountLabel,
+                            ),
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: color.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: Spacing.md),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: Spacing.iconSm,
+                    color: color.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.family_packages_default_meals_range,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size11,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Container(width: 1, height: 11, color: color.outlineVariant),
+                  const SizedBox(width: Spacing.sm),
                   Icon(
                     Icons.groups_outlined,
                     size: Spacing.iconSm,
@@ -118,21 +145,6 @@ class FamilySizePackageCard extends StatelessWidget {
                       package.minMembers,
                       package.maxMembers,
                     ),
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.sm),
-                  Icon(
-                    Icons.inventory_2_outlined,
-                    size: Spacing.iconSm,
-                    color: color.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.family_packages_default_meals_range,
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
@@ -154,10 +166,7 @@ class FamilySizePackageCard extends StatelessWidget {
       return Container(
         width: Spacing.iconMd,
         height: Spacing.iconMd,
-        decoration: BoxDecoration(
-          color: color.primary,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: color.primary, shape: BoxShape.circle),
         child: Icon(
           Icons.check_rounded,
           color: color.onPrimary,
@@ -170,10 +179,7 @@ class FamilySizePackageCard extends StatelessWidget {
       height: Spacing.iconMd,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: color.outlineVariant,
-          width: 1.5,
-        ),
+        border: Border.all(color: color.outlineVariant, width: 1.5),
       ),
     );
   }

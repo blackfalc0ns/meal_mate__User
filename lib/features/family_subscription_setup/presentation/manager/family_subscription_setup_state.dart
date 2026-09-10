@@ -19,6 +19,9 @@ class FamilyPlanState {
     this.packages = const [],
     this.selectedPackage,
     this.isCurrentFlowLoading = false,
+    this.isDeletingMember = false,
+    this.deleteMemberSuccess = false,
+    this.deleteMemberFailure,
     this.currentFlow,
     this.isRelationshipsLoading = false,
     this.relationships = const [],
@@ -66,6 +69,9 @@ class FamilyPlanState {
   final FamilySizePackageEntity? selectedPackage;
 
   final bool isCurrentFlowLoading;
+  final bool isDeletingMember;
+  final bool deleteMemberSuccess;
+  final Failure? deleteMemberFailure;
   final FamilyFlowCurrentEntity? currentFlow;
 
   final bool isRelationshipsLoading;
@@ -187,6 +193,10 @@ class FamilyPlanState {
     List<FamilySizePackageEntity>? packages,
     FamilySizePackageEntity? selectedPackage,
     bool? isCurrentFlowLoading,
+    bool? isDeletingMember,
+    bool? deleteMemberSuccess,
+    Failure? deleteMemberFailure,
+    bool clearDeleteMemberFailure = false,
     FamilyFlowCurrentEntity? currentFlow,
     bool? isRelationshipsLoading,
     List<FamilyRelationshipEntity>? relationships,
@@ -245,6 +255,11 @@ class FamilyPlanState {
       packages: packages ?? this.packages,
       selectedPackage: selectedPackage ?? this.selectedPackage,
       isCurrentFlowLoading: isCurrentFlowLoading ?? this.isCurrentFlowLoading,
+      isDeletingMember: isDeletingMember ?? this.isDeletingMember,
+      deleteMemberSuccess: deleteMemberSuccess ?? this.deleteMemberSuccess,
+      deleteMemberFailure: clearDeleteMemberFailure
+          ? null
+          : (deleteMemberFailure ?? this.deleteMemberFailure),
       currentFlow: clearCurrentFlow ? null : (currentFlow ?? this.currentFlow),
       isRelationshipsLoading:
           isRelationshipsLoading ?? this.isRelationshipsLoading,

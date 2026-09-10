@@ -6,6 +6,8 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_event.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
@@ -72,9 +74,18 @@ class _FamilySubscriptionSetupScreenState
         return vm;
       },
       child: isInFamilyFlow
-          ? BlocConsumer<FamilySubscriptionSetupViewModel, FamilyPlanState>(
-              listener: _onStateChanged,
-              builder: _buildContent,
+          ? BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+              listenWhen: _shouldListenForDelete,
+              listener: _onDeleteStateChanged,
+              child:
+                  BlocConsumer<
+                    FamilySubscriptionSetupViewModel,
+                    FamilyPlanState
+                  >(
+                    listenWhen: _shouldListen,
+                    listener: _onStateChanged,
+                    builder: _buildContent,
+                  ),
             )
           : Scaffold(
               appBar: CustomAppBar(
@@ -102,10 +113,22 @@ class _FamilySubscriptionSetupScreenState
               ),
               body: SafeArea(
                 child:
-                    BlocConsumer<
+                    BlocListener<
                       FamilySubscriptionSetupViewModel,
                       FamilyPlanState
-                    >(listener: _onStateChanged, builder: _buildContent),
+                    >(
+                      listenWhen: _shouldListenForDelete,
+                      listener: _onDeleteStateChanged,
+                      child:
+                          BlocConsumer<
+                            FamilySubscriptionSetupViewModel,
+                            FamilyPlanState
+                          >(
+                            listenWhen: _shouldListen,
+                            listener: _onStateChanged,
+                            builder: _buildContent,
+                          ),
+                    ),
               ),
             ),
     );
@@ -125,11 +148,50 @@ class _FamilySubscriptionSetupScreenState
       );
     }
 
-    return FamilySubscriptionSetupContent(
-      state: state,
-      familyNameController: _familyNameController,
-      onSaveFamilyName: () => _onSaveFamilyName(context),
+    final color = context.colorScheme;
+    return Stack(
+      children: [
+        FamilySubscriptionSetupContent(
+          state: state,
+          familyNameController: _familyNameController,
+          onSaveFamilyName: () => _onSaveFamilyName(context),
+        ),
+        if (state.isDeletingMember)
+          Positioned.fill(
+            child: AbsorbPointer(
+              child: ColoredBox(
+                color: color.scrim.withValues(alpha: 0.2),
+                child: const CustomProgressIndicator(),
+              ),
+            ),
+          ),
+      ],
     );
+  }
+
+  bool _shouldListen(FamilyPlanState previous, FamilyPlanState current) =>
+      previous.currentFlow != current.currentFlow;
+
+  bool _shouldListenForDelete(
+    FamilyPlanState previous,
+    FamilyPlanState current,
+  ) =>
+      previous.deleteMemberSuccess != current.deleteMemberSuccess ||
+      previous.deleteMemberFailure != current.deleteMemberFailure;
+
+  void _onDeleteStateChanged(BuildContext context, FamilyPlanState state) {
+    final locale = context.localization;
+    if (state.deleteMemberSuccess) {
+      CustomSnackbar.showSuccess(
+        context: context,
+        message: locale.family_delete_member_success,
+      );
+    } else if (state.deleteMemberFailure != null) {
+      CustomSnackbar.showError(
+        context: context,
+        message: state.deleteMemberFailure!.errorMessage,
+      );
+    }
   }
 
   void _onStateChanged(BuildContext context, FamilyPlanState state) {

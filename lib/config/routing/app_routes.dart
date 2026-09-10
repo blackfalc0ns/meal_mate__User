@@ -1,4 +1,5 @@
 abstract class AppRoutes {
+  static const String loadingPreview = '/loading-preview';
   static const String home = '/home';
   static const String search = '/search';
   static const String offers = '/offers';

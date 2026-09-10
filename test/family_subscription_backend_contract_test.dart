@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_flow_current_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_lookup_response_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_response_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
 
 void main() {
@@ -160,5 +161,14 @@ void main() {
         },
       );
     });
+  });
+
+  test('maps Ready setup status returned by the current flow endpoint', () {
+    final dto = FamilyMemberResponseDto.fromJson(const {
+      'memberId': 'member',
+      'setupStatus': 'Ready',
+    });
+
+    expect(dto.setupStatus, 3);
   });
 }

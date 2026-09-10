@@ -68,11 +68,7 @@ class FamilySetupMembersSection extends StatelessWidget {
           (member) => FamilySetupMemberTile(
             member: member,
             onEdit: () => _openEditMemberDialog(context, member),
-            onDelete: () {
-              context.read<FamilySubscriptionSetupViewModel>().doIntent(
-                DeleteFamilyMemberEvent(member.memberId),
-              );
-            },
+            onDelete: () => _confirmDeleteMember(context, member),
           ),
         ),
         if (!isMaxReached) ...[
@@ -171,6 +167,30 @@ class FamilySetupMembersSection extends StatelessWidget {
               ),
             );
           },
+    );
+  }
+
+  Future<void> _confirmDeleteMember(
+    BuildContext context,
+    FamilyMemberEntity member,
+  ) async {
+    final locale = context.localization;
+    final color = context.colorScheme;
+    final confirmed = await context.showAppCustomDialog<bool>(
+      title: locale.family_delete_member_confirmation_title,
+      message: locale.family_delete_member_confirmation_message,
+      confirmText: locale.family_member_access_remove_label,
+      cancelText: locale.family_cancel,
+      icon: Icons.delete_outline_rounded,
+      iconColor: color.error,
+      confirmTextColor: color.error,
+      onConfirm: () => true,
+      onCancel: () => false,
+    );
+
+    if (!context.mounted || confirmed != true) return;
+    context.read<FamilySubscriptionSetupViewModel>().doIntent(
+      DeleteFamilyMemberEvent(member.memberId),
     );
   }
 }
