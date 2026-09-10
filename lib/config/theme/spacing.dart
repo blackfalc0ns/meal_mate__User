@@ -932,6 +932,9 @@ class Spacing {
   static const double familyDayReviewButtonRadius = 44.851;
   static const double familyDaySelectedTopGap = 5.5;
   static const double familyDaySelectedIconSize = 13.49;
+  static const double familyMealSelectionCardHeight = 143.0;
+  static const double familyMealSelectionImageWidth = 121.0;
+  static const double familyMealSelectionImageHeight = 103.0;
   static const double familyMemberCalendarHorizontalPadding = 15.0;
   static const double familyMemberCalendarTopGap = 17.0;
   static const double familyMemberCalendarMonthTopGap = 16.0;

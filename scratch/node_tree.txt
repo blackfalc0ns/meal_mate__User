@@ -1,0 +1,354 @@
+- 08.09 - Family / Meal Selection + Macros (FRAME, 390.0x1052.0) [fills: #ffffff(1.00)]
+  - Home Indicator (INSTANCE, 402.0x34.0)
+    - Home Indicator (RECTANGLE, 144.0x5.0) [fills: #000000(1.00)] [radius: 100.0]
+  - BackButton (INSTANCE, 24.0x24.0) [fills: #ffffff(1.00)]
+    - Iconly/Bold/Arrow - Left (INSTANCE, 24.0x24.0) [fills: #ffffff(1.00)]
+      - Arrow - Left (GROUP, 18.0x12.0) [fills: #ffffff(1.00)]
+        - Arrow - Left (BOOLEAN_OPERATION, 18.0x12.0) [fills: #24252c(1.00)]
+          - Path (VECTOR, 10.2x12.0) [fills: #130f26(1.00)]
+          - Path (VECTOR, 6.4x3.0) [fills: #130f26(1.00)]
+  - وجبات أحمد (TEXT, 107.0x23.0) text: "وجبات أحمد" [fills: #24252c(1.00)]
+  - Status bar (INSTANCE, 402.0x62.0) gap:154.0 pad(T:21.0,R:24.0,B:19.0,L:24.0)
+    - Time (FRAME, 100.0x22.0) gap:10.0 pad(T:1.5,R:0,B:0,L:0)
+      - Time (TEXT, 37.0x22.0) text: "9:41" [fills: #000000(1.00)]
+    - Levels (FRAME, 100.0x22.0) gap:7.0 pad(T:1.0,R:1.0,B:0,L:0)
+      - Cellular Connection (VECTOR, 19.2x12.2) [fills: #000000(1.00)]
+      - Wifi (VECTOR, 17.1x12.3) [fills: #000000(1.00)]
+      - Frame (FRAME, 27.3x13.0)
+        - Border (RECTANGLE, 25.0x13.0) [radius: 4.300000190734863]
+        - Cap (VECTOR, 1.3x4.1) [fills: #000000(1.00)]
+        - Capacity (RECTANGLE, 21.0x9.0) [fills: #000000(1.00)] [radius: 2.5]
+  - Ellipse 30 (ELLIPSE, 5.0x5.0) [fills: #ffffff(1.00)]
+  - Carousel arrow (GROUP, 9.0x18.0)
+    - weui:arrow-filled (FRAME, 9.0x18.0) [fills: #ffffff(1.00)]
+  - Group 19278 (GROUP, 133.0x12.0)
+    - ذا بـروتـيـن كـيـتـشـن (TEXT, 91.0x12.0) text: "ذا بـروتـيـن كـيـتـشـن" [fills: #04994e(1.00)]
+    - الـغـداء (TEXT, 30.0x12.0) text: "الـغـداء" [fills: #24252c(1.00)]
+    - Ellipse 358 (ELLIPSE, 4.0x4.0) [fills: #04994e(1.00)]
+  - Group 19282 (GROUP, 322.0x41.0)
+    - Group 19281 (GROUP, 279.0x26.0)
+      - lets-icons:check-fill (FRAME, 26.0x26.0) [fills: #ffffff(1.00)]
+        - Vector (VECTOR, 19.5x19.5) [fills: #04994e(1.00)]
+      - Line 63 (LINE, 96.0x0.0)
+      - Line 64 (LINE, 96.0x0.0)
+      - Group 19279 (GROUP, 19.5x19.5)
+        - Ellipse 359 (ELLIPSE, 19.5x19.5) [fills: #04994e(1.00)]
+        - 2 (TEXT, 8.0x15.0) text: "2" [fills: #ffffff(1.00)]
+      - Group 19280 (GROUP, 19.5x19.5)
+        - Ellipse 359 (ELLIPSE, 19.5x19.5) [fills: #ffffff(1.00)]
+        - 3 (TEXT, 8.0x15.0) text: "3" [fills: #000000(1.00)]
+    - اختيار المطعم (TEXT, 56.0x10.0) text: "اختيار المطعم" [fills: #666666(1.00)]
+    - اختيار الوجبة (TEXT, 48.0x10.0) text: "اختيار الوجبة" [fills: #04994e(1.00)]
+    - المراجعة (TEXT, 56.0x10.0) text: "المراجعة" [fills: #666666(1.00)]
+  - Group 19311 (GROUP, 365.0x596.0)
+    - Group 19307 (GROUP, 365.0x143.0)
+      - Rectangle 5770 (RECTANGLE, 365.0x143.0) [fills: #ffffff(1.00)] [radius: 16.0]
+      - Group 19293 (GROUP, 121.0x122.1)
+        - Group 19291 (GROUP, 121.0x122.1)
+          - Rectangle 5771 (RECTANGLE, 121.0x103.3) [radius: 8.853657722473145]
+          - Rectangle 5772 (RECTANGLE, 121.0x27.5) [fills: #ffffff(1.00)] [radius: 13.772356986999512]
+          - Rectangle 5773 (RECTANGLE, 117.1x27.5) [fills: #04994e(1.00)] [radius: 13.772356986999512]
+        - Group 19292 (GROUP, 77.9x19.2)
+          - lets-icons:check-fill (FRAME, 19.2x19.2) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 14.4x14.4) [fills: #ffffff(1.00)]
+          - تم الاختيار (TEXT, 45.0x11.0) text: "تم الاختيار" [fills: #ffffff(1.00)]
+      - Group 19296 (GROUP, 134.6x40.5)
+        - دجاج مشوي بالأعشاب (TEXT, 96.0x11.0) text: "دجاج مشوي بالأعشاب" [fills: #000000(1.00)]
+        - دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة (TEXT, 134.6x20.0) text: "دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة" [fills: #737376(1.00)]
+      - Group 19301 (GROUP, 219.0x22.5)
+        - Group 19297 (GROUP, 34.0x22.5)
+          - 480 (TEXT, 17.0x11.0) text: "480" [fills: #000000(1.00)]
+          - سعرة (TEXT, 16.0x7.0) text: "سعرة" [fills: #000000(1.00)]
+          - solar:fire-bold (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 8.5x9.7) [fills: #04994e(1.00)]
+        - Group 19299 (GROUP, 42.0x22.5)
+          - جم بروتين (TEXT, 27.0x7.0) text: "جم بروتين" [fills: #000000(1.00)]
+          - 42 (TEXT, 11.0x11.0) text: "42" [fills: #000000(1.00)]
+          - mingcute:fitness-fill (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Group (GROUP, 9.3x10.2)
+              - Vector (VECTOR, 0.4x0.3)
+              - Vector (VECTOR, 9.3x8.8) [fills: #04994e(1.00)]
+        - Group 19298 (GROUP, 56.0x22.5)
+          - جم كربوهيدرات (TEXT, 41.0x7.0) text: "جم كربوهيدرات" [fills: #000000(1.00)]
+          - 48 (TEXT, 11.0x11.0) text: "48" [fills: #000000(1.00)]
+          - streamline-plump:wheat-solid (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 11.0x11.3) [fills: #ffbd4e(1.00)]
+        - Group 19300 (GROUP, 39.0x22.5)
+          - جم دهون (TEXT, 27.0x7.0) text: "جم دهون" [fills: #000000(1.00)]
+          - 12 (TEXT, 9.0x11.0) text: "12" [fills: #000000(1.00)]
+          - mdi:drop (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 6.0x8.4) [fills: #ffbd4e(1.00)]
+        - Line 65 (LINE, 0.0x18.0)
+        - Line 66 (LINE, 0.0x18.0)
+        - Line 67 (LINE, 0.0x18.0)
+      - Group 19306 (GROUP, 183.0x17.0)
+        - Group 19304 (GROUP, 83.0x17.0)
+          - Rectangle 5775 (RECTANGLE, 83.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19303 (GROUP, 70.0x8.5)
+            - خالي من الجلوتين (TEXT, 57.0x8.0) text: "خالي من الجلوتين" [fills: #000000(1.00)]
+            - boxicons:leaf-filled (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.7) [fills: #04994e(1.00)]
+        - Group 19305 (GROUP, 92.0x17.0)
+          - Rectangle 5776 (RECTANGLE, 92.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19302 (GROUP, 79.0x8.0)
+            - لا يحتوي على مكسرات (TEXT, 67.0x8.0) text: "لا يحتوي على مكسرات" [fills: #000000(1.00)]
+            - noto:peanuts (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 7.5x6.9) [fills: #f3ae38(1.00)]
+              - Vector (VECTOR, 7.0x6.4) [fills: #d97a08(1.00)]
+              - Vector (VECTOR, 3.1x2.8) [fills: #f7c875(1.00)]
+              - Vector (VECTOR, 6.5x5.5) [fills: #d97a08(1.00)]
+    - Group 19308 (GROUP, 365.0x143.0)
+      - Rectangle 5770 (RECTANGLE, 365.0x143.0) [fills: #ffffff(1.00)] [radius: 16.0]
+      - Group 19293 (GROUP, 121.0x122.1)
+        - Group 19291 (GROUP, 121.0x122.1)
+          - Rectangle 5771 (RECTANGLE, 121.0x103.3) [radius: 8.853657722473145]
+          - Rectangle 5772 (RECTANGLE, 121.0x27.5) [fills: #ffffff(1.00)] [radius: 13.772356986999512]
+          - Rectangle 5773 (RECTANGLE, 117.1x27.5) [fills: #4a4a4a(1.00)] [radius: 13.772356986999512]
+        - Group 19292 (GROUP, 56.0x11.0)
+          - اختيار الوجبة (TEXT, 56.0x11.0) text: "اختيار الوجبة" [fills: #ffffff(1.00)]
+      - Group 19296 (GROUP, 134.6x40.5)
+        - سلمون مشوي بالليمون (TEXT, 106.0x11.0) text: "سلمون مشوي بالليمون" [fills: #000000(1.00)]
+        - سلمون مشوي مع كينوا وخضار مشوية وصوص الليمون (TEXT, 134.6x20.0) text: "سلمون مشوي مع كينوا وخضار مشوية وصوص الليمون" [fills: #737376(1.00)]
+      - Group 19301 (GROUP, 219.0x22.5)
+        - Group 19297 (GROUP, 34.0x22.5)
+          - 480 (TEXT, 17.0x11.0) text: "480" [fills: #000000(1.00)]
+          - سعرة (TEXT, 16.0x7.0) text: "سعرة" [fills: #000000(1.00)]
+          - solar:fire-bold (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 8.5x9.7) [fills: #04994e(1.00)]
+        - Group 19299 (GROUP, 42.0x22.5)
+          - جم بروتين (TEXT, 27.0x7.0) text: "جم بروتين" [fills: #000000(1.00)]
+          - 42 (TEXT, 11.0x11.0) text: "42" [fills: #000000(1.00)]
+          - mingcute:fitness-fill (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Group (GROUP, 9.3x10.2)
+              - Vector (VECTOR, 0.4x0.3)
+              - Vector (VECTOR, 9.3x8.8) [fills: #04994e(1.00)]
+        - Group 19298 (GROUP, 56.0x22.5)
+          - جم كربوهيدرات (TEXT, 41.0x7.0) text: "جم كربوهيدرات" [fills: #000000(1.00)]
+          - 48 (TEXT, 11.0x11.0) text: "48" [fills: #000000(1.00)]
+          - streamline-plump:wheat-solid (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 11.0x11.3) [fills: #ffbd4e(1.00)]
+        - Group 19300 (GROUP, 39.0x22.5)
+          - جم دهون (TEXT, 27.0x7.0) text: "جم دهون" [fills: #000000(1.00)]
+          - 12 (TEXT, 9.0x11.0) text: "12" [fills: #000000(1.00)]
+          - mdi:drop (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 6.0x8.4) [fills: #ffbd4e(1.00)]
+        - Line 65 (LINE, 0.0x18.0)
+        - Line 66 (LINE, 0.0x18.0)
+        - Line 67 (LINE, 0.0x18.0)
+      - Group 19306 (GROUP, 163.0x17.0)
+        - Group 19304 (GROUP, 83.0x17.0)
+          - Rectangle 5775 (RECTANGLE, 83.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19303 (GROUP, 70.0x8.5)
+            - خالي من الجلوتين (TEXT, 57.0x8.0) text: "خالي من الجلوتين" [fills: #000000(1.00)]
+            - boxicons:leaf-filled (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.7) [fills: #04994e(1.00)]
+        - Group 19305 (GROUP, 72.0x17.0)
+          - Rectangle 5776 (RECTANGLE, 72.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19302 (GROUP, 57.0x8.0)
+            - مصدر أوميغا 3 (TEXT, 45.0x8.0) text: "مصدر أوميغا 3" [fills: #000000(1.00)]
+            - mdi:heart (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.1) [fills: #04994e(1.00)]
+    - Group 19309 (GROUP, 365.0x143.0)
+      - Rectangle 5770 (RECTANGLE, 365.0x143.0) [fills: #ffffff(1.00)] [radius: 16.0]
+      - Group 19293 (GROUP, 121.0x122.1)
+        - Group 19291 (GROUP, 121.0x122.1)
+          - Rectangle 5771 (RECTANGLE, 121.0x103.3) [radius: 8.853657722473145]
+          - Rectangle 5772 (RECTANGLE, 121.0x27.5) [fills: #ffffff(1.00)] [radius: 13.772356986999512]
+          - Rectangle 5773 (RECTANGLE, 117.1x27.5) [fills: #4a4a4a(1.00)] [radius: 13.772356986999512]
+        - Group 19292 (GROUP, 56.0x11.0)
+          - اختيار الوجبة (TEXT, 56.0x11.0) text: "اختيار الوجبة" [fills: #ffffff(1.00)]
+      - Group 19296 (GROUP, 134.6x40.5)
+        - كفتة لحم بصلصة الطماطم (TEXT, 120.0x11.0) text: "كفتة لحم بصلصة الطماطم" [fills: #000000(1.00)]
+        - كفتة لحم بقري بصوص الطاطم مع بطاطس مهروسة وبروكلي (TEXT, 134.6x20.0) text: "كفتة لحم بقري بصوص الطاطم مع بطاطس مهروسة وبروكلي" [fills: #737376(1.00)]
+      - Group 19301 (GROUP, 219.0x22.5)
+        - Group 19297 (GROUP, 34.0x22.5)
+          - 480 (TEXT, 17.0x11.0) text: "480" [fills: #000000(1.00)]
+          - سعرة (TEXT, 16.0x7.0) text: "سعرة" [fills: #000000(1.00)]
+          - solar:fire-bold (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 8.5x9.7) [fills: #04994e(1.00)]
+        - Group 19299 (GROUP, 42.0x22.5)
+          - جم بروتين (TEXT, 27.0x7.0) text: "جم بروتين" [fills: #000000(1.00)]
+          - 42 (TEXT, 11.0x11.0) text: "42" [fills: #000000(1.00)]
+          - mingcute:fitness-fill (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Group (GROUP, 9.3x10.2)
+              - Vector (VECTOR, 0.4x0.3)
+              - Vector (VECTOR, 9.3x8.8) [fills: #04994e(1.00)]
+        - Group 19298 (GROUP, 56.0x22.5)
+          - جم كربوهيدرات (TEXT, 41.0x7.0) text: "جم كربوهيدرات" [fills: #000000(1.00)]
+          - 48 (TEXT, 11.0x11.0) text: "48" [fills: #000000(1.00)]
+          - streamline-plump:wheat-solid (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 11.0x11.3) [fills: #ffbd4e(1.00)]
+        - Group 19300 (GROUP, 39.0x22.5)
+          - جم دهون (TEXT, 27.0x7.0) text: "جم دهون" [fills: #000000(1.00)]
+          - 12 (TEXT, 9.0x11.0) text: "12" [fills: #000000(1.00)]
+          - mdi:drop (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 6.0x8.4) [fills: #ffbd4e(1.00)]
+        - Line 65 (LINE, 0.0x18.0)
+        - Line 66 (LINE, 0.0x18.0)
+        - Line 67 (LINE, 0.0x18.0)
+      - Group 19306 (GROUP, 163.0x17.0)
+        - Group 19304 (GROUP, 83.0x17.0)
+          - Rectangle 5775 (RECTANGLE, 83.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19303 (GROUP, 70.0x8.5)
+            - خالي من الجلوتين (TEXT, 57.0x8.0) text: "خالي من الجلوتين" [fills: #000000(1.00)]
+            - boxicons:leaf-filled (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.7) [fills: #04994e(1.00)]
+        - Group 19305 (GROUP, 72.0x17.0)
+          - Rectangle 5776 (RECTANGLE, 72.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19302 (GROUP, 57.0x8.0)
+            - مصدر أوميغا 3 (TEXT, 45.0x8.0) text: "مصدر أوميغا 3" [fills: #000000(1.00)]
+            - mdi:heart (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.1) [fills: #04994e(1.00)]
+    - Group 19310 (GROUP, 365.0x143.0)
+      - Rectangle 5770 (RECTANGLE, 365.0x143.0) [fills: #ffffff(1.00)] [radius: 16.0]
+      - Group 19293 (GROUP, 121.0x122.1)
+        - Group 19291 (GROUP, 121.0x122.1)
+          - Rectangle 5771 (RECTANGLE, 121.0x103.3) [radius: 8.853657722473145]
+          - Rectangle 5772 (RECTANGLE, 121.0x27.5) [fills: #ffffff(1.00)] [radius: 13.772356986999512]
+          - Rectangle 5773 (RECTANGLE, 117.1x27.5) [fills: #4a4a4a(1.00)] [radius: 13.772356986999512]
+        - Group 19292 (GROUP, 56.0x11.0)
+          - اختيار الوجبة (TEXT, 56.0x11.0) text: "اختيار الوجبة" [fills: #ffffff(1.00)]
+      - Group 19296 (GROUP, 134.6x40.5)
+        - طبق نباتي متوازن (TEXT, 77.0x11.0) text: "طبق نباتي متوازن" [fills: #000000(1.00)]
+        - كفتة نباتية مع حمص ، كينوا ، خضار طازجة وصوص طحينة (TEXT, 134.6x20.0) text: "كفتة نباتية مع حمص ، كينوا ، خضار طازجة وصوص طحينة" [fills: #737376(1.00)]
+      - Group 19301 (GROUP, 219.0x22.5)
+        - Group 19297 (GROUP, 34.0x22.5)
+          - 480 (TEXT, 17.0x11.0) text: "480" [fills: #000000(1.00)]
+          - سعرة (TEXT, 16.0x7.0) text: "سعرة" [fills: #000000(1.00)]
+          - solar:fire-bold (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 8.5x9.7) [fills: #04994e(1.00)]
+        - Group 19299 (GROUP, 42.0x22.5)
+          - جم بروتين (TEXT, 27.0x7.0) text: "جم بروتين" [fills: #000000(1.00)]
+          - 42 (TEXT, 11.0x11.0) text: "42" [fills: #000000(1.00)]
+          - mingcute:fitness-fill (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Group (GROUP, 9.3x10.2)
+              - Vector (VECTOR, 0.4x0.3)
+              - Vector (VECTOR, 9.3x8.8) [fills: #04994e(1.00)]
+        - Group 19298 (GROUP, 56.0x22.5)
+          - جم كربوهيدرات (TEXT, 41.0x7.0) text: "جم كربوهيدرات" [fills: #000000(1.00)]
+          - 48 (TEXT, 11.0x11.0) text: "48" [fills: #000000(1.00)]
+          - streamline-plump:wheat-solid (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 11.0x11.3) [fills: #ffbd4e(1.00)]
+        - Group 19300 (GROUP, 39.0x22.5)
+          - جم دهون (TEXT, 27.0x7.0) text: "جم دهون" [fills: #000000(1.00)]
+          - 12 (TEXT, 9.0x11.0) text: "12" [fills: #000000(1.00)]
+          - mdi:drop (FRAME, 12.0x12.0) [fills: #ffffff(1.00)]
+            - Vector (VECTOR, 6.0x8.4) [fills: #ffbd4e(1.00)]
+        - Line 65 (LINE, 0.0x18.0)
+        - Line 66 (LINE, 0.0x18.0)
+        - Line 67 (LINE, 0.0x18.0)
+      - Group 19306 (GROUP, 163.0x17.0)
+        - Group 19304 (GROUP, 83.0x17.0)
+          - Rectangle 5775 (RECTANGLE, 83.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19303 (GROUP, 70.0x8.5)
+            - خالي من الجلوتين (TEXT, 57.0x8.0) text: "خالي من الجلوتين" [fills: #000000(1.00)]
+            - boxicons:leaf-filled (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.7) [fills: #04994e(1.00)]
+        - Group 19305 (GROUP, 72.0x17.0)
+          - Rectangle 5776 (RECTANGLE, 72.0x17.0) [fills: #f7f7f7(1.00)] [radius: 6.0]
+          - Group 19302 (GROUP, 57.0x8.0)
+            - مصدر أوميغا 3 (TEXT, 45.0x8.0) text: "مصدر أوميغا 3" [fills: #000000(1.00)]
+            - mdi:heart (FRAME, 8.0x8.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 6.7x6.1) [fills: #04994e(1.00)]
+  - Group 19319 (GROUP, 363.0x62.1)
+    - Rectangle 5777 (RECTANGLE, 363.0x53.2) [fills: #ffffff(1.00)] [radius: 16.154449462890625]
+    - Group 19318 (GROUP, 336.2x52.6)
+      - Group 19313 (GROUP, 34.2x34.2)
+        - Ellipse 360 (ELLIPSE, 34.2x34.2) [fills: #f5f5f5(1.00)]
+        - Group 19312 (GROUP, 12.4x12.4)
+          - Ellipse 361 (ELLIPSE, 12.4x12.4) [fills: #04994e(1.00)]
+          - 3 (TEXT, 4.0x10.0) text: "3" [fills: #ffffff(1.00)]
+        - tabler:clipboard-list-filled (FRAME, 22.8x22.8) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 15.2x19.0) [fills: #04994e(1.00)]
+      - Group 19315 (GROUP, 97.0x29.1)
+        - تم اختيار 3 من 4 وجبات (TEXT, 96.0x13.0) text: "تم اختيار 3 من 4 وجبات" [fills: #000000(1.00)]
+        - Group 19314 (GROUP, 76.1x11.0)
+          - الغداء (TEXT, 20.0x11.0) text: "الغداء" [fills: #737376(1.00)]
+          - الأثنين 26 مايو (TEXT, 47.0x11.0) text: "الأثنين 26 مايو" [fills: #737376(1.00)]
+          - Ellipse 362 (ELLIPSE, 2.9x2.9) [fills: #04994e(1.00)]
+      - Group 19317 (GROUP, 141.6x52.5)
+        - Rectangle 5778 (RECTANGLE, 141.6x33.3) [fills: #04994e(1.00)] [radius: 16.629581451416016]
+        - Group 19316 (GROUP, 98.2x42.5)
+          - متابعة المراجعة (TEXT, 83.0x13.0) text: "متابعة المراجعة" [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 4.9x6.1) [fills: #ffffff(1.00)]
+  - Frame 19255 (FRAME, 210.8x27.4) gap:9.487393379211426
+    - Group 19254 (GROUP, 47.4x27.4)
+      - Rectangle 5765 (RECTANGLE, 47.4x27.4) [fills: #ffffff(1.00)] [radius: 10.541547775268555]
+      - Group 19248 (GROUP, 35.8x12.6)
+        - عشاء (TEXT, 20.0x10.0) text: "عشاء" [fills: #000000(1.00)]
+        - tabler:moon-filled (FRAME, 12.6x12.6) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 10.2x10.5) [fills: #7b4db9(1.00)]
+    - Group 19253 (GROUP, 44.3x27.4)
+      - Rectangle 5764 (RECTANGLE, 44.3x27.4) [fills: #ffffff(1.00)] [radius: 10.541547775268555]
+      - Group 19247 (GROUP, 32.7x13.7)
+        - غداء (TEXT, 17.0x10.0) text: "غداء" [fills: #000000(1.00)]
+        - mynaui:sun-solid (FRAME, 13.7x13.7) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 11.1x11.1) [fills: #ff7a13(1.00)]
+    - Group 19252 (GROUP, 47.4x27.4)
+      - Rectangle 5763 (RECTANGLE, 47.4x27.4) [fills: #ffffff(1.00)] [radius: 10.541547775268555]
+      - Group 19246 (GROUP, 35.8x13.7)
+        - فطور (TEXT, 20.0x10.0) text: "فطور" [fills: #000000(1.00)]
+        - mynaui:sun-solid (FRAME, 13.7x13.7) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 11.1x11.1) [fills: #ff7a13(1.00)]
+    - Group 19249 (GROUP, 43.2x27.4) [radius: 10.541547775268555]
+      - Rectangle 5760 (RECTANGLE, 43.2x27.4) [fills: #f5f6f9(1.00)] [radius: 10.541547775268555]
+      - الكل (TEXT, 17.0x9.0) text: "الكل" [fills: #04994e(1.00)]
+  - Group 19593 (GROUP, 365.0x121.7)
+    - Group 19353 (GROUP, 365.0x121.7)
+      - Rectangle 5784 (RECTANGLE, 365.0x121.7) [fills: #ffffff(1.00)] [radius: 14.038461685180664]
+      - Group 19589 (GROUP, 61.8x46.8)
+        - السعرات (TEXT, 29.0x9.0) text: "السعرات " [fills: #000000(1.00)]
+        - Group 19343 (GROUP, 61.8x0.0)
+          - Line 70 (VECTOR, 61.8x0.0)
+          - Line 71 (VECTOR, 49.6x0.0)
+        - 1440 سعرة (TEXT, 48.0x13.0) text: "1440 سعرة" [fills: #000000(1.00)]
+        - mdi:fire (FRAME, 16.8x16.8) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 9.8x12.6) [fills: #04994e(1.00)]
+      - Group 19590 (GROUP, 61.8x45.9)
+        - البروتين (TEXT, 27.0x9.0) text: "البروتين" [fills: #000000(1.00)]
+        - Group 19343 (GROUP, 61.8x0.0)
+          - Line 70 (VECTOR, 61.8x0.0)
+          - Line 71 (VECTOR, 53.3x0.0)
+        - 120 جم (TEXT, 32.0x13.0) text: "120 جم" [fills: #000000(1.00)]
+        - griddy-icons:muscle-flex-filled (FRAME, 14.0x14.0) [fills: #ffffff(1.00)]
+          - Vector (VECTOR, 11.7x11.3) [fills: #f67e15(1.00)]
+      - Group 19591 (GROUP, 61.8x45.9)
+        - الكربوهيدرات (TEXT, 44.0x9.0) text: "الكربوهيدرات" [fills: #000000(1.00)]
+        - Group 19343 (GROUP, 61.8x0.0)
+          - Line 70 (VECTOR, 61.8x0.0)
+          - Line 71 (VECTOR, 38.4x0.0)
+        - 142 جم (TEXT, 31.0x13.0) text: "142 جم" [fills: #000000(1.00)]
+        - healthicons:carbohydrates (FRAME, 14.0x14.0) [fills: #ffffff(1.00)]
+          - Group (GROUP, 11.7x8.2)
+            - Vector (VECTOR, 2.9x4.7) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 1.8x7.9) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 1.8x3.2) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 2.9x6.7) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 1.8x3.2) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 11.7x5.3) [fills: #8dc61c(1.00)]
+            - Vector (VECTOR, 8.5x5.3) [fills: #8dc61c(1.00)]
+      - Group 19592 (GROUP, 61.8x74.3)
+        - الدهون (TEXT, 26.0x9.0) text: "الدهون" [fills: #000000(1.00)]
+        - Group 19343 (GROUP, 61.8x0.0)
+          - Line 70 (VECTOR, 61.8x0.0)
+          - Line 71 (VECTOR, 41.2x0.0)
+        - 36 جم (TEXT, 27.0x13.0) text: "36 جم" [fills: #000000(1.00)]
+        - Vector (VECTOR, 5.6x6.7) [fills: #eb5959(1.00)]
+      - Group 19588 (GROUP, 101.1x21.5)
+        - Rectangle 5830 (RECTANGLE, 101.1x21.5) [fills: #ecf4ee(1.00)] [radius: 10.762821197509766]
+        - Group 19586 (GROUP, 82.4x15.0)
+          - Group 19587 (GROUP, 82.4x15.0)
+            - reicon:verify-filled (FRAME, 15.0x15.0) [fills: #ffffff(1.00)]
+              - Vector (VECTOR, 12.5x12.5) [fills: #04994e(1.00)]
+            - من وجبات مختارة (TEXT, 64.0x10.0) text: "من وجبات مختارة" [fills: #04994e(1.00)]
+      - Group 19352 (GROUP, 250.8x90.8)
+        - Group 19338 (GROUP, 89.8x16.8)
+          - ملخص الماكروز (TEXT, 66.0x11.0) text: "ملخص الماكروز" [fills: #04994e(1.00)]
+          - tabler:chart-pie-filled (FRAME, 16.8x16.8) [fills: #ffffff(1.00)]
+            - Group (GROUP, 13.9x13.9)
+              - Vector (VECTOR, 13.9x13.9) [fills: #04994e(1.00)]
+              - Vector (VECTOR, 5.3x5.3) [fills: #04994e(1.00)]
+        - Line 72 (LINE, 0.0x42.1)
+        - Line 73 (LINE, 0.0x42.1)
+        - Line 74 (LINE, 0.0x42.1)
+    - يتحدث تلقائياً حسب الوجبات المختارة (TEXT, 138.0x11.0) text: "يتحدث تلقائياً حسب الوجبات المختارة" [fills: #5a5c62(1.00)]

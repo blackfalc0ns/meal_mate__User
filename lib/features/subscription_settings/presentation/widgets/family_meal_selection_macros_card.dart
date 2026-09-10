@@ -18,18 +18,29 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Spacing.cardPadding),
       decoration: BoxDecoration(
-        color: color.primary.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.primary.withValues(alpha: 0.2),
-          width: Spacing.border,
-        ),
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusLg),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: Spacing.xs,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Icon(
+                Icons.pie_chart_rounded,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,11 +49,11 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                       locale.family_meal_macros_title,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size14,
-                        color: color.onSurface,
+                        fontSize: FontSize.size12,
+                        color: color.primary,
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: Spacing.xs / 2),
                     Text(
                       locale.family_meal_macros_subtitle,
                       style: getRegularStyle(
@@ -57,10 +68,10 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.sm,
-                  vertical: Spacing.xs,
+                  vertical: Spacing.xs / 2,
                 ),
                 decoration: BoxDecoration(
-                  color: color.primary.withValues(alpha: 0.12),
+                  color: color.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Row(
@@ -68,10 +79,10 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.check_circle_rounded,
-                      size: Spacing.iconSm,
+                      size: Spacing.iconXs,
                       color: color.primary,
                     ),
-                    const SizedBox(width: Spacing.xs),
+                    const SizedBox(width: Spacing.xs / 2),
                     Text(
                       locale.family_meal_macros_selected_badge,
                       style: getMediumStyle(
@@ -87,154 +98,132 @@ class FamilyMealSelectionMacrosCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.md),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: Spacing.sm,
-                    horizontal: Spacing.xs,
+                child: _buildMacroColumn(
+                  icon: Icons.local_fire_department_rounded,
+                  iconColor: color.primary,
+                  label: locale.family_meal_macros_calories,
+                  value: locale.family_meal_calorie_unit(
+                    macros.calories.toString(),
                   ),
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    border: Border.all(color: color.outlineVariant),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        locale.family_meal_macros_calories,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.family_meal_calorie_unit(
-                          macros.calories.toString(),
-                        ),
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.primary,
-                        ),
-                      ),
-                    ],
-                  ),
+                  barColor: color.primary,
+                  fillFraction: 0.85,
+                  color: color,
                 ),
               ),
-              const SizedBox(width: Spacing.xs),
+              _buildDivider(color),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: Spacing.sm,
-                    horizontal: Spacing.xs,
+                child: _buildMacroColumn(
+                  icon: Icons.fitness_center_rounded,
+                  iconColor: color.secondary,
+                  label: locale.family_meal_macros_protein,
+                  value: locale.family_meal_gram_unit(
+                    macros.proteinG.toString(),
                   ),
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    border: Border.all(color: color.outlineVariant),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        locale.family_meal_macros_carbs,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.family_meal_gram_unit(macros.carbsG.toString()),
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
+                  barColor: color.secondary,
+                  fillFraction: 0.75,
+                  color: color,
                 ),
               ),
-              const SizedBox(width: Spacing.xs),
+              _buildDivider(color),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: Spacing.sm,
-                    horizontal: Spacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    border: Border.all(color: color.outlineVariant),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        locale.family_meal_macros_protein,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.family_meal_gram_unit(
-                          macros.proteinG.toString(),
-                        ),
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: _buildMacroColumn(
+                  icon: Icons.grain_rounded,
+                  iconColor: color.tertiary,
+                  label: locale.family_meal_macros_carbs,
+                  value: locale.family_meal_gram_unit(macros.carbsG.toString()),
+                  barColor: color.tertiary,
+                  fillFraction: 0.65,
+                  color: color,
                 ),
               ),
-              const SizedBox(width: Spacing.xs),
+              _buildDivider(color),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: Spacing.sm,
-                    horizontal: Spacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    border: Border.all(color: color.outlineVariant),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        locale.family_meal_macros_fat,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.family_meal_gram_unit(macros.fatG.toString()),
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: _buildMacroColumn(
+                  icon: Icons.water_drop_rounded,
+                  iconColor: color.error,
+                  label: locale.family_meal_macros_fat,
+                  value: locale.family_meal_gram_unit(macros.fatG.toString()),
+                  barColor: color.error,
+                  fillFraction: 0.50,
+                  color: color,
                 ),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDivider(ColorScheme color) {
+    return Container(
+      width: Spacing.border,
+      height: Spacing.xl,
+      margin: const EdgeInsets.symmetric(horizontal: Spacing.xs / 2),
+      color: color.outlineVariant,
+    );
+  }
+
+  Widget _buildMacroColumn({
+    required IconData icon,
+    required Color iconColor,
+    required String label,
+    required String value,
+    required Color barColor,
+    required double fillFraction,
+    required ColorScheme color,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: Spacing.iconXs, color: iconColor),
+            const SizedBox(width: Spacing.xs / 2),
+            Text(
+              label,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size9,
+                color: color.onSurface,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: Spacing.xs / 2),
+        Text(
+          value,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size11,
+            color: color.onSurface,
+          ),
+        ),
+        const SizedBox(height: Spacing.xs),
+        Container(
+          height: Spacing.xs / 1.5,
+          decoration: BoxDecoration(
+            color: color.outlineVariant.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(Spacing.radiusPill),
+          ),
+          alignment: AlignmentDirectional.centerStart,
+          child: FractionallySizedBox(
+            widthFactor: fillFraction.clamp(0.1, 1.0),
+            child: Container(
+              height: Spacing.xs / 1.5,
+              decoration: BoxDecoration(
+                color: barColor,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

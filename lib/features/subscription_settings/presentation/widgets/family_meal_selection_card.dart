@@ -23,10 +23,10 @@ class FamilyMealSelectionCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: Spacing.md),
-      padding: const EdgeInsets.all(Spacing.cardPadding),
+      padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        borderRadius: BorderRadius.circular(Spacing.radiusLg),
         border: Border.all(
           color: meal.selected
               ? color.primary.withValues(alpha: 0.5)
@@ -41,260 +41,243 @@ class FamilyMealSelectionCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  meal.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size13,
+                    color: color.onSurface,
+                  ),
+                ),
+                const SizedBox(height: Spacing.xs / 2),
+                Text(
+                  meal.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: Spacing.sm),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildStatItem(
+                      icon: Icons.local_fire_department_rounded,
+                      iconColor: color.primary,
+                      value: meal.calories,
+                      unit: locale.family_meal_macros_calories,
+                      color: color,
+                    ),
+                    _buildStatDivider(color),
+                    _buildStatItem(
+                      icon: Icons.grain_rounded,
+                      iconColor: color.tertiary,
+                      value: meal.carbs,
+                      unit: locale.family_meal_macros_carbs,
+                      color: color,
+                    ),
+                    _buildStatDivider(color),
+                    _buildStatItem(
+                      icon: Icons.fitness_center_rounded,
+                      iconColor: color.secondary,
+                      value: meal.protein,
+                      unit: locale.family_meal_macros_protein,
+                      color: color,
+                    ),
+                    _buildStatDivider(color),
+                    _buildStatItem(
+                      icon: Icons.water_drop_rounded,
+                      iconColor: color.error,
+                      value: meal.fat,
+                      unit: locale.family_meal_macros_fat,
+                      color: color,
+                    ),
+                  ],
+                ),
+                if (meal.allergens.isNotEmpty) ...[
+                  const SizedBox(height: Spacing.sm),
+                  Wrap(
+                    spacing: Spacing.xs,
+                    runSpacing: Spacing.xs / 2,
+                    children: meal.allergens.map((allergen) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.xs,
+                          vertical: Spacing.xs / 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.surfaceContainerHighest.withValues(
+                            alpha: 0.5,
+                          ),
+                          borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.eco_rounded,
+                              size: Spacing.iconXs * 0.75,
+                              color: color.primary,
+                            ),
+                            const SizedBox(width: Spacing.xs / 2),
+                            Text(
+                              allergen.label,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size8,
+                                color: color.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: Spacing.md),
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                child: meal.imageUrl != null && meal.imageUrl!.isNotEmpty
-                    ? AppCachedNetworkImage(
-                        imageUrl: meal.imageUrl!,
-                        width: Spacing.avatarLg,
-                        height: Spacing.avatarLg,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        width: Spacing.avatarLg,
-                        height: Spacing.avatarLg,
-                        color: color.surfaceContainerHighest,
-                        child: Icon(
-                          Icons.restaurant_rounded,
-                          color: color.onSurfaceVariant,
-                          size: Spacing.iconLg,
-                        ),
-                      ),
+                child: SizedBox(
+                  width: Spacing.familyMealSelectionImageWidth,
+                  height: Spacing.familyMealSelectionImageHeight - 20.0,
+                  child: meal.imageUrl != null && meal.imageUrl!.isNotEmpty
+                      ? AppCachedNetworkImage(
+                          imageUrl: meal.imageUrl!,
+                          width: Spacing.familyMealSelectionImageWidth,
+                          height: Spacing.familyMealSelectionImageHeight - 20.0,
+                          fit: BoxFit.cover,
+                        )
+                      : (meal.imageAsset.isNotEmpty
+                            ? Image.asset(
+                                meal.imageAsset,
+                                width: Spacing.familyMealSelectionImageWidth,
+                                height:
+                                    Spacing.familyMealSelectionImageHeight -
+                                    20.0,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                color: color.surfaceContainerHighest,
+                                child: Icon(
+                                  Icons.restaurant_rounded,
+                                  color: color.onSurfaceVariant,
+                                  size: Spacing.iconLg,
+                                ),
+                              )),
+                ),
               ),
-              const SizedBox(width: Spacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      meal.title,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
+              const SizedBox(height: Spacing.xs),
+              InkWell(
+                onTap: onSelect,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: Spacing.familyMealSelectionImageWidth,
+                  height: Spacing.buttonSmallHeight * 0.72,
+                  decoration: BoxDecoration(
+                    color: meal.selected
+                        ? color.primary
+                        : color.onSurface.withValues(alpha: 0.75),
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (meal.selected) ...[
+                            Icon(
+                              Icons.check_rounded,
+                              size: Spacing.iconXs,
+                              color: color.onPrimary,
+                            ),
+                            const SizedBox(width: Spacing.xs / 2),
+                          ],
+                          Flexible(
+                            child: Text(
+                              meal.selected
+                                  ? locale.family_meal_status_selected
+                                  : locale.family_meal_button_select,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: meal.selected ? color.onPrimary : color.surface,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      meal.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: Spacing.md),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.xs,
-            ),
-            decoration: BoxDecoration(
-              color: color.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      locale.family_meal_calorie_unit(meal.calories),
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      locale.family_meal_macros_calories,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: Spacing.md,
-                  width: Spacing.border,
-                  color: color.outlineVariant,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      locale.family_meal_gram_unit(meal.carbs),
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      locale.family_meal_macros_carbs,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: Spacing.md,
-                  width: Spacing.border,
-                  color: color.outlineVariant,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      locale.family_meal_gram_unit(meal.protein),
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      locale.family_meal_macros_protein,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: Spacing.md,
-                  width: Spacing.border,
-                  color: color.outlineVariant,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      locale.family_meal_gram_unit(meal.fat),
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    Text(
-                      locale.family_meal_macros_fat,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          if (meal.allergens.isNotEmpty) ...[
-            const SizedBox(height: Spacing.sm),
-            Wrap(
-              spacing: Spacing.xs,
-              runSpacing: Spacing.xs,
-              children: meal.allergens.map((allergen) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.sm,
-                    vertical: Spacing.xs / 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.surfaceContainerHighest.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.check_circle_outline_rounded,
-                        size: Spacing.iconSm * 0.75,
-                        color: color.onSurfaceVariant,
-                      ),
-                      const SizedBox(width: Spacing.xs / 2),
-                      Text(
-                        allergen.label,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size9,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-          const SizedBox(height: Spacing.md),
-          SizedBox(
-            width: double.infinity,
-            height: Spacing.buttonSmallHeight,
-            child: meal.selected
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.check_rounded,
-                          size: Spacing.iconSm,
-                          color: color.onPrimary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          locale.family_meal_status_selected,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: color.onPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : OutlinedButton(
-                    onPressed: onSelect,
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: color.primary),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                    ),
-                    child: Text(
-                      locale.family_meal_button_select,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
-                        color: color.primary,
-                      ),
-                    ),
-                  ),
-          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatDivider(ColorScheme color) {
+    return Container(
+      width: Spacing.border,
+      height: Spacing.md,
+      color: color.outlineVariant,
+    );
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required Color iconColor,
+    required String value,
+    required String unit,
+    required ColorScheme color,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(icon, size: Spacing.iconXs, color: iconColor),
+        const SizedBox(height: Spacing.xs / 2),
+        Text(
+          value,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size10,
+            color: color.onSurface,
+          ),
+        ),
+        Text(
+          unit,
+          style: getRegularStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size8,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -18,8 +18,10 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_bottom_bar.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_category_chips.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_macros_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_stepper.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyMealSelectionScreen extends StatefulWidget {
   const FamilyMealSelectionScreen({super.key, this.args});
@@ -141,16 +143,41 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                     ),
                   ),
                   const SizedBox(height: Spacing.xs / 2),
-                  Text(
-                    locale.family_meal_selection_context(
-                      restaurantName,
-                      slotName,
-                    ),
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: color.onSurfaceVariant,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (restaurantName.isNotEmpty) ...[
+                        Text(
+                          restaurantName,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.primary,
+                          ),
+                        ),
+                        if (slotName.isNotEmpty) ...[
+                          const SizedBox(width: Spacing.xs / 2),
+                          Container(
+                            width: 3.0,
+                            height: 3.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: color.primary,
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.xs / 2),
+                        ],
+                      ],
+                      if (slotName.isNotEmpty)
+                        Text(
+                          slotName,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.onSurface,
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),
@@ -207,16 +234,7 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                     ),
                     const SizedBox(height: Spacing.base),
                     if (state.isLoadingAvailableMeals && availableMeals.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: Spacing.xxl,
-                        ),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: color.primary,
-                          ),
-                        ),
-                      )
+                      const FamilyMealSelectionLoadingSkeleton()
                     else if (state.availableMealsFailure != null &&
                         availableMeals.isEmpty)
                       Padding(
@@ -238,23 +256,28 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                         ),
                       )
                     else if (availableMeals.isNotEmpty)
-                      for (final meal in availableMeals)
-                        FamilyMealSelectionCard(
-                          meal: meal.copyWith(
-                            selected:
-                                meal.selected ||
-                                state.selectedMealsForDay.any(
-                                  (selectedMeal) => selectedMeal.id == meal.id,
+                      for (int i = 0; i < availableMeals.length; i++)
+                        StaggeredSlideItem(
+                          key: ValueKey('meal-${availableMeals[i].id}-$i'),
+                          index: i,
+                          child: FamilyMealSelectionCard(
+                            meal: availableMeals[i].copyWith(
+                              selected:
+                                  availableMeals[i].selected ||
+                                  state.selectedMealsForDay.any(
+                                    (selectedMeal) =>
+                                        selectedMeal.id == availableMeals[i].id,
+                                  ),
+                            ),
+                            onSelect: () {
+                              _viewModel!.doIntent(
+                                SelectMealForSlotEvent(
+                                  meal: availableMeals[i],
+                                  slot: availableMeals[i].slot,
                                 ),
+                              );
+                            },
                           ),
-                          onSelect: () {
-                            _viewModel!.doIntent(
-                              SelectMealForSlotEvent(
-                                meal: meal,
-                                slot: meal.slot,
-                              ),
-                            );
-                          },
                         )
                     else
                       EmptyStateWidget(

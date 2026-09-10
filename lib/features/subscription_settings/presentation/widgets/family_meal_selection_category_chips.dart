@@ -22,12 +22,36 @@ class FamilyMealSelectionCategoryChips extends StatelessWidget {
     final locale = context.localization;
 
     final categories =
-        <(int, String, String?)>[
-          (0, locale.family_meal_tab_all, null),
-          (1, locale.family_meal_tab_breakfast, 'breakfast'),
-          (2, locale.family_meal_tab_lunch, 'lunch'),
-          (3, locale.family_meal_tab_dinner, 'dinner'),
-          (4, locale.family_slot_snack, 'snack'),
+        <(int, String, String?, IconData?, Color?)>[
+          (0, locale.family_meal_tab_all, null, null, null),
+          (
+            1,
+            locale.family_meal_tab_breakfast,
+            'breakfast',
+            Icons.wb_sunny_rounded,
+            color.secondary,
+          ),
+          (
+            2,
+            locale.family_meal_tab_lunch,
+            'lunch',
+            Icons.wb_sunny_rounded,
+            color.secondary,
+          ),
+          (
+            3,
+            locale.family_meal_tab_dinner,
+            'dinner',
+            Icons.nightlight_round,
+            color.tertiary,
+          ),
+          (
+            4,
+            locale.family_slot_snack,
+            'snack',
+            Icons.cookie_outlined,
+            color.secondary,
+          ),
         ].where((category) {
           final slot = category.$3;
           return slot == null || availableSlots.contains(slot);
@@ -47,12 +71,12 @@ class FamilyMealSelectionCategoryChips extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.base,
-                  vertical: Spacing.sm,
+                  horizontal: Spacing.md,
+                  vertical: Spacing.xs,
                 ),
                 decoration: BoxDecoration(
                   color: selectedIndex == categories[i].$1
-                      ? color.primary
+                      ? color.primary.withValues(alpha: 0.08)
                       : color.surface,
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                   border: Border.all(
@@ -62,15 +86,34 @@ class FamilyMealSelectionCategoryChips extends StatelessWidget {
                     width: Spacing.border,
                   ),
                 ),
-                child: Text(
-                  categories[i].$2,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: selectedIndex == categories[i].$1
-                        ? color.onPrimary
-                        : color.onSurfaceVariant,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (categories[i].$4 != null) ...[
+                      Icon(
+                        categories[i].$4,
+                        size: Spacing.iconXs,
+                        color: selectedIndex == categories[i].$1
+                            ? color.primary
+                            : categories[i].$5,
+                      ),
+                      const SizedBox(width: Spacing.xs / 2),
+                    ],
+                    Text(
+                      categories[i].$2,
+                      style: selectedIndex == categories[i].$1
+                          ? getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.primary,
+                            )
+                          : getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.onSurface,
+                            ),
+                    ),
+                  ],
                 ),
               ),
             ),

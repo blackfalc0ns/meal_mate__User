@@ -5,10 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyMealSelectionStepper extends StatelessWidget {
-  const FamilyMealSelectionStepper({
-    super.key,
-    this.currentStep = 2,
-  });
+  const FamilyMealSelectionStepper({super.key, this.currentStep = 2});
 
   final int currentStep;
 
@@ -18,18 +15,9 @@ class FamilyMealSelectionStepper extends StatelessWidget {
     final locale = context.localization;
 
     final steps = [
-      _StepperItemData(
-        title: locale.family_meal_stepper_restaurant,
-        stepNumber: 1,
-      ),
-      _StepperItemData(
-        title: locale.family_meal_stepper_meal,
-        stepNumber: 2,
-      ),
-      _StepperItemData(
-        title: locale.family_meal_stepper_review,
-        stepNumber: 3,
-      ),
+      (title: locale.family_meal_stepper_restaurant, stepNumber: 1),
+      (title: locale.family_meal_stepper_meal, stepNumber: 2),
+      (title: locale.family_meal_stepper_review, stepNumber: 3),
     ];
 
     return Padding(
@@ -43,9 +31,7 @@ class FamilyMealSelectionStepper extends StatelessWidget {
                 child: Container(
                   height: Spacing.border * 2,
                   margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
-                  color: i < currentStep
-                      ? color.primary
-                      : color.outlineVariant,
+                  color: i < currentStep ? color.primary : color.outlineVariant,
                 ),
               ),
             Column(
@@ -59,8 +45,8 @@ class FamilyMealSelectionStepper extends StatelessWidget {
                     color: i + 1 < currentStep
                         ? color.primary
                         : (i + 1 == currentStep
-                            ? color.primary
-                            : color.surface),
+                              ? color.primary
+                              : color.surface),
                     border: Border.all(
                       color: i + 1 <= currentStep
                           ? color.primary
@@ -90,13 +76,17 @@ class FamilyMealSelectionStepper extends StatelessWidget {
                 const SizedBox(height: Spacing.xs),
                 Text(
                   steps[i].title,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
-                    color: i + 1 <= currentStep
-                        ? color.onSurface
-                        : color.onSurfaceVariant,
-                  ),
+                  style: i + 1 == currentStep
+                      ? getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.primary,
+                        )
+                      : getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onSurfaceVariant,
+                        ),
                 ),
               ],
             ),
@@ -105,14 +95,4 @@ class FamilyMealSelectionStepper extends StatelessWidget {
       ),
     );
   }
-}
-
-class _StepperItemData {
-  const _StepperItemData({
-    required this.title,
-    required this.stepNumber,
-  });
-
-  final String title;
-  final int stepNumber;
 }
