@@ -98,6 +98,7 @@ class FamilyAddressesScreen extends StatelessWidget {
               Expanded(
                 child: FamilyAddressLocationStage(
                   memberId: member.memberId,
+                  initialAddress: member.deliveryAddress,
                   onSaved: context
                       .read<FamilyAddressesViewModel>()
                       .addressSaved,

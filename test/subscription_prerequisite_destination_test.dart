@@ -7,6 +7,8 @@ void main() {
       'checkout.address_required': SubscriptionPrerequisiteDestination.address,
       'checkout.allergies_required':
           SubscriptionPrerequisiteDestination.allergies,
+      'family.allergies_required':
+          SubscriptionPrerequisiteDestination.allergies,
       'checkout.dietary_preferences_required':
           SubscriptionPrerequisiteDestination.dietaryPreferences,
     };

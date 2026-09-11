@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/repo/addresses_repository.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
@@ -42,10 +43,39 @@ void main() {
       await viewModel.close();
     },
   );
+
+  test('identical reverse geocode coordinates reuse the last result', () async {
+    final repository = _CountingAddressesRepository();
+    final viewModel = AddressesViewModel(
+      GetCustomerAddressesUseCase(repository),
+      GetLocationsCatalogUseCase(repository),
+      AddCustomerAddressUseCase(repository),
+      UpdateCustomerAddressUseCase(repository),
+      DeleteCustomerAddressUseCase(repository),
+      GeocodeAddressUseCase(repository),
+      ReverseGeocodeLocationUseCase(repository),
+      PreviewNewAddressCoverageUseCase(repository),
+      PreviewExistingAddressCoverageUseCase(repository),
+      ConfirmSetDefaultAddressUseCase(repository),
+    );
+
+    viewModel.doIntent(
+      const ReverseGeocodeEvent(latitude: 29.338785, longitude: 48.079744),
+    );
+    await viewModel.stream.firstWhere((state) => state.mapAutofill.isSuccess);
+    viewModel.doIntent(
+      const ReverseGeocodeEvent(latitude: 29.338786, longitude: 48.079745),
+    );
+    await Future<void>.delayed(Duration.zero);
+
+    expect(repository.reverseGeocodeRequests, 1);
+    await viewModel.close();
+  });
 }
 
 class _CountingAddressesRepository implements AddressesRepository {
   int locationsRequests = 0;
+  int reverseGeocodeRequests = 0;
 
   @override
   Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
@@ -55,6 +85,21 @@ class _CountingAddressesRepository implements AddressesRepository {
     locationsRequests++;
     return ApiSuccessResult(
       data: const LocationsCatalogEntity(countryId: 'kw', countryCode: 'KW'),
+    );
+  }
+
+  @override
+  Future<ApiResult<MapAddressAutofillEntity>> reverseGeocode(
+    double latitude,
+    double longitude,
+  ) async {
+    reverseGeocodeRequests++;
+    return ApiSuccessResult(
+      data: MapAddressAutofillEntity(
+        latitude: latitude,
+        longitude: longitude,
+        formattedAddress: 'Salmiyah',
+      ),
     );
   }
 

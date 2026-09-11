@@ -35,6 +35,7 @@ import 'package:meal_meat_user/features/auth/domain/entities/reset_password_requ
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/repo/auth_repository.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -43,12 +44,14 @@ class AuthRepositoryImpl implements AuthRepository {
     this._tokenService,
     this._sharedPrefHelper,
     this._pushNotificationService,
+    this._familyFlowSnapshotStore,
   );
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
   final SharedPrefHelper _sharedPrefHelper;
   final PushNotificationService _pushNotificationService;
+  final FamilyFlowSnapshotStore _familyFlowSnapshotStore;
 
   @override
   Future<ApiResult<LoginEntity>> login(LoginRequestEntity request) {
@@ -193,6 +196,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   Future<void> _clearSubscriptionCache() async {
+    _familyFlowSnapshotStore.invalidate();
     await _sharedPrefHelper.removeData(key: StorageKeys.currentSubscriptionId);
   }
 }

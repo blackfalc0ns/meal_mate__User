@@ -2628,6 +2628,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_relation_hint => 'اختر صلة القرابة';
 
   @override
+  String get family_relation_input_hint => 'اكتب صلة القرابة';
+
+  @override
   String get family_age => 'العمر';
 
   @override
@@ -2682,6 +2685,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_delete_member_success => 'تم حذف الفرد بنجاح';
+
+  @override
+  String get family_add_member_success => 'تمت إضافة الفرد بنجاح';
+
+  @override
+  String get family_update_member_success => 'تم تعديل بيانات الفرد بنجاح';
 
   @override
   String get family_setup_title => 'إعداد اشتراك العائلة';
@@ -4122,6 +4131,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_gender_male => 'ذكر';
+
+  @override
+  String get family_gender => 'النوع';
 
   @override
   String get family_gender_female => 'أنثى';

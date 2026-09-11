@@ -5018,6 +5018,12 @@ abstract class AppLocalizations {
   /// **'Choose relationship'**
   String get family_relation_hint;
 
+  /// No description provided for @family_relation_input_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter relationship'**
+  String get family_relation_input_hint;
+
   /// No description provided for @family_age.
   ///
   /// In en, this message translates to:
@@ -5125,6 +5131,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Member deleted successfully'**
   String get family_delete_member_success;
+
+  /// No description provided for @family_add_member_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member added successfully'**
+  String get family_add_member_success;
+
+  /// No description provided for @family_update_member_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member updated successfully'**
+  String get family_update_member_success;
 
   /// No description provided for @family_setup_title.
   ///
@@ -7897,6 +7915,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Male'**
   String get family_gender_male;
+
+  /// No description provided for @family_gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get family_gender;
 
   /// No description provided for @family_gender_female.
   ///

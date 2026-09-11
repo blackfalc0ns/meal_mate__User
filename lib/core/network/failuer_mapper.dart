@@ -87,6 +87,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'checkout.address_required':
       return locale.checkout_address_required;
     case 'checkout.allergies_required':
+    case 'family.allergies_required':
       return locale.checkout_allergies_required;
     case 'checkout.dietary_preferences_required':
       return locale.checkout_dietary_preferences_required;

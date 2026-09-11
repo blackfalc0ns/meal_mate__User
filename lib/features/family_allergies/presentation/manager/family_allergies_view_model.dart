@@ -6,7 +6,9 @@ import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_fam
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 
 @injectable
@@ -31,6 +33,12 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
           members: members,
           catalog: catalogResult.data.allergens,
           ingredients: catalogResult.data.ingredients,
+          selectedCodes: members.isEmpty
+              ? const {}
+              : _savedSelectionFor(members.first),
+          rejectedCodes: members.isEmpty
+              ? const {}
+              : _savedRejectedSelectionFor(members.first),
           completed: members.isEmpty,
         ),
       );
@@ -76,8 +84,8 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     emit(
       state.copyWith(
         currentIndex: index,
-        selectedCodes: const {},
-        rejectedCodes: const {},
+        selectedCodes: _savedSelectionFor(state.members[index]),
+        rejectedCodes: _savedRejectedSelectionFor(state.members[index]),
         allergySearch: '',
         ingredientSearch: '',
         clearError: true,
@@ -88,6 +96,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   Future<void> saveCurrent() async {
     final member = state.currentMember;
     if (member == null || !state.canSave) return;
+    final savedCodes = Set<String>.of(state.selectedCodes);
     emit(state.copyWith(isSaving: true, completed: false, clearError: true));
     final result = await _save(
       memberId: member.memberId,
@@ -103,15 +112,43 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     switch (result) {
       case ApiSuccessResult(data: final saved) when saved:
         final last = state.currentIndex == state.members.length - 1;
+        final updatedMembers = [...state.members];
+        updatedMembers[state.currentIndex] = member.copyWith(
+          allergies: savedCodes
+              .where((code) => code != FoodPreferenceItemEntity.noneCode)
+              .map((code) {
+                final catalogItem = state.catalog.where(
+                  (item) => item.code == code,
+                );
+                final match = catalogItem.isEmpty ? null : catalogItem.first;
+                return FoodPreferenceItemEntity(
+                  code: code,
+                  nameAr: match?.nameAr ?? '',
+                  nameEn: match?.nameEn ?? '',
+                  severity: 'High',
+                );
+              })
+              .toList(),
+          allergiesCompleted: true,
+          hasNoAllergies: savedCodes.contains(
+            FoodPreferenceItemEntity.noneCode,
+          ),
+        );
+        final nextIndex = last ? state.currentIndex : state.currentIndex + 1;
         emit(
           state.copyWith(
             isSaving: false,
             completed: last,
-            currentIndex: last ? state.currentIndex : state.currentIndex + 1,
-            selectedCodes: const {},
+            members: updatedMembers,
+            currentIndex: nextIndex,
+            selectedCodes: last
+                ? savedCodes
+                : _savedSelectionFor(updatedMembers[nextIndex]),
             allergySearch: '',
             ingredientSearch: '',
-            rejectedCodes: const {},
+            rejectedCodes: last
+                ? state.rejectedCodes
+                : _savedRejectedSelectionFor(updatedMembers[nextIndex]),
           ),
         );
       case ApiSuccessResult():
@@ -124,5 +161,14 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
           ),
         );
     }
+  }
+
+  Set<String> _savedSelectionFor(FamilyMemberEntity member) {
+    if (member.hasNoAllergies) return const {'NONE'};
+    return member.allergies.map((allergy) => allergy.code).toSet();
+  }
+
+  Set<String> _savedRejectedSelectionFor(FamilyMemberEntity member) {
+    return member.dislikedFoods.map((ingredient) => ingredient.code).toSet();
   }
 }

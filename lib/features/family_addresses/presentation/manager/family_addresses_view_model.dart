@@ -15,21 +15,22 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     final result = await _getFlow();
     switch (result) {
       case ApiSuccessResult():
-        final missingAddressMembers = result.data.members
-            .where(
-              (member) =>
-                  member.deliveryAddressId == null ||
-                  member.deliveryAddressId!.isEmpty,
-            )
-            .toList();
+        final members = result.data.members;
+        final completedMemberIds = members
+            .where((member) => member.deliveryAddressId?.isNotEmpty ?? false)
+            .map((member) => member.memberId)
+            .toSet();
+        final firstPendingIndex = members.indexWhere(
+          (member) => !completedMemberIds.contains(member.memberId),
+        );
         emit(
           state.copyWith(
             isLoading: false,
             familyName: result.data.name,
-            members: missingAddressMembers.isEmpty
-                ? result.data.members
-                : missingAddressMembers,
-            completed: result.data.members.isEmpty,
+            members: members,
+            currentIndex: firstPendingIndex < 0 ? 0 : firstPendingIndex,
+            completedMemberIds: completedMemberIds,
+            completed: members.isEmpty,
           ),
         );
       case ApiErrorResult():

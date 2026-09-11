@@ -2557,6 +2557,86 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<List<SubscriptionDurationResponseDto>> getFamilySubscriptionDurations(
+    String programId,
+    bool includeFriday,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'includeFriday': includeFriday};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<SubscriptionDurationResponseDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/family-subscription-flow/programs/${programId}/durations',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<SubscriptionDurationResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) => SubscriptionDurationResponseDto.fromJson(
+              i as Map<String, dynamic>,
+            ),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<SubscriptionTierResponseDto>> getFamilySubscriptionTiers(
+    String programId,
+    String? bundleId,
+    int? durationDays,
+    bool includeFriday,
+    String familyMemberId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'bundleId': bundleId,
+      r'durationDays': durationDays,
+      r'includeFriday': includeFriday,
+      r'familyMemberId': familyMemberId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<SubscriptionTierResponseDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/family-subscription-flow/programs/${programId}/tiers',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<SubscriptionTierResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                SubscriptionTierResponseDto.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<FamilyFlowCurrentResponseDto> saveFamilyMemberPlan(
     String memberId,
     FamilyMemberPlanWriteRequestDto request,

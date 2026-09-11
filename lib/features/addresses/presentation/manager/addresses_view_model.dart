@@ -50,6 +50,9 @@ class AddressesViewModel extends Cubit<AddressesState> {
   AddFamilyMemberAddressUseCase? _addFamilyMemberAddressUseCase;
   String? _familyMemberId;
   int _familyMemberGeneration = 0;
+  double? _lastReverseGeocodeLatitude;
+  double? _lastReverseGeocodeLongitude;
+  MapAddressAutofillEntity? _lastReverseGeocodeResult;
 
   void configureFamilyMember(
     String memberId, {
@@ -60,6 +63,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
         _familyMemberId != null && _familyMemberId != memberId;
     if (memberChanged) {
       _familyMemberGeneration++;
+      _clearReverseGeocodeCache();
       emit(
         state.copyWith(
           locations: state.locations.copyWith(
@@ -81,6 +85,13 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   void invalidateFamilyMemberOperations() {
     _familyMemberGeneration++;
+    _clearReverseGeocodeCache();
+  }
+
+  void _clearReverseGeocodeCache() {
+    _lastReverseGeocodeLatitude = null;
+    _lastReverseGeocodeLongitude = null;
+    _lastReverseGeocodeResult = null;
   }
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
@@ -400,6 +411,29 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _reverseGeocode(double latitude, double longitude) async {
+    final lastLatitude = _lastReverseGeocodeLatitude;
+    final lastLongitude = _lastReverseGeocodeLongitude;
+    if (lastLatitude != null &&
+        lastLongitude != null &&
+        (latitude - lastLatitude).abs() < 0.00001 &&
+        (longitude - lastLongitude).abs() < 0.00001) {
+      final cached = _lastReverseGeocodeResult;
+      if (cached != null && !state.mapAutofill.isSuccess) {
+        emit(
+          state.copyWith(
+            mapAutofill: state.mapAutofill.copyWith(
+              isLoading: false,
+              isSuccess: true,
+              autofill: cached,
+              clearFailure: true,
+            ),
+          ),
+        );
+      }
+      return;
+    }
+    _lastReverseGeocodeLatitude = latitude;
+    _lastReverseGeocodeLongitude = longitude;
     final memberGeneration = _familyMemberGeneration;
     if (isClosed) return;
 
@@ -419,6 +453,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
+        _lastReverseGeocodeResult = autofill;
         await _applyAutofillToCatalog(
           autofill,
           memberGeneration: memberGeneration,
@@ -435,6 +470,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
           );
         }
       case ApiErrorResult():
+        _lastReverseGeocodeLatitude = null;
+        _lastReverseGeocodeLongitude = null;
         emit(
           state.copyWith(
             mapAutofill: state.mapAutofill.copyWith(

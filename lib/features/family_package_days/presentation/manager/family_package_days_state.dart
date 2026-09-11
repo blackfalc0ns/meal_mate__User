@@ -201,6 +201,7 @@ class FamilyPlanState {
     int? selectedDurationIndex,
     bool clearSelectedDuration = false,
     int? customDurationDays,
+    bool clearCustomDuration = false,
     bool? includeFriday,
     bool? isTiersLoading,
     List<SubscriptionTierEntity>? tiers,
@@ -252,7 +253,9 @@ class FamilyPlanState {
       selectedDurationIndex: clearSelectedDuration
           ? null
           : (selectedDurationIndex ?? this.selectedDurationIndex),
-      customDurationDays: customDurationDays ?? this.customDurationDays,
+      customDurationDays: clearCustomDuration
+          ? null
+          : (customDurationDays ?? this.customDurationDays),
       includeFriday: includeFriday ?? this.includeFriday,
       isTiersLoading: isTiersLoading ?? this.isTiersLoading,
       tiers: tiers ?? this.tiers,

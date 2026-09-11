@@ -55,7 +55,6 @@ class FamilyPackageDaysContent extends StatelessWidget {
               const SizedBox(height: Spacing.familyProgramMemberTopGap),
               FamilyPackageDaysMemberSection(
                 state: state,
-                showSummary: !isMemberSwitchLoading,
                 isLoading: isMemberSwitchLoading,
               ),
               if (isMemberSwitchLoading)

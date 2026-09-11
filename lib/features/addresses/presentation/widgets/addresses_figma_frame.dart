@@ -14,9 +14,9 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/location_confirmation_card.dart';
 
 class AddressesFigmaFrame extends StatefulWidget {
   const AddressesFigmaFrame({
@@ -24,6 +24,7 @@ class AddressesFigmaFrame extends StatefulWidget {
     required this.locations,
     required this.isSubmitting,
     this.initialAddress,
+    this.showInitialAddressDetails = true,
     this.flowController,
   });
 
@@ -32,6 +33,7 @@ class AddressesFigmaFrame extends StatefulWidget {
   final LocationsCatalogState locations;
   final bool isSubmitting;
   final CustomerAddressEntity? initialAddress;
+  final bool showInitialAddressDetails;
   final AddressEntryFlowController? flowController;
 
   @override
@@ -49,6 +51,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   GoogleMapController? _mapController;
   Timer? _debounceTimer;
   bool _isInitialMapMove = true;
+  bool _openDetailsAfterAutofill = false;
   AddressLocationMode? _selectedMode;
   late final AddressEntryFlowController _flowController;
   late final bool _ownsFlowController;
@@ -68,8 +71,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
     _ownsFlowController = widget.flowController == null;
     _flowController = widget.flowController ?? AddressEntryFlowController();
-    if (widget.initialAddress != null) {
-      _flowController.showAddressDetails();
+    if (widget.initialAddress != null && widget.showInitialAddressDetails) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _showDetailsSheet(context);
+      });
     }
     _flowController.addListener(_onFlowStageChanged);
     _fillInitialAddress(widget.initialAddress);
@@ -119,6 +124,12 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
               LatLng(autofill.latitude, autofill.longitude),
             ),
           );
+          if (_openDetailsAfterAutofill) {
+            _openDetailsAfterAutofill = false;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) _showDetailsSheet(context);
+            });
+          }
         }
       },
       child: Semantics(
@@ -165,55 +176,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
               bottom: Spacing.bottomSheetRadius * 12,
               child: Center(child: IgnorePointer(child: AddressMapMarker())),
             ),
-            if (_flowController.stage == AddressEntryStage.details)
-              Positioned.fill(
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.lg,
-                      vertical: Spacing.xxl,
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.bottomCenter,
-                      child: LocationConfirmationCard(
-                        isLoading: widget.isSubmitting,
-                        onConfirm: () => _submitAddress(context),
-                        content: HomeAddressFormCard(
-                          governorates: widget.locations.governorates,
-                          areas: widget.locations.areas,
-                          blocks: widget.locations.blocks,
-                          selectedGovernorate:
-                              widget.locations.selectedGovernorate,
-                          selectedArea: widget.locations.selectedArea,
-                          selectedBlock: widget.locations.selectedBlock,
-                          streetController: _streetController,
-                          avenueController: _avenueController,
-                          floorController: _floorController,
-                          buildingNumberController: _buildingNumberController,
-                          apartmentController: _apartmentController,
-                          onGovernorateSelected: (governorate) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressGovernorateEvent(governorate),
-                            );
-                          },
-                          onAreaSelected: (area) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressAreaEvent(area),
-                            );
-                          },
-                          onBlockSelected: (block) {
-                            context.read<AddressesViewModel>().doIntent(
-                              SelectAddressBlockEvent(block),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            else
+            if (_flowController.stage != AddressEntryStage.coveragePreview)
               Positioned(
                 left: 0,
                 right: 0,
@@ -228,9 +191,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                     setState(() => _selectedMode = mode);
                   },
                   onUseCurrentLocation: () => _onGpsPressed(context),
-                  onConfirm: () {
-                    _flowController.showAddressDetails();
-                  },
+                  onConfirm: () => _prepareAndShowDetails(context),
                 ),
               ),
           ],
@@ -291,11 +252,11 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     });
   }
 
-  void _triggerReverseGeocode(BuildContext context) {
+  void _triggerReverseGeocode(BuildContext context, {bool force = false}) {
     if (_lastGeocodedLat != null && _lastGeocodedLng != null) {
       final latDiff = (_currentLatitude - _lastGeocodedLat!).abs();
       final lngDiff = (_currentLongitude - _lastGeocodedLng!).abs();
-      if (latDiff < 0.0001 && lngDiff < 0.0001) {
+      if (!force && latDiff < 0.0001 && lngDiff < 0.0001) {
         return;
       }
     }
@@ -308,6 +269,77 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
         longitude: _currentLongitude,
       ),
     );
+  }
+
+  void _prepareAndShowDetails(BuildContext context) {
+    final state = context.read<AddressesViewModel>().state;
+    if (state.mapAutofill.isLoading) return;
+    if (state.mapAutofill.isSuccess &&
+        state.mapAutofill.autofill != null &&
+        state.locations.selectedGovernorate != null &&
+        state.locations.selectedArea != null &&
+        state.locations.selectedBlock != null) {
+      _showDetailsSheet(context);
+      return;
+    }
+    _openDetailsAfterAutofill = true;
+    _triggerReverseGeocode(context, force: true);
+  }
+
+  Future<void> _showDetailsSheet(BuildContext context) async {
+    final viewModel = context.read<AddressesViewModel>();
+    _flowController.showAddressDetails();
+    await AddressDetailsWoltSheet.show(
+      context: context,
+      isLoading: widget.isSubmitting,
+      onConfirm: () {
+        _submitAddress(context);
+        Navigator.of(context).pop();
+      },
+      content: LayoutBuilder(
+        builder: (context, constraints) {
+          return FittedBox(
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: Spacing.addressesHomeFormWidth,
+              child: BlocProvider<AddressesViewModel>.value(
+                value: viewModel,
+                child: BlocBuilder<AddressesViewModel, AddressesState>(
+                  buildWhen: (previous, current) =>
+                      previous.locations != current.locations,
+                  builder: (context, state) => HomeAddressFormCard(
+                    governorates: state.locations.governorates,
+                    areas: state.locations.areas,
+                    blocks: state.locations.blocks,
+                    selectedGovernorate: state.locations.selectedGovernorate,
+                    selectedArea: state.locations.selectedArea,
+                    selectedBlock: state.locations.selectedBlock,
+                    streetController: _streetController,
+                    avenueController: _avenueController,
+                    floorController: _floorController,
+                    buildingNumberController: _buildingNumberController,
+                    apartmentController: _apartmentController,
+                    onGovernorateSelected: (governorate) => context
+                        .read<AddressesViewModel>()
+                        .doIntent(SelectAddressGovernorateEvent(governorate)),
+                    onAreaSelected: (area) => context
+                        .read<AddressesViewModel>()
+                        .doIntent(SelectAddressAreaEvent(area)),
+                    onBlockSelected: (block) => context
+                        .read<AddressesViewModel>()
+                        .doIntent(SelectAddressBlockEvent(block)),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+    if (mounted && _flowController.stage == AddressEntryStage.details) {
+      _flowController.chooseLocation();
+    }
   }
 
   void _submitAddress(BuildContext context) {
@@ -414,6 +446,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   void _fillInitialAddress(CustomerAddressEntity? address) {
     if (address == null) return;
 
+    _searchController.text = address.addressLine;
     _streetController.text = address.street ?? '';
     _avenueController.text = address.notes ?? '';
     _buildingNumberController.text = address.building ?? '';

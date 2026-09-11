@@ -4,17 +4,22 @@ import 'package:meal_meat_user/features/family_allergies/data/data_source/family
 import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/repo/family_allergies_repository.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 
 @Injectable(as: FamilyAllergiesRepository)
 class FamilyAllergiesRepositoryImpl implements FamilyAllergiesRepository {
-  const FamilyAllergiesRepositoryImpl(this._remoteDataSource);
+  const FamilyAllergiesRepositoryImpl(
+    this._remoteDataSource,
+    this._snapshotStore,
+  );
   final FamilyAllergiesRemoteDataSource _remoteDataSource;
+  final FamilyFlowSnapshotStore _snapshotStore;
   @override
   Future<ApiResult<bool>> saveMemberAllergies({
     required String memberId,
     required List<FamilyMemberAllergySelection> allergies,
-  }) => safeApiCall(
-    () => _remoteDataSource.saveMemberAllergies(
+  }) => safeApiCall(() async {
+    final result = await _remoteDataSource.saveMemberAllergies(
       memberId,
       FamilyMemberAllergiesRequestDto(
         allergies: allergies
@@ -26,6 +31,8 @@ class FamilyAllergiesRepositoryImpl implements FamilyAllergiesRepository {
             )
             .toList(),
       ),
-    ),
-  );
+    );
+    _snapshotStore.invalidate();
+    return result;
+  });
 }

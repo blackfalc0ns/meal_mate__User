@@ -552,6 +552,21 @@ abstract class ApiServices {
     @Path('programId') String programId,
   );
 
+  @GET(EndPoints.familySubscriptionFlowProgramDurations)
+  Future<List<SubscriptionDurationResponseDto>> getFamilySubscriptionDurations(
+    @Path('programId') String programId,
+    @Query('includeFriday') bool includeFriday,
+  );
+
+  @GET(EndPoints.familySubscriptionFlowProgramTiers)
+  Future<List<SubscriptionTierResponseDto>> getFamilySubscriptionTiers(
+    @Path('programId') String programId,
+    @Query('bundleId') String? bundleId,
+    @Query('durationDays') int? durationDays,
+    @Query('includeFriday') bool includeFriday,
+    @Query('familyMemberId') String familyMemberId,
+  );
+
   @PUT(EndPoints.familySubscriptionFlowMemberPlan)
   Future<FamilyFlowCurrentResponseDto> saveFamilyMemberPlan(
     @Path('memberId') String memberId,

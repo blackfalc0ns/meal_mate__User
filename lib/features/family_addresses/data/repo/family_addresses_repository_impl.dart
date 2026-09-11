@@ -6,11 +6,13 @@ import 'package:meal_meat_user/features/addresses/domain/entities/customer_addre
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/data/data_source/family_addresses_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/repo/family_addresses_repository.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 
 @Injectable(as: FamilyAddressesRepository)
 class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
-  const FamilyAddressesRepositoryImpl(this._remote);
+  const FamilyAddressesRepositoryImpl(this._remote, this._snapshotStore);
   final FamilyAddressesRemoteDataSource _remote;
+  final FamilyFlowSnapshotStore _snapshotStore;
   @override
   Future<ApiResult<List<CustomerAddressEntity>>> getAddresses(
     String memberId,
@@ -23,22 +25,28 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
   Future<ApiResult<CustomerAddressEntity>> addAddress(
     String memberId,
     CustomerAddressRequestEntity request,
-  ) => safeApiCall(
-    () async =>
-        (await _remote.addAddress(memberId, request.toDto())).toEntity(),
-  );
+  ) => safeApiCall(() async {
+    final entity = (await _remote.addAddress(
+      memberId,
+      request.toDto(),
+    )).toEntity();
+    _snapshotStore.invalidate();
+    return entity;
+  });
   @override
   Future<ApiResult<CustomerAddressEntity>> updateAddress(
     String memberId,
     String addressId,
     CustomerAddressRequestEntity request,
-  ) => safeApiCall(
-    () async => (await _remote.updateAddress(
+  ) => safeApiCall(() async {
+    final entity = (await _remote.updateAddress(
       memberId,
       addressId,
       request.toDto(),
-    )).toEntity(),
-  );
+    )).toEntity();
+    _snapshotStore.invalidate();
+    return entity;
+  });
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewAddress(
     String memberId,
@@ -61,8 +69,12 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
   Future<ApiResult<CustomerAddressEntity>> setDefaultAddress(
     String memberId,
     String addressId,
-  ) => safeApiCall(
-    () async =>
-        (await _remote.setDefaultAddress(memberId, addressId)).toEntity(),
-  );
+  ) => safeApiCall(() async {
+    final entity = (await _remote.setDefaultAddress(
+      memberId,
+      addressId,
+    )).toEntity();
+    _snapshotStore.invalidate();
+    return entity;
+  });
 }

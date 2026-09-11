@@ -120,15 +120,18 @@ class _FamilyPackageDaysSetupScreenState
         durationDays > 0 &&
         tier != null) {
       final tierInt = int.tryParse(tier.tier) ?? 1;
-      await context.read<FamilyPackageDaysViewModel>().saveMemberPlanAndWait(
-        memberId: member.memberId,
-        programId: programId,
-        bundleId: bundle.bundleId,
-        tier: tierInt,
-        durationDays: durationDays,
-        includeFriday: state.includeFriday,
-      );
+      final saved = await context
+          .read<FamilyPackageDaysViewModel>()
+          .saveMemberPlanAndWait(
+            memberId: member.memberId,
+            programId: programId,
+            bundleId: bundle.bundleId,
+            tier: tierInt,
+            durationDays: durationDays,
+            includeFriday: state.includeFriday,
+          );
       if (!context.mounted) return;
+      if (!saved) return;
       latestState = context.read<FamilyPackageDaysViewModel>().state;
     }
 

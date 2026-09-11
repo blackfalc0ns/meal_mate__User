@@ -7,6 +7,51 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/fa
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 void main() {
+  test(
+    'keeps every family member visible and marks saved addresses completed',
+    () async {
+      const savedMember = FamilyMemberEntity(
+        memberId: 'saved-member',
+        role: 1,
+        displayName: 'Saved',
+        relationshipCode: 'SELF',
+        gender: 1,
+        ageYears: 30,
+        deliveryAddressId: 'address-1',
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: true,
+      );
+      const pendingMember = FamilyMemberEntity(
+        memberId: 'pending-member',
+        role: 2,
+        displayName: 'Pending',
+        relationshipCode: 'CHILD',
+        gender: 1,
+        ageYears: 12,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: false,
+      );
+      final viewModel = FamilyAddressesViewModel(
+        GetFamilyFlowCurrentUseCase(
+          _FamilyFlowRepository(
+            const FamilyFlowCurrentEntity(
+              members: [savedMember, pendingMember],
+            ),
+          ),
+        ),
+      );
+
+      await viewModel.load();
+
+      expect(viewModel.state.members, [savedMember, pendingMember]);
+      expect(viewModel.state.completedMemberIds, {'saved-member'});
+      expect(viewModel.state.currentMember, same(pendingMember));
+      await viewModel.close();
+    },
+  );
+
   test('revisited completed address flow waits for an explicit save', () async {
     const member = FamilyMemberEntity(
       memberId: 'member-1',

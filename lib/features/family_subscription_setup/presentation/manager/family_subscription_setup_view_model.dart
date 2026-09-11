@@ -156,7 +156,14 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     required int ageYears,
     String? deliveryAddressId,
   }) async {
-    emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
+    emit(
+      state.copyWith(
+        isMemberSaving: true,
+        memberSaveSuccess: false,
+        clearMemberSaveFailure: true,
+        clearFailure: true,
+      ),
+    );
     final result = await _addFamilyMemberUseCase(
       phone: phone,
       displayName: displayName,
@@ -169,11 +176,18 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
+          state.copyWith(
+            isMemberSaving: false,
+            memberSaveSuccess: true,
+            currentFlow: result.data,
+          ),
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+          state.copyWith(
+            isMemberSaving: false,
+            memberSaveFailure: result.failure,
+          ),
         );
     }
   }
@@ -188,7 +202,14 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     required int ageYears,
     String? deliveryAddressId,
   }) async {
-    emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
+    emit(
+      state.copyWith(
+        isMemberSaving: true,
+        memberSaveSuccess: false,
+        clearMemberSaveFailure: true,
+        clearFailure: true,
+      ),
+    );
     final result = await _updateFamilyMemberUseCase(
       memberId: memberId,
       phone: phone,
@@ -202,11 +223,18 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
+          state.copyWith(
+            isMemberSaving: false,
+            memberSaveSuccess: true,
+            currentFlow: result.data,
+          ),
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
+          state.copyWith(
+            isMemberSaving: false,
+            memberSaveFailure: result.failure,
+          ),
         );
     }
   }

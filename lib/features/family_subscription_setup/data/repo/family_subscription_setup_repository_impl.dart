@@ -6,17 +6,24 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_lookup_request_dto.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_flow_current_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_lookup_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart';
 
-@Injectable(as: FamilySubscriptionSetupRepository)
+@LazySingleton(as: FamilySubscriptionSetupRepository)
 class FamilySubscriptionSetupRepositoryImpl
     implements FamilySubscriptionSetupRepository {
-  FamilySubscriptionSetupRepositoryImpl(this._remoteDataSource);
+  FamilySubscriptionSetupRepositoryImpl(
+    this._remoteDataSource,
+    this._snapshotStore,
+  );
 
   final FamilySubscriptionSetupRemoteDataSource _remoteDataSource;
+  final FamilyFlowSnapshotStore _snapshotStore;
+  Future<ApiResult<FamilyFlowCurrentEntity>>? _currentRequest;
 
   @override
   Future<ApiResult<List<FamilyRelationshipEntity>>> getFamilyRelationships() {
@@ -28,9 +35,35 @@ class FamilySubscriptionSetupRepositoryImpl
 
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> getFamilySubscriptionCurrent() {
-    return safeApiCall(() async {
+    final snapshot = _snapshotStore.current;
+    if (snapshot != null) {
+      return Future.value(ApiSuccessResult(data: snapshot));
+    }
+    final inFlight = _currentRequest;
+    if (inFlight != null) return inFlight;
+    final requestRevision = _snapshotStore.revision;
+    final request = safeApiCall(() async {
       final response = await _remoteDataSource.getFamilySubscriptionCurrent();
       return response.toEntity();
+    });
+    _currentRequest = request;
+    return request
+        .then((result) {
+          if (result is ApiSuccessResult<FamilyFlowCurrentEntity>) {
+            _snapshotStore.updateIfUnchanged(requestRevision, result.data);
+          }
+          return result;
+        })
+        .whenComplete(() => _currentRequest = null);
+  }
+
+  Future<ApiResult<FamilyFlowCurrentEntity>> _flowMutation(
+    Future<FamilyFlowCurrentResponseDto> Function() call,
+  ) {
+    return safeApiCall(() async {
+      final entity = (await call()).toEntity();
+      _snapshotStore.update(entity);
+      return entity;
     });
   }
 
@@ -39,21 +72,21 @@ class FamilySubscriptionSetupRepositoryImpl
     String? name,
     String? familyPackageId,
   }) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.convertFromIndividual(
+    return _flowMutation(
+      () => _remoteDataSource.convertFromIndividual(
         FamilyConvertFromIndividualRequestDto(
           name: name,
           familyPackageId: familyPackageId,
         ),
-      );
-      return response.toEntity();
-    });
+      ),
+    );
   }
 
   @override
   Future<ApiResult<void>> abandonFamilyDraft() {
     return safeApiCall(() async {
       await _remoteDataSource.abandonFamilyDraft();
+      _snapshotStore.invalidate();
     });
   }
 
@@ -62,15 +95,14 @@ class FamilySubscriptionSetupRepositoryImpl
     required String name,
     String? familyPackageId,
   }) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.updateFamilyGroup(
+    return _flowMutation(
+      () => _remoteDataSource.updateFamilyGroup(
         FamilyGroupWriteRequestDto(
           name: name,
           familyPackageId: familyPackageId,
         ),
-      );
-      return response.toEntity();
-    });
+      ),
+    );
   }
 
   @override
@@ -83,8 +115,8 @@ class FamilySubscriptionSetupRepositoryImpl
     required int ageYears,
     String? deliveryAddressId,
   }) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.addFamilyMember(
+    return _flowMutation(
+      () => _remoteDataSource.addFamilyMember(
         FamilyMemberWriteRequestDto(
           phone: phone,
           displayName: displayName,
@@ -94,9 +126,8 @@ class FamilySubscriptionSetupRepositoryImpl
           ageYears: ageYears,
           deliveryAddressId: deliveryAddressId,
         ),
-      );
-      return response.toEntity();
-    });
+      ),
+    );
   }
 
   @override
@@ -110,8 +141,8 @@ class FamilySubscriptionSetupRepositoryImpl
     required int ageYears,
     String? deliveryAddressId,
   }) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.updateFamilyMember(
+    return _flowMutation(
+      () => _remoteDataSource.updateFamilyMember(
         memberId,
         FamilyMemberWriteRequestDto(
           phone: phone,
@@ -122,19 +153,15 @@ class FamilySubscriptionSetupRepositoryImpl
           ageYears: ageYears,
           deliveryAddressId: deliveryAddressId,
         ),
-      );
-      return response.toEntity();
-    });
+      ),
+    );
   }
 
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> deleteFamilyMember(
     String memberId,
   ) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.deleteFamilyMember(memberId);
-      return response.toEntity();
-    });
+    return _flowMutation(() => _remoteDataSource.deleteFamilyMember(memberId));
   }
 
   @override

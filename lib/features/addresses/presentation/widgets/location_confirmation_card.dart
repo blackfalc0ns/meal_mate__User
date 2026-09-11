@@ -15,6 +15,8 @@ class LocationConfirmationCard extends StatelessWidget {
     this.content,
     this.secondaryButtonText,
     this.onSecondaryPressed,
+    this.scrollController,
+    this.primaryButtonText,
   });
 
   final VoidCallback onConfirm;
@@ -22,6 +24,8 @@ class LocationConfirmationCard extends StatelessWidget {
   final Widget? content;
   final String? secondaryButtonText;
   final VoidCallback? onSecondaryPressed;
+  final ScrollController? scrollController;
+  final String? primaryButtonText;
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +34,25 @@ class LocationConfirmationCard extends StatelessWidget {
 
     return Container(
       width: Spacing.addressesChooseLocationCardWidth,
-      padding: const EdgeInsets.all(Spacing.addressesChooseLocationCardPadding),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(
-          Spacing.addressesChooseLocationCardRadius,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(Spacing.bottomSheetRadius),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.08),
+            blurRadius: Spacing.base,
+            offset: const Offset(Spacing.zero, -Spacing.xs),
+          ),
+        ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      clipBehavior: Clip.antiAlias,
+      child: ListView(
+        controller: scrollController,
+        padding: const EdgeInsets.all(
+          Spacing.addressesChooseLocationCardPadding,
+        ),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +147,7 @@ class LocationConfirmationCard extends StatelessWidget {
               child: isLoading
                   ? LoadingWidget.inline(color: color.onPrimary)
                   : Text(
-                      locale.addresses_confirm_location,
+                      primaryButtonText ?? locale.addresses_confirm_location,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getBoldStyle(

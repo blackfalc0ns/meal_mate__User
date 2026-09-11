@@ -128,6 +128,10 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/programs';
   static const String familySubscriptionFlowProgramBundles =
       '/api/v1/customer/family-subscription-flow/programs/{programId}/bundles';
+  static const String familySubscriptionFlowProgramDurations =
+      '/api/v1/customer/family-subscription-flow/programs/{programId}/durations';
+  static const String familySubscriptionFlowProgramTiers =
+      '/api/v1/customer/family-subscription-flow/programs/{programId}/tiers';
   static const String familySubscriptionFlowMetadata =
       '/api/v1/customer/family-subscription-flow/metadata';
   static const String familySubscriptionFlowCurrent =

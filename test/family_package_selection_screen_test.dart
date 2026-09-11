@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_package_hero_card.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/widgets/family_package_section_header.dart';
@@ -144,7 +145,7 @@ void main() {
   });
 
   group('FamilyPackageSelectionLoadingSkeleton', () {
-    testWidgets('renders all skeleton blocks properly', (tester) async {
+    testWidgets('mirrors the visible package selection layout', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(child: const FamilyPackageSelectionLoadingSkeleton()),
       );
@@ -154,6 +155,7 @@ void main() {
         find.byType(FamilyPackageSelectionLoadingSkeleton),
         findsOneWidget,
       );
+      expect(find.byType(ShimmerPlaceholder), findsNWidgets(15));
     });
   });
 }

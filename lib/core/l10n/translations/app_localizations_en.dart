@@ -2675,6 +2675,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_relation_hint => 'Choose relationship';
 
   @override
+  String get family_relation_input_hint => 'Enter relationship';
+
+  @override
   String get family_age => 'Age';
 
   @override
@@ -2729,6 +2732,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_delete_member_success => 'Member deleted successfully';
+
+  @override
+  String get family_add_member_success => 'Member added successfully';
+
+  @override
+  String get family_update_member_success => 'Member updated successfully';
 
   @override
   String get family_setup_title => 'Family subscription setup';
@@ -4187,6 +4196,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_gender_male => 'Male';
+
+  @override
+  String get family_gender => 'Gender';
 
   @override
   String get family_gender_female => 'Female';

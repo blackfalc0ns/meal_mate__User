@@ -17,6 +17,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
     required this.confirmButtonText,
     required this.onConfirm,
     required this.onChooseAnother,
+    this.popOnConfirm = true,
   });
 
   final AddressCoveragePreviewEntity preview;
@@ -24,6 +25,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
   final String confirmButtonText;
   final VoidCallback onConfirm;
   final VoidCallback onChooseAnother;
+  final bool popOnConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +100,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
               isLoading: isSubmitting,
               onPressed: isCovered && !isSubmitting
                   ? () {
-                      Navigator.of(context).pop();
+                      if (popOnConfirm) Navigator.of(context).pop();
                       onConfirm();
                     }
                   : null,

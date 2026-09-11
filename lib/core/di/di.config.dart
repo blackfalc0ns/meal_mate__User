@@ -154,6 +154,10 @@ import '../../features/family_package_days/data/repo/family_package_days_reposit
     as _i471;
 import '../../features/family_package_days/domain/repo/family_package_days_repository.dart'
     as _i306;
+import '../../features/family_package_days/domain/usecase/get_family_plan_durations_usecase.dart'
+    as _i570;
+import '../../features/family_package_days/domain/usecase/get_family_plan_tiers_usecase.dart'
+    as _i870;
 import '../../features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart'
     as _i600;
 import '../../features/family_package_days/presentation/manager/family_package_days_view_model.dart'
@@ -190,6 +194,8 @@ import '../../features/family_subscription_setup/data/data_source/family_subscri
     as _i60;
 import '../../features/family_subscription_setup/data/repo/family_subscription_setup_repository_impl.dart'
     as _i922;
+import '../../features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart'
+    as _i41;
 import '../../features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart'
     as _i925;
 import '../../features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart'
@@ -390,7 +396,7 @@ import '../../features/subscription_settings/domain/usecase/manage_family_member
 import '../../features/subscription_settings/domain/usecase/renew_family_member_subscription_usecase.dart'
     as _i141;
 import '../../features/subscription_settings/presentation/manager/family_calendar_view_model.dart'
-    as _i888;
+    as _i12;
 import '../../features/subscription_settings/presentation/manager/family_management_view_model.dart'
     as _i69;
 import '../../features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart'
@@ -507,6 +513,20 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i179.AppNavigatorService(),
     );
     gh.lazySingleton<_i1056.TokenInterceptor>(() => _i1056.TokenInterceptor());
+    gh.lazySingleton<_i41.FamilyFlowSnapshotStore>(
+      () => _i41.FamilyFlowSnapshotStore(),
+    );
+    gh.factory<_i12.FamilyCalendarViewModel>(
+      () => _i12.FamilyCalendarViewModel(
+        gh<_i897.GetFamilyMembersUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
+      ),
+    );
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
     );
@@ -618,6 +638,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i996.PaymentRepository>(
       () => _i914.PaymentRepositoryImpl(gh<_i957.PaymentRemoteDataSource>()),
     );
+    gh.factory<_i306.FamilyPackageDaysRepository>(
+      () => _i471.FamilyPackageDaysRepositoryImpl(
+        gh<_i355.FamilyPackageDaysRemoteDataSource>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
     gh.factory<_i802.FamilyCheckoutRepository>(
       () => _i205.FamilyCheckoutRepositoryImpl(
         gh<_i714.FamilyCheckoutRemoteDataSource>(),
@@ -644,6 +670,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i223.FamilyAllergiesRepository>(
       () => _i145.FamilyAllergiesRepositoryImpl(
         gh<_i322.FamilyAllergiesRemoteDataSource>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
     gh.factory<_i735.SubscriptionTypesRemoteDataSource>(
@@ -652,6 +679,21 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i557.MealDetailsRemoteDataSource>(
       () => _i90.MealDetailsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i570.GetFamilyPlanDurationsUseCase>(
+      () => _i570.GetFamilyPlanDurationsUseCase(
+        gh<_i306.FamilyPackageDaysRepository>(),
+      ),
+    );
+    gh.factory<_i870.GetFamilyPlanTiersUseCase>(
+      () => _i870.GetFamilyPlanTiersUseCase(
+        gh<_i306.FamilyPackageDaysRepository>(),
+      ),
+    );
+    gh.factory<_i600.SaveFamilyMemberPlanUseCase>(
+      () => _i600.SaveFamilyMemberPlanUseCase(
+        gh<_i306.FamilyPackageDaysRepository>(),
+      ),
     );
     gh.factory<_i549.RestaurantTierUpgradeRemoteDataSource>(
       () => _i798.RestaurantTierUpgradeRemoteDataSourceImpl(
@@ -685,11 +727,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i737.AddressesRemoteDataSource>(
       () => _i380.AddressesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
-    );
-    gh.factory<_i306.FamilyPackageDaysRepository>(
-      () => _i471.FamilyPackageDaysRepositoryImpl(
-        gh<_i355.FamilyPackageDaysRemoteDataSource>(),
-      ),
     );
     gh.factory<_i603.FamilyProgramsRemoteDataSource>(
       () => _i567.FamilyProgramsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -778,17 +815,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i141.RenewFamilyMemberSubscriptionUseCase>(),
       ),
     );
-    gh.factory<_i888.FamilyCalendarViewModel>(
-      () => _i888.FamilyCalendarViewModel(
-        gh<_i897.GetFamilyMembersUseCase>(),
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i389.GetCalendarRestaurantsUseCase>(),
-        gh<_i389.GetCalendarAvailableMealsUseCase>(),
-        gh<_i896.SaveCalendarDayMealsUseCase>(),
-        gh<_i133.SetCalendarDayRestaurantUseCase>(),
-      ),
-    );
     gh.factory<_i462.GetSubscriptionReadinessUseCase>(
       () => _i462.GetSubscriptionReadinessUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
@@ -850,6 +876,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i557.MealDetailsRemoteDataSource>(),
       ),
     );
+    gh.lazySingleton<_i925.FamilySubscriptionSetupRepository>(
+      () => _i922.FamilySubscriptionSetupRepositoryImpl(
+        gh<_i379.FamilySubscriptionSetupRemoteDataSource>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
     gh.factory<_i914.ProfileUncompletedSubscriptionRepository>(
       () => _i983.ProfileUncompletedSubscriptionRepositoryImpl(
         gh<_i998.ProfileRemoteDataSource>(),
@@ -880,6 +912,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i341.NotificationsRepository>(
       () => _i166.NotificationsRepositoryImpl(
         gh<_i173.NotificationsRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i982.FamilyAddressesRepository>(
+      () => _i52.FamilyAddressesRepositoryImpl(
+        gh<_i1040.FamilyAddressesRemoteDataSource>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
     gh.factory<_i718.GetSubscriptionProgramBundlesUseCase>(
@@ -961,21 +999,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i964.FamilyProgramsRepository>(
       () => _i377.FamilyProgramsRepositoryImpl(
         gh<_i603.FamilyProgramsRemoteDataSource>(),
-      ),
-    );
-    gh.factory<_i925.FamilySubscriptionSetupRepository>(
-      () => _i922.FamilySubscriptionSetupRepositoryImpl(
-        gh<_i379.FamilySubscriptionSetupRemoteDataSource>(),
-      ),
-    );
-    gh.factory<_i600.SaveFamilyMemberPlanUseCase>(
-      () => _i600.SaveFamilyMemberPlanUseCase(
-        gh<_i306.FamilyPackageDaysRepository>(),
-      ),
-    );
-    gh.factory<_i982.FamilyAddressesRepository>(
-      () => _i52.FamilyAddressesRepositoryImpl(
-        gh<_i1040.FamilyAddressesRemoteDataSource>(),
       ),
     );
     gh.factory<_i556.AddressesRepository>(
@@ -1208,17 +1231,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i427.ConvertFromIndividualUseCase>(),
       ),
     );
-    gh.factory<_i597.FamilyPackageDaysViewModel>(
-      () => _i597.FamilyPackageDaysViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i577.GetFamilyProgramsUseCase>(),
-        gh<_i448.GetFamilyProgramBundlesUseCase>(),
-        gh<_i809.GetSubscriptionDurationsUseCase>(),
-        gh<_i766.GetSubscriptionTiersUseCase>(),
-        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i600.SaveFamilyMemberPlanUseCase>(),
-      ),
-    );
     gh.factory<_i502.PaymentViewModel>(
       () => _i502.PaymentViewModel(
         gh<_i365.GetPaymentMethodsUseCase>(),
@@ -1270,6 +1282,17 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i133.SetCalendarDayRestaurantUseCase(gh<_i333.CalendarRepository>()),
     );
+    gh.factory<_i597.FamilyPackageDaysViewModel>(
+      () => _i597.FamilyPackageDaysViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i577.GetFamilyProgramsUseCase>(),
+        gh<_i448.GetFamilyProgramBundlesUseCase>(),
+        gh<_i570.GetFamilyPlanDurationsUseCase>(),
+        gh<_i870.GetFamilyPlanTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i600.SaveFamilyMemberPlanUseCase>(),
+      ),
+    );
     gh.factory<_i528.RestaurantTierUpgradeViewModel>(
       () => _i528.RestaurantTierUpgradeViewModel(
         gh<_i990.GetSubscriptionUpgradeOptionsUseCase>(),
@@ -1298,6 +1321,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i546.UnregisterDeviceTokenUseCase>(),
       ),
     );
+    gh.factory<_i2.AuthRepository>(
+      () => _i607.AuthRepositoryImpl(
+        gh<_i182.AuthRemoteDataSource>(),
+        gh<_i227.TokenService>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i63.PushNotificationService>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
     gh.factory<_i603.FamilyAddressesViewModel>(
       () => _i603.FamilyAddressesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1322,6 +1354,36 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i945.GetCustomerAddressesUseCase>(),
         gh<_i973.LookupFamilyMemberUseCase>(),
       ),
+    );
+    gh.factory<_i749.ForgotPasswordUseCase>(
+      () => _i749.ForgotPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i171.GetCallingCodesUseCase>(
+      () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i911.LoginUseCase>(
+      () => _i911.LoginUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i757.LogoutUseCase>(
+      () => _i757.LogoutUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i501.RefreshTokenUseCase>(
+      () => _i501.RefreshTokenUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i769.RegisterUseCase>(
+      () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i610.ResendPasswordOtpUseCase>(
+      () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i621.ResendPhoneOtpUseCase>(
+      () => _i621.ResendPhoneOtpUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i1029.ResetPasswordUseCase>(
+      () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i918.VerifyPhoneUseCase>(
+      () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
     );
     gh.factory<_i293.MealDetailsViewModel>(
       () => _i293.MealDetailsViewModel(
@@ -1366,44 +1428,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
       ),
-    );
-    gh.factory<_i2.AuthRepository>(
-      () => _i607.AuthRepositoryImpl(
-        gh<_i182.AuthRemoteDataSource>(),
-        gh<_i227.TokenService>(),
-        gh<_i42.SharedPrefHelper>(),
-        gh<_i63.PushNotificationService>(),
-      ),
-    );
-    gh.factory<_i749.ForgotPasswordUseCase>(
-      () => _i749.ForgotPasswordUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i171.GetCallingCodesUseCase>(
-      () => _i171.GetCallingCodesUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i911.LoginUseCase>(
-      () => _i911.LoginUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i757.LogoutUseCase>(
-      () => _i757.LogoutUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i501.RefreshTokenUseCase>(
-      () => _i501.RefreshTokenUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i769.RegisterUseCase>(
-      () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i610.ResendPasswordOtpUseCase>(
-      () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i621.ResendPhoneOtpUseCase>(
-      () => _i621.ResendPhoneOtpUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i1029.ResetPasswordUseCase>(
-      () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
-    );
-    gh.factory<_i918.VerifyPhoneUseCase>(
-      () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),
     );
     gh.factory<_i892.AuthViewModel>(
       () => _i892.AuthViewModel(

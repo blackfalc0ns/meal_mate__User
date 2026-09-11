@@ -28,6 +28,9 @@ class FamilyPlanState {
     this.isAddressesLoading = false,
     this.addresses = const [],
     this.isMemberLookupLoading = false,
+    this.isMemberSaving = false,
+    this.memberSaveSuccess = false,
+    this.memberSaveFailure,
     this.memberLookup,
     this.memberLookupPhone,
     this.memberLookupFailure,
@@ -80,6 +83,9 @@ class FamilyPlanState {
   final bool isAddressesLoading;
   final List<CustomerAddressEntity> addresses;
   final bool isMemberLookupLoading;
+  final bool isMemberSaving;
+  final bool memberSaveSuccess;
+  final Failure? memberSaveFailure;
   final FamilyMemberLookupEntity? memberLookup;
   final String? memberLookupPhone;
   final Failure? memberLookupFailure;
@@ -129,6 +135,7 @@ class FamilyPlanState {
       isPackagesLoading ||
       isCurrentFlowLoading ||
       isMemberLookupLoading ||
+      isMemberSaving ||
       isProgramsLoading ||
       isBundlesLoading ||
       isDurationsLoading ||
@@ -203,6 +210,10 @@ class FamilyPlanState {
     bool? isAddressesLoading,
     List<CustomerAddressEntity>? addresses,
     bool? isMemberLookupLoading,
+    bool? isMemberSaving,
+    bool? memberSaveSuccess,
+    Failure? memberSaveFailure,
+    bool clearMemberSaveFailure = false,
     FamilyMemberLookupEntity? memberLookup,
     bool clearMemberLookup = false,
     String? memberLookupPhone,
@@ -268,6 +279,11 @@ class FamilyPlanState {
       addresses: addresses ?? this.addresses,
       isMemberLookupLoading:
           isMemberLookupLoading ?? this.isMemberLookupLoading,
+      isMemberSaving: isMemberSaving ?? this.isMemberSaving,
+      memberSaveSuccess: memberSaveSuccess ?? this.memberSaveSuccess,
+      memberSaveFailure: clearMemberSaveFailure
+          ? null
+          : (memberSaveFailure ?? this.memberSaveFailure),
       memberLookup: clearMemberLookup
           ? null
           : (memberLookup ?? this.memberLookup),

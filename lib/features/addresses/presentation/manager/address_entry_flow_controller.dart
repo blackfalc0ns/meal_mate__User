@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-enum AddressEntryStage { locationSelection, details }
+enum AddressEntryStage { locationSelection, details, coveragePreview }
 
 class AddressEntryFlowController extends ChangeNotifier {
   AddressEntryStage _stage = AddressEntryStage.locationSelection;
@@ -8,6 +8,12 @@ class AddressEntryFlowController extends ChangeNotifier {
   AddressEntryStage get stage => _stage;
 
   void showAddressDetails() => _setStage(AddressEntryStage.details);
+
+  void showCoveragePreview() => _setStage(AddressEntryStage.coveragePreview);
+
+  void editAddressDetails() => _setStage(AddressEntryStage.details);
+
+  void chooseLocation() => _setStage(AddressEntryStage.locationSelection);
 
   void addressSaved() => _setStage(AddressEntryStage.locationSelection);
 
@@ -26,4 +32,22 @@ class AddressActionSuccessTracker {
     _handledAction = action;
     return true;
   }
+}
+
+class AddressOptimisticAdvanceTracker {
+  bool _advanced = false;
+
+  bool advanceOnConfirm() {
+    if (_advanced) return false;
+    _advanced = true;
+    return true;
+  }
+
+  bool shouldAdvanceOnSuccess() {
+    if (!_advanced) return true;
+    _advanced = false;
+    return false;
+  }
+
+  void reset() => _advanced = false;
 }
