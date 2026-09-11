@@ -6,7 +6,9 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyMemberAccessPermissionsTile extends StatelessWidget {
-  const FamilyMemberAccessPermissionsTile({super.key});
+  const FamilyMemberAccessPermissionsTile({super.key, this.onTap});
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +16,10 @@ class FamilyMemberAccessPermissionsTile extends StatelessWidget {
     final locale = context.localization;
 
     return InkWell(
-      onTap: () =>
-          Navigator.of(context).pushNamed(AppRoutes.familyMemberPermissions),
+      onTap: onTap ??
+          () => Navigator.of(context).pushNamed(
+                AppRoutes.familyMemberPermissions,
+              ),
       borderRadius: BorderRadius.circular(Spacing.radiusLg),
       child: Container(
         padding: const EdgeInsets.all(Spacing.cardPadding),

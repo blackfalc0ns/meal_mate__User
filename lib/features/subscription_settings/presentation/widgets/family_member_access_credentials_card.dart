@@ -3,24 +3,27 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart';
 
 class FamilyMemberAccessCredentialsCard extends StatelessWidget {
   const FamilyMemberAccessCredentialsCard({
     super.key,
-    required this.member,
-    this.onEditEmail,
+    this.identifier,
+    this.onEditIdentifier,
     this.onEditPassword,
   });
 
-  final FamilyMemberAccessEntity member;
-  final VoidCallback? onEditEmail;
+  final String? identifier;
+  final VoidCallback? onEditIdentifier;
   final VoidCallback? onEditPassword;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final displayIdentifier = identifier?.trim().isNotEmpty == true
+        ? identifier!
+        : locale.family_member_no_plan;
 
     return Container(
       padding: const EdgeInsets.all(Spacing.cardPadding),
@@ -32,65 +35,48 @@ class FamilyMemberAccessCredentialsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            locale.family_member_access_credentials_section,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size14,
+              color: color.onSurface,
+            ),
+          ),
+          const SizedBox(height: Spacing.sm),
+          Divider(
+            color: color.outlineVariant.withValues(alpha: 0.5),
+            thickness: Spacing.hairline,
+            height: Spacing.md,
+          ),
+          // Identifier Row (Phone / Email)
           Row(
             children: [
-              Icon(
-                Icons.lock_outline_rounded,
-                size: Spacing.iconMd,
-                color: color.primary,
-              ),
-              const SizedBox(width: Spacing.sm),
               Text(
-                locale.family_member_access_credentials_section,
-                style: getBoldStyle(
+                locale.family_member_access_phone_label,
+                style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size14,
+                  fontSize: FontSize.size11,
+                  color: color.onSurfaceVariant,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                displayIdentifier,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: Spacing.md),
-          Divider(
-            color: color.outlineVariant,
-            thickness: Spacing.hairline,
-            height: Spacing.zero,
-          ),
-          const SizedBox(height: Spacing.md),
-          // Email Row
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      locale.family_member_access_email_label,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      member.email,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(width: Spacing.md),
               InkWell(
-                onTap: onEditEmail,
+                onTap: onEditIdentifier,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.sm,
-                    vertical: Spacing.xs,
+                    horizontal: Spacing.xs,
+                    vertical: Spacing.xxs,
                   ),
                   child: Text(
                     locale.family_member_access_edit,
@@ -104,47 +90,39 @@ class FamilyMemberAccessCredentialsCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.md),
           Divider(
-            color: color.outlineVariant,
+            color: color.outlineVariant.withValues(alpha: 0.5),
             thickness: Spacing.hairline,
-            height: Spacing.zero,
+            height: Spacing.md,
           ),
-          const SizedBox(height: Spacing.md),
           // Password Row
           Row(
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      locale.family_member_access_password_label,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      '••••••••',
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
-                      ),
-                    ),
-                  ],
+              Text(
+                locale.family_member_access_password_label,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size11,
+                  color: color.onSurfaceVariant,
                 ),
               ),
+              const Spacer(),
+              Text(
+                '••••••••',
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.onSurface,
+                ),
+              ),
+              const SizedBox(width: Spacing.md),
               InkWell(
                 onTap: onEditPassword,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.sm,
-                    vertical: Spacing.xs,
+                    horizontal: Spacing.xs,
+                    vertical: Spacing.xxs,
                   ),
                   child: Text(
                     locale.family_member_access_edit,
