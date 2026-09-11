@@ -40,12 +40,6 @@ class FamilyMemberAccessLoadingSkeleton extends StatelessWidget {
           height: 68.0,
           borderRadius: Spacing.radiusLg,
         ),
-        SizedBox(height: Spacing.xl),
-        ShimmerPlaceholder.rect(
-          width: double.infinity,
-          height: 48.0,
-          borderRadius: Spacing.radiusMd,
-        ),
       ],
     );
   }

@@ -22,6 +22,7 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_members_section.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_plan_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_section.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_settings_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_warning_card.dart';
 
 class FamilySubscriptionSettingsScreen extends StatefulWidget {
@@ -88,7 +89,7 @@ class _FamilySubscriptionSettingsScreenState
                     ),
                   )
                 : home == null
-                ? Center(child: CircularProgressIndicator(color: color.primary))
+                ? const FamilySubscriptionSettingsLoadingSkeleton()
                 : RefreshIndicator(
                     color: color.primary,
                     onRefresh: () async {
@@ -138,15 +139,23 @@ class _FamilySubscriptionSettingsScreenState
             ),
           )
           .toList(),
-      quickActions: home.shortcuts
-          .map(
-            (action) => ui.FamilySubscriptionQuickActionEntity(
-              code: action.code,
-              label: _shortcutLabel(context, action.code),
-              iconAsset: _shortcutIcon(action.code),
-            ),
-          )
-          .toList(),
+      quickActions: [
+        ui.FamilySubscriptionQuickActionEntity(
+          code: 'meals',
+          label: locale.family_manage_meals,
+          iconAsset: Assets.familyManageMeals,
+        ),
+        ui.FamilySubscriptionQuickActionEntity(
+          code: 'subscription',
+          label: locale.family_manage_subscription,
+          iconAsset: Assets.familyManageSubscription,
+        ),
+        ui.FamilySubscriptionQuickActionEntity(
+          code: 'permissions',
+          label: locale.family_manage_permissions,
+          iconAsset: Assets.familyManagePermissions,
+        ),
+      ],
       mealStatuses: home.todaySchedule.map((member) {
         final required = member.todayRequiredCount;
         final filled = member.todayFilledCount;
@@ -218,7 +227,11 @@ class _FamilySubscriptionSettingsScreenState
           ],
           if (settings.mealStatuses.isNotEmpty) ...[
             const SizedBox(height: Spacing.xl),
-            FamilySubscriptionMealsStatusCard(statuses: settings.mealStatuses),
+            FamilySubscriptionMealsStatusCard(
+              statuses: settings.mealStatuses,
+              onCompleteMealsTap: () =>
+                  context.pushNamed(AppRoutes.familySubscriptionMembers),
+            ),
           ],
           if (settings.warningTitle.isNotEmpty) ...[
             const SizedBox(height: Spacing.md),
@@ -229,23 +242,4 @@ class _FamilySubscriptionSettingsScreenState
       ),
     );
   }
-
-  String _shortcutLabel(BuildContext context, String code) {
-    final locale = context.localization;
-    return switch (code) {
-      'calendar' || 'meals' => locale.family_manage_meals,
-      'subscriptions' || 'subscription' => locale.family_manage_subscription,
-      'invoice' || 'bills' => locale.family_manage_invoice,
-      'permissions' => locale.family_manage_permissions,
-      _ => code,
-    };
-  }
-
-  String _shortcutIcon(String code) => switch (code) {
-    'calendar' || 'meals' => Assets.familyManageMeals,
-    'subscriptions' || 'subscription' => Assets.familyManageSubscription,
-    'invoice' || 'bills' => Assets.familyManageInvoice,
-    'permissions' => Assets.familyManagePermissions,
-    _ => Assets.familyManagePermissions,
-  };
 }

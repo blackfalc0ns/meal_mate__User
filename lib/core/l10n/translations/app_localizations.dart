@@ -4442,6 +4442,30 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get family_member_permissions_save;
 
+  /// No description provided for @family_member_permissions_confirm_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Permissions'**
+  String get family_member_permissions_confirm_title;
+
+  /// No description provided for @family_member_permissions_confirm_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to save the permission changes for {memberName}?'**
+  String family_member_permissions_confirm_desc(String memberName);
+
+  /// No description provided for @family_member_permissions_confirm_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get family_member_permissions_confirm_cancel;
+
+  /// No description provided for @family_member_permissions_confirm_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get family_member_permissions_confirm_action;
+
   /// No description provided for @family_member_permissions_meals_section.
   ///
   /// In en, this message translates to:

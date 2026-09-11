@@ -8,9 +8,14 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/fa
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_meals_status_item.dart';
 
 class FamilySubscriptionMealsStatusCard extends StatelessWidget {
-  const FamilySubscriptionMealsStatusCard({super.key, required this.statuses});
+  const FamilySubscriptionMealsStatusCard({
+    super.key,
+    required this.statuses,
+    this.onCompleteMealsTap,
+  });
 
   final List<FamilySubscriptionMealStatusEntity> statuses;
+  final VoidCallback? onCompleteMealsTap;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
                 locale.family_manage_today_date,
                 style: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size11,
                   color: color.onSurfaceVariant,
                 ),
               ),
@@ -79,12 +84,12 @@ class FamilySubscriptionMealsStatusCard extends StatelessWidget {
           const SizedBox(height: Spacing.base),
           AppButton(
             text: locale.family_manage_complete_missing_meals,
-            onPressed: () {},
+            onPressed: onCompleteMealsTap,
             height: Spacing.xxl,
             borderRadius: Spacing.radiusPill,
             color: color.primary,
             textColor: color.onPrimary,
-            fontSize: FontSize.size9,
+            fontSize: FontSize.size11,
           ),
         ],
       ),

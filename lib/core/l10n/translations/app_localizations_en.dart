@@ -2357,6 +2357,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_member_permissions_save => 'Save';
 
   @override
+  String get family_member_permissions_confirm_title => 'Save Permissions';
+
+  @override
+  String family_member_permissions_confirm_desc(String memberName) {
+    return 'Are you sure you want to save the permission changes for $memberName?';
+  }
+
+  @override
+  String get family_member_permissions_confirm_cancel => 'Cancel';
+
+  @override
+  String get family_member_permissions_confirm_action => 'Confirm';
+
+  @override
   String get family_member_permissions_meals_section => 'Meals';
 
   @override

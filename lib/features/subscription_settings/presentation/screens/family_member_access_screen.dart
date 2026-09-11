@@ -9,6 +9,7 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_state.dart';
@@ -216,8 +217,21 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: Spacing.xl),
-                          AppButton(
+                          const SizedBox(height: Spacing.sm),
+                        ],
+                      ),
+                bottomNavigationBar: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.screenH,
+                      vertical: Spacing.sm,
+                    ),
+                    child: access == null
+                        ? const ShimmerPlaceholder.rect(
+                            height: Spacing.buttonHeight,
+                            borderRadius: Spacing.buttonRadius,
+                          )
+                        : AppButton(
                             text: locale.family_member_access_save_button,
                             onPressed: state.isSaving || !hasChanges
                                 ? null
@@ -227,9 +241,8 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                                       isPaused,
                                     ),
                           ),
-                          const SizedBox(height: Spacing.xl),
-                        ],
-                      ),
+                  ),
+                ),
               ),
               if (state.isSaving)
                 Positioned.fill(

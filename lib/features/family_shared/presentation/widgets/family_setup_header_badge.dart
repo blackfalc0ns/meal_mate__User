@@ -38,6 +38,7 @@ class FamilySetupHeaderBadge extends StatelessWidget {
               ),
             ],
           ),
+
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,

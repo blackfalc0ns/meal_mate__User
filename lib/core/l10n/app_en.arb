@@ -823,6 +823,17 @@
   },
   "family_member_permissions_note": "The family manager remains in primary control of the family plan settings\nand can edit permissions at any time",
   "family_member_permissions_save": "Save",
+  "family_member_permissions_confirm_title": "Save Permissions",
+  "family_member_permissions_confirm_desc": "Are you sure you want to save the permission changes for {memberName}?",
+  "@family_member_permissions_confirm_desc": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_confirm_cancel": "Cancel",
+  "family_member_permissions_confirm_action": "Confirm",
   "family_member_permissions_meals_section": "Meals",
   "family_member_permissions_program_section": "Program",
   "family_member_permissions_settings_section": "Account and settings",

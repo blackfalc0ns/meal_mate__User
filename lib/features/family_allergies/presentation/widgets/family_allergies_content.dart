@@ -66,8 +66,8 @@ class FamilyAllergiesContent extends StatelessWidget {
               currentStep: 3,
               includeFamilyCreationStep: true,
             ),
-            const SizedBox(height: Spacing.lg),
           ],
+          const SizedBox(height: Spacing.familyProgramMemberTopGap),
           FamilyProgramMemberStrip(
             members: members,
             onSelectMember: viewModel.selectMember,

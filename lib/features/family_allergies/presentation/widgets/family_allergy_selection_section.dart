@@ -92,6 +92,7 @@ class _FamilyAllergySelectionSectionState
                 color: color.onSurface,
               ),
               decoration: InputDecoration(
+                fillColor: Colors.transparent,
                 hintText: widget.searchHint,
                 hintStyle: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
@@ -100,7 +101,7 @@ class _FamilyAllergySelectionSectionState
                 ),
                 suffixIcon: Icon(
                   Icons.search_rounded,
-                  size: Spacing.iconLg,
+                  size: Spacing.iconMd,
                   color: color.onSurfaceVariant,
                 ),
                 contentPadding: const EdgeInsets.symmetric(

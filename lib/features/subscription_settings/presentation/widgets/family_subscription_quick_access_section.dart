@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_tile.dart';
@@ -8,17 +9,43 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 class FamilySubscriptionQuickAccessSection extends StatelessWidget {
   const FamilySubscriptionQuickAccessSection({
     super.key,
-    required this.actions,
+    this.actions,
     this.onActionTap,
   });
 
-  final List<FamilySubscriptionQuickActionEntity> actions;
+  final List<FamilySubscriptionQuickActionEntity>? actions;
   final ValueChanged<FamilySubscriptionQuickActionEntity>? onActionTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final hasThreeCanonicalActions = actions != null &&
+        actions!.length == 3 &&
+        actions!.any((a) => a.code == 'meals') &&
+        actions!.any((a) => a.code == 'subscription') &&
+        actions!.any((a) => a.code == 'permissions');
+
+    final effectiveActions = hasThreeCanonicalActions
+        ? actions!
+        : [
+            FamilySubscriptionQuickActionEntity(
+              code: 'meals',
+              label: locale.family_manage_meals,
+              iconAsset: Assets.familyManageMeals,
+            ),
+            FamilySubscriptionQuickActionEntity(
+              code: 'subscription',
+              label: locale.family_manage_subscription,
+              iconAsset: Assets.familyManageSubscription,
+            ),
+            FamilySubscriptionQuickActionEntity(
+              code: 'permissions',
+              label: locale.family_manage_permissions,
+              iconAsset: Assets.familyManagePermissions,
+            ),
+          ];
 
     return ColoredBox(
       color: color.surface.withValues(alpha: 0),
@@ -29,18 +56,18 @@ class FamilySubscriptionQuickAccessSection extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.md),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (final action in actions)
-                SizedBox(
-                  width: Spacing.familyManageQuickTileWidth,
+              for (int i = 0; i < effectiveActions.length; i++) ...[
+                if (i > 0) const SizedBox(width: Spacing.sm),
+                Expanded(
                   child: FamilySubscriptionQuickAccessTile(
-                    action: action,
+                    action: effectiveActions[i],
                     onTap: onActionTap == null
                         ? null
-                        : () => onActionTap!(action),
+                        : () => onActionTap!(effectiveActions[i]),
                   ),
                 ),
+              ],
             ],
           ),
         ],

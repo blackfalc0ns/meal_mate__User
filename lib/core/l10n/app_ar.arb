@@ -823,6 +823,17 @@
   },
   "family_member_permissions_note": "يظل المدير العائلي هو المتحكم الأساسي في إعدادات\nالباقة العائلية ويمكنه تعديل الصلاحيات في أي وقت",
   "family_member_permissions_save": "حفظ",
+  "family_member_permissions_confirm_title": "تأكيد حفظ الصلاحيات",
+  "family_member_permissions_confirm_desc": "هل أنت متأكد من حفظ تعديل الصلاحيات لـ {memberName}؟",
+  "@family_member_permissions_confirm_desc": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_permissions_confirm_cancel": "إلغاء",
+  "family_member_permissions_confirm_action": "تأكيد",
   "family_member_permissions_meals_section": "الوجبات",
   "family_member_permissions_program_section": "البرنامج",
   "family_member_permissions_settings_section": "الحساب والإعدادات",

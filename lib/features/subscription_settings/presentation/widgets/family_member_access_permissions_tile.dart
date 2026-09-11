@@ -16,10 +16,11 @@ class FamilyMemberAccessPermissionsTile extends StatelessWidget {
     final locale = context.localization;
 
     return InkWell(
-      onTap: onTap ??
-          () => Navigator.of(context).pushNamed(
-                AppRoutes.familyMemberPermissions,
-              ),
+      onTap:
+          onTap ??
+          () => Navigator.of(
+            context,
+          ).pushNamed(AppRoutes.familyMemberPermissions),
       borderRadius: BorderRadius.circular(Spacing.radiusLg),
       child: Container(
         padding: const EdgeInsets.all(Spacing.cardPadding),
@@ -72,7 +73,7 @@ class FamilyMemberAccessPermissionsTile extends StatelessWidget {
               ),
             ),
             Icon(
-              Icons.chevron_left_rounded,
+              Icons.chevron_right_rounded,
               size: Spacing.iconLg,
               color: color.onSurfaceVariant,
             ),

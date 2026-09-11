@@ -47,13 +47,13 @@ class FamilySubscriptionSectionHeader extends StatelessWidget {
                     locale: Locale(locale.localeName),
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size10,
                       color: color.primary,
                     ),
                   ),
                   Icon(
                     Icons.chevron_right_rounded,
-                    size: Spacing.iconSm,
+                    size: Spacing.iconMd,
                     color: color.primary,
                   ),
                 ],

@@ -72,7 +72,7 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                             locale: Locale(locale.localeName),
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size15,
+                              fontSize: FontSize.size12,
                               color: color.onSurface,
                             ),
                           ),

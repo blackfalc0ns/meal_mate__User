@@ -112,7 +112,8 @@ class FamilyMembersListCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (member.ageYears != null && member.ageYears! > 0) ...[
+                        if (member.ageYears != null &&
+                            member.ageYears! > 0) ...[
                           const SizedBox(width: Spacing.xs),
                           Text(
                             '• ${locale.family_member_age_years(member.ageYears!)}',
@@ -159,11 +160,11 @@ class FamilyMembersListCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: Spacing.xs),
-                        Icon(
-                          Icons.chevron_left_rounded,
-                          size: Spacing.iconSm,
-                          color: color.onSurfaceVariant,
-                        ),
+                        // Icon(
+                        //   Icons.chevron_left_rounded,
+                        //   size: Spacing.iconSm,
+                        //   color: color.onSurfaceVariant,
+                        // ),
                       ],
                     ),
                     const SizedBox(height: Spacing.xs),
@@ -296,9 +297,7 @@ class FamilyMembersListCard extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: color.outlineVariant.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusSm,
-                          ),
+                          borderRadius: BorderRadius.circular(Spacing.radiusSm),
                           border: Border.all(
                             color: color.outlineVariant.withValues(alpha: 0.5),
                             width: Spacing.border,
@@ -335,9 +334,7 @@ class FamilyMembersListCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: noteColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -382,14 +379,10 @@ class FamilyMembersListCard extends StatelessWidget {
                   const SizedBox(height: Spacing.xs),
                   Container(
                     height: Spacing.familyMembersAccountChipHeight,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.sm,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
                     decoration: BoxDecoration(
                       color: accountBadgeColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(
-                        Spacing.radiusPill,
-                      ),
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
                     ),
                     child: Center(
                       widthFactor: 1.0,

@@ -2316,6 +2316,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_member_permissions_save => 'حفظ';
 
   @override
+  String get family_member_permissions_confirm_title => 'تأكيد حفظ الصلاحيات';
+
+  @override
+  String family_member_permissions_confirm_desc(String memberName) {
+    return 'هل أنت متأكد من حفظ تعديل الصلاحيات لـ $memberName؟';
+  }
+
+  @override
+  String get family_member_permissions_confirm_cancel => 'إلغاء';
+
+  @override
+  String get family_member_permissions_confirm_action => 'تأكيد';
+
+  @override
   String get family_member_permissions_meals_section => 'الوجبات';
 
   @override
