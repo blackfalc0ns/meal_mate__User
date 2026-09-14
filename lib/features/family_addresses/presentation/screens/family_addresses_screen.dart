@@ -36,6 +36,9 @@ class FamilyAddressesScreen extends StatelessWidget {
         listener: (context, state) =>
             context.pushNamed(AppRoutes.familyAllergies),
         builder: (context, state) {
+          if (isInFamilyFlow) {
+            FamilyFlowScope.updateFamilyName(context, state.familyName);
+          }
           final member = state.currentMember;
           if (state.isLoading || member == null) {
             const loading = FamilyAddressesLoadingSkeleton();
@@ -76,17 +79,15 @@ class FamilyAddressesScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      FamilySetupHeaderBadge(title: state.familyName),
                       if (!isInFamilyFlow) ...[
+                        FamilySetupHeaderBadge(title: state.familyName),
                         const SizedBox(height: Spacing.md),
                         const FamilyProgramStepper(
                           currentStep: 2,
                           includeFamilyCreationStep: true,
                         ),
                       ],
-                      const SizedBox(
-                        height: Spacing.familyProgramMemberTopGap,
-                      ),
+                      const SizedBox(height: Spacing.familyProgramMemberTopGap),
                       FamilyProgramMemberStrip(
                         members: members,
                         onSelectMember: context

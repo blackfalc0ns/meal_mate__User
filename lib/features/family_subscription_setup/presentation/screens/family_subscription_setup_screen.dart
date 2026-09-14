@@ -199,6 +199,10 @@ class _FamilySubscriptionSetupScreenState
     final currentFlow = state.currentFlow;
     if (currentFlow == null) return;
 
+    if (FamilyFlowScope.isActive(context)) {
+      FamilyFlowScope.updateFamilyName(context, currentFlow.name);
+    }
+
     if (_familyNameController.text.isEmpty &&
         currentFlow.name != null &&
         currentFlow.name!.isNotEmpty) {

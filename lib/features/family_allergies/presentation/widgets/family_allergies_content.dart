@@ -59,8 +59,8 @@ class FamilyAllergiesContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const FamilySetupHeaderBadge(),
           if (!isInFamilyFlow) ...[
+            const FamilySetupHeaderBadge(),
             const SizedBox(height: Spacing.md),
             const FamilyProgramStepper(
               currentStep: 3,

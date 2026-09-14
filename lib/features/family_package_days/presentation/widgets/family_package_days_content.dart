@@ -30,6 +30,9 @@ class FamilyPackageDaysContent extends StatelessWidget {
     color.surface;
     locale.localeName;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
+    if (isInFamilyFlow) {
+      FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
+    }
     final isMemberSwitchLoading =
         state.isBundlesLoading ||
         state.isDurationsLoading ||
@@ -44,8 +47,8 @@ class FamilyPackageDaysContent extends StatelessWidget {
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
-              FamilySetupHeaderBadge(title: state.currentFlow?.name),
               if (!isInFamilyFlow) ...[
+                FamilySetupHeaderBadge(title: state.currentFlow?.name),
                 const SizedBox(height: Spacing.familyProgramProgressTopGap),
                 const FamilyProgramStepper(
                   currentStep: 4,

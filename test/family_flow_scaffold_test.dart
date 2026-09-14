@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/navigation/family_flow_route_observer.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_navigator.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scaffold.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 
 void main() {
@@ -96,4 +97,43 @@ void main() {
     expect(find.text('program-stage'), findsOneWidget);
     expect(find.byType(FamilyProgramStepper), findsOneWidget);
   });
+
+  testWidgets(
+    'family info expands beside the icon then collapses automatically',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('ar'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          home: FamilyFlowScope(
+            child: Builder(
+              builder: (context) {
+                FamilyFlowScope.updateFamilyName(context, 'عائلة yyyy');
+                return FamilyFlowScaffold(
+                  currentStepListenable: ValueNotifier<int>(1),
+                  body: const SizedBox.expand(),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byType(PopupMenuButton<void>), findsNothing);
+      expect(find.text('عائلة yyyy'), findsNothing);
+      await tester.tap(find.byIcon(Icons.info_outline_rounded));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 250));
+
+      expect(find.text('عائلة yyyy'), findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(milliseconds: 250));
+
+      expect(find.text('عائلة yyyy'), findsNothing);
+    },
+  );
 }

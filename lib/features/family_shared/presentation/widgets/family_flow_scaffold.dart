@@ -5,7 +5,9 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_info_action.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyFlowScaffold extends StatelessWidget {
   const FamilyFlowScaffold({
@@ -23,6 +25,9 @@ class FamilyFlowScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final familyNameListenable = FamilyFlowScope.familyNameListenableOf(
+      context,
+    );
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -49,6 +54,15 @@ class FamilyFlowScaffold extends StatelessWidget {
             ),
           ],
         ),
+        actions: familyNameListenable == null
+            ? null
+            : [
+                ValueListenableBuilder<String?>(
+                  valueListenable: familyNameListenable,
+                  builder: (context, familyName, child) =>
+                      FamilyFlowInfoAction(familyName: familyName),
+                ),
+              ],
       ),
       body: SafeArea(
         top: false,

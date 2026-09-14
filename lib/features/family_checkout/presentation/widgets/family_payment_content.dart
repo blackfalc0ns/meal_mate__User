@@ -24,6 +24,9 @@ class FamilyPaymentContent extends StatelessWidget {
     color.surface;
     locale.localeName;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
+    if (isInFamilyFlow) {
+      FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
+    }
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -34,8 +37,8 @@ class FamilyPaymentContent extends StatelessWidget {
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
-              FamilySetupHeaderBadge(title: state.currentFlow?.name),
               if (!isInFamilyFlow) ...[
+                FamilySetupHeaderBadge(title: state.currentFlow?.name),
                 const SizedBox(height: Spacing.familyProgramProgressTopGap),
                 const FamilyProgramStepper(
                   currentStep: 5,
