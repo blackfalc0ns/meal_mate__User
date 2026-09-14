@@ -182,4 +182,23 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests/{upgradeId}';
   static const String customerDeviceTokens =
       '/api/v1/customers/me/device-tokens';
+  static const String influencerBanks = '/api/v1/influencer-partner/banks';
+  static const String influencerProfile = '/api/v1/influencer-partner/me';
+  static const String influencerSocialLinks =
+      '/api/v1/influencer-partner/me/social-links';
+  static const String influencerHome = '/api/v1/influencer-partner/me/home';
+  static const String influencerLinks = '/api/v1/influencer-partner/me/links';
+  static const String influencerActivities =
+      '/api/v1/influencer-partner/me/activities';
+  static const String influencerWallet = '/api/v1/influencer-partner/me/wallet';
+  static const String influencerBankAccount =
+      '/api/v1/influencer-partner/me/bank-account';
+  static const String influencerWithdrawals =
+      '/api/v1/influencer-partner/me/withdrawals';
+  static const String influencerWithdrawal =
+      '/api/v1/influencer-partner/me/withdrawals/{id}';
+  static const String influencerWithdrawalCancel =
+      '/api/v1/influencer-partner/me/withdrawals/{id}/cancel';
+  static const String influencerAnalytics =
+      '/api/v1/influencer-partner/me/analytics';
 }

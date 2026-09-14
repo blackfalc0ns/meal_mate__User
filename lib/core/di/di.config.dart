@@ -234,6 +234,18 @@ import '../../features/food_preferences/domain/usecase/update_food_preferences_u
     as _i635;
 import '../../features/food_preferences/presentation/manager/food_preferences_view_model.dart'
     as _i420;
+import '../../features/influencer/data/data_source/influencer_remote_data_source.dart'
+    as _i52;
+import '../../features/influencer/data/data_source/influencer_remote_data_source_impl.dart'
+    as _i397;
+import '../../features/influencer/data/repo/influencer_repository_impl.dart'
+    as _i298;
+import '../../features/influencer/domain/repo/influencer_repository.dart'
+    as _i1050;
+import '../../features/influencer/domain/usecase/influencer_read_usecases.dart'
+    as _i584;
+import '../../features/influencer/domain/usecase/influencer_write_usecases.dart'
+    as _i769;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source.dart'
     as _i557;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source_impl.dart'
@@ -512,7 +524,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i179.AppNavigatorService>(
       () => _i179.AppNavigatorService(),
     );
-    gh.lazySingleton<_i1056.TokenInterceptor>(() => _i1056.TokenInterceptor());
     gh.lazySingleton<_i41.FamilyFlowSnapshotStore>(
       () => _i41.FamilyFlowSnapshotStore(),
     );
@@ -534,6 +545,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i227.TokenService(
         prefs: gh<_i558.FlutterSecureStorage>(),
         sharedPreferences: gh<_i460.SharedPreferences>(),
+      ),
+    );
+    gh.lazySingleton<_i1056.TokenInterceptor>(
+      () => _i1056.TokenInterceptor(
+        tokenService: gh<_i227.TokenService>(),
+        languageService: gh<_i819.LanguageService>(),
+        navigatorService: gh<_i179.AppNavigatorService>(),
       ),
     );
     gh.factory<_i819.LanguageService>(
@@ -694,6 +712,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i600.SaveFamilyMemberPlanUseCase(
         gh<_i306.FamilyPackageDaysRepository>(),
       ),
+    );
+    gh.factory<_i52.InfluencerRemoteDataSource>(
+      () => _i397.InfluencerRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i549.RestaurantTierUpgradeRemoteDataSource>(
       () => _i798.RestaurantTierUpgradeRemoteDataSourceImpl(
@@ -913,6 +934,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i166.NotificationsRepositoryImpl(
         gh<_i173.NotificationsRemoteDataSource>(),
       ),
+    );
+    gh.factory<_i1050.InfluencerRepository>(
+      () =>
+          _i298.InfluencerRepositoryImpl(gh<_i52.InfluencerRemoteDataSource>()),
     );
     gh.factory<_i982.FamilyAddressesRepository>(
       () => _i52.FamilyAddressesRepositoryImpl(
@@ -1189,6 +1214,67 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerHomeUseCase>(
+      () => _i584.GetInfluencerHomeUseCase(gh<_i1050.InfluencerRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerLinksUseCase>(
+      () => _i584.GetInfluencerLinksUseCase(gh<_i1050.InfluencerRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerProfileUseCase>(
+      () =>
+          _i584.GetInfluencerProfileUseCase(gh<_i1050.InfluencerRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerBanksUseCase>(
+      () => _i584.GetInfluencerBanksUseCase(gh<_i1050.InfluencerRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerBankAccountUseCase>(
+      () => _i584.GetInfluencerBankAccountUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i584.GetInfluencerWalletUseCase>(
+      () => _i584.GetInfluencerWalletUseCase(gh<_i1050.InfluencerRepository>()),
+    );
+    gh.factory<_i584.GetInfluencerWithdrawalsUseCase>(
+      () => _i584.GetInfluencerWithdrawalsUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i584.GetInfluencerWithdrawalUseCase>(
+      () => _i584.GetInfluencerWithdrawalUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i584.GetInfluencerAnalyticsUseCase>(
+      () => _i584.GetInfluencerAnalyticsUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i769.UpdateInfluencerSocialLinksUseCase>(
+      () => _i769.UpdateInfluencerSocialLinksUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i769.SaveInfluencerBankAccountUseCase>(
+      () => _i769.SaveInfluencerBankAccountUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i769.DeleteInfluencerBankAccountUseCase>(
+      () => _i769.DeleteInfluencerBankAccountUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i769.CreateInfluencerWithdrawalUseCase>(
+      () => _i769.CreateInfluencerWithdrawalUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
+    );
+    gh.factory<_i769.CancelInfluencerWithdrawalUseCase>(
+      () => _i769.CancelInfluencerWithdrawalUseCase(
+        gh<_i1050.InfluencerRepository>(),
+      ),
     );
     gh.factory<_i643.GetFamilyMemberAddressesUseCase>(
       () => _i643.GetFamilyMemberAddressesUseCase(

@@ -86,6 +86,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
+import 'package:meal_meat_user/features/influencer/data/models/influencer_api_models.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -696,5 +697,55 @@ abstract class ApiServices {
   @DELETE(EndPoints.customerDeviceTokens)
   Future<void> unregisterDeviceToken(
     @Body() DeviceTokenUnregisterRequestDto request,
+  );
+
+  @GET(EndPoints.influencerBanks)
+  Future<List<InfluencerBankDto>> getInfluencerBanks();
+  @GET(EndPoints.influencerProfile)
+  Future<InfluencerProfileResponseDto> getInfluencerProfile();
+  @PUT(EndPoints.influencerSocialLinks)
+  Future<InfluencerProfileResponseDto> updateInfluencerSocialLinks(
+    @Body() InfluencerSocialLinksRequestDto request,
+  );
+  @GET(EndPoints.influencerHome)
+  Future<InfluencerHomeResponseDto> getInfluencerHome();
+  @GET(EndPoints.influencerLinks)
+  Future<InfluencerLinksResponseDto> getInfluencerLinks();
+  @GET(EndPoints.influencerActivities)
+  Future<InfluencerActivitiesPageDto> getInfluencerActivities(
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+  );
+  @GET(EndPoints.influencerWallet)
+  Future<InfluencerWalletResponseDto> getInfluencerWallet();
+  @GET(EndPoints.influencerBankAccount)
+  Future<InfluencerBankAccountResponseDto> getInfluencerBankAccount();
+  @PUT(EndPoints.influencerBankAccount)
+  Future<InfluencerBankAccountResponseDto> saveInfluencerBankAccount(
+    @Body() InfluencerBankAccountRequestDto request,
+  );
+  @DELETE(EndPoints.influencerBankAccount)
+  Future<InfluencerSuccessResponseDto> deleteInfluencerBankAccount();
+  @POST(EndPoints.influencerWithdrawals)
+  Future<InfluencerWithdrawalResponseDto> createInfluencerWithdrawal(
+    @Body() InfluencerWithdrawalRequestDto request,
+  );
+  @GET(EndPoints.influencerWithdrawals)
+  Future<InfluencerWithdrawalsPageDto> getInfluencerWithdrawals(
+    @Query('status') String? status,
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+  );
+  @GET(EndPoints.influencerWithdrawal)
+  Future<InfluencerWithdrawalResponseDto> getInfluencerWithdrawal(
+    @Path('id') String id,
+  );
+  @POST(EndPoints.influencerWithdrawalCancel)
+  Future<InfluencerWithdrawalResponseDto> cancelInfluencerWithdrawal(
+    @Path('id') String id,
+  );
+  @GET(EndPoints.influencerAnalytics)
+  Future<InfluencerAnalyticsResponseDto> getInfluencerAnalytics(
+    @Query('period') String period,
   );
 }
