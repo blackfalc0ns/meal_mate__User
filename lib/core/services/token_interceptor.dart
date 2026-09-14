@@ -1,17 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
+import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 
 @lazySingleton
 class TokenInterceptor extends QueuedInterceptor {
+  TokenInterceptor({
+    TokenService? tokenService,
+    LanguageService? languageService,
+    AppNavigatorService? navigatorService,
+  }) : _tokenService = tokenService ?? getIt<TokenService>(),
+       _languageService = languageService ?? getIt<LanguageService>(),
+       _navigatorService = navigatorService ?? getIt<AppNavigatorService>();
+
   static const String skipAuthKey = 'skipAuth';
   static const String _refreshRetryKey = 'refreshRetry';
 
-  final TokenService _tokenService = getIt<TokenService>();
-  final LanguageService _languageService = getIt<LanguageService>();
+  final TokenService _tokenService;
+  final LanguageService _languageService;
+  final AppNavigatorService _navigatorService;
   final Dio _refreshDio = Dio(
     BaseOptions(
       baseUrl: NetworkConstants.baseUrl,
@@ -26,6 +37,7 @@ class TokenInterceptor extends QueuedInterceptor {
   );
 
   Future<String?>? _inFlightRefresh;
+  bool _sessionExpired = false;
 
   @override
   Future<void> onRequest(
@@ -42,6 +54,7 @@ class TokenInterceptor extends QueuedInterceptor {
       final token = await _tokenService.getToken();
 
       if (token != null && token.isNotEmpty) {
+        _sessionExpired = false;
         options.headers[NetworkConstants.authorization] =
             '${NetworkConstants.bearer} $token';
       }
@@ -62,7 +75,13 @@ class TokenInterceptor extends QueuedInterceptor {
     final shouldSkipAuth = options.extra[skipAuthKey] == true;
     final alreadyRetried = options.extra[_refreshRetryKey] == true;
 
-    if (!isUnauthorized || shouldSkipAuth || alreadyRetried) {
+    if (!isUnauthorized || shouldSkipAuth) {
+      handler.next(err);
+      return;
+    }
+
+    if (alreadyRetried) {
+      await _expireSession();
       handler.next(err);
       return;
     }
@@ -70,6 +89,7 @@ class TokenInterceptor extends QueuedInterceptor {
     try {
       final newAccessToken = await _refreshAccessToken();
       if (newAccessToken == null || newAccessToken.isEmpty) {
+        await _expireSession();
         handler.next(err);
         return;
       }
@@ -81,12 +101,19 @@ class TokenInterceptor extends QueuedInterceptor {
       final response = await Dio().fetch<dynamic>(options);
       handler.resolve(response);
     } on DioException catch (_) {
-      await _tokenService.clearTokens();
+      await _expireSession();
       handler.next(err);
     } catch (_) {
-      await _tokenService.clearTokens();
+      await _expireSession();
       handler.next(err);
     }
+  }
+
+  Future<void> _expireSession() async {
+    if (_sessionExpired) return;
+    _sessionExpired = true;
+    await _tokenService.clearTokens();
+    await _navigatorService.replaceAllWithNamedWhenReady(AppRoutes.login);
   }
 
   Future<String?> _refreshAccessToken() {

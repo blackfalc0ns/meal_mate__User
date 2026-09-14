@@ -47,4 +47,17 @@ class AppNavigatorService {
 
     return null;
   }
+
+  Future<void> replaceAllWithNamedWhenReady(String routeName) async {
+    for (var attempt = 0; attempt < _retryAttempts; attempt++) {
+      final navigatorState = navigator;
+      if (navigatorState != null) {
+        navigatorState.pushNamedAndRemoveUntil(routeName, (_) => false);
+        return;
+      }
+
+      await WidgetsBinding.instance.endOfFrame;
+      await Future<void>.delayed(_retryDelay);
+    }
+  }
 }

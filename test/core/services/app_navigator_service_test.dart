@@ -26,4 +26,30 @@ void main() {
 
     expect(find.text('Saved'), findsOneWidget);
   });
+
+  testWidgets('replaces the navigation stack when the session expires', (
+    tester,
+  ) async {
+    final service = AppNavigatorService();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorKey: service.navigatorKey,
+        initialRoute: '/protected',
+        routes: {
+          '/protected': (_) => const Scaffold(body: Text('Protected')),
+          '/details': (_) => const Scaffold(body: Text('Details')),
+          '/login': (_) => const Scaffold(body: Text('Login')),
+        },
+      ),
+    );
+    service.navigator!.pushNamed('/details');
+    await tester.pumpAndSettle();
+
+    await service.replaceAllWithNamedWhenReady('/login');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Login'), findsOneWidget);
+    expect(service.navigator!.canPop(), isFalse);
+  });
 }
