@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
-import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_social_tile.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_share_social_tile.dart';
 
 void main() {
   testWidgets('more social tile draws three dots without image asset', (

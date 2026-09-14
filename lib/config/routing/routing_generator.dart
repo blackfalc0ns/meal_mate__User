@@ -8,13 +8,13 @@ import 'package:meal_meat_user/features/meal_details/domain/entities/meal_detail
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/home/presentation/screens/home_nutrition_details_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_dashboard_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_wallet_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_history_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_review_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_withdraw_screen.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/screens/influencer_dashboard_screen.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/screens/influencer_share_links_screen.dart';
+import 'package:meal_meat_user/features/influencer/social_links/presentation/screens/influencer_social_connections_screen.dart';
+import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_wallet_screen.dart';
+import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_withdraw_history_screen.dart';
+import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_withdraw_review_screen.dart';
+import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_withdraw_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
@@ -249,12 +249,12 @@ class RouteGenerator {
         final restaurantArgs = settings.arguments is FamilyRestaurantsArgs
             ? settings.arguments! as FamilyRestaurantsArgs
             : (settings.arguments is String
-                ? FamilyRestaurantsArgs(
-                    subscriptionId: settings.arguments! as String,
-                    date: DateTime.now(),
-                    memberName: '',
-                  )
-                : null);
+                  ? FamilyRestaurantsArgs(
+                      subscriptionId: settings.arguments! as String,
+                      date: DateTime.now(),
+                      memberName: '',
+                    )
+                  : null);
         return _buildRoute(
           settings: settings,
           page: FamilyRestaurantsScreen(args: restaurantArgs),
@@ -263,12 +263,12 @@ class RouteGenerator {
         final mealArgs = settings.arguments is FamilyMealSelectionArgs
             ? settings.arguments! as FamilyMealSelectionArgs
             : (settings.arguments is String
-                ? FamilyMealSelectionArgs(
-                    subscriptionId: settings.arguments! as String,
-                    date: DateTime.now(),
-                    memberName: '',
-                  )
-                : null);
+                  ? FamilyMealSelectionArgs(
+                      subscriptionId: settings.arguments! as String,
+                      date: DateTime.now(),
+                      memberName: '',
+                    )
+                  : null);
         return _buildRoute(
           settings: settings,
           page: FamilyMealSelectionScreen(args: mealArgs),
@@ -277,12 +277,12 @@ class RouteGenerator {
         final reviewArgs = settings.arguments is FamilyReviewMemberMealsArgs
             ? settings.arguments! as FamilyReviewMemberMealsArgs
             : (settings.arguments is String
-                ? FamilyReviewMemberMealsArgs(
-                    subscriptionId: settings.arguments! as String,
-                    date: DateTime.now(),
-                    memberName: '',
-                  )
-                : null);
+                  ? FamilyReviewMemberMealsArgs(
+                      subscriptionId: settings.arguments! as String,
+                      date: DateTime.now(),
+                      memberName: '',
+                    )
+                  : null);
         return _buildRoute(
           settings: settings,
           page: FamilyReviewMemberMealsScreen(args: reviewArgs),

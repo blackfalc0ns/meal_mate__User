@@ -7,19 +7,19 @@ import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations_ar.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
-import 'package:meal_meat_user/features/influencer/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_dashboard_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_statistics_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_share_links_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_social_connections_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/screens/influencer_wallet_screen.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_activity_tile.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_header_card.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_hero_card.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_period_filter_strip.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_share_prompt_card.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_statistics_summary_card.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/data/influencer_fake_data_source.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/screens/influencer_dashboard_screen.dart';
+import 'package:meal_meat_user/features/influencer/analytics/presentation/screens/influencer_statistics_screen.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/screens/influencer_share_links_screen.dart';
+import 'package:meal_meat_user/features/influencer/social_links/presentation/screens/influencer_social_connections_screen.dart';
+import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_wallet_screen.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_activity_tile.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_header_card.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_hero_card.dart';
+import 'package:meal_meat_user/features/influencer/analytics/presentation/widgets/influencer_period_filter_strip.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_share_prompt_card.dart';
+import 'package:meal_meat_user/features/influencer/analytics/presentation/widgets/influencer_statistics_summary_card.dart';
 
 void main() {
   testWidgets(

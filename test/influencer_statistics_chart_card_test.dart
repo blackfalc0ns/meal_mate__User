@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
-import 'package:meal_meat_user/features/influencer/domain/entities/influencer_dashboard_entity.dart';
-import 'package:meal_meat_user/features/influencer/presentation/widgets/influencer_statistics_chart_card.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import 'package:meal_meat_user/features/influencer/analytics/presentation/widgets/influencer_statistics_chart_card.dart';
 
 void main() {
   testWidgets('statistics chart card shows bar values', (tester) async {

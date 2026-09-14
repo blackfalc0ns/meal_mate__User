@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/influencer/domain/entities/influencer_api_entities.dart';
-import 'package:meal_meat_user/features/influencer/domain/repo/influencer_repository.dart';
-import 'package:meal_meat_user/features/influencer/domain/usecase/influencer_read_usecases.dart';
-import 'package:meal_meat_user/features/influencer/presentation/manager/dashboard/influencer_dashboard_view_model.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_api_entities.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/repo/influencer_repository.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/usecase/influencer_read_usecases.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/manager/influencer_dashboard_view_model.dart';
 
 void main() {
   test('dashboard loads once unless force refreshed', () async {

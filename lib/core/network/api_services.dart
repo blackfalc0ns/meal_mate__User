@@ -86,7 +86,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
-import 'package:meal_meat_user/features/influencer/data/models/influencer_api_models.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_api_models.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
