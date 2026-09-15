@@ -212,6 +212,12 @@ class AssetsFake {
       'assets/images/influencer/figma/influencer_social_telegram.svg';
   static const String influencerSocialTiktok =
       'assets/images/influencer/figma/influencer_social_tiktok.svg';
+  static const String influencerSocialYoutube =
+      'assets/images/influencer/figma/influencer_social_youtube.svg';
+  static const String influencerSocialSnapchat =
+      'assets/images/influencer/figma/influencer_social_snapchat.svg';
+  static const String influencerPrivacyShield =
+      'assets/images/influencer/figma/influencer_privacy_shield.svg';
   static const String influencerSocialMore =
       'assets/images/influencer/figma/influencer_social_more.svg';
   static const String influencerQuickStatClicks =

@@ -4563,6 +4563,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get influencer_snapchat => 'Snapchat';
 
   @override
+  String get influencer_whatsapp => 'WhatsApp';
+
+  @override
+  String get influencer_telegram => 'Telegram';
+
+  @override
+  String get influencer_youtube => 'YouTube';
+
+  @override
+  String get influencer_tiktok_subtitle => 'Add your TikTok account';
+
+  @override
+  String get influencer_instagram_subtitle => 'Add your Instagram account';
+
+  @override
+  String get influencer_whatsapp_subtitle =>
+      'Add your WhatsApp Business number';
+
+  @override
+  String get influencer_telegram_subtitle => 'Add your Telegram account';
+
+  @override
+  String get influencer_youtube_subtitle => 'Add your YouTube channel';
+
+  @override
+  String get influencer_snapchat_subtitle => 'Add your Snapchat account';
+
+  @override
+  String get influencer_social_add => 'Add';
+
+  @override
+  String get influencer_social_edit => 'Edit';
+
+  @override
+  String get influencer_privacy_title => 'We protect your data privacy';
+
+  @override
+  String get influencer_privacy_body =>
+      'We only use your data to improve partnership opportunities and brand communication.';
+
+  @override
+  String get influencer_enter_account => 'Enter account handle or link';
+
+  @override
+  String get influencer_confirm => 'Confirm';
+
+  @override
+  String get influencer_cancel => 'Cancel';
+
+  @override
   String get influencer_not_connected => 'Not connected';
 
   @override
@@ -5518,4 +5568,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_day_default_restaurant_name => 'Green Chef Restaurant';
+
+  @override
+  String get influencer_header_greeting => 'Hello, Mohammed';
 }

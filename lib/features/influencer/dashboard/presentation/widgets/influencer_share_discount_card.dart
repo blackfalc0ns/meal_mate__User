@@ -6,17 +6,18 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_dashed_border.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class InfluencerShareDiscountCard extends StatelessWidget {
   const InfluencerShareDiscountCard({
     super.key,
     required this.shareLinks,
-    required this.qrAsset,
+    required this.qrData,
     required this.copyIconAsset,
   });
 
   final InfluencerShareLinksEntity shareLinks;
-  final String qrAsset;
+  final String qrData;
   final String copyIconAsset;
 
   @override
@@ -70,11 +71,16 @@ class InfluencerShareDiscountCard extends StatelessWidget {
                   const SizedBox(height: Spacing.xs),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    child: Image.asset(
-                      qrAsset,
-                      width: Spacing.influencerShareLinksQrImageSize,
-                      height: Spacing.influencerShareLinksQrImageSize,
-                      fit: BoxFit.cover,
+                    child: QrImageView(
+                      data: qrData,
+                      semanticsLabel: qrData,
+                      size: Spacing.influencerShareLinksQrImageSize,
+                      padding: EdgeInsets.zero,
+                      backgroundColor: color.surface,
+                      eyeStyle: QrEyeStyle(color: color.onSurface),
+                      dataModuleStyle: QrDataModuleStyle(
+                        color: color.onSurface,
+                      ),
                     ),
                   ),
                 ],

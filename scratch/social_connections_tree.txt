@@ -1,0 +1,129 @@
+- [2300:9456] Influencer Social Connections - iPhone 13 (FRAME, 390.0x844.0) [fills: #ffffff(1.00)]
+  - [2300:9457] Screen Title (TEXT, 318.0x34.0) text: "إضافة وسائل التواصل" [fills: #000000(1.00)] [font: Alexandria, size: 18.0, weight: 700]
+  - [2300:9458] Screen Subtitle (TEXT, 342.0x28.0) text: "أضف حساباتك على وسائل التواصل لبدء الشراكة وكسب عمولات أكثر" [fills: #5d6576(1.00)] [font: Alexandria, size: 10.0, weight: 400]
+  - [2300:9459] Frame 1 (FRAME, 358.0x365.0) gap:7.0
+    - [2300:9460] Group 20431 (GROUP, 358.0x55.0)
+      - [2300:9461] Social Card - TikTok (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9462] Group 20430 (GROUP, 327.0x37.0)
+        - [2300:9463] Group (GROUP, 30.0x30.0)
+          - [2300:9464] Vector (VECTOR, 30.0x30.0) [fills: #000000(1.00)]
+          - [2300:9465] Group (GROUP, 15.2x18.7)
+            - [2300:9466] Vector (VECTOR, 14.2x16.4) [fills: #ff004f(1.00)]
+            - [2300:9467] Vector (VECTOR, 14.2x16.4) [fills: #00f7ef(1.00)]
+            - [2300:9468] Vector (VECTOR, 14.2x16.4) [fills: #ffffff(1.00)]
+        - [2300:9469] Group 20428 (GROUP, 154.0x37.0)
+          - [2300:9470] TikTok Title (TEXT, 106.0x19.0) text: "تيك توك" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9471] TikTok Subtitle (TEXT, 154.0x17.0) text: "أضف حسابك على تيك توك" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9472] Group 20429 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9473] TikTok Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9474] TikTok Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+    - [2300:9475] Group 20435 (GROUP, 358.0x55.0)
+      - [2300:9476] Social Card - Instagram (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9477] Group 20434 (GROUP, 327.0x37.0)
+        - [2300:9478] Group (GROUP, 30.0x30.0)
+          - [2300:9479] Vector (VECTOR, 30.0x30.0)
+          - [2300:9480] Group (GROUP, 18.6x17.8)
+            - [2300:9481] Vector (VECTOR, 18.6x17.8) [fills: #ffffff(1.00)]
+            - [2300:9482] Vector (VECTOR, 8.6x8.7) [fills: #ffffff(1.00)]
+            - [2300:9483] Vector (VECTOR, 2.3x2.3) [fills: #ffffff(1.00)]
+        - [2300:9484] Group 20432 (GROUP, 154.0x37.0)
+          - [2300:9485] Instagram Title (TEXT, 106.0x19.0) text: "إنستغرام" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9486] Instagram Subtitle (TEXT, 154.0x17.0) text: "أضف حسابك على إنستغرام" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9487] Group 20433 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9488] Instagram Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9489] Instagram Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+    - [2300:9490] Group 20439 (GROUP, 358.0x55.0)
+      - [2300:9491] Social Card - WhatsApp (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9492] Group 20438 (GROUP, 327.0x37.0)
+        - [2300:9493] Group (GROUP, 30.0x30.0)
+          - [2300:9494] Vector (VECTOR, 30.0x30.0) [fills: #00e510(1.00)]
+          - [2300:9495] Group (GROUP, 19.5x18.9)
+            - [2300:9496] Vector (VECTOR, 8.7x8.7) [fills: #fdfdfd(1.00)]
+            - [2300:9497] Vector (VECTOR, 19.5x18.9) [fills: #fdfdfd(1.00)]
+        - [2300:9498] Group 20436 (GROUP, 154.0x37.0)
+          - [2300:9499] WhatsApp Title (TEXT, 106.0x19.0) text: "واتساب" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9500] WhatsApp Subtitle (TEXT, 154.0x17.0) text: "أضف رقم واتساب للأعمال" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9501] Group 20437 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9502] WhatsApp Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9503] WhatsApp Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+    - [2300:9504] Group 20443 (GROUP, 358.0x55.0)
+      - [2300:9505] Social Card - Telegram (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9506] Group 20442 (GROUP, 327.0x37.0)
+        - [2300:9507] Group (GROUP, 30.0x30.0)
+          - [2300:9508] Vector (VECTOR, 30.0x30.0) [fills: #00b0f2(1.00)]
+          - [2300:9509] Vector (VECTOR, 18.3x15.2) [fills: #fefffc(1.00)]
+        - [2300:9510] Group 20440 (GROUP, 154.0x37.0)
+          - [2300:9511] Telegram Title (TEXT, 106.0x19.0) text: "تيليجرام" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9512] Telegram Subtitle (TEXT, 154.0x17.0) text: "أضف حسابك على تيليجرام" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9513] Group 20441 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9514] Telegram Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9515] Telegram Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+    - [2300:9516] Group 20447 (GROUP, 358.0x55.0)
+      - [2300:9517] Social Card - YouTube (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9518] Group 20446 (GROUP, 327.0x37.0)
+        - [2300:9519] Group (GROUP, 30.0x30.0)
+          - [2300:9520] Vector (VECTOR, 30.0x30.0) [fills: #ff0209(1.00)]
+          - [2300:9521] Group (GROUP, 19.2x13.4)
+            - [2300:9522] Vector (VECTOR, 19.2x13.4) [fills: #ffffff(1.00)]
+            - [2300:9523] Vector (VECTOR, 5.1x5.9) [fills: #ff0209(1.00)]
+        - [2300:9524] Group 20444 (GROUP, 154.0x37.0)
+          - [2300:9525] YouTube Title (TEXT, 106.0x19.0) text: "يوتيوب" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9526] YouTube Subtitle (TEXT, 154.0x17.0) text: "أضف قناتك على يوتيوب" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9527] Group 20445 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9528] YouTube Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9529] YouTube Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+    - [2300:9530] Group 20451 (GROUP, 358.0x55.0)
+      - [2300:9531] Social Card - Snapchat (RECTANGLE, 358.0x55.0) [fills: #ffffff(1.00)] [strokes: #e5eae8] [radius: 30.0]
+      - [2300:9532] Group 20450 (GROUP, 327.0x37.0)
+        - [2300:9533] Group (GROUP, 30.0x30.0)
+          - [2300:9534] Vector (VECTOR, 30.0x30.0) [fills: #fffa00(1.00)]
+          - [2300:9535] Group (GROUP, 18.3x18.1)
+            - [2300:9536] Vector (VECTOR, 17.4x17.2) [fills: #ffffff(1.00)]
+            - [2300:9537] Vector (VECTOR, 18.3x18.1) [fills: #1d1d1b(1.00)]
+        - [2300:9538] Group 20448 (GROUP, 154.0x37.0)
+          - [2300:9539] Snapchat Title (TEXT, 106.0x19.0) text: "سناب شات" [fills: #191c1d(1.00)] [font: Alexandria, size: 12.0, weight: 600]
+          - [2300:9540] Snapchat Subtitle (TEXT, 154.0x17.0) text: "أضف حسابك على سناب شات" [fills: #5d6576(1.00)] [font: Alexandria, size: 9.600000381469727, weight: 400]
+        - [2300:9541] Group 20449 (GROUP, 88.0x30.0) [radius: 15.0]
+          - [2300:9542] Snapchat Add Button (RECTANGLE, 88.0x30.0) [fills: #ffffff(1.00)] [strokes: #04994e] [radius: 15.0]
+          - [2300:9543] Snapchat Add Label (TEXT, 78.0x30.0) text: "إضافة" [fills: #04994e(1.00)] [font: Alexandria, size: 11.0, weight: 700]
+  - [2300:9544] Group 20454 (GROUP, 358.0x54.0)
+    - [2300:9545] Privacy Note (RECTANGLE, 358.0x54.0) [fills: #f6f9f7(1.00)] [strokes: #e5eae8] [radius: 30.0]
+    - [2300:9546] Group 20453 (GROUP, 324.0x35.0)
+      - [2300:9547] mingcute:safe-lock-fill (FRAME, 30.0x30.0) [fills: #ffffff(1.00)]
+        - [2300:9548] Vector (VECTOR, 22.5x24.8) [fills: #0c9441(1.00)]
+      - [2300:9549] Group 20452 (GROUP, 284.0x35.0)
+        - [2300:9550] Privacy Title (TEXT, 187.0x19.0) text: "نحافظ على خصوصية بياناتك" [fills: #5d6576(1.00)] [font: Alexandria, size: 10.699999809265137, weight: 600]
+        - [2300:9551] Privacy Body (TEXT, 284.0x19.0) text: "نستخدم بياناتك فقط لتحسين فرص الشراكة والتواصل مع العلامات التجارية." [fills: #5d6576(1.00)] [font: Alexandria, size: 7.800000190734863, weight: 400]
+  - [2300:9552] Save and Continue Button (RECTANGLE, 358.0x48.0) [radius: 38.0]
+  - [2300:9553] Save and Continue Label (TEXT, 358.0x34.0) text: "حفظ ومتابعة" [fills: #ffffff(1.00)] [font: Alexandria, size: 14.0, weight: 700]
+  - [2300:9554] Skip Now (TEXT, 110.0x24.0) text: "تخطي الآن" [fills: #04994e(1.00)] [font: Alexandria, size: 12.0, weight: 700]
+  - [2300:9555] Home Indicator (RECTANGLE, 132.0x5.0) [fills: #000000(1.00)] [radius: 3.0]
+  - [2300:9556] Group 20427 (GROUP, 359.0x49.7)
+    - [2300:9557] vuesax/bold/notification (INSTANCE, 29.8x29.8) [fills: #ffffff(1.00)]
+      - [I2300:9557;101:147] vuesax/bold/notification (GROUP, 29.8x29.8)
+        - [I2300:9557;101:148] notification (GROUP, 29.8x29.8)
+          - [I2300:9557;101:149] Vector (VECTOR, 19.1x21.1) [fills: #24252c(1.00)]
+          - [I2300:9557;101:150] Vector (VECTOR, 7.0x2.5) [fills: #24252c(1.00)]
+          - [I2300:9557;101:151] Vector (VECTOR, 29.8x29.8)
+      - [I2300:9557;101:152] Ellipse 28 (ELLIPSE, 9.9x9.9) [fills: #f67e15(1.00)]
+    - [2300:9558] Group 20426 (GROUP, 140.2x49.7)
+      - [2300:9559] Ellipse 1352 (ELLIPSE, 49.7x49.7) [fills: IMAGE]
+      - [2300:9560] مرحباً ، محمد (TEXT, 72.0x14.0) text: "مرحباً ، محمد" [fills: #000000(1.00)] [font: Alexandria, size: 11.32638931274414, weight: 700]
+      - [2300:9561] Influencer Partner (TEXT, 82.0x11.0) text: "Influencer Partner" [fills: #04994e(1.00)] [font: Alexandria, size: 8.734758377075195, weight: 700]
+    - [2300:9562] Asset 10 1 (FRAME, 38.0x37.6) [fills: #ffffff(1.00)]
+      - [2300:9563] Layer 1 (GROUP, 38.0x37.6)
+        - [2300:9564] Group (GROUP, 38.0x37.6)
+          - [2300:9565] Vector (VECTOR, 38.0x20.8)
+          - [2300:9566] Group (GROUP, 37.1x15.0)
+            - [2300:9567] Vector (VECTOR, 28.7x13.8) [fills: #06542b(1.00)]
+            - [2300:9568] Vector (VECTOR, 9.9x13.0)
+  - [2300:9569] Status bar (INSTANCE, 390.0x62.0) gap:154.0 pad(T:21.0,R:24.0,B:19.0,L:24.0)
+    - [I2300:9569;5465:16808] Time (FRAME, 94.0x22.0) gap:10.0 pad(T:1.5,R:0,B:0,L:0)
+      - [I2300:9569;5465:16809] Time (TEXT, 37.0x22.0) text: "9:41" [fills: #000000(1.00)] [font: SF Pro, size: 17.0, weight: 590]
+    - [I2300:9569;5465:16811] Levels (FRAME, 94.0x22.0) gap:7.0 pad(T:1.0,R:1.0,B:0,L:0)
+      - [I2300:9569;5465:16812] Cellular Connection (VECTOR, 19.2x12.2) [fills: #000000(1.00)]
+      - [I2300:9569;5465:16813] Wifi (VECTOR, 17.1x12.3) [fills: #000000(1.00)]
+      - [I2300:9569;6325:1760] Frame (FRAME, 27.3x13.0)
+        - [I2300:9569;5465:16815] Border (RECTANGLE, 25.0x13.0) [strokes: #000000] [radius: 4.300000190734863]
+        - [I2300:9569;5465:16816] Cap (VECTOR, 1.3x4.1) [fills: #000000(1.00)]
+        - [I2300:9569;5465:16817] Capacity (RECTANGLE, 21.0x9.0) [fills: #000000(1.00)] [radius: 2.5]

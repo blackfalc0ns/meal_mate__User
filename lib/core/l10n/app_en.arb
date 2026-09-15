@@ -1636,6 +1636,22 @@
   "influencer_instagram": "Instagram",
   "influencer_tiktok": "TikTok",
   "influencer_snapchat": "Snapchat",
+  "influencer_whatsapp": "WhatsApp",
+  "influencer_telegram": "Telegram",
+  "influencer_youtube": "YouTube",
+  "influencer_tiktok_subtitle": "Add your TikTok account",
+  "influencer_instagram_subtitle": "Add your Instagram account",
+  "influencer_whatsapp_subtitle": "Add your WhatsApp Business number",
+  "influencer_telegram_subtitle": "Add your Telegram account",
+  "influencer_youtube_subtitle": "Add your YouTube channel",
+  "influencer_snapchat_subtitle": "Add your Snapchat account",
+  "influencer_social_add": "Add",
+  "influencer_social_edit": "Edit",
+  "influencer_privacy_title": "We protect your data privacy",
+  "influencer_privacy_body": "We only use your data to improve partnership opportunities and brand communication.",
+  "influencer_enter_account": "Enter account handle or link",
+  "influencer_confirm": "Confirm",
+  "influencer_cancel": "Cancel",
   "influencer_not_connected": "Not connected",
   "influencer_currency": "KWD",
   "influencer_wallet_last_updated": "Last updated today at 09:15 AM",
@@ -1772,7 +1788,16 @@
   "upgrade_summary_operational_title": "Upgrade activation details",
   "upgrade_summary_effective_date": "Activation start date",
   "upgrade_summary_repetition": "You can repeat a restaurant up to {limit} times during {days} days",
-  "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
+  "@upgrade_summary_repetition": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "upgrade_summary_new_restaurants": "New restaurants joining your package",
   "upgrade_summary_no_new_restaurants": "No additional restaurants in this tier",
   "upgrade_summary_load_error": "Unable to load the upgrade summary. Please try again.",
@@ -1811,7 +1836,13 @@
   "family_packages_continue_button": "Continue subscription selection",
   "family_allergies_title": "Allergies",
   "family_allergies_member": "Allergies for {name}",
-  "@family_allergies_member": {"placeholders": {"name": {"type": "String"}}},
+  "@family_allergies_member": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_allergies_none": "No allergies",
   "family_allergies_save_next_member": "Save and continue",
   "family_allergies_next_location": "Next: location",
@@ -1827,7 +1858,13 @@
   "family_allergies_information_note": "We use this information to personalize suitable meals for each member.",
   "family_addresses_title": "Delivery addresses",
   "family_addresses_member": "Address for {name}",
-  "@family_addresses_member": {"placeholders": {"name": {"type": "String"}}},
+  "@family_addresses_member": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_addresses_add": "Add address",
   "family_addresses_use": "Use this address",
   "family_addresses_next_member": "Save and continue",
@@ -1836,9 +1873,24 @@
   "family_addresses_area": "Area",
   "family_addresses_line": "Address details",
   "family_meal_selection_title": "{name}'s Meals",
-  "@family_meal_selection_title": {"placeholders": {"name": {"type": "String"}}},
+  "@family_meal_selection_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_selection_context": "{restaurant} • {slot}",
-  "@family_meal_selection_context": {"placeholders": {"restaurant": {"type": "String"}, "slot": {"type": "String"}}},
+  "@family_meal_selection_context": {
+    "placeholders": {
+      "restaurant": {
+        "type": "String"
+      },
+      "slot": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_stepper_restaurant": "Select Restaurant",
   "family_meal_stepper_meal": "Select Meal",
   "family_meal_stepper_review": "Review",
@@ -1850,9 +1902,21 @@
   "family_meal_macros_protein": "Protein",
   "family_meal_macros_fat": "Fats",
   "family_meal_gram_unit": "{count}g",
-  "@family_meal_gram_unit": {"placeholders": {"count": {"type": "String"}}},
+  "@family_meal_gram_unit": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_calorie_unit": "{count} kcal",
-  "@family_meal_calorie_unit": {"placeholders": {"count": {"type": "String"}}},
+  "@family_meal_calorie_unit": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_tab_all": "All",
   "family_meal_tab_breakfast": "Breakfast",
   "family_meal_tab_lunch": "Lunch",
@@ -1860,10 +1924,25 @@
   "family_meal_status_selected": "Selected",
   "family_meal_button_select": "Select Meal",
   "family_meal_selected_counter": "{selected} of {total} meals selected",
-  "@family_meal_selected_counter": {"placeholders": {"selected": {"type": "int"}, "total": {"type": "int"}}},
+  "@family_meal_selected_counter": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "family_meal_continue_review": "Continue to Review",
   "family_review_title": "Review {name}'s Meals",
-  "@family_review_title": {"placeholders": {"name": {"type": "String"}}},
+  "@family_review_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_subtitle": "Review today's choices before confirmation",
   "family_review_status_ready": "Ready to confirm",
   "family_review_selected_day_label": "Selected Day",
@@ -1877,19 +1956,49 @@
   "family_review_edit_button": "Edit",
   "family_review_nutrition_summary_section": "Nutritional Summary",
   "family_review_calories_progress": "{current} of {target} kcal",
-  "@family_review_calories_progress": {"placeholders": {"current": {"type": "String"}, "target": {"type": "String"}}},
+  "@family_review_calories_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_grams_progress": "{current} of {target}g",
-  "@family_review_grams_progress": {"placeholders": {"current": {"type": "String"}, "target": {"type": "String"}}},
+  "@family_review_grams_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_member_instructions_section": "Member Instructions",
   "family_review_preferences_note": "Your preferences will be respected if any meal needs replacement",
   "family_review_cutoff_title": "You can edit today's meals until cutoff time",
   "family_review_cutoff_desc": "Once cutoff is reached, meals will be prepared and cannot be edited or canceled.",
   "family_review_cutoff_time": "Time remaining: {time}",
-  "@family_review_cutoff_time": {"placeholders": {"time": {"type": "String"}}},
+  "@family_review_cutoff_time": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_cutoff_disclaimer": "If remaining meals are not chosen, they will be assigned automatically based on preferences",
   "family_review_edit_meals_button": "Edit Meals",
   "family_review_confirm_meals_button": "Confirm {name}'s Meals",
-  "@family_review_confirm_meals_button": {"placeholders": {"name": {"type": "String"}}},
+  "@family_review_confirm_meals_button": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_success_message": "Meals confirmed successfully",
   "family_meal_item_1_title": "Herb-Grilled Chicken",
   "family_meal_item_1_desc": "Herb-marinated grilled chicken with brown rice and mixed vegetables",
@@ -1933,50 +2042,105 @@
   "family_member_paused_label": "Paused",
   "family_member_active_label": "Active",
   "family_member_days_remaining": "{count} days remaining",
-  "@family_member_days_remaining": {"placeholders": {"count": {"type": "int"}}},
+  "@family_member_days_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "family_member_age_years": "{count} years",
-  "@family_member_age_years": {"placeholders": {"count": {"type": "int"}}}
-  ,"family_member_details_title": "Details for {name}"
-  ,"@family_member_details_title": {"placeholders": {"name": {"type": "String"}}}
-  ,"family_member_manager_label": "Family manager"
-  ,"family_member_member_label": "Family member"
-  ,"family_member_program_title": "Nutrition program"
-  ,"family_member_change_program": "Change program"
-  ,"family_member_package_title": "Subscription"
-  ,"family_member_subscription_dates": "{start} – {end}"
-  ,"@family_member_subscription_dates": {"placeholders": {"start": {"type": "String"}, "end": {"type": "String"}}}
-  ,"family_member_renew_subscription": "Renew subscription"
-  ,"family_member_today_nutrition": "Today's nutrition"
-  ,"family_member_calories_value": "{count} kcal"
-  ,"@family_member_calories_value": {"placeholders": {"count": {"type": "String"}}}
-  ,"family_member_show_calendar": "Show calendar"
-  ,"family_member_access_phone_label": "Mobile number"
-  ,"family_member_access_pause_label": "Pause member"
-  ,"family_member_access_remove_label": "Remove member"
-  ,"family_member_access_generated_password_title": "One-time password"
-  ,"family_member_access_generated_password_message": "Share this password now. It will not be shown again."
-  ,"family_member_access_existing_login": "This phone number already has a MealMate account. The member can use the existing password."
-  ,"family_member_access_copy": "Copy"
-  ,"family_member_shortcut_daily_meals": "Daily Meals"
-  ,"family_member_shortcut_daily_meals_subtitle": "View meals and plans"
-  ,"family_member_shortcut_permissions": "Permissions"
-  ,"family_member_shortcut_permissions_subtitle": "View and manage permissions"
-  ,"family_member_calendar_title": "{name}'s Calendar"
-  ,"@family_member_calendar_title": {"placeholders": {"name": {"type": "String"}}}
-  ,"family_member_no_active_subscription": "This member currently has no active subscription."
-  ,"family_member_no_meals_selected": "No meals selected for this day."
-  ,"family_member_selected_meals_count": "{count} meals selected"
-  ,"@family_member_selected_meals_count": {"placeholders": {"count": {"type": "int"}}}
-  ,"family_member_day_details_button": "View Day Details"
-  ,"family_member_choose_meals_button": "Choose Meals"
-  ,"family_member_selected_meals_title": "Selected Meals"
-  ,"family_member_selected_meals_subtitle": "Selected meals for {name} on {date}"
-  ,"@family_member_selected_meals_subtitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}}
-  ,"family_member_meal_chosen": "Selected"
-  ,"family_member_choose_meal": "Choose meal"
-  ,"family_day_screen_title": "Day Details"
-  ,"family_day_current_restaurant_subtitle": "Current restaurant"
-  ,"family_day_review_meals_button": "Review day meals"
-  ,"family_day_all_meals_selected": "All meals selected"
-  ,"family_day_default_restaurant_name": "Green Chef Restaurant"
+  "@family_member_age_years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_details_title": "Details for {name}",
+  "@family_member_details_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_manager_label": "Family manager",
+  "family_member_member_label": "Family member",
+  "family_member_program_title": "Nutrition program",
+  "family_member_change_program": "Change program",
+  "family_member_package_title": "Subscription",
+  "family_member_subscription_dates": "{start} – {end}",
+  "@family_member_subscription_dates": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_renew_subscription": "Renew subscription",
+  "family_member_today_nutrition": "Today's nutrition",
+  "family_member_calories_value": "{count} kcal",
+  "@family_member_calories_value": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_show_calendar": "Show calendar",
+  "family_member_access_phone_label": "Mobile number",
+  "family_member_access_pause_label": "Pause member",
+  "family_member_access_remove_label": "Remove member",
+  "family_member_access_generated_password_title": "One-time password",
+  "family_member_access_generated_password_message": "Share this password now. It will not be shown again.",
+  "family_member_access_existing_login": "This phone number already has a MealMate account. The member can use the existing password.",
+  "family_member_access_copy": "Copy",
+  "family_member_shortcut_daily_meals": "Daily Meals",
+  "family_member_shortcut_daily_meals_subtitle": "View meals and plans",
+  "family_member_shortcut_permissions": "Permissions",
+  "family_member_shortcut_permissions_subtitle": "View and manage permissions",
+  "family_member_calendar_title": "{name}'s Calendar",
+  "@family_member_calendar_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_no_active_subscription": "This member currently has no active subscription.",
+  "family_member_no_meals_selected": "No meals selected for this day.",
+  "family_member_selected_meals_count": "{count} meals selected",
+  "@family_member_selected_meals_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_day_details_button": "View Day Details",
+  "family_member_choose_meals_button": "Choose Meals",
+  "family_member_selected_meals_title": "Selected Meals",
+  "family_member_selected_meals_subtitle": "Selected meals for {name} on {date}",
+  "@family_member_selected_meals_subtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_meal_chosen": "Selected",
+  "family_member_choose_meal": "Choose meal",
+  "family_day_screen_title": "Day Details",
+  "family_day_current_restaurant_subtitle": "Current restaurant",
+  "family_day_review_meals_button": "Review day meals",
+  "family_day_all_meals_selected": "All meals selected",
+  "family_day_default_restaurant_name": "Green Chef Restaurant",
+  "influencer_header_greeting": "Hello, Mohammed"
 }

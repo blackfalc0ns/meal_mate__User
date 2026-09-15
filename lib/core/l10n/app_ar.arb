@@ -1771,7 +1771,16 @@
   "upgrade_summary_operational_title": "تفاصيل تفعيل الترقية",
   "upgrade_summary_effective_date": "تاريخ بدء التفعيل",
   "upgrade_summary_repetition": "يمكن تكرار المطعم حتى {limit} مرات خلال {days} يومًا",
-  "@upgrade_summary_repetition": {"placeholders": {"limit": {"type": "int"}, "days": {"type": "int"}}},
+  "@upgrade_summary_repetition": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "upgrade_summary_new_restaurants": "مطاعم جديدة تنضم لباقتك",
   "upgrade_summary_no_new_restaurants": "لا توجد مطاعم إضافية في هذا التصنيف",
   "upgrade_summary_load_error": "تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.",
@@ -1810,7 +1819,13 @@
   "family_packages_continue_button": "متابعة اختيار الاشتراك",
   "family_allergies_title": "الحساسية",
   "family_allergies_member": "حساسية {name}",
-  "@family_allergies_member": {"placeholders": {"name": {"type": "String"}}},
+  "@family_allergies_member": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_allergies_none": "بدون حساسية",
   "family_allergies_save_next_member": "حفظ والمتابعة",
   "family_allergies_next_location": "التالي: الموقع",
@@ -1826,7 +1841,13 @@
   "family_allergies_information_note": "نستخدم هذه المعلومات لتخصيص الوجبات المناسبة لكل فرد.",
   "family_addresses_title": "عناوين التوصيل",
   "family_addresses_member": "عنوان {name}",
-  "@family_addresses_member": {"placeholders": {"name": {"type": "String"}}},
+  "@family_addresses_member": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_addresses_add": "إضافة عنوان",
   "family_addresses_use": "استخدام هذا العنوان",
   "family_addresses_next_member": "حفظ والمتابعة",
@@ -1835,9 +1856,24 @@
   "family_addresses_area": "المنطقة",
   "family_addresses_line": "تفاصيل العنوان",
   "family_meal_selection_title": "وجبات {name}",
-  "@family_meal_selection_title": {"placeholders": {"name": {"type": "String"}}},
+  "@family_meal_selection_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_selection_context": "{restaurant} • {slot}",
-  "@family_meal_selection_context": {"placeholders": {"restaurant": {"type": "String"}, "slot": {"type": "String"}}},
+  "@family_meal_selection_context": {
+    "placeholders": {
+      "restaurant": {
+        "type": "String"
+      },
+      "slot": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_stepper_restaurant": "اختيار المطعم",
   "family_meal_stepper_meal": "اختيار الوجبة",
   "family_meal_stepper_review": "المراجعة",
@@ -1849,9 +1885,21 @@
   "family_meal_macros_protein": "البروتين",
   "family_meal_macros_fat": "الدهون",
   "family_meal_gram_unit": "{count} جم",
-  "@family_meal_gram_unit": {"placeholders": {"count": {"type": "String"}}},
+  "@family_meal_gram_unit": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_calorie_unit": "{count} سعرة",
-  "@family_meal_calorie_unit": {"placeholders": {"count": {"type": "String"}}},
+  "@family_meal_calorie_unit": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "family_meal_tab_all": "الكل",
   "family_meal_tab_breakfast": "إفطار",
   "family_meal_tab_lunch": "غداء",
@@ -1859,10 +1907,25 @@
   "family_meal_status_selected": "تم الاختيار",
   "family_meal_button_select": "اختيار الوجبة",
   "family_meal_selected_counter": "تم اختيار {selected} من {total} وجبات",
-  "@family_meal_selected_counter": {"placeholders": {"selected": {"type": "int"}, "total": {"type": "int"}}},
+  "@family_meal_selected_counter": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "family_meal_continue_review": "متابعة المراجعة",
   "family_review_title": "مراجعة وجبات {name}",
-  "@family_review_title": {"placeholders": {"name": {"type": "String"}}},
+  "@family_review_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_subtitle": "راجع اختيارات اليوم قبل التأكيد",
   "family_review_status_ready": "جاهز للتأكيد",
   "family_review_selected_day_label": "اليوم المحدد",
@@ -1876,19 +1939,49 @@
   "family_review_edit_button": "تعديل",
   "family_review_nutrition_summary_section": "ملخص القيم الغذائية",
   "family_review_calories_progress": "{current} من {target} سعرة",
-  "@family_review_calories_progress": {"placeholders": {"current": {"type": "String"}, "target": {"type": "String"}}},
+  "@family_review_calories_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_grams_progress": "{current} من {target} جم",
-  "@family_review_grams_progress": {"placeholders": {"current": {"type": "String"}, "target": {"type": "String"}}},
+  "@family_review_grams_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_member_instructions_section": "تعليمات الفرد",
   "family_review_preferences_note": "سيتم مراعاة تفضيلاتك في حال احتياج استبدال أي وجبة",
   "family_review_cutoff_title": "يمكنك تعديل وجبات اليوم حتى وقت القفل",
   "family_review_cutoff_desc": "بمجرد وصول وقت القفل، سيتم تجهيز وجباتك رسمياً ولا يمكن إلغاء أو تعديل بعد ذلك.",
   "family_review_cutoff_time": "الوقت المتبقي: {time}",
-  "@family_review_cutoff_time": {"placeholders": {"time": {"type": "String"}}},
+  "@family_review_cutoff_time": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_cutoff_disclaimer": "في حال لم تكتمل الوجبات المتبقية، سيتم تعيينها تلقائياً بناءً على التفضيلات",
   "family_review_edit_meals_button": "تعديل الوجبات",
   "family_review_confirm_meals_button": "تأكيد وجبات {name}",
-  "@family_review_confirm_meals_button": {"placeholders": {"name": {"type": "String"}}},
+  "@family_review_confirm_meals_button": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_review_success_message": "تم تأكيد الوجبات بنجاح",
   "family_meal_item_1_title": "دجاج مشوي بالأعشاب",
   "family_meal_item_1_desc": "دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة",
@@ -1932,50 +2025,121 @@
   "family_member_paused_label": "موقوف",
   "family_member_active_label": "نشط",
   "family_member_days_remaining": "متبقي {count} أيام",
-  "@family_member_days_remaining": {"placeholders": {"count": {"type": "int"}}},
+  "@family_member_days_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "family_member_age_years": "{count} سنة",
-  "@family_member_age_years": {"placeholders": {"count": {"type": "int"}}}
-  ,"family_member_details_title": "تفاصيل {name}"
-  ,"@family_member_details_title": {"placeholders": {"name": {"type": "String"}}}
-  ,"family_member_manager_label": "مدير العائلة"
-  ,"family_member_member_label": "فرد في العائلة"
-  ,"family_member_program_title": "البرنامج الغذائي"
-  ,"family_member_change_program": "تغيير البرنامج"
-  ,"family_member_package_title": "الاشتراك"
-  ,"family_member_subscription_dates": "{start} – {end}"
-  ,"@family_member_subscription_dates": {"placeholders": {"start": {"type": "String"}, "end": {"type": "String"}}}
-  ,"family_member_renew_subscription": "تجديد الاشتراك"
-  ,"family_member_today_nutrition": "تغذية اليوم"
-  ,"family_member_calories_value": "{count} سعرة"
-  ,"@family_member_calories_value": {"placeholders": {"count": {"type": "String"}}}
-  ,"family_member_show_calendar": "عرض التقويم"
-  ,"family_member_access_phone_label": "رقم الموبايل"
-  ,"family_member_access_pause_label": "إيقاف الفرد"
-  ,"family_member_access_remove_label": "حذف الفرد"
-  ,"family_member_access_generated_password_title": "كلمة مرور لمرة واحدة"
-  ,"family_member_access_generated_password_message": "شارك كلمة المرور الآن، لن يتم عرضها مرة أخرى."
-  ,"family_member_access_existing_login": "رقم الموبايل لديه حساب MealMate بالفعل، ويمكن للفرد الدخول بكلمة المرور الحالية."
-  ,"family_member_access_copy": "نسخ"
-  ,"family_member_shortcut_daily_meals": "الوجبات اليومية"
-  ,"family_member_shortcut_daily_meals_subtitle": "عرض الوجبات والخطط"
-  ,"family_member_shortcut_permissions": "الصلاحيات"
-  ,"family_member_shortcut_permissions_subtitle": "عرض وإدارة الصلاحيات"
-  ,"family_member_calendar_title": "تقويم {name}"
-  ,"@family_member_calendar_title": {"placeholders": {"name": {"type": "String"}}}
-  ,"family_member_no_active_subscription": "هذا الفرد ليس لديه اشتراك نشط حالياً."
-  ,"family_member_no_meals_selected": "لا توجد وجبات مختارة لهذا اليوم."
-  ,"family_member_selected_meals_count": "{count} وجبات مختارة"
-  ,"@family_member_selected_meals_count": {"placeholders": {"count": {"type": "int"}}}
-  ,"family_member_day_details_button": "عرض تفاصيل اليوم"
-  ,"family_member_choose_meals_button": "اختيار الوجبات"
-  ,"family_member_selected_meals_title": "الوجبات المختارة"
-  ,"family_member_selected_meals_subtitle": "الوجبات المختارة لـ{name} يوم {date}"
-  ,"@family_member_selected_meals_subtitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}}
-  ,"family_member_meal_chosen": "تم الاختيار"
-  ,"family_member_choose_meal": "اختار وجبة"
-  ,"family_day_screen_title": "تفاصيل يوم"
-  ,"family_day_current_restaurant_subtitle": "المطعم الحالي"
-  ,"family_day_review_meals_button": "مراجعة وجبات اليوم"
-  ,"family_day_all_meals_selected": "تم اختيار جميع الوجبات"
-  ,"family_day_default_restaurant_name": "مطعم جرين شيف"
+  "@family_member_age_years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_details_title": "تفاصيل {name}",
+  "@family_member_details_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_manager_label": "مدير العائلة",
+  "family_member_member_label": "فرد في العائلة",
+  "family_member_program_title": "البرنامج الغذائي",
+  "family_member_change_program": "تغيير البرنامج",
+  "family_member_package_title": "الاشتراك",
+  "family_member_subscription_dates": "{start} – {end}",
+  "@family_member_subscription_dates": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_renew_subscription": "تجديد الاشتراك",
+  "family_member_today_nutrition": "تغذية اليوم",
+  "family_member_calories_value": "{count} سعرة",
+  "@family_member_calories_value": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_show_calendar": "عرض التقويم",
+  "family_member_access_phone_label": "رقم الموبايل",
+  "family_member_access_pause_label": "إيقاف الفرد",
+  "family_member_access_remove_label": "حذف الفرد",
+  "family_member_access_generated_password_title": "كلمة مرور لمرة واحدة",
+  "family_member_access_generated_password_message": "شارك كلمة المرور الآن، لن يتم عرضها مرة أخرى.",
+  "family_member_access_existing_login": "رقم الموبايل لديه حساب MealMate بالفعل، ويمكن للفرد الدخول بكلمة المرور الحالية.",
+  "family_member_access_copy": "نسخ",
+  "family_member_shortcut_daily_meals": "الوجبات اليومية",
+  "family_member_shortcut_daily_meals_subtitle": "عرض الوجبات والخطط",
+  "family_member_shortcut_permissions": "الصلاحيات",
+  "family_member_shortcut_permissions_subtitle": "عرض وإدارة الصلاحيات",
+  "family_member_calendar_title": "تقويم {name}",
+  "@family_member_calendar_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_no_active_subscription": "هذا الفرد ليس لديه اشتراك نشط حالياً.",
+  "family_member_no_meals_selected": "لا توجد وجبات مختارة لهذا اليوم.",
+  "family_member_selected_meals_count": "{count} وجبات مختارة",
+  "@family_member_selected_meals_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_day_details_button": "عرض تفاصيل اليوم",
+  "family_member_choose_meals_button": "اختيار الوجبات",
+  "family_member_selected_meals_title": "الوجبات المختارة",
+  "family_member_selected_meals_subtitle": "الوجبات المختارة لـ{name} يوم {date}",
+  "@family_member_selected_meals_subtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_meal_chosen": "تم الاختيار",
+  "family_member_choose_meal": "اختار وجبة",
+  "family_day_screen_title": "تفاصيل يوم",
+  "family_day_current_restaurant_subtitle": "المطعم الحالي",
+  "family_day_review_meals_button": "مراجعة وجبات اليوم",
+  "family_day_all_meals_selected": "تم اختيار جميع الوجبات",
+  "family_day_default_restaurant_name": "مطعم جرين شيف",
+  "influencer_header_greeting": "مرحباً ، محمد",
+  "influencer_whatsapp": "واتساب",
+  "influencer_telegram": "تيليجرام",
+  "influencer_youtube": "يوتيوب",
+  "influencer_tiktok_subtitle": "أضف حسابك على تيك توك",
+  "influencer_instagram_subtitle": "أضف حسابك على إنستغرام",
+  "influencer_whatsapp_subtitle": "أضف رقم واتساب للأعمال",
+  "influencer_telegram_subtitle": "أضف حسابك على تيليجرام",
+  "influencer_youtube_subtitle": "أضف قناتك على يوتيوب",
+  "influencer_snapchat_subtitle": "أضف حسابك على سناب شات",
+  "influencer_social_add": "إضافة",
+  "influencer_social_edit": "تعديل",
+  "influencer_privacy_title": "نحافظ على خصوصية بياناتك",
+  "influencer_privacy_body": "نستخدم بياناتك فقط لتحسين فرص الشراكة والتواصل مع العلامات التجارية.",
+  "influencer_enter_account": "أدخل الحساب أو الرابط",
+  "influencer_confirm": "تأكيد",
+  "influencer_cancel": "إلغاء"
 }

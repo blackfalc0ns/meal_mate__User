@@ -25,7 +25,7 @@ class InfluencerSocialLinksViewModel extends Cubit<InfluencerSocialLinksState> {
         emit(
           state.copyWith(
             isLoading: false,
-            isSuccess: true,
+            isSuccess: false,
             profile: data,
             clearFailure: true,
           ),

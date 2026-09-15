@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_share_discount_card.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() {
   testWidgets('discount card matches figma horizontal composition', (
@@ -48,7 +49,7 @@ void main() {
                     socialPlatforms: [],
                     quickStats: [],
                   ),
-                  qrAsset: AssetsFake.influencerQr,
+                  qrData: 'https://mealmate.com/ref/Mealmate20',
                   copyIconAsset: AssetsFake.influencerCopyIcon,
                 ),
               ),
@@ -58,7 +59,8 @@ void main() {
       ),
     );
 
-    final qrCenter = tester.getCenter(find.byType(Image));
+    final qr = tester.widget<QrImageView>(find.byType(QrImageView));
+    final qrCenter = tester.getCenter(find.byType(QrImageView));
     final copyIconCenter = tester.getCenter(find.byType(SvgPicture));
     final codeCenter = tester.getCenter(find.text('Mealmate20'));
     final labelCenter = tester.getCenter(find.text('نسخ الكود'));
@@ -66,7 +68,7 @@ void main() {
         .getTopLeft(find.byType(InfluencerShareDiscountCard))
         .dy;
     final qrLabelTop = tester.getTopLeft(find.text('امسح للمشاركة')).dy;
-    final qrSize = tester.getSize(find.byType(Image));
+    final qrSize = tester.getSize(find.byType(QrImageView));
 
     expect(qrCenter.dx, lessThan(copyIconCenter.dx));
     expect(copyIconCenter.dx, lessThan(codeCenter.dx));
@@ -74,5 +76,6 @@ void main() {
     expect(labelCenter.dy, greaterThan(copyIconCenter.dy));
     expect(qrLabelTop - cardTop, lessThan(Spacing.xxl));
     expect(qrSize.width, greaterThan(Spacing.avatarLg));
+    expect(qr.semanticsLabel, 'https://mealmate.com/ref/Mealmate20');
   });
 }

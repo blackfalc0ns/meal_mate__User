@@ -136,34 +136,32 @@ class InfluencerTopProductCard extends StatelessWidget {
                 ),
 
                 Spacer(),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        product.revenueLabel,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      product.revenueLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
                       ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        product.revenue,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
-                          color: color.onSurface,
-                        ),
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    Text(
+                      product.revenue,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

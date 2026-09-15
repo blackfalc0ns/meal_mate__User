@@ -4490,6 +4490,55 @@ class AppLocalizationsAr extends AppLocalizations {
   String get influencer_snapchat => 'سناب شات';
 
   @override
+  String get influencer_whatsapp => 'واتساب';
+
+  @override
+  String get influencer_telegram => 'تيليجرام';
+
+  @override
+  String get influencer_youtube => 'يوتيوب';
+
+  @override
+  String get influencer_tiktok_subtitle => 'أضف حسابك على تيك توك';
+
+  @override
+  String get influencer_instagram_subtitle => 'أضف حسابك على إنستغرام';
+
+  @override
+  String get influencer_whatsapp_subtitle => 'أضف رقم واتساب للأعمال';
+
+  @override
+  String get influencer_telegram_subtitle => 'أضف حسابك على تيليجرام';
+
+  @override
+  String get influencer_youtube_subtitle => 'أضف قناتك على يوتيوب';
+
+  @override
+  String get influencer_snapchat_subtitle => 'أضف حسابك على سناب شات';
+
+  @override
+  String get influencer_social_add => 'إضافة';
+
+  @override
+  String get influencer_social_edit => 'تعديل';
+
+  @override
+  String get influencer_privacy_title => 'نحافظ على خصوصية بياناتك';
+
+  @override
+  String get influencer_privacy_body =>
+      'نستخدم بياناتك فقط لتحسين فرص الشراكة والتواصل مع العلامات التجارية.';
+
+  @override
+  String get influencer_enter_account => 'أدخل الحساب أو الرابط';
+
+  @override
+  String get influencer_confirm => 'تأكيد';
+
+  @override
+  String get influencer_cancel => 'إلغاء';
+
+  @override
   String get influencer_not_connected => 'غير متصل';
 
   @override
@@ -5423,4 +5472,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_day_default_restaurant_name => 'مطعم جرين شيف';
+
+  @override
+  String get influencer_header_greeting => 'مرحباً ، محمد';
 }

@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
+import '../../../dashboard/presentation/widgets/influencer_header_card.dart';
 import '../../domain/entities/influencer_social_links_entity.dart';
 import '../manager/influencer_social_links_event.dart';
 import '../manager/influencer_social_links_state.dart';
 import '../manager/influencer_social_links_view_model.dart';
+import '../models/influencer_social_item_view_data.dart';
+import '../widgets/influencer_social_action_buttons.dart';
+import '../widgets/influencer_social_connection_card.dart';
+import '../widgets/influencer_social_input_sheet.dart';
+import '../widgets/influencer_social_privacy_card.dart';
+import '../widgets/influencer_social_title_section.dart';
 
 class InfluencerSocialConnectionsScreen extends StatefulWidget {
   const InfluencerSocialConnectionsScreen({
     super.key,
     this.showScaffold = true,
+    this.viewModel,
   });
+
   final bool showScaffold;
+  final InfluencerSocialLinksViewModel? viewModel;
+
   @override
   State<InfluencerSocialConnectionsScreen> createState() =>
       _InfluencerSocialConnectionsScreenState();
@@ -27,34 +35,79 @@ class InfluencerSocialConnectionsScreen extends StatefulWidget {
 class _InfluencerSocialConnectionsScreenState
     extends State<InfluencerSocialConnectionsScreen> {
   late final InfluencerSocialLinksViewModel _viewModel;
-  late final TextEditingController _instagram;
-  late final TextEditingController _tiktok;
-  late final TextEditingController _snapchat;
-  InfluencerSocialLinksEntity _links = const InfluencerSocialLinksEntity();
+  final ValueNotifier<String?> _tiktokHandle = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _instagramHandle = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _whatsappHandle = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _telegramHandle = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _youtubeHandle = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _snapchatHandle = ValueNotifier<String?>(null);
   var _initialized = false;
+
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt<InfluencerSocialLinksViewModel>()
+    _viewModel = widget.viewModel ?? getIt<InfluencerSocialLinksViewModel>()
       ..doIntent(const LoadInfluencerSocialLinksEvent());
-    _instagram = TextEditingController();
-    _tiktok = TextEditingController();
-    _snapchat = TextEditingController();
   }
 
   @override
   void dispose() {
+    _tiktokHandle.dispose();
+    _instagramHandle.dispose();
+    _whatsappHandle.dispose();
+    _telegramHandle.dispose();
+    _youtubeHandle.dispose();
+    _snapchatHandle.dispose();
     _viewModel.close();
-    _instagram.dispose();
-    _tiktok.dispose();
-    _snapchat.dispose();
     super.dispose();
+  }
+
+  void _onSave() {
+    _viewModel.doIntent(
+      SaveInfluencerSocialLinksEvent(
+        InfluencerSocialLinksEntity(
+          tiktok: _normalize(_tiktokHandle.value),
+          instagram: _normalize(_instagramHandle.value),
+          whatsapp: _normalize(_whatsappHandle.value),
+          telegram: _normalize(_telegramHandle.value),
+          youtube: _normalize(_youtubeHandle.value),
+          snapchat: _normalize(_snapchatHandle.value),
+        ),
+      ),
+    );
+  }
+
+  void _onSkip() {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  String? _normalize(String? value) {
+    if (value == null) return null;
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+    return trimmed.startsWith('@') ? trimmed.substring(1) : trimmed;
+  }
+
+  void _openInputSheet(
+    BuildContext context,
+    InfluencerSocialItemViewData item,
+    ValueNotifier<String?> notifier,
+  ) {
+    InfluencerSocialInputSheet.show(
+      context: context,
+      item: item,
+      initialValue: notifier.value ?? '',
+      onSaved: (value) => notifier.value = _normalize(value),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
     return BlocProvider.value(
       value: _viewModel,
       child:
@@ -62,25 +115,36 @@ class _InfluencerSocialConnectionsScreenState
             InfluencerSocialLinksViewModel,
             InfluencerSocialLinksState
           >(
-            listenWhen: (_, current) =>
-                !_initialized && current.profile != null,
-            listener: (_, state) {
-              _links = state.profile!.links;
-              _instagram.text = _links.instagram ?? '';
-              _tiktok.text = _links.tiktok ?? '';
-              _snapchat.text = _links.snapchat ?? '';
-              _initialized = true;
+            listenWhen: (previous, current) {
+              if (!_initialized && current.profile != null) return true;
+              if (!previous.isSuccess && current.isSuccess) return true;
+              return false;
+            },
+            listener: (context, state) {
+              if (!_initialized && state.profile != null) {
+                final links = state.profile!.links;
+                _tiktokHandle.value = links.tiktok;
+                _instagramHandle.value = links.instagram;
+                _whatsappHandle.value = links.whatsapp;
+                _telegramHandle.value = links.telegram;
+                _youtubeHandle.value = links.youtube;
+                _snapchatHandle.value = links.snapchat;
+                _initialized = true;
+              }
+              if (state.isSuccess && Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
             },
             builder: (context, state) {
               final content = _content(context, state);
               if (!widget.showScaffold) return content;
               return Scaffold(
                 backgroundColor: color.surface,
-                appBar: CustomAppBar(
-                  title: locale.influencer_social_connections_title,
-                  titleFontSize: FontSize.size17,
-                  backgroundColor: color.surface,
-                  showShadow: false,
+                appBar: InfluencerHeaderCard(
+                  userName: locale.influencer_header_greeting,
+                  partnerLabel: locale.influencer_partner_label,
+                  avatarAsset: AssetsFake.influencerDashboardAvatar,
+                  logoAsset: AssetsFake.influencerLogo,
                 ),
                 body: content,
               );
@@ -92,6 +156,7 @@ class _InfluencerSocialConnectionsScreenState
   Widget _content(BuildContext context, InfluencerSocialLinksState state) {
     final color = context.colorScheme;
     final locale = context.localization;
+
     if (state.isLoading && state.profile == null) {
       return Center(child: CircularProgressIndicator(color: color.primary));
     }
@@ -103,6 +168,7 @@ class _InfluencerSocialConnectionsScreenState
         ),
       );
     }
+
     return SafeArea(
       top: false,
       child: SingleChildScrollView(
@@ -115,56 +181,180 @@ class _InfluencerSocialConnectionsScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _field(context, locale.influencer_instagram, _instagram),
-            const SizedBox(height: Spacing.sm),
-            _field(context, locale.influencer_tiktok, _tiktok),
-            const SizedBox(height: Spacing.sm),
-            _field(context, locale.influencer_snapchat, _snapchat),
-            const SizedBox(height: Spacing.xl),
-            InfluencerPrimaryButton(
-              label: locale.influencer_save_continue,
-              isLoading: state.isSaving,
-              onPressed: state.isSaving
-                  ? null
-                  : () => _viewModel.doIntent(
-                      SaveInfluencerSocialLinksEvent(
-                        InfluencerSocialLinksEntity(
-                          instagram: _normalize(_instagram.text),
-                          tiktok: _normalize(_tiktok.text),
-                          snapchat: _normalize(_snapchat.text),
-                          whatsapp: _links.whatsapp,
-                          telegram: _links.telegram,
-                          youtube: _links.youtube,
-                        ),
-                      ),
+            InfluencerSocialTitleSection(
+              title: locale.influencer_social_connections_header,
+              subtitle: locale.influencer_social_connections_body,
+            ),
+            const SizedBox(height: Spacing.lg),
+            ValueListenableBuilder<String?>(
+              valueListenable: _tiktokHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.tiktok,
+                  title: locale.influencer_tiktok,
+                  subtitle: locale.influencer_tiktok_subtitle,
+                  iconAsset: AssetsFake.influencerSocialTiktok,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.tiktok,
+                      title: locale.influencer_tiktok,
+                      subtitle: locale.influencer_tiktok_subtitle,
+                      iconAsset: AssetsFake.influencerSocialTiktok,
+                      handle: handle,
                     ),
+                    _tiktokHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.influencerSocialCardsGap),
+            ValueListenableBuilder<String?>(
+              valueListenable: _instagramHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.instagram,
+                  title: locale.influencer_instagram,
+                  subtitle: locale.influencer_instagram_subtitle,
+                  iconAsset: AssetsFake.influencerSocialInstagram,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.instagram,
+                      title: locale.influencer_instagram,
+                      subtitle: locale.influencer_instagram_subtitle,
+                      iconAsset: AssetsFake.influencerSocialInstagram,
+                      handle: handle,
+                    ),
+                    _instagramHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.influencerSocialCardsGap),
+            ValueListenableBuilder<String?>(
+              valueListenable: _whatsappHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.whatsapp,
+                  title: locale.influencer_whatsapp,
+                  subtitle: locale.influencer_whatsapp_subtitle,
+                  iconAsset: AssetsFake.influencerSocialWhatsapp,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.whatsapp,
+                      title: locale.influencer_whatsapp,
+                      subtitle: locale.influencer_whatsapp_subtitle,
+                      iconAsset: AssetsFake.influencerSocialWhatsapp,
+                      handle: handle,
+                    ),
+                    _whatsappHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.influencerSocialCardsGap),
+            ValueListenableBuilder<String?>(
+              valueListenable: _telegramHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.telegram,
+                  title: locale.influencer_telegram,
+                  subtitle: locale.influencer_telegram_subtitle,
+                  iconAsset: AssetsFake.influencerSocialTelegram,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.telegram,
+                      title: locale.influencer_telegram,
+                      subtitle: locale.influencer_telegram_subtitle,
+                      iconAsset: AssetsFake.influencerSocialTelegram,
+                      handle: handle,
+                    ),
+                    _telegramHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.influencerSocialCardsGap),
+            ValueListenableBuilder<String?>(
+              valueListenable: _youtubeHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.youtube,
+                  title: locale.influencer_youtube,
+                  subtitle: locale.influencer_youtube_subtitle,
+                  iconAsset: AssetsFake.influencerSocialYoutube,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.youtube,
+                      title: locale.influencer_youtube,
+                      subtitle: locale.influencer_youtube_subtitle,
+                      iconAsset: AssetsFake.influencerSocialYoutube,
+                      handle: handle,
+                    ),
+                    _youtubeHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.influencerSocialCardsGap),
+            ValueListenableBuilder<String?>(
+              valueListenable: _snapchatHandle,
+              builder: (context, handle, _) {
+                final item = InfluencerSocialItemViewData(
+                  platform: InfluencerSocialPlatform.snapchat,
+                  title: locale.influencer_snapchat,
+                  subtitle: locale.influencer_snapchat_subtitle,
+                  iconAsset: AssetsFake.influencerSocialSnapchat,
+                  handle: handle,
+                  onTap: () => _openInputSheet(
+                    context,
+                    InfluencerSocialItemViewData(
+                      platform: InfluencerSocialPlatform.snapchat,
+                      title: locale.influencer_snapchat,
+                      subtitle: locale.influencer_snapchat_subtitle,
+                      iconAsset: AssetsFake.influencerSocialSnapchat,
+                      handle: handle,
+                    ),
+                    _snapchatHandle,
+                  ),
+                );
+                return InfluencerSocialConnectionCard(item: item);
+              },
+            ),
+            const SizedBox(height: Spacing.md),
+            const InfluencerSocialPrivacyCard(),
+            const SizedBox(height: Spacing.xl),
+            BlocSelector<
+              InfluencerSocialLinksViewModel,
+              InfluencerSocialLinksState,
+              bool
+            >(
+              selector: (state) => state.isSaving,
+              builder: (context, isSaving) {
+                return InfluencerSocialActionButtons(
+                  isLoading: isSaving,
+                  onSave: _onSave,
+                  onSkip: _onSkip,
+                );
+              },
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget _field(
-    BuildContext context,
-    String label,
-    TextEditingController controller,
-  ) {
-    final color = context.colorScheme;
-    return TextFormField(
-      controller: controller,
-      style: getRegularStyle(
-        fontFamily: FontConstant.alexandria,
-        fontSize: FontSize.size12,
-        color: color.onSurface,
-      ),
-      decoration: InputDecoration(labelText: label),
-    );
-  }
-
-  String? _normalize(String value) {
-    final trimmed = value.trim();
-    if (trimmed.isEmpty) return null;
-    return trimmed.startsWith('@') ? trimmed.substring(1) : trimmed;
   }
 }

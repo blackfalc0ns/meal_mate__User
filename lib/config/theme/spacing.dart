@@ -1377,4 +1377,18 @@ class Spacing {
   static const double influencerShareLinksQuickStatsRadius = 17.861;
   static const double influencerShareLinksQuickStatIconSize = 18.75;
   static const double influencerShareLinksDividerHeight = 33.94;
+
+  // Influencer Social Connections Figma measurements (node 2300:9456).
+  static const double influencerSocialCardHeight = 55.0;
+  static const double influencerSocialCardRadius = 30.0;
+  static const double influencerSocialCardBorder = 1.0;
+  static const double influencerSocialIconSize = 30.0;
+  static const double influencerSocialAddButtonWidth = 88.0;
+  static const double influencerSocialAddButtonHeight = 30.0;
+  static const double influencerSocialAddButtonRadius = 15.0;
+  static const double influencerSocialPrivacyHeight = 54.0;
+  static const double influencerSocialPrivacyRadius = 30.0;
+  static const double influencerSocialSaveButtonHeight = 48.0;
+  static const double influencerSocialSaveButtonRadius = 38.0;
+  static const double influencerSocialCardsGap = 7.0;
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import '../../domain/entities/influencer_dashboard_entity.dart';
 import '../manager/influencer_dashboard_event.dart';
@@ -15,6 +17,11 @@ import '../widgets/influencer_share_banner.dart';
 import '../widgets/influencer_share_discount_card.dart';
 import '../widgets/influencer_share_quick_stats_card.dart';
 import '../widgets/influencer_share_referral_card.dart';
+import '../widgets/influencer_share_social_tile.dart';
+import '../../../social_links/presentation/manager/influencer_social_links_event.dart';
+import '../../../social_links/presentation/manager/influencer_social_links_state.dart';
+import '../../../social_links/presentation/manager/influencer_social_links_view_model.dart';
+import '../../../social_links/presentation/widgets/influencer_social_title_section.dart';
 
 class InfluencerShareLinksScreen extends StatelessWidget {
   const InfluencerShareLinksScreen({super.key, this.showScaffold = true});
@@ -30,24 +37,41 @@ class InfluencerShareLinksScreen extends StatelessWidget {
       child:
           BlocBuilder<InfluencerDashboardViewModel, InfluencerDashboardState>(
             builder: (context, state) {
-              final content = _content(context, state);
-              if (!showScaffold) return content;
-              return Scaffold(
-                backgroundColor: color.surface,
-                appBar: CustomAppBar(
-                  title: locale.influencer_share_links_title,
-                  titleFontSize: FontSize.size17,
-                  backgroundColor: color.surface,
-                  showShadow: false,
-                ),
-                body: content,
+              return BlocProvider(
+                create: (_) =>
+                    getIt<InfluencerSocialLinksViewModel>()
+                      ..doIntent(const LoadInfluencerSocialLinksEvent()),
+                child:
+                    BlocBuilder<
+                      InfluencerSocialLinksViewModel,
+                      InfluencerSocialLinksState
+                    >(
+                      builder: (context, socialState) {
+                        final content = _content(context, state, socialState);
+                        if (!showScaffold) return content;
+                        return Scaffold(
+                          backgroundColor: color.surface,
+                          appBar: CustomAppBar(
+                            title: locale.influencer_share_links_title,
+                            titleFontSize: FontSize.size17,
+                            backgroundColor: color.surface,
+                            showShadow: false,
+                          ),
+                          body: content,
+                        );
+                      },
+                    ),
               );
             },
           ),
     );
   }
 
-  Widget _content(BuildContext context, InfluencerDashboardState state) {
+  Widget _content(
+    BuildContext context,
+    InfluencerDashboardState state,
+    InfluencerSocialLinksState socialState,
+  ) {
     final color = context.colorScheme;
     final locale = context.localization;
     if (state.isLoading && state.links == null) {
@@ -63,6 +87,8 @@ class InfluencerShareLinksScreen extends StatelessWidget {
     }
     final links = state.links;
     if (links == null) return const SizedBox.shrink();
+    final socialPlatforms = _socialPlatforms(context, socialState);
+    final hasSocialLinks = socialPlatforms.isNotEmpty;
     final view = InfluencerShareLinksEntity(
       title: locale.influencer_share_links_title,
       subtitle: locale.influencer_share_links_subtitle,
@@ -123,7 +149,9 @@ class InfluencerShareLinksScreen extends StatelessWidget {
             const SizedBox(height: Spacing.base),
             InfluencerShareDiscountCard(
               shareLinks: view,
-              qrAsset: AssetsFake.influencerQr,
+              qrData: links.qrCodeData.isNotEmpty
+                  ? links.qrCodeData
+                  : links.referralLink,
               copyIconAsset: AssetsFake.influencerCopyIcon,
             ),
             const SizedBox(height: Spacing.base),
@@ -132,10 +160,102 @@ class InfluencerShareLinksScreen extends StatelessWidget {
               copyIconAsset: AssetsFake.influencerCopyIcon,
             ),
             const SizedBox(height: Spacing.lg),
+            if (socialPlatforms.isNotEmpty) ...[
+              InfluencerSocialTitleSection(
+                title: locale.influencer_share_now,
+                subtitle: locale.influencer_share_links_body,
+              ),
+              const SizedBox(height: Spacing.sm),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (
+                      var index = 0;
+                      index < socialPlatforms.length;
+                      index++
+                    ) ...[
+                      InfluencerShareSocialTile(
+                        platform: socialPlatforms[index],
+                      ),
+                      if (index < socialPlatforms.length - 1)
+                        const SizedBox(width: Spacing.md),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: Spacing.lg),
+            ],
+            AppButton(
+              height: 40,
+              fontSize: FontSize.size12,
+              text: hasSocialLinks
+                  ? '${locale.influencer_social_edit} ${locale.influencer_social_connections_title}'
+                  : locale.influencer_add_social_accounts,
+              onPressed: () async {
+                await Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.influencerSocialConnections);
+                if (!context.mounted) return;
+                context.read<InfluencerSocialLinksViewModel>().doIntent(
+                  const LoadInfluencerSocialLinksEvent(forceRefresh: true),
+                );
+              },
+            ),
+            const SizedBox(height: Spacing.lg),
             InfluencerShareQuickStatsCard(shareLinks: view),
           ],
         ),
       ),
     );
+  }
+
+  List<InfluencerShareSocialPlatformEntity> _socialPlatforms(
+    BuildContext context,
+    InfluencerSocialLinksState state,
+  ) {
+    final locale = context.localization;
+    final links = state.profile?.links;
+    if (links == null) return const [];
+
+    final platforms = <InfluencerShareSocialPlatformEntity>[];
+    void addIfPresent(String? value, String label, String iconAsset) {
+      if (value?.trim().isEmpty ?? true) return;
+      platforms.add(
+        InfluencerShareSocialPlatformEntity(label: label, iconAsset: iconAsset),
+      );
+    }
+
+    addIfPresent(
+      links.tiktok,
+      locale.influencer_tiktok,
+      AssetsFake.influencerSocialTiktok,
+    );
+    addIfPresent(
+      links.instagram,
+      locale.influencer_instagram,
+      AssetsFake.influencerSocialInstagram,
+    );
+    addIfPresent(
+      links.whatsapp,
+      locale.influencer_whatsapp,
+      AssetsFake.influencerSocialWhatsapp,
+    );
+    addIfPresent(
+      links.telegram,
+      locale.influencer_telegram,
+      AssetsFake.influencerSocialTelegram,
+    );
+    addIfPresent(
+      links.youtube,
+      locale.influencer_youtube,
+      AssetsFake.influencerSocialYoutube,
+    );
+    addIfPresent(
+      links.snapchat,
+      locale.influencer_snapchat,
+      AssetsFake.influencerSocialSnapchat,
+    );
+    return platforms;
   }
 }

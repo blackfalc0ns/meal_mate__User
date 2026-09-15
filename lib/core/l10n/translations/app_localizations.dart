@@ -8612,6 +8612,102 @@ abstract class AppLocalizations {
   /// **'Snapchat'**
   String get influencer_snapchat;
 
+  /// No description provided for @influencer_whatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get influencer_whatsapp;
+
+  /// No description provided for @influencer_telegram.
+  ///
+  /// In en, this message translates to:
+  /// **'Telegram'**
+  String get influencer_telegram;
+
+  /// No description provided for @influencer_youtube.
+  ///
+  /// In en, this message translates to:
+  /// **'YouTube'**
+  String get influencer_youtube;
+
+  /// No description provided for @influencer_tiktok_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your TikTok account'**
+  String get influencer_tiktok_subtitle;
+
+  /// No description provided for @influencer_instagram_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your Instagram account'**
+  String get influencer_instagram_subtitle;
+
+  /// No description provided for @influencer_whatsapp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your WhatsApp Business number'**
+  String get influencer_whatsapp_subtitle;
+
+  /// No description provided for @influencer_telegram_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your Telegram account'**
+  String get influencer_telegram_subtitle;
+
+  /// No description provided for @influencer_youtube_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your YouTube channel'**
+  String get influencer_youtube_subtitle;
+
+  /// No description provided for @influencer_snapchat_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your Snapchat account'**
+  String get influencer_snapchat_subtitle;
+
+  /// No description provided for @influencer_social_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get influencer_social_add;
+
+  /// No description provided for @influencer_social_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get influencer_social_edit;
+
+  /// No description provided for @influencer_privacy_title.
+  ///
+  /// In en, this message translates to:
+  /// **'We protect your data privacy'**
+  String get influencer_privacy_title;
+
+  /// No description provided for @influencer_privacy_body.
+  ///
+  /// In en, this message translates to:
+  /// **'We only use your data to improve partnership opportunities and brand communication.'**
+  String get influencer_privacy_body;
+
+  /// No description provided for @influencer_enter_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter account handle or link'**
+  String get influencer_enter_account;
+
+  /// No description provided for @influencer_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get influencer_confirm;
+
+  /// No description provided for @influencer_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get influencer_cancel;
+
   /// No description provided for @influencer_not_connected.
   ///
   /// In en, this message translates to:
@@ -10255,6 +10351,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Green Chef Restaurant'**
   String get family_day_default_restaurant_name;
+
+  /// No description provided for @influencer_header_greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, Mohammed'**
+  String get influencer_header_greeting;
 }
 
 class _AppLocalizationsDelegate
