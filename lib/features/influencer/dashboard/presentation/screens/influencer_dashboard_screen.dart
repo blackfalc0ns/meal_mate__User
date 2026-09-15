@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/screens/influencer_share_links_screen.dart';
-import 'package:meal_meat_user/features/influencer/social_links/presentation/screens/influencer_social_connections_screen.dart';
-import 'package:meal_meat_user/features/influencer/analytics/presentation/screens/influencer_statistics_screen.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_wallet_screen.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_dashboard_bottom_tabs.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_header_card.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_hero_card.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_metrics_grid.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_recent_activities_section.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_share_prompt_card.dart';
+import '../../domain/entities/influencer_dashboard_entity.dart';
+import '../manager/influencer_dashboard_event.dart';
+import '../manager/influencer_dashboard_state.dart';
+import '../manager/influencer_dashboard_view_model.dart';
+import '../widgets/influencer_dashboard_bottom_tabs.dart';
+import '../widgets/influencer_header_card.dart';
+import '../widgets/influencer_hero_card.dart';
+import '../widgets/influencer_metrics_grid.dart';
+import '../widgets/influencer_recent_activities_section.dart';
+import '../widgets/influencer_share_prompt_card.dart';
+import '../../../analytics/presentation/screens/influencer_statistics_screen.dart';
+import '../../../social_links/presentation/screens/influencer_social_connections_screen.dart';
+import '../../../wallet/presentation/screens/influencer_wallet_screen.dart';
+import 'influencer_share_links_screen.dart';
 
 class InfluencerDashboardScreen extends StatefulWidget {
   const InfluencerDashboardScreen({super.key});
-
   @override
   State<InfluencerDashboardScreen> createState() =>
       _InfluencerDashboardScreenState();
@@ -23,43 +29,103 @@ class InfluencerDashboardScreen extends StatefulWidget {
 
 class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
   var _selectedTab = InfluencerDashboardTabItem.home;
-
-  void _selectTab(InfluencerDashboardTabItem tab) {
-    if (tab == _selectedTab) return;
-    setState(() => _selectedTab = tab);
-  }
-
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
-    final homeTab = _buildHomeTab(context);
-    final screens = [
-      const InfluencerSocialConnectionsScreen(showScaffold: false),
-      const InfluencerStatisticsScreen(),
-      const InfluencerWalletScreen(showScaffold: false),
-      const InfluencerShareLinksScreen(showScaffold: false),
-      homeTab,
-    ];
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: InfluencerHeaderCard(
-        userName: dashboard.userName,
-        partnerLabel: dashboard.partnerLabel,
-        avatarAsset: dashboard.avatarAsset,
-        logoAsset: dashboard.logoAsset,
-      ),
-      bottomNavigationBar: InfluencerDashboardBottomTabs(
-        selectedTab: _selectedTab,
-        onTabSelected: _selectTab,
-      ),
-      body: screens[_selectedTab.index],
+    return BlocProvider(
+      create: (_) =>
+          getIt<InfluencerDashboardViewModel>()
+            ..doIntent(const LoadInfluencerDashboardEvent()),
+      child:
+          BlocBuilder<InfluencerDashboardViewModel, InfluencerDashboardState>(
+            builder: (context, state) {
+              final home = state.home;
+              return Scaffold(
+                backgroundColor: color.surface,
+                appBar: InfluencerHeaderCard(
+                  userName: home?.influencerCode ?? '',
+                  partnerLabel: locale.influencer_partner_label,
+                  avatarAsset: AssetsFake.influencerDashboardAvatar,
+                  logoAsset: AssetsFake.influencerLogo,
+                ),
+                bottomNavigationBar: InfluencerDashboardBottomTabs(
+                  selectedTab: _selectedTab,
+                  onTabSelected: (tab) {
+                    if (tab != _selectedTab) setState(() => _selectedTab = tab);
+                  },
+                ),
+                body: [
+                  const InfluencerSocialConnectionsScreen(showScaffold: false),
+                  const InfluencerStatisticsScreen(),
+                  const InfluencerWalletScreen(showScaffold: false),
+                  const InfluencerShareLinksScreen(showScaffold: false),
+                  _home(context, state),
+                ][_selectedTab.index],
+              );
+            },
+          ),
     );
   }
 
-  Widget _buildHomeTab(BuildContext context) {
+  Widget _home(BuildContext context, InfluencerDashboardState state) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+    if (state.isLoading && state.home == null) {
+      return Center(child: CircularProgressIndicator(color: color.primary));
+    }
+    if (state.failure != null && state.home == null) {
+      return ApiErrorWidget(
+        exception: state.failure!.exception,
+        onRetry: () => context.read<InfluencerDashboardViewModel>().doIntent(
+          const LoadInfluencerDashboardEvent(forceRefresh: true),
+        ),
+      );
+    }
+    final home = state.home;
+    if (home == null) return const SizedBox.shrink();
+    final metrics = [
+      InfluencerMetricEntity(
+        title: locale.influencer_referrals,
+        value: home.kpis.registeredCustomers.toString(),
+        subtitle: locale.influencer_active_codes,
+        iconAsset: AssetsFake.influencerMetricUsers,
+        trendIconAsset: AssetsFake.influencerTrendUp,
+      ),
+      InfluencerMetricEntity(
+        title: locale.influencer_completed_subscriptions,
+        value: home.kpis.completedSubscriptions.toString(),
+        subtitle: locale.influencer_active_codes,
+        iconAsset: AssetsFake.influencerMetricSubscriptions,
+        trendIconAsset: AssetsFake.influencerTrendUp,
+      ),
+      InfluencerMetricEntity(
+        title: locale.influencer_pending_withdrawals,
+        value: home.wallet.pendingBalance.amount.toStringAsFixed(3),
+        subtitle: locale.influencer_under_review,
+        iconAsset: AssetsFake.influencerMetricClicks,
+        trendIconAsset: AssetsFake.influencerTrendUp,
+      ),
+      InfluencerMetricEntity(
+        title: locale.influencer_conversion_rate,
+        value: '${home.kpis.conversionRate.toStringAsFixed(2)}%',
+        subtitle: locale.influencer_from_visits,
+        iconAsset: AssetsFake.influencerMetricConversion,
+        trendIconAsset: AssetsFake.influencerTrendUp,
+      ),
+    ];
+    final activities = home.recentActivities
+        .map(
+          (item) => InfluencerActivityEntity(
+            title: item.code,
+            subtitle: item.referenceId ?? '',
+            amount:
+                '${item.commissionAmount.amount.toStringAsFixed(3)} ${item.commissionAmount.currency}',
+            time: item.occurredAtUtc?.toLocal().toString() ?? '',
+            avatarAsset: AssetsFake.influencerDashboardAvatar,
+          ),
+        )
+        .toList();
     return SafeArea(
       top: false,
       child: SingleChildScrollView(
@@ -69,40 +135,37 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
           end: Spacing.screenH,
           bottom: Spacing.xxxl,
         ),
-        child: _buildHomeContent(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InfluencerHeroCard(
+              imageAsset: AssetsFake.influencerDashboardHero,
+              trendIconAsset: AssetsFake.influencerTrendUp,
+              totalEarnings: home.totalCommissions.amount.toStringAsFixed(3),
+              currency: home.totalCommissions.currency,
+              weeklyGain:
+                  '+${home.thisWeekCommissionsDiff.amount.toStringAsFixed(3)}',
+            ),
+            const SizedBox(height: Spacing.influencerMetricsTopGap),
+            InfluencerMetricsGrid(metrics: metrics),
+            const SizedBox(height: Spacing.base),
+            InfluencerSharePromptCard(
+              title: locale.influencer_share_code_title,
+              subtitle: locale.influencer_referral_code_subtitle,
+              codeTitle: locale.influencer_referral_code_title,
+              code: home.influencerCode,
+              shareIconAsset: AssetsFake.influencerShareIcon,
+              copyIconAsset: AssetsFake.influencerCopyIcon,
+            ),
+            const SizedBox(height: Spacing.sm),
+            InfluencerRecentActivitiesSection(
+              title: locale.influencer_recent_activities,
+              actionLabel: locale.influencer_view_all,
+              activities: activities,
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildHomeContent(BuildContext context) {
-    final locale = context.localization;
-    final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InfluencerHeroCard(
-          imageAsset: dashboard.heroImageAsset,
-          trendIconAsset: dashboard.trendIconAsset,
-        ),
-        const SizedBox(height: Spacing.influencerMetricsTopGap),
-        InfluencerMetricsGrid(metrics: dashboard.metrics),
-        const SizedBox(height: Spacing.base),
-        InfluencerSharePromptCard(
-          title: locale.influencer_share_code_title,
-          subtitle: locale.influencer_referral_code_subtitle,
-          codeTitle: locale.influencer_referral_code_title,
-          code: locale.influencer_referral_code_value,
-          shareIconAsset: dashboard.shareIconAsset,
-          copyIconAsset: dashboard.copyIconAsset,
-        ),
-        const SizedBox(height: Spacing.sm),
-        InfluencerRecentActivitiesSection(
-          title: locale.influencer_recent_activities,
-          actionLabel: locale.influencer_view_all,
-          activities: dashboard.activities,
-        ),
-      ],
     );
   }
 }

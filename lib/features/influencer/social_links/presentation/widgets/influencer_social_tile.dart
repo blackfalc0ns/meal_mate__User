@@ -3,12 +3,17 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
 
 class InfluencerSocialTile extends StatelessWidget {
-  const InfluencerSocialTile({super.key, required this.account});
+  const InfluencerSocialTile({
+    super.key,
+    required this.platform,
+    required this.handle,
+    required this.connected,
+  });
 
-  final InfluencerSocialAccountEntity account;
+  final String platform, handle;
+  final bool connected;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class InfluencerSocialTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  account.platform,
+                  platform,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
@@ -53,7 +58,7 @@ class InfluencerSocialTile extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs),
                 Text(
-                  account.handle,
+                  handle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getRegularStyle(
@@ -66,7 +71,7 @@ class InfluencerSocialTile extends StatelessWidget {
             ),
           ),
           Icon(
-            account.connected
+            connected
                 ? Icons.check_circle_rounded
                 : Icons.add_circle_outline_rounded,
             color: color.primary,

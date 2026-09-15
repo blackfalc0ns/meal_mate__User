@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_wallet_view_data.dart';
 import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_summary_metric_card.dart';
 
 class InfluencerWalletMonthlySummaryCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class InfluencerWalletMonthlySummaryCard extends StatelessWidget {
   });
 
   final String title;
-  final List<InfluencerWalletSummaryMetricEntity> metrics;
+  final List<InfluencerWalletSummaryMetricViewData> metrics;
 
   @override
   Widget build(BuildContext context) {

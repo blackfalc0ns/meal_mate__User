@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_wallet_view_data.dart';
 
 class InfluencerWalletActionButton extends StatelessWidget {
   const InfluencerWalletActionButton({
@@ -14,7 +14,7 @@ class InfluencerWalletActionButton extends StatelessWidget {
     required this.onTap,
   });
 
-  final InfluencerActionEntity action;
+  final InfluencerWalletActionViewData action;
   final VoidCallback onTap;
 
   @override
@@ -68,27 +68,26 @@ class InfluencerWalletActionButton extends StatelessWidget {
 
   String? get _svgAsset {
     return switch (action.icon) {
-      InfluencerActionIcon.wallet => AssetsFake.influencerWalletActionWithdraw,
-      InfluencerActionIcon.history => AssetsFake.influencerWalletActionHistory,
-      _ => null,
+      InfluencerWalletActionIcon.wallet =>
+        AssetsFake.influencerWalletActionWithdraw,
+      InfluencerWalletActionIcon.history =>
+        AssetsFake.influencerWalletActionHistory,
     };
   }
 
   IconData get _icon {
     return switch (action.icon) {
-      InfluencerActionIcon.wallet => Icons.payments_rounded,
-      InfluencerActionIcon.history => Icons.history_rounded,
-      InfluencerActionIcon.share => Icons.share_rounded,
-      InfluencerActionIcon.social => Icons.groups_rounded,
+      InfluencerWalletActionIcon.wallet => Icons.payments_rounded,
+      InfluencerWalletActionIcon.history => Icons.history_rounded,
     };
   }
 
   double get _iconSize {
     return switch (action.icon) {
-      InfluencerActionIcon.wallet => Spacing.influencerWalletActionIconLarge,
-      InfluencerActionIcon.history => Spacing.influencerWalletActionIconSmall,
-      InfluencerActionIcon.share ||
-      InfluencerActionIcon.social => Spacing.influencerWalletActionIconSmall,
+      InfluencerWalletActionIcon.wallet =>
+        Spacing.influencerWalletActionIconLarge,
+      InfluencerWalletActionIcon.history =>
+        Spacing.influencerWalletActionIconSmall,
     };
   }
 }

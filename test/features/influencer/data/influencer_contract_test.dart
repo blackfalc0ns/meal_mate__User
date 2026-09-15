@@ -1,7 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_api_models.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/mapper/influencer_mapper.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_api_entities.dart';
+import 'package:meal_meat_user/features/influencer/analytics/data/mapper/influencer_analytics_mapper.dart';
+import 'package:meal_meat_user/features/influencer/analytics/data/models/influencer_analytics_dto.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/data/mapper/influencer_dashboard_mapper.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_dashboard_dto.dart';
+import 'package:meal_meat_user/features/influencer/wallet/data/mapper/influencer_wallet_mapper.dart';
+import 'package:meal_meat_user/features/influencer/wallet/data/models/influencer_wallet_dto.dart';
+import 'package:meal_meat_user/features/influencer/wallet/domain/entities/influencer_wallet_entity.dart';
 
 void main() {
   test('home maps server money, policy, KPI and activity values', () {

@@ -1,41 +1,45 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../core/network/api_results.dart';
-import '../../domain/entities/influencer_api_entities.dart';
-import '../../domain/usecase/influencer_read_usecases.dart';
+import '../../domain/entities/influencer_dashboard_api_entity.dart';
+import '../../domain/usecase/get_influencer_home_usecase.dart';
+import '../../domain/usecase/get_influencer_links_usecase.dart';
+import 'influencer_dashboard_event.dart';
 import 'influencer_dashboard_state.dart';
 
 @injectable
 class InfluencerDashboardViewModel extends Cubit<InfluencerDashboardState> {
-  InfluencerDashboardViewModel(this._getHome, this._getProfile)
+  InfluencerDashboardViewModel(this._getHome, this._getLinks)
     : super(const InfluencerDashboardState());
   final GetInfluencerHomeUseCase _getHome;
-  final GetInfluencerProfileUseCase _getProfile;
+  final GetInfluencerLinksUseCase _getLinks;
 
-  Future<void> load({bool forceRefresh = false}) async {
+  Future<void> doIntent(InfluencerDashboardEvent event) => switch (event) {
+    LoadInfluencerDashboardEvent() => _loadHome(
+      forceRefresh: event.forceRefresh,
+    ),
+    LoadInfluencerLinksEvent() => _loadLinks(forceRefresh: event.forceRefresh),
+  };
+
+  Future<void> _loadHome({required bool forceRefresh}) async {
     if (state.isLoading || (!forceRefresh && state.home != null)) return;
     emit(state.copyWith(isLoading: true, clearFailure: true));
-    final homeResult = await _getHome();
-    final profileResult = await _getProfile();
-    if (homeResult is ApiSuccessResult<InfluencerHomeApiEntity>) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          home: homeResult.data,
-          profile: profileResult is ApiSuccessResult<InfluencerProfileApiEntity>
-              ? profileResult.data
-              : null,
-          clearFailure: true,
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          failure:
-              (homeResult as ApiErrorResult<InfluencerHomeApiEntity>).failure,
-        ),
-      );
+    switch (await _getHome()) {
+      case ApiSuccessResult<InfluencerHomeApiEntity>(:final data):
+        emit(state.copyWith(isLoading: false, home: data, clearFailure: true));
+      case ApiErrorResult<InfluencerHomeApiEntity>(:final failure):
+        emit(state.copyWith(isLoading: false, failure: failure));
+    }
+  }
+
+  Future<void> _loadLinks({required bool forceRefresh}) async {
+    if (state.isLoading || (!forceRefresh && state.links != null)) return;
+    emit(state.copyWith(isLoading: true, clearFailure: true));
+    switch (await _getLinks()) {
+      case ApiSuccessResult<InfluencerLinksEntity>(:final data):
+        emit(state.copyWith(isLoading: false, links: data, clearFailure: true));
+      case ApiErrorResult<InfluencerLinksEntity>(:final failure):
+        emit(state.copyWith(isLoading: false, failure: failure));
     }
   }
 }

@@ -1,27 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_api_entities.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/repo/influencer_repository.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/usecase/influencer_read_usecases.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_api_entity.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/repo/influencer_dashboard_repository.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/usecase/get_influencer_home_usecase.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/domain/usecase/get_influencer_links_usecase.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/presentation/manager/influencer_dashboard_event.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/presentation/manager/influencer_dashboard_view_model.dart';
 
 void main() {
   test('dashboard loads once unless force refreshed', () async {
-    final repo = _Repo();
+    final repo = _DashboardRepo();
     final vm = InfluencerDashboardViewModel(
       GetInfluencerHomeUseCase(repo),
-      GetInfluencerProfileUseCase(repo),
+      GetInfluencerLinksUseCase(repo),
     );
-    await vm.load();
-    await vm.load();
+    await vm.doIntent(const LoadInfluencerDashboardEvent());
+    await vm.doIntent(const LoadInfluencerDashboardEvent());
     expect(repo.homeCalls, 1);
     expect(vm.state.home?.influencerCode, 'CODE');
-    await vm.load(forceRefresh: true);
+    await vm.doIntent(const LoadInfluencerDashboardEvent(forceRefresh: true));
     expect(repo.homeCalls, 2);
   });
 }
 
-class _Repo implements InfluencerRepository {
+class _DashboardRepo implements InfluencerDashboardRepository {
   int homeCalls = 0;
   @override
   Future<ApiResult<InfluencerHomeApiEntity>> getHome() async {
@@ -30,26 +32,23 @@ class _Repo implements InfluencerRepository {
   }
 
   @override
-  Future<ApiResult<InfluencerProfileApiEntity>> getProfile() async =>
-      ApiSuccessResult(data: _profile);
-  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-const _money = InfluencerMoneyEntity(amount: 0, currency: 'KWD');
-const _bank = InfluencerBankInfoEntity(
+const _money = InfluencerDashboardMoneyEntity(amount: 0, currency: 'KWD');
+const _bank = InfluencerDashboardBankEntity(
   bankName: '',
   accountHolderName: '',
   maskedIban: '',
   isConfigured: false,
 );
-const _policy = InfluencerWithdrawalPolicyEntity(
+const _policy = InfluencerDashboardPolicyEntity(
   minimumAmount: 10,
   maximumAmount: 0,
   currencyCode: 'KWD',
   canWithdraw: false,
 );
-const _kpis = InfluencerKpisEntity(
+const _kpis = InfluencerDashboardKpisEntity(
   registeredCustomers: 0,
   completedSubscriptions: 0,
   linkClicks: 0,
@@ -59,7 +58,7 @@ const _kpis = InfluencerKpisEntity(
   linkClicksDiff: 0,
   conversionRateDiff: 0,
 );
-const _wallet = InfluencerWalletApiEntity(
+const _wallet = InfluencerDashboardWalletEntity(
   availableBalance: _money,
   pendingBalance: _money,
   lifetimeEarnings: _money,
@@ -80,15 +79,4 @@ const _home = InfluencerHomeApiEntity(
   wallet: _wallet,
   bankInfo: _bank,
   recentActivities: [],
-);
-const _profile = InfluencerProfileApiEntity(
-  id: 'id',
-  displayName: 'Name',
-  code: 'CODE',
-  commissionRate: 10,
-  status: 'Active',
-  isActive: true,
-  hasCompletedSocialOnboarding: true,
-  socialLinks: InfluencerSocialLinksEntity(),
-  bankInfo: _bank,
 );

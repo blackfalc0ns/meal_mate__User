@@ -14,6 +14,8 @@ class InfluencerWithdrawInputField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.onTap,
+    this.keyboardType,
+    this.validator,
   });
 
   final String label;
@@ -22,6 +24,8 @@ class InfluencerWithdrawInputField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,8 @@ class InfluencerWithdrawInputField extends StatelessWidget {
           hint: hint,
           readOnly: readOnly,
           onTap: onTap,
+          keyboardType: keyboardType,
+          validator: validator,
           suffixIcon: suffixIcon,
           fillColor: color.surface,
           borderColor: color.outlineVariant,

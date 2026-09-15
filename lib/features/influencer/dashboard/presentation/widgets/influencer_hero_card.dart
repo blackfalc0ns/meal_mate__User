@@ -10,10 +10,16 @@ class InfluencerHeroCard extends StatelessWidget {
     super.key,
     required this.imageAsset,
     required this.trendIconAsset,
+    required this.totalEarnings,
+    required this.currency,
+    required this.weeklyGain,
   });
 
   final String imageAsset;
   final String trendIconAsset;
+  final String totalEarnings;
+  final String currency;
+  final String weeklyGain;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +58,7 @@ class InfluencerHeroCard extends StatelessWidget {
                           top: Spacing.influencerHeroCurrencyTop,
                         ),
                         child: Text(
-                          locale.influencer_currency,
+                          currency,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
@@ -63,7 +69,7 @@ class InfluencerHeroCard extends StatelessWidget {
                       const SizedBox(width: Spacing.xs),
 
                       Text(
-                        locale.influencer_total_earnings_value,
+                        totalEarnings,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size30,
@@ -86,7 +92,7 @@ class InfluencerHeroCard extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          locale.influencer_weekly_commission_gain,
+                          weeklyGain,
                           style: getRegularStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size11,
@@ -112,62 +118,6 @@ class InfluencerHeroCard extends StatelessWidget {
                     ],
                   ),
                 ],
-              ),
-            ),
-            Positioned(
-              right: Spacing.influencerHeroContentStart,
-              bottom: Spacing.md,
-              child: SizedBox(
-                width: Spacing.influencerHeroProgressWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          locale.influencer_month_goal_progress,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size8,
-                            color: color.onPrimary,
-                          ),
-                        ),
-                        Text(
-                          locale.influencer_this_month,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size8,
-                            color: color.onPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Spacing.md),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      child: LinearProgressIndicator(
-                        minHeight: Spacing.influencerHeroProgressHeight,
-                        value: 0.8,
-                        backgroundColor: color.onPrimary.withValues(
-                          alpha: 0.25,
-                        ),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          color.onPrimary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      locale.influencer_month_goal_value,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onPrimary,
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
             Positioned(

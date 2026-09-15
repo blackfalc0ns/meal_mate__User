@@ -4,7 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_analytics_view_data.dart';
 
 class InfluencerStatisticsChartCard extends StatelessWidget {
   const InfluencerStatisticsChartCard({
@@ -18,7 +18,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
   final String title;
   final String legendLabel;
   final String filterLabel;
-  final List<InfluencerChartPointEntity> bars;
+  final List<InfluencerAnalyticsPointViewData> bars;
 
   @override
   Widget build(BuildContext context) {

@@ -3385,12 +3385,12 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<InfluencerProfileResponseDto> getInfluencerProfile() async {
+  Future<InfluencerSocialProfileResponseDto> getInfluencerProfile() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InfluencerProfileResponseDto>(
+    final _options = _setStreamType<InfluencerSocialProfileResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -3401,9 +3401,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InfluencerProfileResponseDto _value;
+    late InfluencerSocialProfileResponseDto _value;
     try {
-      _value = InfluencerProfileResponseDto.fromJson(_result.data!);
+      _value = InfluencerSocialProfileResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -3412,15 +3412,15 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<InfluencerProfileResponseDto> updateInfluencerSocialLinks(
-    InfluencerSocialLinksRequestDto request,
+  Future<InfluencerSocialLinksUpdateResponseDto> updateInfluencerSocialLinks(
+    InfluencerSocialLinksDto request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<InfluencerProfileResponseDto>(
+    final _options = _setStreamType<InfluencerSocialLinksUpdateResponseDto>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -3431,9 +3431,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InfluencerProfileResponseDto _value;
+    late InfluencerSocialLinksUpdateResponseDto _value;
     try {
-      _value = InfluencerProfileResponseDto.fromJson(_result.data!);
+      _value = InfluencerSocialLinksUpdateResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -3613,12 +3613,13 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<InfluencerSuccessResponseDto> deleteInfluencerBankAccount() async {
+  Future<InfluencerBankAccountDeleteResponseDto>
+  deleteInfluencerBankAccount() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InfluencerSuccessResponseDto>(
+    final _options = _setStreamType<InfluencerBankAccountDeleteResponseDto>(
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -3629,9 +3630,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InfluencerSuccessResponseDto _value;
+    late InfluencerBankAccountDeleteResponseDto _value;
     try {
-      _value = InfluencerSuccessResponseDto.fromJson(_result.data!);
+      _value = InfluencerBankAccountDeleteResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

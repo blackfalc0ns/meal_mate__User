@@ -3,12 +3,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_wallet_view_data.dart';
 
 class InfluencerTransactionTile extends StatelessWidget {
   const InfluencerTransactionTile({super.key, required this.transaction});
 
-  final InfluencerTransactionEntity transaction;
+  final InfluencerTransactionViewData transaction;
 
   @override
   Widget build(BuildContext context) {

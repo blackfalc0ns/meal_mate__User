@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_analytics_view_data.dart';
 
 class InfluencerTopProductCard extends StatelessWidget {
   const InfluencerTopProductCard({
@@ -15,7 +15,7 @@ class InfluencerTopProductCard extends StatelessWidget {
 
   final String title;
   final String actionLabel;
-  final InfluencerTopProductEntity product;
+  final InfluencerTopProductViewData product;
 
   @override
   Widget build(BuildContext context) {

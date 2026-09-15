@@ -10,11 +10,13 @@ class InfluencerPrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.filled = true,
+    this.isLoading = false,
   });
 
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool filled;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class InfluencerPrimaryButton extends StatelessWidget {
     return AppButton(
       text: label,
       onPressed: onPressed,
+      isLoading: isLoading,
       variant: filled ? AppButtonVariant.filled : AppButtonVariant.outlined,
       height: Spacing.buttonSmallHeight,
       borderRadius: Spacing.radiusPill,

@@ -1,47 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_primary_button.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_amount_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_balance_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_input_field.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_method_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_notice_banner.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_title_block.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_withdraw_top_bar.dart';
+import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
+import '../../domain/entities/influencer_wallet_entity.dart';
+import '../manager/influencer_wallet_event.dart';
+import '../manager/influencer_wallet_state.dart';
+import '../manager/influencer_wallet_view_model.dart';
+import '../widgets/influencer_withdraw_balance_card.dart';
+import '../widgets/influencer_withdraw_input_field.dart';
+import '../widgets/influencer_withdraw_notice_banner.dart';
+import '../widgets/influencer_withdraw_title_block.dart';
+import 'influencer_withdraw_review_screen.dart';
 
 class InfluencerWithdrawScreen extends StatefulWidget {
   const InfluencerWithdrawScreen({super.key});
-
   @override
   State<InfluencerWithdrawScreen> createState() =>
       _InfluencerWithdrawScreenState();
 }
 
 class _InfluencerWithdrawScreenState extends State<InfluencerWithdrawScreen> {
-  int _selectedMethodIndex = 0;
+  late final InfluencerWalletViewModel _viewModel;
   late final TextEditingController _accountHolderController;
   late final TextEditingController _ibanController;
   late final TextEditingController _bankNameController;
-
+  late final TextEditingController _amountController;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
+    _viewModel = getIt<InfluencerWalletViewModel>()
+      ..doIntent(const LoadInfluencerWalletEvent());
     _accountHolderController = TextEditingController();
     _ibanController = TextEditingController();
     _bankNameController = TextEditingController();
+    _amountController = TextEditingController();
   }
 
   @override
   void dispose() {
+    _viewModel.close();
     _accountHolderController.dispose();
     _ibanController.dispose();
     _bankNameController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -49,132 +55,149 @@ class _InfluencerWithdrawScreenState extends State<InfluencerWithdrawScreen> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
-    final wallet = dashboard.wallet;
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: Spacing.screenH,
-            vertical: Spacing.screenV,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              InfluencerWithdrawTopBar(
-                userName: dashboard.userName,
-                partnerLabel: dashboard.partnerLabel,
-                avatarAsset: dashboard.avatarAsset,
-                onBackTap: () => Navigator.of(context).maybePop(),
-              ),
-              const SizedBox(height: Spacing.base),
-              InfluencerWithdrawTitleBlock(
-                title: locale.influencer_withdraw_screen_title,
-                subtitle: locale.influencer_withdraw_screen_subtitle,
-              ),
-              const SizedBox(height: Spacing.base),
-              InfluencerWithdrawBalanceCard(
-                title: locale.influencer_available_for_withdraw,
-                amount: wallet.availableBalance,
-                currency: wallet.currency,
-                iconAsset: AssetsFake.influencerWalletIcon,
-              ),
-              const SizedBox(height: Spacing.base),
-              Text(
-                locale.influencer_choose_withdraw_method,
-                textAlign: TextAlign.start,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onSurface,
+    return BlocProvider.value(
+      value: _viewModel,
+      child: Scaffold(
+        backgroundColor: color.surface,
+        appBar: AppBar(
+          backgroundColor: color.surface,
+          title: Text(locale.influencer_withdraw_screen_title),
+        ),
+        body: BlocConsumer<InfluencerWalletViewModel, InfluencerWalletState>(
+          listenWhen: (previous, current) =>
+              previous.wallet == null && current.wallet != null,
+          listener: (_, state) {
+            _amountController.text = state.wallet!.availableBalance.amount
+                .toStringAsFixed(3);
+          },
+          builder: (context, state) {
+            if (state.isLoading && state.wallet == null) {
+              return Center(
+                child: CircularProgressIndicator(color: color.primary),
+              );
+            }
+            if (state.failure != null && state.wallet == null) {
+              return ApiErrorWidget(
+                exception: state.failure!.exception,
+                onRetry: () => _viewModel.doIntent(
+                  const LoadInfluencerWalletEvent(forceRefresh: true),
+                ),
+              );
+            }
+            final wallet = state.wallet;
+            if (wallet == null) return const SizedBox.shrink();
+            return SafeArea(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: Spacing.screenH,
+                    vertical: Spacing.screenV,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      InfluencerWithdrawTitleBlock(
+                        title: locale.influencer_withdraw_screen_title,
+                        subtitle: locale.influencer_withdraw_screen_subtitle,
+                      ),
+                      const SizedBox(height: Spacing.base),
+                      InfluencerWithdrawBalanceCard(
+                        title: locale.influencer_available_for_withdraw,
+                        amount: wallet.availableBalance.amount.toStringAsFixed(
+                          3,
+                        ),
+                        currency: wallet.currencyCode,
+                        iconAsset: AssetsFake.influencerWalletIcon,
+                      ),
+                      const SizedBox(height: Spacing.base),
+                      InfluencerWithdrawInputField(
+                        label: locale.influencer_withdraw_amount,
+                        hint: wallet.availableBalance.amount.toStringAsFixed(3),
+                        controller: _amountController,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        validator: (value) => _isValidAmount(value, wallet)
+                            ? null
+                            : locale.this_field_is_required,
+                      ),
+                      if (!wallet.bankInfo.isConfigured) ...[
+                        const SizedBox(height: Spacing.base),
+                        InfluencerWithdrawInputField(
+                          label: locale.influencer_bank_account_holder,
+                          hint: locale.influencer_account_holder_hint,
+                          controller: _accountHolderController,
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        InfluencerWithdrawInputField(
+                          label: locale.influencer_bank_iban,
+                          hint: locale.influencer_iban_hint,
+                          controller: _ibanController,
+                        ),
+                        const SizedBox(height: Spacing.sm),
+                        InfluencerWithdrawInputField(
+                          label: locale.influencer_bank_name,
+                          hint: locale.influencer_select_bank_hint,
+                          controller: _bankNameController,
+                        ),
+                      ],
+                      const SizedBox(height: Spacing.base),
+                      InfluencerWithdrawNoticeBanner(
+                        message: locale.influencer_withdraw_notice_text,
+                      ),
+                      const SizedBox(height: Spacing.xl),
+                      InfluencerPrimaryButton(
+                        label: locale.influencer_request_withdraw,
+                        onPressed:
+                            wallet.withdrawalPolicy.canWithdraw &&
+                                !wallet.hasActiveWithdrawalRequest
+                            ? () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  _openReview(context, wallet);
+                                }
+                              }
+                            : null,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: Spacing.sm),
-              InfluencerWithdrawMethodCard(
-                title: locale.influencer_bank_transfer,
-                subtitle: locale.influencer_bank_transfer_subtitle,
-                icon: Icons.account_balance_rounded,
-                isSelected: _selectedMethodIndex == 0,
-                onTap: () {
-                  setState(() {
-                    _selectedMethodIndex = 0;
-                  });
-                },
-              ),
-              const SizedBox(height: Spacing.sm),
-              InfluencerWithdrawMethodCard(
-                title: locale.influencer_electronic_wallet,
-                subtitle: locale.influencer_electronic_wallet_subtitle,
-                icon: Icons.account_balance_wallet_rounded,
-                isSelected: _selectedMethodIndex == 1,
-                onTap: () {
-                  setState(() {
-                    _selectedMethodIndex = 1;
-                  });
-                },
-              ),
-              const SizedBox(height: Spacing.base),
-              Text(
-                locale.influencer_bank_transfer_details,
-                textAlign: TextAlign.start,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onSurface,
-                ),
-              ),
-              const SizedBox(height: Spacing.base),
-              InfluencerWithdrawInputField(
-                label: locale.influencer_bank_account_holder,
-                hint: locale.influencer_account_holder_hint,
-                controller: _accountHolderController,
-              ),
-              const SizedBox(height: Spacing.sm),
-              InfluencerWithdrawInputField(
-                label: locale.influencer_bank_iban,
-                hint: locale.influencer_iban_hint,
-                controller: _ibanController,
-                suffixIcon: Icon(
-                  Icons.crop_free_rounded,
-                  color: color.onSurfaceVariant,
-                  size: Spacing.iconMd,
-                ),
-              ),
-              const SizedBox(height: Spacing.sm),
-              InfluencerWithdrawInputField(
-                label: locale.influencer_bank_name,
-                hint: locale.influencer_select_bank_hint,
-                controller: _bankNameController,
-                suffixIcon: Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: color.onSurfaceVariant,
-                  size: Spacing.iconMd,
-                ),
-              ),
-              const SizedBox(height: Spacing.base),
-              InfluencerWithdrawAmountCard(
-                label: locale.influencer_withdraw_amount,
-                amount: '${wallet.availableBalance}.000',
-                currency: wallet.currency,
-              ),
-              const SizedBox(height: Spacing.base),
-              InfluencerWithdrawNoticeBanner(
-                message: locale.influencer_withdraw_notice_text,
-              ),
-              const SizedBox(height: Spacing.xl),
-              InfluencerPrimaryButton(
-                label: locale.influencer_request_withdraw,
-                onPressed: () => Navigator.of(
-                  context,
-                ).pushNamed(AppRoutes.influencerWithdrawReview),
-              ),
-              const SizedBox(height: Spacing.base),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  void _openReview(BuildContext context, InfluencerWalletEntity wallet) {
+    final amount = double.parse(_amountController.text.trim());
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => InfluencerWithdrawReviewScreen(
+          wallet: wallet,
+          amount: amount,
+          bankName: wallet.bankInfo.isConfigured
+              ? wallet.bankInfo.bankName
+              : _bankNameController.text.trim(),
+          accountHolderName: wallet.bankInfo.isConfigured
+              ? wallet.bankInfo.accountHolderName
+              : _accountHolderController.text.trim(),
+          iban: wallet.bankInfo.isConfigured
+              ? wallet.bankInfo.iban
+              : _ibanController.text.replaceAll(' ', '').toUpperCase(),
+        ),
+      ),
+    );
+  }
+
+  bool _isValidAmount(String? value, InfluencerWalletEntity wallet) {
+    final amount = double.tryParse(value?.trim() ?? '');
+    if (amount == null) return false;
+    final policy = wallet.withdrawalPolicy;
+    return amount >= policy.minimumAmount &&
+        amount <= policy.maximumAmount &&
+        amount <= wallet.availableBalance.amount;
   }
 }

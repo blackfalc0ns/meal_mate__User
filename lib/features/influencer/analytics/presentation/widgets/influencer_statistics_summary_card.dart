@@ -6,7 +6,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
+import '../models/influencer_analytics_view_data.dart';
 
 class InfluencerStatisticsSummaryCard extends StatelessWidget {
   const InfluencerStatisticsSummaryCard({
@@ -15,8 +15,8 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
     required this.points,
   });
 
-  final InfluencerStatisticsSummaryEntity summary;
-  final List<InfluencerChartPointEntity> points;
+  final InfluencerAnalyticsSummaryViewData summary;
+  final List<InfluencerAnalyticsPointViewData> points;
 
   @override
   Widget build(BuildContext context) {

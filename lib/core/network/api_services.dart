@@ -86,7 +86,11 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_api_models.dart';
+import 'package:meal_meat_user/features/influencer/analytics/data/models/influencer_analytics_dto.dart';
+import 'package:meal_meat_user/features/influencer/bank_account/data/models/influencer_bank_account_dto.dart';
+import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_dashboard_dto.dart';
+import 'package:meal_meat_user/features/influencer/social_links/data/models/influencer_social_links_dto.dart';
+import 'package:meal_meat_user/features/influencer/wallet/data/models/influencer_wallet_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -702,10 +706,10 @@ abstract class ApiServices {
   @GET(EndPoints.influencerBanks)
   Future<List<InfluencerBankDto>> getInfluencerBanks();
   @GET(EndPoints.influencerProfile)
-  Future<InfluencerProfileResponseDto> getInfluencerProfile();
+  Future<InfluencerSocialProfileResponseDto> getInfluencerProfile();
   @PUT(EndPoints.influencerSocialLinks)
-  Future<InfluencerProfileResponseDto> updateInfluencerSocialLinks(
-    @Body() InfluencerSocialLinksRequestDto request,
+  Future<InfluencerSocialLinksUpdateResponseDto> updateInfluencerSocialLinks(
+    @Body() InfluencerSocialLinksDto request,
   );
   @GET(EndPoints.influencerHome)
   Future<InfluencerHomeResponseDto> getInfluencerHome();
@@ -725,7 +729,7 @@ abstract class ApiServices {
     @Body() InfluencerBankAccountRequestDto request,
   );
   @DELETE(EndPoints.influencerBankAccount)
-  Future<InfluencerSuccessResponseDto> deleteInfluencerBankAccount();
+  Future<InfluencerBankAccountDeleteResponseDto> deleteInfluencerBankAccount();
   @POST(EndPoints.influencerWithdrawals)
   Future<InfluencerWithdrawalResponseDto> createInfluencerWithdrawal(
     @Body() InfluencerWithdrawalRequestDto request,

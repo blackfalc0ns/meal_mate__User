@@ -1,27 +1,27 @@
 import '../../../../../core/network/failures.dart';
-import '../../domain/entities/influencer_api_entities.dart';
+import '../../domain/entities/influencer_dashboard_api_entity.dart';
 
 class InfluencerDashboardState {
   const InfluencerDashboardState({
     this.isLoading = false,
     this.home,
-    this.profile,
+    this.links,
     this.failure,
   });
   final bool isLoading;
   final InfluencerHomeApiEntity? home;
-  final InfluencerProfileApiEntity? profile;
+  final InfluencerLinksEntity? links;
   final Failure? failure;
   InfluencerDashboardState copyWith({
     bool? isLoading,
     InfluencerHomeApiEntity? home,
-    InfluencerProfileApiEntity? profile,
+    InfluencerLinksEntity? links,
     Failure? failure,
     bool clearFailure = false,
   }) => InfluencerDashboardState(
     isLoading: isLoading ?? this.isLoading,
     home: home ?? this.home,
-    profile: profile ?? this.profile,
+    links: links ?? this.links,
     failure: clearFailure ? null : failure ?? this.failure,
   );
 }

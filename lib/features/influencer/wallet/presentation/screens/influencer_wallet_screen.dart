@@ -1,44 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/data/influencer_fake_data_source.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/domain/entities/influencer_dashboard_entity.dart';
-import 'package:meal_meat_user/features/influencer/dashboard/presentation/widgets/influencer_header_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_action_button.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_monthly_summary_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_overview_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_recent_transactions_card.dart';
-import 'package:meal_meat_user/features/influencer/wallet/presentation/widgets/influencer_wallet_title_block.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import '../../domain/entities/influencer_wallet_entity.dart';
+import '../../../bank_account/presentation/screens/influencer_bank_account_screen.dart';
+import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
+import '../manager/influencer_wallet_event.dart';
+import '../manager/influencer_wallet_state.dart';
+import '../manager/influencer_wallet_view_model.dart';
+import '../models/influencer_wallet_view_data.dart';
+import '../widgets/influencer_wallet_action_button.dart';
+import '../widgets/influencer_wallet_monthly_summary_card.dart';
+import '../widgets/influencer_wallet_overview_card.dart';
+import '../widgets/influencer_wallet_recent_transactions_card.dart';
+import '../widgets/influencer_wallet_title_block.dart';
 
 class InfluencerWalletScreen extends StatelessWidget {
   const InfluencerWalletScreen({super.key, this.showScaffold = true});
-
   final bool showScaffold;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final dashboard = InfluencerFakeDataSource(locale).loadDashboard();
-    final wallet = dashboard.wallet;
-
-    final actions = [
-      InfluencerActionEntity(
-        title: locale.influencer_wallet_history_action,
-        subtitle: locale.influencer_withdraw_history_subtitle,
-        icon: InfluencerActionIcon.history,
-        routeName: AppRoutes.influencerWithdrawHistory,
+    return BlocProvider(
+      create: (_) =>
+          getIt<InfluencerWalletViewModel>()
+            ..doIntent(const LoadInfluencerWalletEvent()),
+      child: BlocBuilder<InfluencerWalletViewModel, InfluencerWalletState>(
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading ||
+            previous.wallet != current.wallet ||
+            previous.failure != current.failure,
+        builder: (context, state) {
+          final content = _buildContent(context, state);
+          if (!showScaffold) return content;
+          return Scaffold(
+            backgroundColor: color.surface,
+            appBar: CustomAppBar(
+              title: locale.influencer_wallet_figma_title,
+              backgroundColor: color.surface,
+              showShadow: false,
+            ),
+            body: content,
+          );
+        },
       ),
-      InfluencerActionEntity(
+    );
+  }
+
+  Widget _buildContent(BuildContext context, InfluencerWalletState state) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+    if (state.isLoading && state.wallet == null) {
+      return Center(child: CircularProgressIndicator(color: color.primary));
+    }
+    if (state.failure != null && state.wallet == null) {
+      return ApiErrorWidget(
+        exception: state.failure!.exception,
+        onRetry: () => context.read<InfluencerWalletViewModel>().doIntent(
+          const LoadInfluencerWalletEvent(forceRefresh: true),
+        ),
+      );
+    }
+    final wallet = state.wallet;
+    if (wallet == null) return const SizedBox.shrink();
+    final actions = [
+      InfluencerWalletActionViewData(
+        title: locale.influencer_wallet_history_action,
+        routeName: AppRoutes.influencerWithdrawHistory,
+        icon: InfluencerWalletActionIcon.history,
+      ),
+      InfluencerWalletActionViewData(
         title: locale.influencer_wallet_withdraw_action,
-        subtitle: locale.influencer_request_withdraw_subtitle,
-        icon: InfluencerActionIcon.wallet,
         routeName: AppRoutes.influencerWithdraw,
+        icon: InfluencerWalletActionIcon.wallet,
       ),
     ];
-
-    final body = SafeArea(
+    final transactions = wallet.recentTransactions
+        .map(
+          (item) => InfluencerTransactionViewData(
+            title: locale.influencer_bank_transfer,
+            date: item.requestedAtUtc?.toLocal().toString() ?? '',
+            amount:
+                '${item.amount.amount.toStringAsFixed(3)} ${item.amount.currency}',
+            status: item.status == InfluencerWithdrawalStatus.completed
+                ? locale.wallet_status_completed
+                : locale.wallet_status_processing,
+            isDebit: true,
+          ),
+        )
+        .toList();
+    return SafeArea(
       top: false,
       child: SingleChildScrollView(
         padding: const EdgeInsetsDirectional.symmetric(
@@ -55,10 +112,12 @@ class InfluencerWalletScreen extends StatelessWidget {
             const SizedBox(height: Spacing.base),
             InfluencerWalletOverviewCard(
               availableTitle: locale.influencer_available_balance,
-              availableAmount: wallet.availableBalance,
+              availableAmount: wallet.availableBalance.amount.toStringAsFixed(
+                3,
+              ),
               totalTitle: locale.influencer_total_earnings_colon,
-              totalAmount: wallet.totalBalance,
-              currency: wallet.currency,
+              totalAmount: wallet.lifetimeEarnings.amount.toStringAsFixed(3),
+              currency: wallet.currencyCode,
             ),
             const SizedBox(height: Spacing.influencerWalletActionsTopGap),
             Row(
@@ -79,35 +138,43 @@ class InfluencerWalletScreen extends StatelessWidget {
             const SizedBox(height: Spacing.base),
             InfluencerWalletMonthlySummaryCard(
               title: locale.influencer_wallet_month_summary,
-              metrics: wallet.monthlySummary,
+              metrics: [
+                InfluencerWalletSummaryMetricViewData(
+                  title: locale.influencer_wallet_summary_withdrawn,
+                  value: wallet.thisMonthWithdrawn.amount.toStringAsFixed(3),
+                  currency: wallet.currencyCode,
+                  icon: InfluencerWalletSummaryIcon.withdrawn,
+                ),
+                InfluencerWalletSummaryMetricViewData(
+                  title: locale.influencer_wallet_summary_total_earnings,
+                  value: wallet.thisMonthEarned.amount.toStringAsFixed(3),
+                  currency: wallet.currencyCode,
+                  icon: InfluencerWalletSummaryIcon.earnings,
+                ),
+              ],
             ),
             const SizedBox(height: Spacing.base),
             InfluencerWalletRecentTransactionsCard(
               title: locale.influencer_wallet_latest_transactions,
               actionLabel: locale.influencer_view_all,
-              transactions: wallet.transactions,
+              transactions: transactions,
               onActionTap: () => Navigator.of(
                 context,
               ).pushNamed(AppRoutes.influencerWithdrawHistory),
             ),
+            const SizedBox(height: Spacing.base),
+            InfluencerPrimaryButton(
+              label: locale.influencer_bank_transfer_details,
+              filled: false,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const InfluencerBankAccountScreen(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
-    );
-
-    if (!showScaffold) {
-      return body;
-    }
-
-    return Scaffold(
-      backgroundColor: color.surface,
-      appBar: InfluencerHeaderCard(
-        userName: dashboard.userName,
-        partnerLabel: dashboard.partnerLabel,
-        avatarAsset: dashboard.avatarAsset,
-        logoAsset: dashboard.logoAsset,
-      ),
-      body: body,
     );
   }
 }
