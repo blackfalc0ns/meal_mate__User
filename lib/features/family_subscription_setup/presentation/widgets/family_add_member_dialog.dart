@@ -393,6 +393,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
 
                               // Relationship and Age
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Column(

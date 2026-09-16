@@ -118,7 +118,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       case DeleteCustomerAddressEvent():
         _deleteCustomerAddress(event.addressId);
       case ReverseGeocodeEvent():
-        _reverseGeocode(event.latitude, event.longitude);
+        _reverseGeocode(event.latitude, event.longitude, force: event.force);
       case GeocodeAddressEvent():
         _geocodeAddress(event.address, event.countryCode);
       case PreviewNewAddressCoverageEvent():
@@ -181,10 +181,39 @@ class AddressesViewModel extends Cubit<AddressesState> {
     CustomerAddressEntity? initialAddress,
   ) async {
     final loadedCountryCode = state.locations.data?.countryCode;
-    if (initialAddress == null &&
-        (state.locations.isLoading || loadedCountryCode == countryCode)) {
+    final loadedData = state.locations.data;
+    if (state.locations.isLoading) return;
+
+    if (loadedData != null && loadedCountryCode == countryCode) {
+      final initialSelection = _findInitialSelection(
+        loadedData,
+        initialAddress,
+      );
+      final initialArea = initialSelection.area;
+      final selectedAreaWithBlocks = initialArea == null
+          ? null
+          : (initialArea.blocks.isNotEmpty
+              ? initialArea
+              : await _loadAreaBlocks(countryCode, initialArea.id));
+      final selectedArea = selectedAreaWithBlocks ?? initialArea;
+      final selectedBlock = selectedArea == null
+          ? null
+          : _findInitialBlock(selectedArea, initialAddress);
+
+      emit(
+        state.copyWith(
+          locations: state.locations.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            selectedGovernorate: initialSelection.governorate,
+            selectedArea: selectedArea,
+            selectedBlock: selectedBlock,
+          ),
+        ),
+      );
       return;
     }
+
     emit(
       state.copyWith(
         locations: state.locations.copyWith(
@@ -410,10 +439,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
     return value?.trim().toLowerCase() ?? '';
   }
 
-  Future<void> _reverseGeocode(double latitude, double longitude) async {
+  Future<void> _reverseGeocode(
+    double latitude,
+    double longitude, {
+    bool force = false,
+  }) async {
     final lastLatitude = _lastReverseGeocodeLatitude;
     final lastLongitude = _lastReverseGeocodeLongitude;
-    if (lastLatitude != null &&
+    if (!force &&
+        lastLatitude != null &&
         lastLongitude != null &&
         (latitude - lastLatitude).abs() < 0.00001 &&
         (longitude - lastLongitude).abs() < 0.00001) {

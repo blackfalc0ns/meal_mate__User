@@ -46,13 +46,12 @@ class AddressDetailsWoltSheet extends StatelessWidget {
               Spacing.addressesChooseLocationCardPadding,
               Spacing.md,
             ),
-            child: SizedBox(
-              height: Spacing.buttonHeight,
-              child: AppButton(
-                onPressed: onConfirm,
-                isLoading: isLoading,
-                text: context.localization.address_preview_check_button,
-              ),
+            child: AppButton(
+              fontSize: FontSize.size11,
+              height: Spacing.buttonSmallHeight,
+              onPressed: onConfirm,
+              isLoading: isLoading,
+              text: context.localization.address_preview_check_button,
             ),
           ),
           child: AddressDetailsWoltSheet(

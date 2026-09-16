@@ -16,6 +16,7 @@ import 'package:meal_meat_user/features/addresses/presentation/widgets/address_c
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
 
 class AddressesFigmaFrame extends StatefulWidget {
@@ -51,7 +52,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   GoogleMapController? _mapController;
   Timer? _debounceTimer;
   bool _isInitialMapMove = true;
+  bool _isProgrammaticMove = false;
+  bool _animateCameraToAutofill = false;
   bool _openDetailsAfterAutofill = false;
+  bool _isLocationResolving = false;
   AddressLocationMode? _selectedMode;
   late final AddressEntryFlowController _flowController;
   late final bool _ownsFlowController;
@@ -70,6 +74,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     super.initState();
     _currentLatitude = widget.initialAddress?.latitude ?? _defaultLatitude;
     _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
+    if (widget.initialAddress != null) {
+      _lastGeocodedLat = _currentLatitude;
+      _lastGeocodedLng = _currentLongitude;
+    }
     _ownsFlowController = widget.flowController == null;
     _flowController = widget.flowController ?? AddressEntryFlowController();
     if (widget.initialAddress != null && widget.showInitialAddressDetails) {
@@ -108,11 +116,20 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       listenWhen: (previous, current) =>
           previous.mapAutofill != current.mapAutofill,
       listener: (context, state) {
+        if (_isLocationResolving && !state.mapAutofill.isLoading) {
+          if (mounted) {
+            setState(() => _isLocationResolving = false);
+          }
+        }
         if (state.mapAutofill.isSuccess && state.mapAutofill.autofill != null) {
           final autofill = state.mapAutofill.autofill!;
+          final shouldAnimate = _animateCameraToAutofill;
+          _animateCameraToAutofill = false;
           setState(() {
-            _currentLatitude = autofill.latitude;
-            _currentLongitude = autofill.longitude;
+            if (shouldAnimate) {
+              _currentLatitude = autofill.latitude;
+              _currentLongitude = autofill.longitude;
+            }
             if (autofill.street != null && autofill.street!.isNotEmpty) {
               _streetController.text = autofill.street!;
             }
@@ -128,11 +145,14 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
               _searchController.text = autofill.formattedAddress;
             }
           });
-          _mapController?.animateCamera(
-            CameraUpdate.newLatLng(
-              LatLng(autofill.latitude, autofill.longitude),
-            ),
-          );
+          if (shouldAnimate) {
+            _isProgrammaticMove = true;
+            _mapController?.animateCamera(
+              CameraUpdate.newLatLng(
+                LatLng(autofill.latitude, autofill.longitude),
+              ),
+            );
+          }
           if (_openDetailsAfterAutofill) {
             _openDetailsAfterAutofill = false;
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -166,16 +186,6 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                     () => EagerGestureRecognizer(),
                   ),
                 },
-                circles: {
-                  Circle(
-                    circleId: const CircleId('delivery_radius'),
-                    center: LatLng(_currentLatitude, _currentLongitude),
-                    radius: 200,
-                    fillColor: color.primary.withValues(alpha: 0.12),
-                    strokeColor: color.primary.withValues(alpha: 0.28),
-                    strokeWidth: 1,
-                  ),
-                },
               ),
             ),
             const Positioned(
@@ -198,9 +208,24 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                   onSearchChanged: _onSearchChanged,
                   onModeChanged: (mode) {
                     setState(() => _selectedMode = mode);
+                    if (mode == AddressLocationMode.fromMap) {
+                      final sent = _triggerReverseGeocode(context, force: true);
+                      if (sent && mounted) {
+                        setState(() => _isLocationResolving = true);
+                      }
+                    }
                   },
                   onUseCurrentLocation: () => _onGpsPressed(context),
                   onConfirm: () => _prepareAndShowDetails(context),
+                ),
+              ),
+            if (_isLocationResolving)
+              Positioned.fill(
+                child: AbsorbPointer(
+                  child: ColoredBox(
+                    color: color.scrim.withValues(alpha: 0.2),
+                    child: const CustomProgressIndicator(),
+                  ),
                 ),
               ),
           ],
@@ -234,10 +259,17 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       _isInitialMapMove = false;
       return;
     }
+    if (_isProgrammaticMove) {
+      _isProgrammaticMove = false;
+      return;
+    }
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 600), () {
       if (!mounted) return;
-      _triggerReverseGeocode(context);
+      final sent = _triggerReverseGeocode(context);
+      if (sent && mounted) {
+        setState(() => _isLocationResolving = true);
+      }
     });
   }
 
@@ -245,12 +277,17 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _mapController?.animateCamera(
       CameraUpdate.newLatLng(LatLng(_currentLatitude, _currentLongitude)),
     );
-    _triggerReverseGeocode(context);
+    final sent = _triggerReverseGeocode(context, force: true);
+    if (sent && mounted) {
+      setState(() => _isLocationResolving = true);
+    }
   }
 
   void _onSearchSubmitted(String query) {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return;
+    _animateCameraToAutofill = true;
+    if (mounted) setState(() => _isLocationResolving = true);
     context.read<AddressesViewModel>().doIntent(
       GeocodeAddressEvent(address: trimmed),
     );
@@ -262,18 +299,20 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     if (trimmed.length < 3) return;
     _debounceTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
+      _animateCameraToAutofill = true;
+      setState(() => _isLocationResolving = true);
       context.read<AddressesViewModel>().doIntent(
         GeocodeAddressEvent(address: trimmed),
       );
     });
   }
 
-  void _triggerReverseGeocode(BuildContext context, {bool force = false}) {
+  bool _triggerReverseGeocode(BuildContext context, {bool force = false}) {
     if (_lastGeocodedLat != null && _lastGeocodedLng != null) {
       final latDiff = (_currentLatitude - _lastGeocodedLat!).abs();
       final lngDiff = (_currentLongitude - _lastGeocodedLng!).abs();
       if (!force && latDiff < 0.0001 && lngDiff < 0.0001) {
-        return;
+        return false;
       }
     }
     _lastGeocodedLat = _currentLatitude;
@@ -283,8 +322,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       ReverseGeocodeEvent(
         latitude: _currentLatitude,
         longitude: _currentLongitude,
+        force: force,
       ),
     );
+    return true;
   }
 
   void _prepareAndShowDetails(BuildContext context) {
@@ -299,7 +340,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       return;
     }
     _openDetailsAfterAutofill = true;
-    _triggerReverseGeocode(context, force: true);
+    final sent = _triggerReverseGeocode(context, force: true);
+    if (sent && mounted) {
+      setState(() => _isLocationResolving = true);
+    }
   }
 
   Future<void> _showDetailsSheet(BuildContext context) async {

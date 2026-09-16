@@ -40,6 +40,7 @@ class FamilySetupFormCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.familySetupFormFieldGap),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: FamilySetupField(

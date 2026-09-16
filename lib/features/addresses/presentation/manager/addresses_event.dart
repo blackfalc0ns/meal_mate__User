@@ -61,10 +61,15 @@ class DeleteCustomerAddressEvent extends AddressesEvent {
 }
 
 class ReverseGeocodeEvent extends AddressesEvent {
-  const ReverseGeocodeEvent({required this.latitude, required this.longitude});
+  const ReverseGeocodeEvent({
+    required this.latitude,
+    required this.longitude,
+    this.force = false,
+  });
 
   final double latitude;
   final double longitude;
+  final bool force;
 }
 
 class GeocodeAddressEvent extends AddressesEvent {

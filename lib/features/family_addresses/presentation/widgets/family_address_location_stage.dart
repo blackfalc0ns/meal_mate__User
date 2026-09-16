@@ -41,8 +41,6 @@ class _FamilyAddressLocationStageState
       AddressEntryFlowController();
   final AddressActionSuccessTracker _successTracker =
       AddressActionSuccessTracker();
-  final AddressOptimisticAdvanceTracker _advanceTracker =
-      AddressOptimisticAdvanceTracker();
 
   @override
   void initState() {
@@ -64,7 +62,7 @@ class _FamilyAddressLocationStageState
     if (oldWidget.memberId == widget.memberId) return;
 
     _shownPreview = null;
-    _advanceTracker.reset();
+    _entryFlowController.chooseLocation();
     _viewModel.invalidateFamilyMemberOperations();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || oldWidget.memberId == widget.memberId) return;
@@ -102,9 +100,7 @@ class _FamilyAddressLocationStageState
             isSuccess: state.action.isSuccess,
           )) {
             _entryFlowController.addressSaved();
-            if (_advanceTracker.shouldAdvanceOnSuccess()) {
-              widget.onSaved();
-            }
+            widget.onSaved();
             return;
           }
 
@@ -122,6 +118,8 @@ class _FamilyAddressLocationStageState
               context: context,
               message: mapFailureMessage(context, previewError),
             );
+            _shownPreview = null;
+            _entryFlowController.chooseLocation();
           }
 
           final preview = state.coveragePreview.preview;
@@ -176,12 +174,10 @@ class _FamilyAddressLocationStageState
                         context.read<AddressesViewModel>().doIntent(
                           const ConfirmPendingAddressActionEvent(),
                         );
-                        if (_advanceTracker.advanceOnConfirm()) {
-                          widget.onSaved();
-                        }
                       },
                       onChooseAnother: () {
-                        _entryFlowController.editAddressDetails();
+                        _shownPreview = null;
+                        _entryFlowController.chooseLocation();
                         context.read<AddressesViewModel>().doIntent(
                           const ClearCoveragePreviewEvent(),
                         );
