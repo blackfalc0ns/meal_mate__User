@@ -128,12 +128,23 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilyRelationships() async {
+    emit(state.copyWith(isRelationshipsLoading: true, clearFailure: true));
     final result = await _getFamilyRelationshipsUseCase();
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(relationships: result.data));
+        emit(
+          state.copyWith(
+            isRelationshipsLoading: false,
+            relationships: result.data,
+          ),
+        );
       case ApiErrorResult():
-        emit(state.copyWith(failure: result.failure));
+        emit(
+          state.copyWith(
+            isRelationshipsLoading: false,
+            failure: result.failure,
+          ),
+        );
     }
   }
 

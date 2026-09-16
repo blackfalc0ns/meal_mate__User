@@ -64,35 +64,27 @@ class FamilySetupMemberTile extends StatelessWidget {
                       const SizedBox(width: Spacing.xs),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.xs,
-                          vertical: 2,
+                          horizontal: Spacing.sm,
+                          vertical: Spacing.xss,
                         ),
                         decoration: BoxDecoration(
-                          color: color.primary,
+                          color: color.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(
                             Spacing.radiusPill,
                           ),
                         ),
                         child: Text(
                           locale.family_owner,
-                          style: getBoldStyle(
+                          style: getSemiBoldStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size8,
-                            color: color.onPrimary,
+                            fontSize: FontSize.size10,
+                            color: color.primary,
                           ),
                         ),
                       ),
                     ],
                   ],
                 ),
-                // Text(
-                //   '${member.ageYears} ${locale.family_year} · ${member.relationshipCode}',
-                //   style: getRegularStyle(
-                //     fontFamily: FontConstant.alexandria,
-                //     fontSize: FontSize.size10,
-                //     color: color.onSurfaceVariant,
-                //   ),
-                // ),
               ],
             ),
           ),

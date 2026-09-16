@@ -15,9 +15,12 @@ void main() {
     expect(dialogSource, isNot(contains('_selectedAddressId')));
   });
 
-  test('relationship is a text field and gender has the correct label', () {
+  test('relationship opens the picker and submits its selected code', () {
     expect(dialogSource, contains('_relationshipController'));
-    expect(dialogSource, isNot(contains('DropdownButton<String>')));
+    expect(dialogSource, contains('readOnly: true'));
+    expect(dialogSource, contains('FamilyRelationshipPickerSheet.show('));
+    expect(dialogSource, contains('relationshipCode: relationshipCode'));
+    expect(dialogSource, isNot(contains('_resolveRelationshipCode')));
     expect(dialogSource, contains('l10n.family_gender'));
   });
 

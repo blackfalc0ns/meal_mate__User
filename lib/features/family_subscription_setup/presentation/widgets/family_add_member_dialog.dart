@@ -21,8 +21,10 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_member_form_validation.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_relationship_options.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_gender_option.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_member_phone_field.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_relationship_picker_sheet.dart';
 
 class FamilyAddMemberDialog extends StatefulWidget {
   const FamilyAddMemberDialog({
@@ -106,6 +108,8 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
   String? _phoneError;
   String? _nameError;
   String? _ageError;
+  String? _relationshipError;
+  String? _selectedRelationshipCode;
   bool _phoneLookupBlocked = false;
 
   @override
@@ -115,15 +119,26 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     _nameController = TextEditingController(text: member?.displayName ?? '');
     _phoneController = TextEditingController(text: member?.phoneNumber ?? '');
     _resolvedPhone = member?.phoneNumber;
-    _relationshipController = TextEditingController(
-      text: member?.relationshipCode ?? '',
-    );
+    _relationshipController = TextEditingController();
+    _selectedRelationshipCode = member?.relationshipCode;
     _ageController = TextEditingController(
       text: member != null && member.ageYears > 0
           ? member.ageYears.toString()
           : '',
     );
     _gender = member?.gender ?? 1;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final relationships = context
+        .read<FamilySubscriptionSetupViewModel>()
+        .state
+        .relationships;
+    _syncRelationshipName(
+      relationships.isNotEmpty ? relationships : widget.relationships,
+    );
   }
 
   @override
@@ -141,17 +156,34 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final phone = _resolvedPhone?.trim() ?? '';
     final ageText = _ageController.text.trim();
     final age = int.tryParse(ageText) ?? 0;
-    final relationship = _relationshipController.text.trim();
-    final relCode = _resolveRelationshipCode(relationship);
+    final relationshipCode = _selectedRelationshipCode;
+    final stateRelationships = context
+        .read<FamilySubscriptionSetupViewModel>()
+        .state
+        .relationships;
+    final options = buildFamilyRelationshipOptions(
+      stateRelationships.isNotEmpty ? stateRelationships : widget.relationships,
+      selectedCode: relationshipCode,
+      includeSelectedRelationship: widget.member != null,
+    );
+    final relationshipIsInvalid =
+        relationshipCode == null ||
+        !options.any((option) => option.code == relationshipCode);
     final phoneIsInvalid = validateFamilyMemberPhone(_resolvedPhone) != null;
     final nameIsInvalid = validateFamilyMemberName(name) != null;
     final ageIsInvalid = validateFamilyMemberAge(ageText) != null;
 
-    if (phoneIsInvalid || nameIsInvalid || ageIsInvalid) {
+    if (phoneIsInvalid ||
+        nameIsInvalid ||
+        ageIsInvalid ||
+        relationshipIsInvalid) {
       setState(() {
         _phoneError = phoneIsInvalid ? locale.phone_number_is_not_valid : null;
         _nameError = nameIsInvalid ? locale.name_is_required : null;
         _ageError = ageIsInvalid ? locale.family_age_invalid : null;
+        _relationshipError = relationshipIsInvalid
+            ? locale.family_relation_hint
+            : null;
       });
       return;
     }
@@ -178,7 +210,7 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
       phone: phone,
       displayName: name,
       occupation: null,
-      relationshipCode: relCode,
+      relationshipCode: relationshipCode,
       gender: _gender,
       ageYears: age,
       deliveryAddressId: null,
@@ -376,9 +408,28 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
                                           ),
                                         ),
                                         const SizedBox(height: Spacing.xs),
-                                        AppTextField(
-                                          controller: _relationshipController,
-                                          hint: l10n.family_relation_input_hint,
+                                        BlocListener<
+                                          FamilySubscriptionSetupViewModel,
+                                          FamilyPlanState
+                                        >(
+                                          listenWhen: (previous, current) =>
+                                              previous.relationships !=
+                                              current.relationships,
+                                          listener: (context, state) =>
+                                              _syncRelationshipName(
+                                                state.relationships,
+                                              ),
+                                          child: AppTextField(
+                                            controller: _relationshipController,
+                                            hint: l10n.family_relation_hint,
+                                            errorText: _relationshipError,
+                                            readOnly: true,
+                                            onTap: _openRelationshipPicker,
+                                            suffixIcon: Icon(
+                                              Icons.keyboard_arrow_down_rounded,
+                                              color: color.onSurfaceVariant,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -501,17 +552,61 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     );
   }
 
-  String _resolveRelationshipCode(String value) {
-    if (value.isEmpty) return 'other';
-    final normalizedValue = value.toLowerCase();
-    for (final relationship in widget.relationships) {
-      if (relationship.code.toLowerCase() == normalizedValue ||
-          relationship.nameAr.toLowerCase() == normalizedValue ||
-          relationship.nameEn.toLowerCase() == normalizedValue) {
-        return relationship.code;
+  Future<void> _openRelationshipPicker() async {
+    final viewModel = context.read<FamilySubscriptionSetupViewModel>();
+    var relationships = viewModel.state.relationships.isNotEmpty
+        ? viewModel.state.relationships
+        : widget.relationships;
+    if (relationships.isEmpty) {
+      if (!viewModel.state.isRelationshipsLoading) {
+        viewModel.doIntent(const GetFamilyRelationshipsEvent());
+      }
+      late final FamilyPlanState state;
+      try {
+        state = await viewModel.stream.firstWhere(
+          (state) => !state.isRelationshipsLoading,
+        );
+      } on StateError {
+        return;
+      }
+      if (!mounted) return;
+      relationships = state.relationships;
+      if (relationships.isEmpty) {
+        final failure = state.failure;
+        if (failure != null) {
+          CustomSnackbar.showError(
+            context: context,
+            message: failure.errorMessage,
+          );
+        }
+        return;
       }
     }
-    return value;
+    final selected = await FamilyRelationshipPickerSheet.show(
+      context: context,
+      relationships: relationships,
+      selectedCode: _selectedRelationshipCode,
+      includeSelectedRelationship: widget.member != null,
+    );
+    if (!mounted || selected == null) return;
+    _selectedRelationshipCode = selected.code;
+    _relationshipController.text = selected.name(
+      context.localization.localeName,
+    );
+    if (_relationshipError != null) {
+      setState(() => _relationshipError = null);
+    }
+  }
+
+  void _syncRelationshipName(List<FamilyRelationshipEntity> relationships) {
+    final selected = relationships
+        .where((relationship) => relationship.code == _selectedRelationshipCode)
+        .firstOrNull;
+    if (selected == null) return;
+    final name = selected.name(context.localization.localeName);
+    if (_relationshipController.text != name) {
+      _relationshipController.text = name;
+    }
   }
 
   void _handleMemberSaveState(BuildContext context, FamilyPlanState state) {

@@ -51,70 +51,55 @@ class _FamilyFlowInfoActionState extends State<FamilyFlowInfoAction> {
         : familyName;
 
     return Tooltip(
-      message: locale.family_name,
-      excludeFromSemantics: true,
-      child: Semantics(
-        button: true,
-        label: locale.family_name,
-        child: Material(
-          color: _isExpanded
-              ? color.primaryContainer
-              : color.surface.withValues(alpha: 0),
+      message: displayName,
+      child: Material(
+        color: _isExpanded
+            ? color.primaryContainer
+            : color.surface.withValues(alpha: 0),
+        borderRadius: BorderRadius.circular(Spacing.xxl),
+        child: InkWell(
+          key: const ValueKey('family-flow-info-button'),
+          onTap: _toggle,
           borderRadius: BorderRadius.circular(Spacing.xxl),
-          child: InkWell(
-            key: const ValueKey('family-flow-info-button'),
-            onTap: _toggle,
-            borderRadius: BorderRadius.circular(Spacing.xxl),
-            child: AnimatedSize(
-              duration: duration,
-              curve: Curves.easeOutCubic,
-              alignment: AlignmentDirectional.centerEnd,
+          child: AnimatedSize(
+            duration: duration,
+            curve: Curves.easeOutCubic,
+            alignment: AlignmentDirectional.centerEnd,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width / 3,
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.info_outline_rounded, color: color.primary),
-                    AnimatedSwitcher(
-                      duration: duration,
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeOutCubic,
-                      transitionBuilder: (child, animation) =>
-                          FadeTransition(opacity: animation, child: child),
-                      child: _isExpanded
-                          ? Padding(
-                              key: const ValueKey('family-flow-info-label'),
-                              padding: const EdgeInsetsDirectional.only(
-                                start: Spacing.xs,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.group_rounded,
-                                    size: Spacing.md,
-                                    color: color.primary,
-                                  ),
-                                  const SizedBox(width: Spacing.xs),
-                                  Text(
-                                    displayName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: getBoldStyle(
-                                      fontFamily: FontConstant.alexandria,
-                                      fontSize: FontSize.size8,
-                                      color: color.onPrimaryContainer,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : const SizedBox.shrink(
-                              key: ValueKey('family-flow-info-collapsed'),
-                            ),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.sm,
+                  vertical: Spacing.xs,
                 ),
+                child: _isExpanded
+                    ? Row(
+                        key: const ValueKey('family-flow-info-label'),
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.group_rounded,
+                            size: Spacing.iconSm,
+                            color: color.primary,
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              displayName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onPrimaryContainer,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Icon(Icons.info_outlined, color: color.primary),
               ),
             ),
           ),
