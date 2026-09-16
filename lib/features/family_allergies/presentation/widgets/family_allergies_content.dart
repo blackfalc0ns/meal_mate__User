@@ -51,93 +51,121 @@ class FamilyAllergiesContent extends StatelessWidget {
       );
     }).toList();
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.familySetupHorizontalPadding,
-        vertical: Spacing.md,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (!isInFamilyFlow) ...[
-            const FamilySetupHeaderBadge(),
-            const SizedBox(height: Spacing.md),
-            const FamilyProgramStepper(
-              currentStep: 3,
-              includeFamilyCreationStep: true,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (!isInFamilyFlow) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.familySetupHorizontalPadding,
             ),
-          ],
-          const SizedBox(height: Spacing.familyProgramMemberTopGap),
-          FamilyProgramMemberStrip(
+            child: Column(
+              children: [
+                const FamilySetupHeaderBadge(),
+                const SizedBox(height: Spacing.md),
+                const FamilyProgramStepper(
+                  currentStep: 3,
+                  includeFamilyCreationStep: true,
+                ),
+              ],
+            ),
+          ),
+        ],
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.familySetupHorizontalPadding,
+          ),
+          child: FamilyProgramMemberStrip(
             members: members,
             onSelectMember: viewModel.selectMember,
           ),
-          const SizedBox(height: Spacing.lg),
-          Text(
-            locale.family_allergies_food_title,
-            textAlign: TextAlign.start,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size17,
-              color: color.onSurface,
+        ),
+        const SizedBox(height: Spacing.sm),
+        Expanded(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.familySetupHorizontalPadding,
             ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            state.currentMember == null
-                ? locale.family_allergies_food_subtitle
-                : locale.family_allergies_member(
-                    state.currentMember!.displayName,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  locale.family_allergies_food_title,
+                  textAlign: TextAlign.start,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size14,
+                    color: color.onSurface,
                   ),
-            textAlign: TextAlign.start,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
-              color: color.onSurfaceVariant,
+                ),
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  state.currentMember == null
+                      ? locale.family_allergies_food_subtitle
+                      : locale.family_allergies_member(
+                          state.currentMember!.displayName,
+                        ),
+                  textAlign: TextAlign.start,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: Spacing.familyAllergiesSectionGap),
+                FamilyAllergySelectionSection(
+                  title: locale.family_allergies_common,
+                  searchHint: locale.family_allergies_search,
+                  items: allergyItems,
+                  selected: state.selectedCodes,
+                  onSearch: viewModel.changeAllergySearch,
+                  onToggle: viewModel.toggle,
+                ),
+                const SizedBox(height: Spacing.familyAllergiesSectionGap),
+                FamilyNoAllergiesTile(
+                  label: locale.family_allergies_none,
+                  selected: state.selectedCodes.contains('NONE'),
+                  onTap: () => viewModel.toggle('NONE'),
+                ),
+                const SizedBox(height: Spacing.familyAllergiesSectionGap),
+                FamilyAllergySelectionSection(
+                  title: locale.family_allergies_rejected,
+                  searchHint: locale.family_allergies_ingredient_search,
+                  items: ingredientItems,
+                  selected: state.rejectedCodes,
+                  onSearch: viewModel.changeIngredientSearch,
+                  onToggle: viewModel.toggleRejected,
+                ),
+                const SizedBox(height: Spacing.familyAllergiesSectionGap),
+                FamilyAllergiesInformationNote(
+                  text: locale.family_allergies_information_note,
+                ),
+                if (state.errorMessage != null) ...[
+                  const SizedBox(height: Spacing.sm),
+                  Text(
+                    mapFailureMessage(context, state.errorMessage!),
+                    textAlign: TextAlign.start,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size9,
+                      color: color.error,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: Spacing.md),
+              ],
             ),
           ),
-          const SizedBox(height: Spacing.familyAllergiesSectionGap),
-          FamilyAllergySelectionSection(
-            title: locale.family_allergies_common,
-            searchHint: locale.family_allergies_search,
-            items: allergyItems,
-            selected: state.selectedCodes,
-            onSearch: viewModel.changeAllergySearch,
-            onToggle: viewModel.toggle,
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+            start: Spacing.familySetupHorizontalPadding,
+            end: Spacing.familySetupHorizontalPadding,
+            top: Spacing.sm,
+            bottom: Spacing.md,
           ),
-          const SizedBox(height: Spacing.familyAllergiesSectionGap),
-          FamilyNoAllergiesTile(
-            label: locale.family_allergies_none,
-            selected: state.selectedCodes.contains('NONE'),
-            onTap: () => viewModel.toggle('NONE'),
-          ),
-          const SizedBox(height: Spacing.familyAllergiesSectionGap),
-          FamilyAllergySelectionSection(
-            title: locale.family_allergies_rejected,
-            searchHint: locale.family_allergies_ingredient_search,
-            items: ingredientItems,
-            selected: state.rejectedCodes,
-            onSearch: viewModel.changeIngredientSearch,
-            onToggle: viewModel.toggleRejected,
-          ),
-          const SizedBox(height: Spacing.familyAllergiesSectionGap),
-          FamilyAllergiesInformationNote(
-            text: locale.family_allergies_information_note,
-          ),
-          if (state.errorMessage != null) ...[
-            const SizedBox(height: Spacing.sm),
-            Text(
-              mapFailureMessage(context, state.errorMessage!),
-              textAlign: TextAlign.start,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
-                color: color.error,
-              ),
-            ),
-          ],
-          const SizedBox(height: Spacing.md),
-          FamilyAllergiesActions(
+          child: FamilyAllergiesActions(
             nextText: state.currentIndex == state.members.length - 1
                 ? locale.family_next_package_days
                 : locale.family_allergies_save_next_member,
@@ -148,9 +176,8 @@ class FamilyAllergiesContent extends StatelessWidget {
               viewModel.saveCurrent();
             },
           ),
-          const SizedBox(height: Spacing.lg),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

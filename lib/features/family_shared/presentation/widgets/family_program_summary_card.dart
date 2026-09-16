@@ -121,7 +121,6 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                 vertical: Spacing.xss,
               ),
               decoration: BoxDecoration(
-                color: color.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
               ),
               child: Text(

@@ -113,10 +113,11 @@ class _SubscriptionRestaurantGridCardState
               ),
               const Spacer(),
               Container(
+                width: double.infinity,
                 height: Spacing.monthlyRestaurantCardMetaHeight,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: color.primaryContainer,
+                  color: color.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Text(
@@ -125,7 +126,7 @@ class _SubscriptionRestaurantGridCardState
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size11,
+                    fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ),
                 ),

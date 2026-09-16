@@ -30,7 +30,7 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
       memberId,
       request.toDto(),
     )).toEntity();
-    _snapshotStore.invalidate();
+    _snapshotStore.updateMemberDeliveryAddress(memberId, entity);
     return entity;
   });
   @override
@@ -44,7 +44,7 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
       addressId,
       request.toDto(),
     )).toEntity();
-    _snapshotStore.invalidate();
+    _snapshotStore.updateMemberDeliveryAddress(memberId, entity);
     return entity;
   });
   @override

@@ -16,11 +16,13 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
     required this.state,
     required this.onNextPressed,
     this.programId,
+    this.showActions = true,
   });
 
   final FamilyPlanState state;
   final VoidCallback onNextPressed;
   final String? programId;
+  final bool showActions;
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +58,14 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.lg),
         const FamilyPaymentNoteCard(),
-        const SizedBox(height: Spacing.md),
-        FamilyProgramActions(
-          nextText: locale.family_next_payment,
-          nextIcon: Icons.credit_card_rounded,
-          onNextPressed: onNextPressed,
-        ),
+        if (showActions) ...[
+          const SizedBox(height: Spacing.md),
+          FamilyProgramActions(
+            nextText: locale.family_next_payment,
+            nextIcon: Icons.credit_card_rounded,
+            onNextPressed: onNextPressed,
+          ),
+        ],
       ],
     );
   }

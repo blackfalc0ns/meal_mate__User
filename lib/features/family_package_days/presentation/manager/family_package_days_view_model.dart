@@ -128,12 +128,18 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
+        final programs =
+            result.data.where((p) => p.programId.isNotEmpty).toList();
         _emit(
           state.copyWith(
             isProgramsLoading: false,
-            programs: result.data.where((p) => p.programId.isNotEmpty).toList(),
+            programs: programs,
           ),
         );
+        final member = state.selectedMember;
+        if (member != null && state.bundles.isEmpty) {
+          await _loadMemberBundlesAndSelections(member);
+        }
       case ApiErrorResult():
         _emit(
           state.copyWith(isProgramsLoading: false, failure: result.failure),
@@ -194,6 +200,18 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         state.selectedProgram?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : null);
     if (programId == null || programId.isEmpty) return;
+
+    if (member.programId == null || member.programId!.isEmpty) {
+      final updatedMembers = state.members.map((m) {
+        if (m.memberId == member.memberId) {
+          return m.copyWith(programId: programId);
+        }
+        return m;
+      }).toList();
+      final updatedFlow = state.currentFlow?.copyWith(members: updatedMembers);
+      _emit(state.copyWith(currentFlow: updatedFlow));
+    }
+
     _emit(
       state.copyWith(
         isBundlesLoading: true,

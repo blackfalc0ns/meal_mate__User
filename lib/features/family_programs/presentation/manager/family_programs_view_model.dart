@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_programs_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
@@ -14,12 +16,18 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   FamilyProgramsViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._getFamilyProgramsUseCase,
-    this._saveFamilyMemberPlanUseCase,
-  ) : super(const FamilyPlanState());
+    this._saveFamilyMemberPlanUseCase, [
+    FamilyFlowSnapshotStore? snapshotStore,
+  ])  : _snapshotStore = snapshotStore ??
+            (getIt.isRegistered<FamilyFlowSnapshotStore>()
+                ? getIt<FamilyFlowSnapshotStore>()
+                : FamilyFlowSnapshotStore()),
+        super(const FamilyPlanState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
+  final FamilyFlowSnapshotStore _snapshotStore;
   final Map<String, String> _pendingProgramIds = {};
 
   void doIntent(FamilyPlanEvent event) {
@@ -111,6 +119,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     final member = state.selectedMember;
     if (member != null) {
       _pendingProgramIds[member.memberId] = program.programId;
+      _snapshotStore.updateMemberProgram(member.memberId, program.programId);
     }
   }
 
@@ -166,13 +175,17 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
             _pendingProgramIds.remove(change.key);
           }
           final flow = result.data;
+          _snapshotStore.updateMemberProgram(change.key, change.value);
           emit(
             state.copyWith(
               currentFlow: flow.copyWith(
                 members: flow.members
                     .map(
                       (member) => member.copyWith(
-                        programId: _pendingProgramIds[member.memberId],
+                        programId: member.memberId == change.key
+                            ? change.value
+                            : (_pendingProgramIds[member.memberId] ??
+                                member.programId),
                       ),
                     )
                     .toList(),

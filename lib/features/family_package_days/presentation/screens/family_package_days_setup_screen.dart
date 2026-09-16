@@ -82,7 +82,6 @@ class _FamilyPackageDaysSetupScreenState
 
   Widget _buildContent(BuildContext context, FamilyPlanState state) {
     if ((state.isLoading || state.isCurrentFlowLoading) &&
-        state.bundles.isEmpty &&
         state.members.isEmpty) {
       return const FamilyPackageDaysSetupLoadingSkeleton();
     }

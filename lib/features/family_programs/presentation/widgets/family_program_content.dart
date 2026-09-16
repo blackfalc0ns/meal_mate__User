@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions_section.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_member_section.dart';
@@ -16,7 +15,6 @@ class FamilyProgramContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
     if (isInFamilyFlow) {
       FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
@@ -25,6 +23,32 @@ class FamilyProgramContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (!isInFamilyFlow) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.familySetupHorizontalPadding,
+            ),
+            child: Column(
+              children: [
+                FamilySetupHeaderBadge(title: state.currentFlow?.name),
+                const SizedBox(
+                  height: Spacing.familyProgramProgressTopGap,
+                ),
+                const FamilyProgramStepper(
+                  currentStep: 1,
+                  includeFamilyCreationStep: true,
+                ),
+              ],
+            ),
+          ),
+        ],
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.familySetupHorizontalPadding,
+          ),
+          child: FamilyProgramMemberSection(state: state),
+        ),
+        const SizedBox(height: Spacing.sm),
         Expanded(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -35,20 +59,8 @@ class FamilyProgramContent extends StatelessWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
-                    if (!isInFamilyFlow) ...[
-                      FamilySetupHeaderBadge(title: state.currentFlow?.name),
-                      const SizedBox(
-                        height: Spacing.familyProgramProgressTopGap,
-                      ),
-                      const FamilyProgramStepper(
-                        currentStep: 1,
-                        includeFamilyCreationStep: true,
-                      ),
-                    ],
-                    const SizedBox(height: Spacing.familyProgramMemberTopGap),
-                    FamilyProgramMemberSection(state: state),
                     FamilyProgramSelectionSection(state: state),
-                    const SizedBox(height: Spacing.xl),
+                    const SizedBox(height: Spacing.md),
                   ]),
                 ),
               ),
@@ -59,7 +71,8 @@ class FamilyProgramContent extends StatelessWidget {
           padding: const EdgeInsetsDirectional.only(
             start: Spacing.familySetupHorizontalPadding,
             end: Spacing.familySetupHorizontalPadding,
-            bottom: Spacing.xl,
+            top: Spacing.sm,
+            bottom: Spacing.md,
           ),
           child: FamilyProgramActionsSection(state: state),
         ),

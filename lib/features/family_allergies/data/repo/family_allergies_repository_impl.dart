@@ -32,7 +32,7 @@ class FamilyAllergiesRepositoryImpl implements FamilyAllergiesRepository {
             .toList(),
       ),
     );
-    _snapshotStore.invalidate();
+    _snapshotStore.updateMemberAllergies(memberId, allergies);
     return result;
   });
 }
