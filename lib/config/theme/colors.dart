@@ -83,6 +83,12 @@ class AppColors {
 
   static const LinearGradient primarygradient = primaryGradient;
 
+  static const LinearGradient calendarNoSubscriptionGradient = LinearGradient(
+    colors: [Color(0xFF1FAB4D), Color(0xFF037A38)],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
   static LinearGradient homeHeaderGradient = LinearGradient(
     colors: [
       homeHeaderGreen,
@@ -215,4 +221,9 @@ class AppColors {
   static const Color addressesInputIconBackground = Color(0xFFEDF7F2);
   static const Color addressesBuildingBackground = Color(0xFFF7F7F7);
   static const Color addressesOptionalText = Color(0xFF8C919C);
+}
+
+extension CalendarColorScheme on ColorScheme {
+  LinearGradient get calendarNoSubscriptionGradient =>
+      AppColors.calendarNoSubscriptionGradient;
 }

@@ -144,7 +144,6 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                 AppButton(
                   variant: AppButtonVariant.filled,
                   text: l10n.auth_create_account_button,
-                  isLoading: state.register.isLoading,
                   iconWidget: SvgPicture.asset(
                     Assets.loginIcon,
                     width: 18,

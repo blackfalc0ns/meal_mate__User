@@ -5684,6 +5684,24 @@ abstract class AppLocalizations {
   /// **'Add meals'**
   String get calendar_empty_meals_button;
 
+  /// No description provided for @calendar_no_subscription_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals yet'**
+  String get calendar_no_subscription_title;
+
+  /// No description provided for @calendar_no_subscription_description.
+  ///
+  /// In en, this message translates to:
+  /// **'It looks like you are not subscribed to a plan.\nSubscribe now and enjoy healthy meals suited to your goals.'**
+  String get calendar_no_subscription_description;
+
+  /// No description provided for @calendar_no_subscription_button.
+  ///
+  /// In en, this message translates to:
+  /// **'View subscriptions'**
+  String get calendar_no_subscription_button;
+
   /// No description provided for @calendar_reschedule.
   ///
   /// In en, this message translates to:

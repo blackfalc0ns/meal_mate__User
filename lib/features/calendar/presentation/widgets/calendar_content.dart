@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_days_builder.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_content.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 
 class CalendarContent extends StatefulWidget {
@@ -36,6 +38,9 @@ class CalendarContent extends StatefulWidget {
 
 class _CalendarContentState extends State<CalendarContent> {
   late DateTime _focusedMonth;
+  late DateTime _emptySelectedDate;
+  List<CalendarDayEntity> _emptyDays = const [];
+  String? _emptyDaysLocaleName;
   bool _isExpanded = false;
 
   @override
@@ -43,6 +48,17 @@ class _CalendarContentState extends State<CalendarContent> {
     super.initState();
     final date = widget.state.selectedDate ?? DateTime.now();
     _focusedMonth = DateTime(date.year, date.month);
+    _emptySelectedDate = date;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final localeName = context.localization.localeName;
+    if (_emptyDaysLocaleName != localeName) {
+      _emptyDaysLocaleName = localeName;
+      _updateEmptyDays();
+    }
   }
 
   @override
@@ -66,24 +82,47 @@ class _CalendarContentState extends State<CalendarContent> {
     }
 
     if (state.hasNoSubscription) {
-      return Padding(
-        padding: const EdgeInsets.all(Spacing.screenH),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            EmptyStateWidget(
-              title: locale.billing_no_subscription_title,
-              description: locale.billing_no_subscription_description,
-              icon: Icons.calendar_month_rounded,
+      final days = _isExpanded
+          ? CalendarDaysBuilder.monthDays(
+              focusedMonth: _focusedMonth,
+              selectedDate: _emptySelectedDate,
+              serviceDays: _emptyDays,
+            )
+          : _emptyDays;
+      return Column(
+        children: [
+          CalendarPickerPanel(
+            monthTitle: DateFormat.yMMMM(
+              locale.localeName,
+            ).format(_focusedMonth),
+            days: days,
+            isExpanded: _isExpanded,
+            onToggleExpanded: () => setState(() => _isExpanded = !_isExpanded),
+            onMonthChanged: _changeMonth,
+            onDaySelected: (day) {
+              if (day.date == null) return;
+              setState(() {
+                _emptySelectedDate = day.date!;
+                _updateEmptyDays();
+              });
+            },
+          ),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.screenH,
+                  vertical: Spacing.lg,
+                ),
+                child: CalendarEmptyMealsState(
+                  isNoSubscription: true,
+                  onAddMeals: () =>
+                      context.pushNamed(AppRoutes.subscriptions),
+                ),
+              ),
             ),
-            const SizedBox(height: Spacing.lg),
-            AppButton(
-              text: locale.subscription_details_subscribe_now,
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(AppRoutes.subscriptions),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
@@ -153,6 +192,33 @@ class _CalendarContentState extends State<CalendarContent> {
       _focusedMonth = DateTime(
         _focusedMonth.year,
         _focusedMonth.month + direction,
+      );
+      if (widget.state.hasNoSubscription) {
+        _emptySelectedDate = DateTime(_focusedMonth.year, _focusedMonth.month);
+        _updateEmptyDays();
+      }
+    });
+  }
+
+  void _updateEmptyDays() {
+    final localeName = _emptyDaysLocaleName;
+    if (localeName == null) return;
+    final dayCount = DateTime(
+      _focusedMonth.year,
+      _focusedMonth.month + 1,
+      0,
+    ).day;
+    _emptyDays = List.generate(dayCount, (index) {
+      final date = DateTime(_focusedMonth.year, _focusedMonth.month, index + 1);
+      return CalendarDayEntity(
+        dayNumber: date.day,
+        weekday: DateFormat.EEEE(localeName).format(date),
+        date: date,
+        isSelected:
+            date.year == _emptySelectedDate.year &&
+            date.month == _emptySelectedDate.month &&
+            date.day == _emptySelectedDate.day,
+        hasMeals: false,
       );
     });
   }

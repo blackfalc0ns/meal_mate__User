@@ -14,7 +14,8 @@ class CalendarMonthTitle extends StatelessWidget {
 
     return RichText(
       textAlign: TextAlign.center,
-      textDirection: TextDirection.rtl,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(
         style: getBoldStyle(
           fontFamily: FontConstant.alexandria,

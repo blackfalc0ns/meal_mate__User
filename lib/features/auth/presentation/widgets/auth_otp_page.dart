@@ -203,7 +203,6 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               AppButton(
                 variant: AppButtonVariant.filled,
                 text: buttonText,
-                isLoading: state.verifyPhone.isLoading,
                 iconWidget: SvgPicture.asset(
                   Assets.loginIcon,
                   width: 18,

@@ -92,11 +92,10 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
               padding: const EdgeInsets.only(bottom: Spacing.lg),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: widget.backgroundColor ?? color.surfaceContainerHighest,
+                  color:
+                      widget.backgroundColor ?? color.surfaceContainerHighest,
                   border: widget.showBottomBorder
-                      ? Border(
-                          bottom: BorderSide(color: color.outlineVariant),
-                        )
+                      ? Border(bottom: BorderSide(color: color.outlineVariant))
                       : null,
                 ),
                 child: Column(
@@ -118,7 +117,11 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                                 onPressed: () => _handleMonthArrow(-1),
                               ),
                               const Spacer(),
-                              CalendarMonthTitle(monthTitle: widget.monthTitle),
+                              Flexible(
+                                child: CalendarMonthTitle(
+                                  monthTitle: widget.monthTitle,
+                                ),
+                              ),
                               const Spacer(),
                               CalendarMonthArrowButton(
                                 icon: Icons.chevron_right_rounded,
@@ -139,23 +142,23 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                       reverse: _isMonthTransition
                           ? (_monthDirection < 0)
                           : !widget.isExpanded,
-                      transitionBuilder: (
-                        child,
-                        primaryAnimation,
-                        secondaryAnimation,
-                      ) {
-                        return SharedAxisTransition(
-                          animation: primaryAnimation,
-                          secondaryAnimation: secondaryAnimation,
-                          transitionType: _isMonthTransition
-                              ? SharedAxisTransitionType.horizontal
-                              : SharedAxisTransitionType.vertical,
-                          fillColor: widget.backgroundColor ?? color.surface,
-                          child: child,
-                        );
-                      },
+                      transitionBuilder:
+                          (child, primaryAnimation, secondaryAnimation) {
+                            return SharedAxisTransition(
+                              animation: primaryAnimation,
+                              secondaryAnimation: secondaryAnimation,
+                              transitionType: _isMonthTransition
+                                  ? SharedAxisTransitionType.horizontal
+                                  : SharedAxisTransitionType.vertical,
+                              fillColor:
+                                  widget.backgroundColor ?? color.surface,
+                              child: child,
+                            );
+                          },
                       child: AnimatedPadding(
-                        key: ValueKey('${widget.monthTitle}_${widget.isExpanded}'),
+                        key: ValueKey(
+                          '${widget.monthTitle}_${widget.isExpanded}',
+                        ),
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOutCubic,
                         padding: EdgeInsets.symmetric(

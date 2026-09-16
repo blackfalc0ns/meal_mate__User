@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
@@ -7,9 +8,14 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class CalendarEmptyMealsState extends StatelessWidget {
-  const CalendarEmptyMealsState({super.key, required this.onAddMeals});
+  const CalendarEmptyMealsState({
+    super.key,
+    required this.onAddMeals,
+    this.isNoSubscription = false,
+  });
 
   final VoidCallback? onAddMeals;
+  final bool isNoSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,9 @@ class CalendarEmptyMealsState extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.calendarEmptyMealsContentGap),
         Text(
-          locale.calendar_empty_meals_title,
+          isNoSubscription
+              ? locale.calendar_no_subscription_title
+              : locale.calendar_empty_meals_title,
           textAlign: TextAlign.center,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
@@ -40,7 +48,9 @@ class CalendarEmptyMealsState extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.calendarEmptyMealsContentGap),
         Text(
-          locale.calendar_empty_meals_description,
+          isNoSubscription
+              ? locale.calendar_no_subscription_description
+              : locale.calendar_empty_meals_description,
           textAlign: TextAlign.center,
           style:
               getRegularStyle(
@@ -57,13 +67,19 @@ class CalendarEmptyMealsState extends StatelessWidget {
         SizedBox(
           width: Spacing.calendarEmptyMealsButtonWidth,
           child: AppButton(
-            text: locale.calendar_empty_meals_button,
+            text: isNoSubscription
+                ? locale.calendar_no_subscription_button
+                : locale.calendar_empty_meals_button,
             onPressed: onAddMeals,
-            icon: Icons.add_rounded,
+            icon: isNoSubscription
+                ? Icons.arrow_forward_ios_rounded
+                : Icons.add_rounded,
+            gradient: isNoSubscription
+                ? color.calendarNoSubscriptionGradient
+                : null,
             height: Spacing.calendarEmptyMealsButtonHeight,
             borderRadius: Spacing.calendarEmptyMealsButtonRadius,
-            fontSize: FontSize.size20,
-          
+            fontSize: isNoSubscription ? FontSize.size17 : FontSize.size20,
           ),
         ),
       ],

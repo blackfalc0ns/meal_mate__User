@@ -141,7 +141,6 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                 AppButton(
                   variant: AppButtonVariant.filled,
                   text: l10n.auth_sign_in_button,
-                  isLoading: state.login.isLoading,
                   iconWidget: SvgPicture.asset(
                     Assets.loginIcon,
                     width: 18,

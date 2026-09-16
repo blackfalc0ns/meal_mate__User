@@ -3022,6 +3022,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_empty_meals_button => 'Add meals';
 
   @override
+  String get calendar_no_subscription_title => 'No meals yet';
+
+  @override
+  String get calendar_no_subscription_description =>
+      'It looks like you are not subscribed to a plan.\nSubscribe now and enjoy healthy meals suited to your goals.';
+
+  @override
+  String get calendar_no_subscription_button => 'View subscriptions';
+
+  @override
   String get calendar_reschedule => 'Reschedule meal';
 
   @override

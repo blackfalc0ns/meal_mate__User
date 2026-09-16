@@ -112,7 +112,6 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
                 const SizedBox(height: Spacing.xl),
                 AppButton.filled(
                   text: l10n.auth_send_otp_button,
-                  isLoading: state.forgotPassword.isLoading,
                   iconWidget: SvgPicture.asset(
                     Assets.loginIcon,
                     width: Spacing.lg,

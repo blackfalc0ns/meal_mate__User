@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dar
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_background.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_forgot_password_page.dart';
+import 'package:meal_meat_user/features/auth/presentation/widgets/auth_loading_overlay.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_new_password_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_page.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_otp_purpose.dart';
@@ -71,6 +72,19 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
     _goToPage(AuthPageType.otp);
   }
 
+  bool _isLoading(AuthState state) {
+    return state.login.isLoading ||
+        state.register.isLoading ||
+        state.callingCodes.isLoading ||
+        state.verifyPhone.isLoading ||
+        state.resendPhoneOtp.isLoading ||
+        state.forgotPassword.isLoading ||
+        state.resetPassword.isLoading ||
+        state.resendPasswordOtp.isLoading ||
+        state.refreshToken.isLoading ||
+        state.logout.isLoading;
+  }
+
   @override
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
@@ -81,49 +95,58 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
       child: Scaffold(
         body: AuthBackground(
           child: SafeArea(
-            child: BlocBuilder<AuthViewModel, AuthState>(
-              buildWhen: (previous, current) =>
-                  previous.callingCodes != current.callingCodes,
-              builder: (context, state) {
-                final showCallingCodesError =
-                    !state.callingCodes.isLoading &&
-                    state.callingCodes.items.isEmpty &&
-                    state.callingCodes.failure != null;
+            child: BlocSelector<AuthViewModel, AuthState, bool>(
+              selector: _isLoading,
+              builder: (context, isLoading) => AuthLoadingOverlay(
+                isLoading: isLoading,
+                child: BlocBuilder<AuthViewModel, AuthState>(
+                  buildWhen: (previous, current) =>
+                      previous.callingCodes != current.callingCodes,
+                  builder: (context, state) {
+                    final showCallingCodesError =
+                        !state.callingCodes.isLoading &&
+                        state.callingCodes.items.isEmpty &&
+                        state.callingCodes.failure != null;
 
-                if (showCallingCodesError) {
-                  return ApiErrorWidget(
-                    exception: state.callingCodes.failure!.exception,
-                    onRetry: () => context.read<AuthViewModel>().doIntent(
-                      const GetCallingCodesEvent(),
-                    ),
-                    onCheckConnection: () => context
-                        .read<AuthViewModel>()
-                        .doIntent(const GetCallingCodesEvent()),
-                  );
-                }
+                    if (showCallingCodesError) {
+                      return ApiErrorWidget(
+                        exception: state.callingCodes.failure!.exception,
+                        onRetry: () => context.read<AuthViewModel>().doIntent(
+                          const GetCallingCodesEvent(),
+                        ),
+                        onCheckConnection: () => context
+                            .read<AuthViewModel>()
+                            .doIntent(const GetCallingCodesEvent()),
+                      );
+                    }
 
-                return PageView(
-                  controller: _pageController,
-                  reverse: isRtl,
-                  physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {
-                    _currentPage = AuthPageType.values[index];
+                    return PageView(
+                      controller: _pageController,
+                      reverse: isRtl,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: (index) {
+                        _currentPage = AuthPageType.values[index];
+                      },
+                      children: [
+                        AuthSignInPage(onNavigate: _goToPage),
+                        AuthSignUpPage(
+                          onNavigate: _goToPage,
+                          onOtpSent: _goToPhoneVerificationOtp,
+                        ),
+                        AuthForgotPasswordPage(
+                          onNavigate: _goToPage,
+                          onOtpSent: _goToResetPasswordOtp,
+                        ),
+                        AuthOtpPage(
+                          onNavigate: _goToPage,
+                          purpose: _otpPurpose,
+                        ),
+                        AuthNewPasswordPage(onNavigate: _goToPage),
+                      ],
+                    );
                   },
-                  children: [
-                    AuthSignInPage(onNavigate: _goToPage),
-                    AuthSignUpPage(
-                      onNavigate: _goToPage,
-                      onOtpSent: _goToPhoneVerificationOtp,
-                    ),
-                    AuthForgotPasswordPage(
-                      onNavigate: _goToPage,
-                      onOtpSent: _goToResetPasswordOtp,
-                    ),
-                    AuthOtpPage(onNavigate: _goToPage, purpose: _otpPurpose),
-                    AuthNewPasswordPage(onNavigate: _goToPage),
-                  ],
-                );
-              },
+                ),
+              ),
             ),
           ),
         ),

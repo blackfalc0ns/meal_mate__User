@@ -2972,6 +2972,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_empty_meals_button => 'إضافة وجبات';
 
   @override
+  String get calendar_no_subscription_title => 'لا توجد وجبات حتى الان';
+
+  @override
+  String get calendar_no_subscription_description =>
+      'ييدو أنك لست مشتركاً في أي باقة.\nاشترك الآن واستمتع بوجبات صحية تناسب أهدافك.';
+
+  @override
+  String get calendar_no_subscription_button => 'عرض الاشتراكات';
+
+  @override
   String get calendar_reschedule => 'تأجيل الوجبة';
 
   @override

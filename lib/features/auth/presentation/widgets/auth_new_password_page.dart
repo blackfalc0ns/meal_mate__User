@@ -105,7 +105,6 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
                 const SizedBox(height: Spacing.xl),
                 AppButton.filled(
                   text: l10n.auth_new_password_button,
-                  isLoading: state.resetPassword.isLoading,
                   iconWidget: SvgPicture.asset(
                     Assets.loginIcon,
                     width: 18,

@@ -209,13 +209,15 @@ class AppButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         textDirection: textDirection,
         children: [
-          Text(
-            text,
-            locale: locale,
-            style: style,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: Text(
+              text,
+              locale: locale,
+              style: style,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(width: Spacing.sm),
           iconWidget ?? Icon(icon, size: 24),
