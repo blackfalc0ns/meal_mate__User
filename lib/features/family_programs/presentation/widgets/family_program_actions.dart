@@ -23,34 +23,35 @@ class FamilyProgramActions extends StatelessWidget {
 
     return Row(
       children: [
-        SizedBox(
-          width: Spacing.familyProgramPreviousButtonWidth,
+        Expanded(
+          flex: 1,
           child: AppButton.outlined(
+            iconBeforeText: true,
             text: locale.family_previous_program,
             onPressed: () => Navigator.maybePop(context),
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
             color: color.primary,
             textColor: color.primary,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size11,
             iconWidget: Icon(
               Icons.arrow_back_ios_rounded,
               color: color.primary,
-              size: Spacing.iconSm,
+              size: Spacing.iconMd,
             ),
           ),
         ),
-        const Spacer(),
-        SizedBox(
-          width: Spacing.familyProgramNextButtonWidth,
+        const SizedBox(width: Spacing.sm),
+        Expanded(
+          flex: 1,
           child: AppButton.filled(
+            iconBeforeText: false,
             text: nextText ?? locale.family_next_payment,
             onPressed: onNextPressed,
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
             textColor: color.onPrimary,
-            fontSize: FontSize.size12,
-
+            fontSize: FontSize.size11,
             iconWidget: Icon(
               nextIcon ?? Icons.credit_card_rounded,
               color: color.onPrimary,

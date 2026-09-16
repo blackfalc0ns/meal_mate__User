@@ -50,7 +50,7 @@ class AddressChooseLocationSheet extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.lg,
-        vertical: Spacing.lg,
+        vertical: Spacing.sm,
       ),
       child: SafeArea(
         top: false,
@@ -76,11 +76,11 @@ class AddressChooseLocationSheet extends StatelessWidget {
               text: locale.address_preview_check_button,
               isLoading: isSubmitting,
               onPressed: onConfirm,
-              height: Spacing.buttonHeight,
+              height: Spacing.buttonSmallHeight,
               borderRadius: Spacing.radiusPill,
               color: color.primary,
               textColor: color.onPrimary,
-              fontSize: FontSize.size16,
+              fontSize: FontSize.size12,
             ),
           ],
         ),

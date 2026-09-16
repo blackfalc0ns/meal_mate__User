@@ -20,6 +20,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
+  final Map<String, String> _pendingProgramIds = {};
 
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
@@ -31,6 +32,8 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
         _selectProgram(event.programIndex);
       case SelectFamilyMemberEvent():
         _selectMember(event.memberIndex);
+      case SaveFamilyProgramsEvent():
+        _savePendingPrograms();
     }
   }
 
@@ -107,7 +110,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
 
     final member = state.selectedMember;
     if (member != null) {
-      _saveMemberPlan(memberId: member.memberId, programId: program.programId);
+      _pendingProgramIds[member.memberId] = program.programId;
     }
   }
 
@@ -147,26 +150,41 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     return flow.copyWith(members: updatedMembers);
   }
 
-  Future<void> _saveMemberPlan({
-    required String memberId,
-    String? programId,
-  }) async {
+  Future<void> _savePendingPrograms() async {
+    if (state.isPlanSaving || _pendingProgramIds.isEmpty) return;
     emit(state.copyWith(isPlanSaving: true, clearFailure: true));
-    final result = await _saveFamilyMemberPlanUseCase(
-      memberId: memberId,
-      programId: programId,
-    );
-    switch (result) {
-      case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            isPlanSaving: false,
-            currentFlow: result.data,
-            clearFailure: true,
-          ),
-        );
-      case ApiErrorResult():
-        emit(state.copyWith(isPlanSaving: false, failure: result.failure));
+    final changes = Map<String, String>.of(_pendingProgramIds);
+    for (final change in changes.entries) {
+      final result = await _saveFamilyMemberPlanUseCase(
+        memberId: change.key,
+        programId: change.value,
+      );
+      if (isClosed) return;
+      switch (result) {
+        case ApiSuccessResult():
+          if (_pendingProgramIds[change.key] == change.value) {
+            _pendingProgramIds.remove(change.key);
+          }
+          final flow = result.data;
+          emit(
+            state.copyWith(
+              currentFlow: flow.copyWith(
+                members: flow.members
+                    .map(
+                      (member) => member.copyWith(
+                        programId: _pendingProgramIds[member.memberId],
+                      ),
+                    )
+                    .toList(),
+              ),
+              clearFailure: true,
+            ),
+          );
+        case ApiErrorResult():
+          emit(state.copyWith(isPlanSaving: false, failure: result.failure));
+          return;
+      }
     }
+    emit(state.copyWith(isPlanSaving: false));
   }
 }

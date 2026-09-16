@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
@@ -26,42 +27,64 @@ class FamilyProgramSetupScreen extends StatelessWidget {
       create: (_) => getIt<FamilyProgramsViewModel>()
         ..doIntent(const GetFamilySubscriptionCurrentEvent())
         ..doIntent(const GetFamilyProgramsEvent()),
-      child: isInFamilyFlow
-          ? BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
-              builder: _buildContent,
-            )
-          : Scaffold(
-              backgroundColor: color.surface,
-              appBar: CustomAppBar(
-                showBackButton: true,
-                titleWidget: Column(
-                  children: [
-                    Text(
-                      locale.family_setup_title,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
+      child: BlocListener<FamilyProgramsViewModel, FamilyPlanState>(
+        listenWhen: (previous, current) =>
+            previous.isPlanSaving &&
+            !current.isPlanSaving &&
+            current.failure != null,
+        listener: (context, state) => CustomSnackbar.showError(
+          context: context,
+          message: state.failure!.errorMessage,
+        ),
+        child: isInFamilyFlow
+            ? BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
+                buildWhen: _shouldRebuildContent,
+                builder: _buildContent,
+              )
+            : Scaffold(
+                backgroundColor: color.surface,
+                appBar: CustomAppBar(
+                  showBackButton: true,
+                  titleWidget: Column(
+                    children: [
+                      Text(
+                        locale.family_setup_title,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size13,
+                          color: color.onSurface,
+                        ),
                       ),
-                    ),
-                    Text(
-                      locale.family_setup_subtitle,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size9,
-                        color: color.onSurfaceVariant,
+                      Text(
+                        locale.family_setup_subtitle,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size9,
+                          color: color.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                body: SafeArea(
+                  child: BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
+                    buildWhen: _shouldRebuildContent,
+                    builder: _buildContent,
+                  ),
                 ),
               ),
-              body: SafeArea(
-                child: BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
-                  builder: _buildContent,
-                ),
-              ),
-            ),
+      ),
     );
+  }
+
+  bool _shouldRebuildContent(FamilyPlanState previous, FamilyPlanState current) {
+    return previous.currentFlow != current.currentFlow ||
+        previous.programs != current.programs ||
+        previous.selectedMemberIndex != current.selectedMemberIndex ||
+        previous.selectedProgramIndex != current.selectedProgramIndex ||
+        previous.isCurrentFlowLoading != current.isCurrentFlowLoading ||
+        previous.isProgramsLoading != current.isProgramsLoading ||
+        (current.programs.isEmpty && previous.failure != current.failure);
   }
 
   Widget _buildContent(BuildContext context, FamilyPlanState state) {

@@ -19,6 +19,7 @@ class AddressFormField extends StatelessWidget {
     this.onTap,
     this.optionalText,
     this.small = false,
+    this.hasError = false,
   });
 
   final String label;
@@ -32,6 +33,7 @@ class AddressFormField extends StatelessWidget {
   final VoidCallback? onTap;
   final String? optionalText;
   final bool small;
+  final bool hasError;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class AddressFormField extends StatelessWidget {
         decoration: BoxDecoration(
           color: color.surface,
           border: Border.all(
-            color: color.outlineVariant,
+            color: hasError ? color.error : color.outlineVariant,
             width: Spacing.addressesHomeFormFieldBorder,
           ),
           borderRadius: BorderRadius.circular(

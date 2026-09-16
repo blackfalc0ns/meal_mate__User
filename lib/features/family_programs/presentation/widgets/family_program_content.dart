@@ -17,38 +17,51 @@ class FamilyProgramContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    color.surface;
-    locale.localeName;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
     if (isInFamilyFlow) {
       FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
     }
 
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.familySetupHorizontalPadding,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              if (!isInFamilyFlow) ...[
-                FamilySetupHeaderBadge(title: state.currentFlow?.name),
-                const SizedBox(height: Spacing.familyProgramProgressTopGap),
-                const FamilyProgramStepper(
-                  currentStep: 1,
-                  includeFamilyCreationStep: true,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.familySetupHorizontalPadding,
                 ),
-              ],
-              const SizedBox(height: Spacing.familyProgramMemberTopGap),
-              FamilyProgramMemberSection(state: state),
-              FamilyProgramSelectionSection(state: state),
-              FamilyProgramActionsSection(state: state),
-              const SizedBox(height: Spacing.xxxl),
-            ]),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    if (!isInFamilyFlow) ...[
+                      FamilySetupHeaderBadge(title: state.currentFlow?.name),
+                      const SizedBox(
+                        height: Spacing.familyProgramProgressTopGap,
+                      ),
+                      const FamilyProgramStepper(
+                        currentStep: 1,
+                        includeFamilyCreationStep: true,
+                      ),
+                    ],
+                    const SizedBox(height: Spacing.familyProgramMemberTopGap),
+                    FamilyProgramMemberSection(state: state),
+                    FamilyProgramSelectionSection(state: state),
+                    const SizedBox(height: Spacing.xl),
+                  ]),
+                ),
+              ),
+            ],
           ),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+            start: Spacing.familySetupHorizontalPadding,
+            end: Spacing.familySetupHorizontalPadding,
+            bottom: Spacing.xl,
+          ),
+          child: FamilyProgramActionsSection(state: state),
         ),
       ],
     );

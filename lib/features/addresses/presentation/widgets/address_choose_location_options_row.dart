@@ -32,18 +32,10 @@ class AddressChooseLocationOptionsRow extends StatelessWidget {
             subtitle: locale.addresses_choose_from_map_subtitle,
             isSelected: selectedMode == AddressLocationMode.fromMap,
             onTap: () => onModeChanged?.call(AddressLocationMode.fromMap),
-            icon: Container(
-              width: Spacing.iconXl,
-              height: Spacing.iconXl,
-              decoration: BoxDecoration(
-                color: color.secondaryContainer,
-                borderRadius: BorderRadius.circular(Spacing.xs),
-              ),
-              child: Icon(
-                Icons.map_rounded,
-                size: Spacing.iconSm,
-                color: color.primary,
-              ),
+            icon: Icon(
+              Icons.map_rounded,
+              size: Spacing.iconMd,
+              color: color.primary,
             ),
           ),
         ),
@@ -57,12 +49,12 @@ class AddressChooseLocationOptionsRow extends StatelessWidget {
               onModeChanged?.call(AddressLocationMode.currentLocation);
               onUseCurrentLocation?.call();
             },
-            icon: SvgPicture.asset(
-              Assets.addressesIconGps,
-              width: Spacing.iconLg,
-              height: Spacing.iconLg,
-              colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
+            icon:Icon(
+              Icons.gps_fixed_rounded,
+              size: Spacing.iconMd,
+              color: color.primary,
             ),
+          
           ),
         ),
       ],

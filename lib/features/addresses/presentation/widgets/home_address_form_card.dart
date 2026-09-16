@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -20,6 +21,7 @@ class HomeAddressFormCard extends StatefulWidget {
     required this.avenueController,
     required this.floorController,
     required this.buildingNumberController,
+    this.buildingNumberErrorListenable,
     required this.apartmentController,
     required this.onGovernorateSelected,
     required this.onAreaSelected,
@@ -36,6 +38,7 @@ class HomeAddressFormCard extends StatefulWidget {
   final TextEditingController avenueController;
   final TextEditingController floorController;
   final TextEditingController buildingNumberController;
+  final ValueListenable<bool>? buildingNumberErrorListenable;
   final TextEditingController apartmentController;
   final ValueChanged<LocationGovernorateEntity> onGovernorateSelected;
   final ValueChanged<LocationAreaEntity> onAreaSelected;
@@ -209,25 +212,14 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
             optionalText: locale.addresses_optional,
           ),
           const SizedBox(height: Spacing.addressesHomeFormFieldGap),
-          AddressFormField(
-            label: locale.addresses_floor_label,
-            hint: locale.addresses_floor_hint,
-            iconAsset: Assets.addressesIconFloor,
-            controller: widget.floorController,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            small: true,
-          ),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
-          AddressFormField(
-            label: locale.addresses_building_number_label,
-            hint: locale.addresses_building_number_hint,
-            iconAsset: Assets.addressesIconNumber,
-            controller: widget.buildingNumberController,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            small: true,
-          ),
+          if (widget.buildingNumberErrorListenable case final errorListenable?)
+            ValueListenableBuilder<bool>(
+              valueListenable: errorListenable,
+              builder: (context, hasError, _) =>
+                  _buildHouseAndFloorFields(context, hasError),
+            )
+          else
+            _buildHouseAndFloorFields(context, false),
           const SizedBox(height: Spacing.addressesHomeFormFieldGap),
           AddressFormField(
             label: locale.addresses_apartment_number_label,
@@ -241,6 +233,65 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildHouseAndFloorFields(BuildContext context, bool hasError) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: AddressFormField(
+                label: locale.addresses_building_number_label,
+                hint: locale.addresses_building_number_hint,
+                iconAsset: Assets.addressesIconNumber,
+                controller: widget.buildingNumberController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                hasError: hasError,
+                small: true,
+              ),
+            ),
+            const SizedBox(width: Spacing.addressesHomeFormFieldGap),
+            Expanded(
+              child: AddressFormField(
+                label: locale.addresses_floor_label,
+                hint: locale.addresses_floor_hint,
+                iconAsset: Assets.addressesIconFloor,
+                controller: widget.floorController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                optionalText: locale.addresses_optional,
+                small: true,
+              ),
+            ),
+          ],
+        ),
+        if (hasError)
+          Padding(
+            padding: const EdgeInsetsDirectional.only(top: Spacing.xs),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    locale.this_field_is_required,
+                    textAlign: TextAlign.start,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.error,
+                    ),
+                  ),
+                ),
+                const Expanded(child: SizedBox.shrink()),
+              ],
+            ),
+          ),
+      ],
     );
   }
 

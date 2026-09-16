@@ -72,8 +72,7 @@ class FamilyAddressesScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsetsDirectional.only(
                     start: Spacing.familySetupHorizontalPadding,
-                    end: Spacing.familySetupHorizontalPadding,
-                    top: Spacing.md,
+                    end: Spacing.xs,
                     bottom: Spacing.md,
                   ),
                   child: Column(
@@ -87,7 +86,7 @@ class FamilyAddressesScreen extends StatelessWidget {
                           includeFamilyCreationStep: true,
                         ),
                       ],
-                      const SizedBox(height: Spacing.familyProgramMemberTopGap),
+                      const SizedBox(height: Spacing.xs),
                       FamilyProgramMemberStrip(
                         members: members,
                         onSelectMember: context

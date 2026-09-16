@@ -110,6 +110,59 @@ void main() {
     );
   });
 
+  testWidgets('house number and optional floor share a row', (tester) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final controllers = List.generate(5, (_) => TextEditingController());
+    addTearDown(() {
+      for (final controller in controllers) {
+        controller.dispose();
+      }
+    });
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: Spacing.addressesHomeFormWidth,
+                child: HomeAddressFormCard(
+                  governorates: const [],
+                  areas: const [],
+                  blocks: const [],
+                  streetController: controllers[0],
+                  avenueController: controllers[1],
+                  floorController: controllers[2],
+                  buildingNumberController: controllers[3],
+                  apartmentController: controllers[4],
+                  onGovernorateSelected: (_) {},
+                  onAreaSelected: (_) {},
+                  onBlockSelected: (_) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      tester.getTopLeft(find.text('House / building number')).dy,
+      closeTo(tester.getTopLeft(find.text('Floor')).dy, 1),
+    );
+    expect(find.text('(optional)'), findsNWidgets(3));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('uses the Figma location selection controls', (tester) async {
     await tester.pumpWidget(
       MaterialApp(

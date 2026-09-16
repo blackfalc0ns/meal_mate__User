@@ -61,6 +61,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   final TextEditingController _avenueController = TextEditingController();
   final TextEditingController _buildingNumberController =
       TextEditingController();
+  final ValueNotifier<bool> _buildingNumberHasError = ValueNotifier(false);
   final TextEditingController _floorController = TextEditingController();
   final TextEditingController _apartmentController = TextEditingController();
 
@@ -77,6 +78,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       });
     }
     _flowController.addListener(_onFlowStageChanged);
+    _buildingNumberController.addListener(_onBuildingNumberChanged);
     _fillInitialAddress(widget.initialAddress);
   }
 
@@ -87,7 +89,9 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _searchController.dispose();
     _streetController.dispose();
     _avenueController.dispose();
+    _buildingNumberController.removeListener(_onBuildingNumberChanged);
     _buildingNumberController.dispose();
+    _buildingNumberHasError.dispose();
     _floorController.dispose();
     _apartmentController.dispose();
     _flowController.removeListener(_onFlowStageChanged);
@@ -114,6 +118,11 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
             }
             if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
               _avenueController.text = autofill.avenue!;
+            }
+            if (autofill.building != null &&
+                autofill.building!.trim().isNotEmpty &&
+                _buildingNumberController.text.trim().isEmpty) {
+              _buildingNumberController.text = autofill.building!.trim();
             }
             if (autofill.formattedAddress.isNotEmpty) {
               _searchController.text = autofill.formattedAddress;
@@ -202,6 +211,13 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
   void _onFlowStageChanged() {
     if (mounted) setState(() {});
+  }
+
+  void _onBuildingNumberChanged() {
+    if (_buildingNumberHasError.value &&
+        _buildingNumberController.text.trim().isNotEmpty) {
+      _buildingNumberHasError.value = false;
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -293,8 +309,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       context: context,
       isLoading: widget.isSubmitting,
       onConfirm: () {
-        _submitAddress(context);
-        Navigator.of(context).pop();
+        if (_submitAddress(context)) Navigator.of(context).pop();
       },
       content: LayoutBuilder(
         builder: (context, constraints) {
@@ -319,6 +334,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                     avenueController: _avenueController,
                     floorController: _floorController,
                     buildingNumberController: _buildingNumberController,
+                    buildingNumberErrorListenable: _buildingNumberHasError,
                     apartmentController: _apartmentController,
                     onGovernorateSelected: (governorate) => context
                         .read<AddressesViewModel>()
@@ -342,8 +358,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     }
   }
 
-  void _submitAddress(BuildContext context) {
-    if (widget.isSubmitting) return;
+  bool _submitAddress(BuildContext context) {
+    if (widget.isSubmitting) return false;
 
     final locale = context.localization;
     final languageCode = Localizations.localeOf(context).languageCode;
@@ -381,9 +397,12 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final avenue = _avenueController.text.trim().isNotEmpty
         ? _avenueController.text.trim()
         : (autofill?.avenue?.trim() ?? '');
-    final building = _buildingNumberController.text.trim().isNotEmpty
-        ? _buildingNumberController.text.trim()
-        : (autofill?.building?.trim() ?? '');
+    final building = _buildingNumberController.text.trim();
+    if (building.isEmpty) {
+      _buildingNumberHasError.value = true;
+      return false;
+    }
+    _buildingNumberHasError.value = false;
     final unit = _apartmentController.text.trim();
     final floor = _floorController.text.trim();
 
@@ -418,7 +437,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       blockRegionId: block?.id,
       street: street.isEmpty ? null : street,
       avenue: avenue.isEmpty ? null : avenue,
-      building: building.isEmpty ? null : building,
+      building: building,
       unit: unit.isEmpty ? null : unit,
       floor: floor.isEmpty ? null : floor,
       latitude: _currentLatitude,
@@ -435,12 +454,13 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
           request: request,
         ),
       );
-      return;
+      return true;
     }
 
     context.read<AddressesViewModel>().doIntent(
       PreviewNewAddressCoverageEvent(request),
     );
+    return true;
   }
 
   void _fillInitialAddress(CustomerAddressEntity? address) {

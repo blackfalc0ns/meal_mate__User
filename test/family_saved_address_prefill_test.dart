@@ -18,6 +18,9 @@ import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_search_bar.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_form_field.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
 
 void main() {
@@ -72,6 +75,73 @@ void main() {
       find.byType(AddressChooseLocationSearchBar),
     );
     expect(searchBar.controller?.text, address.addressLine);
+  });
+
+  testWidgets('empty house number keeps address details open', (tester) async {
+    final repository = _AddressesRepository();
+    final viewModel = AddressesViewModel(
+      GetCustomerAddressesUseCase(repository),
+      GetLocationsCatalogUseCase(repository),
+      AddCustomerAddressUseCase(repository),
+      UpdateCustomerAddressUseCase(repository),
+      DeleteCustomerAddressUseCase(repository),
+      GeocodeAddressUseCase(repository),
+      ReverseGeocodeLocationUseCase(repository),
+      PreviewNewAddressCoverageUseCase(repository),
+      PreviewExistingAddressCoverageUseCase(repository),
+      ConfirmSetDefaultAddressUseCase(repository),
+    );
+    addTearDown(viewModel.close);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        home: Scaffold(
+          body: BlocProvider.value(
+            value: viewModel,
+            child: const AddressesFigmaFrame(
+              locations: LocationsCatalogState(),
+              isSubmitting: false,
+              initialAddress: CustomerAddressEntity(
+                addressId: 'address-1',
+                label: 'Home',
+                addressLine: 'Block 2, Street 10',
+                isDefault: true,
+                notifyOnDelivery: true,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AddressDetailsWoltSheet), findsOneWidget);
+    await tester.tap(find.text('Continue & Check Coverage').last);
+    await tester.pump();
+
+    expect(find.byType(AddressDetailsWoltSheet), findsOneWidget);
+    final inlineError = find.descendant(
+      of: find.byType(HomeAddressFormCard),
+      matching: find.text('This field is required'),
+    );
+    expect(inlineError, findsOneWidget);
+
+    final houseField = find.byWidgetPredicate(
+      (widget) =>
+          widget is AddressFormField &&
+          widget.label == 'House / building number',
+    );
+    await tester.enterText(
+      find.descendant(of: houseField, matching: find.byType(TextField)),
+      '12',
+    );
+    await tester.pump();
+    expect(inlineError, findsNothing);
+    expect(tester.takeException(), isNull);
   });
 }
 

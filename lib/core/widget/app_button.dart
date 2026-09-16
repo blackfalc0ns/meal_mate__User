@@ -19,6 +19,7 @@ class AppButton extends StatelessWidget {
     this.isExpanded = true,
     this.icon,
     this.iconWidget,
+    this.iconBeforeText = false,
     this.height,
     this.borderRadius,
     this.color,
@@ -39,6 +40,7 @@ class AppButton extends StatelessWidget {
     this.isExpanded = true,
     this.icon,
     this.iconWidget,
+    this.iconBeforeText = false,
     this.height,
     this.borderRadius,
     this.color,
@@ -58,6 +60,7 @@ class AppButton extends StatelessWidget {
     this.isExpanded = true,
     this.icon,
     this.iconWidget,
+    this.iconBeforeText = false,
     this.height,
     this.borderRadius,
     this.color,
@@ -77,6 +80,7 @@ class AppButton extends StatelessWidget {
     this.isExpanded = false,
     this.icon,
     this.iconWidget,
+    this.iconBeforeText = false,
     this.height,
     this.borderRadius,
     this.color,
@@ -94,6 +98,7 @@ class AppButton extends StatelessWidget {
   final bool isExpanded;
   final IconData? icon;
   final Widget? iconWidget;
+  final bool iconBeforeText;
   final double? height;
   final double? borderRadius;
   final Color? color;
@@ -204,24 +209,24 @@ class AppButton extends StatelessWidget {
     }
 
     if (iconWidget != null || icon != null) {
+      final buttonIcon = iconWidget ?? Icon(icon, size: Spacing.iconMd);
+      final buttonText = Flexible(
+        child: Text(
+          text,
+          locale: locale,
+          style: style,
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         textDirection: textDirection,
-        children: [
-          Flexible(
-            child: Text(
-              text,
-              locale: locale,
-              style: style,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: Spacing.sm),
-          iconWidget ?? Icon(icon, size: 24),
-        ],
+        children: iconBeforeText
+            ? [buttonIcon, const SizedBox(width: Spacing.sm), buttonText]
+            : [buttonText, const SizedBox(width: Spacing.sm), buttonIcon],
       );
     }
     return Text(

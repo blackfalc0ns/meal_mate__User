@@ -21,3 +21,7 @@ class SelectFamilyMemberEvent extends FamilyPlanEvent {
 
   final int memberIndex;
 }
+
+class SaveFamilyProgramsEvent extends FamilyPlanEvent {
+  const SaveFamilyProgramsEvent();
+}

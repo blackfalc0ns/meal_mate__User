@@ -29,7 +29,6 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
     final currentPlan = plan;
 
     return Scaffold(
-      backgroundColor: color.surface,
       body: SafeArea(
         child: Column(
           children: [

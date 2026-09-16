@@ -64,29 +64,26 @@ class FamilyFlowScaffold extends StatelessWidget {
                 ),
               ],
       ),
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: Spacing.familySetupHorizontalPadding,
-                end: Spacing.familySetupHorizontalPadding,
-                top: Spacing.md,
-                bottom: Spacing.md,
-              ),
-              child: ValueListenableBuilder<int>(
-                valueListenable: currentStepListenable,
-                builder: (context, currentStep, child) => FamilyProgramStepper(
-                  currentStep: currentStep,
-                  completedSteps: currentStep == 0 ? 1 : 0,
-                  includeFamilyCreationStep: true,
-                ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: Spacing.familySetupHorizontalPadding,
+              end: Spacing.familySetupHorizontalPadding,
+              top: Spacing.md,
+              bottom: Spacing.md,
+            ),
+            child: ValueListenableBuilder<int>(
+              valueListenable: currentStepListenable,
+              builder: (context, currentStep, child) => FamilyProgramStepper(
+                currentStep: currentStep,
+                completedSteps: currentStep == 0 ? 1 : 0,
+                includeFamilyCreationStep: true,
               ),
             ),
-            Expanded(child: body),
-          ],
-        ),
+          ),
+          Expanded(child: body),
+        ],
       ),
     );
   }
