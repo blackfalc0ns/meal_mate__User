@@ -56,6 +56,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   bool _animateCameraToAutofill = false;
   bool _openDetailsAfterAutofill = false;
   bool _isLocationResolving = false;
+  final OverlayPortalController _loadingOverlayController =
+      OverlayPortalController();
   AddressLocationMode? _selectedMode;
   late final AddressEntryFlowController _flowController;
   late final bool _ownsFlowController;
@@ -118,7 +120,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       listener: (context, state) {
         if (_isLocationResolving && !state.mapAutofill.isLoading) {
           if (mounted) {
-            setState(() => _isLocationResolving = false);
+            _setLocationResolving(false);
           }
         }
         if (state.mapAutofill.isSuccess && state.mapAutofill.autofill != null) {
@@ -161,77 +163,96 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
           }
         }
       },
-      child: Semantics(
-        label: locale.addresses_choose_location_title,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(_currentLatitude, _currentLongitude),
-                  zoom: 16.0,
-                ),
-                onMapCreated: _onMapCreated,
-                onCameraMove: _onCameraMove,
-                onCameraIdle: _onCameraIdle,
-                myLocationEnabled: false,
-                myLocationButtonEnabled: false,
-                zoomControlsEnabled: false,
-                mapToolbarEnabled: false,
-                compassEnabled: false,
-                rotateGesturesEnabled: false,
-                tiltGesturesEnabled: false,
-                gestureRecognizers: {
-                  Factory<OneSequenceGestureRecognizer>(
-                    () => EagerGestureRecognizer(),
+      child: OverlayPortal(
+        controller: _loadingOverlayController,
+        overlayChildBuilder: (context) => const Positioned.fill(
+          child: IgnorePointer(child: CustomProgressIndicator()),
+        ),
+        child: Semantics(
+          label: locale.addresses_choose_location_title,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(_currentLatitude, _currentLongitude),
+                    zoom: 16.0,
                   ),
-                },
+                  onMapCreated: _onMapCreated,
+                  onCameraMove: _onCameraMove,
+                  onCameraIdle: _onCameraIdle,
+                  myLocationEnabled: false,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  mapToolbarEnabled: false,
+                  compassEnabled: false,
+                  rotateGesturesEnabled: false,
+                  tiltGesturesEnabled: false,
+                  gestureRecognizers: {
+                    Factory<OneSequenceGestureRecognizer>(
+                      () => EagerGestureRecognizer(),
+                    ),
+                  },
+                ),
               ),
-            ),
-            const Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: Spacing.bottomSheetRadius * 12,
-              child: Center(child: IgnorePointer(child: AddressMapMarker())),
-            ),
-            if (_flowController.stage != AddressEntryStage.coveragePreview)
-              Positioned(
+              const Positioned(
                 left: 0,
                 right: 0,
-                bottom: 0,
-                child: AddressChooseLocationSheet(
-                  selectedMode: _selectedMode,
-                  isSubmitting: widget.isSubmitting,
-                  searchController: _searchController,
-                  onSearchSubmitted: _onSearchSubmitted,
-                  onSearchChanged: _onSearchChanged,
-                  onModeChanged: (mode) {
-                    setState(() => _selectedMode = mode);
-                    if (mode == AddressLocationMode.fromMap) {
-                      final sent = _triggerReverseGeocode(context, force: true);
-                      if (sent && mounted) {
-                        setState(() => _isLocationResolving = true);
-                      }
-                    }
-                  },
-                  onUseCurrentLocation: () => _onGpsPressed(context),
-                  onConfirm: () => _prepareAndShowDetails(context),
-                ),
+                top: 0,
+                bottom: Spacing.bottomSheetRadius * 12,
+                child: Center(child: IgnorePointer(child: AddressMapMarker())),
               ),
-            if (_isLocationResolving)
-              Positioned.fill(
-                child: AbsorbPointer(
-                  child: ColoredBox(
-                    color: color.scrim.withValues(alpha: 0.2),
-                    child: const CustomProgressIndicator(),
+              if (_flowController.stage != AddressEntryStage.coveragePreview)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: AddressChooseLocationSheet(
+                    selectedMode: _selectedMode,
+                    isSubmitting: widget.isSubmitting,
+                    searchController: _searchController,
+                    onSearchSubmitted: _onSearchSubmitted,
+                    onSearchChanged: _onSearchChanged,
+                    onModeChanged: (mode) {
+                      setState(() => _selectedMode = mode);
+                      if (mode == AddressLocationMode.fromMap) {
+                        final sent = _triggerReverseGeocode(
+                          context,
+                          force: true,
+                        );
+                        if (sent && mounted) {
+                          _setLocationResolving(true);
+                        }
+                      }
+                    },
+                    onUseCurrentLocation: () => _onGpsPressed(context),
+                    onConfirm: () => _prepareAndShowDetails(context),
                   ),
                 ),
-              ),
-          ],
+              if (_isLocationResolving)
+                Positioned.fill(
+                  child: AbsorbPointer(
+                    child: ColoredBox(
+                      color: color.scrim.withValues(alpha: 0.2),
+                      child: const SizedBox.expand(),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _setLocationResolving(bool value) {
+    if (_isLocationResolving == value) return;
+    setState(() => _isLocationResolving = value);
+    if (value) {
+      _loadingOverlayController.show();
+    } else {
+      _loadingOverlayController.hide();
+    }
   }
 
   void _onFlowStageChanged() {
@@ -268,7 +289,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       if (!mounted) return;
       final sent = _triggerReverseGeocode(context);
       if (sent && mounted) {
-        setState(() => _isLocationResolving = true);
+        _setLocationResolving(true);
       }
     });
   }
@@ -279,7 +300,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     );
     final sent = _triggerReverseGeocode(context, force: true);
     if (sent && mounted) {
-      setState(() => _isLocationResolving = true);
+      _setLocationResolving(true);
     }
   }
 
@@ -287,7 +308,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return;
     _animateCameraToAutofill = true;
-    if (mounted) setState(() => _isLocationResolving = true);
+    if (mounted) _setLocationResolving(true);
     context.read<AddressesViewModel>().doIntent(
       GeocodeAddressEvent(address: trimmed),
     );
@@ -300,7 +321,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _debounceTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
       _animateCameraToAutofill = true;
-      setState(() => _isLocationResolving = true);
+      _setLocationResolving(true);
       context.read<AddressesViewModel>().doIntent(
         GeocodeAddressEvent(address: trimmed),
       );
@@ -342,7 +363,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _openDetailsAfterAutofill = true;
     final sent = _triggerReverseGeocode(context, force: true);
     if (sent && mounted) {
-      setState(() => _isLocationResolving = true);
+      _setLocationResolving(true);
     }
   }
 

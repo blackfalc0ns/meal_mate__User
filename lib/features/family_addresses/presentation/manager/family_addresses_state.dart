@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 
@@ -11,6 +12,7 @@ class FamilyAddressesState {
     this.currentIndex = 0,
     this.completedMemberIds = const {},
     this.errorMessage,
+    this.failure,
     this.completed = false,
     this.addressSaveRevision = 0,
   });
@@ -22,6 +24,7 @@ class FamilyAddressesState {
   final int currentIndex;
   final Set<String> completedMemberIds;
   final String? errorMessage;
+  final Failure? failure;
   final bool completed;
   final int addressSaveRevision;
   FamilyMemberEntity? get currentMember =>
@@ -36,7 +39,9 @@ class FamilyAddressesState {
     int? currentIndex,
     Set<String>? completedMemberIds,
     String? errorMessage,
+    Failure? failure,
     bool clearError = false,
+    bool clearFailure = false,
     bool? completed,
     int? addressSaveRevision,
   }) => FamilyAddressesState(
@@ -48,6 +53,7 @@ class FamilyAddressesState {
     currentIndex: currentIndex ?? this.currentIndex,
     completedMemberIds: completedMemberIds ?? this.completedMemberIds,
     errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+    failure: clearFailure ? null : (failure ?? this.failure),
     completed: completed ?? this.completed,
     addressSaveRevision: addressSaveRevision ?? this.addressSaveRevision,
   );

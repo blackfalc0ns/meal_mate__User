@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
@@ -40,6 +41,21 @@ class FamilyAddressesScreen extends StatelessWidget {
         builder: (context, state) {
           if (isInFamilyFlow) {
             FamilyFlowScope.updateFamilyName(context, state.familyName);
+          }
+          if (state.failure != null && state.members.isEmpty) {
+            final errorWidget = ApiErrorWidget(
+              exception: state.failure!.exception,
+              onRetry: () => context
+                  .read<FamilyAddressesViewModel>()
+                  .load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
+            );
+            if (isInFamilyFlow) return errorWidget;
+
+            return Scaffold(
+              backgroundColor: color.surfaceContainerHighest,
+              appBar: _buildAppBar(context),
+              body: errorWidget,
+            );
           }
           final member = state.currentMember;
           if (state.isLoading || member == null) {

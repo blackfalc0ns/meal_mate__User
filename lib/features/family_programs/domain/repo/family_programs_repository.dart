@@ -3,7 +3,10 @@ import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscr
 import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
 
 abstract class FamilyProgramsRepository {
-  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms();
+  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
+    int? page,
+    int? pageSize,
+  });
   Future<ApiResult<List<SubscriptionBundleEntity>>> getFamilyProgramBundles(
     String programId,
   );

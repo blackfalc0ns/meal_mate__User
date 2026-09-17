@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -32,8 +33,10 @@ class AddAllergyScreen extends StatelessWidget {
           if (state.action.failure != null) {
             CustomSnackbar.showError(
               context: context,
-              message:
-                  state.action.errorMessage ?? locale.add_allergy_update_error,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.action.failure!,
+              ),
             );
           }
 

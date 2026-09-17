@@ -60,7 +60,7 @@ class FamilyProgramSelectionSection extends StatelessWidget {
             description: locale.family_packages_selection_subtitle,
             icon: Icons.restaurant_menu_rounded,
           )
-        else
+        else ...[
           FamilyProgramGrid(
             programs: displayedPrograms,
             selectedIndex: effectiveProgramIndex,
@@ -70,6 +70,11 @@ class FamilyProgramSelectionSection extends StatelessWidget {
               );
             },
           ),
+          if (state.isLoadingMorePrograms) ...[
+            const SizedBox(height: Spacing.familyProgramGridGap),
+            const FamilyProgramGridLoadingSkeleton(itemCount: 2),
+          ],
+        ],
       ],
     );
   }

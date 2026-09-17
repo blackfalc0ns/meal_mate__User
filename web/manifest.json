@@ -1,6 +1,6 @@
 {
-    "name": "meal_meat_user",
-    "short_name": "meal_meat_user",
+    "name": "Meal Mate",
+    "short_name": "Meal Mate",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

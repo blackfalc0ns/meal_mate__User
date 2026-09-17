@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
@@ -141,10 +142,15 @@ class FamilyAllergiesContent extends StatelessWidget {
                 FamilyAllergiesInformationNote(
                   text: locale.family_allergies_information_note,
                 ),
-                if (state.errorMessage != null) ...[
+                if (state.saveFailure != null || state.errorMessage != null) ...[
                   const SizedBox(height: Spacing.sm),
                   Text(
-                    mapFailureMessage(context, state.errorMessage!),
+                    state.saveFailure != null
+                        ? ErrorMessagePresenter.fromFailure(
+                            context,
+                            state.saveFailure!,
+                          )
+                        : mapFailureMessage(context, state.errorMessage!),
                     textAlign: TextAlign.start,
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,

@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
 
@@ -12,6 +13,8 @@ class FamilyAllergiesState {
     this.selectedCodes = const {},
     this.errorMessage,
     this.optionalSaveErrorMessage,
+    this.failure,
+    this.saveFailure,
     this.completed = false,
     this.allergySearch = '',
     this.ingredientSearch = '',
@@ -27,6 +30,8 @@ class FamilyAllergiesState {
   final Set<String> selectedCodes;
   final String? errorMessage;
   final String? optionalSaveErrorMessage;
+  final Failure? failure;
+  final Failure? saveFailure;
   final bool completed;
   final String allergySearch;
   final String ingredientSearch;
@@ -46,8 +51,12 @@ class FamilyAllergiesState {
     Set<String>? selectedCodes,
     String? errorMessage,
     String? optionalSaveErrorMessage,
+    Failure? failure,
+    Failure? saveFailure,
     bool clearError = false,
     bool clearOptionalSaveError = false,
+    bool clearFailure = false,
+    bool clearSaveFailure = false,
     bool? completed,
     String? allergySearch,
     String? ingredientSearch,
@@ -64,6 +73,8 @@ class FamilyAllergiesState {
     optionalSaveErrorMessage: clearOptionalSaveError
         ? null
         : optionalSaveErrorMessage ?? this.optionalSaveErrorMessage,
+    failure: clearFailure ? null : (failure ?? this.failure),
+    saveFailure: clearSaveFailure ? null : (saveFailure ?? this.saveFailure),
     completed: completed ?? this.completed,
     allergySearch: allergySearch ?? this.allergySearch,
     ingredientSearch: ingredientSearch ?? this.ingredientSearch,

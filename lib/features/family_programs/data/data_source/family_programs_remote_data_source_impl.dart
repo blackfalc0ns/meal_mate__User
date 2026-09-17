@@ -12,8 +12,11 @@ class FamilyProgramsRemoteDataSourceImpl
   final ApiServices _apiServices;
 
   @override
-  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms() {
-    return _apiServices.getFamilyPrograms();
+  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms({
+    int? page,
+    int? pageSize,
+  }) {
+    return _apiServices.getFamilyPrograms(page: page, pageSize: pageSize);
   }
 
   @override

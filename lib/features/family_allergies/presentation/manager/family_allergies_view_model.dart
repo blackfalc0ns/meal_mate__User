@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
@@ -27,7 +28,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
 
   Future<void> load({String? memberId}) async {
-    emit(state.copyWith(isLoading: true, clearError: true));
+    emit(state.copyWith(isLoading: true, clearError: true, clearFailure: true));
     final flowResult = await _getFlow();
     final catalogResult = await _getCatalog();
     if (flowResult is ApiSuccessResult<FamilyFlowCurrentEntity> &&
@@ -40,6 +41,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
       emit(
         state.copyWith(
           isLoading: false,
+          clearFailure: true,
           members: members,
           catalog: catalogResult.data.allergens,
           ingredients: catalogResult.data.ingredients,
@@ -58,7 +60,13 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         ? flowResult.failure
         : (catalogResult as ApiErrorResult<FoodPreferencesCatalogEntity>)
               .failure;
-    emit(state.copyWith(isLoading: false, errorMessage: failure.errorMessage));
+    emit(
+      state.copyWith(
+        isLoading: false,
+        failure: failure,
+        errorMessage: failure.errorMessage,
+      ),
+    );
   }
 
   void toggle(String code) {
@@ -113,6 +121,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         completed: false,
         clearError: true,
         clearOptionalSaveError: true,
+        clearSaveFailure: true,
       ),
     );
     final result = await _save(
@@ -129,6 +138,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     switch (result) {
       case ApiSuccessResult(data: final saved) when saved:
         String? optionalSaveErrorMessage;
+        Failure? optionalSaveFailure;
         final savedRejectedCodes = _savedRejectedSelectionFor(member);
         if (savedRejectedCodes.length != state.rejectedCodes.length ||
             !savedRejectedCodes.containsAll(state.rejectedCodes)) {
@@ -138,6 +148,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
           );
           if (dislikedResult case ApiErrorResult(:final failure)) {
             optionalSaveErrorMessage = failure.errorMessage;
+            optionalSaveFailure = failure;
           }
         }
         final last = state.currentIndex == state.members.length - 1;
@@ -182,6 +193,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
             completed: last,
             optionalSaveErrorMessage: optionalSaveErrorMessage,
             errorMessage: optionalSaveErrorMessage,
+            saveFailure: optionalSaveFailure,
             members: updatedMembers,
             currentIndex: nextIndex,
             selectedCodes: last
@@ -200,6 +212,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         emit(
           state.copyWith(
             isSaving: false,
+            saveFailure: result.failure,
             errorMessage: result.failure.errorMessage,
           ),
         );

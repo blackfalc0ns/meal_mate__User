@@ -9,7 +9,10 @@ class GetFamilyProgramsUseCase {
 
   final FamilyProgramsRepository _repository;
 
-  Future<ApiResult<List<SubscriptionProgramEntity>>> call() {
-    return _repository.getFamilyPrograms();
+  Future<ApiResult<List<SubscriptionProgramEntity>>> call({
+    int? page,
+    int? pageSize,
+  }) {
+    return _repository.getFamilyPrograms(page: page, pageSize: pageSize);
   }
 }

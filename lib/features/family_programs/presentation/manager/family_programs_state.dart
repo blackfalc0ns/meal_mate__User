@@ -24,6 +24,9 @@ class FamilyPlanState {
     this.isAddressesLoading = false,
     this.addresses = const [],
     this.isProgramsLoading = false,
+    this.isLoadingMorePrograms = false,
+    this.hasMorePrograms = true,
+    this.programsPage = 1,
     this.isPlanSaving = false,
     this.programs = const [],
     this.selectedProgramIndex,
@@ -69,6 +72,9 @@ class FamilyPlanState {
   final List<CustomerAddressEntity> addresses;
 
   final bool isProgramsLoading;
+  final bool isLoadingMorePrograms;
+  final bool hasMorePrograms;
+  final int programsPage;
   final bool isPlanSaving;
   final List<SubscriptionProgramEntity> programs;
   final int? selectedProgramIndex;
@@ -181,6 +187,9 @@ class FamilyPlanState {
     bool? isAddressesLoading,
     List<CustomerAddressEntity>? addresses,
     bool? isProgramsLoading,
+    bool? isLoadingMorePrograms,
+    bool? hasMorePrograms,
+    int? programsPage,
     bool? isPlanSaving,
     List<SubscriptionProgramEntity>? programs,
     int? selectedProgramIndex,
@@ -231,6 +240,10 @@ class FamilyPlanState {
       isAddressesLoading: isAddressesLoading ?? this.isAddressesLoading,
       addresses: addresses ?? this.addresses,
       isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
+      isLoadingMorePrograms:
+          isLoadingMorePrograms ?? this.isLoadingMorePrograms,
+      hasMorePrograms: hasMorePrograms ?? this.hasMorePrograms,
+      programsPage: programsPage ?? this.programsPage,
       isPlanSaving: isPlanSaving ?? this.isPlanSaving,
       programs: programs ?? this.programs,
       selectedProgramIndex: clearSelectedProgram

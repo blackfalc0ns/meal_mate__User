@@ -11,7 +11,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
   final GetFamilyFlowCurrentUseCase _getFlow;
 
   Future<void> load({String? memberId}) async {
-    emit(state.copyWith(isLoading: true, clearError: true));
+    emit(state.copyWith(isLoading: true, clearError: true, clearFailure: true));
     final result = await _getFlow();
     switch (result) {
       case ApiSuccessResult():
@@ -30,6 +30,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         emit(
           state.copyWith(
             isLoading: false,
+            clearFailure: true,
             familyName: result.data.name,
             members: members,
             currentIndex: firstPendingIndex < 0 ? 0 : firstPendingIndex,
@@ -41,6 +42,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         emit(
           state.copyWith(
             isLoading: false,
+            failure: result.failure,
             errorMessage: result.failure.errorMessage,
           ),
         );

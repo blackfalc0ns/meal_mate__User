@@ -5,8 +5,11 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_event.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_state.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_view_model.dart';
@@ -88,6 +91,23 @@ class _FamilyPackageDaysSetupScreenState
       return const FamilyPackageDaysSetupLoadingSkeleton();
     }
 
+    if (state.failure != null && state.members.isEmpty) {
+      return ApiErrorWidget(
+        exception: state.failure!.exception,
+        onRetry: () {
+          final vm = context.read<FamilyPackageDaysViewModel>();
+          vm.doIntent(GetFamilySubscriptionCurrentEvent(
+            memberId: FamilyFlowScope.targetMemberIdOf(context),
+          ));
+          if (widget.programId != null && widget.programId!.isNotEmpty) {
+            vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
+          } else {
+            vm.doIntent(const GetFamilyProgramsEvent());
+          }
+        },
+      );
+    }
+
     return FamilyPackageDaysContent(
       state: state,
       programId: widget.programId,
@@ -132,7 +152,17 @@ class _FamilyPackageDaysSetupScreenState
             includeFriday: state.includeFriday,
           );
       if (!context.mounted) return;
-      if (!saved) return;
+      if (!saved) {
+        final failure =
+            context.read<FamilyPackageDaysViewModel>().state.failure;
+        if (failure != null) {
+          CustomSnackbar.showError(
+            context: context,
+            message: ErrorMessagePresenter.fromFailure(context, failure),
+          );
+        }
+        return;
+      }
       latestState = context.read<FamilyPackageDaysViewModel>().state;
     }
 

@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
@@ -35,15 +34,18 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         ..doIntent(const GetFamilyProgramsEvent()),
       child: BlocListener<FamilyProgramsViewModel, FamilyPlanState>(
         listenWhen: (previous, current) =>
-            previous.isPlanSaving && !current.isPlanSaving,
+            previous.isPlanSaving &&
+            !current.isPlanSaving &&
+            current.failure != null,
         listener: (context, state) {
           if (state.failure != null) {
             CustomSnackbar.showError(
               context: context,
-              message: state.failure!.errorMessage,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
             );
-          } else {
-            context.pushNamed(AppRoutes.familyAddresses);
           }
         },
         child: isInFamilyFlow
@@ -97,6 +99,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         previous.selectedProgramIndex != current.selectedProgramIndex ||
         previous.isCurrentFlowLoading != current.isCurrentFlowLoading ||
         previous.isProgramsLoading != current.isProgramsLoading ||
+        previous.isLoadingMorePrograms != current.isLoadingMorePrograms ||
+        previous.hasMorePrograms != current.hasMorePrograms ||
         (current.programs.isEmpty && previous.failure != current.failure);
   }
 

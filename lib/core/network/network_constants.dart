@@ -150,6 +150,16 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/members/{memberId}/allergies';
   static const String familySubscriptionFlowMemberDislikedIngredients =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/disliked-ingredients';
+  static const String familySubscriptionFlowMemberDietary =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/dietary';
+  static const String familySubscriptionFlowDislikedIngredients =
+      '/api/v1/customer/family-subscription-flow/disliked-ingredients';
+  static const String familySubscriptionFlowAllergies =
+      '/api/v1/customer/family-subscription-flow/allergies';
+  static const String familySubscriptionFlowDietary =
+      '/api/v1/customer/family-subscription-flow/dietary';
+  static const String familySubscriptionFlowCatalog =
+      '/api/v1/customer/family-subscription-flow/food-preferences/catalog';
   static const String familyMemberAddresses =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses';
   static const String familyMemberAddress =

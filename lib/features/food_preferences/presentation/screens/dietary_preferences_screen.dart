@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -27,7 +28,15 @@ class DietaryPreferencesScreen extends StatelessWidget {
       child: BlocListener<FoodPreferencesViewModel, FoodPreferencesState>(
         listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
-          if (state.action.isSuccess) {
+          if (state.action.failure != null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.action.failure!,
+              ),
+            );
+          } else if (state.action.isSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
               message: context.localization.dietary_preferences_update_success,

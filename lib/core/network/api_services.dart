@@ -40,6 +40,7 @@ import 'package:meal_meat_user/features/meal_details/data/models/response/subscr
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_duration/data/models/response/subscription_duration_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
@@ -330,8 +331,10 @@ abstract class ApiServices {
     @Path('programId') String programId,
     @Path('bundleId') String bundleId,
     @Path('tier') String tier,
-    @Query('familyMemberId') String? familyMemberId,
-  );
+    @Query('familyMemberId') String? familyMemberId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @GET(EndPoints.subscriptionRestaurantDetails)
   Future<SubscriptionRestaurantDetailsResponseDto>
@@ -556,7 +559,10 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.familySubscriptionFlowPrograms)
-  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms();
+  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @GET(EndPoints.familySubscriptionFlowProgramBundles)
   Future<List<SubscriptionBundleResponseDto>> getFamilyProgramBundles(
@@ -595,6 +601,36 @@ abstract class ApiServices {
     @Path('memberId') String memberId,
     @Body() FoodPreferencesDislikedIngredientsRequestDto request,
   );
+
+  @PUT(EndPoints.familySubscriptionFlowMemberDietary)
+  Future<void> saveFamilyMemberDietary(
+    @Path('memberId') String memberId,
+    @Body() Map<String, dynamic> request,
+  );
+
+  @GET(EndPoints.familySubscriptionFlowDislikedIngredients)
+  Future<FoodPreferencesResponseDto> getFamilyDislikedIngredients({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('search') String? search,
+  });
+
+  @GET(EndPoints.familySubscriptionFlowAllergies)
+  Future<FoodPreferencesResponseDto> getFamilyAllergies({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('search') String? search,
+  });
+
+  @GET(EndPoints.familySubscriptionFlowDietary)
+  Future<FoodPreferencesResponseDto> getFamilyDietary({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('search') String? search,
+  });
+
+  @GET(EndPoints.familySubscriptionFlowCatalog)
+  Future<FoodPreferencesCatalogResponseDto> getFamilyFoodPreferencesCatalog();
 
   @GET(EndPoints.familyMemberAddresses)
   Future<List<CustomerAddressResponseDto>> getFamilyMemberAddresses(

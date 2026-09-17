@@ -10,6 +10,9 @@ class FoodPreferencesDislikedIngredientsRequestDto {
 
   final List<String> ingredientCodes;
 
-  Map<String, dynamic> toJson() =>
-      _$FoodPreferencesDislikedIngredientsRequestDtoToJson(this);
+  Map<String, dynamic> toJson() {
+    final json = _$FoodPreferencesDislikedIngredientsRequestDtoToJson(this);
+    json['dislikedIngredients'] = ingredientCodes;
+    return json;
+  }
 }

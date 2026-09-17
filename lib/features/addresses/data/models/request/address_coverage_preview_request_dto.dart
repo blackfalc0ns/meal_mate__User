@@ -13,6 +13,8 @@ class AddressCoveragePreviewRequestDto {
     this.area,
     this.block,
     this.isDefault = true,
+    this.page,
+    this.pageSize,
   });
 
   final String? regionId;
@@ -23,7 +25,19 @@ class AddressCoveragePreviewRequestDto {
   final String? area;
   final String? block;
   final bool isDefault;
+  final int? page;
+  final int? pageSize;
 
-  Map<String, dynamic> toJson() =>
-      _$AddressCoveragePreviewRequestDtoToJson(this);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'regionId': regionId,
+    'blockRegionId': blockRegionId,
+    'latitude': latitude,
+    'longitude': longitude,
+    'governorate': governorate,
+    'area': area,
+    'block': block,
+    'isDefault': isDefault,
+    if (page != null) 'page': page,
+    if (pageSize != null) 'pageSize': pageSize,
+  };
 }

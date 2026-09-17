@@ -14,9 +14,15 @@ class FamilyProgramsRepositoryImpl implements FamilyProgramsRepository {
   final FamilyProgramsRemoteDataSource _remoteDataSource;
 
   @override
-  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms() {
+  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
+    int? page,
+    int? pageSize,
+  }) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getFamilyPrograms();
+      final response = await _remoteDataSource.getFamilyPrograms(
+        page: page,
+        pageSize: pageSize,
+      );
       return response.map((program) => program.toEntity()).toList();
     });
   }

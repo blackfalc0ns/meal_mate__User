@@ -12,6 +12,7 @@ class FoodPreferencesResponseDto {
     this.allergens,
     this.allergies,
     this.dislikedFoods,
+    this.items,
     this.selectedCount,
     this.eatsEverything,
     this.hasNoAllergies,
@@ -32,6 +33,7 @@ class FoodPreferencesResponseDto {
   final List<FoodPreferenceItemResponseDto>? allergens;
   final List<FoodPreferenceItemResponseDto>? allergies;
   final List<FoodPreferenceItemResponseDto>? dislikedFoods;
+  final List<FoodPreferenceItemResponseDto>? items;
   final int? selectedCount;
   final bool? eatsEverything;
   final bool? hasNoAllergies;
@@ -44,8 +46,37 @@ class FoodPreferencesResponseDto {
   final bool? hasPreviousPage;
   final String? notes;
 
-  factory FoodPreferencesResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$FoodPreferencesResponseDtoFromJson(json);
+  factory FoodPreferencesResponseDto.fromJson(Map<String, dynamic> json) {
+    final parsed = _$FoodPreferencesResponseDtoFromJson(json);
+    final itemsList = (json['items'] as List<dynamic>?)
+        ?.map(
+          (e) =>
+              FoodPreferenceItemResponseDto.fromJson(e as Map<String, dynamic>),
+        )
+        .toList();
+    if (itemsList == null || itemsList.isEmpty) return parsed;
+    return FoodPreferencesResponseDto(
+      noneOption: parsed.noneOption,
+      dietaryPattern: parsed.dietaryPattern,
+      dietaryPreferences: parsed.dietaryPreferences ?? itemsList,
+      ingredients: parsed.ingredients ?? itemsList,
+      allergens: parsed.allergens ?? itemsList,
+      allergies: parsed.allergies ?? itemsList,
+      dislikedFoods: parsed.dislikedFoods ?? itemsList,
+      items: itemsList,
+      selectedCount: parsed.selectedCount,
+      eatsEverything: parsed.eatsEverything,
+      hasNoAllergies: parsed.hasNoAllergies,
+      hasNoDietaryRestriction: parsed.hasNoDietaryRestriction,
+      page: parsed.page,
+      pageSize: parsed.pageSize,
+      totalCount: parsed.totalCount,
+      totalPages: parsed.totalPages,
+      hasNextPage: parsed.hasNextPage,
+      hasPreviousPage: parsed.hasPreviousPage,
+      notes: parsed.notes,
+    );
+  }
 }
 
 @JsonSerializable(createToJson: false)

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_programs_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
@@ -36,7 +37,9 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
       case GetFamilySubscriptionCurrentEvent():
         _getFamilySubscriptionCurrent(memberId: event.memberId);
       case GetFamilyProgramsEvent():
-        _getPrograms();
+        _getPrograms(page: event.page, pageSize: event.pageSize);
+      case LoadMoreFamilyProgramsEvent():
+        _loadMorePrograms(pageSize: event.pageSize);
       case SelectFamilyProgramEvent():
         _selectProgram(event.programIndex);
       case SelectFamilyMemberEvent():
@@ -75,20 +78,22 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     }
   }
 
-  Future<void> _getPrograms() async {
+  Future<void> _getPrograms({int page = 1, int pageSize = 10}) async {
     emit(state.copyWith(isProgramsLoading: true, clearFailure: true));
-    final result = await _getFamilyProgramsUseCase();
+    final result = await _getFamilyProgramsUseCase(
+      page: page,
+      pageSize: pageSize,
+    );
     switch (result) {
       case ApiSuccessResult():
         final programs = result.data
             .where((p) => p.programId.isNotEmpty)
             .toList();
         int? progIdx;
-        final selectedMember = state.selectedMember;
-        if (selectedMember?.programId != null &&
-            selectedMember!.programId!.isNotEmpty) {
+        final memberProgramId = state.selectedMember?.programId;
+        if (memberProgramId != null && memberProgramId.isNotEmpty) {
           final found = programs.indexWhere(
-            (p) => p.programId == selectedMember.programId,
+            (p) => p.programId == memberProgramId,
           );
           if (found != -1) progIdx = found;
         }
@@ -96,12 +101,66 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
           state.copyWith(
             isProgramsLoading: false,
             programs: programs,
+            programsPage: page,
+            hasMorePrograms: result.data.length >= pageSize,
             selectedProgramIndex: progIdx,
             clearSelectedProgram: progIdx == null,
           ),
         );
       case ApiErrorResult():
         emit(state.copyWith(isProgramsLoading: false, failure: result.failure));
+    }
+  }
+
+  Future<void> _loadMorePrograms({int pageSize = 10}) async {
+    if (state.isLoadingMorePrograms ||
+        !state.hasMorePrograms ||
+        state.isProgramsLoading) {
+      return;
+    }
+
+    emit(state.copyWith(isLoadingMorePrograms: true));
+    final nextPage = state.programsPage + 1;
+    final result = await _getFamilyProgramsUseCase(
+      page: nextPage,
+      pageSize: pageSize,
+    );
+
+    switch (result) {
+      case ApiSuccessResult():
+        final newPrograms = result.data
+            .where((p) => p.programId.isNotEmpty)
+            .toList();
+        final existingIds = state.programs.map((p) => p.programId).toSet();
+        final uniqueNewPrograms = newPrograms
+            .where((p) => !existingIds.contains(p.programId))
+            .toList();
+        final updatedPrograms =
+            List<SubscriptionProgramEntity>.from(state.programs)
+              ..addAll(uniqueNewPrograms);
+
+        int? progIdx = state.selectedProgramIndex;
+        final memberProgramId = state.selectedMember?.programId;
+        if (progIdx == null &&
+            memberProgramId != null &&
+            memberProgramId.isNotEmpty) {
+          final found = updatedPrograms.indexWhere(
+            (p) => p.programId == memberProgramId,
+          );
+          if (found != -1) progIdx = found;
+        }
+
+        emit(
+          state.copyWith(
+            isLoadingMorePrograms: false,
+            programs: updatedPrograms,
+            programsPage: nextPage,
+            hasMorePrograms: result.data.length >= pageSize,
+            selectedProgramIndex: progIdx,
+          ),
+        );
+      case ApiErrorResult():
+        emit(state.copyWith(isLoadingMorePrograms: false));
     }
   }
 

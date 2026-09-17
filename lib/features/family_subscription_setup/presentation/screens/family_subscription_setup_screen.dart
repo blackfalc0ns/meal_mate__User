@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -75,8 +76,8 @@ class _FamilySubscriptionSetupScreenState
       },
       child: isInFamilyFlow
           ? BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
-              listenWhen: _shouldListenForDelete,
-              listener: _onDeleteStateChanged,
+              listenWhen: _shouldListenForActions,
+              listener: _onActionStateChanged,
               child:
                   BlocConsumer<
                     FamilySubscriptionSetupViewModel,
@@ -117,8 +118,8 @@ class _FamilySubscriptionSetupScreenState
                       FamilySubscriptionSetupViewModel,
                       FamilyPlanState
                     >(
-                      listenWhen: _shouldListenForDelete,
-                      listener: _onDeleteStateChanged,
+                      listenWhen: _shouldListenForActions,
+                      listener: _onActionStateChanged,
                       child:
                           BlocConsumer<
                             FamilySubscriptionSetupViewModel,
@@ -172,14 +173,16 @@ class _FamilySubscriptionSetupScreenState
   bool _shouldListen(FamilyPlanState previous, FamilyPlanState current) =>
       previous.currentFlow != current.currentFlow;
 
-  bool _shouldListenForDelete(
+  bool _shouldListenForActions(
     FamilyPlanState previous,
     FamilyPlanState current,
   ) =>
       previous.deleteMemberSuccess != current.deleteMemberSuccess ||
-      previous.deleteMemberFailure != current.deleteMemberFailure;
+      previous.deleteMemberFailure != current.deleteMemberFailure ||
+      previous.memberSaveFailure != current.memberSaveFailure ||
+      (previous.failure != current.failure && current.currentFlow != null);
 
-  void _onDeleteStateChanged(BuildContext context, FamilyPlanState state) {
+  void _onActionStateChanged(BuildContext context, FamilyPlanState state) {
     final locale = context.localization;
     if (state.deleteMemberSuccess) {
       CustomSnackbar.showSuccess(
@@ -189,7 +192,26 @@ class _FamilySubscriptionSetupScreenState
     } else if (state.deleteMemberFailure != null) {
       CustomSnackbar.showError(
         context: context,
-        message: state.deleteMemberFailure!.errorMessage,
+        message: ErrorMessagePresenter.fromFailure(
+          context,
+          state.deleteMemberFailure!,
+        ),
+      );
+    } else if (state.memberSaveFailure != null) {
+      CustomSnackbar.showError(
+        context: context,
+        message: ErrorMessagePresenter.fromFailure(
+          context,
+          state.memberSaveFailure!,
+        ),
+      );
+    } else if (state.failure != null && state.currentFlow != null) {
+      CustomSnackbar.showError(
+        context: context,
+        message: ErrorMessagePresenter.fromFailure(
+          context,
+          state.failure!,
+        ),
       );
     }
   }

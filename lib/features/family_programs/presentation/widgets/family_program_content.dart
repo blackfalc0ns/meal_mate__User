@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions_section.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_member_section.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_selection_section.dart';
@@ -50,21 +53,35 @@ class FamilyProgramContent extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.sm),
         Expanded(
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.familySetupHorizontalPadding,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification.metrics.pixels >=
+                      notification.metrics.maxScrollExtent - 200 &&
+                  state.hasMorePrograms &&
+                  !state.isLoadingMorePrograms &&
+                  !state.isProgramsLoading) {
+                context.read<FamilyProgramsViewModel>().doIntent(
+                      const LoadMoreFamilyProgramsEvent(),
+                    );
+              }
+              return false;
+            },
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.familySetupHorizontalPadding,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate.fixed([
+                      FamilyProgramSelectionSection(state: state),
+                      const SizedBox(height: Spacing.md),
+                    ]),
+                  ),
                 ),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate.fixed([
-                    FamilyProgramSelectionSection(state: state),
-                    const SizedBox(height: Spacing.md),
-                  ]),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Padding(

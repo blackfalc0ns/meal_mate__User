@@ -82,7 +82,7 @@ class FamilyProgramMemberSection extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: Spacing.familyProgramSummaryTopGap),
+          const SizedBox(height: Spacing.xs),
         ],
         if (activeMemberDetails != null) ...[
           FamilyProgramSummaryCard(member: activeMemberDetails),

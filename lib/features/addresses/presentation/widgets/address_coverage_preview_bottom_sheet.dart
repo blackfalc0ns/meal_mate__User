@@ -111,11 +111,11 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
                       onConfirm();
                     }
                   : null,
-              height: Spacing.buttonHeight,
+              height: Spacing.buttonSmallHeight,
               borderRadius: Spacing.radiusPill,
               color: isCovered ? color.primary : color.outlineVariant,
               textColor: isCovered ? color.onPrimary : color.onSurfaceVariant,
-              fontSize: FontSize.size15,
+              fontSize: FontSize.size13,
             ),
             if (!isCovered) ...[
               const SizedBox(height: Spacing.md),
@@ -256,7 +256,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
     final locale = context.localization;
 
     return SizedBox(
-      height: 110,
+      height: 115,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: restaurants.length,

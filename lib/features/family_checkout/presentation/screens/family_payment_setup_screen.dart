@@ -7,6 +7,8 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_event.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
@@ -72,6 +74,15 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
   }
 
   void _onStateChanged(BuildContext context, FamilyPlanState state) {
+    if (state.failure != null &&
+        !state.isCheckoutLoading &&
+        state.checkoutResult == null) {
+      CustomSnackbar.showError(
+        context: context,
+        message: ErrorMessagePresenter.fromFailure(context, state.failure!),
+      );
+      return;
+    }
     if (state.checkoutResult == null) return;
     Navigator.of(context, rootNavigator: true).pushNamed(
       AppRoutes.paymentWebView,

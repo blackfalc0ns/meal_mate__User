@@ -4,14 +4,19 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 
 class FamilyProgramGridLoadingSkeleton extends StatelessWidget {
-  const FamilyProgramGridLoadingSkeleton({super.key});
+  const FamilyProgramGridLoadingSkeleton({
+    super.key,
+    this.itemCount = 6,
+  });
+
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
     return GridView.builder(
-      key: const ValueKey('family-program-grid-loading'),
+      key: ValueKey('family-program-grid-loading-$itemCount'),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -20,7 +25,7 @@ class FamilyProgramGridLoadingSkeleton extends StatelessWidget {
         crossAxisSpacing: Spacing.familyProgramGridGap,
         mainAxisSpacing: Spacing.familyProgramGridGap,
       ),
-      itemCount: 6,
+      itemCount: itemCount,
       itemBuilder: (_, _) => Container(
         key: const ValueKey('family-program-loading-card'),
         height: Spacing.familyProgramCardHeight,

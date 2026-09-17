@@ -9,7 +9,16 @@ class GetFamilySubscriptionCurrentEvent extends FamilyPlanEvent {
 }
 
 class GetFamilyProgramsEvent extends FamilyPlanEvent {
-  const GetFamilyProgramsEvent();
+  const GetFamilyProgramsEvent({this.page = 1, this.pageSize = 10});
+
+  final int page;
+  final int pageSize;
+}
+
+class LoadMoreFamilyProgramsEvent extends FamilyPlanEvent {
+  const LoadMoreFamilyProgramsEvent({this.pageSize = 10});
+
+  final int pageSize;
 }
 
 class SelectFamilyProgramEvent extends FamilyPlanEvent {
