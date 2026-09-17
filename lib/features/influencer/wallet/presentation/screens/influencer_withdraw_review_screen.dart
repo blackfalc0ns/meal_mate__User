@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
 import '../../domain/entities/influencer_wallet_entity.dart';
 import '../manager/influencer_wallet_event.dart';
@@ -44,13 +46,26 @@ class InfluencerWithdrawReviewScreen extends StatelessWidget {
       create: (_) => getIt<InfluencerWalletViewModel>(),
       child: BlocConsumer<InfluencerWalletViewModel, InfluencerWalletState>(
         listenWhen: (previous, current) =>
-            previous.isSubmitting &&
-            !current.isSubmitting &&
-            current.failure == null,
-        listener: (context, _) => Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.influencerWallet,
-          ModalRoute.withName(AppRoutes.influencerDashboard),
-        ),
+            (previous.isSubmitting &&
+                !current.isSubmitting &&
+                current.failure == null) ||
+            (previous.failure != current.failure && current.failure != null),
+        listener: (context, state) {
+          if (state.failure != null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
+            );
+            return;
+          }
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.influencerWallet,
+            ModalRoute.withName(AppRoutes.influencerDashboard),
+          );
+        },
         builder: (context, state) => Scaffold(
           backgroundColor: color.surface,
           appBar: AppBar(backgroundColor: color.surface),

@@ -110,6 +110,11 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
   }
 
   BarChartData _chartData(ColorScheme color) {
+    final barWidth = bars.length > 20
+        ? Spacing.xss
+        : (bars.length > 10 ? Spacing.sm : Spacing.base);
+    final step = (bars.length / 5).ceil().clamp(1, bars.length);
+
     return BarChartData(
       minY: 0,
       maxY: 300,
@@ -124,31 +129,8 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
       borderData: FlBorderData(show: false),
       barTouchData: BarTouchData(enabled: false),
       titlesData: FlTitlesData(
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: Spacing.lg,
-            interval: 1,
-            getTitlesWidget: (value, meta) {
-              final index = value.toInt();
-              if (index < 0 || index >= bars.length) {
-                return const SizedBox.shrink();
-              }
-
-              return SideTitleWidget(
-                meta: meta,
-                space: Spacing.zero,
-                child: Text(
-                  bars[index].value.toInt().toString(),
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
-              );
-            },
-          ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
         ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -178,6 +160,10 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
               if (index < 0 || index >= bars.length) {
                 return const SizedBox.shrink();
               }
+              final isVisible = index % step == 0 || index == bars.length - 1;
+              if (!isVisible) {
+                return const SizedBox.shrink();
+              }
               return Text(
                 bars[index].label,
                 style: getRegularStyle(
@@ -197,7 +183,7 @@ class InfluencerStatisticsChartCard extends StatelessWidget {
             barRods: [
               BarChartRodData(
                 toY: bars[index].value,
-                width: Spacing.xxl,
+                width: barWidth,
                 color: color.primary,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(Spacing.radiusXs),

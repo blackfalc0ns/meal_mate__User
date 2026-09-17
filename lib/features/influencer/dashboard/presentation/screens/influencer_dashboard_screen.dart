@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../domain/entities/influencer_dashboard_entity.dart';
 import '../manager/influencer_dashboard_event.dart';
 import '../manager/influencer_dashboard_state.dart';
 import '../manager/influencer_dashboard_view_model.dart';
 import '../widgets/influencer_dashboard_bottom_tabs.dart';
+import '../widgets/influencer_dashboard_loading_skeleton.dart';
 import '../widgets/influencer_header_card.dart';
 import '../widgets/influencer_hero_card.dart';
 import '../widgets/influencer_metrics_grid.dart';
@@ -38,7 +41,18 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
           getIt<InfluencerDashboardViewModel>()
             ..doIntent(const LoadInfluencerDashboardEvent()),
       child:
-          BlocBuilder<InfluencerDashboardViewModel, InfluencerDashboardState>(
+          BlocConsumer<InfluencerDashboardViewModel, InfluencerDashboardState>(
+            listenWhen: (previous, current) =>
+                previous.failure != current.failure &&
+                current.failure != null &&
+                current.home != null,
+            listener: (context, state) => CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
+            ),
             builder: (context, state) {
               final home = state.home;
               return Scaffold(
@@ -69,10 +83,9 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
   }
 
   Widget _home(BuildContext context, InfluencerDashboardState state) {
-    final color = context.colorScheme;
     final locale = context.localization;
     if (state.isLoading && state.home == null) {
-      return Center(child: CircularProgressIndicator(color: color.primary));
+      return const InfluencerDashboardLoadingSkeleton();
     }
     if (state.failure != null && state.home == null) {
       return ApiErrorWidget(
@@ -84,32 +97,41 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
     }
     final home = state.home;
     if (home == null) return const SizedBox.shrink();
+    String formatDiff(num diff, {bool isPercent = false}) {
+      final sign = diff >= 0 ? '+' : '';
+      final formattedNumber = isPercent
+          ? diff.toStringAsFixed(1)
+          : diff.toString();
+      final percentSuffix = isPercent ? '%' : '';
+      return '${locale.influencer_this_week} $sign$formattedNumber$percentSuffix';
+    }
+
     final metrics = [
       InfluencerMetricEntity(
         title: locale.influencer_referrals,
         value: home.kpis.registeredCustomers.toString(),
-        subtitle: locale.influencer_active_codes,
+        subtitle: formatDiff(home.kpis.registeredCustomersDiff),
         iconAsset: AssetsFake.influencerMetricUsers,
         trendIconAsset: AssetsFake.influencerTrendUp,
       ),
       InfluencerMetricEntity(
         title: locale.influencer_completed_subscriptions,
         value: home.kpis.completedSubscriptions.toString(),
-        subtitle: locale.influencer_active_codes,
+        subtitle: formatDiff(home.kpis.completedSubscriptionsDiff),
         iconAsset: AssetsFake.influencerMetricSubscriptions,
         trendIconAsset: AssetsFake.influencerTrendUp,
       ),
       InfluencerMetricEntity(
         title: locale.influencer_pending_withdrawals,
-        value: home.wallet.pendingBalance.amount.toStringAsFixed(3),
-        subtitle: locale.influencer_under_review,
+        value: home.kpis.linkClicks.toString(),
+        subtitle: formatDiff(home.kpis.linkClicksDiff),
         iconAsset: AssetsFake.influencerMetricClicks,
         trendIconAsset: AssetsFake.influencerTrendUp,
       ),
       InfluencerMetricEntity(
         title: locale.influencer_conversion_rate,
         value: '${home.kpis.conversionRate.toStringAsFixed(2)}%',
-        subtitle: locale.influencer_from_visits,
+        subtitle: formatDiff(home.kpis.conversionRateDiff, isPercent: true),
         iconAsset: AssetsFake.influencerMetricConversion,
         trendIconAsset: AssetsFake.influencerTrendUp,
       ),
@@ -144,7 +166,7 @@ class _InfluencerDashboardScreenState extends State<InfluencerDashboardScreen> {
               totalEarnings: home.totalCommissions.amount.toStringAsFixed(3),
               currency: home.totalCommissions.currency,
               weeklyGain:
-                  '+${home.thisWeekCommissionsDiff.amount.toStringAsFixed(3)}',
+                  '${home.thisWeekCommissionsDiff.amount >= 0 ? '+' : ''}${home.thisWeekCommissionsDiff.amount.toStringAsFixed(3)}',
             ),
             const SizedBox(height: Spacing.influencerMetricsTopGap),
             InfluencerMetricsGrid(metrics: metrics),

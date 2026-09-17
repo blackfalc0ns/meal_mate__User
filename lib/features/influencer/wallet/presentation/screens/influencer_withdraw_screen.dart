@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
 import '../../domain/entities/influencer_wallet_entity.dart';
 import '../manager/influencer_wallet_event.dart';
@@ -12,6 +15,7 @@ import '../manager/influencer_wallet_state.dart';
 import '../manager/influencer_wallet_view_model.dart';
 import '../widgets/influencer_withdraw_balance_card.dart';
 import '../widgets/influencer_withdraw_input_field.dart';
+import '../widgets/influencer_withdraw_loading_skeleton.dart';
 import '../widgets/influencer_withdraw_notice_banner.dart';
 import '../widgets/influencer_withdraw_title_block.dart';
 import 'influencer_withdraw_review_screen.dart';
@@ -59,22 +63,31 @@ class _InfluencerWithdrawScreenState extends State<InfluencerWithdrawScreen> {
       value: _viewModel,
       child: Scaffold(
         backgroundColor: color.surface,
-        appBar: AppBar(
-          backgroundColor: color.surface,
-          title: Text(locale.influencer_withdraw_screen_title),
-        ),
+        appBar: CustomAppBar(title: (locale.influencer_withdraw_screen_title)),
         body: BlocConsumer<InfluencerWalletViewModel, InfluencerWalletState>(
           listenWhen: (previous, current) =>
-              previous.wallet == null && current.wallet != null,
-          listener: (_, state) {
-            _amountController.text = state.wallet!.availableBalance.amount
-                .toStringAsFixed(3);
+              (previous.wallet == null && current.wallet != null) ||
+              (previous.failure != current.failure &&
+                  current.failure != null &&
+                  current.wallet != null),
+          listener: (context, state) {
+            if (state.wallet != null && _amountController.text.isEmpty) {
+              _amountController.text = state.wallet!.availableBalance.amount
+                  .toStringAsFixed(3);
+            }
+            if (state.failure != null && state.wallet != null) {
+              CustomSnackbar.showError(
+                context: context,
+                message: ErrorMessagePresenter.fromFailure(
+                  context,
+                  state.failure!,
+                ),
+              );
+            }
           },
           builder: (context, state) {
             if (state.isLoading && state.wallet == null) {
-              return Center(
-                child: CircularProgressIndicator(color: color.primary),
-              );
+              return const InfluencerWithdrawLoadingSkeleton();
             }
             if (state.failure != null && state.wallet == null) {
               return ApiErrorWidget(

@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../../dashboard/presentation/widgets/influencer_header_card.dart';
 import '../../domain/entities/influencer_social_links_entity.dart';
 import '../manager/influencer_social_links_event.dart';
@@ -13,6 +15,7 @@ import '../manager/influencer_social_links_view_model.dart';
 import '../models/influencer_social_item_view_data.dart';
 import '../widgets/influencer_social_action_buttons.dart';
 import '../widgets/influencer_social_connection_card.dart';
+import '../widgets/influencer_social_connections_loading_skeleton.dart';
 import '../widgets/influencer_social_input_sheet.dart';
 import '../widgets/influencer_social_privacy_card.dart';
 import '../widgets/influencer_social_title_section.dart';
@@ -118,6 +121,7 @@ class _InfluencerSocialConnectionsScreenState
             listenWhen: (previous, current) {
               if (!_initialized && current.profile != null) return true;
               if (!previous.isSuccess && current.isSuccess) return true;
+              if (previous.failure != current.failure && current.failure != null) return true;
               return false;
             },
             listener: (context, state) {
@@ -130,6 +134,15 @@ class _InfluencerSocialConnectionsScreenState
                 _youtubeHandle.value = links.youtube;
                 _snapchatHandle.value = links.snapchat;
                 _initialized = true;
+              }
+              if (state.failure != null && (state.profile != null || !state.isSaving)) {
+                CustomSnackbar.showError(
+                  context: context,
+                  message: ErrorMessagePresenter.fromFailure(
+                    context,
+                    state.failure!,
+                  ),
+                );
               }
               if (state.isSuccess && Navigator.of(context).canPop()) {
                 Navigator.of(context).pop();
@@ -154,11 +167,10 @@ class _InfluencerSocialConnectionsScreenState
   }
 
   Widget _content(BuildContext context, InfluencerSocialLinksState state) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     if (state.isLoading && state.profile == null) {
-      return Center(child: CircularProgressIndicator(color: color.primary));
+      return const InfluencerSocialConnectionsLoadingSkeleton();
     }
     if (state.failure != null && state.profile == null) {
       return ApiErrorWidget(

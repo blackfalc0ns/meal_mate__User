@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../domain/entities/influencer_wallet_entity.dart';
 import '../../../bank_account/presentation/screens/influencer_bank_account_screen.dart';
 import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
@@ -14,6 +16,7 @@ import '../manager/influencer_wallet_state.dart';
 import '../manager/influencer_wallet_view_model.dart';
 import '../models/influencer_wallet_view_data.dart';
 import '../widgets/influencer_wallet_action_button.dart';
+import '../widgets/influencer_wallet_loading_skeleton.dart';
 import '../widgets/influencer_wallet_monthly_summary_card.dart';
 import '../widgets/influencer_wallet_overview_card.dart';
 import '../widgets/influencer_wallet_recent_transactions_card.dart';
@@ -31,7 +34,18 @@ class InfluencerWalletScreen extends StatelessWidget {
       create: (_) =>
           getIt<InfluencerWalletViewModel>()
             ..doIntent(const LoadInfluencerWalletEvent()),
-      child: BlocBuilder<InfluencerWalletViewModel, InfluencerWalletState>(
+      child: BlocConsumer<InfluencerWalletViewModel, InfluencerWalletState>(
+        listenWhen: (previous, current) =>
+            previous.failure != current.failure &&
+            current.failure != null &&
+            current.wallet != null,
+        listener: (context, state) => CustomSnackbar.showError(
+          context: context,
+          message: ErrorMessagePresenter.fromFailure(
+            context,
+            state.failure!,
+          ),
+        ),
         buildWhen: (previous, current) =>
             previous.isLoading != current.isLoading ||
             previous.wallet != current.wallet ||
@@ -54,10 +68,9 @@ class InfluencerWalletScreen extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context, InfluencerWalletState state) {
-    final color = context.colorScheme;
     final locale = context.localization;
     if (state.isLoading && state.wallet == null) {
-      return Center(child: CircularProgressIndicator(color: color.primary));
+      return const InfluencerWalletLoadingSkeleton();
     }
     if (state.failure != null && state.wallet == null) {
       return ApiErrorWidget(

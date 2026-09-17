@@ -4,14 +4,17 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../manager/influencer_analytics_event.dart';
 import '../manager/influencer_analytics_state.dart';
 import '../manager/influencer_analytics_view_model.dart';
 import '../models/influencer_analytics_view_data.dart';
 import '../widgets/influencer_period_filter_strip.dart';
 import '../widgets/influencer_statistics_chart_card.dart';
+import '../widgets/influencer_statistics_loading_skeleton.dart';
 import '../widgets/influencer_statistics_summary_card.dart';
 import '../widgets/influencer_top_product_card.dart';
 
@@ -26,12 +29,21 @@ class InfluencerStatisticsScreen extends StatelessWidget {
       create: (_) =>
           getIt<InfluencerAnalyticsViewModel>()
             ..doIntent(const LoadInfluencerAnalyticsEvent()),
-      child: BlocBuilder<InfluencerAnalyticsViewModel, InfluencerAnalyticsState>(
+      child: BlocConsumer<InfluencerAnalyticsViewModel, InfluencerAnalyticsState>(
+        listenWhen: (previous, current) =>
+            previous.failure != current.failure &&
+            current.failure != null &&
+            current.analytics != null,
+        listener: (context, state) => CustomSnackbar.showError(
+          context: context,
+          message: ErrorMessagePresenter.fromFailure(
+            context,
+            state.failure!,
+          ),
+        ),
         builder: (context, state) {
           if (state.isLoading && state.analytics == null) {
-            return Center(
-              child: CircularProgressIndicator(color: color.primary),
-            );
+            return const InfluencerStatisticsLoadingSkeleton();
           }
           if (state.failure != null && state.analytics == null) {
             return ApiErrorWidget(
@@ -68,10 +80,10 @@ class InfluencerStatisticsScreen extends StatelessWidget {
             title: locale.influencer_total_earnings,
             value: analytics.totalEarnings.amount.toStringAsFixed(3),
             currency: analytics.currencyCode,
-            gain: analytics.comparison.netCommissionChangePercentage
-                .toStringAsFixed(1),
+            gain:
+                '${analytics.comparison.netCommissionChangePercentage >= 0 ? '+' : ''}${analytics.comparison.netCommissionChangePercentage.toStringAsFixed(1)}',
             growthPercent:
-                '${analytics.comparison.netCommissionChangePercentage.toStringAsFixed(1)}%',
+                '${analytics.comparison.netCommissionChangePercentage >= 0 ? '+' : ''}${analytics.comparison.netCommissionChangePercentage.toStringAsFixed(1)}%',
             comparisonLabel: locale.influencer_statistics_subtitle,
           );
           final top = analytics.topPackages.isEmpty

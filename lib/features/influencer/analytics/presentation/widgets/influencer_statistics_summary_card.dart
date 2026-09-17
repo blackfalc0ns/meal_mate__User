@@ -227,7 +227,9 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              final isReadableInterval = index.isEven;
+              final step = (points.length / 4).ceil().clamp(1, points.length);
+              final isReadableInterval =
+                  index % step == 0 || index == points.length - 1;
               if (!isReadableInterval) {
                 return const SizedBox.shrink();
               }
@@ -261,7 +263,7 @@ class InfluencerStatisticsSummaryCard extends StatelessWidget {
           barWidth: Spacing.xs,
           color: color.inversePrimary,
           dotData: FlDotData(
-            show: true,
+            show: points.length <= 7,
             getDotPainter: (spot, percent, barData, index) {
               return FlDotCirclePainter(
                 radius: Spacing.xs,

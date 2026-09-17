@@ -5,16 +5,19 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../domain/entities/influencer_dashboard_entity.dart';
 import '../manager/influencer_dashboard_event.dart';
 import '../manager/influencer_dashboard_state.dart';
 import '../manager/influencer_dashboard_view_model.dart';
 import '../widgets/influencer_share_banner.dart';
 import '../widgets/influencer_share_discount_card.dart';
+import '../widgets/influencer_share_links_loading_skeleton.dart';
 import '../widgets/influencer_share_quick_stats_card.dart';
 import '../widgets/influencer_share_referral_card.dart';
 import '../widgets/influencer_share_social_tile.dart';
@@ -35,7 +38,18 @@ class InfluencerShareLinksScreen extends StatelessWidget {
           getIt<InfluencerDashboardViewModel>()
             ..doIntent(const LoadInfluencerLinksEvent()),
       child:
-          BlocBuilder<InfluencerDashboardViewModel, InfluencerDashboardState>(
+          BlocConsumer<InfluencerDashboardViewModel, InfluencerDashboardState>(
+            listenWhen: (previous, current) =>
+                previous.failure != current.failure &&
+                current.failure != null &&
+                current.links != null,
+            listener: (context, state) => CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
+            ),
             builder: (context, state) {
               return BlocProvider(
                 create: (_) =>
@@ -72,10 +86,9 @@ class InfluencerShareLinksScreen extends StatelessWidget {
     InfluencerDashboardState state,
     InfluencerSocialLinksState socialState,
   ) {
-    final color = context.colorScheme;
     final locale = context.localization;
     if (state.isLoading && state.links == null) {
-      return Center(child: CircularProgressIndicator(color: color.primary));
+      return const InfluencerShareLinksLoadingSkeleton();
     }
     if (state.failure != null && state.links == null) {
       return ApiErrorWidget(

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import '../../../dashboard/presentation/widgets/influencer_primary_button.dart';
 import '../../../wallet/presentation/widgets/influencer_withdraw_input_field.dart';
+import '../widgets/influencer_bank_account_loading_skeleton.dart';
 import '../manager/influencer_bank_account_event.dart';
 import '../manager/influencer_bank_account_state.dart';
 import '../manager/influencer_bank_account_view_model.dart';
@@ -56,13 +59,25 @@ class _InfluencerBankAccountScreenState
             InfluencerBankAccountState
           >(
             listenWhen: (previous, current) =>
-                !_initialized && current.account != null,
-            listener: (_, state) {
-              final account = state.account!;
-              _bankController.text = account.bankName;
-              _holderController.text = account.accountHolderName;
-              _ibanController.text = account.iban ?? '';
-              _initialized = true;
+                (!_initialized && current.account != null) ||
+                (previous.failure != current.failure && current.failure != null),
+            listener: (context, state) {
+              if (!_initialized && state.account != null) {
+                final account = state.account!;
+                _bankController.text = account.bankName;
+                _holderController.text = account.accountHolderName;
+                _ibanController.text = account.iban ?? '';
+                _initialized = true;
+              }
+              if (state.failure != null && (state.account != null || !state.isMutating)) {
+                CustomSnackbar.showError(
+                  context: context,
+                  message: ErrorMessagePresenter.fromFailure(
+                    context,
+                    state.failure!,
+                  ),
+                );
+              }
             },
             builder: (context, state) => Scaffold(
               backgroundColor: color.surface,
@@ -78,10 +93,9 @@ class _InfluencerBankAccountScreenState
   }
 
   Widget _body(BuildContext context, InfluencerBankAccountState state) {
-    final color = context.colorScheme;
     final locale = context.localization;
     if (state.isLoading && state.account == null) {
-      return Center(child: CircularProgressIndicator(color: color.primary));
+      return const InfluencerBankAccountLoadingSkeleton();
     }
     if (state.failure != null && state.account == null) {
       return ApiErrorWidget(
