@@ -22,7 +22,9 @@ class FamilyPaymentMembersSection extends StatelessWidget {
 
     final summary = state.summary;
     final activeMemberId =
-        state.selectedSummaryMemberId ?? summary?.selectedMember?.memberId;
+        state.selectedSummaryMemberId ??
+        summary?.selectedMemberId ??
+        summary?.selectedMember?.memberId;
     final summaryMembers = summary?.members ?? const [];
     final fallbackMembers = state.members;
     final displayedMembers = summaryMembers.isNotEmpty
@@ -60,11 +62,13 @@ class FamilyPaymentMembersSection extends StatelessWidget {
       final isSelected = activeMemberId != null
           ? member.memberId == activeMemberId
           : member.isManager;
-      final isReady = member.isReady || member.setupStatus == 3;
+      final isReady = member.isReady || member.setupStatus == 2;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
         imageAsset: '',
-        status: isReady
+        status: member.setupStatus == 0
+            ? locale.family_member_no_plan_selected
+            : isReady
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,
@@ -81,11 +85,13 @@ class FamilyPaymentMembersSection extends StatelessWidget {
       final index = entry.key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
-      final isReady = member.setupStatus == 3;
+      final isReady = member.isReady;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
         imageAsset: '',
-        status: isReady
+        status: member.setupStatus == 0
+            ? locale.family_member_no_plan_selected
+            : isReady
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,

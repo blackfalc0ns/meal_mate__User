@@ -5,7 +5,7 @@ part 'family_member_write_request_dto.g.dart';
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class FamilyMemberWriteRequestDto {
   const FamilyMemberWriteRequestDto({
-    required this.phone,
+    this.phone,
     required this.displayName,
     this.occupation,
     required this.relationshipCode,
@@ -14,7 +14,7 @@ class FamilyMemberWriteRequestDto {
     this.deliveryAddressId,
   });
 
-  final String phone;
+  final String? phone;
   final String displayName;
   final String? occupation;
   final String relationshipCode;

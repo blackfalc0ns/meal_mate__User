@@ -2677,6 +2677,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'This phone number already belongs to another family.';
 
   @override
+  String get family_error_plan_locked =>
+      'This member already has an active subscription. Their plan cannot be changed here.';
+
+  @override
+  String get family_error_plan_incomplete =>
+      'Complete this member\'s program, package, tier, and duration.';
+
+  @override
+  String get family_error_member_incomplete =>
+      'Choose at least one member and complete their subscription details.';
+
+  @override
   String get family_occupation => 'Occupation';
 
   @override

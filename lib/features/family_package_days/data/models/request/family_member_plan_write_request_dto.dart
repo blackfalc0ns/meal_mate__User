@@ -11,7 +11,16 @@ class FamilyMemberPlanWriteRequestDto {
     this.durationDays,
     this.includeFriday,
     this.startDate,
-  });
+  }) : _clear = false;
+
+  const FamilyMemberPlanWriteRequestDto.clear()
+    : programId = null,
+      bundleId = null,
+      tier = null,
+      durationDays = null,
+      includeFriday = null,
+      startDate = null,
+      _clear = true;
 
   final String? programId;
   final String? bundleId;
@@ -19,7 +28,14 @@ class FamilyMemberPlanWriteRequestDto {
   final int? durationDays;
   final bool? includeFriday;
   final String? startDate;
+  final bool _clear;
 
-  Map<String, dynamic> toJson() =>
-      _$FamilyMemberPlanWriteRequestDtoToJson(this);
+  Map<String, dynamic> toJson() => _clear
+      ? <String, dynamic>{
+          'programId': null,
+          'bundleId': null,
+          'tier': null,
+          'durationDays': null,
+        }
+      : _$FamilyMemberPlanWriteRequestDtoToJson(this);
 }

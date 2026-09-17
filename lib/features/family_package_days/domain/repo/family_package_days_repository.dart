@@ -19,6 +19,7 @@ abstract class FamilyPackageDaysRepository {
 
   Future<ApiResult<FamilyFlowCurrentEntity>> saveFamilyMemberPlan({
     required String memberId,
+    bool clearPlan = false,
     String? programId,
     String? bundleId,
     int? tier,

@@ -6,4 +6,8 @@ abstract interface class FamilyAllergiesRepository {
     required String memberId,
     required List<FamilyMemberAllergySelection> allergies,
   });
+  Future<ApiResult<void>> saveMemberDislikedIngredients({
+    required String memberId,
+    required List<String> ingredientCodes,
+  });
 }

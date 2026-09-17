@@ -55,6 +55,7 @@ class FamilyPackageDaysRepositoryImpl implements FamilyPackageDaysRepository {
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> saveFamilyMemberPlan({
     required String memberId,
+    bool clearPlan = false,
     String? programId,
     String? bundleId,
     int? tier,
@@ -65,14 +66,16 @@ class FamilyPackageDaysRepositoryImpl implements FamilyPackageDaysRepository {
     return safeApiCall(() async {
       final response = await _remoteDataSource.saveFamilyMemberPlan(
         memberId,
-        FamilyMemberPlanWriteRequestDto(
-          programId: programId,
-          bundleId: bundleId,
-          tier: tier,
-          durationDays: durationDays,
-          includeFriday: includeFriday,
-          startDate: startDate,
-        ),
+        clearPlan
+            ? const FamilyMemberPlanWriteRequestDto.clear()
+            : FamilyMemberPlanWriteRequestDto(
+                programId: programId,
+                bundleId: bundleId,
+                tier: tier,
+                durationDays: durationDays,
+                includeFriday: includeFriday,
+                startDate: startDate,
+              ),
       );
       final entity = response.toEntity();
       _snapshotStore.update(entity);

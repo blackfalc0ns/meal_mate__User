@@ -18,6 +18,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
     required this.onConfirm,
     required this.onChooseAnother,
     this.popOnConfirm = true,
+    this.requireFamilyCoverage = false,
   });
 
   final AddressCoveragePreviewEntity preview;
@@ -26,13 +27,19 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
   final VoidCallback onConfirm;
   final VoidCallback onChooseAnother;
   final bool popOnConfirm;
+  final bool requireFamilyCoverage;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final isCovered = preview.canSetAsDefault;
+    final isCovered =
+        preview.canSetAsDefault &&
+        (!requireFamilyCoverage ||
+            (preview.resolvedRegionId != null &&
+                preview.conflictMessage == null &&
+                preview.servingRestaurants.isNotEmpty));
     final noticeText = preview.restaurantCoverageNotice?.text(
       locale.localeName,
     );

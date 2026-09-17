@@ -148,6 +148,8 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/members/{memberId}/plan';
   static const String familySubscriptionFlowMemberAllergies =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/allergies';
+  static const String familySubscriptionFlowMemberDislikedIngredients =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/disliked-ingredients';
   static const String familyMemberAddresses =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses';
   static const String familyMemberAddress =

@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/family_programs/presentation/manager/fam
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_summary_card.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyProgramMemberSection extends StatelessWidget {
   const FamilyProgramMemberSection({super.key, required this.state});
@@ -19,11 +20,20 @@ class FamilyProgramMemberSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     color.surface;
-    final members = state.members;
+    final targetMemberId = FamilyFlowScope.targetMemberIdOf(context);
+    final memberEntries = state.members
+        .asMap()
+        .entries
+        .where(
+          (entry) =>
+              targetMemberId == null || entry.value.memberId == targetMemberId,
+        )
+        .toList();
+    final members = memberEntries.map((entry) => entry.value).toList();
     final selectedMember = state.selectedMember;
 
     final displayedMembers = members.asMap().entries.map((entry) {
-      final index = entry.key;
+      final index = memberEntries[entry.key].key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
       final hasProgram =
@@ -68,7 +78,7 @@ class FamilyProgramMemberSection extends StatelessWidget {
             members: displayedMembers,
             onSelectMember: (index) {
               context.read<FamilyProgramsViewModel>().doIntent(
-                SelectFamilyMemberEvent(index),
+                SelectFamilyMemberEvent(memberEntries[index].key),
               );
             },
           ),

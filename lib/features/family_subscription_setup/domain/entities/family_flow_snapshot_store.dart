@@ -71,16 +71,32 @@ class FamilyFlowSnapshotStore {
     _revision++;
   }
 
-  void updateMemberProgram(
+  void updateMemberProgram(String memberId, String programId) {
+    final snapshot = current;
+    if (snapshot == null) return;
+    final updatedMembers = snapshot.members.map((member) {
+      if (member.memberId != memberId) return member;
+      return member.copyWith(programId: programId);
+    }).toList();
+    current = snapshot.copyWith(members: updatedMembers);
+    _revision++;
+  }
+
+  void updateMemberDislikedIngredients(
     String memberId,
-    String programId,
+    List<String> ingredientCodes,
   ) {
     final snapshot = current;
     if (snapshot == null) return;
     final updatedMembers = snapshot.members.map((member) {
       if (member.memberId != memberId) return member;
       return member.copyWith(
-        programId: programId,
+        dislikedFoods: ingredientCodes
+            .map(
+              (code) =>
+                  FoodPreferenceItemEntity(code: code, nameAr: '', nameEn: ''),
+            )
+            .toList(),
       );
     }).toList();
     current = snapshot.copyWith(members: updatedMembers);

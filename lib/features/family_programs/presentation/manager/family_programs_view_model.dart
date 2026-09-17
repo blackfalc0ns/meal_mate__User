@@ -18,11 +18,12 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     this._getFamilyProgramsUseCase,
     this._saveFamilyMemberPlanUseCase, [
     FamilyFlowSnapshotStore? snapshotStore,
-  ])  : _snapshotStore = snapshotStore ??
-            (getIt.isRegistered<FamilyFlowSnapshotStore>()
-                ? getIt<FamilyFlowSnapshotStore>()
-                : FamilyFlowSnapshotStore()),
-        super(const FamilyPlanState());
+  ]) : _snapshotStore =
+           snapshotStore ??
+           (getIt.isRegistered<FamilyFlowSnapshotStore>()
+               ? getIt<FamilyFlowSnapshotStore>()
+               : FamilyFlowSnapshotStore()),
+       super(const FamilyPlanState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
@@ -33,7 +34,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent();
+        _getFamilySubscriptionCurrent(memberId: event.memberId);
       case GetFamilyProgramsEvent():
         _getPrograms();
       case SelectFamilyProgramEvent():
@@ -45,15 +46,19 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
     }
   }
 
-  Future<void> _getFamilySubscriptionCurrent() async {
+  Future<void> _getFamilySubscriptionCurrent({String? memberId}) async {
     emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _getFamilyFlowCurrentUseCase();
     switch (result) {
       case ApiSuccessResult():
         final flow = result.data;
-        final selectedIndex =
-            (state.selectedMemberIndex >= 0 &&
-                state.selectedMemberIndex < flow.members.length)
+        final targetIndex = flow.members.indexWhere(
+          (member) => member.memberId == memberId,
+        );
+        final selectedIndex = targetIndex >= 0
+            ? targetIndex
+            : (state.selectedMemberIndex >= 0 &&
+                  state.selectedMemberIndex < flow.members.length)
             ? state.selectedMemberIndex
             : 0;
         emit(
@@ -101,6 +106,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   }
 
   void _selectProgram(int index) {
+    if (state.selectedMember?.memberSubscriptionId != null) return;
     final program = state.programs.length > index
         ? state.programs[index]
         : null;
@@ -160,8 +166,12 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _savePendingPrograms() async {
-    if (state.isPlanSaving || _pendingProgramIds.isEmpty) return;
+    if (state.isPlanSaving) return;
     emit(state.copyWith(isPlanSaving: true, clearFailure: true));
+    if (_pendingProgramIds.isEmpty) {
+      emit(state.copyWith(isPlanSaving: false));
+      return;
+    }
     final changes = Map<String, String>.of(_pendingProgramIds);
     for (final change in changes.entries) {
       final result = await _saveFamilyMemberPlanUseCase(
@@ -185,7 +195,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
                         programId: member.memberId == change.key
                             ? change.value
                             : (_pendingProgramIds[member.memberId] ??
-                                member.programId),
+                                  member.programId),
                       ),
                     )
                     .toList(),

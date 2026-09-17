@@ -30,7 +30,7 @@ void main() {
   test('only an incomplete non-manager can be deleted from setup flow', () {
     expect(member().canDeleteFromSetupFlow, isTrue);
     expect(member(role: 1).canDeleteFromSetupFlow, isFalse);
-    expect(member(setupStatus: 3).canDeleteFromSetupFlow, isFalse);
+    expect(member(setupStatus: 2).canDeleteFromSetupFlow, isFalse);
     expect(
       member(memberSubscriptionId: 'subscription').canDeleteFromSetupFlow,
       isFalse,

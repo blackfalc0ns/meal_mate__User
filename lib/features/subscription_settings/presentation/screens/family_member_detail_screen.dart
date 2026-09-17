@@ -221,6 +221,26 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                   )
                 : null,
           ),
+          if (!detail.hasPlan && !detail.isManager) ...[
+            const SizedBox(height: Spacing.familyMemberDetailCardGap),
+            FilledButton.icon(
+              onPressed: () async {
+                await Navigator.of(context).pushNamed(
+                  AppRoutes.familyProgramSetup,
+                  arguments: detail.memberId,
+                );
+                if (!context.mounted) return;
+                _viewModel.doIntent(
+                  LoadFamilyMemberEvent(
+                    detail.memberId,
+                    context.localization.localeName,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add_shopping_cart_outlined),
+              label: Text(locale.subscription_details_subscribe_now),
+            ),
+          ],
           const SizedBox(height: Spacing.familyMemberDetailCardGap),
           FamilyMemberDetailProgressCard(member: member),
           const SizedBox(height: Spacing.familyMemberDetailCardGap),

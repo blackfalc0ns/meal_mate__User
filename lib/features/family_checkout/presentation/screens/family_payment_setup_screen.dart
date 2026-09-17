@@ -27,7 +27,11 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
     return BlocProvider<FamilyCheckoutViewModel>(
       create: (_) => getIt<FamilyCheckoutViewModel>()
         ..doIntent(const GetFamilySubscriptionCurrentEvent())
-        ..doIntent(const GetFamilySummaryEvent()),
+        ..doIntent(
+          GetFamilySummaryEvent(
+            memberId: FamilyFlowScope.targetMemberIdOf(context),
+          ),
+        ),
       child: isInFamilyFlow
           ? BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
               listener: _onStateChanged,

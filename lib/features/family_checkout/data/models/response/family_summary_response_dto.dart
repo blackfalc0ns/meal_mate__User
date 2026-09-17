@@ -17,7 +17,7 @@ class FamilySummaryMemberDto {
   final String? memberId;
   final String? displayName;
   final bool? isManager;
-  @JsonKey(fromJson: _nullableIntFromJson)
+  @JsonKey(fromJson: _setupStatusFromJson)
   final int? setupStatus;
   final bool? isReady;
   final String? roleAr;
@@ -41,6 +41,7 @@ class FamilySelectedMemberSummaryDto {
     this.bundleNameEn,
     this.durationDays,
     this.durationLabelAr,
+    this.durationLabelEn,
     this.selectedTier,
     this.tierNameAr,
     this.tierNameEn,
@@ -58,7 +59,7 @@ class FamilySelectedMemberSummaryDto {
   final String? displayName;
   final bool? isManager;
   final String? roleAr;
-  @JsonKey(fromJson: _nullableIntFromJson)
+  @JsonKey(fromJson: _setupStatusFromJson)
   final int? setupStatus;
   final bool? isReady;
   final String? programNameAr;
@@ -68,6 +69,7 @@ class FamilySelectedMemberSummaryDto {
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? durationDays;
   final String? durationLabelAr;
+  final String? durationLabelEn;
   @JsonKey(readValue: _readSelectedTier, fromJson: _nullableIntFromJson)
   final int? selectedTier;
   final String? tierNameAr;
@@ -121,6 +123,7 @@ class FamilySummaryResponseDto {
   const FamilySummaryResponseDto({
     this.familyGroupId,
     this.familyName,
+    this.selectedMemberId,
     this.subtotal,
     this.familyDiscountPercent,
     this.familyDiscountAmount,
@@ -140,6 +143,7 @@ class FamilySummaryResponseDto {
 
   final String? familyGroupId;
   final String? familyName;
+  final String? selectedMemberId;
 
   @JsonKey(fromJson: _nullableDoubleFromJson)
   final double? subtotal;
@@ -184,6 +188,18 @@ int? _nullableIntFromJson(dynamic value) {
   if (value is num) return value.toInt();
   if (value is String) return int.tryParse(value);
   return null;
+}
+
+int? _setupStatusFromJson(dynamic value) {
+  if (value is String) {
+    return switch (value.trim().toLowerCase()) {
+      'notstarted' => 0,
+      'inprogress' => 1,
+      'ready' => 2,
+      _ => int.tryParse(value),
+    };
+  }
+  return _nullableIntFromJson(value);
 }
 
 double? _nullableDoubleFromJson(dynamic value) {

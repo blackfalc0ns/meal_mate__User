@@ -11,6 +11,7 @@ class FamilyAllergiesState {
     this.currentIndex = 0,
     this.selectedCodes = const {},
     this.errorMessage,
+    this.optionalSaveErrorMessage,
     this.completed = false,
     this.allergySearch = '',
     this.ingredientSearch = '',
@@ -25,6 +26,7 @@ class FamilyAllergiesState {
   final int currentIndex;
   final Set<String> selectedCodes;
   final String? errorMessage;
+  final String? optionalSaveErrorMessage;
   final bool completed;
   final String allergySearch;
   final String ingredientSearch;
@@ -43,7 +45,9 @@ class FamilyAllergiesState {
     int? currentIndex,
     Set<String>? selectedCodes,
     String? errorMessage,
+    String? optionalSaveErrorMessage,
     bool clearError = false,
+    bool clearOptionalSaveError = false,
     bool? completed,
     String? allergySearch,
     String? ingredientSearch,
@@ -57,6 +61,9 @@ class FamilyAllergiesState {
     currentIndex: currentIndex ?? this.currentIndex,
     selectedCodes: selectedCodes ?? this.selectedCodes,
     errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+    optionalSaveErrorMessage: clearOptionalSaveError
+        ? null
+        : optionalSaveErrorMessage ?? this.optionalSaveErrorMessage,
     completed: completed ?? this.completed,
     allergySearch: allergySearch ?? this.allergySearch,
     ingredientSearch: ingredientSearch ?? this.ingredientSearch,

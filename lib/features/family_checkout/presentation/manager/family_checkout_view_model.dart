@@ -82,6 +82,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         }
         final activeMemberId =
             memberId ??
+            summary.selectedMemberId ??
             summary.selectedMember?.memberId ??
             state.selectedSummaryMemberId;
         emit(
@@ -89,6 +90,11 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
             isSummaryLoading: false,
             summary: summary,
             selectedSummaryMemberId: activeMemberId,
+            paymentMethods: summary.canCheckout && summary.finalPrice > 0
+                ? state.paymentMethods
+                : const [],
+            clearSelectedPaymentMethod:
+                !summary.canCheckout || summary.finalPrice <= 0,
           ),
         );
         if (summary.canCheckout && summary.finalPrice > 0) {
@@ -104,12 +110,16 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     final result = await _getFamilyPaymentMethodsUseCase(amount);
     switch (result) {
       case ApiSuccessResult():
+        final selectedId = state.selectedPaymentMethod?.id;
         emit(
           state.copyWith(
             paymentMethods: result.data,
+            clearSelectedPaymentMethod: result.data.isEmpty,
             selectedPaymentMethod:
-                state.selectedPaymentMethod ??
-                (result.data.isNotEmpty ? result.data.first : null),
+                result.data
+                    .where((method) => method.id == selectedId)
+                    .firstOrNull ??
+                result.data.firstOrNull,
           ),
         );
       case ApiErrorResult():

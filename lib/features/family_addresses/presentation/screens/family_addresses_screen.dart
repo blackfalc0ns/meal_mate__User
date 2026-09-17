@@ -28,7 +28,9 @@ class FamilyAddressesScreen extends StatelessWidget {
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider(
-      create: (_) => getIt<FamilyAddressesViewModel>()..load(),
+      create: (_) =>
+          getIt<FamilyAddressesViewModel>()
+            ..load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
       child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
         listenWhen: (previous, current) =>
             current.completed &&

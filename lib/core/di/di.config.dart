@@ -128,6 +128,8 @@ import '../../features/family_allergies/domain/repo/family_allergies_repository.
     as _i223;
 import '../../features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart'
     as _i515;
+import '../../features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart'
+    as _i758;
 import '../../features/family_allergies/presentation/manager/family_allergies_view_model.dart'
     as _i911;
 import '../../features/family_checkout/data/data_source/family_checkout_remote_data_source.dart'
@@ -188,6 +190,8 @@ import '../../features/family_programs/domain/usecase/get_family_programs_usecas
     as _i577;
 import '../../features/family_programs/presentation/manager/family_programs_view_model.dart'
     as _i731;
+import '../../features/family_shared/presentation/manager/family_subscription_flow_view_model.dart'
+    as _i932;
 import '../../features/family_subscription_setup/data/data_source/family_subscription_setup_remote_data_source.dart'
     as _i379;
 import '../../features/family_subscription_setup/data/data_source/family_subscription_setup_remote_data_source_impl.dart'
@@ -866,6 +870,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i223.FamilyAllergiesRepository>(),
       ),
     );
+    gh.factory<_i758.SaveFamilyMemberDislikedIngredientsUseCase>(
+      () => _i758.SaveFamilyMemberDislikedIngredientsUseCase(
+        gh<_i223.FamilyAllergiesRepository>(),
+      ),
+    );
     gh.factory<_i998.ProfileRemoteDataSource>(
       () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -1374,6 +1383,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i801.GetFamilySizePackagesUseCase>(),
       ),
     );
+    gh.factory<_i911.FamilyAllergiesViewModel>(
+      () => _i911.FamilyAllergiesViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
+        gh<_i515.SaveFamilyMemberAllergiesUseCase>(),
+        gh<_i758.SaveFamilyMemberDislikedIngredientsUseCase>(),
+      ),
+    );
     gh.factory<_i537.GetSubscriptionPackagesUseCase>(
       () => _i537.GetSubscriptionPackagesUseCase(
         gh<_i678.SubscriptionPackagesRepository>(),
@@ -1519,6 +1536,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
       ),
     );
+    gh.factory<_i932.FamilySubscriptionFlowViewModel>(
+      () => _i932.FamilySubscriptionFlowViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
     gh.factory<_i528.RestaurantTierUpgradeViewModel>(
       () => _i528.RestaurantTierUpgradeViewModel(
         gh<_i990.GetSubscriptionUpgradeOptionsUseCase>(),
@@ -1572,13 +1595,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
       ),
     );
-    gh.factory<_i911.FamilyAllergiesViewModel>(
-      () => _i911.FamilyAllergiesViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
-        gh<_i515.SaveFamilyMemberAllergiesUseCase>(),
-      ),
-    );
     gh.factory<_i693.FamilySubscriptionSetupViewModel>(
       () => _i693.FamilySubscriptionSetupViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1627,13 +1643,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i832.GetSubscriptionMealDetailsUseCase>(),
       ),
     );
-    gh.factory<_i731.FamilyProgramsViewModel>(
-      () => _i731.FamilyProgramsViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i577.GetFamilyProgramsUseCase>(),
-        gh<_i600.SaveFamilyMemberPlanUseCase>(),
-      ),
-    );
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
         gh<_i945.GetCustomerAddressesUseCase>(),
@@ -1651,6 +1660,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(
       () => _i851.SubscriptionRestaurantDetailsViewModel(
         gh<_i837.GetSubscriptionRestaurantDetailsUseCase>(),
+      ),
+    );
+    gh.factory<_i731.FamilyProgramsViewModel>(
+      () => _i731.FamilyProgramsViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i577.GetFamilyProgramsUseCase>(),
+        gh<_i600.SaveFamilyMemberPlanUseCase>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
     gh.factory<_i127.CalendarViewModel>(

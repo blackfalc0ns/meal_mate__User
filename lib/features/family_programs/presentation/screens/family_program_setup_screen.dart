@@ -7,6 +7,8 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
@@ -25,17 +27,25 @@ class FamilyProgramSetupScreen extends StatelessWidget {
 
     return BlocProvider<FamilyProgramsViewModel>(
       create: (_) => getIt<FamilyProgramsViewModel>()
-        ..doIntent(const GetFamilySubscriptionCurrentEvent())
+        ..doIntent(
+          GetFamilySubscriptionCurrentEvent(
+            memberId: FamilyFlowScope.targetMemberIdOf(context),
+          ),
+        )
         ..doIntent(const GetFamilyProgramsEvent()),
       child: BlocListener<FamilyProgramsViewModel, FamilyPlanState>(
         listenWhen: (previous, current) =>
-            previous.isPlanSaving &&
-            !current.isPlanSaving &&
-            current.failure != null,
-        listener: (context, state) => CustomSnackbar.showError(
-          context: context,
-          message: state.failure!.errorMessage,
-        ),
+            previous.isPlanSaving && !current.isPlanSaving,
+        listener: (context, state) {
+          if (state.failure != null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: state.failure!.errorMessage,
+            );
+          } else {
+            context.pushNamed(AppRoutes.familyAddresses);
+          }
+        },
         child: isInFamilyFlow
             ? BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
                 buildWhen: _shouldRebuildContent,
@@ -77,7 +87,10 @@ class FamilyProgramSetupScreen extends StatelessWidget {
     );
   }
 
-  bool _shouldRebuildContent(FamilyPlanState previous, FamilyPlanState current) {
+  bool _shouldRebuildContent(
+    FamilyPlanState previous,
+    FamilyPlanState current,
+  ) {
     return previous.currentFlow != current.currentFlow ||
         previous.programs != current.programs ||
         previous.selectedMemberIndex != current.selectedMemberIndex ||

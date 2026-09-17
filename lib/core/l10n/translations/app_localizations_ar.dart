@@ -2630,6 +2630,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'This phone number already belongs to another family.';
 
   @override
+  String get family_error_plan_locked =>
+      'لدى هذا الفرد اشتراك نشط بالفعل، ولا يمكن تغيير خطته من هنا.';
+
+  @override
+  String get family_error_plan_incomplete =>
+      'أكمل البرنامج والباقة والتصنيف والمدة لهذا الفرد.';
+
+  @override
+  String get family_error_member_incomplete =>
+      'اختر فردًا واحدًا على الأقل وأكمل بيانات اشتراكه.';
+
+  @override
   String get family_occupation => 'المهنة';
 
   @override

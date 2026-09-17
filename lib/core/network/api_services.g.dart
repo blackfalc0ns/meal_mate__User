@@ -2699,6 +2699,29 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<void> saveFamilyMemberDislikedIngredients(
+    String memberId,
+    FoodPreferencesDislikedIngredientsRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<void>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/family-subscription-flow/members/${memberId}/disliked-ingredients',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
   Future<List<CustomerAddressResponseDto>> getFamilyMemberAddresses(
     String memberId,
   ) async {

@@ -31,4 +31,26 @@ void main() {
     expect(entity.selectedMember?.tierNameEn, 'Basic');
     expect(entity.finalPrice, 81);
   });
+
+  test('summary accepts named setup statuses and selected member id', () {
+    final summary = FamilySummaryResponseDto.fromJson({
+      'selectedMemberId': 'member-2',
+      'members': [
+        {'memberId': 'member-1', 'setupStatus': 'NotStarted'},
+        {'memberId': 'member-2', 'setupStatus': 'Ready'},
+      ],
+      'selectedMember': {
+        'memberId': 'member-2',
+        'setupStatus': 'Ready',
+        'durationLabelEn': '26 Days',
+        'tierNameEn': 'Premium Tier',
+      },
+    }).toEntity();
+
+    expect(summary.selectedMemberId, 'member-2');
+    expect(summary.members.map((member) => member.setupStatus), [0, 2]);
+    expect(summary.selectedMember?.isReady, isTrue);
+    expect(summary.selectedMember?.durationText('en'), '26 Days');
+    expect(summary.selectedMember?.tierText('en'), 'Premium Tier');
+  });
 }

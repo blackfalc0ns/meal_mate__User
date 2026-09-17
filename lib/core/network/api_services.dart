@@ -584,6 +584,12 @@ abstract class ApiServices {
     @Body() FamilyMemberAllergiesRequestDto request,
   );
 
+  @PUT(EndPoints.familySubscriptionFlowMemberDislikedIngredients)
+  Future<void> saveFamilyMemberDislikedIngredients(
+    @Path('memberId') String memberId,
+    @Body() FoodPreferencesDislikedIngredientsRequestDto request,
+  );
+
   @GET(EndPoints.familyMemberAddresses)
   Future<List<CustomerAddressResponseDto>> getFamilyMemberAddresses(
     @Path('memberId') String memberId,

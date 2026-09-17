@@ -57,19 +57,21 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
             );
             if (route != null) context.pushReplacementNamed(route);
           },
-          onConfirmPayment: () {
-            final methodId = state.selectedPaymentMethod?.id ?? 1;
-            context.read<FamilyCheckoutViewModel>().doIntent(
-              CheckoutFamilySubscriptionEvent(
-                callbackUrl: 'mealmate://checkout/success',
-                errorUrl: 'mealmate://checkout/error',
-                correlationId: context
-                    .read<FamilyCheckoutViewModel>()
-                    .correlationId,
-                paymentMethodId: methodId,
-              ),
-            );
-          },
+          onConfirmPayment: state.selectedPaymentMethod?.id == null
+              ? null
+              : () {
+                  final methodId = state.selectedPaymentMethod!.id;
+                  context.read<FamilyCheckoutViewModel>().doIntent(
+                    CheckoutFamilySubscriptionEvent(
+                      callbackUrl: 'mealmate://checkout/success',
+                      errorUrl: 'mealmate://checkout/error',
+                      correlationId: context
+                          .read<FamilyCheckoutViewModel>()
+                          .correlationId,
+                      paymentMethodId: methodId,
+                    ),
+                  );
+                },
         ),
       ],
     );

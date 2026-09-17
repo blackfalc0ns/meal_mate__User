@@ -114,7 +114,9 @@ int _familyStatusCode(Object? value) {
 int _familySetupStatusCode(Object? value) {
   if (value is num) return value.toInt();
   return switch (value?.toString().trim().toLowerCase()) {
-    'ready' => 3,
+    'notstarted' => 0,
+    'inprogress' => 1,
+    'ready' => 2,
     _ => 0,
   };
 }

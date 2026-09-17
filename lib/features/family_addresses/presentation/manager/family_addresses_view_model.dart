@@ -10,12 +10,16 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
 
   final GetFamilyFlowCurrentUseCase _getFlow;
 
-  Future<void> load() async {
+  Future<void> load({String? memberId}) async {
     emit(state.copyWith(isLoading: true, clearError: true));
     final result = await _getFlow();
     switch (result) {
       case ApiSuccessResult():
-        final members = result.data.members;
+        final members = memberId == null
+            ? result.data.members
+            : result.data.members
+                  .where((member) => member.memberId == memberId)
+                  .toList();
         final completedMemberIds = members
             .where((member) => member.deliveryAddressId?.isNotEmpty ?? false)
             .map((member) => member.memberId)

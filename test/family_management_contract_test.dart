@@ -102,7 +102,7 @@ void main() {
 
     final entity = dto.toEntity('en');
 
-    expect(entity.setupStatus, 3);
+    expect(entity.setupStatus, 2);
     expect(entity.programName, 'Balanced lifestyle');
     expect(entity.isManager, isFalse);
   });

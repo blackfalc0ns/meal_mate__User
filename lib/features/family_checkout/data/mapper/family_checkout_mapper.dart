@@ -8,7 +8,7 @@ extension FamilySummaryMemberDtoMapper on FamilySummaryMemberDto {
       displayName: displayName ?? '',
       isManager: isManager ?? false,
       setupStatus: setupStatus ?? 0,
-      isReady: isReady ?? (setupStatus == 3),
+      isReady: isReady ?? (setupStatus == 2),
       roleAr: roleAr,
     );
   }
@@ -23,13 +23,14 @@ extension FamilySelectedMemberSummaryDtoMapper
       isManager: isManager ?? false,
       roleAr: roleAr,
       setupStatus: setupStatus ?? 0,
-      isReady: isReady ?? (setupStatus == 3),
+      isReady: isReady ?? (setupStatus == 2),
       programNameAr: programNameAr,
       programNameEn: programNameEn,
       bundleNameAr: bundleNameAr,
       bundleNameEn: bundleNameEn,
       durationDays: durationDays,
       durationLabelAr: durationLabelAr,
+      durationLabelEn: durationLabelEn,
       selectedTier: selectedTier,
       tierNameAr: tierNameAr,
       tierNameEn: tierNameEn,
@@ -65,6 +66,7 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
     return FamilySummaryEntity(
       familyGroupId: familyGroupId,
       familyName: familyName,
+      selectedMemberId: selectedMemberId,
       subtotal: subtotal ?? 0.0,
       familyDiscountPercent: familyDiscountPercent ?? 0.0,
       familyDiscountAmount: familyDiscountAmount ?? 0.0,

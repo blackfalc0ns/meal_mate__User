@@ -170,7 +170,14 @@ class _FamilyAddressLocationStageState
                       isSubmitting: state.action.isLoading,
                       confirmButtonText: locale.address_coverage_confirm_save,
                       popOnConfirm: false,
+                      requireFamilyCoverage: true,
                       onConfirm: () {
+                        if (!preview.canSetAsDefault ||
+                            preview.resolvedRegionId == null ||
+                            preview.conflictMessage != null ||
+                            preview.servingRestaurants.isEmpty) {
+                          return;
+                        }
                         context.read<AddressesViewModel>().doIntent(
                           const ConfirmPendingAddressActionEvent(),
                         );

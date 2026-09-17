@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
@@ -32,7 +30,6 @@ class FamilyProgramActionsSection extends StatelessWidget {
                   context.read<FamilyProgramsViewModel>().doIntent(
                     const SaveFamilyProgramsEvent(),
                   );
-                  context.pushNamed(AppRoutes.familyAddresses);
                 },
         ),
       ],

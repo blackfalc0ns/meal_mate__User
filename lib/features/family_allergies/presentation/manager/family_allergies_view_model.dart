@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
+import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
@@ -13,20 +14,29 @@ import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food
 
 @injectable
 class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
-  FamilyAllergiesViewModel(this._getFlow, this._getCatalog, this._save)
-    : super(const FamilyAllergiesState());
+  FamilyAllergiesViewModel(
+    this._getFlow,
+    this._getCatalog,
+    this._save,
+    this._saveDisliked,
+  ) : super(const FamilyAllergiesState());
 
   final GetFamilyFlowCurrentUseCase _getFlow;
   final GetFoodPreferencesCatalogUseCase _getCatalog;
   final SaveFamilyMemberAllergiesUseCase _save;
+  final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
 
-  Future<void> load() async {
+  Future<void> load({String? memberId}) async {
     emit(state.copyWith(isLoading: true, clearError: true));
     final flowResult = await _getFlow();
     final catalogResult = await _getCatalog();
     if (flowResult is ApiSuccessResult<FamilyFlowCurrentEntity> &&
         catalogResult is ApiSuccessResult<FoodPreferencesCatalogEntity>) {
-      final members = flowResult.data.members;
+      final members = memberId == null
+          ? flowResult.data.members
+          : flowResult.data.members
+                .where((member) => member.memberId == memberId)
+                .toList();
       emit(
         state.copyWith(
           isLoading: false,
@@ -97,7 +107,14 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     final member = state.currentMember;
     if (member == null || !state.canSave) return;
     final savedCodes = Set<String>.of(state.selectedCodes);
-    emit(state.copyWith(isSaving: true, completed: false, clearError: true));
+    emit(
+      state.copyWith(
+        isSaving: true,
+        completed: false,
+        clearError: true,
+        clearOptionalSaveError: true,
+      ),
+    );
     final result = await _save(
       memberId: member.memberId,
       allergies: state.selectedCodes
@@ -111,6 +128,18 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     );
     switch (result) {
       case ApiSuccessResult(data: final saved) when saved:
+        String? optionalSaveErrorMessage;
+        final savedRejectedCodes = _savedRejectedSelectionFor(member);
+        if (savedRejectedCodes.length != state.rejectedCodes.length ||
+            !savedRejectedCodes.containsAll(state.rejectedCodes)) {
+          final dislikedResult = await _saveDisliked(
+            memberId: member.memberId,
+            ingredientCodes: state.rejectedCodes.toList(),
+          );
+          if (dislikedResult case ApiErrorResult(:final failure)) {
+            optionalSaveErrorMessage = failure.errorMessage;
+          }
+        }
         final last = state.currentIndex == state.members.length - 1;
         final updatedMembers = [...state.members];
         updatedMembers[state.currentIndex] = member.copyWith(
@@ -133,12 +162,26 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
           hasNoAllergies: savedCodes.contains(
             FoodPreferenceItemEntity.noneCode,
           ),
+          dislikedFoods: optionalSaveErrorMessage == null
+              ? state.rejectedCodes.map((code) {
+                  final match = state.ingredients
+                      .where((item) => item.code == code)
+                      .firstOrNull;
+                  return FoodPreferenceItemEntity(
+                    code: code,
+                    nameAr: match?.nameAr ?? '',
+                    nameEn: match?.nameEn ?? '',
+                  );
+                }).toList()
+              : member.dislikedFoods,
         );
         final nextIndex = last ? state.currentIndex : state.currentIndex + 1;
         emit(
           state.copyWith(
             isSaving: false,
             completed: last,
+            optionalSaveErrorMessage: optionalSaveErrorMessage,
+            errorMessage: optionalSaveErrorMessage,
             members: updatedMembers,
             currentIndex: nextIndex,
             selectedCodes: last

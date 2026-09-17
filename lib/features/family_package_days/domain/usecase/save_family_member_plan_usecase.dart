@@ -11,6 +11,7 @@ class SaveFamilyMemberPlanUseCase {
 
   Future<ApiResult<FamilyFlowCurrentEntity>> call({
     required String memberId,
+    bool clearPlan = false,
     String? programId,
     String? bundleId,
     int? tier,
@@ -20,6 +21,7 @@ class SaveFamilyMemberPlanUseCase {
   }) {
     return _repository.saveFamilyMemberPlan(
       memberId: memberId,
+      clearPlan: clearPlan,
       programId: programId,
       bundleId: bundleId,
       tier: tier,

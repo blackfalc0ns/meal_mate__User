@@ -84,7 +84,7 @@ void main() {
       expect(entity.packageName('en'), 'Family package');
       expect(member.role, 1);
       expect(member.gender, 1);
-      expect(member.setupStatus, 1);
+      expect(member.setupStatus, 0);
       expect(member.deliveryAddress?.addressId, 'address-1');
       expect(member.deliveryAddress?.addressLine, 'Salmiya, block 4');
       expect(member.allergies, isEmpty);
@@ -161,14 +161,45 @@ void main() {
         },
       );
     });
-  });
 
-  test('maps Ready setup status returned by the current flow endpoint', () {
-    final dto = FamilyMemberResponseDto.fromJson(const {
-      'memberId': 'member',
-      'setupStatus': 'Ready',
+    test('reset plan sends explicit nulls for the four pricing fields', () {
+      expect(FamilyMemberPlanWriteRequestDto.clear().toJson(), {
+        'programId': null,
+        'bundleId': null,
+        'tier': null,
+        'durationDays': null,
+      });
     });
 
-    expect(dto.setupStatus, 3);
+    test('add member omits phone when it is absent', () {
+      expect(
+        const FamilyMemberWriteRequestDto(
+          displayName: 'Sara',
+          relationshipCode: 'spouse',
+          gender: 2,
+          ageYears: 28,
+        ).toJson(),
+        {
+          'displayName': 'Sara',
+          'relationshipCode': 'spouse',
+          'gender': 2,
+          'ageYears': 28,
+        },
+      );
+    });
+  });
+
+  test('maps every documented member setup status', () {
+    for (final entry in const {
+      'NotStarted': 0,
+      'InProgress': 1,
+      'Ready': 2,
+    }.entries) {
+      final dto = FamilyMemberResponseDto.fromJson({
+        'memberId': 'member',
+        'setupStatus': entry.key,
+      });
+      expect(dto.setupStatus, entry.value);
+    }
   });
 }

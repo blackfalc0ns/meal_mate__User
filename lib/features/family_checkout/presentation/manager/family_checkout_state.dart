@@ -207,6 +207,7 @@ class FamilyPlanState {
     bool? isPaymentMethodsLoading,
     List<PaymentMethodEntity>? paymentMethods,
     PaymentMethodEntity? selectedPaymentMethod,
+    bool clearSelectedPaymentMethod = false,
     bool? isCheckoutLoading,
     PaymentCheckoutEntity? checkoutResult,
     Failure? failure,
@@ -266,8 +267,9 @@ class FamilyPlanState {
       isPaymentMethodsLoading:
           isPaymentMethodsLoading ?? this.isPaymentMethodsLoading,
       paymentMethods: paymentMethods ?? this.paymentMethods,
-      selectedPaymentMethod:
-          selectedPaymentMethod ?? this.selectedPaymentMethod,
+      selectedPaymentMethod: clearSelectedPaymentMethod
+          ? null
+          : selectedPaymentMethod ?? this.selectedPaymentMethod,
       isCheckoutLoading: isCheckoutLoading ?? this.isCheckoutLoading,
       checkoutResult: clearCheckoutResult
           ? null

@@ -5018,6 +5018,24 @@ abstract class AppLocalizations {
   /// **'This phone number already belongs to another family.'**
   String get family_error_already_in_family;
 
+  /// No description provided for @family_error_plan_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'This member already has an active subscription. Their plan cannot be changed here.'**
+  String get family_error_plan_locked;
+
+  /// No description provided for @family_error_plan_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete this member\'s program, package, tier, and duration.'**
+  String get family_error_plan_incomplete;
+
+  /// No description provided for @family_error_member_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one member and complete their subscription details.'**
+  String get family_error_member_incomplete;
+
   /// No description provided for @family_occupation.
   ///
   /// In en, this message translates to:

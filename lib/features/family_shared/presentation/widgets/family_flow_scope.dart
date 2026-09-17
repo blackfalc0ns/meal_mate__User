@@ -2,9 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 class FamilyFlowScope extends StatefulWidget {
-  const FamilyFlowScope({super.key, required this.child});
+  const FamilyFlowScope({super.key, required this.child, this.targetMemberId});
 
   final Widget child;
+  final String? targetMemberId;
+
+  static String? targetMemberIdOf(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>()
+      ?.targetMemberId;
 
   static bool isActive(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>() !=
@@ -48,16 +53,26 @@ class _FamilyFlowScopeState extends State<FamilyFlowScope> {
 
   @override
   Widget build(BuildContext context) {
-    return _FamilyFlowInherited(familyName: _familyName, child: widget.child);
+    return _FamilyFlowInherited(
+      familyName: _familyName,
+      targetMemberId: widget.targetMemberId,
+      child: widget.child,
+    );
   }
 }
 
 class _FamilyFlowInherited extends InheritedWidget {
-  const _FamilyFlowInherited({required this.familyName, required super.child});
+  const _FamilyFlowInherited({
+    required this.familyName,
+    required this.targetMemberId,
+    required super.child,
+  });
 
   final ValueNotifier<String?> familyName;
+  final String? targetMemberId;
 
   @override
   bool updateShouldNotify(_FamilyFlowInherited oldWidget) =>
-      familyName != oldWidget.familyName;
+      familyName != oldWidget.familyName ||
+      targetMemberId != oldWidget.targetMemberId;
 }

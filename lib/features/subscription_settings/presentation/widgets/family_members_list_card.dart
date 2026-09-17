@@ -19,13 +19,13 @@ class FamilyMembersListCard extends StatelessWidget {
 
     final statusColor = member.isPaused
         ? color.error
-        : member.setupStatus == 3
+        : member.hasPlan && member.remainingDays > 0
         ? color.primary
         : color.secondary;
 
     final statusLabel = member.isPaused
         ? locale.family_member_paused_label
-        : member.setupStatus == 3
+        : member.hasPlan && member.remainingDays > 0
         ? locale.family_manage_active
         : locale.family_member_in_progress;
 

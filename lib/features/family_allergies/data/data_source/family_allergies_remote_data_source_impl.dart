@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/family_allergies/data/data_source/family_allergies_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_disliked_ingredients_request_dto.dart';
 
 @Injectable(as: FamilyAllergiesRemoteDataSource)
 class FamilyAllergiesRemoteDataSourceImpl
@@ -13,4 +14,10 @@ class FamilyAllergiesRemoteDataSourceImpl
     String memberId,
     FamilyMemberAllergiesRequestDto request,
   ) => _apiServices.saveFamilyMemberAllergies(memberId, request);
+
+  @override
+  Future<void> saveMemberDislikedIngredients(
+    String memberId,
+    FoodPreferencesDislikedIngredientsRequestDto request,
+  ) => _apiServices.saveFamilyMemberDislikedIngredients(memberId, request);
 }

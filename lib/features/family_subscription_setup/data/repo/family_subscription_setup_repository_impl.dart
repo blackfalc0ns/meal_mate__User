@@ -118,7 +118,7 @@ class FamilySubscriptionSetupRepositoryImpl
     return _flowMutation(
       () => _remoteDataSource.addFamilyMember(
         FamilyMemberWriteRequestDto(
-          phone: phone,
+          phone: phone.trim().isEmpty ? null : phone.trim(),
           displayName: displayName,
           occupation: occupation,
           relationshipCode: relationshipCode,
@@ -145,7 +145,7 @@ class FamilySubscriptionSetupRepositoryImpl
       () => _remoteDataSource.updateFamilyMember(
         memberId,
         FamilyMemberWriteRequestDto(
-          phone: phone,
+          phone: phone.trim().isEmpty ? null : phone.trim(),
           displayName: displayName,
           occupation: occupation,
           relationshipCode: relationshipCode,

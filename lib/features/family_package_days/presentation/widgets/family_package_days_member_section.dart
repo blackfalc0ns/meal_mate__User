@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_summary_card.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyPackageDaysMemberSection extends StatelessWidget {
   const FamilyPackageDaysMemberSection({
@@ -26,10 +27,14 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     color.surface;
+    final targetMemberId = FamilyFlowScope.targetMemberIdOf(context);
     final memberEntries = state.members
         .asMap()
         .entries
-        .where((entry) => entry.value.hasProgram)
+        .where(
+          (entry) =>
+              targetMemberId == null || entry.value.memberId == targetMemberId,
+        )
         .toList();
     final members = memberEntries.map((entry) => entry.value).toList();
     final selectedMember = state.selectedMember;
@@ -92,6 +97,14 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
           FamilyProgramSummaryCard(member: activeMemberDetails),
           const SizedBox(height: Spacing.familyPackageTitleTopGap),
         ],
+        if (selectedMember?.isInCheckoutBasket == true && !isLoading)
+          TextButton.icon(
+            onPressed: () => context
+                .read<FamilyPackageDaysViewModel>()
+                .doIntent(ClearFamilyMemberPlanEvent(selectedMember!.memberId)),
+            icon: Icon(Icons.remove_shopping_cart_outlined, color: color.error),
+            label: Text(locale.family_cancel),
+          ),
       ],
     );
   }

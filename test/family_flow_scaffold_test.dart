@@ -124,7 +124,7 @@ void main() {
 
       expect(find.byType(PopupMenuButton<void>), findsNothing);
       expect(find.text('عائلة yyyy'), findsNothing);
-      await tester.tap(find.byIcon(Icons.info_outline_rounded));
+      await tester.tap(find.byKey(const ValueKey('family-flow-info-button')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 250));
 

@@ -66,10 +66,11 @@ class FamilyMemberEntity {
       selectedTier != null &&
       (durationDays != null && durationDays! > 0);
 
-  bool get isReady => setupStatus == 3 || isPlanCompleted;
+  bool get isReady => setupStatus == 2;
   bool get canDeleteFromSetupFlow =>
       !isManager &&
       !isReady &&
+      !isPlanCompleted &&
       (memberSubscriptionId == null || memberSubscriptionId!.isEmpty);
   bool get isInCheckoutBasket =>
       memberSubscriptionId == null && isPlanCompleted;

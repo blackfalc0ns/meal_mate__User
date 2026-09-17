@@ -29,6 +29,7 @@ class FamilySelectedMemberSummaryEntity {
   final String? bundleNameEn;
   final int? durationDays;
   final String? durationLabelAr;
+  final String? durationLabelEn;
   final int? selectedTier;
   final String? tierNameAr;
   final String? tierNameEn;
@@ -53,6 +54,7 @@ class FamilySelectedMemberSummaryEntity {
     this.bundleNameEn,
     this.durationDays,
     this.durationLabelAr,
+    this.durationLabelEn,
     this.selectedTier,
     this.tierNameAr,
     this.tierNameEn,
@@ -82,6 +84,10 @@ class FamilySelectedMemberSummaryEntity {
   }
 
   String durationText(String languageCode) {
+    if (languageCode.toLowerCase().startsWith('en') &&
+        (durationLabelEn?.isNotEmpty ?? false)) {
+      return durationLabelEn!;
+    }
     if (durationLabelAr != null && durationLabelAr!.isNotEmpty) {
       return durationLabelAr!;
     }
@@ -94,6 +100,10 @@ class FamilySelectedMemberSummaryEntity {
   }
 
   String tierText(String languageCode) {
+    if (languageCode.toLowerCase().startsWith('en') &&
+        (tierNameEn?.isNotEmpty ?? false)) {
+      return tierNameEn!;
+    }
     if (tierNameAr != null && tierNameAr!.isNotEmpty) {
       return tierNameAr!;
     }
@@ -148,6 +158,7 @@ class FamilyMealOverviewEntity {
 class FamilySummaryEntity {
   final String? familyGroupId;
   final String? familyName;
+  final String? selectedMemberId;
   final double subtotal;
   final double familyDiscountPercent;
   final double familyDiscountAmount;
@@ -167,6 +178,7 @@ class FamilySummaryEntity {
   const FamilySummaryEntity({
     this.familyGroupId,
     this.familyName,
+    this.selectedMemberId,
     required this.subtotal,
     required this.familyDiscountPercent,
     required this.familyDiscountAmount,

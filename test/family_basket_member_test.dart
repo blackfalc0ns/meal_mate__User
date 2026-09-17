@@ -27,6 +27,7 @@ void main() {
 
   test('only complete unpaid plans enter the checkout basket', () {
     expect(member().isInCheckoutBasket, isTrue);
+    expect(member().isReady, isFalse);
     expect(member(subscriptionId: 'subscription').isInCheckoutBasket, isFalse);
     expect(member(bundleId: null).isInCheckoutBasket, isFalse);
     expect(member(duration: 0).isInCheckoutBasket, isFalse);

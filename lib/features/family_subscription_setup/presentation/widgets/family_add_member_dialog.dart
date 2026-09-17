@@ -169,7 +169,9 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
     final relationshipIsInvalid =
         relationshipCode == null ||
         !options.any((option) => option.code == relationshipCode);
-    final phoneIsInvalid = validateFamilyMemberPhone(_resolvedPhone) != null;
+    final phoneIsInvalid =
+        _phoneController.text.trim().isNotEmpty &&
+        validateFamilyMemberPhone(_resolvedPhone) != null;
     final nameIsInvalid = validateFamilyMemberName(name) != null;
     final ageIsInvalid = validateFamilyMemberAge(ageText) != null;
 
@@ -188,11 +190,11 @@ class _FamilyAddMemberDialogState extends State<FamilyAddMemberDialog> {
       return;
     }
 
-    if (_phoneLookupBlocked) {
+    if (phone.isNotEmpty && _phoneLookupBlocked) {
       return;
     }
 
-    if (widget.member == null) {
+    if (widget.member == null && phone.isNotEmpty) {
       final lookupState = context
           .read<FamilySubscriptionSetupViewModel>()
           .state;

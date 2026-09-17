@@ -35,7 +35,9 @@ class _FamilyPackageDaysSetupScreenState
     return BlocProvider<FamilyPackageDaysViewModel>(
       create: (_) {
         final vm = getIt<FamilyPackageDaysViewModel>();
-        vm.doIntent(const GetFamilySubscriptionCurrentEvent());
+        vm.doIntent(GetFamilySubscriptionCurrentEvent(
+          memberId: FamilyFlowScope.targetMemberIdOf(context),
+        ));
         if (widget.programId != null && widget.programId!.isNotEmpty) {
           vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
         } else {

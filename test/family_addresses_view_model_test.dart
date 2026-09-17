@@ -7,6 +7,45 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/fa
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 void main() {
+  test('add-on address step includes only the requested member', () async {
+    const active = FamilyMemberEntity(
+      memberId: 'active',
+      memberSubscriptionId: 'subscription-1',
+      role: 1,
+      displayName: 'Active',
+      relationshipCode: 'self',
+      gender: 1,
+      ageYears: 40,
+      setupStatus: 2,
+      includeFriday: false,
+      isCurrentUser: true,
+    );
+    const added = FamilyMemberEntity(
+      memberId: 'added',
+      role: 2,
+      displayName: 'Added',
+      relationshipCode: 'child',
+      gender: 1,
+      ageYears: 12,
+      setupStatus: 1,
+      includeFriday: false,
+      isCurrentUser: false,
+    );
+    final viewModel = FamilyAddressesViewModel(
+      GetFamilyFlowCurrentUseCase(
+        _FamilyFlowRepository(
+          const FamilyFlowCurrentEntity(members: [active, added]),
+        ),
+      ),
+    );
+
+    await viewModel.load(memberId: 'added');
+
+    expect(viewModel.state.members, [added]);
+    expect(viewModel.state.currentMember, same(added));
+    await viewModel.close();
+  });
+
   test(
     'keeps every family member visible and marks saved addresses completed',
     () async {

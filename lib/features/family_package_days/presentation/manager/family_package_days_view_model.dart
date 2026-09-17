@@ -47,7 +47,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     if (isClosed) return;
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent();
+        _getFamilySubscriptionCurrent(memberId: event.memberId);
       case GetFamilyProgramsEvent():
         _getPrograms();
       case GetFamilyBundlesEvent():
@@ -80,10 +80,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
           includeFriday: event.includeFriday,
           startDate: event.startDate,
         );
+      case ClearFamilyMemberPlanEvent():
+        _saveMemberPlan(memberId: event.memberId, clearPlan: true);
     }
   }
 
-  Future<void> _getFamilySubscriptionCurrent() async {
+  Future<void> _getFamilySubscriptionCurrent({String? memberId}) async {
     _emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _getFamilyFlowCurrentUseCase();
     if (isClosed) return;
@@ -92,13 +94,20 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         final flow = result.data;
         _syncConvertedDraftFlag(flow);
         final firstPlannedIndex = flow.members.indexWhere(
-          (member) => member.hasProgram,
+          (member) => member.hasProgram && member.memberSubscriptionId == null,
+        );
+        final targetIndex = flow.members.indexWhere(
+          (member) => member.memberId == memberId,
         );
         final currentIndexIsPlanned =
             state.selectedMemberIndex >= 0 &&
             state.selectedMemberIndex < flow.members.length &&
-            flow.members[state.selectedMemberIndex].hasProgram;
-        final selectedIndex = currentIndexIsPlanned
+            flow.members[state.selectedMemberIndex].hasProgram &&
+            flow.members[state.selectedMemberIndex].memberSubscriptionId ==
+                null;
+        final selectedIndex = targetIndex >= 0
+            ? targetIndex
+            : currentIndexIsPlanned
             ? state.selectedMemberIndex
             : (firstPlannedIndex >= 0 ? firstPlannedIndex : 0);
         final member = flow.members.isNotEmpty
@@ -128,14 +137,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     if (isClosed) return;
     switch (result) {
       case ApiSuccessResult():
-        final programs =
-            result.data.where((p) => p.programId.isNotEmpty).toList();
-        _emit(
-          state.copyWith(
-            isProgramsLoading: false,
-            programs: programs,
-          ),
-        );
+        final programs = result.data
+            .where((p) => p.programId.isNotEmpty)
+            .toList();
+        _emit(state.copyWith(isProgramsLoading: false, programs: programs));
         final member = state.selectedMember;
         if (member != null && state.bundles.isEmpty) {
           await _loadMemberBundlesAndSelections(member);
@@ -503,6 +508,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
 
   Future<bool> _saveMemberPlan({
     required String memberId,
+    bool clearPlan = false,
     String? programId,
     String? bundleId,
     int? tier,
@@ -513,10 +519,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     final member = state.members
         .where((item) => item.memberId == memberId)
         .firstOrNull;
+    if (member?.memberSubscriptionId != null) return false;
     if (state.isConvertedFamilyDraft && member?.isManager == true) return true;
 
     final result = await _saveFamilyMemberPlanUseCase(
       memberId: memberId,
+      clearPlan: clearPlan,
       programId: programId,
       bundleId: bundleId,
       tier: tier,
@@ -528,7 +536,16 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         _syncConvertedDraftFlag(result.data);
-        _emit(state.copyWith(currentFlow: result.data, clearFailure: true));
+        _emit(
+          state.copyWith(
+            currentFlow: result.data,
+            clearFailure: true,
+            clearSelectedBundle: clearPlan,
+            clearSelectedDuration: clearPlan,
+            clearSelectedTier: clearPlan,
+            clearCustomDuration: clearPlan,
+          ),
+        );
         return true;
       case ApiErrorResult():
         _emit(state.copyWith(failure: result.failure));

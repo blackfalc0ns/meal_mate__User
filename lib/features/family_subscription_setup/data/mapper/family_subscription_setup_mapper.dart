@@ -33,7 +33,7 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
       gender: gender ?? 1,
       ageYears: ageYears ?? 0,
       deliveryAddressId: deliveryAddressId,
-      setupStatus: setupStatus ?? 1,
+      setupStatus: setupStatus ?? 0,
       programId: programId,
       bundleId: bundleId,
       selectedTier: selectedTier,

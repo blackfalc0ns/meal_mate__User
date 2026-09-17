@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/family_allergies/data/models/request/fam
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/repo/family_allergies_repository.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_disliked_ingredients_request_dto.dart';
 
 @Injectable(as: FamilyAllergiesRepository)
 class FamilyAllergiesRepositoryImpl implements FamilyAllergiesRepository {
@@ -34,5 +35,19 @@ class FamilyAllergiesRepositoryImpl implements FamilyAllergiesRepository {
     );
     _snapshotStore.updateMemberAllergies(memberId, allergies);
     return result;
+  });
+
+  @override
+  Future<ApiResult<void>> saveMemberDislikedIngredients({
+    required String memberId,
+    required List<String> ingredientCodes,
+  }) => safeApiCall(() async {
+    await _remoteDataSource.saveMemberDislikedIngredients(
+      memberId,
+      FoodPreferencesDislikedIngredientsRequestDto(
+        ingredientCodes: ingredientCodes,
+      ),
+    );
+    _snapshotStore.updateMemberDislikedIngredients(memberId, ingredientCodes);
   });
 }

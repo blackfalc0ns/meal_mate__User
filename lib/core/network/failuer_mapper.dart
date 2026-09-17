@@ -85,6 +85,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'subscription_flow.profile_incomplete':
       return locale.subscription_flow_profile_incomplete;
     case 'checkout.address_required':
+    case 'family.address_required':
       return locale.checkout_address_required;
     case 'checkout.allergies_required':
     case 'family.allergies_required':
@@ -130,9 +131,22 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'family.cannot_remove_manager':
       return locale.family_error_cannot_remove_manager;
     case 'family.member_not_found':
+    case 'family.not_found':
       return locale.family_error_member_not_found;
     case 'family.already_in_family':
       return locale.family_error_already_in_family;
+    case 'family.max_members':
+      return locale.family_members_max_reached;
+    case 'family.plan_locked':
+      return locale.family_error_plan_locked;
+    case 'family.plan_incomplete':
+      return locale.family_error_plan_incomplete;
+    case 'family.member_incomplete':
+      return locale.family_error_member_incomplete;
+    case 'family.display_name_required':
+      return locale.name_is_required;
+    case 'family.age_invalid':
+      return locale.family_age_invalid;
     case 'family.not_manager':
       return locale.family_error_not_manager;
     case 'family.use_checkout_flow':

@@ -17,11 +17,12 @@ void main() {
 
   test('family program continues to member addresses', () {
     final source = File(
-      'lib/features/family_programs/presentation/widgets/'
-      'family_program_actions_section.dart',
+      'lib/features/family_programs/presentation/screens/'
+      'family_program_setup_screen.dart',
     ).readAsStringSync();
 
     expect(source, contains('AppRoutes.familyAddresses'));
+    expect(source, contains('!current.isPlanSaving'));
     expect(source, isNot(contains('AppRoutes.familyPackageDaysSetup')));
   });
 

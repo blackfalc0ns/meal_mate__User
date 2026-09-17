@@ -93,10 +93,10 @@ int? _setupStatusFromJson(dynamic value) {
   if (value is num) return value.toInt();
   if (value is String) {
     final lower = value.toLowerCase();
-    if (lower == 'completed' || lower == 'ready' || value == '3') return 3;
-    if (lower == 'inprogress' || value == '2') return 2;
-    if (lower == 'notstarted' || value == '1') return 1;
-    return int.tryParse(value) ?? 2;
+    if (lower == 'ready' || lower == 'completed') return 2;
+    if (lower == 'inprogress') return 1;
+    if (lower == 'notstarted') return 0;
+    return int.tryParse(value);
   }
   return null;
 }

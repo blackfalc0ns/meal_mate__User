@@ -33,6 +33,11 @@ class FamilySubscriptionFlowScreen extends StatelessWidget {
         getIt<FamilyFlowSnapshotStore>(),
       )..load(),
       child: FamilyFlowScope(
+        targetMemberId:
+            initialRoute == AppRoutes.familyProgramSetup &&
+                initialArguments is String
+            ? initialArguments as String
+            : null,
         child: FamilyFlowNavigator(
           initialRoute: initialRoute,
           routeFactory: _buildStageRoute,

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/repo/family_allergies_repository.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
+import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
@@ -16,6 +18,53 @@ import 'package:meal_meat_user/features/food_preferences/domain/repo/food_prefer
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 
 void main() {
+  test(
+    'saves disliked ingredients without making them checkout required',
+    () async {
+      final repository = _FamilyAllergiesRepository();
+      final viewModel = FamilyAllergiesViewModel(
+        GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
+        GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+        SaveFamilyMemberAllergiesUseCase(repository),
+        SaveFamilyMemberDislikedIngredientsUseCase(repository),
+      );
+      addTearDown(viewModel.close);
+
+      await viewModel.load();
+      viewModel.toggle('NONE');
+      viewModel.toggleRejected('INGREDIENT:avocado');
+      await viewModel.saveCurrent();
+
+      expect(repository.savedIngredientCodes, ['INGREDIENT:avocado']);
+      expect(viewModel.state.completed, isTrue);
+    },
+  );
+
+  test(
+    'failed optional preference save does not block allergy completion',
+    () async {
+      final repository = _FamilyAllergiesRepository()..failDislikedSave = true;
+      final viewModel = FamilyAllergiesViewModel(
+        GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
+        GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+        SaveFamilyMemberAllergiesUseCase(repository),
+        SaveFamilyMemberDislikedIngredientsUseCase(repository),
+      );
+      addTearDown(viewModel.close);
+
+      await viewModel.load();
+      viewModel.toggle('NONE');
+      viewModel.toggleRejected('INGREDIENT:avocado');
+      await viewModel.saveCurrent();
+
+      expect(viewModel.state.completed, isTrue);
+      expect(
+        viewModel.state.optionalSaveErrorMessage,
+        'Preference save failed',
+      );
+    },
+  );
+
   test('loads disliked ingredients and tracks their selection', () async {
     final viewModel = FamilyAllergiesViewModel(
       GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
@@ -33,6 +82,7 @@ void main() {
         ),
       ),
       SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
+      SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
     );
     addTearDown(viewModel.close);
 
@@ -89,6 +139,7 @@ void main() {
       ),
       GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
       SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
+      SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
     );
     addTearDown(viewModel.close);
 
@@ -116,6 +167,7 @@ void main() {
         GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
         GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
         SaveFamilyMemberAllergiesUseCase(allergiesRepository),
+        SaveFamilyMemberDislikedIngredientsUseCase(allergiesRepository),
       );
       addTearDown(viewModel.close);
 
@@ -192,6 +244,8 @@ class _FoodPreferencesRepository implements FoodPreferencesRepository {
 
 class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
   int _saveCount = 0;
+  List<String>? savedIngredientCodes;
+  bool failDislikedSave = false;
   final pendingSave = Completer<ApiResult<bool>>();
 
   @override
@@ -204,5 +258,19 @@ class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
       return Future.value(ApiSuccessResult(data: true));
     }
     return pendingSave.future;
+  }
+
+  @override
+  Future<ApiResult<void>> saveMemberDislikedIngredients({
+    required String memberId,
+    required List<String> ingredientCodes,
+  }) async {
+    savedIngredientCodes = ingredientCodes;
+    if (failDislikedSave) {
+      return ApiErrorResult<void>(
+        failure: Failure(errorMessage: 'Preference save failed'),
+      );
+    }
+    return ApiSuccessResult<void>(data: null);
   }
 }

@@ -3,7 +3,9 @@ sealed class FamilyPlanEvent {
 }
 
 class GetFamilySubscriptionCurrentEvent extends FamilyPlanEvent {
-  const GetFamilySubscriptionCurrentEvent();
+  const GetFamilySubscriptionCurrentEvent({this.memberId});
+
+  final String? memberId;
 }
 
 class GetFamilyProgramsEvent extends FamilyPlanEvent {
