@@ -61,10 +61,9 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             previous.isPaymentFailed != current.isPaymentFailed,
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.home,
-              (route) => false,
-            );
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
             Navigator.of(context).pushNamed(AppRoutes.profileBilling);
             return;
           }

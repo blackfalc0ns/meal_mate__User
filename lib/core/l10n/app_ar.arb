@@ -2141,11 +2141,201 @@
   "influencer_telegram_subtitle": "أضف حسابك على تيليجرام",
   "influencer_youtube_subtitle": "أضف قناتك على يوتيوب",
   "influencer_snapchat_subtitle": "أضف حسابك على سناب شات",
+  "family_error_use_checkout_flow": "أضف أفراد العائلة من خلال خطوات الاشتراك والدفع.",
+  "family_error_manager_permissions_immutable": "لا يمكن تغيير صلاحيات مدير العائلة.",
+  "family_error_member_paused": "هذا الفرد موقوف حالياً.",
+  "family_error_permission_denied": "هذا الفرد لا يملك صلاحية تعديل الوجبات.",
+  "family_error_renewal_not_available": "لا يمكن تجديد هذا الاشتراك حالياً.",
+  "family_error_subscription_not_found": "لم يتم العثور على اشتراك الفرد المطلوب.",
+  "family_error_customer_only": "هذا الإجراء متاح للعملاء فقط.",
+  "family_member_no_plan": "من غير خطة",
+  "family_member_paused_label": "موقوف",
+  "family_member_active_label": "نشط",
+  "family_member_days_remaining": "متبقي {count} أيام",
+  "@family_member_days_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_age_years": "{count} سنة",
+  "@family_member_age_years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_details_title": "تفاصيل {name}",
+  "@family_member_details_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_manager_label": "مدير العائلة",
+  "family_member_member_label": "فرد في العائلة",
+  "family_member_program_title": "البرنامج الغذائي",
+  "family_member_change_program": "تغيير البرنامج",
+  "family_member_package_title": "الاشتراك",
+  "family_member_subscription_dates": "{start} – {end}",
+  "@family_member_subscription_dates": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_renew_subscription": "تجديد الاشتراك",
+  "family_member_today_nutrition": "تغذية اليوم",
+  "family_member_calories_value": "{count} سعرة",
+  "@family_member_calories_value": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_show_calendar": "عرض التقويم",
+  "family_member_access_phone_label": "رقم الموبايل",
+  "family_member_access_pause_label": "إيقاف الفرد",
+  "family_member_access_remove_label": "حذف الفرد",
+  "family_member_access_generated_password_title": "كلمة مرور لمرة واحدة",
+  "family_member_access_generated_password_message": "شارك كلمة المرور الآن، لن يتم عرضها مرة أخرى.",
+  "family_member_access_existing_login": "رقم الموبايل لديه حساب MealMate بالفعل، ويمكن للفرد الدخول بكلمة المرور الحالية.",
+  "family_member_access_copy": "نسخ",
+  "family_member_shortcut_daily_meals": "الوجبات اليومية",
+  "family_member_shortcut_daily_meals_subtitle": "عرض الوجبات والخطط",
+  "family_member_shortcut_permissions": "الصلاحيات",
+  "family_member_shortcut_permissions_subtitle": "عرض وإدارة الصلاحيات",
+  "family_member_calendar_title": "تقويم {name}",
+  "@family_member_calendar_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_no_active_subscription": "هذا الفرد ليس لديه اشتراك نشط حالياً.",
+  "family_member_no_meals_selected": "لا توجد وجبات مختارة لهذا اليوم.",
+  "family_member_selected_meals_count": "{count} وجبات مختارة",
+  "@family_member_selected_meals_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_day_details_button": "عرض تفاصيل اليوم",
+  "family_member_choose_meals_button": "اختيار الوجبات",
+  "family_member_selected_meals_title": "الوجبات المختارة",
+  "family_member_selected_meals_subtitle": "الوجبات المختارة لـ{name} يوم {date}",
+  "@family_member_selected_meals_subtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_meal_chosen": "تم الاختيار",
+  "family_member_choose_meal": "اختار وجبة",
+  "family_day_screen_title": "تفاصيل يوم",
+  "family_day_current_restaurant_subtitle": "المطعم الحالي",
+  "family_day_review_meals_button": "مراجعة وجبات اليوم",
+  "family_day_all_meals_selected": "تم اختيار جميع الوجبات",
+  "family_day_default_restaurant_name": "مطعم جرين شيف",
+  "influencer_header_greeting": "مرحباً ، محمد",
+  "influencer_whatsapp": "واتساب",
+  "influencer_telegram": "تيليجرام",
+  "influencer_youtube": "يوتيوب",
+  "influencer_tiktok_subtitle": "أضف حسابك على تيك توك",
+  "influencer_instagram_subtitle": "أضف حسابك على إنستغرام",
+  "influencer_whatsapp_subtitle": "أضف رقم واتساب للأعمال",
+  "influencer_telegram_subtitle": "أضف حسابك على تيليجرام",
+  "influencer_youtube_subtitle": "أضف قناتك على يوتيوب",
+  "influencer_snapchat_subtitle": "أضف حسابك على سناب شات",
   "influencer_social_add": "إضافة",
   "influencer_social_edit": "تعديل",
   "influencer_privacy_title": "نحافظ على خصوصية بياناتك",
   "influencer_privacy_body": "نستخدم بياناتك فقط لتحسين فرص الشراكة والتواصل مع العلامات التجارية.",
   "influencer_enter_account": "أدخل الحساب أو الرابط",
   "influencer_confirm": "تأكيد",
-  "influencer_cancel": "إلغاء"
+  "influencer_cancel": "إلغاء",
+  "currency_kwd": "د.ك",
+  "offer_browse_title": "العروض المتاحة",
+  "offer_browse_empty": "لا توجد عروض متوفرة حالياً",
+  "offer_browse_tab_all": "الكل",
+  "offer_browse_tab_offers": "عروض خاصة",
+  "offer_browse_tab_restaurants": "مطاعم",
+  "offer_browse_tab_subscriptions": "اشتراكات",
+  "offer_browse_remaining_spots": "مقاعد متبقية",
+  "offer_browse_action_button": "استفد من العرض",
+  "offer_hub_view_all": "عرض الكل",
+  "offer_hub_share_message": "تم نسخ رابط المشاركة!",
+  "offer_deal_best_seller": "الأكثر طلباً",
+  "offer_deal_action_button": "اطلب الآن",
+  "offer_deal_free_delivery": "توصيل مجاني",
+  "offer_details_code_label": "كود الخصم",
+  "offer_details_copy_code": "تم نسخ الكود بنجاح",
+  "offer_countdown_prefix": "ينتهي العرض خلال",
+  "offer_countdown_expired": "انتهى هذا العرض",
+  "offer_status_expired": "العرض منتهي الصلاحية",
+  "offer_status_sold_out": "نفدت المقاعد",
+  "offer_promo_title": "إدخال كود الخصم",
+  "offer_promo_headline": "لديك كود خصم أو كوبون؟",
+  "offer_promo_subtitle": "أدخل كود الخصم للاستفادة من أفضل العروض الحصرية على اشتراكاتك",
+  "offer_promo_hint": "أدخل الكود هنا (مثال: SAVE20)",
+  "offer_promo_paste_tooltip": "لصق من الحافظة",
+  "offer_promo_apply_button": "تطبيق الكود",
+  "offer_promo_empty_error": "يرجى كتابة كود الخصم أولاً",
+  "offer_promo_invalid_error": "كود الخصم غير صالح أو منتهي الصلاحية",
+  "offer_promo_available_codes_title": "أكواد مقترحة لك",
+  "offer_promo_apply_code": "تطبيق",
+  "offer_promo_save20_title": "خصم 20% على جميع الباقات الشهرية",
+  "offer_promo_fit10_title": "خصم 10% على برامج اللياقة",
+  "offer_promo_welcome_title": "خصم 15% للمشتركين الجدد",
+  "offer_redeem_title": "تطبيق العرض واختيار الباقة",
+  "offer_redeem_select_package_title": "اختر مدة الباقة المناسبة لك",
+  "offer_package_month_title": "باقة شهر كامل (26 يوم)",
+  "offer_package_half_month_title": "باقة نصف شهر (13 يوم)",
+  "offer_package_week_title": "باقة أسبوعية (6 أيام)",
+  "offer_redeem_min_days_notice": "يتطلب هذا العرض اشتراكاً بحد أدنى {days} يوم",
+  "@offer_redeem_min_days_notice": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "offer_redeem_total_after_discount": "الإجمالي بعد الخصم",
+  "offer_redeem_proceed_button": "المتابعة لتأكيد الاشتراك",
+  "offer_redeem_safe_payment_notice": "عملية دفع آمنة ومشفرة 100%",
+  "offer_checkout_title": "تأكيد الاشتراك بالعرض",
+  "offer_checkout_applied_title": "تم تطبيق العرض بنجاح!",
+  "offer_checkout_applied_code": "الكود المعتمد",
+  "offer_checkout_applied_description": "تم تفعيل أفضل خصم متاح على باقتك المختارة",
+  "offer_checkout_order_summary_title": "ملخص الاشتراك",
+  "offer_checkout_package_label": "الباقة المختارة",
+  "offer_checkout_meals_per_day": "عدد الوجبات يومياً",
+  "offer_checkout_original_price": "السعر الأصلي",
+  "offer_checkout_discount_amount": "قيمة الخصم",
+  "offer_checkout_final_total": "المبلغ الإجمالي للدفع",
+  "offer_checkout_secure_badge": "عملية الدفع محمية ومضمونة عبر بوابة الدفع الآمنة",
+  "offer_checkout_proceed_button": "تأكيد ودفع الآن",
+  "offer_checkout_change_package_button": "تغيير الباقة أو العرض",
+  "offer_activation_success_title": "تم تفعيل الاشتراك بنجاح",
+  "offer_activation_congrats": "مبروك! تم تفعيل عرضك بنجاح",
+  "offer_activation_subtitle": "أصبحت باقتك جاهزة للاستخدام. يمكنك الآن بدء تحديد وجباتك وجدولها",
+  "offer_activation_order_title": "تفاصيل الاشتراك المفعل",
+  "offer_activation_paid_total": "المبلغ المدفوع",
+  "offer_activation_choose_plan_button": "جدولة واختيار الوجبات",
+  "meals_count": "وجبات"
 }

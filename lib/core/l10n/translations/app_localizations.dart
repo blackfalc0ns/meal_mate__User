@@ -10393,6 +10393,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello, Mohammed'**
   String get influencer_header_greeting;
+
+  /// No description provided for @currency_kwd.
+  ///
+  /// In en, this message translates to:
+  /// **'KWD'**
+  String get currency_kwd;
+
+  /// No description provided for @offer_browse_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Offers'**
+  String get offer_browse_title;
+
+  /// No description provided for @offer_browse_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers available right now'**
+  String get offer_browse_empty;
+
+  /// No description provided for @offer_browse_tab_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get offer_browse_tab_all;
+
+  /// No description provided for @offer_browse_tab_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Offers'**
+  String get offer_browse_tab_offers;
+
+  /// No description provided for @offer_browse_tab_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants'**
+  String get offer_browse_tab_restaurants;
+
+  /// No description provided for @offer_browse_tab_subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get offer_browse_tab_subscriptions;
+
+  /// No description provided for @offer_browse_remaining_spots.
+  ///
+  /// In en, this message translates to:
+  /// **'spots remaining'**
+  String get offer_browse_remaining_spots;
+
+  /// No description provided for @offer_browse_action_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim Offer'**
+  String get offer_browse_action_button;
+
+  /// No description provided for @offer_hub_view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get offer_hub_view_all;
+
+  /// No description provided for @offer_hub_share_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Share link copied!'**
+  String get offer_hub_share_message;
+
+  /// No description provided for @offer_deal_best_seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Seller'**
+  String get offer_deal_best_seller;
+
+  /// No description provided for @offer_deal_action_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Now'**
+  String get offer_deal_action_button;
+
+  /// No description provided for @offer_deal_free_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Delivery'**
+  String get offer_deal_free_delivery;
+
+  /// No description provided for @offer_details_code_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Promo Code'**
+  String get offer_details_code_label;
+
+  /// No description provided for @offer_details_copy_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied successfully'**
+  String get offer_details_copy_code;
+
+  /// No description provided for @offer_countdown_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer ends in'**
+  String get offer_countdown_prefix;
+
+  /// No description provided for @offer_countdown_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer has expired'**
+  String get offer_countdown_expired;
+
+  /// No description provided for @offer_status_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Expired'**
+  String get offer_status_expired;
+
+  /// No description provided for @offer_status_sold_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold Out'**
+  String get offer_status_sold_out;
+
+  /// No description provided for @offer_promo_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Promo Code'**
+  String get offer_promo_title;
+
+  /// No description provided for @offer_promo_headline.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a promo code or coupon?'**
+  String get offer_promo_headline;
+
+  /// No description provided for @offer_promo_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the promo code to get the best exclusive offers on your subscriptions'**
+  String get offer_promo_subtitle;
+
+  /// No description provided for @offer_promo_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code here (e.g. SAVE20)'**
+  String get offer_promo_hint;
+
+  /// No description provided for @offer_promo_paste_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste from clipboard'**
+  String get offer_promo_paste_tooltip;
+
+  /// No description provided for @offer_promo_apply_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Code'**
+  String get offer_promo_apply_button;
+
+  /// No description provided for @offer_promo_empty_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a promo code first'**
+  String get offer_promo_empty_error;
+
+  /// No description provided for @offer_promo_invalid_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid or expired promo code'**
+  String get offer_promo_invalid_error;
+
+  /// No description provided for @offer_promo_available_codes_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Promo Codes'**
+  String get offer_promo_available_codes_title;
+
+  /// No description provided for @offer_promo_apply_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get offer_promo_apply_code;
+
+  /// No description provided for @offer_promo_save20_title.
+  ///
+  /// In en, this message translates to:
+  /// **'20% off all monthly packages'**
+  String get offer_promo_save20_title;
+
+  /// No description provided for @offer_promo_fit10_title.
+  ///
+  /// In en, this message translates to:
+  /// **'10% off fitness programs'**
+  String get offer_promo_fit10_title;
+
+  /// No description provided for @offer_promo_welcome_title.
+  ///
+  /// In en, this message translates to:
+  /// **'15% off for new subscribers'**
+  String get offer_promo_welcome_title;
+
+  /// No description provided for @offer_redeem_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Offer & Select Package'**
+  String get offer_redeem_title;
+
+  /// No description provided for @offer_redeem_select_package_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Your Package Duration'**
+  String get offer_redeem_select_package_title;
+
+  /// No description provided for @offer_package_month_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Month Package (26 Days)'**
+  String get offer_package_month_title;
+
+  /// No description provided for @offer_package_half_month_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Half Month Package (13 Days)'**
+  String get offer_package_half_month_title;
+
+  /// No description provided for @offer_package_week_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Package (6 Days)'**
+  String get offer_package_week_title;
+
+  /// No description provided for @offer_redeem_min_days_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer requires a minimum of {days} days'**
+  String offer_redeem_min_days_notice(String days);
+
+  /// No description provided for @offer_redeem_total_after_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total After Discount'**
+  String get offer_redeem_total_after_discount;
+
+  /// No description provided for @offer_redeem_proceed_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed to Confirmation'**
+  String get offer_redeem_proceed_button;
+
+  /// No description provided for @offer_redeem_safe_payment_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Secure & Encrypted Payment'**
+  String get offer_redeem_safe_payment_notice;
+
+  /// No description provided for @offer_checkout_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Checkout Confirmation'**
+  String get offer_checkout_title;
+
+  /// No description provided for @offer_checkout_applied_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Applied Successfully!'**
+  String get offer_checkout_applied_title;
+
+  /// No description provided for @offer_checkout_applied_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied Code'**
+  String get offer_checkout_applied_code;
+
+  /// No description provided for @offer_checkout_applied_description.
+  ///
+  /// In en, this message translates to:
+  /// **'The best available discount has been applied to your selected package'**
+  String get offer_checkout_applied_description;
+
+  /// No description provided for @offer_checkout_order_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Summary'**
+  String get offer_checkout_order_summary_title;
+
+  /// No description provided for @offer_checkout_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Package'**
+  String get offer_checkout_package_label;
+
+  /// No description provided for @offer_checkout_meals_per_day.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Per Day'**
+  String get offer_checkout_meals_per_day;
+
+  /// No description provided for @offer_checkout_original_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Original Price'**
+  String get offer_checkout_original_price;
+
+  /// No description provided for @offer_checkout_discount_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount Amount'**
+  String get offer_checkout_discount_amount;
+
+  /// No description provided for @offer_checkout_final_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Payment'**
+  String get offer_checkout_final_total;
+
+  /// No description provided for @offer_checkout_secure_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is secure and protected via safe gateway'**
+  String get offer_checkout_secure_badge;
+
+  /// No description provided for @offer_checkout_proceed_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Pay Now'**
+  String get offer_checkout_proceed_button;
+
+  /// No description provided for @offer_checkout_change_package_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Package or Offer'**
+  String get offer_checkout_change_package_button;
+
+  /// No description provided for @offer_activation_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Activated'**
+  String get offer_activation_success_title;
+
+  /// No description provided for @offer_activation_congrats.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! Your offer is active'**
+  String get offer_activation_congrats;
+
+  /// No description provided for @offer_activation_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your package is ready to use. You can now select and schedule your meals'**
+  String get offer_activation_subtitle;
+
+  /// No description provided for @offer_activation_order_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Activated Subscription Details'**
+  String get offer_activation_order_title;
+
+  /// No description provided for @offer_activation_paid_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Paid'**
+  String get offer_activation_paid_total;
+
+  /// No description provided for @offer_activation_choose_plan_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule & Choose Meals'**
+  String get offer_activation_choose_plan_button;
+
+  /// No description provided for @meals_count.
+  ///
+  /// In en, this message translates to:
+  /// **'meals'**
+  String get meals_count;
 }
 
 class _AppLocalizationsDelegate

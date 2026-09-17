@@ -5497,4 +5497,197 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get influencer_header_greeting => 'مرحباً ، محمد';
+
+  @override
+  String get currency_kwd => 'د.ك';
+
+  @override
+  String get offer_browse_title => 'العروض المتاحة';
+
+  @override
+  String get offer_browse_empty => 'لا توجد عروض متوفرة حالياً';
+
+  @override
+  String get offer_browse_tab_all => 'الكل';
+
+  @override
+  String get offer_browse_tab_offers => 'عروض خاصة';
+
+  @override
+  String get offer_browse_tab_restaurants => 'مطاعم';
+
+  @override
+  String get offer_browse_tab_subscriptions => 'اشتراكات';
+
+  @override
+  String get offer_browse_remaining_spots => 'مقاعد متبقية';
+
+  @override
+  String get offer_browse_action_button => 'استفد من العرض';
+
+  @override
+  String get offer_hub_view_all => 'عرض الكل';
+
+  @override
+  String get offer_hub_share_message => 'تم نسخ رابط المشاركة!';
+
+  @override
+  String get offer_deal_best_seller => 'الأكثر طلباً';
+
+  @override
+  String get offer_deal_action_button => 'اطلب الآن';
+
+  @override
+  String get offer_deal_free_delivery => 'توصيل مجاني';
+
+  @override
+  String get offer_details_code_label => 'كود الخصم';
+
+  @override
+  String get offer_details_copy_code => 'تم نسخ الكود بنجاح';
+
+  @override
+  String get offer_countdown_prefix => 'ينتهي العرض خلال';
+
+  @override
+  String get offer_countdown_expired => 'انتهى هذا العرض';
+
+  @override
+  String get offer_status_expired => 'العرض منتهي الصلاحية';
+
+  @override
+  String get offer_status_sold_out => 'نفدت المقاعد';
+
+  @override
+  String get offer_promo_title => 'إدخال كود الخصم';
+
+  @override
+  String get offer_promo_headline => 'لديك كود خصم أو كوبون؟';
+
+  @override
+  String get offer_promo_subtitle =>
+      'أدخل كود الخصم للاستفادة من أفضل العروض الحصرية على اشتراكاتك';
+
+  @override
+  String get offer_promo_hint => 'أدخل الكود هنا (مثال: SAVE20)';
+
+  @override
+  String get offer_promo_paste_tooltip => 'لصق من الحافظة';
+
+  @override
+  String get offer_promo_apply_button => 'تطبيق الكود';
+
+  @override
+  String get offer_promo_empty_error => 'يرجى كتابة كود الخصم أولاً';
+
+  @override
+  String get offer_promo_invalid_error =>
+      'كود الخصم غير صالح أو منتهي الصلاحية';
+
+  @override
+  String get offer_promo_available_codes_title => 'أكواد مقترحة لك';
+
+  @override
+  String get offer_promo_apply_code => 'تطبيق';
+
+  @override
+  String get offer_promo_save20_title => 'خصم 20% على جميع الباقات الشهرية';
+
+  @override
+  String get offer_promo_fit10_title => 'خصم 10% على برامج اللياقة';
+
+  @override
+  String get offer_promo_welcome_title => 'خصم 15% للمشتركين الجدد';
+
+  @override
+  String get offer_redeem_title => 'تطبيق العرض واختيار الباقة';
+
+  @override
+  String get offer_redeem_select_package_title => 'اختر مدة الباقة المناسبة لك';
+
+  @override
+  String get offer_package_month_title => 'باقة شهر كامل (26 يوم)';
+
+  @override
+  String get offer_package_half_month_title => 'باقة نصف شهر (13 يوم)';
+
+  @override
+  String get offer_package_week_title => 'باقة أسبوعية (6 أيام)';
+
+  @override
+  String offer_redeem_min_days_notice(String days) {
+    return 'يتطلب هذا العرض اشتراكاً بحد أدنى $days يوم';
+  }
+
+  @override
+  String get offer_redeem_total_after_discount => 'الإجمالي بعد الخصم';
+
+  @override
+  String get offer_redeem_proceed_button => 'المتابعة لتأكيد الاشتراك';
+
+  @override
+  String get offer_redeem_safe_payment_notice => 'عملية دفع آمنة ومشفرة 100%';
+
+  @override
+  String get offer_checkout_title => 'تأكيد الاشتراك بالعرض';
+
+  @override
+  String get offer_checkout_applied_title => 'تم تطبيق العرض بنجاح!';
+
+  @override
+  String get offer_checkout_applied_code => 'الكود المعتمد';
+
+  @override
+  String get offer_checkout_applied_description =>
+      'تم تفعيل أفضل خصم متاح على باقتك المختارة';
+
+  @override
+  String get offer_checkout_order_summary_title => 'ملخص الاشتراك';
+
+  @override
+  String get offer_checkout_package_label => 'الباقة المختارة';
+
+  @override
+  String get offer_checkout_meals_per_day => 'عدد الوجبات يومياً';
+
+  @override
+  String get offer_checkout_original_price => 'السعر الأصلي';
+
+  @override
+  String get offer_checkout_discount_amount => 'قيمة الخصم';
+
+  @override
+  String get offer_checkout_final_total => 'المبلغ الإجمالي للدفع';
+
+  @override
+  String get offer_checkout_secure_badge =>
+      'عملية الدفع محمية ومضمونة عبر بوابة الدفع الآمنة';
+
+  @override
+  String get offer_checkout_proceed_button => 'تأكيد ودفع الآن';
+
+  @override
+  String get offer_checkout_change_package_button => 'تغيير الباقة أو العرض';
+
+  @override
+  String get offer_activation_success_title => 'تم تفعيل الاشتراك بنجاح';
+
+  @override
+  String get offer_activation_congrats => 'مبروك! تم تفعيل عرضك بنجاح';
+
+  @override
+  String get offer_activation_subtitle =>
+      'أصبحت باقتك جاهزة للاستخدام. يمكنك الآن بدء تحديد وجباتك وجدولها';
+
+  @override
+  String get offer_activation_order_title => 'تفاصيل الاشتراك المفعل';
+
+  @override
+  String get offer_activation_paid_total => 'المبلغ المدفوع';
+
+  @override
+  String get offer_activation_choose_plan_button => 'جدولة واختيار الوجبات';
+
+  @override
+  String get meals_count => 'وجبات';
 }

@@ -3,18 +3,25 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 
 class OfferDealCard extends StatelessWidget {
   const OfferDealCard({super.key, required this.offer, this.onTap});
 
-  final OfferDealEntity offer;
+  final OfferEntity offer;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final lang = Localizations.localeOf(context).languageCode;
+
+    final discountText = offer.formattedDiscount().isNotEmpty
+        ? offer.formattedDiscount()
+        : (offer.discountRate != null && offer.discountRate! > 0
+              ? '${(offer.discountRate! * 100).toInt()}%'
+              : '');
 
     return Material(
       color: color.surface.withValues(alpha: 0),
@@ -36,55 +43,67 @@ class OfferDealCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
             child: Stack(
               children: [
-                PositionedDirectional(
-                  end: 0,
-                  top: 0,
-                  child: Container(
-                    height: Spacing.offersDealBadgeHeight,
-                    padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-                    decoration: BoxDecoration(
-                      color: offer.accentColor,
-                      borderRadius: const BorderRadiusDirectional.only(
-                        topEnd: Radius.circular(Spacing.offersDealCardRadius),
-                        bottomStart: Radius.circular(Spacing.sm),
+                if (discountText.isNotEmpty)
+                  PositionedDirectional(
+                    end: 0,
+                    top: 0,
+                    child: Container(
+                      height: Spacing.offersDealBadgeHeight,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      offer.discountLabel,
-                      textAlign: TextAlign.center,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
-                        color: color.onPrimary,
+                      decoration: BoxDecoration(
+                        color: color.primary,
+                        borderRadius: const BorderRadiusDirectional.only(
+                          topEnd: Radius.circular(Spacing.offersDealCardRadius),
+                          bottomStart: Radius.circular(Spacing.sm),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        discountText,
+                        textAlign: TextAlign.center,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size12,
+                          color: color.onPrimary,
+                        ),
                       ),
                     ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsetsDirectional.only(
                     top: Spacing.md,
                     start: Spacing.xs,
-                    //  end: Spacing.xs,
-                    // bottom: Spacing.offersDealFooterHeight,
+                    end: Spacing.xs,
                   ),
                   child: Column(
                     children: [
                       SizedBox(
                         height: Spacing.offersDealImageHeight,
                         child: Center(
-                          child: Hero(
-                            tag: offer,
-                            child: Image.asset(
-                              offer.imageAsset,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+                          child:
+                              offer.bannerImageUrl != null &&
+                                  offer.bannerImageUrl!.isNotEmpty
+                              ? Image.network(
+                                  offer.bannerImageUrl!,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (_, _, _) => Icon(
+                                    Icons.local_offer_rounded,
+                                    size: 36,
+                                    color: color.primary,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.local_offer_rounded,
+                                  size: 36,
+                                  color: color.primary,
+                                ),
                         ),
                       ),
-
+                      const SizedBox(height: Spacing.xs),
                       Text(
-                        offer.title,
+                        offer.title(lang),
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -96,7 +115,7 @@ class OfferDealCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs),
                       Text(
-                        offer.subtitle,
+                        offer.description(lang),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -106,7 +125,6 @@ class OfferDealCard extends StatelessWidget {
                           color: color.onSurfaceVariant,
                         ).copyWith(height: 1.20),
                       ),
-                      SizedBox(height: Spacing.xs),
                     ],
                   ),
                 ),
@@ -116,7 +134,7 @@ class OfferDealCard extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     height: Spacing.offersDealFooterHeight,
-                    color: offer.footerColor,
+                    color: color.primary,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -127,29 +145,16 @@ class OfferDealCard extends StatelessWidget {
                           semanticLabel: locale.nav_offers,
                         ),
                         const SizedBox(width: Spacing.xs),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              offer.deliveryPrefixLabel ?? '',
-
-                              style: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.onPrimary,
-                              ),
-                            ),
-                            Text(
-                              offer.deliveryLabel,
-                              textAlign: TextAlign.end,
-                              style: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size11,
-                                color: color.onPrimary,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          offer.promoCode != null && offer.promoCode!.isNotEmpty
+                              ? offer.promoCode!
+                              : locale.offer_deal_free_delivery,
+                          textAlign: TextAlign.center,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onPrimary,
+                          ),
                         ),
                       ],
                     ),

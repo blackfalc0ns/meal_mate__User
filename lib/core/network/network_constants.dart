@@ -203,4 +203,16 @@ abstract class EndPoints {
       '/api/v1/influencer-partner/me/withdrawals/{id}/cancel';
   static const String influencerAnalytics =
       '/api/v1/influencer-partner/me/analytics';
+  static const String customerOffersAvailable =
+      '/api/v1/customer/offers/available';
+  static const String customerOfferDetails =
+      '/api/v1/customer/offers/{id}';
+  static const String customerOffersEvaluate =
+      '/api/v1/customer/offers/evaluate';
+  static const String customerOffersRedeem =
+      '/api/v1/customer/offers/redeem';
+  static const String customerCampaignPricePreview =
+      '/api/v1/customer/campaigns/price-preview';
+  static const String customerCampaignCheckoutSession =
+      '/api/v1/customer/campaigns/checkout-session';
 }

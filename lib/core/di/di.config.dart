@@ -358,6 +358,24 @@ import '../../features/notifications/domain/usecase/register_device_token_usecas
     as _i350;
 import '../../features/notifications/domain/usecase/unregister_device_token_usecase.dart'
     as _i546;
+import '../../features/offer_details/presentation/manager/offer_details_view_model.dart'
+    as _i736;
+import '../../features/offers/data/data_source/offers_remote_data_source.dart'
+    as _i470;
+import '../../features/offers/data/data_source/offers_remote_data_source_impl.dart'
+    as _i642;
+import '../../features/offers/data/repo/offers_repository_impl.dart' as _i59;
+import '../../features/offers/domain/repo/offers_repository.dart' as _i1067;
+import '../../features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart'
+    as _i885;
+import '../../features/offers/domain/usecase/evaluate_offer_usecase.dart'
+    as _i70;
+import '../../features/offers/domain/usecase/get_available_offers_usecase.dart'
+    as _i908;
+import '../../features/offers/domain/usecase/get_customer_offer_details_usecase.dart'
+    as _i285;
+import '../../features/offers/presentation/manager/offers_view_model.dart'
+    as _i912;
 import '../../features/payment/data/data_source/payment_remote_data_source.dart'
     as _i957;
 import '../../features/payment/data/data_source/payment_remote_data_source_impl.dart'
@@ -875,6 +893,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i223.FamilyAllergiesRepository>(),
       ),
     );
+    gh.factory<_i470.OffersRemoteDataSource>(
+      () => _i642.OffersRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i998.ProfileRemoteDataSource>(
       () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -994,6 +1015,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i926.GetSubscriptionSummaryUseCase>(
       () => _i926.GetSubscriptionSummaryUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
+      ),
+    );
+    gh.factory<_i1067.OffersRepository>(
+      () => _i59.OffersRepositoryImpl(
+        gh<_i470.OffersRemoteDataSource>(),
+        gh<_i227.TokenService>(),
       ),
     );
     gh.factory<_i895.CheckoutSubscriptionUseCase>(
@@ -1355,12 +1382,31 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i62.MealDetailsRepository>(),
       ),
     );
+    gh.factory<_i885.CreateCampaignCheckoutSessionUseCase>(
+      () => _i885.CreateCampaignCheckoutSessionUseCase(
+        gh<_i1067.OffersRepository>(),
+      ),
+    );
+    gh.factory<_i70.EvaluateOfferUseCase>(
+      () => _i70.EvaluateOfferUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i908.GetAvailableOffersUseCase>(
+      () => _i908.GetAvailableOffersUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i285.GetCustomerOfferDetailsUseCase>(
+      () => _i285.GetCustomerOfferDetailsUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i527.SubscriptionPlanViewModel>(
       () => _i527.SubscriptionPlanViewModel(
         gh<_i809.GetSubscriptionDurationsUseCase>(),
         gh<_i766.GetSubscriptionTiersUseCase>(),
         gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
         gh<_i462.GetSubscriptionReadinessUseCase>(),
+      ),
+    );
+    gh.factory<_i736.OfferDetailsViewModel>(
+      () => _i736.OfferDetailsViewModel(
+        gh<_i285.GetCustomerOfferDetailsUseCase>(),
       ),
     );
     gh.factory<_i275.GetSubscriptionDurationsUseCase>(
@@ -1541,6 +1587,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
+    );
+    gh.factory<_i912.OffersViewModel>(
+      () => _i912.OffersViewModel(gh<_i908.GetAvailableOffersUseCase>()),
     );
     gh.factory<_i528.RestaurantTierUpgradeViewModel>(
       () => _i528.RestaurantTierUpgradeViewModel(

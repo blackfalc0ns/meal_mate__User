@@ -2117,6 +2117,200 @@
       }
     }
   },
+  "family_meal_tab_all": "All",
+  "family_meal_tab_breakfast": "Breakfast",
+  "family_meal_tab_lunch": "Lunch",
+  "family_meal_tab_dinner": "Dinner",
+  "family_meal_status_selected": "Selected",
+  "family_meal_button_select": "Select Meal",
+  "family_meal_selected_counter": "{selected} of {total} meals selected",
+  "@family_meal_selected_counter": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "family_meal_continue_review": "Continue to Review",
+  "family_review_title": "Review {name}'s Meals",
+  "@family_review_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_review_subtitle": "Review today's choices before confirmation",
+  "family_review_status_ready": "Ready to confirm",
+  "family_review_selected_day_label": "Selected Day",
+  "family_review_goal_label": "Goal",
+  "family_review_goal_balanced": "Balanced",
+  "family_review_selected_meals_section": "Selected Meals",
+  "family_slot_breakfast": "Breakfast",
+  "family_slot_lunch": "Lunch",
+  "family_slot_dinner": "Dinner",
+  "family_slot_snack": "Snack",
+  "family_review_edit_button": "Edit",
+  "family_review_nutrition_summary_section": "Nutritional Summary",
+  "family_review_calories_progress": "{current} of {target} kcal",
+  "@family_review_calories_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "family_review_grams_progress": "{current} of {target}g",
+  "@family_review_grams_progress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "family_review_member_instructions_section": "Member Instructions",
+  "family_review_preferences_note": "Your preferences will be respected if any meal needs replacement",
+  "family_review_cutoff_title": "You can edit today's meals until cutoff time",
+  "family_review_cutoff_desc": "Once cutoff is reached, meals will be prepared and cannot be edited or canceled.",
+  "family_review_cutoff_time": "Time remaining: {time}",
+  "@family_review_cutoff_time": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "family_review_cutoff_disclaimer": "If remaining meals are not chosen, they will be assigned automatically based on preferences",
+  "family_review_edit_meals_button": "Edit Meals",
+  "family_review_confirm_meals_button": "Confirm {name}'s Meals",
+  "@family_review_confirm_meals_button": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_review_success_message": "Meals confirmed successfully",
+  "family_meal_item_1_title": "Herb-Grilled Chicken",
+  "family_meal_item_1_desc": "Herb-marinated grilled chicken with brown rice and mixed vegetables",
+  "family_meal_item_2_title": "Lemon-Grilled Salmon",
+  "family_meal_item_2_desc": "Grilled salmon with quinoa, roasted vegetables, and lemon sauce",
+  "family_meal_item_3_title": "Meat Kofta in Tomato Sauce",
+  "family_meal_item_3_desc": "Beef kofta in tomato sauce with mashed potatoes and broccoli",
+  "family_meal_item_4_title": "Balanced Vegan Bowl",
+  "family_meal_item_4_desc": "Plant-based bowl with chickpeas, quinoa, greens, and tahini sauce",
+  "family_meal_tag_gluten_free": "Gluten-Free",
+  "family_meal_tag_contains_nuts": "Contains Nuts",
+  "family_meal_tag_omega3": "Omega-3 Source",
+  "family_review_meal_1_name": "Oatmeal with Honey & Banana",
+  "family_review_meal_2_name": "Grilled Chicken with Brown Rice & Veggies",
+  "family_review_meal_3_name": "Lemon Salmon with Quinoa & Green Salad",
+  "family_review_meal_4_name": "Greek Yogurt with Berries & Honey",
+  "family_review_tag_no_nuts": "No Nuts",
+  "family_review_tag_brown_rice": "Prefers Brown Rice",
+  "family_review_tag_not_spicy": "No Spicy Food",
+  "subscription_upgrade_target_invalid": "The selected tier is not valid for upgrade.",
+  "upgrade_redirect_urls_required": "Payment redirect information is incomplete.",
+  "upgrade_customer_not_found": "Customer information is incomplete for payment.",
+  "subscription_upgrade_not_available": "The subscription is currently not available for upgrade.",
+  "subscription_upgrade_request_already_pending": "An upgrade request is already pending review.",
+  "subscription_not_found": "Subscription not found.",
+  "subscription_upgrade_default_error": "An error occurred while initiating the upgrade, please try again.",
+  "restaurant_tier_upgrade_success": "Tier upgraded successfully and the updated subscription is active immediately.",
+  "restaurant_tier_upgrade_confirm_title": "Confirm Tier Upgrade",
+  "restaurant_tier_upgrade_no_data": "No data available for upgrade request.",
+  "family_error_cannot_remove_manager": "The family manager cannot be removed.",
+  "family_error_member_not_found": "This family member could not be found.",
+  "family_error_not_manager": "Only the family manager can perform this action.",
+  "family_error_use_checkout_flow": "Add family members through the subscription checkout flow.",
+  "family_error_manager_permissions_immutable": "The family manager's permissions cannot be changed.",
+  "family_error_member_paused": "This family member is paused.",
+  "family_error_permission_denied": "This family member does not have permission to edit meals.",
+  "family_error_renewal_not_available": "This subscription cannot be renewed right now.",
+  "family_error_subscription_not_found": "The requested family subscription was not found.",
+  "family_error_customer_only": "This action is only available to customers.",
+  "family_member_no_plan": "No plan",
+  "family_member_paused_label": "Paused",
+  "family_member_active_label": "Active",
+  "family_member_days_remaining": "{count} days remaining",
+  "@family_member_days_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_age_years": "{count} years",
+  "@family_member_age_years": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_details_title": "Details for {name}",
+  "@family_member_details_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_manager_label": "Family manager",
+  "family_member_member_label": "Family member",
+  "family_member_program_title": "Nutrition program",
+  "family_member_change_program": "Change program",
+  "family_member_package_title": "Subscription",
+  "family_member_subscription_dates": "{start} – {end}",
+  "@family_member_subscription_dates": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_renew_subscription": "Renew subscription",
+  "family_member_today_nutrition": "Today's nutrition",
+  "family_member_calories_value": "{count} kcal",
+  "@family_member_calories_value": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "family_member_show_calendar": "Show calendar",
+  "family_member_access_phone_label": "Mobile number",
+  "family_member_access_pause_label": "Pause member",
+  "family_member_access_remove_label": "Remove member",
+  "family_member_access_generated_password_title": "One-time password",
+  "family_member_access_generated_password_message": "Share this password now. It will not be shown again.",
+  "family_member_access_existing_login": "This phone number already has a MealMate account. The member can use the existing password.",
+  "family_member_access_copy": "Copy",
+  "family_member_shortcut_daily_meals": "Daily Meals",
+  "family_member_shortcut_daily_meals_subtitle": "View meals and plans",
+  "family_member_shortcut_permissions": "Permissions",
+  "family_member_shortcut_permissions_subtitle": "View and manage permissions",
+  "family_member_calendar_title": "{name}'s Calendar",
+  "@family_member_calendar_title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "family_member_no_active_subscription": "This member currently has no active subscription.",
   "family_member_no_meals_selected": "No meals selected for this day.",
   "family_member_selected_meals_count": "{count} meals selected",
@@ -2148,5 +2342,74 @@
   "family_day_review_meals_button": "Review day meals",
   "family_day_all_meals_selected": "All meals selected",
   "family_day_default_restaurant_name": "Green Chef Restaurant",
-  "influencer_header_greeting": "Hello, Mohammed"
+  "influencer_header_greeting": "Hello, Mohammed",
+  "currency_kwd": "KWD",
+  "offer_browse_title": "Available Offers",
+  "offer_browse_empty": "No offers available right now",
+  "offer_browse_tab_all": "All",
+  "offer_browse_tab_offers": "Special Offers",
+  "offer_browse_tab_restaurants": "Restaurants",
+  "offer_browse_tab_subscriptions": "Subscriptions",
+  "offer_browse_remaining_spots": "spots remaining",
+  "offer_browse_action_button": "Claim Offer",
+  "offer_hub_view_all": "View All",
+  "offer_hub_share_message": "Share link copied!",
+  "offer_deal_best_seller": "Best Seller",
+  "offer_deal_action_button": "Order Now",
+  "offer_deal_free_delivery": "Free Delivery",
+  "offer_details_code_label": "Promo Code",
+  "offer_details_copy_code": "Code copied successfully",
+  "offer_countdown_prefix": "Offer ends in",
+  "offer_countdown_expired": "This offer has expired",
+  "offer_status_expired": "Offer Expired",
+  "offer_status_sold_out": "Sold Out",
+  "offer_promo_title": "Enter Promo Code",
+  "offer_promo_headline": "Have a promo code or coupon?",
+  "offer_promo_subtitle": "Enter the promo code to get the best exclusive offers on your subscriptions",
+  "offer_promo_hint": "Enter code here (e.g. SAVE20)",
+  "offer_promo_paste_tooltip": "Paste from clipboard",
+  "offer_promo_apply_button": "Apply Code",
+  "offer_promo_empty_error": "Please enter a promo code first",
+  "offer_promo_invalid_error": "Invalid or expired promo code",
+  "offer_promo_available_codes_title": "Suggested Promo Codes",
+  "offer_promo_apply_code": "Apply",
+  "offer_promo_save20_title": "20% off all monthly packages",
+  "offer_promo_fit10_title": "10% off fitness programs",
+  "offer_promo_welcome_title": "15% off for new subscribers",
+  "offer_redeem_title": "Apply Offer & Select Package",
+  "offer_redeem_select_package_title": "Select Your Package Duration",
+  "offer_package_month_title": "Full Month Package (26 Days)",
+  "offer_package_half_month_title": "Half Month Package (13 Days)",
+  "offer_package_week_title": "Weekly Package (6 Days)",
+  "offer_redeem_min_days_notice": "This offer requires a minimum of {days} days",
+  "@offer_redeem_min_days_notice": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "offer_redeem_total_after_discount": "Total After Discount",
+  "offer_redeem_proceed_button": "Proceed to Confirmation",
+  "offer_redeem_safe_payment_notice": "100% Secure & Encrypted Payment",
+  "offer_checkout_title": "Offer Checkout Confirmation",
+  "offer_checkout_applied_title": "Offer Applied Successfully!",
+  "offer_checkout_applied_code": "Applied Code",
+  "offer_checkout_applied_description": "The best available discount has been applied to your selected package",
+  "offer_checkout_order_summary_title": "Subscription Summary",
+  "offer_checkout_package_label": "Selected Package",
+  "offer_checkout_meals_per_day": "Meals Per Day",
+  "offer_checkout_original_price": "Original Price",
+  "offer_checkout_discount_amount": "Discount Amount",
+  "offer_checkout_final_total": "Total Payment",
+  "offer_checkout_secure_badge": "Payment is secure and protected via safe gateway",
+  "offer_checkout_proceed_button": "Confirm & Pay Now",
+  "offer_checkout_change_package_button": "Change Package or Offer",
+  "offer_activation_success_title": "Subscription Activated",
+  "offer_activation_congrats": "Congratulations! Your offer is active",
+  "offer_activation_subtitle": "Your package is ready to use. You can now select and schedule your meals",
+  "offer_activation_order_title": "Activated Subscription Details",
+  "offer_activation_paid_total": "Total Paid",
+  "offer_activation_choose_plan_button": "Schedule & Choose Meals",
+  "meals_count": "meals"
 }

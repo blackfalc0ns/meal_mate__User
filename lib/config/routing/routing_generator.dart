@@ -17,7 +17,15 @@ import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/i
 import 'package:meal_meat_user/features/influencer/wallet/presentation/screens/influencer_withdraw_screen.dart';
 import 'package:meal_meat_user/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
+import 'package:meal_meat_user/features/offers/presentation/screens/browse_offers_screen.dart';
+import 'package:meal_meat_user/features/offers/presentation/screens/promo_code_input_screen.dart';
+import 'package:meal_meat_user/features/offers/presentation/screens/redeem_package_screen.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/activation_success_args.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/promo_applied_checkout_screen.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/activation_success_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
@@ -357,9 +365,59 @@ class RouteGenerator {
         );
 
       case AppRoutes.offerDetails:
+        final offerId = settings.arguments is String
+            ? settings.arguments! as String
+            : '';
         return _buildRoute(
           settings: settings,
-          page: const OfferDetailsScreen(),
+          page: OfferDetailsScreen(offerId: offerId),
+        );
+      case AppRoutes.browseOffers:
+        return _buildRoute(
+          settings: settings,
+          page: const BrowseOffersScreen(),
+        );
+      case AppRoutes.promoCodeInput:
+        return _buildRoute(
+          settings: settings,
+          page: const PromoCodeInputScreen(),
+        );
+      case AppRoutes.redeemPackage:
+        final offer = settings.arguments is OfferEntity
+            ? settings.arguments! as OfferEntity
+            : const OfferEntity(
+                id: 'default-offer',
+                nameAr: 'عرض خاص',
+                nameEn: 'Special Offer',
+                descriptionAr: 'خصم مميز على باقات الوجبات',
+                descriptionEn: 'Special meal package discount',
+                discountRate: 0.20,
+              );
+        return _buildRoute(
+          settings: settings,
+          page: RedeemPackageScreen(offer: offer),
+        );
+      case AppRoutes.promoCheckout:
+        final args = settings.arguments is OfferCheckoutArgs
+            ? settings.arguments! as OfferCheckoutArgs
+            : null;
+        if (args == null) {
+          return _buildRoute(settings: settings, page: const OffersScreen());
+        }
+        return _buildRoute(
+          settings: settings,
+          page: PromoAppliedCheckoutScreen(args: args),
+        );
+      case AppRoutes.activationSuccess:
+        final args = settings.arguments is ActivationSuccessArgs
+            ? settings.arguments! as ActivationSuccessArgs
+            : null;
+        if (args == null) {
+          return _buildRoute(settings: settings, page: const OffersScreen());
+        }
+        return _buildRoute(
+          settings: settings,
+          page: ActivationSuccessScreen(args: args),
         );
       case AppRoutes.payment:
         final args = settings.arguments is PaymentArgs

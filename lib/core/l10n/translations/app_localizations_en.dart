@@ -5593,4 +5593,199 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get influencer_header_greeting => 'Hello, Mohammed';
+
+  @override
+  String get currency_kwd => 'KWD';
+
+  @override
+  String get offer_browse_title => 'Available Offers';
+
+  @override
+  String get offer_browse_empty => 'No offers available right now';
+
+  @override
+  String get offer_browse_tab_all => 'All';
+
+  @override
+  String get offer_browse_tab_offers => 'Special Offers';
+
+  @override
+  String get offer_browse_tab_restaurants => 'Restaurants';
+
+  @override
+  String get offer_browse_tab_subscriptions => 'Subscriptions';
+
+  @override
+  String get offer_browse_remaining_spots => 'spots remaining';
+
+  @override
+  String get offer_browse_action_button => 'Claim Offer';
+
+  @override
+  String get offer_hub_view_all => 'View All';
+
+  @override
+  String get offer_hub_share_message => 'Share link copied!';
+
+  @override
+  String get offer_deal_best_seller => 'Best Seller';
+
+  @override
+  String get offer_deal_action_button => 'Order Now';
+
+  @override
+  String get offer_deal_free_delivery => 'Free Delivery';
+
+  @override
+  String get offer_details_code_label => 'Promo Code';
+
+  @override
+  String get offer_details_copy_code => 'Code copied successfully';
+
+  @override
+  String get offer_countdown_prefix => 'Offer ends in';
+
+  @override
+  String get offer_countdown_expired => 'This offer has expired';
+
+  @override
+  String get offer_status_expired => 'Offer Expired';
+
+  @override
+  String get offer_status_sold_out => 'Sold Out';
+
+  @override
+  String get offer_promo_title => 'Enter Promo Code';
+
+  @override
+  String get offer_promo_headline => 'Have a promo code or coupon?';
+
+  @override
+  String get offer_promo_subtitle =>
+      'Enter the promo code to get the best exclusive offers on your subscriptions';
+
+  @override
+  String get offer_promo_hint => 'Enter code here (e.g. SAVE20)';
+
+  @override
+  String get offer_promo_paste_tooltip => 'Paste from clipboard';
+
+  @override
+  String get offer_promo_apply_button => 'Apply Code';
+
+  @override
+  String get offer_promo_empty_error => 'Please enter a promo code first';
+
+  @override
+  String get offer_promo_invalid_error => 'Invalid or expired promo code';
+
+  @override
+  String get offer_promo_available_codes_title => 'Suggested Promo Codes';
+
+  @override
+  String get offer_promo_apply_code => 'Apply';
+
+  @override
+  String get offer_promo_save20_title => '20% off all monthly packages';
+
+  @override
+  String get offer_promo_fit10_title => '10% off fitness programs';
+
+  @override
+  String get offer_promo_welcome_title => '15% off for new subscribers';
+
+  @override
+  String get offer_redeem_title => 'Apply Offer & Select Package';
+
+  @override
+  String get offer_redeem_select_package_title =>
+      'Select Your Package Duration';
+
+  @override
+  String get offer_package_month_title => 'Full Month Package (26 Days)';
+
+  @override
+  String get offer_package_half_month_title => 'Half Month Package (13 Days)';
+
+  @override
+  String get offer_package_week_title => 'Weekly Package (6 Days)';
+
+  @override
+  String offer_redeem_min_days_notice(String days) {
+    return 'This offer requires a minimum of $days days';
+  }
+
+  @override
+  String get offer_redeem_total_after_discount => 'Total After Discount';
+
+  @override
+  String get offer_redeem_proceed_button => 'Proceed to Confirmation';
+
+  @override
+  String get offer_redeem_safe_payment_notice =>
+      '100% Secure & Encrypted Payment';
+
+  @override
+  String get offer_checkout_title => 'Offer Checkout Confirmation';
+
+  @override
+  String get offer_checkout_applied_title => 'Offer Applied Successfully!';
+
+  @override
+  String get offer_checkout_applied_code => 'Applied Code';
+
+  @override
+  String get offer_checkout_applied_description =>
+      'The best available discount has been applied to your selected package';
+
+  @override
+  String get offer_checkout_order_summary_title => 'Subscription Summary';
+
+  @override
+  String get offer_checkout_package_label => 'Selected Package';
+
+  @override
+  String get offer_checkout_meals_per_day => 'Meals Per Day';
+
+  @override
+  String get offer_checkout_original_price => 'Original Price';
+
+  @override
+  String get offer_checkout_discount_amount => 'Discount Amount';
+
+  @override
+  String get offer_checkout_final_total => 'Total Payment';
+
+  @override
+  String get offer_checkout_secure_badge =>
+      'Payment is secure and protected via safe gateway';
+
+  @override
+  String get offer_checkout_proceed_button => 'Confirm & Pay Now';
+
+  @override
+  String get offer_checkout_change_package_button => 'Change Package or Offer';
+
+  @override
+  String get offer_activation_success_title => 'Subscription Activated';
+
+  @override
+  String get offer_activation_congrats =>
+      'Congratulations! Your offer is active';
+
+  @override
+  String get offer_activation_subtitle =>
+      'Your package is ready to use. You can now select and schedule your meals';
+
+  @override
+  String get offer_activation_order_title => 'Activated Subscription Details';
+
+  @override
+  String get offer_activation_paid_total => 'Total Paid';
+
+  @override
+  String get offer_activation_choose_plan_button => 'Schedule & Choose Meals';
+
+  @override
+  String get meals_count => 'meals';
 }

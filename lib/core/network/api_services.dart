@@ -91,6 +91,12 @@ import 'package:meal_meat_user/features/influencer/bank_account/data/models/infl
 import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_dashboard_dto.dart';
 import 'package:meal_meat_user/features/influencer/social_links/data/models/influencer_social_links_dto.dart';
 import 'package:meal_meat_user/features/influencer/wallet/data/models/influencer_wallet_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -757,5 +763,25 @@ abstract class ApiServices {
   @GET(EndPoints.influencerAnalytics)
   Future<InfluencerAnalyticsResponseDto> getInfluencerAnalytics(
     @Query('period') String period,
+  );
+
+  @POST(EndPoints.customerOffersAvailable)
+  Future<List<OfferResponseDto>> getCustomerAvailableOffers(
+    @Body() GetCustomerAvailableOffersRequestDto request,
+  );
+
+  @GET(EndPoints.customerOfferDetails)
+  Future<OfferResponseDto> getCustomerOfferDetails(
+    @Path('id') String id,
+  );
+
+  @POST(EndPoints.customerOffersEvaluate)
+  Future<EvaluateOfferDiscountResponseDto> evaluateOfferDiscount(
+    @Body() EvaluateOfferDiscountRequestDto request,
+  );
+
+  @POST(EndPoints.customerCampaignCheckoutSession)
+  Future<CampaignCheckoutSessionResponseDto> createCampaignCheckoutSession(
+    @Body() CreateCampaignCheckoutSessionRequestDto request,
   );
 }
