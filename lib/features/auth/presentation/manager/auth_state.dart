@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
@@ -23,6 +27,7 @@ class AuthState {
     this.resendPasswordOtp = const ResendPasswordOtpState(),
     this.refreshToken = const RefreshTokenState(),
     this.logout = const LogoutState(),
+    this.biometric = const BiometricAuthState(),
   });
 
   final LoginState login;
@@ -36,6 +41,7 @@ class AuthState {
   final ResendPasswordOtpState resendPasswordOtp;
   final RefreshTokenState refreshToken;
   final LogoutState logout;
+  final BiometricAuthState biometric;
 
   AuthState copyWith({
     LoginState? login,
@@ -49,6 +55,7 @@ class AuthState {
     ResendPasswordOtpState? resendPasswordOtp,
     RefreshTokenState? refreshToken,
     LogoutState? logout,
+    BiometricAuthState? biometric,
   }) {
     return AuthState(
       login: login ?? this.login,
@@ -62,6 +69,7 @@ class AuthState {
       resendPasswordOtp: resendPasswordOtp ?? this.resendPasswordOtp,
       refreshToken: refreshToken ?? this.refreshToken,
       logout: logout ?? this.logout,
+      biometric: biometric ?? this.biometric,
     );
   }
 }
@@ -393,6 +401,74 @@ class LogoutState {
       data: data ?? this.data,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       failure: clearError ? null : failure ?? this.failure,
+    );
+  }
+}
+
+class BiometricAuthState {
+  const BiometricAuthState({
+    this.isSupported = false,
+    this.isEnabled = false,
+    this.canOfferBiometric = false,
+    this.biometricType = BiometricTypeEnum.none,
+    this.isLoading = false,
+    this.isSuccess = false,
+    this.errorMessage,
+    this.authStatus,
+    this.savedCredentials,
+  });
+
+  final bool isSupported;
+  final bool isEnabled;
+  final bool canOfferBiometric;
+  final BiometricTypeEnum biometricType;
+  final bool isLoading;
+  final bool isSuccess;
+  final String? errorMessage;
+  final BiometricAuthStatus? authStatus;
+  final BiometricCredentials? savedCredentials;
+
+  IconData get biometricIcon => switch (biometricType) {
+        BiometricTypeEnum.face => Icons.face_rounded,
+        BiometricTypeEnum.fingerprint => Icons.fingerprint_rounded,
+        _ => Icons.fingerprint_rounded,
+      };
+
+  String getBiometricButtonText(AppLocalizations l10n) =>
+      switch (biometricType) {
+        BiometricTypeEnum.face =>
+          '${l10n.biometric_quick_login} (${l10n.biometric_face_id})',
+        BiometricTypeEnum.fingerprint =>
+          '${l10n.biometric_quick_login} (${l10n.biometric_fingerprint})',
+        _ => l10n.biometric_quick_login,
+      };
+
+  BiometricAuthState copyWith({
+    bool? isSupported,
+    bool? isEnabled,
+    bool? canOfferBiometric,
+    BiometricTypeEnum? biometricType,
+    bool? isLoading,
+    bool? isSuccess,
+    String? errorMessage,
+    bool clearError = false,
+    BiometricAuthStatus? authStatus,
+    bool clearAuthStatus = false,
+    BiometricCredentials? savedCredentials,
+    bool clearSavedCredentials = false,
+  }) {
+    return BiometricAuthState(
+      isSupported: isSupported ?? this.isSupported,
+      isEnabled: isEnabled ?? this.isEnabled,
+      canOfferBiometric: canOfferBiometric ?? this.canOfferBiometric,
+      biometricType: biometricType ?? this.biometricType,
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      authStatus: clearAuthStatus ? null : (authStatus ?? this.authStatus),
+      savedCredentials: clearSavedCredentials
+          ? null
+          : (savedCredentials ?? this.savedCredentials),
     );
   }
 }

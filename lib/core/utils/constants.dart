@@ -9,6 +9,9 @@ abstract class AppConstants {
   static const String deviceIdKey = 'deviceIdKey';
   static const String customerIdKey = 'customerIdKey';
   static const String biometricEnabled = 'biometricEnabled';
+  static const String biometricPhone = 'biometric_phone';
+  static const String biometricPassword = 'biometric_password';
+  static const String biometricCountryCode = 'biometric_country_code';
 
   // 🔹 Localization Keys
   static const String languageCode = 'languageCode';

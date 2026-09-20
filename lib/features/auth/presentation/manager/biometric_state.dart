@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
 class BiometricState {
   const BiometricState({
@@ -10,6 +13,7 @@ class BiometricState {
     this.isSuccess = false,
     this.errorMessage,
     this.authStatus,
+    this.savedCredentials,
   });
 
   final bool isSupported;
@@ -20,6 +24,22 @@ class BiometricState {
   final bool isSuccess;
   final String? errorMessage;
   final BiometricAuthStatus? authStatus;
+  final BiometricCredentials? savedCredentials;
+
+  IconData get biometricIcon => switch (biometricType) {
+        BiometricTypeEnum.face => Icons.face_rounded,
+        BiometricTypeEnum.fingerprint => Icons.fingerprint_rounded,
+        _ => Icons.fingerprint_rounded,
+      };
+
+  String getBiometricButtonText(AppLocalizations l10n) =>
+      switch (biometricType) {
+        BiometricTypeEnum.face =>
+          '${l10n.biometric_quick_login} (${l10n.biometric_face_id})',
+        BiometricTypeEnum.fingerprint =>
+          '${l10n.biometric_quick_login} (${l10n.biometric_fingerprint})',
+        _ => l10n.biometric_quick_login,
+      };
 
   BiometricState copyWith({
     bool? isSupported,
@@ -32,6 +52,8 @@ class BiometricState {
     bool clearError = false,
     BiometricAuthStatus? authStatus,
     bool clearAuthStatus = false,
+    BiometricCredentials? savedCredentials,
+    bool clearSavedCredentials = false,
   }) {
     return BiometricState(
       isSupported: isSupported ?? this.isSupported,
@@ -41,8 +63,10 @@ class BiometricState {
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
-      authStatus:
-          clearAuthStatus ? null : (authStatus ?? this.authStatus),
+      authStatus: clearAuthStatus ? null : (authStatus ?? this.authStatus),
+      savedCredentials: clearSavedCredentials
+          ? null
+          : (savedCredentials ?? this.savedCredentials),
     );
   }
 }

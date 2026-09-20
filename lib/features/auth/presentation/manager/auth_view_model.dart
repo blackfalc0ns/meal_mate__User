@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
@@ -41,8 +44,10 @@ class AuthViewModel extends Cubit<AuthState> {
     this._refreshTokenUseCase,
     this._logoutUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
-    this._sharedPrefHelper,
-  ) : super(const AuthState());
+    this._sharedPrefHelper, [
+    BiometricService? biometricService,
+  ])  : _biometricService = biometricService ?? getIt<BiometricService>(),
+        super(const AuthState());
 
   final LoginUseCase _loginUseCase;
   final RegisterUseCase _registerUseCase;
@@ -57,6 +62,7 @@ class AuthViewModel extends Cubit<AuthState> {
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
+  final BiometricService _biometricService;
 
   void doIntent(AuthEvent event) {
     switch (event) {
@@ -95,6 +101,18 @@ class AuthViewModel extends Cubit<AuthState> {
 
       case LogoutEvent():
         _logout(event.request);
+
+      case InitBiometricEvent():
+        _initBiometric();
+
+      case AuthenticateWithBiometricEvent():
+        _authenticateWithBiometric(
+          localizedReason: event.localizedReason,
+          lockedOutMessage: event.lockedOutMessage,
+          permanentlyLockedOutMessage: event.permanentlyLockedOutMessage,
+          notEnrolledMessage: event.notEnrolledMessage,
+          genericErrorMessage: event.genericErrorMessage,
+        );
     }
   }
 
@@ -529,6 +547,112 @@ class AuthViewModel extends Cubit<AuthState> {
         await _sharedPrefHelper.removeData(
           key: StorageKeys.currentSubscriptionId,
         );
+    }
+  }
+
+  Future<void> _initBiometric() async {
+    final isSupported = await _biometricService.isDeviceSupported();
+    final biometricType = await _biometricService.getPrimaryBiometricType();
+    final isEnabled = _biometricService.isBiometricEnabled();
+    final canOffer = await _biometricService.canOfferBiometricLogin();
+    final savedCreds = await _biometricService.getSavedCredentials();
+
+    emit(
+      state.copyWith(
+        biometric: state.biometric.copyWith(
+          isSupported: isSupported,
+          biometricType: biometricType,
+          isEnabled: isEnabled,
+          canOfferBiometric: canOffer,
+          savedCredentials: savedCreds,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _authenticateWithBiometric({
+    required String localizedReason,
+    String? lockedOutMessage,
+    String? permanentlyLockedOutMessage,
+    String? notEnrolledMessage,
+    String? genericErrorMessage,
+  }) async {
+    if (state.biometric.isLoading || state.login.isLoading) return;
+
+    emit(
+      state.copyWith(
+        biometric: state.biometric.copyWith(
+          isLoading: true,
+          clearError: true,
+          clearAuthStatus: true,
+          isSuccess: false,
+        ),
+      ),
+    );
+
+    final result = await _biometricService.authenticate(
+      localizedReason: localizedReason,
+    );
+
+    if (result.isSuccess) {
+      await _biometricService.setBiometricEnabled(true);
+      final savedCreds = await _biometricService.getSavedCredentials();
+      emit(
+        state.copyWith(
+          biometric: state.biometric.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            authStatus: BiometricAuthStatus.success,
+            savedCredentials: savedCreds,
+            clearError: true,
+          ),
+        ),
+      );
+
+      if (savedCreds != null) {
+        await _login(
+          LoginRequestEntity(
+            phone: savedCreds.phone,
+            password: savedCreds.password,
+            countryCode: savedCreds.countryCode,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            biometric: state.biometric.copyWith(
+              isLoading: false,
+              isSuccess: false,
+              errorMessage:
+                  'يرجى تسجيل الدخول برقم الجوال وكلمة المرور لمرة واحدة لربط البصمة بأمان',
+            ),
+          ),
+        );
+      }
+    } else {
+      String? message;
+      if (result.status == BiometricAuthStatus.lockedOut) {
+        message = lockedOutMessage ?? 'Biometric authentication is temporarily locked.';
+      } else if (result.status == BiometricAuthStatus.permanentlyLockedOut) {
+        message = permanentlyLockedOutMessage ??
+            lockedOutMessage ??
+            'Biometric authentication is permanently locked.';
+      } else if (result.status == BiometricAuthStatus.notEnrolled) {
+        message = notEnrolledMessage ?? 'No biometrics enrolled on this device.';
+      } else if (result.status != BiometricAuthStatus.canceled) {
+        message = genericErrorMessage ?? result.errorMessage ?? 'Authentication failed.';
+      }
+
+      emit(
+        state.copyWith(
+          biometric: state.biometric.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            authStatus: result.status,
+            errorMessage: message,
+          ),
+        ),
+      );
     }
   }
 }

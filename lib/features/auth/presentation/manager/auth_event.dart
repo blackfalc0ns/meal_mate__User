@@ -82,3 +82,23 @@ class LogoutEvent extends AuthEvent {
 
   final LogoutRequestEntity request;
 }
+
+class InitBiometricEvent extends AuthEvent {
+  const InitBiometricEvent();
+}
+
+class AuthenticateWithBiometricEvent extends AuthEvent {
+  const AuthenticateWithBiometricEvent({
+    required this.localizedReason,
+    this.lockedOutMessage,
+    this.permanentlyLockedOutMessage,
+    this.notEnrolledMessage,
+    this.genericErrorMessage,
+  });
+
+  final String localizedReason;
+  final String? lockedOutMessage;
+  final String? permanentlyLockedOutMessage;
+  final String? notEnrolledMessage;
+  final String? genericErrorMessage;
+}

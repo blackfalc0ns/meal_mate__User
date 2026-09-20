@@ -467,6 +467,8 @@
   "drawer_settings": "الإعدادات",
   "drawer_language": "اللغة",
   "drawer_logout": "تسجيل الخروج",
+  "profile_logout_confirmation_message": "هل أنت متأكد من تسجيل الخروج؟",
+  "profile_logout_cancel": "إلغاء",
   "offers_title": "العروض",
   "offers_hero_badge": "خصم",
   "offers_hero_discount": "30%",

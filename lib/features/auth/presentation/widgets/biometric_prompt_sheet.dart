@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
 import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -13,20 +14,38 @@ class BiometricPromptSheet extends StatefulWidget {
     super.key,
     required this.biometricType,
     required this.onComplete,
+    this.credentials,
   });
 
   final BiometricTypeEnum biometricType;
   final VoidCallback onComplete;
+  final BiometricCredentials? credentials;
 
   static Future<void> showIfNeeded(
     BuildContext context, {
     required VoidCallback onComplete,
+    BiometricCredentials? credentials,
   }) async {
+    if (credentials == null) {
+      onComplete();
+      return;
+    }
+
     final biometricService = getIt<BiometricService>();
     final isSupported = await biometricService.isDeviceSupported();
     final isEnabled = biometricService.isBiometricEnabled();
 
-    if (!isSupported || isEnabled) {
+    if (!isSupported) {
+      onComplete();
+      return;
+    }
+
+    if (isEnabled) {
+      await biometricService.saveBiometricCredentials(
+        phone: credentials.phone,
+        password: credentials.password,
+        countryCode: credentials.countryCode,
+      );
       onComplete();
       return;
     }
@@ -56,6 +75,7 @@ class BiometricPromptSheet extends StatefulWidget {
       builder: (_) => BiometricPromptSheet(
         biometricType: biometricType,
         onComplete: onComplete,
+        credentials: credentials,
       ),
     );
   }
@@ -156,6 +176,13 @@ class _BiometricPromptSheetState extends State<BiometricPromptSheet> {
 
     if (result.isSuccess) {
       await biometricService.setBiometricEnabled(true);
+      if (widget.credentials != null) {
+        await biometricService.saveBiometricCredentials(
+          phone: widget.credentials!.phone,
+          password: widget.credentials!.password,
+          countryCode: widget.credentials!.countryCode,
+        );
+      }
     }
 
     if (mounted) {

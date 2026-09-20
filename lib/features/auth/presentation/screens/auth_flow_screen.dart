@@ -90,8 +90,9 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return BlocProvider<AuthViewModel>(
-      create: (_) =>
-          getIt<AuthViewModel>()..doIntent(const GetCallingCodesEvent()),
+      create: (_) => getIt<AuthViewModel>()
+        ..doIntent(const GetCallingCodesEvent())
+        ..doIntent(const InitBiometricEvent()),
       child: Scaffold(
         body: AuthBackground(
           child: SafeArea(

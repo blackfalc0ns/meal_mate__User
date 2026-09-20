@@ -6,10 +6,8 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
-import 'package:meal_meat_user/core/biometric/biometric_service.dart';
+import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
@@ -39,28 +37,15 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _canUseBiometric = false;
-  BiometricTypeEnum _biometricType = BiometricTypeEnum.none;
-  bool _isBiometricAuthenticating = false;
 
   @override
   void initState() {
     super.initState();
-    _checkBiometrics();
-  }
-
-  Future<void> _checkBiometrics() async {
-    final biometricService = getIt<BiometricService>();
-    final canRestore = biometricService.canRestoreSession();
-    if (canRestore) {
-      final type = await biometricService.getPrimaryBiometricType();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        setState(() {
-          _canUseBiometric = true;
-          _biometricType = type;
-        });
+        context.read<AuthViewModel>().doIntent(const InitBiometricEvent());
       }
-    }
+    });
   }
 
   @override
@@ -77,15 +62,47 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
     return BlocConsumer<AuthViewModel, AuthState>(
       listenWhen: (previous, current) =>
           previous.login.isSuccess != current.login.isSuccess ||
-          previous.login.errorMessage != current.login.errorMessage,
+          previous.login.errorMessage != current.login.errorMessage ||
+          previous.biometric.errorMessage != current.biometric.errorMessage,
       listener: (context, state) {
         if (state.login.isSuccess) {
           CustomSnackbar.showSuccess(
             context: context,
             message: l10n.auth_login_success,
           );
+
+          if (state.biometric.isSuccess) {
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+            return;
+          }
+
+          final selectedCallingCode = context
+              .read<AuthViewModel>()
+              .state
+              .callingCodes
+              .selected;
+          final phoneText = _phoneController.text.trim();
+          final passwordText = _passwordController.text;
+          final phone = phoneText.isNotEmpty
+              ? normalizeLoginPhone(
+                  phoneText,
+                  selectedCallingCode?.dialCode ?? '+20',
+                )
+              : null;
+          final password = passwordText.isNotEmpty ? passwordText : null;
+          final countryCode = selectedCallingCode?.countryCode ?? 'EG';
+
           BiometricPromptSheet.showIfNeeded(
             context,
+            credentials: (phone != null && password != null)
+                ? BiometricCredentials(
+                    phone: phone,
+                    password: password,
+                    countryCode: countryCode,
+                  )
+                : null,
             onComplete: () {
               Navigator.of(
                 context,
@@ -98,6 +115,11 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
         final message = state.login.errorMessage;
         if (message != null && message.isNotEmpty) {
           CustomSnackbar.showError(context: context, message: message);
+        }
+
+        final biometricError = state.biometric.errorMessage;
+        if (biometricError != null && biometricError.isNotEmpty) {
+          CustomSnackbar.showError(context: context, message: biometricError);
         }
       },
       builder: (context, state) {
@@ -152,18 +174,31 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                     colors: [Color(0xFF1D8134), Color(0xFF51C063)],
                   ),
                 ),
-                if (_canUseBiometric) ...[
+                if (state.biometric.canOfferBiometric) ...[
                   const SizedBox(height: Spacing.md),
                   AppButton(
                     variant: AppButtonVariant.outlined,
-                    text: _getBiometricButtonText(l10n),
-                    isLoading: _isBiometricAuthenticating,
+                    text: state.biometric.getBiometricButtonText(l10n),
+                    isLoading:
+                        state.biometric.isLoading || state.login.isLoading,
                     iconWidget: Icon(
-                      _getBiometricIcon(),
+                      state.biometric.biometricIcon,
                       color: AppColors.primary,
                       size: 20,
                     ),
-                    onPressed: _handleBiometricLogin,
+                    onPressed: () {
+                      context.read<AuthViewModel>().doIntent(
+                            AuthenticateWithBiometricEvent(
+                              localizedReason: l10n.biometric_auth_reason,
+                              lockedOutMessage: l10n.biometric_locked_out,
+                              permanentlyLockedOutMessage:
+                                  l10n.biometric_permanently_locked_out,
+                              notEnrolledMessage:
+                                  l10n.biometric_not_enrolled,
+                              genericErrorMessage: l10n.biometric_failed,
+                            ),
+                          );
+                    },
                     color: AppColors.primary,
                   ),
                 ],
@@ -173,59 +208,6 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
         );
       },
     );
-  }
-
-  IconData _getBiometricIcon() {
-    return _biometricType == BiometricTypeEnum.face
-        ? Icons.face_rounded
-        : Icons.fingerprint_rounded;
-  }
-
-  String _getBiometricButtonText(AppLocalizations l10n) {
-    if (_biometricType == BiometricTypeEnum.face) {
-      return '${l10n.biometric_quick_login} (${l10n.biometric_face_id})';
-    } else if (_biometricType == BiometricTypeEnum.fingerprint) {
-      return '${l10n.biometric_quick_login} (${l10n.biometric_fingerprint})';
-    }
-    return l10n.biometric_quick_login;
-  }
-
-  Future<void> _handleBiometricLogin() async {
-    setState(() {
-      _isBiometricAuthenticating = true;
-    });
-
-    final l10n = AppLocalizations.of(context)!;
-    final biometricService = getIt<BiometricService>();
-
-    final result = await biometricService.authenticate(
-      localizedReason: l10n.biometric_auth_reason,
-    );
-
-    if (!mounted) return;
-
-    setState(() {
-      _isBiometricAuthenticating = false;
-    });
-
-    if (result.isSuccess) {
-      CustomSnackbar.showSuccess(
-        context: context,
-        message: l10n.auth_login_success,
-      );
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-    } else if (result.status != BiometricAuthStatus.canceled) {
-      final message = switch (result.status) {
-        BiometricAuthStatus.lockedOut => l10n.biometric_locked_out,
-        BiometricAuthStatus.permanentlyLockedOut =>
-          l10n.biometric_permanently_locked_out,
-        BiometricAuthStatus.notEnrolled => l10n.biometric_not_enrolled,
-        _ => l10n.biometric_failed,
-      };
-      CustomSnackbar.showError(context: context, message: message);
-    }
   }
 
   void _handleSubmit() {

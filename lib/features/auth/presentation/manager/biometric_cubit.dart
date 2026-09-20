@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
+import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
 import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'biometric_state.dart';
 
@@ -15,7 +16,8 @@ class BiometricCubit extends Cubit<BiometricState> {
     final isSupported = await _biometricService.isDeviceSupported();
     final biometricType = await _biometricService.getPrimaryBiometricType();
     final isEnabled = _biometricService.isBiometricEnabled();
-    final canRestoreSession = _biometricService.canRestoreSession();
+    final canRestoreSession = await _biometricService.canOfferBiometricLogin();
+    final savedCreds = await _biometricService.getSavedCredentials();
 
     emit(
       state.copyWith(
@@ -23,6 +25,7 @@ class BiometricCubit extends Cubit<BiometricState> {
         biometricType: biometricType,
         isEnabled: isEnabled,
         canRestoreSession: canRestoreSession,
+        savedCredentials: savedCreds,
       ),
     );
   }
@@ -37,7 +40,7 @@ class BiometricCubit extends Cubit<BiometricState> {
     String? genericErrorMessage,
   }) async {
     if (!enable) {
-      await _biometricService.setBiometricEnabled(false);
+      await _biometricService.disableBiometric();
       emit(
         state.copyWith(
           isEnabled: false,
@@ -113,10 +116,12 @@ class BiometricCubit extends Cubit<BiometricState> {
     }
   }
 
-  /// Attempts biometric authentication to restore existing session.
-  Future<bool> authenticateForLogin({
+  /// Attempts biometric authentication to login or restore existing session.
+  Future<BiometricCredentials?> authenticateForLogin({
     required String localizedReason,
     String? lockedOutMessage,
+    String? permanentlyLockedOutMessage,
+    String? notEnrolledMessage,
     String? genericErrorMessage,
   }) async {
     emit(state.copyWith(isLoading: true, clearError: true, clearAuthStatus: true));
@@ -126,20 +131,27 @@ class BiometricCubit extends Cubit<BiometricState> {
     );
 
     if (result.isSuccess) {
+      final savedCreds = await _biometricService.getSavedCredentials();
       emit(
         state.copyWith(
           isLoading: false,
           isSuccess: true,
           authStatus: BiometricAuthStatus.success,
+          savedCredentials: savedCreds,
           clearError: true,
         ),
       );
-      return true;
+      return savedCreds;
     } else {
       String? message;
-      if (result.status == BiometricAuthStatus.lockedOut ||
-          result.status == BiometricAuthStatus.permanentlyLockedOut) {
+      if (result.status == BiometricAuthStatus.lockedOut) {
         message = lockedOutMessage ?? 'Biometric authentication is temporarily locked.';
+      } else if (result.status == BiometricAuthStatus.permanentlyLockedOut) {
+        message = permanentlyLockedOutMessage ??
+            lockedOutMessage ??
+            'Biometric authentication is permanently locked.';
+      } else if (result.status == BiometricAuthStatus.notEnrolled) {
+        message = notEnrolledMessage ?? 'No biometrics enrolled on this device.';
       } else if (result.status != BiometricAuthStatus.canceled) {
         message = genericErrorMessage ?? result.errorMessage ?? 'Authentication failed.';
       }
@@ -152,7 +164,7 @@ class BiometricCubit extends Cubit<BiometricState> {
           errorMessage: message,
         ),
       );
-      return false;
+      return null;
     }
   }
 

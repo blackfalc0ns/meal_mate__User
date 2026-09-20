@@ -15,7 +15,7 @@ import 'package:meal_meat_user/features/profile/presentation/manager/profile_vie
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_header.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_image_upload_builder.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_loading_skeleton.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_logout_button.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_logout_action.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_settings_card.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_stats_card.dart';
 
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                           const SizedBox(height: Spacing.profileSettingsTopGap),
                           const ProfileSettingsCard(),
                           const SizedBox(height: Spacing.profileLogoutTopGap),
-                          const ProfileLogoutButton(),
+                          const ProfileLogoutAction(),
                           const SizedBox(height: Spacing.xxxl),
                         ],
                       ),

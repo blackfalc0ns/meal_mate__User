@@ -467,6 +467,8 @@
   "drawer_settings": "Settings",
   "drawer_language": "Language",
   "drawer_logout": "Log out",
+  "profile_logout_confirmation_message": "Are you sure you want to log out?",
+  "profile_logout_cancel": "Cancel",
   "offers_title": "Offers",
   "offers_hero_badge": "Off",
   "offers_hero_discount": "30%",

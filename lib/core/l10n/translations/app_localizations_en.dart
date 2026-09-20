@@ -1347,6 +1347,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drawer_logout => 'Log out';
 
   @override
+  String get profile_logout_confirmation_message =>
+      'Are you sure you want to log out?';
+
+  @override
+  String get profile_logout_cancel => 'Cancel';
+
+  @override
   String get offers_title => 'Offers';
 
   @override

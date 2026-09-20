@@ -2552,6 +2552,18 @@ abstract class AppLocalizations {
   /// **'Log out'**
   String get drawer_logout;
 
+  /// No description provided for @profile_logout_confirmation_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get profile_logout_confirmation_message;
+
+  /// No description provided for @profile_logout_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get profile_logout_cancel;
+
   /// No description provided for @offers_title.
   ///
   /// In en, this message translates to:

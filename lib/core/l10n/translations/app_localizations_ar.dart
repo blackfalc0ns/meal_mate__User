@@ -1327,6 +1327,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get drawer_logout => 'تسجيل الخروج';
 
   @override
+  String get profile_logout_confirmation_message =>
+      'هل أنت متأكد من تسجيل الخروج؟';
+
+  @override
+  String get profile_logout_cancel => 'إلغاء';
+
+  @override
   String get offers_title => 'العروض';
 
   @override

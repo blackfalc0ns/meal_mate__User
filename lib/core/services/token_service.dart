@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../biometric/biometric_credentials.dart';
 import '../utils/constants.dart';
 
 @injectable
@@ -72,5 +73,53 @@ class TokenService {
     await deleteRefreshToken();
     await deleteCurrentUserId();
     await _sharedPreferences.remove(StorageKeys.currentSubscriptionId);
+  }
+
+  // ---------------- BIOMETRIC CREDENTIALS ----------------
+
+  Future<void> saveBiometricCredentials({
+    required String phone,
+    required String password,
+    required String countryCode,
+  }) async {
+    await _prefs.write(key: AppConstants.biometricPhone, value: phone);
+    await _prefs.write(key: AppConstants.biometricPassword, value: password);
+    await _prefs.write(
+      key: AppConstants.biometricCountryCode,
+      value: countryCode,
+    );
+  }
+
+  Future<BiometricCredentials?> getBiometricCredentials() async {
+    final phone = await _prefs.read(key: AppConstants.biometricPhone);
+    final password = await _prefs.read(key: AppConstants.biometricPassword);
+    final countryCode =
+        await _prefs.read(key: AppConstants.biometricCountryCode) ?? 'EG';
+    if (phone == null ||
+        phone.isEmpty ||
+        password == null ||
+        password.isEmpty) {
+      return null;
+    }
+    return BiometricCredentials(
+      phone: phone,
+      password: password,
+      countryCode: countryCode,
+    );
+  }
+
+  Future<bool> hasBiometricCredentials() async {
+    final phone = await _prefs.read(key: AppConstants.biometricPhone);
+    final password = await _prefs.read(key: AppConstants.biometricPassword);
+    return phone != null &&
+        phone.isNotEmpty &&
+        password != null &&
+        password.isNotEmpty;
+  }
+
+  Future<void> deleteBiometricCredentials() async {
+    await _prefs.delete(key: AppConstants.biometricPhone);
+    await _prefs.delete(key: AppConstants.biometricPassword);
+    await _prefs.delete(key: AppConstants.biometricCountryCode);
   }
 }

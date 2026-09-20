@@ -120,7 +120,7 @@ class InfluencerWalletOverviewCard extends StatelessWidget {
                             availableAmount,
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size69,
+                              fontSize: FontSize.size15,
                               color: color.onPrimary,
                             ),
                           ),
