@@ -6,6 +6,7 @@ part 'subscription_tier_restaurant_browse_response_dto.g.dart';
 class SubscriptionTierRestaurantBrowseResponseDto {
   const SubscriptionTierRestaurantBrowseResponseDto({
     this.restaurantId,
+    this.name,
     this.nameAr,
     this.nameEn,
     this.logoUrl,
@@ -13,6 +14,7 @@ class SubscriptionTierRestaurantBrowseResponseDto {
     this.mealCount,
     this.bundleMealCount,
     this.tier,
+    this.tierName,
     this.tierNameAr,
     this.tierNameEn,
     this.tierLogoUrl,
@@ -20,6 +22,7 @@ class SubscriptionTierRestaurantBrowseResponseDto {
   });
 
   final String? restaurantId;
+  final String? name;
   final String? nameAr;
   final String? nameEn;
   final String? logoUrl;
@@ -27,6 +30,7 @@ class SubscriptionTierRestaurantBrowseResponseDto {
   final int? mealCount;
   final int? bundleMealCount;
   final String? tier;
+  final String? tierName;
   final String? tierNameAr;
   final String? tierNameEn;
   final String? tierLogoUrl;

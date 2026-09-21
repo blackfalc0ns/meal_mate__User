@@ -51,7 +51,7 @@ class SubscriptionTypeNotice extends StatelessWidget {
               textAlign: TextAlign.center,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size11,
                 color: color.primary,
               ),
             ),

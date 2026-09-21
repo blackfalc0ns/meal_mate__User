@@ -89,25 +89,20 @@ class RestaurantMenuTabs extends StatelessWidget {
               color: color.outlineVariant,
             ),
           ),
-          Positioned(
-            left: Spacing.restaurantDetailsTabsHorizontalInset,
-            right: Spacing.restaurantDetailsTabsHorizontalInset,
-            top: 0,
-            child: labels.isEmpty
-                ? const SizedBox.shrink()
-                : Row(
-                    children: [
-                      for (var index = 0; index < labels.length; index++)
-                        Expanded(
-                          child: RestaurantMenuTabLabel(
-                            text: labels[index],
-                            active: selectedIndex == index,
-                            onTap: () => onChanged(index),
-                          ),
+          labels.isEmpty
+              ? const SizedBox.shrink()
+              : Row(
+                  children: [
+                    for (var index = 0; index < labels.length; index++)
+                      Expanded(
+                        child: RestaurantMenuTabLabel(
+                          text: labels[index],
+                          active: selectedIndex == index,
+                          onTap: () => onChanged(index),
                         ),
-                    ],
-                  ),
-          ),
+                      ),
+                  ],
+                ),
           Positioned(
             left: Spacing.restaurantDetailsTabsHorizontalInset,
             right: Spacing.restaurantDetailsTabsHorizontalInset,

@@ -1,0 +1,2917 @@
+🎨 Color Pallete -> ColorPalette -> 67:591: HeaderText
+🎨 Color Pallete -> ColorPalette -> 67:730: Frame427318168
+🎨 Color Pallete -> ColorPalette -> 67:595: primary
+🎨 Color Pallete -> ColorPalette -> 67:610: secondary
+🎨 Color Pallete -> ColorPalette -> 67:625: tertiary
+🎨 Color Pallete -> ColorPalette -> 67:640: quaternary
+🎨 Color Pallete -> ColorPalette -> 67:655: quinary
+🎨 Color Pallete -> ColorPalette -> 67:670: senary
+🎨 Color Pallete -> ColorPalette -> 67:685: septenary
+🎨 Color Pallete -> ColorPalette -> 67:700: octonary
+🎨 Color Pallete -> ColorPalette -> 67:715: grey
+🎨 Color Pallete -> Logo Variations -> 687:2044: Asset 11 1
+🎨 Color Pallete -> Logo Variations -> 687:2037: Asset 10 1
+🎨 Color Pallete -> Logo Variations -> 687:1965: Asset 8 1
+🎨 Color Pallete -> Logo Variations -> 687:2001: Asset 9 1
+🎨 Color Pallete -> Logo Variations -> 687:2080: Asset 12 1
+🎨 Color Pallete -> Logo Variations -> 687:2116: Layer 1
+🎨 Color Pallete -> Green -> 1138:4288: Green
+🎨 Color Pallete -> Green -> 1138:4289: Swatches
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:10256: Nav Bar
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:11543: mainContainer
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:12684: Preview 3
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:12711: Ads  Banners
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13054: Group 18637
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13084: Group 18638
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13109: Group 18645
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13151: Group 18651
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13181: Preview 6
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13205: Group 18652
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13233: Group 18653
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13262: Preview 9
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:13790: Group 18708
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:17087: Group 19100
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:21323: مدى
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:22310: Frame 19291
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:22921: Group 19428
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:23140: ٠٠٠٠ 4242
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:25317: Program Impact Container
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:25320: Program Impact Icon Container
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:25324: Time Icon Container
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:25330: Delivery Time Container
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:27482: Component 3
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:27489: Component 4
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:27496: 01.05 - Loading / Primary
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:27312: Frame
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:27368: mainContainer
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:26339: اختر البطاقة
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:26362: Group 19919
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:26379: Group 19937
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1836:26386: Group 19938
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1886:11962: 03 - Home / Dashboard - Base
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 1991:9808: Codex Image Aug 19, 2026, 06_38_38 PM 1
+📱 MealMate App -> 15 - Shared / Repeated / Loose Assets -> 2267:10013: 03.01 - Home / Dashboard - Base
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10428: Rectangle 5738
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10429: Group 1
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10436: Doodle / 2
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10437: Home Indicator
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10438: Status bar
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10439: Notification
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10450: Group 19163
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10459: Doodle / 2
+📱 MealMate App -> 03.01 - Home / Dashboard - Base -> 2300:10460: Frame 1000003807
+📱 MealMate App -> 16 - Influncer -> 2300:8026: iPhone 13 & 14 - 34
+📱 MealMate App -> 16 - Influncer -> 2300:8227: iPhone 13 & 14 - 35
+📱 MealMate App -> 16 - Influncer -> 2300:8471: iPhone 13 & 14 - 36
+📱 MealMate App -> 16 - Influncer -> 2300:8673: iPhone 13 & 14 - 40
+📱 MealMate App -> 16 - Influncer -> 2300:8779: iPhone 13 & 14 - 42
+📱 MealMate App -> 16 - Influncer -> 2300:8865: iPhone 13 & 14 - 41
+📱 MealMate App -> 16 - Influncer -> 2300:8969: iPhone 13 & 14 - 43
+📱 MealMate App -> 16 - Influncer -> 2300:9136: iPhone 13 & 14 - 44
+📱 MealMate App -> 16 - Influncer -> 2300:9141: Group 20675
+📱 MealMate App -> 16 - Influncer -> 2300:9150: Group 20671
+📱 MealMate App -> 16 - Influncer -> 2300:9338: iPhone 13 & 14 - 45
+📱 MealMate App -> 16 - Influncer -> 2300:9456: Influencer Social Connections - iPhone 13
+📱 MealMate App -> 16 - Influncer -> 2532:11129: 30 - Profile / Overview
+📱 MealMate App -> Group 20683 -> 2300:9206: Rectangle 6129
+📱 MealMate App -> Group 20683 -> 2300:9207: Group 20679
+📱 MealMate App -> Group 20681 -> 2300:9216: Rectangle 6129
+📱 MealMate App -> Group 20681 -> 2300:9217: Group 20679
+📱 MealMate App -> 01 - Entry & Onboarding -> 1836:10081: 01.01 - Splash / Primary
+📱 MealMate App -> 01 - Entry & Onboarding -> 1836:10195: 01.02 - Onboarding / Welcome
+📱 MealMate App -> 01 - Entry & Onboarding -> 1836:10180: 01.03 - Onboarding / Healthy Mood
+📱 MealMate App -> 01 - Entry & Onboarding -> 1836:10164: 01.04 - Onboarding / Delivery
+📱 MealMate App -> 01 - Entry & Onboarding -> 1856:3643: 14.01 - Legacy / Splash Alternate
+📱 MealMate App -> 01 - Entry & Onboarding -> 1860:11666: 14.02 - Legacy / Loading Alternate
+📱 MealMate App -> 02 - Authentication -> 1836:10295: 02.01 - Auth / Sign In
+📱 MealMate App -> 02 - Authentication -> 1836:10333: 02.02 - Auth / Create Account
+📱 MealMate App -> 02 - Authentication -> 1836:10414: 02.10 - Auth / Forgot Password
+📱 MealMate App -> 02 - Authentication -> 1836:10382: 02.11 - Auth / OTP Verification
+📱 MealMate App -> 02 - Authentication -> 1836:10440: 02.12 - Auth / New Password
+📱 MealMate App -> 02 - Authentication -> 1836:27021: 02.20 - Auth / Biometric Setup
+📱 MealMate App -> 03 - Home & Navigation -> 1836:19209: 03.01 - Home / Dashboard — Base
+📱 MealMate App -> 03 - Home & Navigation -> 1836:18361: 03.02 - Home / Active Subscription
+📱 MealMate App -> 03 - Home & Navigation -> 1836:18783: 03.03 - Home / Family Subscription
+📱 MealMate App -> 03 - Home & Navigation -> 1836:21253: 03.04 - Home / Nutrition Details
+📱 MealMate App -> 03 - Home & Navigation -> 1836:11033: 03.05 - Home / Side Menu
+📱 MealMate App -> 04 - Search -> 1836:15204: 04.01 - Search / Recent & Categories
+📱 MealMate App -> 04 - Search -> 1836:14973: 04.02 - Search / Suggestions
+📱 MealMate App -> 04 - Search -> 1836:14674: 04.03 - Search / Results
+📱 MealMate App -> 04 - Search -> 1836:14556: 04.04 - Search / No Results
+📱 MealMate App -> mainContainer -> 2528:7219: tabPills
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3790: FLOW / Meal Details to Nutrition Details
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3789: FLOW / Restaurant Profile to Meal Details
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3788: FLOW / Browse Restaurants to Restaurant Profile
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3787: FLOW / Select Restaurant to Browse Restaurants
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3786: FLOW / Day to Select Restaurant
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3785: FLOW / Calendar Day to Daily Macros
+📱 MealMate App -> 05 - Meals & Calendar -> 1848:3784: FLOW / Calendar Month to Day
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:11571: 05.01 - Meals / Calendar Month
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:13296: 05.10 - Meals / Day — Select Restaurant
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:11983: 05.02 - Meals / Calendar Day
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:12897: 05.11 - Meals / Browse Restaurants
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:13408: 05.13 - Meals / Meal Details & Select
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:25159: 05.14 - Meals / Meal Nutrition Details
+📱 MealMate App -> 05 - Meals & Calendar -> 1836:24570: 05.12 - Meals / Restaurant Profile & Menu
+📱 MealMate App -> 05 - Meals & Calendar -> 1977:5721: 05.E - Meals / No Active Subscription
+📱 MealMate App -> 05 - Meals & Calendar -> 1977:5877: Meals - Empty State - iPhone 14
+📱 MealMate App -> 05 - Meals & Calendar -> 2263:8804: 05.03 - Meals / Calendar Day + Daily Macros
+📱 MealMate App -> 05 - Meals & Calendar -> 2513:5213: Meals - Empty State - iPhone 15
+📱 MealMate App -> 05 - Meals & Calendar -> 3338:6830: M-05.16 - Meals / Selection Confirmation
+📱 MealMate App -> 05 - Meals & Calendar -> 3338:7142: Calender 12
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:23504: 06.01 - Subscription / Choose Type
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:23788: 06.02 - Subscription / Individual Packages
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:24056: 06.04 - Subscription / Duration & Tier
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:24330: 06.05 - Subscription / Restaurant List
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:24506: 06.06 - Subscription / Summary
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:20067: 06.07 - Checkout / Payment Method
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:15569: 06.20 - Subscription / Billing & Management
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:20960: 06.21 - Subscription / Upgrade Restaurant Tier
+📱 MealMate App -> 06 - Subscription & Checkout -> 1836:21133: 06.22 - Subscription / Tier Comparison
+📱 MealMate App -> 06 - Subscription & Checkout -> 2448:6789: 06.03 - Subscription / Family Packages
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5156: Home Indicator
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5157: mainContainer
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5178: Status bar
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5179: الاشتراكات والفواتير
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5180: Iconly/Bold/Arrow - Left
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5186: Rectangle 5662
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2524:5373: Group 20753
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5375: Home Indicator
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5376: mainContainer
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5397: Status bar
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5398: الاشتراكات والفواتير
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5399: Iconly/Bold/Arrow - Left
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5405: Rectangle 5662
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2525:5411: Group 20753
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5197: Group 18933
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5211: Home Indicator
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5212: mainContainer
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5233: Status bar
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5234: الاشتراكات والفواتير
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5235: Iconly/Bold/Arrow - Left
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5236: Rectangle 5662
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5237: Group 20753
+📱 MealMate App -> 06.20 - Subscription / Billing & Management -> 2528:5246: Group 18933
+📱 MealMate App -> 07 - Family Setup -> 1836:20194: 07.06 - Payment & Confirmation
+📱 MealMate App -> 07 - Family Setup -> 1836:23141: 07.01 - Create Family & Add Member
+📱 MealMate App -> 07 - Family Setup -> 2245:4074: 07.02 - Member Allergies
+📱 MealMate App -> 07 - Family Setup -> 2251:35819: 07.03 - Member Delivery Location
+📱 MealMate App -> 07 - Family Setup -> 1836:22585: 07.05 - Package, Days & Tier
+📱 MealMate App -> 07 - Family Setup -> 1836:22971: 07.04 - Member Program
+📱 MealMate App -> Frame -> 2258:4270: Group 20009
+📱 MealMate App -> 08 - Family Management -> 1848:3799: FLOW / Restaurant Selection to Meal Selection
+📱 MealMate App -> 08 - Family Management -> 1848:3798: FLOW / Day Details to Restaurant Selection
+📱 MealMate App -> 08 - Family Management -> 1848:3797: FLOW / Member Calendar to Day Details
+📱 MealMate App -> 08 - Family Management -> 1848:3796: FLOW / Family Calendar to Member Calendar
+📱 MealMate App -> 08 - Family Management -> 1848:3795: FLOW / Dashboard to Family Calendar
+📱 MealMate App -> 08 - Family Management -> 1848:3794: FLOW / Access to Permissions
+📱 MealMate App -> 08 - Family Management -> 1848:3793: FLOW / Member Details to Access
+📱 MealMate App -> 08 - Family Management -> 1848:3792: FLOW / Members to Member Details
+📱 MealMate App -> 08 - Family Management -> 1848:3791: FLOW / Dashboard to Members
+📱 MealMate App -> 08 - Family Management -> 1836:25467: 08.01 - Family / Management Dashboard
+📱 MealMate App -> 08 - Family Management -> 1836:25011: 08.02 - Family / Members
+📱 MealMate App -> 08 - Family Management -> 1836:24909: 08.03 - Family / Member Details
+📱 MealMate App -> 08 - Family Management -> 1836:25990: 08.04 - Family / Calendar & Member Switcher
+📱 MealMate App -> 08 - Family Management -> 1836:21324: 08.07 - Family / Restaurant Selection
+📱 MealMate App -> 08 - Family Management -> 1836:21945: 08.09 - Family / Meal Selection + Macros
+📱 MealMate App -> 08 - Family Management -> 1836:22340: 08.10 - Family / Review Member Meals
+📱 MealMate App -> 08 - Family Management -> 1836:25625: 08.20 - Family / Member Access
+📱 MealMate App -> 08 - Family Management -> 1836:25701: 08.21 - Family / Member Permissions
+📱 MealMate App -> 08 - Family Management -> 2929:7148: 08.06 - Family / Member Day Details
+📱 MealMate App -> 08 - Family Management -> 3312:6854: iPhone 13 & 14 - 47
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7005: Home Indicator
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7006: BackButton
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7007: Status bar
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7008: Ellipse 30
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7009: Carousel arrow
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7011: Frame 18165
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7033: الأفراد
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7034: Group 19493
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7040: Frame 19508
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7147: Add Person Container
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7196: Rectangle 6152
+📱 MealMate App -> 08.02 - Family / Members -> 3312:7197: Group 20750
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25337: BackButton
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25339: Status bar
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25340: Ellipse 30
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25341: Carousel arrow
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25365: تفاصيل يوم
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25366: Group 19511
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25378: Group 19514
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1836:25390: Frame 19523
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 1860:10335: Frame 19525
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 2885:7352: Home Indicator
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 2885:7353: Add Person Container
+📱 MealMate App -> 08.06 - Family / Member Day Details -> 2885:7356: Group 19523
+📱 MealMate App -> Group 19524 -> 2929:7476: Rectangle 5824
+📱 MealMate App -> Group 19524 -> 2929:7477: Group 21183
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:27240: 09.01 - Delivery / Choose Home Location old one 
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:14061: 09.02 - Delivery / Saved Addresses
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:14272: 09.03 - Delivery / Address Preferences
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:16743: 09.04 - Delivery / Address Change Locked
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:16572: 09.10 - Delivery / Track Today Box
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:15740: 09.11 - Delivery / Live Tracking
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:16171: 09.12 - Delivery / Proof of Delivery
+📱 MealMate App -> 09 - Delivery & Addresses -> 1836:16660: 09.13 - Delivery / Delivered
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:14152: 10.02 - Profile / Health Goals
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:14400: 10.03 - Profile / Dietary Preferences
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:20552: 10.04 - Profile / Allergies
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:20763: 10.05 - Profile / Add Allergy
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:15451: 10.06 - Profile / Referrals & Rewards
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:13799: 10.10 - Profile / App Settings
+📱 MealMate App -> 10 - Profile & Preferences -> 1836:13937: 10.11 - Profile / Security & Privacy
+📱 MealMate App -> 10 - Profile & Preferences -> 3056:13735: 10.01 - Profile / Overview
+📱 MealMate App -> 11 - Notifications -> 1836:27140: 11.01 - Notifications / Inbox
+📱 MealMate App -> 11 - Notifications -> 1836:27396: 11.02 - Notifications / Preferences
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:10690: 12.01 - Offers / Browse
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:19784: 12.02 - Offers / Offer Details
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:20416: 12.03 - Offers / Promo Code Entry
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:10466: 12.04 - Offers / Redeem Offer
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:19947: 12.05 - Offers / Promo Applied
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:10597: 12.06 - Offers / Activation Success
+📱 MealMate App -> 12 - Offers & Promotions -> 1836:19600: 12.10 - Offers / Referral Discount
+📱 MealMate App -> 13 - Wallet & Refunds -> 1836:26189: 13.01 - Wallet / Refund Balance
+📱 MealMate App -> 13 - Wallet & Refunds -> 1836:26441: 13.02 - Wallet / Transactions
+📱 MealMate App -> 13 - Wallet & Refunds -> 1836:26305: 13.03 - Wallet / Refund to Card
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:17640: 14.10 - Legacy / Home Dashboard
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:26599: 14.11 - Legacy / Home Active Subscription Duplicate
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:12336: 14.21 - Legacy / Ingredients & Sources
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:23646: 14.30 - Legacy / Subscription Choose Type Alternate
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:16871: 14.31 - Legacy / Individual Plans
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:17113: 14.32 - Legacy / Family Plans
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:12726: 14.40 - Legacy / Choose Home Location
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:23299: 14.50 - Legacy / Wallet Add Balance
+📱 MealMate App -> 14 - Legacy & Alternatives -> 1836:23402: 14.51 - Legacy / Wallet Recharge
+📱 MealMate App -> Frame -> 2258:4208: Text/مكونات لا يفضلها
+📱 MealMate App -> Frame -> 2262:8745: Frame 1000003804
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6579: Mask group
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6583: Ellipse 1375
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6584: Group 8
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6586: Frame 115
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6638: Group 18708
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6642: Group 19995
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6652: Home Indicator
+📱 MealMate App -> 09.01A - Choose Location Method -> 2403:6653: mainContainer
+📱 MealMate App -> Group 20727 -> 2403:6626: Rectangle 6136
+📱 MealMate App -> Group 20727 -> 2403:6627: Group 20724
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6675: Mask group
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6679: Ellipse 1375
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6680: Group 8
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6682: Frame 115
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6734: Group 18708
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6738: Group 19995
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6748: Home Indicator
+📱 MealMate App -> 09.01B - Map / Current Location -> 2403:6749: mainContainer
+📱 MealMate App -> Group 20727 -> 2403:6722: Rectangle 6136
+📱 MealMate App -> Group 20727 -> 2403:6723: Group 20724
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6771: Mask group
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6775: Ellipse 1375
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6776: Group 8
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6778: Frame 115
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6858: Group 18708
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6862: Home Indicator
+📱 MealMate App -> 09.01C - Manual Address Entry -> 2403:6863: mainContainer
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6896: Ellipse 1375
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6897: Group 8
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6892: Mask group
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6979: Group 18708
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6983: Home Indicator
+📱 MealMate App -> 09.01D - Address Review & Confirm -> 2403:6984: mainContainer
+📱 MealMate App -> mainContainer -> 2509:5136: tabPills
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6749: Status bar
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6750: Back
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6752: Group 21112
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6755: Group 21104
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6796: Group 21110
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6810: Group 21111
+📱 MealMate App -> 08.32 - Family / Upgrade Success -> 2827:6813: ChatGPT Image Sep 8, 2026, 09_56_26 PM 1
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6815: Status bar
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6816: Back
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6818: Group 21140
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6821: Group 21117
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6830: Group 21141
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6833: Group 21142
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6893: Group 21138
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6921: Group 21139
+📱 MealMate App -> 08.30 - Family / Plan Full & Upgrade -> 2827:6924: مفارقة جميع الباقات
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:6926: Group 21143
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:6929: Group 21151
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:6952: Group 21159
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:6976: Group 21169
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:7012: Group 21172
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:7020: Group 21182
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:7046: Group 21139
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:7049: Group 21139
+📱 MealMate App -> 08.31 - Family / Upgrade Payment -> 2827:7052: ChatGPT Image Sep 8, 2026, 09_36_28 PM 1
+📱 MealMate App -> Group 21186 -> 3056:13604: الباقة الحالية
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13618: Group 20009
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13625: Group 20010
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13635: Group 20006
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13642: Group 20005
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13648: يتصل بك الآن
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13649: Group 20011
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13655: Group 20012
+📱 MealMate App -> 09.11A - Delivery / Driver Call - Incoming -> 3056:13661: محمد علي
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13663: Group 20009
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13670: Group 20006
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13677: Group 20386
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13688: Group 20385
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13696: Group 20371
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13703: Group 20384
+📱 MealMate App -> 09.11B - Delivery / Driver Call - Active -> 3056:13724: Status bar
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5218: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5219: Rectangle 5443
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5220: ChatGPT Image Sep 20, 2026, 06_49_00 PM 1
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5221: Home Indicator
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5222: Group 20731
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5225: Button
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5230: العودة إلى تسجيل الدخول
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5231: Asset 11 1
+📱 MealMate App -> M-02.14 - Authentication Error State -> 3309:5249: وجبات فضل لحياة أسهل
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5272: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5273: Rectangle 5443
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5274: ChatGPT Image Sep 20, 2026, 06_53_43 PM 1
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5275: Home Indicator
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5276: مرحباً بك في
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5277: MealMate
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5278: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5279: Group 20731
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5282: Button
+📱 MealMate App -> M-02.13 - Password Reset Success -> 3312:5287: Group 20732
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7228: Status bar
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7229: mainContainer
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7251: Group 20791
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7267: Group 20817
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7290: Frame 19393
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7319: Group 20828
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7418: Group 20819
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7424: Group 20823
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7440: Group 20827
+📱 MealMate App -> M-07.05A - Subscription Start Date -> 3312:7451: Group 20830
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7516: Group 1
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7476: Group 20738
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7491: Button
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7496: Button
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7501: Group 20739
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7505: ChatGPT Image Sep 20, 2026, 05_38_44 PM 1
+📱 MealMate App -> M-06.23 - Checkout / Payment Failed -> 3312:7506: Group 20791
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1062: Stuff App — Product Map
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1063: خريطة منظمة لكل الفلوهات الموجودة في الصفحة، مع فصل السائق عن Dispatcher وحالات الاستثناء.
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1064: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1066: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1071: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1076: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1081: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1086: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1091: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1096: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1101: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1106: Frame
+📱 Stuff App -> 00 — Overview & Workflow Map -> 2076:1111: Frame
+📱 Stuff App -> Frame -> 2076:1121: Rectangle
+📱 Stuff App -> Frame -> 2076:1122: تم استكمال فجوة التسجيل
+📱 Stuff App -> Frame -> 2076:1123: تمت إضافة واجهة «مراجعة الطلب قبل الإرسال» كخطوة 02.05 بعد رفع المستندات، وأصبح فلو التسجيل مكتملًا حتى إرسال الطلب.
+📱 Stuff App -> Frame -> 2076:1125: Rectangle
+📱 Stuff App -> Frame -> 2076:1126: Call Privacy Flow
+📱 Stuff App -> Frame -> 2076:1127: الفلو المتفق عليه أصبح موجودًا داخل الفلو الرئيسي: In‑App Call → 1/3 → 2/3 → 3/3 → فتح الاتصال الخارجي عند الحاجة.
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1129: Entry & Authentication
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1130: الدخول الأساسي والتحقق من رقم الهاتف والبريد.
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1131: Frame
+📱 Stuff App -> 01 — Entry & Authentication -> 1522:13516: 01.02 - Login
+📱 Stuff App -> 01 — Entry & Authentication -> 1522:13334: 01.03 - Verify Phone OTP
+📱 Stuff App -> 01 — Entry & Authentication -> 1522:13425: 01.04 - Verify Email OTP
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1133: Rectangle
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1134: →
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1135: فتح التطبيق
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1136: Rectangle
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1137: →
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1138: تسجيل الدخول
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1139: Rectangle
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1140: →
+📱 Stuff App -> 01 — Entry & Authentication -> 2076:1141: التحقق الإضافي
+📱 Stuff App -> 01 — Entry & Authentication -> 1275:3665: 01.01 - Splash
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1143: Role Selection & Registration
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1144: تحديد نوع الحساب ثم استكمال بيانات السائق الأساسية.
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1145: Frame
+📱 Stuff App -> 02 — Role Selection & Registration -> 2023:5154: 02.01 - Role Selection
+📱 Stuff App -> 02 — Role Selection & Registration -> 2023:5222: 02.02 - Driver Personal Data
+📱 Stuff App -> 02 — Role Selection & Registration -> 2023:5307: 02.03 - Driver Vehicle Data
+📱 Stuff App -> 02 — Role Selection & Registration -> 2027:5520: 02.04 - Upload Documents
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1147: Rectangle
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1148: →
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1149: سائق
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1150: Rectangle
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1151: →
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1152: متابعة
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1153: Rectangle
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1154: →
+📱 Stuff App -> 02 — Role Selection & Registration -> 2076:1155: متابعة
+📱 Stuff App -> 02 — Role Selection & Registration -> 2284:15358: 02.05 - Review Order
+📱 Stuff App -> Group 10 -> 2027:5522: Rectangle 4
+📱 Stuff App -> Group 10 -> 2027:5523: vuesax/bold/notification
+📱 Stuff App -> Logo -> 2027:5700: Frame 1
+📱 Stuff App -> Group 19449 -> 2027:5564: Group 19447
+📱 Stuff App -> Group 19449 -> 2027:5580: Group 19448
+📱 Stuff App -> Group 19449 -> 2023:5286: Group 19447
+📱 Stuff App -> Group 19449 -> 2023:5302: Group 19448
+📱 Stuff App -> 03 — Application Review & Account Status -> 2076:1161: Application Status
+📱 Stuff App -> 03 — Application Review & Account Status -> 2076:1162: كل حالات ما بعد إرسال طلب قبول الحساب.
+📱 Stuff App -> 03 — Application Review & Account Status -> 2076:1163: Frame
+📱 Stuff App -> 03 — Application Review & Account Status -> 1522:13201: 03.01 - Application Under Review
+📱 Stuff App -> 03 — Application Review & Account Status -> 2023:5440: 03.02 - More Information Required
+📱 Stuff App -> 03 — Application Review & Account Status -> 2023:5414: 03.03 - Application Rejected
+📱 Stuff App -> 03 — Application Review & Account Status -> 2023:5401: 03.04 - Account Accepted
+📱 Stuff App -> 03 — Application Review & Account Status -> 2076:1165: نتيجة المراجعة
+📱 Stuff App -> 03 — Application Review & Account Status -> 2076:1175: Frame
+📱 Stuff App -> 03 — Application Review & Account Status -> 2077:1061: 03.01 - Account Under Review → نتيجة واحدة من الحالات التالية
+📱 Stuff App -> 03 — Application Review & Account Status -> 2077:1062: Frame
+📱 Stuff App -> 03 — Application Review & Account Status -> 2077:1064: Frame
+📱 Stuff App -> 03 — Application Review & Account Status -> 2077:1066: Frame
+📱 Stuff App -> Group 19835 -> 1522:13297: Rectangle 5924
+📱 Stuff App -> Group 19835 -> 1522:13298: Group 19834
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1180: Permissions & Security Setup
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1181: إعداد الصلاحيات المطلوبة ثم تفعيل الدخول البيومتري.
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1182: Frame
+📱 Stuff App -> 04 — Permissions & Security Setup -> 1522:13675: 04.01 - Permissions
+📱 Stuff App -> 04 — Permissions & Security Setup -> 1631:2454: 04.02 - Biometric Setup
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1184: Rectangle
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1185: →
+📱 Stuff App -> 04 — Permissions & Security Setup -> 2076:1186: بعد التفعيل
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2076:1188: Driver Home & Work Session
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2076:1189: الدخول للحالة التشغيلية، بدء العمل، وإنهاء اليوم.
+📱 Stuff App -> 05 — Driver Home & Work Session -> 1364:3328: 05.01 - Start Work
+📱 Stuff App -> 05 — Driver Home & Work Session -> 1522:13063: 05.03 - End Work Summary
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2076:1195: Frame
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1068: Rectangle
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1069: →
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1070: بدء العمل
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1071: Rectangle
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1072: →
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2077:1073: إنهاء العمل
+📱 Stuff App -> 05 — Driver Home & Work Session -> 2279:15086: 05.02 - Driver Home / Current Delivery
+📱 Stuff App -> Group 19723 -> 1364:3396: ملخص اليوم
+📱 Stuff App -> Group 19723 -> 1364:3397: Group 19722
+📱 Stuff App -> Group 19736 -> 1364:3414: Rectangle 5894
+📱 Stuff App -> Group 19736 -> 1364:3415: Group 19735
+📱 Stuff App -> Group 22 -> 1364:3377: Rectangle 8
+📱 Stuff App -> Group 22 -> 1364:3378: Group 21
+📱 Stuff App -> Frame -> 2076:1191: DRIVER
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1200: Pickup & QR Flow
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1201: المسار الرئيسي للاستلام في الصف الأول، وحالات QR/الاتصال في الصف الثاني.
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1202: Frame
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1364:3458: 06.01 - En Route to Pickup
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1364:3921: 06.05 - Boxes Received
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:4913: 06.12 - Invalid QR
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5122: 06.11 - QR Scan Timeout
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5072: 06.10 - Camera Disabled
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5091: 06.16 - No Assigned Boxes
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5110: 06.17 - Update Error
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5368: 06.14 - No Internet
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1977:5269: 06.13 - Box Not Assigned
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1204: Rectangle
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1205: →
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1206: الوصول
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1207: Rectangle
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1208: →
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1209: اختيار/مسح
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1210: Rectangle
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1211: →
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1212: تصوير الكاميرا
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2076:1213: حالات الاستثناء والـError States
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2397:6942: 06.02 - Assigned Boxes
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1364:3621: 06.03 - QR Scanner
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 1364:4120: 06.06 - Assigned Boxes
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2528:7102: 06.15 - Box Received Success
+📱 Stuff App -> 06 — Pickup, Assigned Boxes & QR -> 2585:9494: 06.04 - Camera
+📱 Stuff App -> 06.04 - Box Photo Proof -> 2259:8345: Rectangle 6113
+📱 Stuff App -> 06.04 - Box Photo Proof -> 2259:8346: Group 20645
+📱 Stuff App -> Group 19596 -> 1364:3658: Rectangle 5864
+📱 Stuff App -> Group 19596 -> 1364:3659: Group 19595
+📱 Stuff App -> Group 19608 -> 1364:3664: Rectangle 5864
+📱 Stuff App -> Group 19608 -> 1364:3665: Group 19595
+📱 Stuff App -> Group 19600 -> 1364:3680: آخر عمليات المسح
+📱 Stuff App -> Group 19600 -> 1364:3681: tabler:clock-filled
+📱 Stuff App -> Group 19606 -> 1364:3684: Rectangle 5866
+📱 Stuff App -> Group 19606 -> 1364:3685: Group 19605
+📱 Stuff App -> Group 19607 -> 1364:3701: Rectangle 5866
+📱 Stuff App -> Group 19607 -> 1364:3702: Group 19605
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2076:1215: Active Delivery
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2076:1216: تفاصيل التوصيل أثناء الطريق والوصول للعميل وحالات التأخير/التعذر.
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2076:1217: Frame
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 1977:4969: 07.03 - Delivery Delay
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 1977:4999: 07.04 - Failed Delivery
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1074: Rectangle
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1075: →
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1076: الوصول للعميل
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1077: حالات استثنائية أثناء التوصيل
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1078: Frame
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2077:1080: Frame
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2090:4793: 07.05 - Return Box to Restaurant
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2293:15561: 07.06 - Delivery Success
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2607:7203: 07.02 - Delivery Confirmation (OTP)
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 2739:1613: 07.00B - Active Delivery Tracking
+📱 Stuff App -> 07 — Active Delivery & Customer Arrival -> 3038:10963: 07.00 - Start Delivery Route
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:6964: Status bar
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:6965: mainContainer
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:6993: Logo
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:7014: Map Container
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:7042: Order Info Container
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:7079: Start Delivery Button Container
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:7085: Back
+📱 Stuff App -> 07.00 - Start Delivery Route -> 2607:7101: Order Details Container
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3744: Status bar
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3745: mainContainer
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3773: Group 19597
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3777: Logo
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3795: Group 19636
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3800: Group 19534
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3805: Group 19625
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3866: Group 19631
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3887: Group 19637
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3902: Group 19638
+📱 Stuff App -> 07.01 - Customer Arrival -> 1364:3917: Group 22
+📱 Stuff App -> 07.01 - Order Details -> 1275:3932: Status bar
+📱 Stuff App -> 07.01 - Order Details -> 1275:3933: mainContainer
+📱 Stuff App -> 07.01 - Order Details -> 1275:3961: Group 22
+📱 Stuff App -> 07.01 - Order Details -> 1275:3965: تفاصيل الطلب
+📱 Stuff App -> 07.01 - Order Details -> 1275:3966: Group 19532
+📱 Stuff App -> 07.01 - Order Details -> 1275:3974: Group 19534
+📱 Stuff App -> 07.01 - Order Details -> 1275:3979: Group 19542
+📱 Stuff App -> 07.01 - Order Details -> 1275:4008: Group 19544
+📱 Stuff App -> 07.01 - Order Details -> 1275:4018: Group 19555
+📱 Stuff App -> 07.01 - Order Details -> 1275:4047: Group 19569
+📱 Stuff App -> 07.01 - Order Details -> 1275:4099: Group 19572
+📱 Stuff App -> 07.01 - Order Details -> 1407:4596: Logo
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2076:1233: Issues & Recovery
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2076:1234: الإبلاغ عن مشكلة وما ينتج عنه من إعادة إسناد أو تأكيد إرسال البلاغ.
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2076:1235: Frame
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 1825:10246: 08.01 - Report Issue
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 1977:5027: 08.02 - Reassignment Request
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 1977:5050: 08.03 - Reassignment Submitted
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 1977:5060: 08.04 - Issue Submitted
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 1977:5577: 08.05 - Delivery Delay Warning
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2076:1243: Frame
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2077:1082: من 08.01 Report Issue يختار النظام/السائق مسار المعالجة المناسب:
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2090:5039: 08.06 - Customer Call Attempt 1
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2090:5199: 08.07 - Customer Call Attempt 2
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2090:5371: 08.08 - Customer Call Attempt 3
+📱 Stuff App -> 08 — Delivery Issues, Reassignment & Recovery -> 2090:5549: 08.09 - Active In-App Call
+📱 Stuff App -> Frame -> 2077:1084: إعادة إسناد
+📱 Stuff App -> Frame -> 2077:1086: إرسال بلاغ
+📱 Stuff App -> Frame -> 2077:1088: تنبيه تأخير
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2076:1248: Performance, Profile & Notifications
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2076:1249: متابعة الأداء، بيانات السائق والدعم، والإشعارات.
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2076:1250: Frame
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 1460:4307: 09.01 - Performance
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 1275:4107: 09.02 - Profile & Support
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 1633:4033: 09.03 - Notifications
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2090:5841: 09.04 - Settings
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2090:5997: 09.05 - Technical Support
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2804:6721: Driver Profile - Vehicle Details
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2804:6854: Driver Profile - Edit Vehicle Details
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 2804:7004: 09.06 · Operations Log
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 3038:11097: Group 20330
+📱 Stuff App -> 09 — Performance, Profile & Notifications -> 3038:11112: 05.02A - Driver Home · Sidebar Open
+📱 Stuff App -> Logo -> 3041:11417: Logo Container
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1253: Dispatcher Operations
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1254: لوحة العمليات الخاصة بالمطعم: إسناد، متابعة، أداء، سجل عمليات وتفاصيل السائق.
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1255: Frame
+📱 Stuff App -> 10 — Dispatcher Operations -> 1631:2980: 10.01 - Dispatcher Dashboard
+📱 Stuff App -> 10 — Dispatcher Operations -> 1632:3613: 10.02 - Box Details
+📱 Stuff App -> 10 — Dispatcher Operations -> 1825:9412: 10.08 - Box Tracking
+📱 Stuff App -> 10 — Dispatcher Operations -> 1860:11684: 10.07 - Driver Details
+📱 Stuff App -> 10 — Dispatcher Operations -> 1825:9710: 10.09 - Driver Performance
+📱 Stuff App -> 10 — Dispatcher Operations -> 1825:9909: 10.10 - Operations Log
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1257: Rectangle
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1258: →
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1259: اختيار الإسناد
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1260: Rectangle
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1261: →
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1262: فتح البوكس
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1263: Rectangle
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1264: →
+📱 Stuff App -> 10 — Dispatcher Operations -> 2076:1265: متابعة
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:7279: 10.04 - Driver List — By Area
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:7651: 10.05 - Driver List — All Drivers
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:8397: 10.05A - Driver Filters Overlay
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:7992: 10.11 - Support & Issues
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:7077: 10.12 - Problem Details
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:5608: 10.13 - Assign Replacement Driver
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:5903: 10.14 - Replacement Pickup Location
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:6112: 10.15 - Replacement Pickup Tracking
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:6295: 10.16 - Pickup Summary
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:6509: 10.17 - Notifications
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:6683: 10.18 - Profile & Settings
+📱 Stuff App -> 10 — Dispatcher Operations -> 2259:6867: 10.19 - Logout Confirmation
+📱 Stuff App -> 10 — Dispatcher Operations -> 2090:7538: 10.03 - Assign Driver
+📱 Stuff App -> 10 — Dispatcher Operations -> 2300:5982: 10.06 - Driver Map & Live Monitoring
+📱 Stuff App -> 10 — Dispatcher Operations -> 2300:9831: 11.03 - Duplicate All Drivers
+📱 Stuff App -> 10 — Dispatcher Operations -> 2090:4870: 11.04 - Legacy Delivery Success
+📱 Stuff App -> 10 — Dispatcher Operations -> 2922:6775: iphone 13 & 20
+📱 Stuff App -> 10 — Dispatcher Operations -> 2922:7144: Group 21195
+📱 Stuff App -> 10.02 - Box Details -> 2863:6767: Group 10
+📱 Stuff App -> 10.02 - Box Details -> 2863:6777: Status bar
+📱 Stuff App -> 10.02 - Box Details -> 2863:6778: mainContainer
+📱 Stuff App -> 10.02 - Box Details -> 2863:6806: Group 19944
+📱 Stuff App -> 10.02 - Box Details -> 2863:6844: Group 19954
+📱 Stuff App -> 10.02 - Box Details -> 2863:6884: Group 19980
+📱 Stuff App -> 10.02 - Box Details -> 2863:7033: Group 19976
+📱 Stuff App -> 10.02 - Box Details -> 2863:7039: Group 19977
+📱 Stuff App -> 10.02 - Box Details -> 2863:7047: Group 19981
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2076:1267: Legacy & Loose Assets
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2076:1268: أي تكرارات أو عناصر قديمة/منفصلة محفوظة هنا بدل حذفها، حتى لا نفقد أي شغل.
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2076:1269: Frame
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 1631:2292: 11.01 - Legacy Duplicate QR
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 1632:3880: 11.20 - Loose Group 19973
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 1860:11657: 11.21 - Loose Group 20016
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2004:9969: 11.22 - Loose Group 20126
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2027:5733: 11.32 - Loose Text / Box Photo
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2076:1271: Frame
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2259:7273: 11.23 - Deprecated Dispatcher Add Image
+📱 Stuff App -> 11 — Legacy, Duplicates & Loose Assets -> 2090:1138: 11.24 - Loose Driver Home Asset
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3525: Group 5
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3531: مرحبًا محمد 👋
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3532: جاهز للتوصيل اليوم؟
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3533: Frame 2
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3567: Group 10
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3577: Group 11
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3580: Status bar
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3581: Group 31
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3638: Group 40
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3674: mainContainer
+📱 Stuff App -> 11.02 - Legacy Driver Home -> 2090:3702: Logo
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:3732: 03.01 · Delivery Details
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4179: 03.03 · Current Delivery Map · Variant
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4471: 03.04 · Delivery Delay Details
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4501: 03.05 · Delivery Delay Warning
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4608: 03.06 · Failed Delivery
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4636: 03.07 · Reassignment Request
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4659: 03.08 · Reassignment Sent
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4669: 03.09 · Report a Problem
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2090:4781: 03.10 · Problem Report Sent
+📱 Stuff App -> REFERENCE — Previous Delivery Grouping -> 2279:14846: 03.02 · Current Delivery Map
+📱 Stuff App -> REFERENCE — Previous Account Grouping -> 2090:5637: 05.01 · Profile & Support
+📱 Stuff App -> REFERENCE — Previous Account Grouping -> 2090:6140: 05.04 · Notifications
+📱 Stuff App -> REFERENCE — Previous Account Grouping -> 2090:6240: 05.05 · Performance Overview
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:6843: 06.01 · Dispatcher Dashboard
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:7241: 06.02 · Box Details
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:7753: 06.04 · Driver Details
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:7932: 06.05 · Track Box
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:8052: 06.06 · Driver Performance
+📱 Stuff App -> REFERENCE — Previous Dispatcher Grouping -> 2090:8249: 06.07 · Operations Log
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7513: Codex Image Aug 21, 2026, 12_07_31 AM 1
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7514: mainContainer
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7543: Group 20258
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7600: Status bar
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7601: Group 20216
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7605: Group 20261
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7622: Group 20276
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7743: Group 20226
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7746: Group 20277
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7749: Group 20278
+📱 Stuff App -> 03.01 · Delivery Details -> 2938:7753: Group 20316
+Icons -> natural-food -> 1767:8569: Vector
+Icons -> natural-food -> 1767:8570: Vector
+Icons -> natural-food -> 1767:8571: Vector
+Icons -> natural-food -> 1767:8572: Vector
+Icons -> honey-01 -> 1767:8537: Vector
+Icons -> honey-01 -> 1767:8538: Vector
+Icons -> honey-01 -> 1767:8539: Vector
+Icons -> honey-02 -> 1767:8541: Vector
+Icons -> honey-02 -> 1767:8542: Vector
+Icons -> honey-02 -> 1767:8543: Vector
+Icons -> honey-02 -> 1767:8544: Vector
+Icons -> honey-02 -> 1767:8545: Vector
+Icons -> paella -> 1767:8510: Vector
+Icons -> paella -> 1767:8511: Vector
+Icons -> paella -> 1767:8512: Vector
+Icons -> paella -> 1767:8513: Vector
+Icons -> paella -> 1767:8514: Vector
+Icons -> paella -> 1767:8515: Vector
+Icons -> paella -> 1767:8516: Vector
+Icons -> paella -> 1767:8517: Vector
+Icons -> paella -> 1767:8518: Vector
+Icons -> paella -> 1767:8519: Vector
+Icons -> paella -> 1767:8520: Vector
+Icons -> paella -> 1767:8521: Vector
+Icons -> paella -> 1767:8522: Vector
+Icons -> orange -> 1767:8506: Vector
+Icons -> orange -> 1767:8507: Vector
+Icons -> orange -> 1767:8508: Vector
+Icons -> egg -> 1767:8422: Vector
+Icons -> beef -> 1767:8438: Vector
+Icons -> beef -> 1767:8439: Vector
+Icons -> beef -> 1767:8440: Vector
+Icons -> ham -> 1767:8424: Vector
+Icons -> leafy-green -> 1767:8566: Vector
+Icons -> leafy-green -> 1767:8567: Vector
+Icons -> salad -> 1767:8459: Vector
+Icons -> salad -> 1767:8460: Vector
+Icons -> salad -> 1767:8461: Vector
+Icons -> salad -> 1767:8462: Vector
+Icons -> broccoli -> 1767:8534: Vector
+Icons -> broccoli -> 1767:8535: Vector
+Icons -> shrimp -> 1767:8524: Vector
+Icons -> shrimp -> 1767:8525: Vector
+Icons -> shrimp -> 1767:8526: Vector
+Icons -> cookie -> 1767:8498: Vector
+Icons -> cookie -> 1767:8499: Vector
+Icons -> cookie -> 1767:8500: Vector
+Icons -> cookie -> 1767:8501: Vector
+Icons -> cookie -> 1767:8502: Vector
+Icons -> cookie -> 1767:8503: Vector
+Icons -> cookie -> 1767:8504: Vector
+Icons -> cherry -> 1767:8489: Vector
+Icons -> cherry -> 1767:8490: Vector
+Icons -> cherry -> 1767:8491: Vector
+Icons -> bread-01 -> 1767:8532: Vector
+Icons -> yogurt -> 1767:8528: Vector
+Icons -> yogurt -> 1767:8529: Vector
+Icons -> yogurt -> 1767:8530: Vector
+Icons -> banana -> 1767:8473: Vector
+Icons -> banana -> 1767:8474: Vector
+Icons -> banana -> 1767:8475: Vector
+Icons -> wheat -> 1767:8471: Vector
+Icons -> watermelon -> 1767:8563: Vector
+Icons -> watermelon -> 1767:8564: Vector
+Icons -> citrus -> 1767:8493: Vector
+Icons -> citrus -> 1767:8494: Vector
+Icons -> citrus -> 1767:8495: Vector
+Icons -> citrus -> 1767:8496: Vector
+Icons -> pizza-01 -> 1767:8551: Vector
+Icons -> pizza-01 -> 1767:8552: Vector
+Icons -> pizza-01 -> 1767:8553: Vector
+Icons -> pizza-01 -> 1767:8554: Vector
+Icons -> pizza-01 -> 1767:8555: Vector
+Icons -> drumstick -> 1767:8557: Vector
+Icons -> drumstick -> 1767:8558: Vector
+Icons -> cheese -> 1767:8483: Vector
+Icons -> cheese -> 1767:8484: Vector
+Icons -> cheese -> 1767:8485: Vector
+Icons -> cheese -> 1767:8486: Vector
+Icons -> cheese -> 1767:8487: Vector
+Icons -> mushroom -> 1767:8547: Vector
+Icons -> mushroom -> 1767:8548: Vector
+Icons -> mushroom -> 1767:8549: Vector
+Icons -> egg-fried -> 1767:8560: Vector
+Icons -> egg-fried -> 1767:8561: Vector
+Icons -> carrot -> 1767:8477: Vector
+Icons -> carrot -> 1767:8478: Vector
+Icons -> carrot -> 1767:8479: Vector
+Icons -> carrot -> 1767:8480: Vector
+Icons -> carrot -> 1767:8481: Vector
+Icons -> fish -> 1767:8448: Vector
+Icons -> fish -> 1767:8449: Vector
+Icons -> pie -> 1767:8429: Vector
+Icons -> pie -> 1767:8430: Vector
+Icons -> pie -> 1767:8431: Vector
+Icons -> pie -> 1767:8432: Vector
+Icons -> pie -> 1767:8433: Vector
+Icons -> bean -> 1767:8435: Vector
+Icons -> bean -> 1767:8436: Vector
+Icons -> nut -> 1767:8426: Vector
+Icons -> nut -> 1767:8427: Vector
+Icons -> halal -> 1767:8456: Vector
+Icons -> halal -> 1767:8457: Vector
+Icons -> corn -> 1767:8442: Vector
+Icons -> corn -> 1767:8443: Vector
+Icons -> steak -> 1767:8464: Vector
+Icons -> steak -> 1767:8465: Vector
+Icons -> steak -> 1767:8466: Vector
+Icons -> vegan -> 1767:8468: Vector
+Icons -> vegan -> 1767:8469: Vector
+Icons -> soup -> 1767:8451: Vector
+Icons -> soup -> 1767:8452: Vector
+Icons -> soup -> 1767:8453: Vector
+Icons -> soup -> 1767:8454: Vector
+  -> 01 - Splash / Primary -> 13:24: Group
+  -> 01 - Splash / Primary -> 13:26: Group
+  -> 01 - Splash / Primary -> 13:28: Rectangle
+  -> 01 - Splash / Primary -> 774:2005: Asset 12 1
+  -> 02 - Splash / Alternate -> 25:3178: Group
+  -> 02 - Splash / Alternate -> 25:3180: Group
+  -> 02 - Splash / Alternate -> 25:3182: Rectangle
+  -> 02 - Splash / Alternate -> 774:2114: Layer 2
+  -> 03 - Onboarding / Delivery -> 17:1147: toppng.com-food-png-salad-as-a-healthy-food-ketogenic-vegan-50-healthy-delicious-recipes-449x353 1
+  -> 03 - Onboarding / Delivery -> 13:266: Rectangle 1
+  -> 03 - Onboarding / Delivery -> 1613:3535: تخطي
+  -> 03 - Onboarding / Delivery -> 13:175: Group
+  -> 03 - Onboarding / Delivery -> 13:282: وجباتك الصحية واللذيذة توصلك لي باب بيتك...
+  -> 03 - Onboarding / Delivery -> 13:185: Rectangle
+  -> 03 - Onboarding / Delivery -> 13:250: Group 35
+  -> 03 - Onboarding / Delivery -> 13:268: تخطي
+  -> 04 - Onboarding / Healthy Mood -> 18:1149: t4gag1e6fmeokhs7mt3g58vhbt 1
+  -> 04 - Onboarding / Healthy Mood -> 13:188: Group
+  -> 04 - Onboarding / Healthy Mood -> 13:197: الأكل الصحي يضبط المزاج!
+  -> 04 - Onboarding / Healthy Mood -> 13:198: Rectangle
+  -> 04 - Onboarding / Healthy Mood -> 17:1136: Rectangle 1
+  -> 04 - Onboarding / Healthy Mood -> 13:270: Group 35
+  -> 04 - Onboarding / Healthy Mood -> 13:277: تخطي
+  -> 05 - Onboarding / Welcome -> 13:264: Rectangle 1
+  -> 05 - Onboarding / Welcome -> 17:1145: —Pngtree—healthy food_3776802 1
+  -> 05 - Onboarding / Welcome -> 13:201: Group
+  -> 05 - Onboarding / Welcome -> 13:210: MealMate رفيقك الصحي كل يوم.
+  -> 05 - Onboarding / Welcome -> 13:211: Rectangle
+  -> 05 - Onboarding / Welcome -> 13:238: تخطي
+  -> 05 - Onboarding / Welcome -> 13:239: Group 35
+  -> Home screen -> 45:480: Rectangle 22
+  -> Home screen -> 45:482: Splach screen
+  -> Home screen -> 45:483: Rectangle 5442
+  -> Home screen -> 45:484: 1
+  -> Home screen -> 45:487: Rectangle 22
+  -> Home screen -> 45:488: Home screen
+  -> Home screen -> 45:489: Rectangle 5442
+  -> Home screen -> 45:490: 1
+  -> Sign in -> 89:1923: Rectangle 22
+  -> Sign in -> 89:1924: Sign in
+  -> Sign in -> 89:1925: Rectangle 5442
+  -> Biometric -> 1614:8478: Rectangle 22
+  -> Biometric -> 1614:8479: Biometric
+  -> Biometric -> 1614:8480: Rectangle 5442
+  -> Create ACC -> 160:1865: Rectangle 22
+  -> Create ACC -> 160:1866: Create ACC
+  -> Create ACC -> 160:1867: Rectangle 5442
+  -> OTP -> 160:1963: Rectangle 22
+  -> OTP -> 160:1964: OTP
+  -> OTP -> 160:1965: Rectangle 5442
+  -> OTP -> 160:2018: Rectangle 22
+  -> OTP -> 160:2019: OTP
+  -> OTP -> 160:2020: Rectangle 5442
+  -> OTP -> 160:2003: Rectangle 22
+  -> OTP -> 160:2004: OTP
+  -> OTP -> 160:2005: Rectangle 5442
+  -> Profile -> 774:2244: Rectangle 22
+  -> Profile -> 774:2245: Profile
+  -> Profile -> 774:2246: Rectangle 5442
+  -> notification -> 1732:6771: Rectangle 22
+  -> notification -> 1732:6772: notification
+  -> notification -> 1732:6773: Rectangle 5442
+  -> notification -> 1736:8206: Rectangle 22
+  -> notification -> 1736:8207: loading Screen
+  -> notification -> 1736:8208: Rectangle 5442
+  -> Nav Bar -> 1736:7074: Rectangle 22
+  -> Nav Bar -> 1736:7075: Nav Bar
+  -> Nav Bar -> 1736:7076: Rectangle 5442
+  -> Home screen -> 77:917: Rectangle 22
+  -> Home screen -> 77:918: Offers Screen
+  -> Home screen -> 77:919: Rectangle 5442
+  -> Home screen -> 77:920: 3
+  -> Home screen -> 77:912: Rectangle 22
+  -> Home screen -> 77:913: Home screen
+  -> Home screen -> 77:914: Rectangle 5442
+  -> Home screen -> 77:915: 2
+  -> Side-bar -> 436:1653: Rectangle 22
+  -> Side-bar -> 436:1654: Side-bar
+  -> Side-bar -> 436:1655: Rectangle 5442
+  -> Home Screen  -> 1613:6648: Rectangle 22
+  -> Home Screen  -> 1613:6649: Home Screen
+  -> Home Screen  -> 1613:6650: Rectangle 5442
+  -> Search Logic -> 877:1573: Rectangle 22
+  -> Search Logic -> 877:1574: Search Logic
+  -> Search Logic -> 877:1575: Rectangle 5442
+  -> Family Logic -> 1286:6945: Rectangle 22
+  -> Family Logic -> 1286:6946: Family Logic
+  -> Family Logic -> 1286:6947: Rectangle 5442
+  -> bundle New Logic -> 1509:6779: Rectangle 22
+  -> bundle New Logic -> 1509:6780: bundle New Logic
+  -> bundle New Logic -> 1509:6781: Rectangle 5442
+  -> Hook -> I77:939;14:779: Line
+  -> Hook -> I77:939;14:780: Line
+  -> Hook -> I77:939;14:781: Arrow
+  -> Hook -> I77:939;14:782: Circle
+  -> Hook -> I77:883;14:779: Line
+  -> Hook -> I77:883;14:780: Line
+  -> Hook -> I77:883;14:781: Arrow
+  -> Hook -> I77:883;14:782: Circle
+  -> Modal -> I77:906;16:1048: Vector
+  -> Modal -> I77:906;16:1045: Label
+  -> Modal -> I77:946;16:1048: Vector
+  -> Modal -> I77:946;16:1045: Label
+  -> Regular -> I77:1436;14:598: Line
+  -> Regular -> I77:1436;14:605: Arrow
+  -> Regular -> I77:1436;14:607: Circle
+  -> 06 - Auth / Sign In -> 78:8134: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+  -> 06 - Auth / Sign In -> 78:8144: Rectangle 5443
+  -> 06 - Auth / Sign In -> 89:1011: Button
+  -> 06 - Auth / Sign In -> 89:1012: Dont have an account
+  -> 06 - Auth / Sign In -> 78:8146: Sign In To Your Account
+  -> 06 - Auth / Sign In -> 78:8139: مرحباً بك في
+  -> 06 - Auth / Sign In -> 78:8140: MealMate
+  -> 06 - Auth / Sign In -> 78:8141: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+  -> 06 - Auth / Sign In -> 89:960: رقم الجوال
+  -> 06 - Auth / Sign In -> 89:961: Group 18195
+  -> 06 - Auth / Sign In -> 89:970: كلمة المرور
+  -> 06 - Auth / Sign In -> 89:971: Group 18196
+  -> 06 - Auth / Sign In -> 89:979: نسيت كلمة المرور؟
+  -> 06 - Auth / Sign In -> 89:980: Group 18197
+  -> 06 - Auth / Sign In -> 89:983: Button
+  -> 06 - Auth / Sign In -> 160:1750: Home Indicator
+  -> 07 - Auth / Create Account -> 160:1753: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+  -> 07 - Auth / Create Account -> 160:1754: Rectangle 5443
+  -> 07 - Auth / Create Account -> 160:1800: Group 18262
+  -> 07 - Auth / Create Account -> 160:1757: Sign In To Your Account
+  -> 07 - Auth / Create Account -> 160:1758: مرحباً بك في
+  -> 07 - Auth / Create Account -> 160:1759: MealMate
+  -> 07 - Auth / Create Account -> 160:1760: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+  -> 07 - Auth / Create Account -> 160:1813: Frame 18169
+  -> 07 - Auth / Create Account -> 160:1781: Group 18197
+  -> 07 - Auth / Create Account -> 160:1784: Button
+  -> 07 - Auth / Create Account -> 160:1789: Home Indicator
+  -> 08 - Auth / Reset Password OTP -> 160:1817: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+  -> 08 - Auth / Reset Password OTP -> 160:1818: Rectangle 5443
+  -> 08 - Auth / Reset Password OTP -> 160:1823: مرحباً بك في
+  -> 08 - Auth / Reset Password OTP -> 160:1824: MealMate
+  -> 08 - Auth / Reset Password OTP -> 160:1825: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+  -> 08 - Auth / Reset Password OTP -> 160:1858: Button
+  -> 08 - Auth / Reset Password OTP -> 160:1863: Home Indicator
+  -> 08 - Auth / Reset Password OTP -> 160:1924: Frame
+  -> 08 - Auth / Reset Password OTP -> 160:1929: Frame
+  -> 08 - Auth / Reset Password OTP -> 160:1942: Frame
+  -> 09 - Auth / Forgot Password -> 160:2022: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+  -> 09 - Auth / Forgot Password -> 160:2023: Rectangle 5443
+  -> 09 - Auth / Forgot Password -> 160:2070: Group 18266
+  -> 09 - Auth / Forgot Password -> 160:2024: مرحباً بك في
+  -> 09 - Auth / Forgot Password -> 160:2025: MealMate
+  -> 09 - Auth / Forgot Password -> 160:2026: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+  -> 09 - Auth / Forgot Password -> 160:2027: Button
+  -> 09 - Auth / Forgot Password -> 160:2031: Home Indicator
+  -> 09 - Auth / Forgot Password -> 160:2032: Frame
+  -> 10 - Auth / New Password -> 160:1967: ChatGPT Image Jun 22, 2026, 01_57_54 AM 1
+  -> 10 - Auth / New Password -> 160:1968: Rectangle 5443
+  -> 10 - Auth / New Password -> 160:2006: Group 18263
+  -> 10 - Auth / New Password -> 160:1969: مرحباً بك في
+  -> 10 - Auth / New Password -> 160:1970: MealMate
+  -> 10 - Auth / New Password -> 160:1971: سجل دخولك للوصول الى خطتك الغذائية ومتابعة أهدافك الصحية
+  -> 10 - Auth / New Password -> 160:1972: Button
+  -> 10 - Auth / New Password -> 160:1976: Home Indicator
+  -> 10 - Auth / New Password -> 160:1977: Frame
+  -> Curve -> I89:1913;14:575: Vector 31
+  -> Curve -> I89:1913;14:565: Arrow
+  -> Curve -> I89:1913;14:566: Circle
+  -> 11 - Offers / Redeem Offer -> 160:579: Home Indicator
+  -> 11 - Offers / Redeem Offer -> 160:580: Group 1
+  -> 11 - Offers / Redeem Offer -> 160:587: Screen title
+  -> 11 - Offers / Redeem Offer -> 160:588: Status bar
+  -> 11 - Offers / Redeem Offer -> 160:589: Carousel arrow
+  -> 11 - Offers / Redeem Offer -> 160:591: Offer details title
+  -> 11 - Offers / Redeem Offer -> 160:592: Choose plan title
+  -> 11 - Offers / Redeem Offer -> 160:593: mingcute:close-fill
+  -> 11 - Offers / Redeem Offer -> 160:597: Deal alert container
+  -> 11 - Offers / Redeem Offer -> 160:618: Offer details container
+  -> 11 - Offers / Redeem Offer -> 160:623: Discount info container
+  -> 11 - Offers / Redeem Offer -> 160:626: Offer duration container
+  -> 11 - Offers / Redeem Offer -> 160:636: Discount code container
+  -> 11 - Offers / Redeem Offer -> 160:650: Offer terms container
+  -> 11 - Offers / Redeem Offer -> 160:655: Package container 3
+  -> 11 - Offers / Redeem Offer -> 160:1424: Plan description 3
+  -> 11 - Offers / Redeem Offer -> 160:668: Total container
+  -> 11 - Offers / Redeem Offer -> 160:674: Secure payment container
+  -> 11 - Offers / Redeem Offer -> 160:678: mdi:tag-outline
+  -> 11 - Offers / Redeem Offer -> 160:680: Package container 2
+  -> 11 - Offers / Redeem Offer -> 160:1426: Plan description 2
+  -> 11 - Offers / Redeem Offer -> 160:691: Package container 1
+  -> 11 - Offers / Redeem Offer -> 160:1718: Plan description 1
+  -> 11 - Offers / Redeem Offer -> 160:702: ic:sharp-arrow-back
+  -> 11 - Offers / Redeem Offer -> 1110:11028: Button
+  -> 12 - Offers / Activation Success -> 160:705: Home Indicator
+  -> 12 - Offers / Activation Success -> 160:706: Group 1
+  -> 12 - Offers / Activation Success -> 160:713: Offer activation message text
+  -> 12 - Offers / Activation Success -> 160:714: Status bar
+  -> 12 - Offers / Activation Success -> 160:718: mingcute:close-fill
+  -> 12 - Offers / Activation Success -> 160:743: ic:sharp-arrow-back
+  -> 12 - Offers / Activation Success -> 160:745: Offer code section background
+  -> 12 - Offers / Activation Success -> 160:746: Order summary container
+  -> 12 - Offers / Activation Success -> 160:760: Copy code button background
+  -> 12 - Offers / Activation Success -> 160:761: solar:copy-outline
+  -> 12 - Offers / Activation Success -> 160:763: Copy code button text
+  -> 12 - Offers / Activation Success -> 160:764: Offer code title
+  -> 12 - Offers / Activation Success -> 160:765: Offer code container
+  -> 12 - Offers / Activation Success -> 160:767: lets-icons:ticket-use
+  -> 12 - Offers / Activation Success -> 160:770: Offer details section container
+  -> 12 - Offers / Activation Success -> 160:794: Offer details section title
+  -> 12 - Offers / Activation Success -> 160:1381: CTA container
+  -> 12 - Offers / Activation Success -> 160:1724: Carousel arrow
+  -> 12 - Offers / Activation Success -> 160:1726: Deal alert container
+  -> 13 - Offers / Browse -> 160:933: Home Indicator
+  -> 13 - Offers / Browse -> 160:934: Group 1
+  -> 13 - Offers / Browse -> 160:941: Iconly/Bold/Arrow - Left
+  -> 13 - Offers / Browse -> 160:942: العروض
+  -> 13 - Offers / Browse -> 160:943: Notification icon
+  -> 13 - Offers / Browse -> 160:944: Frame 18164
+  -> 13 - Offers / Browse -> 160:969: Status bar
+  -> 13 - Offers / Browse -> 160:970: Ellipse 30
+  -> 13 - Offers / Browse -> 160:971: Carousel arrow
+  -> 13 - Offers / Browse -> 160:973: Frame
+  -> 13 - Offers / Browse -> 160:979: عروض مميزة
+  -> 13 - Offers / Browse -> 160:980: عروض المطاعم
+  -> 13 - Offers / Browse -> 160:981: عرض الكل
+  -> 13 - Offers / Browse -> 160:982: Frame 18167
+  -> 13 - Offers / Browse -> 160:1026: Arrow 1
+  -> 13 - Offers / Browse -> 160:1027: Rectangle 2885
+  -> 13 - Offers / Browse -> 160:1028: bxs:offer
+  -> 13 - Offers / Browse -> 160:1030: Rectangle 2886
+  -> 13 - Offers / Browse -> 160:1031: اطلب الآن
+  -> 13 - Offers / Browse -> 160:1032: Group 18177
+  -> 13 - Offers / Browse -> 160:1044: 222_030906~2 1
+  -> 13 - Offers / Browse -> 160:1045: 222_030906~2 3
+  -> 13 - Offers / Browse -> 160:1046: 222_030906~2 2
+  -> 13 - Offers / Browse -> 160:1047: 1781914850421 1
+  -> 13 - Offers / Browse -> 160:1048: Rectangle 2891
+  -> 13 - Offers / Browse -> 160:1049: 1781915988951 1
+  -> 13 - Offers / Browse -> 160:1050: ادع أصدقائك واحصل على خصم 30%
+  -> 13 - Offers / Browse -> 160:1051: Rectangle 2892
+  -> 13 - Offers / Browse -> 160:1052: دعوة الأصدقاء
+  -> 13 - Offers / Browse -> 160:1053: Frame 18165
+  -> 13 - Offers / Browse -> 160:1075: Rectangle 2893
+  -> 13 - Offers / Browse -> 160:1076: McDonald's_Golden_Arches 1
+  -> 13 - Offers / Browse -> 160:1078: Rectangle 2894
+  -> 13 - Offers / Browse -> 160:1079: Burger_King_logo_(1999–2020).svg 1
+  -> 13 - Offers / Browse -> 160:1080: 222_030906~2 4
+  -> 13 - Offers / Browse -> 160:1081: 222_030906~2 5
+  -> 13 - Offers / Browse -> 160:1082: 1781916172286 1
+  -> 13 - Offers / Browse -> 160:1083: Group 18192
+  -> 13 - Offers / Browse -> 160:1086: Group 18196
+  -> 13 - Offers / Browse -> 160:1089: Group 18195
+  -> 13 - Offers / Browse -> 160:1093: Group 18197
+  -> 13 - Offers / Browse -> 160:1097: ChatGPT Image Jun 21, 2026, 10_43_54 PM 1
+  -> 13 - Offers / Browse -> 160:1098: Rectangle 2887
+  -> 13 - Offers / Browse -> 160:1099: 🖼 Import image
+  -> 13 - Offers / Browse -> 160:1100: Vector
+  -> 13 - Offers / Browse -> 160:1101: Group 18192
+  -> 13 - Offers / Browse -> 160:1104: Group 18195
+  -> 13 - Offers / Browse -> 160:1108: Infomation
+  -> 13 - Offers / Browse -> 160:1124: Infomation
+  -> 13 - Offers / Browse -> 160:1140: Infomation
+  -> 13 - Offers / Browse -> 160:1156: Category
+  -> 13 - Offers / Browse -> 160:1164: Category
+  -> 13 - Offers / Browse -> 160:1172: Category
+  -> 13 - Offers / Browse -> 160:1180: Category
+  -> 13 - Offers / Browse -> 160:1182: Category
+  -> 13 - Offers / Browse -> 160:1184: Category
+  -> 13 - Offers / Browse -> 160:1186: Name
+  -> 13 - Offers / Browse -> 160:1189: Name
+  -> 13 - Offers / Browse -> 160:1192: Name
+  -> 13 - Offers / Browse -> 160:1195: Group 18189
+  -> 13 - Offers / Browse -> 160:1198: Group 18198
+  -> 13 - Offers / Browse -> 160:1201: Group 18199
+  -> 13 - Offers / Browse -> 160:1204: mynaui:star-solid
+  -> 13 - Offers / Browse -> 160:1206: Rectangle 5447
+  -> 13 - Offers / Browse -> 160:1207: Rectangle 5448
+  -> 13 - Offers / Browse -> 160:1208: خصم 20% على الباقات الشهرية
+  -> 13 - Offers / Browse -> 160:1209: mingcute:close-fill
+  -> 13 - Offers / Browse -> 160:1213: Group 18218
+  -> 13 - Offers / Browse -> 160:1219: Offer details container
+  -> 13 - Offers / Browse -> 160:1224: button
+  -> 13 - Offers / Browse -> 160:1227: Line 7
+  -> 13 - Offers / Browse -> 160:1228: Offer code container
+  -> 13 - Offers / Browse -> 160:1234: Offer duration container
+  -> 13 - Offers / Browse -> 160:1244: lets-icons:ticket-use
+  -> 13 - Offers / Browse -> 160:1247: رمز الخصم
+  -> 13 - Offers / Browse -> 160:1248: Group 18227
+  -> 13 - Offers / Browse -> 160:1252: Group 18228
+  -> 13 - Offers / Browse -> 160:1257: Offer terms container
+  -> 13 - Offers / Browse -> 160:1262: 1781914850421 1
+  -> 13 - Offers / Browse -> 160:1263: Group 18231
+  -> Regular -> I160:1382;14:598: Line
+  -> Regular -> I160:1382;14:605: Arrow
+  -> Regular -> I160:1382;14:607: Circle
+  -> Regular -> I160:1394;14:598: Line
+  -> Regular -> I160:1394;14:605: Arrow
+  -> Regular -> I160:1394;14:607: Circle
+  -> Regular -> I160:1404;14:598: Line
+  -> Regular -> I160:1404;14:605: Arrow
+  -> Regular -> I160:1404;14:607: Circle
+  -> Regular -> I160:1414;14:598: Line
+  -> Regular -> I160:1414;14:605: Arrow
+  -> Regular -> I160:1414;14:607: Circle
+  -> Modal -> I160:1389;16:1048: Vector
+  -> Modal -> I160:1389;16:1045: Label
+  -> Modal -> I160:1395;16:1048: Vector
+  -> Modal -> I160:1395;16:1045: Label
+  -> Modal -> I160:1405;16:1048: Vector
+  -> Modal -> I160:1405;16:1045: Label
+  -> Modal -> I160:1415;16:1048: Vector
+  -> Modal -> I160:1415;16:1045: Label
+  -> 14 - Home / Side Menu Open -> 409:763: Group 1
+  -> 14 - Home / Side Menu Open -> 409:770: Home Indicator
+  -> 14 - Home / Side Menu Open -> 409:771: Rectangle 8
+  -> 14 - Home / Side Menu Open -> 409:772: Home Screen
+  -> 14 - Home / Side Menu Open -> 409:928: Group 18530
+  -> 14 - Home / Side Menu Open -> 409:944: Group 18529
+  -> 14 - Home / Side Menu Open -> 409:1036: fa7-solid:xmark-circle
+  -> 14 - Home / Side Menu Open -> 717:2043: Layer 1
+  -> 14 - Home / Side Menu Open -> 979:1760: Group 19150
+  -> mainContainer -> 436:1661: tabPills
+  -> 16 - Meals / Calendar Month -> 560:1646: Rectangle 5585
+  -> 16 - Meals / Calendar Month -> 560:1647: Status bar
+  -> 16 - Meals / Calendar Month -> 560:1648: Iconly/Bold/Arrow - Left
+  -> 16 - Meals / Calendar Month -> 560:1649: تقويم الوجبات
+  -> 16 - Meals / Calendar Month -> 560:1650: Notification icon
+  -> 16 - Meals / Calendar Month -> 560:1680: Calendar
+  -> 16 - Meals / Calendar Month -> 564:4326: Group 18635
+  -> 16 - Meals / Calendar Month -> 564:3450: Group 18624
+  -> 16 - Meals / Calendar Month -> 564:3441: Group 18623
+  -> 16 - Meals / Calendar Month -> 560:1861: Group 18624
+  -> 16 - Meals / Calendar Month -> 560:1869: Group 18573
+  -> 16 - Meals / Calendar Month -> 560:2025: Group 18626
+  -> 16 - Meals / Calendar Month -> 560:2026: Group 18627
+  -> 16 - Meals / Calendar Month -> 560:2107: Group 18628
+  -> 16 - Meals / Calendar Month -> 560:2188: mainContainer
+  -> 17 - Meals / Calendar Day Details -> 564:3931: Rectangle 5585
+  -> 17 - Meals / Calendar Day Details -> 564:3932: Status bar
+  -> 17 - Meals / Calendar Day Details -> 564:3933: Iconly/Bold/Arrow - Left
+  -> 17 - Meals / Calendar Day Details -> 564:3934: تقويم الوجبات
+  -> 17 - Meals / Calendar Day Details -> 564:3935: Notification icon
+  -> 17 - Meals / Calendar Day Details -> 564:3936: Calendar
+  -> 17 - Meals / Calendar Day Details -> 564:3966: Group 18624
+  -> 17 - Meals / Calendar Day Details -> 564:3970: Group 18623
+  -> 17 - Meals / Calendar Day Details -> 564:3975: Group 18624
+  -> 17 - Meals / Calendar Day Details -> 564:3983: Group 18573
+  -> 17 - Meals / Calendar Day Details -> 564:4007: Group 18626
+  -> 17 - Meals / Calendar Day Details -> 564:4088: Group 18627
+  -> 17 - Meals / Calendar Day Details -> 564:4169: Group 18628
+  -> 17 - Meals / Calendar Day Details -> 564:4250: mainContainer
+  -> 17 - Meals / Calendar Day Details -> 564:4321: Group 18635
+  -> 17 - Meals / Calendar Day Details -> 564:4305: material-symbols:more
+  -> 19 - Meals / Ingredients & Sources -> 562:3090: Cover Image
+  -> 19 - Meals / Ingredients & Sources -> 562:3092: Base
+  -> 19 - Meals / Ingredients & Sources -> 575:6364: نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة وطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.
+  -> 19 - Meals / Ingredients & Sources -> 573:6357: Group 18644
+  -> 19 - Meals / Ingredients & Sources -> 562:3093: Frame 56
+  -> 19 - Meals / Ingredients & Sources -> 562:3235: Hot Coffees
+  -> 19 - Meals / Ingredients & Sources -> 562:3237: Base
+  -> 19 - Meals / Ingredients & Sources -> 575:6408: Group 18653
+  -> 19 - Meals / Ingredients & Sources -> 562:3261: Line
+  -> 19 - Meals / Ingredients & Sources -> 562:3262: Name
+  -> 19 - Meals / Ingredients & Sources -> 564:4404: Group 18638
+  -> 19 - Meals / Ingredients & Sources -> 564:4400: THE PROTEIN KITCHEN
+  -> 19 - Meals / Ingredients & Sources -> 562:3267: Line
+  -> Preview 3 -> 604:1452: AD22-15
+  -> Ads  Banners -> 604:1480: Rectangle 22
+  -> Ads  Banners -> 604:1481: Ads Banners
+  -> Ads  Banners -> 604:1482: Rectangle 5442
+  -> Ads  Banners -> 604:1483: -
+  -> Wallet Logic -> 1613:3542: Rectangle 22
+  -> Wallet Logic -> 1613:3543: Wallet Logic
+  -> Wallet Logic -> 1613:3544: Rectangle 5442
+  -> Wallet Logic -> 1613:3545: -
+  -> old Wallet  -> 1613:3982: Rectangle 22
+  -> old Wallet  -> 1613:3983: old
+  -> old Wallet  -> 1613:3984: Rectangle 5442
+  -> old Wallet  -> 1613:3985: -
+  -> 24 - Delivery / Choose Home Location -> 604:2156: Mask group
+  -> 24 - Delivery / Choose Home Location -> 604:2160: Frame 88
+  -> 24 - Delivery / Choose Home Location -> 604:2168: Bars / Home Indicator / iPhone / On Light - Portrait
+  -> 24 - Delivery / Choose Home Location -> 604:2169: Group 8
+  -> 24 - Delivery / Choose Home Location -> 604:2173: Frame 115
+  -> 24 - Delivery / Choose Home Location -> 637:3024: mingcute:location-fill
+  -> 24 - Delivery / Choose Home Location -> 637:3116: Group 18708
+  -> 24 - Delivery / Choose Home Location -> 1618:8709: Group 19971
+  -> 24 - Delivery / Choose Home Location -> 1351:3389: mainContainer
+  -> 24 - Delivery / Choose Home Location -> 1618:8718: Group 19973
+  -> Group 18706 -> 1519:11339: Rectangle 5619
+  -> Group 18706 -> 1519:11340: ابحث عن العنوان
+  -> Group 18706 -> 1519:11341: ic:round-search
+  -> Frame 107 -> 1522:11393: Group 19573
+  -> Frame 107 -> 1522:11396: Group 19575
+  -> Frame 107 -> 1522:11401: مثال: شارع المثنى، حي السرة، قطعة 5، منزل 23، الكويت
+  -> 25 - Meals / Browse Restaurants -> 605:1689: Group 18658
+  -> 25 - Meals / Browse Restaurants -> 605:1805: Status bar
+  -> Group 18637 -> 630:1598: AD22-15
+  -> Group 18638 -> 630:1630: AD22-15
+  -> Group 18645 -> 630:1656: Group 18637
+  -> Group 18645 -> 630:1682: boxicons:badge-filled
+  -> Group 18645 -> 630:1687: Group 18644
+  -> Group 18651 -> 630:1701: Preview 9
+  -> Group 18651 -> 630:1721: Group 18650
+  -> Preview 6 -> 630:1734: AD21-02
+  -> Group 18652 -> 631:1759: Preview 9
+  -> Group 18653 -> 631:1789: AD22-15
+  -> Preview 9 -> 631:1820: AD21-10
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3042: Rectangle 5585
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3043: Status bar
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3044: Iconly/Bold/Arrow - Left
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3045: تقويم الوجبات
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3046: Notification icon
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3047: Calendar
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3077: Group 18624
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3081: Group 18623
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3360: mainContainer
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3389: Group 18635
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3393: material-symbols:more
+  -> 26 - Meals / Calendar Restaurant Selection -> 665:3417: Group 18636
+  -> 26 - Meals / Calendar Restaurant Selection -> 986:2583: Group 18559
+  -> Regular -> I665:3433;14:598: Line
+  -> Regular -> I665:3433;14:605: Arrow
+  -> Regular -> I665:3433;14:607: Circle
+  -> Regular -> I665:3440;14:598: Line
+  -> Regular -> I665:3440;14:605: Arrow
+  -> Regular -> I665:3440;14:607: Circle
+  -> 27 - Meals / Meal Details -> 665:3447: ChatGPT Image Jul 10, 2026, 06_12_03 PM 1
+  -> 27 - Meals / Meal Details -> 665:3449: Rectangle 5613
+  -> 27 - Meals / Meal Details -> 774:2225: Group 18835
+  -> 27 - Meals / Meal Details -> 665:3448: Group 18699
+  -> 27 - Meals / Meal Details -> 774:2179: Frame 18657
+  -> 27 - Meals / Meal Details -> 774:2222: Group 18833
+  -> 27 - Meals / Meal Details -> 774:2223: Group 18834
+  -> 27 - Meals / Meal Details -> 774:2221: Group 18832
+  -> 27 - Meals / Meal Details -> 774:2219: Group 18830
+  -> 27 - Meals / Meal Details -> 774:2212: Group 18823
+  -> 27 - Meals / Meal Details -> 774:2213: Group 18824
+  -> 27 - Meals / Meal Details -> 665:3608: Group 18705
+  -> Regular -> I665:3622;14:598: Line
+  -> Regular -> I665:3622;14:605: Arrow
+  -> Regular -> I665:3622;14:607: Circle
+  -> 30 - Profile / Overview -> 687:1425: Home Indicator
+  -> 30 - Profile / Overview -> 687:1447: Status bar
+  -> 30 - Profile / Overview -> 687:1448: Rectangle 5581
+  -> 30 - Profile / Overview -> 687:1449: Group 18658
+  -> 30 - Profile / Overview -> 687:1459: Group 18660
+  -> 30 - Profile / Overview -> 687:1477: Group 18665
+  -> 30 - Profile / Overview -> 687:1479: Group 18699
+  -> 30 - Profile / Overview -> 687:1493: Group 18700
+  -> 30 - Profile / Overview -> 687:1522: Group 18698
+  -> 30 - Profile / Overview -> 687:1530: Group 18697
+  -> 30 - Profile / Overview -> 687:1536: Group 18712
+  -> 30 - Profile / Overview -> 717:1583: Asset 8 1
+  -> 30 - Profile / Overview -> 2176:5005: Home Indicator
+  -> 30 - Profile / Overview -> 2176:5006: Status bar
+  -> 30 - Profile / Overview -> 2176:5008: Group 18658
+  -> 30 - Profile / Overview -> 2176:5018: Group 18660
+  -> 30 - Profile / Overview -> 2176:5200: Frame 1000003800
+  -> 30 - Profile / Overview -> 2176:5152: Asset 8 1
+  -> Group 18708 -> 1286:6179: إدارة الاشتراك العائلي
+  -> Group 18708 -> 1286:6180: إدارة افراد عائلتك واشتراكك العائلي
+  -> Group 18708 -> 1286:6181: Group 18703
+  -> Group 18708 -> 1286:6186: Vector
+  -> 31 - Profile / App Settings -> 697:1429: Home Indicator
+  -> 31 - Profile / App Settings -> 697:1451: Status bar
+  -> 31 - Profile / App Settings -> 697:1452: إعدادات التطبيق
+  -> 31 - Profile / App Settings -> 697:1453: Iconly/Bold/Arrow - Left
+  -> 31 - Profile / App Settings -> 697:1454: Group 18740
+  -> 31 - Profile / App Settings -> 697:1493: Group 18741
+  -> 31 - Profile / App Settings -> 697:1532: Group 18742
+  -> 31 - Profile / App Settings -> 697:1582: Group 18743
+  -> 32 - Profile / Security & Privacy -> 697:1606: Home Indicator
+  -> 32 - Profile / Security & Privacy -> 697:1628: Status bar
+  -> 32 - Profile / Security & Privacy -> 697:1629: الأمان والخصوصية
+  -> 32 - Profile / Security & Privacy -> 697:1630: Group 18731
+  -> 32 - Profile / Security & Privacy -> 697:1673: Group 18737
+  -> 32 - Profile / Security & Privacy -> 697:1724: Iconly/Bold/Arrow - Left
+  -> 32 - Profile / Security & Privacy -> 697:1725: Button
+  -> 32 - Profile / Security & Privacy -> 697:1732: Group 18723
+  -> 32 - Profile / Security & Privacy -> 697:1742: Group 18724
+  -> 33 - Delivery / Saved Addresses -> 768:1633: Rectangle 5635
+  -> 33 - Delivery / Saved Addresses -> 768:1634: Home Indicator
+  -> 33 - Delivery / Saved Addresses -> 768:1656: Status bar
+  -> 33 - Delivery / Saved Addresses -> 768:1657: العناوين
+  -> 33 - Delivery / Saved Addresses -> 768:1658: Iconly/Bold/Arrow - Left
+  -> 33 - Delivery / Saved Addresses -> 768:1659: Button
+  -> 33 - Delivery / Saved Addresses -> 768:1664: العناوين المحفوظة
+  -> 33 - Delivery / Saved Addresses -> 768:1665: تفضيلات التوصيل
+  -> 33 - Delivery / Saved Addresses -> 768:1666: Group 18759
+  -> 33 - Delivery / Saved Addresses -> 768:1683: التواصل عند الوصول
+  -> 33 - Delivery / Saved Addresses -> 768:1686: سنرسل لك إشعاراً عند وصول المندوب
+  -> 33 - Delivery / Saved Addresses -> 768:1688: Rectangle 5636
+  -> 33 - Delivery / Saved Addresses -> 768:1690: Group 18760
+  -> 33 - Delivery / Saved Addresses -> 768:1706: Group 18761
+  -> 33 - Delivery / Saved Addresses -> 768:1713: tabler:home-filled
+  -> 33 - Delivery / Saved Addresses -> 768:1715: tabler:home-filled
+  -> 33 - Delivery / Saved Addresses -> 768:1717: ix:work-case-filled
+  -> 33 - Delivery / Saved Addresses -> 768:1719: ri:map-pin-fill
+  -> 33 - Delivery / Saved Addresses -> 768:1721: mynaui:bell-solid
+  -> 33 - Delivery / Saved Addresses -> 979:1772: Group 19157
+  -> 33 - Delivery / Saved Addresses -> 979:1774: Group 19159
+  -> 33 - Delivery / Saved Addresses -> 768:1729: ...
+  -> 33 - Delivery / Saved Addresses -> 768:1730: ...
+  -> 33 - Delivery / Saved Addresses -> 768:1731: ...
+  -> 33 - Delivery / Saved Addresses -> 768:1732: lets-icons:check-fill
+  -> 33 - Delivery / Saved Addresses -> 979:1771: Group 19156
+  -> 33 - Delivery / Saved Addresses -> 768:1736: file_00000000e09071f49499b4e3de1a6e06 1
+  -> 34 - Profile / Health Goals -> 768:1755: Home Indicator
+  -> 34 - Profile / Health Goals -> 768:1777: Status bar
+  -> 34 - Profile / Health Goals -> 768:1778: أهدافي الصحية
+  -> 34 - Profile / Health Goals -> 768:1779: Iconly/Bold/Arrow - Left
+  -> 34 - Profile / Health Goals -> 768:1780: Button
+  -> 34 - Profile / Health Goals -> 768:1800: Group 18752
+  -> 34 - Profile / Health Goals -> 768:1815: Group 18756
+  -> 34 - Profile / Health Goals -> 768:1838: مستوى النشاط 
+  -> 34 - Profile / Health Goals -> 768:1873: 1783975586843 1
+  -> 34 - Profile / Health Goals -> 768:1874: Group 18806
+  -> 35 - Delivery / Addresses -> 860:1500: Rectangle 5635
+  -> 35 - Delivery / Addresses -> 860:1501: Home Indicator
+  -> 35 - Delivery / Addresses -> 860:1502: mainContainer
+  -> 35 - Delivery / Addresses -> 860:1523: Status bar
+  -> 35 - Delivery / Addresses -> 860:1524: العناوين
+  -> 35 - Delivery / Addresses -> 860:1525: BackButton
+  -> 35 - Delivery / Addresses -> 860:1526: Button
+  -> 35 - Delivery / Addresses -> 860:1531: العناوين المحفوظة
+  -> 35 - Delivery / Addresses -> 860:1532: تفضيلات التوصيل
+  -> 35 - Delivery / Addresses -> 860:1533: Group 18759
+  -> 35 - Delivery / Addresses -> 860:1550: التواصل عند الوصول
+  -> 35 - Delivery / Addresses -> 860:1551: إضافة عنوان جديد
+  -> 35 - Delivery / Addresses -> 860:1552: اترك الطلب عند الباب
+  -> 35 - Delivery / Addresses -> 860:1553: سنرسل لك إشعاراً عند وصول المندوب
+  -> 35 - Delivery / Addresses -> 860:1554: ضع الطلب في مكان آمن عند الباب
+  -> 35 - Delivery / Addresses -> 860:1555: Rectangle 5636
+  -> 35 - Delivery / Addresses -> 860:1556: Rectangle 5639
+  -> 35 - Delivery / Addresses -> 860:1557: Group 18760
+  -> 35 - Delivery / Addresses -> 860:1573: Group 18761
+  -> 35 - Delivery / Addresses -> 860:1577: Rectangle 5641
+  -> 35 - Delivery / Addresses -> 860:1578: Rectangle 5607
+  -> 35 - Delivery / Addresses -> 860:1579: قد تختلف الوجبات والمطاعم المتاحة بناءً على منطقة التوصيل
+  -> 35 - Delivery / Addresses -> 860:1580: tabler:home-filled
+  -> 35 - Delivery / Addresses -> 860:1582: tabler:home-filled
+  -> 35 - Delivery / Addresses -> 860:1584: ix:work-case-filled
+  -> 35 - Delivery / Addresses -> 860:1588: mynaui:bell-solid
+  -> 35 - Delivery / Addresses -> 860:1590: material-symbols:shopping-bag
+  -> 35 - Delivery / Addresses -> 860:1592: mdi:plus-circle
+  -> 35 - Delivery / Addresses -> 860:1594: material-symbols:info-rounded
+  -> 35 - Delivery / Addresses -> 860:1596: ...
+  -> 35 - Delivery / Addresses -> 860:1597: ...
+  -> 35 - Delivery / Addresses -> 893:4553: Group 19147
+  -> 35 - Delivery / Addresses -> 860:1599: lets-icons:check-fill
+  -> 35 - Delivery / Addresses -> 860:1601: lets-icons:check-fill
+  -> 35 - Delivery / Addresses -> 860:1603: file_00000000e09071f49499b4e3de1a6e06 1
+  -> 35 - Delivery / Addresses -> 860:1604: Group 18950
+  -> 36 - Profile / Dietary Preferences -> 860:1644: Home Indicator
+  -> 36 - Profile / Dietary Preferences -> 860:1645: mainContainer
+  -> 36 - Profile / Dietary Preferences -> 860:1666: Status bar
+  -> 36 - Profile / Dietary Preferences -> 860:1667: تفضيلاتي الغذائية
+  -> 36 - Profile / Dietary Preferences -> 860:1668: Iconly/Bold/Arrow - Left
+  -> 36 - Profile / Dietary Preferences -> 860:1669: Button
+  -> 36 - Profile / Dietary Preferences -> 860:1674: Group 18886
+  -> 36 - Profile / Dietary Preferences -> 860:1685: Group 18877
+  -> 36 - Profile / Dietary Preferences -> 860:1713: Group 18880
+  -> 36 - Profile / Dietary Preferences -> 860:1740: Group 18888
+  -> 36 - Profile / Dietary Preferences -> 860:1748: Group 18883
+  -> 36 - Profile / Dietary Preferences -> 860:1773: Group 18895
+  -> 37 - Search / No Results -> 860:1817: Status bar
+  -> 37 - Search / No Results -> 860:1847: material-symbols:more
+  -> 37 - Search / No Results -> 860:1848: ChatGPT Image Jul 15, 2026, 06_49_26 PM (8) 1
+  -> 37 - Search / No Results -> 860:1849: Asset 8 1
+  -> 37 - Search / No Results -> 860:1885: BackButton
+  -> 37 - Search / No Results -> 860:1886: Group 18969
+  -> 37 - Search / No Results -> 860:1896: Group 18957
+  -> 37 - Search / No Results -> 860:1900: Group 18975
+  -> 37 - Search / No Results -> 860:1921: Group 18953
+  -> 37 - Search / No Results -> 860:1928: Group 18973
+  -> 37 - Search / No Results -> 884:1725: mainContainer
+  -> 38 - Search / Meal Results -> 884:1756: Status bar
+  -> 38 - Search / Meal Results -> 884:1757: material-symbols:more
+  -> 38 - Search / Meal Results -> 884:1758: Asset 8 1
+  -> 38 - Search / Meal Results -> 884:1794: BackButton
+  -> 38 - Search / Meal Results -> 884:1795: Group 18969
+  -> 38 - Search / Meal Results -> 884:1805: Group 19013
+  -> 38 - Search / Meal Results -> 884:1851: Group 19021
+  -> 38 - Search / Meal Results -> 884:1900: Group 19024
+  -> 38 - Search / Meal Results -> 884:1905: Rectangle 5704
+  -> 38 - Search / Meal Results -> 884:1906: Rectangle 5705
+  -> 38 - Search / Meal Results -> 884:1907: Group 19037
+  -> 38 - Search / Meal Results -> 884:1934: Group 19047
+  -> 38 - Search / Meal Results -> 884:1964: Group 19065
+  -> 38 - Search / Meal Results -> 884:2029: Group 19078
+  -> 38 - Search / Meal Results -> 884:2043: Home Indicator
+  -> 38 - Search / Meal Results -> 884:2044: Group 19080
+  -> 38 - Search / Meal Results -> 884:2067: Group 19079
+  -> 38 - Search / Meal Results -> 884:2091: Line 59
+  -> 39 - Search / Suggestions -> 884:2115: Status bar
+  -> 39 - Search / Suggestions -> 884:2116: material-symbols:more
+  -> 39 - Search / Suggestions -> 884:2117: Asset 8 1
+  -> 39 - Search / Suggestions -> 884:2153: BackButton
+  -> 39 - Search / Suggestions -> 884:2154: Group 19005
+  -> 39 - Search / Suggestions -> 884:2158: Group 19016
+  -> 39 - Search / Suggestions -> 884:2202: Group 19022
+  -> 39 - Search / Suggestions -> 884:2228: Group 19013
+  -> 39 - Search / Suggestions -> 884:2274: Group 19021
+  -> 39 - Search / Suggestions -> 884:2317: mainContainer
+  -> 40 - Search / Recent & Categories -> 884:2346: Status bar
+  -> 40 - Search / Recent & Categories -> 884:2347: material-symbols:more
+  -> 40 - Search / Recent & Categories -> 884:2348: Asset 8 1
+  -> 40 - Search / Recent & Categories -> 884:2384: BackButton
+  -> 40 - Search / Recent & Categories -> 884:2385: Group 18992
+  -> 40 - Search / Recent & Categories -> 884:2407: Group 19004
+  -> 40 - Search / Recent & Categories -> 884:2435: ChatGPT Image Jul 15, 2026, 06_49_24 PM (4) 1
+  -> 40 - Search / Recent & Categories -> 884:2436: Group 18998
+  -> 40 - Search / Recent & Categories -> 884:2461: Group 18969
+  -> 40 - Search / Recent & Categories -> 884:2471: Group 19005
+  -> 40 - Search / Recent & Categories -> 884:2565: mainContainer
+  -> 40 - Search / Recent & Categories -> 1103:10011: Group 19013
+  -> 40 - Search / Recent & Categories -> 1103:10057: Group 19021
+  -> 41 - Profile / Referrals & Rewards -> 884:2627: Home Indicator
+  -> 41 - Profile / Referrals & Rewards -> 884:2628: mainContainer
+  -> 41 - Profile / Referrals & Rewards -> 884:2649: Status bar
+  -> 41 - Profile / Referrals & Rewards -> 884:2650: الإحالات والمكافآت
+  -> 41 - Profile / Referrals & Rewards -> 884:2651: Iconly/Bold/Arrow - Left
+  -> 41 - Profile / Referrals & Rewards -> 884:2652: Button
+  -> 41 - Profile / Referrals & Rewards -> 884:2657: Group 18908
+  -> 41 - Profile / Referrals & Rewards -> 884:2693: Group 18900
+  -> 41 - Profile / Referrals & Rewards -> 884:2718: Group 18893
+  -> 41 - Profile / Referrals & Rewards -> 884:2735: Group 18889
+  -> 42 - Profile / Subscriptions & Billing -> 884:2745: Home Indicator
+  -> 42 - Profile / Subscriptions & Billing -> 884:2746: mainContainer
+  -> 42 - Profile / Subscriptions & Billing -> 884:2767: Status bar
+  -> 42 - Profile / Subscriptions & Billing -> 884:2768: الاشتراكات والفواتير
+  -> 42 - Profile / Subscriptions & Billing -> 884:2769: Iconly/Bold/Arrow - Left
+  -> 42 - Profile / Subscriptions & Billing -> 884:2770: Button
+  -> 42 - Profile / Subscriptions & Billing -> 884:2775: Rectangle 5662
+  -> 42 - Profile / Subscriptions & Billing -> 884:2776: Group 18924
+  -> 42 - Profile / Subscriptions & Billing -> 884:2790: Group 18933
+  -> 42 - Profile / Subscriptions & Billing -> 884:2825: Group 18934
+  -> 42 - Profile / Subscriptions & Billing -> 884:2830: Group 18919
+  -> 43 - Delivery / Live Tracking -> 886:3479: Rectangle 5585
+  -> 43 - Delivery / Live Tracking -> 886:3480: Status bar
+  -> 43 - Delivery / Live Tracking -> 886:3481: Iconly/Bold/Arrow - Left
+  -> 43 - Delivery / Live Tracking -> 886:3482: تقويم الوجبات
+  -> 43 - Delivery / Live Tracking -> 886:3483: Notification icon
+  -> 43 - Delivery / Live Tracking -> 886:3484: Calendar
+  -> 43 - Delivery / Live Tracking -> 886:3514: Group 18624
+  -> 43 - Delivery / Live Tracking -> 886:3518: Group 18623
+  -> 43 - Delivery / Live Tracking -> 886:3522: Frame 18892
+  -> 43 - Delivery / Live Tracking -> 886:3875: mainContainer
+  -> 43 - Delivery / Live Tracking -> 886:3904: Group 18635
+  -> 43 - Delivery / Live Tracking -> 886:3908: material-symbols:more
+  -> 44 - Delivery / Proof of Delivery -> 886:3910: Rectangle 5585
+  -> 44 - Delivery / Proof of Delivery -> 886:3911: Status bar
+  -> 44 - Delivery / Proof of Delivery -> 886:3912: Iconly/Bold/Arrow - Left
+  -> 44 - Delivery / Proof of Delivery -> 886:3913: تقويم الوجبات
+  -> 44 - Delivery / Proof of Delivery -> 886:3914: Notification icon
+  -> 44 - Delivery / Proof of Delivery -> 886:3915: Calendar
+  -> 44 - Delivery / Proof of Delivery -> 886:3945: Group 18624
+  -> 44 - Delivery / Proof of Delivery -> 886:3949: Group 18623
+  -> 44 - Delivery / Proof of Delivery -> 886:3953: Frame 18892
+  -> 44 - Delivery / Proof of Delivery -> 886:4276: mainContainer
+  -> 44 - Delivery / Proof of Delivery -> 886:4305: Group 18635
+  -> 44 - Delivery / Proof of Delivery -> 886:4309: material-symbols:more
+  -> 45 - Delivery / Track Today's Box -> 886:4311: Group 19117
+  -> 45 - Delivery / Track Today's Box -> 886:4318: Group 19098
+  -> 45 - Delivery / Track Today's Box -> 886:4323: Group 19102
+  -> 45 - Delivery / Track Today's Box -> 886:4333: Group 19112
+  -> 45 - Delivery / Track Today's Box -> 886:4344: Group 19111
+  -> 45 - Delivery / Track Today's Box -> 886:4392: Rectangle 5717
+  -> 46 - Delivery / Delivered -> 886:4394: Group 19117
+  -> 46 - Delivery / Delivered -> 886:4467: Group 19139
+  -> 47 - Delivery / Address Change Locked -> 945:1684: Rectangle 5635
+  -> 47 - Delivery / Address Change Locked -> 945:1685: Home Indicator
+  -> 47 - Delivery / Address Change Locked -> 945:1686: mainContainer
+  -> 47 - Delivery / Address Change Locked -> 945:1707: Status bar
+  -> 47 - Delivery / Address Change Locked -> 945:1708: العناوين
+  -> 47 - Delivery / Address Change Locked -> 945:1709: BackButton
+  -> 47 - Delivery / Address Change Locked -> 945:1710: Button
+  -> 47 - Delivery / Address Change Locked -> 945:1715: العناوين المحفوظة
+  -> 47 - Delivery / Address Change Locked -> 945:1716: تفضيلات التوصيل
+  -> 47 - Delivery / Address Change Locked -> 945:1717: Group 18759
+  -> 47 - Delivery / Address Change Locked -> 945:1734: التواصل عند الوصول
+  -> 47 - Delivery / Address Change Locked -> 945:1735: إضافة عنوان جديد
+  -> 47 - Delivery / Address Change Locked -> 945:1736: اترك الطلب عند الباب
+  -> 47 - Delivery / Address Change Locked -> 945:1737: سنرسل لك إشعاراً عند وصول المندوب
+  -> 47 - Delivery / Address Change Locked -> 945:1738: ضع الطلب في مكان آمن عند الباب
+  -> 47 - Delivery / Address Change Locked -> 945:1739: Rectangle 5636
+  -> 47 - Delivery / Address Change Locked -> 945:1740: Rectangle 5639
+  -> 47 - Delivery / Address Change Locked -> 945:1741: Group 18760
+  -> 47 - Delivery / Address Change Locked -> 945:1757: Group 18761
+  -> 47 - Delivery / Address Change Locked -> 945:1761: Rectangle 5641
+  -> 47 - Delivery / Address Change Locked -> 945:1762: Rectangle 5607
+  -> 47 - Delivery / Address Change Locked -> 945:1763: قد تختلف الوجبات والمطاعم المتاحة بناءً على منطقة التوصيل
+  -> 47 - Delivery / Address Change Locked -> 945:1764: tabler:home-filled
+  -> 47 - Delivery / Address Change Locked -> 945:1766: tabler:home-filled
+  -> 47 - Delivery / Address Change Locked -> 945:1768: ix:work-case-filled
+  -> 47 - Delivery / Address Change Locked -> 945:1770: ri:map-pin-fill
+  -> 47 - Delivery / Address Change Locked -> 945:1772: mynaui:bell-solid
+  -> 47 - Delivery / Address Change Locked -> 945:1774: material-symbols:shopping-bag
+  -> 47 - Delivery / Address Change Locked -> 945:1776: mdi:plus-circle
+  -> 47 - Delivery / Address Change Locked -> 945:1778: material-symbols:info-rounded
+  -> 47 - Delivery / Address Change Locked -> 945:1780: ...
+  -> 47 - Delivery / Address Change Locked -> 945:1781: ...
+  -> 47 - Delivery / Address Change Locked -> 945:1782: ...
+  -> 47 - Delivery / Address Change Locked -> 945:1783: lets-icons:check-fill
+  -> 47 - Delivery / Address Change Locked -> 945:1785: lets-icons:check-fill
+  -> 47 - Delivery / Address Change Locked -> 945:1787: file_00000000e09071f49499b4e3de1a6e06 1
+  -> 47 - Delivery / Address Change Locked -> 945:1788: Rectangle 5704
+  -> 47 - Delivery / Address Change Locked -> 945:1789: Group 19087
+  -> 48 - Subscription / Individual Plans -> 945:1829: Rectangle 5582
+  -> 48 - Subscription / Individual Plans -> 945:1830: Iconly/Bold/Arrow - Left
+  -> 48 - Subscription / Individual Plans -> 945:1831: Status bar
+  -> 48 - Subscription / Individual Plans -> 945:1832: البرنامج المختار :
+  -> 48 - Subscription / Individual Plans -> 945:1833: Group 18507
+  -> 48 - Subscription / Individual Plans -> 945:1857: اختر الباقة التي تناسبك
+  -> 48 - Subscription / Individual Plans -> 945:1858: Home Indicator
+  -> 48 - Subscription / Individual Plans -> 945:1859: mainContainer
+  -> 48 - Subscription / Individual Plans -> 945:1880: Asset 8 1
+  -> 48 - Subscription / Individual Plans -> 945:1916: Group 19088
+  -> 48 - Subscription / Individual Plans -> 945:1938: Frame 18180
+  -> Group 19100 -> 945:2542: Rectangle 5720
+  -> Group 19100 -> 945:2543: Line 61
+  -> Group 19100 -> 945:2544: Line 62
+  -> Group 19100 -> 945:2545: Line 63
+  -> Group 19100 -> 945:2546: Group 19096
+  -> Group 19100 -> 945:2551: Group 19097
+  -> Group 19100 -> 945:2556: Group 19098
+  -> Group 19100 -> 945:2562: Group 19099
+  -> 49 - Subscription / Family Plans -> 945:2107: Rectangle 5582
+  -> 49 - Subscription / Family Plans -> 945:2108: Iconly/Bold/Arrow - Left
+  -> 49 - Subscription / Family Plans -> 945:2109: Status bar
+  -> 49 - Subscription / Family Plans -> 945:2110: البرنامج المختار :
+  -> 49 - Subscription / Family Plans -> 945:2111: Group 18507
+  -> 49 - Subscription / Family Plans -> 945:2135: اختر الباقة التي تناسبك
+  -> 49 - Subscription / Family Plans -> 945:2136: Home Indicator
+  -> 49 - Subscription / Family Plans -> 945:2137: mainContainer
+  -> 49 - Subscription / Family Plans -> 945:2158: Asset 8 1
+  -> 49 - Subscription / Family Plans -> 945:2194: Group 19088
+  -> 49 - Subscription / Family Plans -> 945:2355: Group 19095
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2571: Rectangle 5585
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2572: Status bar
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2573: BackButton
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2574: تقويم الوجبات
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2575: Notification icon
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2576: Calendar
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2606: Group 18624
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2610: Group 18623
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2614: Rectangle 5601
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2615: Frame 18181
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2621: Group 18573
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2645: Group 18626
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2726: Group 18627
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2807: Group 18628
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2888: mainContainer
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2917: Group 18635
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2921: material-symbols:more
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2922: Line 62
+  -> 50 - Meals / Calendar Day Details / Alternate -> 945:2923: Group 19097
+  -> Home Screen -> 1082:3555: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+  -> Home Screen -> 1083:3558: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+  -> Home Screen -> 1060:5546: Rectangle 5738
+  -> Home Screen -> 1053:4075: Group 1
+  -> Home Screen -> 1053:4082: Doodle / 2
+  -> Home Screen -> 1053:4087: Home Indicator
+  -> Home Screen -> 1053:4088: Status bar
+  -> Home Screen -> 1053:4089: Notification
+  -> Home Screen -> 1053:4273: Group 19163
+  -> Home Screen -> 1053:4760: Doodle / 2
+  -> Home Screen -> 1060:5150: Frame 19164
+  -> Group 19188 -> 1082:3445: Group 19187
+  -> Group 19188 -> 1082:3450: Frame 19187
+  -> Group 19121 -> 1053:4236: شركاؤنا المميزون
+  -> Group 19121 -> 1053:4237: Group 19120
+  -> Group 19162 -> 1053:4336: المطاعم
+  -> Group 19162 -> 1053:4337: Frame 19161
+  -> Group 19162 -> 1053:4480: Group 19161
+  -> Group 19167 -> 1053:4969: Rectangle 5734
+  -> Group 19167 -> 1053:4999: ChatGPT Image Jul 24, 2026, 06_00_33 PM (8) 1
+  -> Group 19167 -> 1053:4990: Frame 19162
+  -> Group 19167 -> 1053:4989: Group 19166
+  -> Group 19171 -> 1053:5002: Rectangle 5736
+  -> Group 19171 -> 1054:5088: Rectangle 5737
+  -> Group 19171 -> 1053:5016: Frame 19162
+  -> Group 19171 -> 1053:5003: 04_arabic_packaging 1
+  -> Group 19171 -> 1053:5013: Group 19170
+  -> Group 19172 -> 1054:5024: Rectangle 5736
+  -> Group 19172 -> 1054:5062: ChatGPT Image Jul 24, 2026, 06_00_33 PM (7) 1
+  -> Group 19172 -> 1054:5075: Frame 19162
+  -> Group 19172 -> 1054:5080: Group 19173
+  -> Group 19172 -> 1054:5084: استعرض وجباتك القادمة
+  -> Home Screen -> 1158:2501: Rectangle 5738
+  -> Home Screen -> 1158:2502: Group 1
+  -> Home Screen -> 1158:2509: Doodle / 2
+  -> Home Screen -> 1158:2510: Home Indicator
+  -> Home Screen -> 1158:2511: Status bar
+  -> Home Screen -> 1158:2512: Notification
+  -> Home Screen -> 1158:2523: Group 19163
+  -> Home Screen -> 1158:2532: Doodle / 2
+  -> Home Screen -> 1158:3385: Group 19321
+  -> Home Screen -> 1158:3486: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+  -> Home Screen -> 1158:3487: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+  -> Home Screen -> 1158:3488: Frame 19164
+  -> Home Screen -> 1731:5873: Rectangle 5738
+  -> Home Screen -> 1731:5874: Group 1
+  -> Home Screen -> 1731:5881: Doodle / 2
+  -> Home Screen -> 1731:5882: Home Indicator
+  -> Home Screen -> 1731:5883: Status bar
+  -> Home Screen -> 1731:5884: Notification
+  -> Home Screen -> 1731:5895: Group 19163
+  -> Home Screen -> 1731:5904: Doodle / 2
+  -> Home Screen -> 1731:5905: Group 19321
+  -> Home Screen -> 1731:6003: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+  -> Home Screen -> 1731:6004: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+  -> Home Screen -> 1731:6005: Frame 19164
+  -> Home Screen -> 1731:6714: Group 19992
+  -> Home Screen -> 1158:3784: Rectangle 5738
+  -> Home Screen -> 1158:3785: Group 1
+  -> Home Screen -> 1158:3792: Doodle / 2
+  -> Home Screen -> 1158:3793: Home Indicator
+  -> Home Screen -> 1158:3794: Status bar
+  -> Home Screen -> 1158:3795: Notification
+  -> Home Screen -> 1158:3806: Group 19163
+  -> Home Screen -> 1158:3815: Doodle / 2
+  -> Home Screen -> 1158:3816: Group 19321
+  -> Home Screen -> 1158:3914: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+  -> Home Screen -> 1158:3915: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+  -> Home Screen -> 1158:3917: Input Text
+  -> Home Screen -> 1158:3921: Container
+  -> Home Screen -> 1158:3956: Frame 18962
+  -> Home Screen -> 1158:3982: Group 18979
+  -> Home Screen -> 1158:4040: Card details container
+  -> Home Screen -> 1158:4150: Frame 19163
+  -> Home Screen -> 1158:4185: Group 19167
+  -> Home Screen -> 1158:2534: Group 19175
+  -> Home Screen -> 1158:4655: Group 19323
+  -> 51 - Offers / Referral Discount -> 1087:4574: Home Indicator
+  -> 51 - Offers / Referral Discount -> 1087:4575: Group 1
+  -> 51 - Offers / Referral Discount -> 1087:4582: BackButton
+  -> 51 - Offers / Referral Discount -> 1087:4583: العروض
+  -> 51 - Offers / Referral Discount -> 1087:4584: Notification icon
+  -> 51 - Offers / Referral Discount -> 1087:4585: Status bar
+  -> 51 - Offers / Referral Discount -> 1087:4586: Ellipse 30
+  -> 51 - Offers / Referral Discount -> 1087:4587: Carousel arrow
+  -> 51 - Offers / Referral Discount -> 1087:4589: Frame
+  -> 51 - Offers / Referral Discount -> 1087:4595: Frame 18165
+  -> 51 - Offers / Referral Discount -> 1087:4617: Group 19161
+  -> 51 - Offers / Referral Discount -> 1087:4628: Container
+  -> 51 - Offers / Referral Discount -> 1087:4657: Group 19199
+  -> 51 - Offers / Referral Discount -> 1087:4714: Frame 19199
+  -> 51 - Offers / Referral Discount -> 1087:4749: Group 19220
+  -> 52 - Offers / Offer Details -> 1087:4785: Home Indicator
+  -> 52 - Offers / Offer Details -> 1087:4786: BackButton
+  -> 52 - Offers / Offer Details -> 1087:4787: Offer details section title
+  -> 52 - Offers / Offer Details -> 1087:4788: Notification icon
+  -> 52 - Offers / Offer Details -> 1087:4789: Status bar
+  -> 52 - Offers / Offer Details -> 1087:4790: Frame 18165
+  -> 52 - Offers / Offer Details -> 1087:4812: Button
+  -> 52 - Offers / Offer Details -> 1087:4815: Group 19259
+  -> 52 - Offers / Offer Details -> 1087:4870: Group 19247
+  -> 52 - Offers / Offer Details -> 1087:4916: Group 19257
+  -> offers -> 1089:4980: Home Indicator
+  -> offers -> 1089:4981: BackButton
+  -> offers -> 1089:4982: تم تفعيل العرض
+  -> offers -> 1089:4983: Status bar
+  -> offers -> 1089:4984: Ellipse 30
+  -> offers -> 1089:4985: Carousel arrow
+  -> offers -> 1089:5009: Group 19239
+  -> offers -> 1089:5031: Group 19250
+  -> offers -> 1089:5058: Group 19257
+  -> offers -> 1089:5079: Group 19258
+  -> offers -> 1089:5083: Group 19260
+  -> offers -> 1089:5257: mainContainer
+  -> 53 - Checkout / Payment Method -> 1089:5108: Home Indicator
+  -> 53 - Checkout / Payment Method -> 1089:5109: Group 1
+  -> 53 - Checkout / Payment Method -> 1089:5116: Payment title
+  -> 53 - Checkout / Payment Method -> 1089:5117: Status bar
+  -> 53 - Checkout / Payment Method -> 1089:5118: Ellipse 30
+  -> 53 - Checkout / Payment Method -> 1089:5119: Carousel arrow
+  -> 53 - Checkout / Payment Method -> 1089:5121: Payment method container
+  -> 53 - Checkout / Payment Method -> 1089:5155: Card details container
+  -> 53 - Checkout / Payment Method -> 1089:5199: Secure payment container
+  -> 53 - Checkout / Payment Method -> 1089:5203: Offer container
+  -> 53 - Checkout / Payment Method -> 1089:5227: BackButton
+  -> 53 - Checkout / Payment Method -> 1089:5228: Notification icon
+  -> 53 - Checkout / Payment Method -> 1089:5229: Button
+  -> iPhone 13 & 14 - 23 -> 1301:7166: Rectangle 5806
+  -> iPhone 13 & 14 - 23 -> 1301:7167: BackButton
+  -> iPhone 13 & 14 - 23 -> 1301:7168: Group 19393
+  -> iPhone 13 & 14 - 23 -> 1301:7171: Group 19394
+  -> iPhone 13 & 14 - 23 -> 1301:7177: Group 19282
+  -> iPhone 13 & 14 - 23 -> 1301:7190: Frame 19393
+  -> iPhone 13 & 14 - 23 -> 1301:7223: الدفع وتأكيد الاشتراك
+  -> iPhone 13 & 14 - 23 -> 1301:7224: Group 19466
+  -> iPhone 13 & 14 - 23 -> 1301:7251: Rectangle 5808
+  -> iPhone 13 & 14 - 23 -> 1301:7371: Rectangle 5809
+  -> iPhone 13 & 14 - 23 -> 1301:7252: Group 19467
+  -> iPhone 13 & 14 - 23 -> 1301:7380: Frame 19422
+  -> iPhone 13 & 14 - 23 -> 1301:7274: Meals Info Container
+  -> iPhone 13 & 14 - 23 -> 1301:7344: Group 19460
+  -> iPhone 13 & 14 - 23 -> 1301:7348: تفاصيل الأسعار
+  -> iPhone 13 & 14 - 23 -> 1301:7349: Group 19464
+  -> iPhone 13 & 14 - 23 -> 1301:7352: Group 19463
+  -> iPhone 13 & 14 - 23 -> 1301:7355: Group 19465
+  -> iPhone 13 & 14 - 23 -> 1301:7358: Group 19462
+  -> iPhone 13 & 14 - 23 -> 1301:7362: طريقة الدفع
+  -> iPhone 13 & 14 - 23 -> 1301:7363: نظرة عامة على العائلة
+  -> iPhone 13 & 14 - 23 -> 1301:7408: Frame 19417
+  -> offers -> 1103:10746: Home Indicator
+  -> offers -> 1103:10747: BackButton
+  -> offers -> 1103:10748: رمز العرض
+  -> offers -> 1103:10749: Status bar
+  -> offers -> 1103:10750: Ellipse 30
+  -> offers -> 1103:10751: Carousel arrow
+  -> offers -> 1103:10753: Frame 18165
+  -> offers -> 1103:10775: Group 19262
+  -> offers -> 1103:10806: Group 19264
+  -> offers -> 1103:10814: Group 19268
+  -> offers -> 1103:10830: Group 19274
+  -> offers -> 1103:10875: Group 19258
+  -> 54 - Profile / Allergies -> 1141:2355: Home Indicator
+  -> 54 - Profile / Allergies -> 1141:2356: mainContainer
+  -> 54 - Profile / Allergies -> 1141:2377: Status bar
+  -> 54 - Profile / Allergies -> 1141:2378: Iconly/Bold/Arrow - Left
+  -> 54 - Profile / Allergies -> 1141:2379: Button
+  -> 54 - Profile / Allergies -> 1141:2384: Group 19089
+  -> 54 - Profile / Allergies -> 1141:2387: Group 18775
+  -> 54 - Profile / Allergies -> 1141:2390: Group 19088
+  -> 54 - Profile / Allergies -> 1141:2396: Group 19116
+  -> 54 - Profile / Allergies -> 1141:2526: Group 19117
+  -> 54 - Profile / Allergies -> 1141:2550: Rectangle 5704
+  -> 54 - Profile / Allergies -> 1141:2551: Group 19119
+  -> 55 - Profile / Add Allergy -> 1141:2565: Home Indicator
+  -> 55 - Profile / Add Allergy -> 1141:2566: mainContainer
+  -> 55 - Profile / Add Allergy -> 1141:2587: Status bar
+  -> 55 - Profile / Add Allergy -> 1141:2588: Iconly/Bold/Arrow - Left
+  -> 55 - Profile / Add Allergy -> 1141:2589: Button
+  -> 55 - Profile / Add Allergy -> 1141:2594: Group 19089
+  -> 55 - Profile / Add Allergy -> 1141:2597: Group 18775
+  -> 55 - Profile / Add Allergy -> 1141:2600: Group 19088
+  -> 55 - Profile / Add Allergy -> 1141:2606: Group 19116
+  -> 55 - Profile / Add Allergy -> 1141:2736: Group 19117
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9503: Status bar
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9504: Iconly/Bold/Arrow - Left
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9511: ترقية تصنيف المطاعم
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9775: Rectangle 5817
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9776: باقة 4 وجبات
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9777: Group 19532
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9781: Group 19533
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9784: Group 19534
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9787: Group 19536
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9796: اختر التصنيف الذي تريد الترقية إليه
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1516:9797: كلما ارتفع التصنيف، كلما شملت خيارات مطاعم أكثر وأفضل.
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1519:10250: Frame 1000003796
+  -> 56 - Subscription / Upgrade Restaurant Tier -> 1519:10277: Button
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10403: Status bar
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10404: Iconly/Bold/Arrow - Left
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10405: ترقية تصنيف المطاعم
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10617: Rectangle 5822
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10618: Group 19561
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10670: Group 19564
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10650: الباقة الحالية
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10651: Group 19555
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10719: Rectangle 5823
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10720: ph:exclamation-mark
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10722: Rectangle 5824
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10723: Line 105
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10724: Group 19565
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10733: الباقة الحالية: سيليكت
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10734: الباقة الجديدة: بلس
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10735: القيمة الحالية المدفوعة
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10736: فرق الترقية
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10737: الضريية (5)%
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10738: الإجمالي المستحق الآن
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10739: يتم تطبيق الترقية فورا حتى نهاية الاشتراك الحالي
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10740: 6.500 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10741: 6.500 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10742: 5.500 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10743: 0275 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10744: 5.775 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10745: 12.000 د.ك
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10781: Group 19571
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10834: Button
+  -> 57 - Subscription / Upgrade Tier Comparison -> 1519:10843: Button
+  -> Calories -> 1613:8337: Group 1
+  -> Calories -> 1158:4681: BackButton
+  -> Calories -> 1158:4682: تفاصيل المغذيات الرئيسية
+  -> Calories -> 1158:4683: Frame 19277
+  -> family -> 1282:4411: Home Indicator
+  -> family -> 1282:4412: BackButton
+  -> family -> 1282:4413: مطاعم أحمد
+  -> family -> 1282:4414: Status bar
+  -> family -> 1282:4415: Ellipse 30
+  -> family -> 1282:4416: Carousel arrow
+  -> family -> 1282:4418: Frame 18165
+  -> family -> 1282:4440: Group 19235
+  -> family -> 1282:4446: Group 19242
+  -> family -> 1282:4475: Group 19277
+  -> family -> 1282:4481: Frame 19255
+  -> family -> 1282:4517: Group 19275
+  -> family -> 1282:4520: Group 19274
+  -> family -> 1282:4692: Group 19273
+  -> family -> 1282:4700: Home Indicator
+  -> family -> 1282:4701: BackButton
+  -> family -> 1282:4702: وجبات أحمد
+  -> family -> 1282:4703: Status bar
+  -> family -> 1282:4704: Ellipse 30
+  -> family -> 1282:4705: Carousel arrow
+  -> family -> 1282:4707: Frame 18165
+  -> family -> 1282:4729: Group 19278
+  -> family -> 1282:4733: Group 19282
+  -> family -> 1282:4778: Group 19311
+  -> family -> 1282:5012: Group 19319
+  -> family -> 1301:8234: Frame 19255
+  -> family -> 1530:13804: Home Indicator
+  -> family -> 1530:13805: BackButton
+  -> family -> 1530:13806: وجبات أحمد
+  -> family -> 1530:13807: Status bar
+  -> family -> 1530:13808: Ellipse 30
+  -> family -> 1530:13809: Carousel arrow
+  -> family -> 1530:13833: Group 19278
+  -> family -> 1530:13837: Group 19282
+  -> family -> 1530:13852: Group 19311
+  -> family -> 1530:14086: Group 19319
+  -> family -> 1530:14107: Frame 19255
+  -> family -> 1532:17335: Group 19593
+  -> Frame 19291 -> 1282:4749: Group 19290
+  -> Frame 19291 -> 1282:4757: Group 19289
+  -> Frame 19291 -> 1282:4765: Group 19288
+  -> Frame 19291 -> 1282:4771: Group 19287
+  -> family -> 1282:5034: Home Indicator
+  -> family -> 1282:5035: BackButton
+  -> family -> 1282:5036: مراجعة وجبات أحمد
+  -> family -> 1282:5037: Status bar
+  -> family -> 1282:5038: Ellipse 30
+  -> family -> 1282:5039: Carousel arrow
+  -> family -> 1282:5041: Frame 18165
+  -> family -> 1282:5063: راجع اختيارات اليوم قبل التأكيد
+  -> family -> 1282:5064: Group 19327
+  -> family -> 1282:5088: Group 19354
+  -> family -> 1282:5180: Group 19353
+  -> family -> 1282:5223: Group 19368
+  -> family -> 1282:5251: Group 19367
+  -> family -> 1282:5255: Group 19258
+  -> family -> 1282:5259: Group 19260
+  -> family -> 1282:5264: Group 19371
+  -> family -> 1282:5277: Home Indicator
+  -> family -> 1282:5278: BackButton
+  -> family -> 1282:5279: Status bar
+  -> family -> 1282:5280: Ellipse 30
+  -> family -> 1282:5281: Carousel arrow
+  -> family -> 1282:5305: Group 19282
+  -> family -> 1282:5320: Group 19393
+  -> family -> 1282:5323: Frame 19393
+  -> family -> 1282:5356: Group 19394
+  -> family -> 1282:5362: tabler:apple-filled
+  -> family -> 1282:5363: Group 19411
+  -> family -> 1282:5408: Group 19416
+  -> family -> 1282:5425: Group 19419
+  -> family -> 1282:5483: Group 19430
+  -> family -> 1282:5489: Frame 19417
+  -> family -> 1282:5504: Group 19392
+  -> family -> 1522:12904: Frame 1000003793
+  -> Group 19428 -> 1282:5434: Rectangle 5803
+  -> Group 19428 -> 1282:5435: Group 19427
+  -> family -> 1282:5534: Home Indicator
+  -> family -> 1282:5535: BackButton
+  -> family -> 1282:5536: Status bar
+  -> family -> 1282:5537: Ellipse 30
+  -> family -> 1282:5538: Frame 18165
+  -> family -> 1282:5575: Group 19393
+  -> family -> 1282:5578: Frame 19393
+  -> family -> 1282:5611: Group 19394
+  -> family -> 1282:5617: tabler:apple-filled
+  -> family -> 1282:5618: اختر البرنامج المناسب
+  -> family -> 1282:5619: Group 19440
+  -> family -> 1282:5646: Frame 19417
+  -> family -> 1282:5662: Group 19392
+  -> family -> 1336:3318: Group 19485
+  -> family -> 1336:3345: Vector
+  -> iPhone 13 & 14 - 24 -> 1301:7934: Frame 19425
+  -> iPhone 13 & 14 - 24 -> 1301:8060: BackButton
+  -> iPhone 13 & 14 - 24 -> 1301:8061: Group 19393
+  -> iPhone 13 & 14 - 24 -> 1336:3317: Group 19485
+  -> 58 - Wallet / Add Balance -> 1398:4193: Status bar
+  -> 58 - Wallet / Add Balance -> 1398:4194: Notification icon
+  -> 58 - Wallet / Add Balance -> 1398:4202: Group 1
+  -> 58 - Wallet / Add Balance -> 1398:4204: Group 19163
+  -> 58 - Wallet / Add Balance -> 1399:4321: Frame 1000003775
+  -> 58 - Wallet / Add Balance -> 1399:4350: المحفظة
+  -> 58 - Wallet / Add Balance -> 1407:5118: Container
+  -> 58 - Wallet / Add Balance -> 1407:5298: Frame 1000003778
+  -> 59 - Wallet / Recharge Amount -> 1522:11919: Status bar
+  -> 59 - Wallet / Recharge Amount -> 1522:11920: Notification icon
+  -> 59 - Wallet / Recharge Amount -> 1522:11928: Group 1
+  -> 59 - Wallet / Recharge Amount -> 1522:11930: Group 19163
+  -> 59 - Wallet / Recharge Amount -> 1522:11982: شحن المحفظة
+  -> 59 - Wallet / Recharge Amount -> 1522:12104: أدخل المبلغ
+  -> 59 - Wallet / Recharge Amount -> 1522:12105: Group 19581
+  -> 59 - Wallet / Recharge Amount -> 1522:12108: Group 19585
+  -> 59 - Wallet / Recharge Amount -> 1522:12111: Group 19582
+  -> 59 - Wallet / Recharge Amount -> 1522:12114: Group 19583
+  -> 59 - Wallet / Recharge Amount -> 1522:12117: Group 19584
+  -> 59 - Wallet / Recharge Amount -> 1522:12144: Button Container
+  -> 59 - Wallet / Recharge Amount -> 1522:12147: أو اختر مبلغ جاهز
+  -> 59 - Wallet / Recharge Amount -> 1522:12148: طرق الدفع
+  -> 59 - Wallet / Recharge Amount -> 1522:12215: Add New
+  -> 59 - Wallet / Recharge Amount -> 1522:12222: No mastercard
+  -> 59 - Wallet / Recharge Amount -> 1522:12246: PayPal
+  -> 59 - Wallet / Recharge Amount -> 1522:12280: PayPal
+  -> 59 - Wallet / Recharge Amount -> 1522:12255: MasterCard
+  -> 59 - Wallet / Recharge Amount -> 1522:12268: Visa
+  -> 60 - Subscription / Choose Type -> 1509:6582: ChatGPT Image Aug 8, 2026, 01_36_42 AM 1
+  -> 60 - Subscription / Choose Type -> 1509:6583: Group 19466
+  -> 60 - Subscription / Choose Type -> 1509:6586: Group 19462
+  -> 60 - Subscription / Choose Type -> 1509:6614: Group 19463
+  -> 60 - Subscription / Choose Type -> 1509:6644: Group 19465
+  -> 60 - Subscription / Choose Type -> 1509:6650: Group 19468
+  -> 60 - Subscription / Choose Type -> 1509:6678: Home Indicator
+  -> 60 - Subscription / Choose Type -> 1509:6679: Asset 8 1
+  -> 60 - Subscription / Choose Type -> 1509:6747: mainContainer
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6576: ChatGPT Image Aug 8, 2026, 01_36_42 AM 1
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6577: Group 19466
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6580: Group 19462
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6608: Group 19463
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6638: Group 19465
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6645: Group 19468
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6652: Home Indicator
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6653: Asset 8 1
+  -> 61 - Subscription / Choose Type / Alternate -> 1836:6689: mainContainer
+  -> 62 - Subscription / Individual Packages -> 1509:6784: Rectangle 5582
+  -> 62 - Subscription / Individual Packages -> 1509:6785: Iconly/Bold/Arrow - Left
+  -> 62 - Subscription / Individual Packages -> 1509:6786: Status bar
+  -> 62 - Subscription / Individual Packages -> 1509:6812: اختر الباقة التي تناسبك
+  -> 62 - Subscription / Individual Packages -> 1532:16763: باقة فردية
+  -> 62 - Subscription / Individual Packages -> 1509:6813: Home Indicator
+  -> 62 - Subscription / Individual Packages -> 1509:6835: Asset 8 1
+  -> 62 - Subscription / Individual Packages -> 1509:6887: Frame 18180
+  -> 62 - Subscription / Individual Packages -> 1509:7847: mainContainer
+  -> 63 - Subscription / Family Packages -> 1509:7000: Rectangle 5582
+  -> 63 - Subscription / Family Packages -> 1509:7001: Iconly/Bold/Arrow - Left
+  -> 63 - Subscription / Family Packages -> 1509:7002: Status bar
+  -> 63 - Subscription / Family Packages -> 1509:7029: Home Indicator
+  -> 63 - Subscription / Family Packages -> 1509:7051: Asset 8 1
+  -> 63 - Subscription / Family Packages -> 1509:7103: Group 19095
+  -> 63 - Subscription / Family Packages -> 1509:7937: mainContainer
+  -> 63 - Subscription / Family Packages -> 1532:16764: اختر الباقة التي تناسبك
+  -> 63 - Subscription / Family Packages -> 1532:16765: باقة عائلية
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7596: Large Product Detail
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7600: Rectangle 5551
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7601: باقة 4 وجبات
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7602: Promote
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7617: Group 18654
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7686: Frame 1000003793
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7836: Ellipse 90
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7876: mainContainer
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7905: Home Indicator
+  -> 64 - Subscription / Configure Meal Plan -> 1509:7970: Button Container
+  -> 65 - Subscription / Restaurant List -> 1509:8288: Large Product Detail
+  -> 65 - Subscription / Restaurant List -> 1509:8292: Rectangle 5551
+  -> 65 - Subscription / Restaurant List -> 1509:8293: باقة 4 وجبات
+  -> 65 - Subscription / Restaurant List -> 1509:8294: Promote
+  -> 65 - Subscription / Restaurant List -> 1509:8557: Home Indicator
+  -> 65 - Subscription / Restaurant List -> 1509:8722: Group 18597
+  -> 65 - Subscription / Restaurant List -> 1509:8876: استعراض المطاعم
+  -> 18 - Subscription / Summary -> 1836:9444: Large Product Detail
+  -> 18 - Subscription / Summary -> 1836:9448: Rectangle 5551
+  -> 18 - Subscription / Summary -> 1836:9465: Home Indicator
+  -> 18 - Subscription / Summary -> 1836:9676: Button
+  -> 18 - Subscription / Summary -> 1836:9684: باقة 4 وجبات
+  -> 18 - Subscription / Summary -> 1836:9685: Group 18601
+  -> 18 - Subscription / Summary -> 1836:9727: Promote
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:8880: Cover Image
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:8884: Base
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:8885: نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة وطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:8886: Group 18644
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:8979: Frame 56
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9192: Hot Coffees
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9193: Base
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9194: Group 18653
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9202: Line
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9203: Name
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9204: Group 18638
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9212: THE PROTEIN KITCHEN
+  -> 66 - Meals / Ingredients & Sources / New Flow -> 1512:9213: Line
+  -> family -> 1519:11023: Home Indicator
+  -> family -> 1519:11024: BackButton
+  -> family -> 1519:11026: Status bar
+  -> family -> 1519:11027: Ellipse 30
+  -> family -> 1519:11028: Carousel arrow
+  -> family -> 1519:11052: تفاصيل أحمد
+  -> family -> 1519:11053: Group 19475
+  -> family -> 1519:11075: Group 19481
+  -> family -> 1519:11090: Group 19482
+  -> family -> 1519:11105: Group 19487
+  -> family -> 1519:11128: Group 19491
+  -> family -> 1519:11146: Home Indicator
+  -> family -> 1519:11147: BackButton
+  -> family -> 1519:11149: Status bar
+  -> family -> 1519:11150: Ellipse 30
+  -> family -> 1519:11151: Carousel arrow
+  -> family -> 1519:11153: Frame 18165
+  -> family -> 1519:11175: الأفراد
+  -> family -> 1519:11176: Group 19493
+  -> family -> 1519:11182: Frame 19508
+  -> family -> 1519:11289: Add Person Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11406: ChatGPT Image Jul 10, 2026, 06_12_03 PM 1
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11407: Main Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11438: Dish Description
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11439: Restaurant Logo Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11442: Restaurant Logo
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11443: Dish Title Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11465: Ingredients Title
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11466: Grilled Chicken Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11471: Brown Rice Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11476: Carrot Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11481: Broccoli Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11486: Lettuce Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11491: Lemon Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11496: Line 57
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11497: Line 60
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11498: Line 58
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11499: Line 61
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11500: Line 59
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11501: Line 62
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11502: Delivery Indicator Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11506: Nutrition Facts Title
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11507: Fiber Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11513: Protein Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11521: Carbs Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11534: Fat Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11540: Calorie Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11546: Allergens Title
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11547: Allergens Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11567: Rating Container
+  -> 67 - Meals / Nutrition Details / New Flow -> 1522:11575: Back Button Container
+  -> Program Impact Container -> 1522:11450: Program Impact Title
+  -> Program Impact Container -> 1522:11451: Program Impact Value
+  -> Program Impact Icon Container -> 1522:11453: Ellipse 91
+  -> Program Impact Icon Container -> 1522:11454: material-symbols-light:energy-program-time-used-rounded
+  -> Time Icon Container -> 1522:11457: Ellipse 91
+  -> Time Icon Container -> 1522:11458: mingcute:time-fill
+  -> Delivery Time Container -> 1522:11463: Delivery Time Title
+  -> Delivery Time Container -> 1522:11464: Delivery Time Value
+  -> family -> 1522:12295: Home Indicator
+  -> family -> 1522:12296: BackButton
+  -> family -> 1522:12297: Notification icon
+  -> family -> 1522:12298: Status bar
+  -> family -> 1522:12299: Ellipse 30
+  -> family -> 1522:12300: Carousel arrow
+  -> family -> 1522:12302: Frame 18165
+  -> family -> 1522:12324: تفاصيل يوم
+  -> family -> 1522:12325: Group 19511
+  -> family -> 1522:12337: Group 19514
+  -> family -> 1522:12349: Frame 19523
+  -> family -> 1522:12417: Add Person Container
+  -> family -> 1522:12420: Group 19523
+  -> family Manage -> 1532:14160: Home Indicator
+  -> family Manage -> 1532:14161: BackButton
+  -> family Manage -> 1532:14162: Notification icon
+  -> family Manage -> 1532:14163: Status bar
+  -> family Manage -> 1532:14164: Ellipse 30
+  -> family Manage -> 1532:14165: Carousel arrow
+  -> family Manage -> 1532:14167: Group 19275
+  -> family Manage -> 1532:14181: إدارة الباقة العائلية
+  -> family Manage -> 1532:14182: Frame 19524
+  -> family Manage -> 1532:14217: Group 19555
+  -> family Manage -> 1532:14245: أفراد العائلة
+  -> family Manage -> 1532:14246: Group 19550
+  -> family Manage -> 1532:14250: Group 19552
+  -> family Manage -> 1532:17513: Group 19598
+  -> family Manage -> 2174:3999: Home Indicator
+  -> family Manage -> 2174:4000: BackButton
+  -> family Manage -> 2174:4001: Notification icon
+  -> family Manage -> 2174:4002: Status bar
+  -> family Manage -> 2174:4003: Ellipse 30
+  -> family Manage -> 2174:4004: Carousel arrow
+  -> family Manage -> 2174:4006: Group 19275
+  -> family Manage -> 2174:4020: إدارة الباقة العائلية
+  -> family Manage -> 2174:4021: Frame 19524
+  -> family Manage -> 2174:4056: Group 19555
+  -> family Manage -> 2174:4084: أفراد العائلة
+  -> family Manage -> 2174:4085: Group 19550
+  -> family Manage -> 2174:4089: Group 19552
+  -> family Manage -> 2174:4097: Group 19598
+  -> family Manage -> 2174:4310: Group 20518
+  -> family Manage -> 2174:4323: Group 20522
+  -> family Manage -> 2174:4335: اختر ما يناسبك للمتابعة
+  -> Group 20517 -> 2174:4991: Rectangle 6093
+  -> Group 20517 -> 2174:4992: Group 20516
+  -> family -> 1532:16851: Home Indicator
+  -> family -> 1532:16852: BackButton
+  -> family -> 1532:16853: Notification icon
+  -> family -> 1532:16854: Status bar
+  -> family -> 1532:16855: Ellipse 30
+  -> family -> 1532:16856: Carousel arrow
+  -> family -> 1532:16858: Add Person Container
+  -> family -> 1532:16861: إدارة الوصول لأحمد
+  -> family -> 1532:16862: Group 19542
+  -> family -> 1532:16873: Group 19551
+  -> family -> 1532:16892: Group 19556
+  -> family -> 1532:16899: Group 19564
+  -> family -> 1532:16947: Home Indicator
+  -> family -> 1532:16948: BackButton
+  -> family -> 1532:16949: Notification icon
+  -> family -> 1532:16950: Status bar
+  -> family -> 1532:16951: Ellipse 30
+  -> family -> 1532:16952: Carousel arrow
+  -> family -> 1532:16954: Frame 18165
+  -> family -> 1532:16976: Add Person Container
+  -> family -> 1532:16979: Group 19534
+  -> family -> 1532:16983: Group 19533
+  -> family -> 1532:17059: Group 19532
+  -> iPhone 13 & 14 - 30 -> 1532:17098: Group 19577
+  -> iPhone 13 & 14 - 30 -> 1532:17242: Group 19576
+  -> iPhone 13 & 14 - 30 -> 1532:17252: تقويم أحمد
+  -> iPhone 13 & 14 - 30 -> 1532:17253: Add Person Container
+  -> iPhone 13 & 14 - 30 -> 1532:17256: Group 19580
+  -> iPhone 13 & 14 - 30 -> 1532:17264: BackButton
+  -> iPhone 13 & 14 - 31 -> 1682:3573: Group 19577
+  -> iPhone 13 & 14 - 31 -> 1682:3717: Group 19576
+  -> iPhone 13 & 14 - 31 -> 1682:3728: Add Person Container
+  -> iPhone 13 & 14 - 31 -> 1682:3731: Group 19580
+  -> iPhone 13 & 14 - 31 -> 1682:3745: Frame 19524
+  -> iPhone 13 & 14 - 31 -> 1682:3804: Group 19988
+  -> iPhone 13 & 14 - 31 -> 1682:3815: Status bar
+  -> 68 - Wallet / Refund Balance -> 1613:3548: Status bar
+  -> 68 - Wallet / Refund Balance -> 1613:3549: Notification icon
+  -> 68 - Wallet / Refund Balance -> 1613:3557: Group 1
+  -> 68 - Wallet / Refund Balance -> 1613:3559: Group 19163
+  -> 68 - Wallet / Refund Balance -> 1613:3564: المحفظة
+  -> 68 - Wallet / Refund Balance -> 1613:3565: Group 19889
+  -> 68 - Wallet / Refund Balance -> 1613:3579: Group 19893
+  -> 68 - Wallet / Refund Balance -> 1613:3589: Group 19904
+  -> 68 - Wallet / Refund Balance -> 1613:3630: Group 19903
+  -> 68 - Wallet / Refund Balance -> 1613:3634: Group 19905
+  -> 69 - Wallet / Refund to Card -> 1613:3662: Status bar
+  -> 69 - Wallet / Refund to Card -> 1613:3663: Notification icon
+  -> 69 - Wallet / Refund to Card -> 1613:3671: Group 1
+  -> 69 - Wallet / Refund to Card -> 1613:3673: Group 19163
+  -> 69 - Wallet / Refund to Card -> 1613:3678: استرداد إلى البطاقة
+  -> 69 - Wallet / Refund to Card -> 1613:3679: Group 19910
+  -> 69 - Wallet / Refund to Card -> 1613:3694: Group 19936
+  -> 69 - Wallet / Refund to Card -> 1613:3735: Group 19937
+  -> 69 - Wallet / Refund to Card -> 1613:3742: Group 19938
+  -> 69 - Wallet / Refund to Card -> 1613:3757: Group 19927
+  -> 69 - Wallet / Refund to Card -> 1613:3763: Group 19940
+  -> 69 - Wallet / Refund to Card -> 1613:3791: Button Container
+  -> 69 - Wallet / Refund to Card -> 1613:3794: Button Container
+  -> 70 - Wallet / Transactions -> 1613:3798: Status bar
+  -> 70 - Wallet / Transactions -> 1613:3799: Notification icon
+  -> 70 - Wallet / Transactions -> 1613:3807: Group 1
+  -> 70 - Wallet / Transactions -> 1613:3809: Group 19163
+  -> 70 - Wallet / Transactions -> 1613:3814: سجل العمليات
+  -> 70 - Wallet / Transactions -> 1613:3815: Card Bank / 1
+  -> 70 - Wallet / Transactions -> 1613:3840: Group 19948
+  -> 70 - Wallet / Transactions -> 1613:3853: Group 19952
+  -> 70 - Wallet / Transactions -> 1613:3869: Group 19961
+  -> 70 - Wallet / Transactions -> 1613:3911: Group 19966
+  -> 70 - Wallet / Transactions -> 1613:3928: Group 19967
+  -> 70 - Wallet / Transactions -> 1613:3945: Group 19970
+  -> Home Screen -> 1613:7495: Rectangle 5738
+  -> Home Screen -> 1613:7496: Group 1
+  -> Home Screen -> 1613:7503: Doodle / 2
+  -> Home Screen -> 1613:7504: Home Indicator
+  -> Home Screen -> 1613:7505: Status bar
+  -> Home Screen -> 1613:7506: Notification
+  -> Home Screen -> 1613:7517: Group 19163
+  -> Home Screen -> 1613:7526: Doodle / 2
+  -> Home Screen -> 1613:7527: Group 19321
+  -> Home Screen -> 1613:7625: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+  -> Home Screen -> 1613:7626: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+  -> Home Screen -> 1613:7627: Frame 19164
+  -> 71 - Security / Biometric Setup -> 1614:8348: Home Indicator
+  -> 71 - Security / Biometric Setup -> 1614:8349: Asset 8 1
+  -> 71 - Security / Biometric Setup -> 1614:8385: Group 19592
+  -> 71 - Security / Biometric Setup -> 1614:8417: Group 19885
+  -> 71 - Security / Biometric Setup -> 1614:8420: يمكنك تغيير هذا الخيار من الإعدادات لاحقاً
+  -> 71 - Security / Biometric Setup -> 1614:8421: Group 19878
+  -> 71 - Security / Biometric Setup -> 1614:8439: Group 19880
+  -> 71 - Security / Biometric Setup -> 1614:8451: Group 19883
+  -> 71 - Security / Biometric Setup -> 1614:8459: Add Person Container
+  -> 71 - Security / Biometric Setup -> 1614:8462: Group 19884
+  -> 71 - Security / Biometric Setup -> 1614:8465: Status bar
+  -> notification -> 1627:3563: Home Indicator
+  -> notification -> 1627:3564: Status bar
+  -> notification -> 1627:3565: Group 19983
+  -> notification -> 1627:3574: Group 19984
+  -> notification -> 1627:3610: Group 19985
+  -> notification -> 1627:3643: Group 19986
+  -> notification -> 1627:3654: Group 19987
+  -> notification -> 1628:3671: mingcute:close-fill
+  -> notification -> 1728:5713: Group 19989
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6785: Mask group
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6789: Frame 88
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6797: Bars / Home Indicator / iPhone / On Light - Portrait
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6798: Group 8
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6800: Frame 115
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6897: Group 18708
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6968: Group 19995
+  -> 72 - Delivery / Choose Home Location / New Flow -> 1732:6906: mainContainer
+  -> Notification Preferences -> 1732:6978: Close
+  -> Notification Preferences -> 1732:6980: Title
+  -> Notification Preferences -> 1732:6981: Subtitle
+  -> Notification Preferences -> 1732:6982: Master notifications
+  -> Notification Preferences -> 1732:6992: Category الوجبات
+  -> Notification Preferences -> 1732:7002: Category التوصيل
+  -> Notification Preferences -> 1732:7012: Category الإشتراك والدفع
+  -> Notification Preferences -> 1732:7024: Category العروض والمكافآت
+  -> Notification Preferences -> 1732:7034: Category العائلة
+  -> Notification Preferences -> 1732:7046: Category الحساب والنظام
+  -> Notification Preferences -> 1732:7056: Info note
+  -> Notification Preferences -> 1732:7061: Status bar
+  -> Notification Preferences -> 1732:7062: Home indicator
+  -> Component 3 -> 1736:8186: Property 1=Asset 10 2
+  -> Component 3 -> 1736:8189: Property 1=Asset 10 3
+  -> Component 4 -> 1791:8575: Property 1=Asset 10 2
+  -> Component 4 -> 1791:8578: Property 1=Asset 10 3
+  -> iPhone 13 & 14 - 32 -> 1736:8193: Component 3
+  -> iPhone 13 & 14 - 32 -> 1736:8194: Asset 10 1
+  -> iPhone 13 & 14 - 32 -> 1736:8201: جاري التحميل
+  -> iPhone 13 & 14 - 33 -> 1791:8593: Component 4
+  -> iPhone 13 & 14 - 33 -> 1791:8583: Asset 10 1
+  -> iPhone 13 & 14 - 33 -> 1791:8590: جاري التحميل
+  -> Change Plan Type - iPhone 13 -> 2174:3785: Home Indicator
+  -> Change Plan Type - iPhone 13 -> 2174:3786: Frame 1000003798
+  -> Change Plan Type - iPhone 13 -> 2174:3832: Status bar
+  -> Change Plan Type - iPhone 13 -> 2174:3833: Group 20427
+  -> iPhone 13 & 14 - 38 -> 2174:3861: Status bar
+  -> iPhone 13 & 14 - 38 -> 2174:3862: Group 20427
+  -> iPhone 13 & 14 - 38 -> 2174:3873: mainContainer
+  -> iPhone 13 & 14 - 38 -> 2174:3895: Group 20549
+  -> iPhone 13 & 14 - 38 -> 2174:3911: Group 20541
+  -> iPhone 13 & 14 - 38 -> 2174:3952: Group 20544
+  -> iPhone 13 & 14 - 38 -> 2174:3964: Group 20546
+  -> iPhone 13 & 14 - 38 -> 2174:3970: Group 20547
+  -> iPhone 13 & 14 - 34 -> 2174:4338: Status bar
+  -> iPhone 13 & 14 - 34 -> 2174:4339: Group 20399
+  -> iPhone 13 & 14 - 34 -> 2174:4371: Group 20427
+  -> iPhone 13 & 14 - 34 -> 2174:4384: Frame 20408
+  -> iPhone 13 & 14 - 34 -> 2174:4449: Group 20414
+  -> iPhone 13 & 14 - 34 -> 2174:4470: Group 20425
+  -> iPhone 13 & 14 - 35 -> 2174:4539: Status bar
+  -> iPhone 13 & 14 - 35 -> 2174:4540: Group 20427
+  -> iPhone 13 & 14 - 35 -> 2174:4575: Group 20471
+  -> iPhone 13 & 14 - 35 -> 2174:4583: Frame 20434
+  -> iPhone 13 & 14 - 35 -> 2174:4599: Group 20447
+  -> iPhone 13 & 14 - 35 -> 2174:4647: Group 20469
+  -> iPhone 13 & 14 - 35 -> 2174:4716: Group 20470
+  -> iPhone 13 & 14 - 35 -> 2174:4760: Group 20468
+  -> iPhone 13 & 14 - 36 -> 2174:4783: Group 20427
+  -> iPhone 13 & 14 - 36 -> 2174:4796: Status bar
+  -> iPhone 13 & 14 - 36 -> 2174:4797: Frame 20512
+  -> iPhone 13 & 14 - 36 -> 2174:4842: Group 20474
+  -> iPhone 13 & 14 - 36 -> 2174:4854: Group 20483
+  -> iPhone 13 & 14 - 36 -> 2174:4879: Group 20490
+  -> iPhone 13 & 14 - 36 -> 2174:4898: Group 20502
+  -> iPhone 13 & 14 - 36 -> 2174:4901: شارك الآن
+  -> iPhone 13 & 14 - 36 -> 2174:4902: شارك يسهولة عبر منصات التواصل
+  -> iPhone 13 & 14 - 36 -> 2174:4903: Group 20511
+  -> iPhone 13 & 14 - 36 -> 2174:4930: روابط المشاركة
+  -> iPhone 13 & 14 - 36 -> 2174:4931: شارك رابطك وكودك واحصل على عمولات أكثر
+  -> iPhone 13 & 14 - 36 -> 2174:4932: Group 20512
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10692: Rectangle 5585
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10693: Status bar
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10694: BackButton
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10695: تقويم الوجبات
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10696: Notification icon
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10697: Calendar
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10727: Group 18624
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10731: Group 18623
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10735: Rectangle 5601
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10736: Frame 18181
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10742: Group 18573
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10766: Group 18626
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10847: Group 18627
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:10928: Group 18628
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:11009: mainContainer
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:11038: Group 18635
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:11042: material-symbols:more
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:11043: Line 62
+  -> 05.03 - Meals / Day + Daily Macros -> 3053:11044: Group 19097
+  -> 06.03 - Subscription / Family Packages -> 3054:13494: Rectangle 5582
+  -> 06.03 - Subscription / Family Packages -> 3054:13495: Iconly/Bold/Arrow - Left
+  -> 06.03 - Subscription / Family Packages -> 3054:13496: Status bar
+  -> 06.03 - Subscription / Family Packages -> 3054:13497: Home Indicator
+  -> 06.03 - Subscription / Family Packages -> 3054:13498: Asset 8 1
+  -> 06.03 - Subscription / Family Packages -> 3054:13534: Group 19095
+  -> 06.03 - Subscription / Family Packages -> 3054:13548: mainContainer
+  -> 06.03 - Subscription / Family Packages -> 3054:13576: اختر الباقة التي تناسبك
+  -> 06.03 - Subscription / Family Packages -> 3054:13577: باقة عائلية
+  -> 10.01 - Profile / Overview -> 3056:13960: Home Indicator
+  -> 10.01 - Profile / Overview -> 3056:13961: Status bar
+  -> 10.01 - Profile / Overview -> 3056:13962: Rectangle 5581
+  -> 10.01 - Profile / Overview -> 3056:13963: Group 18658
+  -> 10.01 - Profile / Overview -> 3056:13973: Group 18660
+  -> 10.01 - Profile / Overview -> 3056:13979: Group 18665
+  -> 10.01 - Profile / Overview -> 3056:13981: Group 18699
+  -> 10.01 - Profile / Overview -> 3056:13995: Group 18700
+  -> 10.01 - Profile / Overview -> 3056:14024: Group 18698
+  -> 10.01 - Profile / Overview -> 3056:14032: Group 18697
+  -> 10.01 - Profile / Overview -> 3056:14038: Group 18712
+  -> 10.01 - Profile / Overview -> 3056:14107: Asset 8 1
+🗑️ Archive -> Home Screen -> 35:3084: Group 1
+🗑️ Archive -> Home Screen -> 35:3091: Rectangle 1
+🗑️ Archive -> Home Screen -> 35:3092: Doodle / 2
+🗑️ Archive -> Home Screen -> 35:3093: Input Text
+🗑️ Archive -> Home Screen -> 35:3097: Status bar
+🗑️ Archive -> Home Screen -> 35:3098: Status bar
+🗑️ Archive -> Home Screen -> 35:3099: Ellipse 1
+🗑️ Archive -> Home Screen -> 35:3100: مرحباً بك ,
+🗑️ Archive -> Home Screen -> 35:3101: أحمد محمد 👋
+🗑️ Archive -> Home Screen -> 35:3102: Notification
+🗑️ Archive -> Home Screen -> 35:3113: السعرات الحرارية 
+🗑️ Archive -> Home Screen -> 35:3122: Specials card
+🗑️ Archive -> Home Screen -> 35:3136: Italian spag 2
+🗑️ Archive -> Home Screen -> 35:3137: Active Item
+🗑️ Archive -> Home Screen -> 35:3155: Active Item
+🗑️ Archive -> Home Screen -> 35:3172: Active Item
+🗑️ Archive -> Home Screen -> 35:3206: وجبات اليوم
+🗑️ Archive -> Home Screen -> 35:3207: عرض الكل
+🗑️ Archive -> Home Screen -> 35:3208: ChatGPT Image Jun 17, 2026, 11_09_06 AM 1
+🗑️ Archive -> Home Indicator -> I77:1378;106:60028: Home Indicator
+🗑️ Archive -> BottomNavBar -> 77:1380: BottomNavBar:shadow
+🗑️ Archive -> BottomNavBar -> 77:1381: Button - Inactive
+🗑️ Archive -> BottomNavBar -> 77:1388: Button - Inactive
+🗑️ Archive -> BottomNavBar -> 77:1394: Button - Inactive
+🗑️ Archive -> BottomNavBar -> 77:1401: Button - Active
+🗑️ Archive -> mainContainer -> 77:1408: tabPills
+🗑️ Archive -> Log In_Empty -> 89:1463: BG Asset
+🗑️ Archive -> Log In_Empty -> 89:1467: White BG
+🗑️ Archive -> Log In_Empty -> 89:1468: Don’t have an account? Sign Up
+🗑️ Archive -> Log In_Empty -> 89:1469: content
+🗑️ Archive -> Log In_Empty -> 89:1489: login-text
+🗑️ Archive -> Log In_Empty -> 89:1491: Home Indicator
+🗑️ Archive -> Log In_Empty -> 89:1492: Logo With TXT 2
+🗑️ Archive -> Mobile -> 89:1504: Frame
+🗑️ Archive -> Mobile -> 89:1521: Frame
+🗑️ Archive -> Html → Body -> 89:1569: Navigation
+🗑️ Archive -> Html → Body -> 89:1574: Main Content
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1627: Logo With TXT 1
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1628: Layer 1
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1638: Mask group
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1641: Don’t have an account? Sign Up
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1642: content
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1665: Home Indicator
+🗑️ Archive -> iPhone 13 & 14 - 1 -> 89:1666: Button
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1698: file_00000000c8b071f4beb177a971b04331 1
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1699: Rectangle 5504
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1700: Group 18380
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1703: باقة الشهر
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1704: باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1705: Group 18388
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1752: Group 18396
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1774: Group 18395
+🗑️ Archive -> iPhone 13 & 14 - 6 -> 370:1782: Group 18397
+🗑️ Archive -> Main Product -> 370:1786: Large Product Detail
+🗑️ Archive -> Main Product -> 370:1794: Product Detail
+🗑️ Archive -> Frame 18581 -> 459:5654: Group 18575
+🗑️ Archive -> Frame 18578 -> 459:5776: Frame 18571
+🗑️ Archive -> Frame 18577 -> 459:5781: Frame 18571
+🗑️ Archive -> Frame 18576 -> 459:5786: Frame 18571
+🗑️ Archive -> Group 18560 -> 459:5791: Rectangle 5592
+🗑️ Archive -> Group 18560 -> 459:5792: Frame 18580
+🗑️ Archive -> Group 18560 -> 459:5797: 1:00 م
+🗑️ Archive -> Button -> 459:5799: Container
+🗑️ Archive -> Button -> 459:5801: Container
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5807: الاشتراكات & الباقات
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5808: Rectangle 2903
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5809: Rectangle 2904
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5810: Rectangle 2905
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5811: Rectangle 2906
+🗑️ Archive -> iPhone 13 & 14 - 7 -> 459:5812: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5834: الاشتراكات & الباقات
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5835: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5857: تفاصيل الباقة
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5858: تفاصيل الباقة
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5859: Rectangle 2903
+🗑️ Archive -> iPhone 13 & 14 - 2 -> 459:5860: Group 18194
+🗑️ Archive -> iPhone 13 & 14 - 3 -> 459:5864: الاشتراكات & الباقات
+🗑️ Archive -> iPhone 13 & 14 - 3 -> 459:5865: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 3 -> 459:5887: Rectangle 2903
+🗑️ Archive -> Calender -> 460:5893: Section - Daily Plan
+🗑️ Archive -> Calender -> 460:5937: mainContainer
+🗑️ Archive -> Calender -> 460:5959: Home Indicator
+🗑️ Archive -> Calender -> 460:5960: Group 1
+🗑️ Archive -> Calender -> 460:5967: Iconly/Bold/Arrow - Left
+🗑️ Archive -> Calender -> 460:5968: تقويم الوجبات
+🗑️ Archive -> Calender -> 460:5969: vuesax/bold/notification
+🗑️ Archive -> Calender -> 460:5970: Rectangle 1054
+🗑️ Archive -> Calender -> 460:5971: Rectangle 1055
+🗑️ Archive -> Calender -> 460:5972: Rectangle 1056
+🗑️ Archive -> Calender -> 460:5973: Rectangle 1057
+🗑️ Archive -> Calender -> 460:5974: Rectangle 1058
+🗑️ Archive -> Calender -> 460:5975: الأحد
+🗑️ Archive -> Calender -> 460:5976: الأثنين
+🗑️ Archive -> Calender -> 460:5977: الثلاثاء
+🗑️ Archive -> Calender -> 460:5978: السبت
+🗑️ Archive -> Calender -> 460:5979: الجمعة
+🗑️ Archive -> Calender -> 460:5980: 25
+🗑️ Archive -> Calender -> 460:5981: 26
+🗑️ Archive -> Calender -> 460:5982: 27
+🗑️ Archive -> Calender -> 460:5983: 24
+🗑️ Archive -> Calender -> 460:5984: 23
+🗑️ Archive -> Calender -> 460:5985: Group 18164
+🗑️ Archive -> Calender -> 460:5996: Status bar
+🗑️ Archive -> Calender -> 460:5997: Ellipse 30
+🗑️ Archive -> Calender -> 460:5998: Section - Monthly Progress Card (Glassmorphism)
+🗑️ Archive -> Calender -> 460:6019: Section - Quick Actions Grid
+🗑️ Archive -> Calender -> 460:6040: Group 41
+🗑️ Archive -> Calender -> 460:6044: Group 40
+🗑️ Archive -> Calender  -> 665:2182: Rectangle 5585
+🗑️ Archive -> Calender  -> 665:2183: Status bar
+🗑️ Archive -> Calender  -> 665:2184: Iconly/Bold/Arrow - Left
+🗑️ Archive -> Calender  -> 665:2185: تقويم الوجبات
+🗑️ Archive -> Calender  -> 665:2186: vuesax/bold/notification
+🗑️ Archive -> Calender  -> 665:2187: Rectangle 5584
+🗑️ Archive -> Calender  -> 665:2188: Group 18552
+🗑️ Archive -> Calender  -> 665:2221: Group 18559
+🗑️ Archive -> Calender  -> 665:2243: Frame 18585
+🗑️ Archive -> Calender  -> 665:2613: mainContainer
+🗑️ Archive -> Calender 3 -> 665:2670: Rectangle 5585
+🗑️ Archive -> Calender 3 -> 665:2671: Status bar
+🗑️ Archive -> Calender 3 -> 665:2672: Iconly/Bold/Arrow - Left
+🗑️ Archive -> Calender 3 -> 665:2673: تقويم الوجبات
+🗑️ Archive -> Calender 3 -> 665:2674: vuesax/bold/notification
+🗑️ Archive -> Calender 3 -> 665:2675: Calendar
+🗑️ Archive -> Calender 3 -> 665:2705: Group 18624
+🗑️ Archive -> Calender 3 -> 665:2709: Group 18623
+🗑️ Archive -> Calender 3 -> 665:2713: Line 1
+🗑️ Archive -> Calender 3 -> 665:2714: Group 18624
+🗑️ Archive -> Calender 3 -> 665:2722: Group 18573
+🗑️ Archive -> Calender 3 -> 665:2746: Group 18626
+🗑️ Archive -> Calender 3 -> 665:2827: Group 18627
+🗑️ Archive -> Calender 3 -> 665:2908: Group 18628
+🗑️ Archive -> Calender 3 -> 665:2989: mainContainer
+🗑️ Archive -> Main Product -> 665:3637: Large Product Detail
+🗑️ Archive -> Main Product -> 665:3652: Rectangle 5551
+🗑️ Archive -> Main Product -> 665:3653: Button
+🗑️ Archive -> Main Product -> 665:3661: باقة الشهر
+🗑️ Archive -> Main Product -> 665:3662: Group 18618
+🗑️ Archive -> Main Product -> 665:3803: Promote
+🗑️ Archive -> Main Product -> 665:3818: Group 18654
+🗑️ Archive -> باقة الشهر -> 665:4855: Large Product Detail
+🗑️ Archive -> باقة الشهر -> 665:4870: Rectangle 5551
+🗑️ Archive -> باقة الشهر -> 665:4871: Group 18481
+🗑️ Archive -> باقة الشهر -> 665:4880: Group 18458
+🗑️ Archive -> باقة الشهر -> 665:5031: Frame 18176
+🗑️ Archive -> باقة الشهر -> 665:5084: Button
+🗑️ Archive -> باقة الشهر -> 665:5092: باقة الشهر
+🗑️ Archive -> باقة الشهر -> 665:5093: Promote
+🗑️ Archive -> باقة الشهر -> 665:5108: Group 18477
+🗑️ Archive -> باقة الشهر -> 665:5122: Ellipse 82
+🗑️ Archive -> باقة الشهر -> 665:5123: Ellipse 81
+🗑️ Archive -> باقة الشهر -> 665:5124: Ellipse 83
+🗑️ Archive -> باقة الشهر 2 -> 665:5126: Large Product Detail
+🗑️ Archive -> باقة الشهر 2 -> 665:5141: Rectangle 5551
+🗑️ Archive -> باقة الشهر 2 -> 665:5142: Group 18465
+🗑️ Archive -> باقة الشهر 2 -> 665:5241: Group 18480
+🗑️ Archive -> باقة الشهر 2 -> 665:5250: Frame 18176
+🗑️ Archive -> باقة الشهر 2 -> 665:5303: Button
+🗑️ Archive -> باقة الشهر 2 -> 665:5311: باقة الشهر
+🗑️ Archive -> باقة الشهر 2 -> 665:5312: Promote
+🗑️ Archive -> باقة الشهر 2 -> 665:5327: Group 18477
+🗑️ Archive -> باقة الشهر 3 -> 665:5342: Large Product Detail
+🗑️ Archive -> باقة الشهر 3 -> 665:5357: Rectangle 5551
+🗑️ Archive -> باقة الشهر 3 -> 665:5358: Frame 18176
+🗑️ Archive -> باقة الشهر 3 -> 665:5411: Button
+🗑️ Archive -> باقة الشهر 3 -> 665:5419: باقة الشهر
+🗑️ Archive -> باقة الشهر 3 -> 665:5420: Group 18477
+🗑️ Archive -> باقة الشهر 3 -> 665:5434: Group 18537
+🗑️ Archive -> باقة الشهر 3 -> 665:5439: Group 18536
+🗑️ Archive -> باقة الشهر 3 -> 665:5443: Group 18546
+🗑️ Archive -> باقة الشهر 3 -> 665:5454: Frame 18179
+🗑️ Archive -> باقة الشهر 3 -> 665:5518: Promote
+🗑️ Archive -> باقة الشهر 4 -> 665:5534: Large Product Detail
+🗑️ Archive -> باقة الشهر 4 -> 665:5549: Rectangle 5551
+🗑️ Archive -> باقة الشهر 4 -> 665:5550: Frame 18176
+🗑️ Archive -> باقة الشهر 4 -> 665:5603: Button
+🗑️ Archive -> باقة الشهر 4 -> 665:5611: باقة الشهر
+🗑️ Archive -> باقة الشهر 4 -> 665:5612: Group 18477
+🗑️ Archive -> باقة الشهر 4 -> 665:5626: Promote
+🗑️ Archive -> باقة الشهر 4 -> 665:5641: باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية
+🗑️ Archive -> باقة الشهر 4 -> 665:5642: Group 18388
+🗑️ Archive -> البرامج  -> 665:5706: Home Indicator
+🗑️ Archive -> البرامج  -> 665:5707: mainContainer
+🗑️ Archive -> البرامج  -> 665:5728: Asset 1@4x 1
+🗑️ Archive -> البرامج  -> 665:5729: Status bar
+🗑️ Archive -> البرامج  -> 665:5730: Rectangle 5581
+🗑️ Archive -> البرامج  -> 665:5731: Group 18506
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5847: ChatGPT Image Jun 28, 2026, 11_19_38 PM (2) 1
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5848: Rectangle 5504
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5849: Group 18380
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5852: باقة الشهر
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5853: باقة غذائية متكاملة تساعدك على خسارة الوزن بطريقة صحية وآمنة من خلال وجبات متوازنة و محسوبة السعرات بعناية
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5854: Group 18388
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5901: Group 18395
+🗑️ Archive -> iPhone 13 & 14 - 8 -> 665:5909: Group 18397
+🗑️ Archive -> Calender -> 665:5952: Home Indicator
+🗑️ Archive -> Calender -> 665:5953: Group 1
+🗑️ Archive -> Calender -> 665:5960: Iconly/Bold/Arrow - Left
+🗑️ Archive -> Calender -> 665:5961: الباقات والاشتراكات
+🗑️ Archive -> Calender -> 665:5962: Status bar
+🗑️ Archive -> Calender -> 665:5963: Group 41
+🗑️ Archive -> Calender -> 665:5965: اختر الباقة المناسبة لك
+🗑️ Archive -> Calender -> 665:5966: Rectangle 2889
+🗑️ Archive -> Calender -> 665:5967: وفر أكثر مع الباقات
+🗑️ Archive -> Calender -> 665:5968: اختر الباقة المناسبة لأسلوب حياتك واستمتع بوجبات صحية كل يوم
+🗑️ Archive -> Calender -> 665:5969: Frame
+🗑️ Archive -> Calender -> 665:5975: 1781795341947 2
+🗑️ Archive -> Calender -> 665:5976: Group 18290
+🗑️ Archive -> Calender -> 665:6013: Group 18292
+🗑️ Archive -> Calender -> 665:6046: Group 18291
+🗑️ Archive -> Calender -> 665:6079: mainContainer
+🗑️ Archive -> Calender -> 665:6100: Group 18295
+🗑️ Archive -> Calender -> 665:6106: Group 18288
+🗑️ Archive -> Calender -> 665:6110: Group 18288
+🗑️ Archive -> Calender -> 665:6114: Rectangle 2903
+🗑️ Archive -> Calender -> 665:6115: Rectangle 2904
+🗑️ Archive -> باقة الشهر -> 665:6134: Large Product Detail
+🗑️ Archive -> باقة الشهر -> 665:6149: Rectangle 5551
+🗑️ Archive -> باقة الشهر -> 665:6150: Frame 18176
+🗑️ Archive -> باقة الشهر -> 665:6203: Button
+🗑️ Archive -> باقة الشهر -> 665:6211: باقة الشهر
+🗑️ Archive -> باقة الشهر -> 665:6212: Promote
+🗑️ Archive -> باقة الشهر -> 665:6227: Group 18477
+🗑️ Archive -> باقة الشهر -> 665:6241: Frame 18587
+🗑️ Archive -> باقة الشهر -> 665:6369: Group 18595
+🗑️ Archive -> Home Screen -> 1053:3495: Section - Daily Plan
+🗑️ Archive -> Home Screen -> 1053:3534: Group 1
+🗑️ Archive -> Home Screen -> 1053:3541: Rectangle 1
+🗑️ Archive -> Home Screen -> 1053:3542: Group 5
+🗑️ Archive -> Home Screen -> 1053:3546: Doodle / 2
+🗑️ Archive -> Home Screen -> 1053:3547: Input Text
+🗑️ Archive -> Home Screen -> 1053:3551: Status bar
+🗑️ Archive -> Home Screen -> 1053:3552: Home Indicator
+🗑️ Archive -> Home Screen -> 1053:3553: Status bar
+🗑️ Archive -> Home Screen -> 1053:3554: Ellipse 1
+🗑️ Archive -> Home Screen -> 1053:3555: مرحباً بك ,
+🗑️ Archive -> Home Screen -> 1053:3556: أحمد محمد 👋
+🗑️ Archive -> Home Screen -> 1053:3557: Notification
+🗑️ Archive -> Home Screen -> 1053:3568: السعرات الحرارية 
+🗑️ Archive -> Home Screen -> 1053:3577: Specials card
+🗑️ Archive -> Home Screen -> 1053:3592: Section - Categories
+🗑️ Archive -> Home Screen -> 1053:3621: mainContainer
+🗑️ Archive -> sidebar menu -> 1089:9195: Group 1
+🗑️ Archive -> sidebar menu -> 1089:9202: Home Indicator
+🗑️ Archive -> sidebar menu -> 1089:9203: Rectangle 8
+🗑️ Archive -> sidebar menu -> 1089:9204: Home Screen
+🗑️ Archive -> sidebar menu -> 1089:9349: Group 18530
+🗑️ Archive -> sidebar menu -> 1089:9365: Group 18529
+🗑️ Archive -> sidebar menu -> 1089:9457: fa7-solid:xmark-circle
+🗑️ Archive -> sidebar menu -> 1089:9459: Layer 1
+🗑️ Archive -> sidebar menu -> 1089:9466: Group 19150
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:15967: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:15989: Page Title
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:15990: Add Family Member Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:15997: Family Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16081: Meals Info Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16151: Price Summary Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16163: Summary Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16195: Button Container
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16198: BackButton
+🗑️ Archive -> iPhone 13 & 14 - 21 -> 1532:16199: Package Details Container
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16248: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16270: Package Details Container
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16318: Page Title
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16319: Add Family Member Container
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16326: Family Container
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16363: Button Container
+🗑️ Archive -> iPhone 13 & 14 - 22 -> 1532:16366: BackButton
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16368: mainContainer
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16390: Group 18347
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16442: BackButton
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16443: Page Title
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16444: Group 18310
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16452: Frame 18171
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16536: Group 18334
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16606: Group 18353
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16618: Group 18352
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16650: Confirm Package Button
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16651: Confirm Package Label
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16652: Rectangle 5490
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16653: Container Background
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16654: Ellipse 53
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16655: mingcute:close-fill
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16659: Add Person Icon Container
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16663: Page Title
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16664: Description
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16665: Add Person Container
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16668: Info Container
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16674: Cancel Label
+🗑️ Archive -> iPhone 13 & 14 - 5 -> 1532:16675: Frame 19421
+🗑️ Archive -> Home Screen -> 1613:5694: ChatGPT Image Jul 25, 2026, 06_06_51 AM 1
+🗑️ Archive -> Home Screen -> 1613:5695: ChatGPT Image Jul 25, 2026, 06_06_51 AM 2
+🗑️ Archive -> Home Screen -> 1613:5696: Rectangle 5738
+🗑️ Archive -> Home Screen -> 1613:5697: Group 1
+🗑️ Archive -> Home Screen -> 1613:5704: Doodle / 2
+🗑️ Archive -> Home Screen -> 1613:5705: Home Indicator
+🗑️ Archive -> Home Screen -> 1613:5706: Status bar
+🗑️ Archive -> Home Screen -> 1613:5707: Notification
+🗑️ Archive -> Home Screen -> 1613:5718: Group 19163
+🗑️ Archive -> Home Screen -> 1613:5727: Doodle / 2
+🗑️ Archive -> Home Screen -> 1613:5728: Frame 19164
+🗑️ Archive -> iPhone 13 & 14 - 25 -> 1806:8598: Group 19088
+🗑️ Archive -> iPhone 13 & 14 - 25 -> 1806:8621: Group 19275
+🗑️ Archive -> iPhone 13 & 14 - 25 -> 1806:8634: Page Title
+🗑️ Archive -> iPhone 13 & 14 - 25 -> 1806:8635: BackButton
+🗑️ Archive -> Group 19262 -> 1806:8638: أفراد الباقة
+🗑️ Archive -> Group 19262 -> 1806:8639: bi:people-fill
+🗑️ Archive -> Frame 19266 -> 1806:8643: Group 19268
+🗑️ Archive -> Frame 19266 -> 1806:8668: Group 19269
+🗑️ Archive -> Frame 19266 -> 1806:8693: Group 19267
+🗑️ Archive -> Frame 19266 -> 1806:8718: Group 19266
+🗑️ Archive -> Frame 19266 -> 1806:8743: Group 19263
+🗑️ Archive -> Group 19088 -> 1810:8759: Rectangle 5715
+🗑️ Archive -> Group 19088 -> 1810:8760: Group 19087
+🗑️ Archive -> Group 19276 -> 1810:8783: أفراد الباقة
+🗑️ Archive -> Group 19276 -> 1810:8784: bi:people-fill
+🗑️ Archive -> Frame 19267 -> 1810:8788: Group 19268
+🗑️ Archive -> Frame 19267 -> 1810:8813: Group 19269
+🗑️ Archive -> Frame 19267 -> 1810:8838: Group 19267
+🗑️ Archive -> Frame 19267 -> 1810:8863: Group 19266
+🗑️ Archive -> Frame 19267 -> 1810:8888: Group 19263
+🗑️ Archive -> Group 19275 -> 1810:8897: Rectangle 5473
+🗑️ Archive -> Group 19275 -> 1810:8898: ChatGPT Image Jun 25, 2026, 01_06_09 AM 5
+🗑️ Archive -> Group 19275 -> 1810:8899: Group 18346
+🗑️ Archive -> Group 19275 -> 1810:8902: Group 18345
+🗑️ Archive -> Group 19275 -> 1810:8905: Group 18347
+🗑️ Archive -> Group 19275 -> 1810:8908: 57.600 KWD
+🗑️ Archive -> Union -> 1810:8913: Rectangle 5811
+🗑️ Archive -> Union -> 1810:8914: Rectangle 5812
+🗑️ Archive -> Frame 1000003779 -> 1810:8916: 25 مطعم
+🗑️ Archive -> Group 19497 -> 1810:8918: ChatGPT Image Aug 5, 2026, 10_40_16 PM (1) 1
+🗑️ Archive -> Group 18600 -> 1810:8920: Ellipse 65
+🗑️ Archive -> Group 18600 -> 1810:8921: Group 18542
+🗑️ Archive -> Group 18600 -> 1810:8925: Group 18442
+🗑️ Archive -> Group 19495 -> 1810:8940: استعراض المطاعم
+🗑️ Archive -> Group 19495 -> 1810:8941: weui:arrow-filled
+🗑️ Archive -> Group 19495 -> 1810:8943: Rectangle 5813
+🗑️ Archive -> Group 19496 -> 1810:8946: Select
+🗑️ Archive -> Group 19496 -> 1810:8947: خيارات صحية متوازنة تناسب أسلوب حياتي.
+🗑️ Archive -> Group 19510 -> 1810:8949: Group 19509
+🗑️ Archive -> Group 19510 -> 1810:8952: boxicons:grid-filled
+🗑️ Archive -> offers -> 1810:8960: Home Indicator
+🗑️ Archive -> offers -> 1810:8961: Group 1
+🗑️ Archive -> offers -> 1810:8968: Iconly/Bold/Arrow - Left
+🗑️ Archive -> offers -> 1810:8969: العروض
+🗑️ Archive -> offers -> 1810:8970: vuesax/bold/notification
+🗑️ Archive -> offers -> 1810:8971: Frame 18164
+🗑️ Archive -> offers -> 1810:8996: Status bar
+🗑️ Archive -> offers -> 1810:8997: Ellipse 30
+🗑️ Archive -> offers -> 1810:8998: Group 41
+🗑️ Archive -> offers -> 1810:9000: Frame
+🗑️ Archive -> offers -> 1810:9006: عروض مميزة
+🗑️ Archive -> offers -> 1810:9007: عروض المطاعم
+🗑️ Archive -> offers -> 1810:9008: عرض الكل
+🗑️ Archive -> offers -> 1810:9009: Frame 18167
+🗑️ Archive -> offers -> 1810:9053: Arrow 1
+🗑️ Archive -> offers -> 1810:9054: Rectangle 2885
+🗑️ Archive -> offers -> 1810:9055: bxs:offer
+🗑️ Archive -> offers -> 1810:9057: Rectangle 2886
+🗑️ Archive -> offers -> 1810:9058: اطلب الآن
+🗑️ Archive -> offers -> 1810:9059: Group 18177
+🗑️ Archive -> offers -> 1810:9071: 222_030906~2 1
+🗑️ Archive -> offers -> 1810:9072: 222_030906~2 3
+🗑️ Archive -> offers -> 1810:9073: 222_030906~2 2
+🗑️ Archive -> offers -> 1810:9074: 1781914850421 1
+🗑️ Archive -> offers -> 1810:9075: Rectangle 2891
+🗑️ Archive -> offers -> 1810:9076: 1781915988951 1
+🗑️ Archive -> offers -> 1810:9077: ادع أصدقائك واحصل على خصم 30%
+🗑️ Archive -> offers -> 1810:9078: Rectangle 2892
+🗑️ Archive -> offers -> 1810:9079: دعوة الأصدقاء
+🗑️ Archive -> offers -> 1810:9080: Frame 18165
+🗑️ Archive -> offers -> 1810:9102: Rectangle 2893
+🗑️ Archive -> offers -> 1810:9103: McDonald's_Golden_Arches 1
+🗑️ Archive -> offers -> 1810:9105: Rectangle 2894
+🗑️ Archive -> offers -> 1810:9106: Burger_King_logo_(1999–2020).svg 1
+🗑️ Archive -> offers -> 1810:9107: 222_030906~2 4
+🗑️ Archive -> offers -> 1810:9108: 222_030906~2 5
+🗑️ Archive -> offers -> 1810:9109: 1781916172286 1
+🗑️ Archive -> offers -> 1810:9110: Group 18192
+🗑️ Archive -> offers -> 1810:9113: Group 18196
+🗑️ Archive -> offers -> 1810:9116: Group 18195
+🗑️ Archive -> offers -> 1810:9120: Group 18197
+🗑️ Archive -> offers -> 1810:9124: ChatGPT Image Jun 21, 2026, 10_43_54 PM 1
+🗑️ Archive -> offers -> 1810:9125: Rectangle 2887
+🗑️ Archive -> offers -> 1810:9126: 🖼 Import image
+🗑️ Archive -> offers -> 1810:9127: Vector
+🗑️ Archive -> offers -> 1810:9128: Group 18192
+🗑️ Archive -> offers -> 1810:9131: Group 18195
+🗑️ Archive -> offers -> 1810:9135: Infomation
+🗑️ Archive -> offers -> 1810:9151: Infomation
+🗑️ Archive -> offers -> 1810:9167: Infomation
+🗑️ Archive -> offers -> 1810:9183: Category
+🗑️ Archive -> offers -> 1810:9191: Category
+🗑️ Archive -> offers -> 1810:9199: Category
+🗑️ Archive -> offers -> 1810:9207: Category
+🗑️ Archive -> offers -> 1810:9209: Category
+🗑️ Archive -> offers -> 1810:9211: Category
+🗑️ Archive -> offers -> 1810:9213: Name
+🗑️ Archive -> offers -> 1810:9216: Name
+🗑️ Archive -> offers -> 1810:9219: Name
+🗑️ Archive -> offers -> 1810:9222: Group 18189
+🗑️ Archive -> offers -> 1810:9225: Group 18198
+🗑️ Archive -> offers -> 1810:9228: Group 18199
+🗑️ Archive -> offers -> 1810:9231: mynaui:star-solid
+🗑️ Archive -> Main Product -> 1825:11075: Large Product Detail
+🗑️ Archive -> Main Product -> 1825:11079: Rectangle 5551
+🗑️ Archive -> Main Product -> 1825:11080: باقة 4 وجبات
+🗑️ Archive -> Main Product -> 1825:11081: Promote
+🗑️ Archive -> Main Product -> 1825:11096: Group 18654
+🗑️ Archive -> Main Product -> 1825:11165: Frame 1000003786
+🗑️ Archive -> Frame 1000003789 -> 1825:11287: Group 19516
+🗑️ Archive -> Frame 1000003789 -> 1825:11324: Group 19517
+🗑️ Archive -> Frame 1000003789 -> 1825:11361: Group 19515
+🗑️ Archive -> Frame 1000003786 -> 1825:11400: Group 19502
+🗑️ Archive -> Frame 1000003786 -> 1825:11436: Group 19504
+🗑️ Archive -> Frame 1000003786 -> 1825:11474: Group 19505
+🗑️ Archive -> Frame 1000003787 -> 1825:11513: Group 19507
+🗑️ Archive -> Frame 1000003787 -> 1825:11547: Group 19508
+🗑️ Archive -> Frame 1000003787 -> 1825:11581: Group 19506
+🗑️ Archive -> Calender -> 1836:6144: Home Indicator
+🗑️ Archive -> Calender -> 1836:6145: Group 1
+🗑️ Archive -> Calender -> 1836:6152: الدفع
+🗑️ Archive -> Calender -> 1836:6153: Status bar
+🗑️ Archive -> Calender -> 1836:6154: Ellipse 30
+🗑️ Archive -> Calender -> 1836:6155: Group 41
+🗑️ Archive -> Calender -> 1836:6157: mingcute:close-fill
+🗑️ Archive -> Calender -> 1836:6161: ic:sharp-arrow-back
+🗑️ Archive -> Calender -> 1836:6163: Rectangle 5449
+🗑️ Archive -> Calender -> 1836:6164: باقة شهر - 26 يوم 4 وجبات يومياً
+🗑️ Archive -> Calender -> 1836:6165: ملخص طلبك
+🗑️ Archive -> Calender -> 1836:6166: 1782231388464 1
+🗑️ Archive -> Calender -> 1836:6167: السعر الأساسي
+🗑️ Archive -> Calender -> 1836:6168: Line 9
+🗑️ Archive -> Calender -> 1836:6169: 52.000 KWD
+🗑️ Archive -> Calender -> 1836:6170: الخصم(20%)
+🗑️ Archive -> Calender -> 1836:6171: Line 10
+🗑️ Archive -> Calender -> 1836:6172: -10.400 KWD
+🗑️ Archive -> Calender -> 1836:6173: الإجمالي بعد الخصم
+🗑️ Archive -> Calender -> 1836:6174: اختر طريقة الدفع
+🗑️ Archive -> Calender -> 1836:6175: تفاصيل البطاقة
+🗑️ Archive -> Calender -> 1836:6176: Line 11
+🗑️ Archive -> Calender -> 1836:6177: 41.600 KWD
+🗑️ Archive -> Calender -> 1836:6178: Group 18256
+🗑️ Archive -> Calender -> 1836:6183: Rectangle 5458
+🗑️ Archive -> Calender -> 1836:6184: Rectangle 5459
+🗑️ Archive -> Calender -> 1836:6185: Rectangle 5460
+🗑️ Archive -> Calender -> 1836:6186: Rectangle 5461
+🗑️ Archive -> Calender -> 1836:6187: Rectangle 5462
+🗑️ Archive -> Calender -> 1836:6188: Rectangle 5465
+🗑️ Archive -> Calender -> 1836:6189: Rectangle 5466
+🗑️ Archive -> Calender -> 1836:6190: Rectangle 5463
+🗑️ Archive -> Calender -> 1836:6191: Rectangle 5464
+🗑️ Archive -> Calender -> 1836:6192: carbon:checkmark-filled
+🗑️ Archive -> Calender -> 1836:6195: Ellipse 50
+🗑️ Archive -> Calender -> 1836:6196: Ellipse 51
+🗑️ Archive -> Calender -> 1836:6197: Ellipse 52
+🗑️ Archive -> Calender -> 1836:6198: Mada_Logo.svg 1
+🗑️ Archive -> Calender -> 1836:6199: Visa_Inc._logo_(2005–2014).svg 1
+🗑️ Archive -> Calender -> 1836:6200: Apple_Pay_logo.svg 1
+🗑️ Archive -> Calender -> 1836:6201: streamline-plump:wallet-solid
+🗑️ Archive -> Calender -> 1836:6203: Group 18221
+🗑️ Archive -> Calender -> 1836:6206: رقم البطاقة
+🗑️ Archive -> Calender -> 1836:6207: اسم حامل البطاقة
+🗑️ Archive -> Calender -> 1836:6208: الإجمالي المطلوب دفعه
+🗑️ Archive -> Calender -> 1836:6209: 41.600 KWD
+🗑️ Archive -> Calender -> 1836:6210: تاريخ الانتهاء
+🗑️ Archive -> Calender -> 1836:6211: رمز التحقق
+🗑️ Archive -> Calender -> 1836:6212: **** **** **** ****
+🗑️ Archive -> Calender -> 1836:6213: الاسم كما هو على البطاقة
+🗑️ Archive -> Calender -> 1836:6214: شامل الضريبة
+🗑️ Archive -> Calender -> 1836:6215: ***
+🗑️ Archive -> Calender -> 1836:6216: يوم / شهر
+🗑️ Archive -> Calender -> 1836:6217: Group 18257
+🗑️ Archive -> Calender -> 1836:6220: Group 18258
+🗑️ Archive -> Calender -> 1836:6223: Group 18259
+🗑️ Archive -> Calender -> 1836:6226: iconoir:card-lock
+🗑️ Archive -> Calender -> 1836:6228: cuida:calendar-outline
+🗑️ Archive -> Calender -> 1836:6234: ri:question-line
+🗑️ Archive -> Calender -> 1836:6236: charm:person
+🗑️ Archive -> Calender -> 1836:6240: Arrow 3
+🗑️ Archive -> Calender -> 1836:6241: Group 18260
+🗑️ Archive -> Calender -> 1836:6246: Group 18242
+🗑️ Archive -> البرامج -> 1836:6262: ChatGPT Image Jul 2, 2026, 04_11_40 PM 1
+🗑️ Archive -> البرامج -> 1836:6263: Home Indicator
+🗑️ Archive -> البرامج -> 1836:6264: mainContainer
+🗑️ Archive -> البرامج -> 1836:6285: Asset 1@4x 1
+🗑️ Archive -> البرامج -> 1836:6286: Status bar
+🗑️ Archive -> البرامج -> 1836:6287: Rectangle 5581
+🗑️ Archive -> البرامج -> 1836:6288: Asset 10 1
+🗑️ Archive -> البرامج -> 1836:6295: Group 18506
+🗑️ Archive -> البرامج -> 1836:6387: ChatGPT Image Jul 2, 2026, 04_11_40 PM 1
+🗑️ Archive -> البرامج -> 1836:6388: Home Indicator
+🗑️ Archive -> البرامج -> 1836:6389: mainContainer
+🗑️ Archive -> البرامج -> 1836:6410: Asset 1@4x 1
+🗑️ Archive -> البرامج -> 1836:6411: Status bar
+🗑️ Archive -> البرامج -> 1836:6412: Rectangle 5581
+🗑️ Archive -> البرامج -> 1836:6413: Group 18506
+🗑️ Archive -> البرامج -> 1836:6505: Asset 10 1
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6720: Large Product Detail
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6724: Rectangle 5551
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6725: Button
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6733: باقة الشهر
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6734: Promote
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6749: Group 18654
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6809: Group 18662
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6979: أفضل المطاعم وتجربة فاخرة
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6980: ايليت
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6981: Group 18666
+🗑️ Archive -> 20 - Subscription / Configure Duration & Tier -> 1836:6985: Asset 11 1
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7030: Large Product Detail
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7034: Rectangle 5551
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7035: باقة الشهر
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7036: Promote
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7051: Group 18654
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7120: Frame 1000003793
+🗑️ Archive -> 21 - Subscription / Configure Plan -> 1836:7270: Ellipse 90
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7272: Large Product Detail
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7276: Rectangle 5551
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7277: باقة 4 وجبات
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7278: Promote
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7293: Group 18654
+🗑️ Archive -> 22 - Subscription / Configure 4-Meal Plan -> 1836:7362: Frame 1000003786
+🗑️ Archive -> Group 19516 -> 1836:7476: Union
+🗑️ Archive -> Group 19516 -> 1836:7479: Group 19495
+🗑️ Archive -> Group 19516 -> 1836:7484: Group 18600
+🗑️ Archive -> Group 19516 -> 1836:7504: Group 19512
+🗑️ Archive -> Group 19517 -> 1836:7513: Union
+🗑️ Archive -> Group 19517 -> 1836:7516: Group 19495
+🗑️ Archive -> Group 19517 -> 1836:7521: Group 18600
+🗑️ Archive -> Group 19517 -> 1836:7541: Group 19512
+🗑️ Archive -> Group 19515 -> 1836:7550: Group 18600
+🗑️ Archive -> Group 19515 -> 1836:7579: Union
+🗑️ Archive -> Group 19515 -> 1836:7582: Group 19518
+🗑️ Archive -> Group 19515 -> 1836:7587: Group 19495
+🗑️ Archive -> Group 19518 -> 1836:7594: Group 19509
+🗑️ Archive -> Group 19518 -> 1836:7597: boxicons:grid-filled
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8503: Large Product Detail
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8507: Rectangle 5551
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8508: باقة الشهر
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8509: Promote
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8524: Group 18597
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8676: Group 18624
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8691: Group 18628
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8706: Group 18632
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8711: Group 18631
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8720: Group 18626
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8729: Group 18627
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8734: Group 18625
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8749: Group 18629
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8760: Group 18630
+🗑️ Archive -> 23 - Subscription / Restaurants Included -> 1836:8767: Asset 11 1
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:8804: Cover Image
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:8808: Base
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:8809: نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة وطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:8810: Group 18644
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:8903: Frame 56
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9116: Hot Coffees
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9117: Base
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9118: Group 18653
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9126: Line
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9127: Name
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9128: Group 18638
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9136: THE PROTEIN KITCHEN
+🗑️ Archive -> 28 - Meals / Ingredients & Sources / Alternate -> 1836:9137: Line
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9139: ChatGPT Image Jul 10, 2026, 06_12_03 PM 1
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9140: Group 18699
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9171: وجبة متكاملة عالية البروتين ومصنوعة من مكونات طبيعية طازجة، مناسبة لبرنامج خسارة الوزن وبناء العضلات.
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9172: Group 18474
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9175: THE PROTEIN KITCHEN
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9176: Group 18678
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9182: Group 18679
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9185: Group 18680
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9189: Group 18681
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9195: Group 18682
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9198: المكونات
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9199: Group 18684
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9204: Group 18685
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9209: Group 18686
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9214: Group 18687
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9219: Group 18688
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9224: Group 18689
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9229: Line 57
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9230: Line 60
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9231: Line 58
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9232: Line 61
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9233: Line 59
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9234: Line 62
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9235: Group 18690
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9239: القيم الغذائية
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9240: Group 18691
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9246: Group 18692
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9254: Group 18693
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9267: Group 18694
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9273: Group 18695
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9279: مسببات الحساسية
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9280: Frame 18589
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9300: Group 18705
+🗑️ Archive -> 29 - Meals / Nutrition & Allergens -> 1836:9308: Group 18709
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9744: Rectangle 5582
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9745: Iconly/Bold/Arrow - Left
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9746: Status bar
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9747: البرنامج المختار :
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9748: Group 18507
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9772: Frame 18180
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9943: اختر الباقة التي تناسبك
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9944: Home Indicator
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9945: mainContainer
+🗑️ Archive -> 15 - Programs / Selected Program -> 1836:9966: Asset 8 1
+🗑️ Archive -> Frame 102 -> 1836:10032: Frame 101
+🗑️ Archive -> Frame 102 -> 1836:10036: Frame 105
+🗑️ Archive -> Frame 103 -> 1836:10044: Frame 101
+🗑️ Archive -> Frame 103 -> 1836:10047: Frame 105
+🗑️ Archive -> Frame 108 -> 1836:10054: Frame 113
+🗑️ Archive -> Frame 108 -> 1836:10059: Frame 114
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10120: Group 19577
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10264: Group 19576
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10274: تقويم أحمد
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10275: Add Person Container
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10278: Group 19580
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10286: BackButton
+🗑️ Archive -> 08.05 - Family / Member Calendar -> 1860:10287: Selected Meals
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10367: Home Indicator
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10368: BackButton
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10369: وجبات أحمد
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10370: Status bar
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10371: Ellipse 30
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10372: Carousel arrow
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10374: Frame 18165
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10396: Group 19278
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10400: Group 19282
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10415: Group 19311
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10649: Group 19319
+🗑️ Archive -> 08.08 - Family / Member Meal Selection -> 1860:10670: Frame 19255

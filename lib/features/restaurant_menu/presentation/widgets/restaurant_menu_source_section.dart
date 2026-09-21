@@ -55,34 +55,31 @@ class RestaurantMenuSourceSection extends StatelessWidget {
 
     final cards = _cards(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            locale.calendar_ingredient_origin_title,
-            textAlign: TextAlign.start,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size11,
-              color: color.onSurface,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          locale.calendar_ingredient_origin_title,
+          textAlign: TextAlign.start,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size11,
+            color: color.onSurface,
           ),
-          const SizedBox(height: Spacing.xs),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                for (var index = 0; index < cards.length; index++) ...[
-                  if (index > 0) const SizedBox(width: Spacing.base),
-                  cards[index],
-                ],
+        ),
+        const SizedBox(height: Spacing.xs),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (var index = 0; index < cards.length; index++) ...[
+                if (index > 0) const SizedBox(width: Spacing.base),
+                cards[index],
               ],
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

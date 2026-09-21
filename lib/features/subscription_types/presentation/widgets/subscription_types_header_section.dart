@@ -27,15 +27,11 @@ class SubscriptionTypesHeaderSection extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             Spacing.subscriptionProgramCardRadius,
           ),
-          child: AspectRatio(
-            aspectRatio:
-                Spacing.subscriptionTypeHeroWidth /
-                Spacing.subscriptionTypeHeroHeight,
-            child: Image.asset(
-              Assets.subscriptionTypeHero,
-              fit: BoxFit.cover,
-              semanticLabel: locale.subscription_type_hero_label,
-            ),
+          child: Image.asset(
+            width: double.infinity,
+            height: 130,
+            Assets.subscriptionTypeHero,
+            fit: BoxFit.cover,
           ),
         ),
         const SizedBox(height: Spacing.sm),

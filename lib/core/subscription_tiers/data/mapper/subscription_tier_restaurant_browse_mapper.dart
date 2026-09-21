@@ -6,6 +6,7 @@ extension SubscriptionTierRestaurantBrowseResponseDtoMapper
   SubscriptionTierRestaurantBrowseEntity toEntity() {
     return SubscriptionTierRestaurantBrowseEntity(
       restaurantId: restaurantId ?? '',
+      nameRaw: name ?? '',
       nameAr: nameAr ?? '',
       nameEn: nameEn ?? '',
       logoUrl: logoUrl,
@@ -13,6 +14,7 @@ extension SubscriptionTierRestaurantBrowseResponseDtoMapper
       mealCount: mealCount ?? 0,
       bundleMealCount: bundleMealCount ?? 0,
       tier: tier ?? '',
+      tierNameRaw: tierName ?? '',
       tierNameAr: tierNameAr ?? '',
       tierNameEn: tierNameEn ?? '',
       tierLogoUrl: tierLogoUrl,

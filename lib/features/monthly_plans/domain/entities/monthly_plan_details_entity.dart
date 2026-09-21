@@ -60,6 +60,7 @@ class MonthlyRestaurantPlanEntity {
     this.logoAsset,
     this.logoUrl,
     this.initials,
+    this.tierName = '',
   });
 
   final String programId;
@@ -75,6 +76,7 @@ class MonthlyRestaurantPlanEntity {
   final String? logoAsset;
   final String? logoUrl;
   final String? initials;
+  final String tierName;
 }
 
 class MonthlyPlanFeatureEntity {

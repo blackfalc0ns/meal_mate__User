@@ -134,105 +134,98 @@ class SubscriptionTypeCard extends StatelessWidget {
                           top: contentTop,
                           start: Spacing.lg,
                           width: contentWidth,
-                          child: Row(
-                            textDirection: textDirection,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                flex: 4,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      textDirection: textDirection,
-                                      children: [
-                                        Container(
-                                          width: Spacing.xl,
-                                          height: Spacing.xl,
-                                          decoration: BoxDecoration(
-                                            color: type.isFamily
-                                                ? color.secondaryContainer
-                                                      .withValues(alpha: 0.85)
-                                                : color.surface,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            type.isFamily
-                                                ? Icons.groups_rounded
-                                                : Icons.person_rounded,
-                                            size: Spacing.iconSm,
-                                            color: accentColor,
-                                            semanticLabel: title,
-                                          ),
-                                        ),
-                                        const SizedBox(width: Spacing.sm),
-
-                                        Flexible(
-                                          child: Text(
-                                            title,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                            style: getBoldStyle(
-                                              fontFamily:
-                                                  FontConstant.alexandria,
-                                              fontSize: FontSize.size15,
-                                              color: accentColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                              Row(
+                                textDirection: textDirection,
+                                children: [
+                                  Container(
+                                    width: Spacing.xl,
+                                    height: Spacing.xl,
+                                    decoration: BoxDecoration(
+                                      color: type.isFamily
+                                          ? color.secondaryContainer
+                                                .withValues(alpha: 0.85)
+                                          : color.surface,
+                                      shape: BoxShape.circle,
                                     ),
-                                    const SizedBox(height: Spacing.sm),
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional.centerStart,
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: cardWidth * 0.34,
-                                        ),
-                                        child: Text(
-                                          description,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: getRegularStyle(
-                                            fontFamily: FontConstant.alexandria,
-                                            fontSize: FontSize.size11,
-                                            color: color.onSurfaceVariant,
-                                          ),
-                                        ),
+                                    child: Icon(
+                                      type.isFamily
+                                          ? Icons.groups_rounded
+                                          : Icons.person_rounded,
+                                      size: Spacing.iconSm,
+                                      color: accentColor,
+                                      semanticLabel: title,
+                                    ),
+                                  ),
+                                  const SizedBox(width: Spacing.sm),
+                                  Expanded(
+                                    child: Text(
+                                      title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: getBoldStyle(
+                                        fontFamily:
+                                            FontConstant.alexandria,
+                                        fontSize: FontSize.size15,
+                                        color: accentColor,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const Spacer(),
-                              Container(
-                                width: Spacing.lg,
-                                height: Spacing.lg,
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? accentColor
-                                      : color.surface,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? accentColor
-                                        : color.onSurfaceVariant.withValues(
-                                            alpha: 0.72,
-                                          ),
+                              const SizedBox(height: Spacing.sm),
+                              Align(
+                                alignment:
+                                    AlignmentDirectional.centerStart,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: cardWidth * 0.34,
+                                  ),
+                                  child: Text(
+                                    description,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    style: getRegularStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size11,
+                                      color: color.onSurfaceVariant,
+                                    ),
                                   ),
                                 ),
-                                child: isSelected
-                                    ? Icon(
-                                        Icons.check_rounded,
-                                        size: Spacing.iconSm,
-                                        color: color.onPrimary,
-                                      )
-                                    : null,
                               ),
                             ],
+                          ),
+                        ),
+                        PositionedDirectional(
+                          top: Spacing.base,
+                          end: Spacing.base,
+                          child: Container(
+                            width: Spacing.lg,
+                            height: Spacing.lg,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? accentColor
+                                  : color.surface,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: isSelected
+                                    ? accentColor
+                                    : color.onSurfaceVariant.withValues(
+                                        alpha: 0.72,
+                                      ),
+                              ),
+                            ),
+                            child: isSelected
+                                ? Icon(
+                                    Icons.check_rounded,
+                                    size: Spacing.iconSm,
+                                    color: color.onPrimary,
+                                  )
+                                : null,
                           ),
                         ),
                         PositionedDirectional(

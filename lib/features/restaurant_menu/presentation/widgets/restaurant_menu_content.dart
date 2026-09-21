@@ -66,62 +66,68 @@ class RestaurantMenuContent extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                if (!isFullPage) ...[
-                  const SizedBox(height: Spacing.lg),
-                  const RestaurantMenuSheetHandle(),
-                ],
-                const SizedBox(height: Spacing.md),
-                RestaurantMenuHeader(
-                  restaurantName: resolvedRestaurantName,
-                  restaurantLogoAsset: restaurantLogoAsset,
-                  restaurantLogoUrl: restaurantLogoUrl,
-                  restaurantInitials: restaurantInitials,
-                ),
-                const RestaurantMenuDescription(),
-                const RestaurantMenuDividerLine(),
-                RestaurantMenuSourceSection(
-                  coreIngredients: coreIngredients,
-                  origins: origins,
-                  isLoading: isLoading,
-                ),
-                const SizedBox(height: Spacing.base),
-                RestaurantMenuTabs(
-                  labels: mealTabs,
-                  selectedIndex: selectedTab,
-                  isLoading: isLoading,
-                  onChanged: (index) {
-                    onTabChanged(index);
-                  },
-                ),
-                const SizedBox(height: Spacing.sm),
-                if (failure != null)
-                  ApiErrorWidget(exception: failure!.exception)
-                else if (isLoading)
-                  const RestaurantMenuLoadingSkeleton()
-                else
-                  RestaurantMenuOptionsSection(
-                    mealType: mealTabs[selectedTab],
-                    tabIndex: selectedTab,
-                    options: options,
-                    isLoadingMore: isLoadingMore,
-                    onOptionSelected: onOptionSelected,
-                    onOptionDetailsSelected: onOptionDetailsSelected,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
+              child: Column(
+                children: [
+                  if (!isFullPage) ...[
+                    const SizedBox(height: Spacing.lg),
+                    const RestaurantMenuSheetHandle(),
+                  ],
+                  const SizedBox(height: Spacing.md),
+                  RestaurantMenuHeader(
+                    restaurantName: resolvedRestaurantName,
+                    restaurantLogoAsset: restaurantLogoAsset,
+                    restaurantLogoUrl: restaurantLogoUrl,
+                    restaurantInitials: restaurantInitials,
                   ),
-                if (mode == RestaurantMenuMode.selection && onSave != null) ...[
-                  const SizedBox(height: Spacing.lg),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
-                    child: AppButton(
-                      text: locale.calendar_done,
-                      isLoading: isSaving,
-                      onPressed: canSave ? onSave : null,
+                  const RestaurantMenuDescription(),
+                  const RestaurantMenuDividerLine(),
+                  RestaurantMenuSourceSection(
+                    coreIngredients: coreIngredients,
+                    origins: origins,
+                    isLoading: isLoading,
+                  ),
+                  const SizedBox(height: Spacing.base),
+                  RestaurantMenuTabs(
+                    labels: mealTabs,
+                    selectedIndex: selectedTab,
+                    isLoading: isLoading,
+                    onChanged: (index) {
+                      onTabChanged(index);
+                    },
+                  ),
+                  const SizedBox(height: Spacing.sm),
+                  if (failure != null)
+                    ApiErrorWidget(exception: failure!.exception)
+                  else if (isLoading)
+                    const RestaurantMenuLoadingSkeleton()
+                  else
+                    RestaurantMenuOptionsSection(
+                      mealType: mealTabs[selectedTab],
+                      tabIndex: selectedTab,
+                      options: options,
+                      isLoadingMore: isLoadingMore,
+                      onOptionSelected: onOptionSelected,
+                      onOptionDetailsSelected: onOptionDetailsSelected,
                     ),
-                  ),
+                  if (mode == RestaurantMenuMode.selection &&
+                      onSave != null) ...[
+                    const SizedBox(height: Spacing.lg),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.lg,
+                      ),
+                      child: AppButton(
+                        text: locale.calendar_done,
+                        isLoading: isSaving,
+                        onPressed: canSave ? onSave : null,
+                      ),
+                    ),
+                  ],
+                  SizedBox(height: Spacing.xxl + bottomContentPadding),
                 ],
-                SizedBox(height: Spacing.xxl + bottomContentPadding),
-              ],
+              ),
             ),
           ),
         ],

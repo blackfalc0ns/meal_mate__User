@@ -65,11 +65,20 @@ class SubscriptionDurationSelectorSkeleton extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Center(
-                  child: ShimmerPlaceholder.rect(
-                    width: Spacing.xxxl * 1.5,
-                    height: Spacing.md,
-                    borderRadius: Spacing.radiusPill,
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      ShimmerPlaceholder.circle(
+                        size: Spacing.monthlyPlanDurationControlSize,
+                      ),
+                      SizedBox(width: Spacing.xs),
+                      ShimmerPlaceholder.rect(
+                        width: Spacing.xxxl * 1.8,
+                        height: Spacing.md,
+                        borderRadius: Spacing.radiusPill,
+                      ),
+                    ],
                   ),
                 ),
               ],

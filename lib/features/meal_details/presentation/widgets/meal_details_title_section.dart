@@ -31,12 +31,12 @@ class MealDetailsTitleSection extends StatelessWidget {
             children: [
               Text(
                 meal.title,
-                textAlign: TextAlign.right,
+
                 style: getSemiBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size18,
                   color: color.onSurface,
-                ).copyWith(height: locale.localeName == 'ar' ? 1.3 : 1.15),
+                ),
               ),
               const SizedBox(height: Spacing.xs),
               Row(

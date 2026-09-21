@@ -10,16 +10,13 @@ class RestaurantMenuSectionTitle extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 36),
-      child: Text(
-        locale.calendar_meals_for(mealType),
-        textAlign: TextAlign.right,
-        style: getBoldStyle(
-          fontFamily: FontConstant.alexandria,
-          fontSize: 18,
-          color: color.onSurface,
-        ),
+    return Text(
+      locale.calendar_meals_for(mealType),
+
+      style: getBoldStyle(
+        fontFamily: FontConstant.alexandria,
+        fontSize: 18,
+        color: color.onSurface,
       ),
     );
   }

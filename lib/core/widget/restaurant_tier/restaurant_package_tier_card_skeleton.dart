@@ -17,116 +17,126 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
+    final placeholderColor = color.surfaceContainerHighest;
+
     return SizedBox(
       width: width,
       height: height,
-      child: ShimmerWidget(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              CustomPaint(
-                size: Size(width, height),
-                painter: _RestaurantPackageTierCardSkeletonPainter(
-                  fillColor: color.surfaceContainerLow,
-                  borderColor: color.outlineVariant,
-                  shadowColor: color.shadow.withValues(alpha: 0.08),
-                  radius: Spacing.monthlyPlanPackageSideRadius,
-                ),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            CustomPaint(
+              size: Size(width, height),
+              painter: _RestaurantPackageTierCardSkeletonPainter(
+                fillColor: color.surface,
+                borderColor: color.outlineVariant.withValues(alpha: 0.6),
+                shadowColor: color.shadow.withValues(alpha: 0.08),
+                radius: Spacing.monthlyPlanPackageSideRadius,
               ),
-              Positioned(
-                left: Spacing.monthlyPlanPackageLogoStart,
-                top: Spacing.monthlyPlanPackageLogoTop,
-                child: SizedBox(
-                  width: Spacing.monthlyPlanPackageButtonWidth,
-                  height: Spacing.iconMd,
-                  child: Stack(
-                    children: [
-                      for (var index = 0; index < 3; index++)
-                        Positioned(
-                          left: index * Spacing.lg,
-                          child: Container(
-                            width: Spacing.iconMd,
-                            height: Spacing.iconMd,
-                            decoration: BoxDecoration(
-                              color: color.surface,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: color.outlineVariant),
-                            ),
+            ),
+            ShimmerWidget(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    left: Spacing.monthlyPlanPackageLogoStart,
+                    top: Spacing.monthlyPlanPackageLogoTop,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: Spacing.monthlyPlanRestaurantLogoSize,
+                          height: Spacing.monthlyPlanRestaurantLogoSize,
+                          decoration: BoxDecoration(
+                            color: placeholderColor,
+                            shape: BoxShape.circle,
                           ),
                         ),
-                      Positioned(
-                        left: Spacing.xxxl + Spacing.md,
-                        top: Spacing.xs,
-                        child: Container(
-                          width: Spacing.xxxl,
+                        for (var i = 0; i < 3; i++)
+                          Transform.translate(
+                            offset: Offset(
+                              (i + 1) *
+                                  Spacing.monthlyPlanRestaurantLogoOverlap,
+                              0,
+                            ),
+                            child: Container(
+                              width: Spacing.monthlyPlanRestaurantLogoSize,
+                              height: Spacing.monthlyPlanRestaurantLogoSize,
+                              decoration: BoxDecoration(
+                                color: placeholderColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: color.surface,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: Spacing.monthlyPlanPackageIconEnd,
+                    top: Spacing.monthlyPlanPackageIconTop,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: Spacing.monthlyPlanPackageTitleWidth,
                           height: Spacing.base,
                           decoration: BoxDecoration(
-                            color: color.surface,
+                            color: placeholderColor,
                             borderRadius: BorderRadius.circular(
                               Spacing.radiusPill,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: Spacing.sm),
+                        Container(
+                          width: Spacing.monthlyPlanPackageIconSize,
+                          height: Spacing.monthlyPlanPackageIconSize,
+                          decoration: BoxDecoration(
+                            color: placeholderColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                right: Spacing.monthlyPlanPackageIconEnd,
-                top: Spacing.monthlyPlanPackageIconTop,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: Spacing.monthlyPlanPackageTitleWidth,
-                      height: Spacing.base,
+                  Positioned(
+                    left: Spacing.monthlyPlanPackageButtonStart,
+                    top: Spacing.monthlyPlanPackageButtonTop,
+                    child: Container(
+                      width: Spacing.monthlyPlanPackageButtonWidth,
+                      height: Spacing.monthlyPlanPackageButtonHeight,
                       decoration: BoxDecoration(
-                        color: color.surface,
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                        color: placeholderColor,
+                        borderRadius: BorderRadius.circular(
+                          Spacing.radiusPill,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: Spacing.sm),
-                    Container(
-                      width: Spacing.monthlyPlanPackageIconSize,
-                      height: Spacing.monthlyPlanPackageIconSize,
+                  ),
+                  Positioned(
+                    right: Spacing.monthlyPlanPackageIndicatorEnd,
+                    top: Spacing.monthlyPlanPackageIndicatorTop,
+                    child: Container(
+                      width: Spacing.monthlyPlanPackageIndicatorSize,
+                      height: Spacing.monthlyPlanPackageIndicatorSize,
                       decoration: BoxDecoration(
                         color: color.surface,
                         shape: BoxShape.circle,
+                        border: Border.all(color: color.outlineVariant),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: Spacing.monthlyPlanPackageButtonStart,
-                top: Spacing.monthlyPlanPackageButtonTop,
-                child: Container(
-                  width: Spacing.monthlyPlanPackageButtonWidth,
-                  height: Spacing.monthlyPlanPackageButtonHeight,
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
                   ),
-                ),
+                ],
               ),
-              Positioned(
-                right: Spacing.monthlyPlanPackageIndicatorEnd,
-                top: Spacing.monthlyPlanPackageIndicatorTop,
-                child: Container(
-                  width: Spacing.monthlyPlanPackageIndicatorSize,
-                  height: Spacing.monthlyPlanPackageIndicatorSize,
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: color.outlineVariant),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

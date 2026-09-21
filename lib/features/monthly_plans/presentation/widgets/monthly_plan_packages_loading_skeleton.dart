@@ -23,27 +23,27 @@ class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: SizedBox(
-                    width: Spacing.monthlyPlanPackagesHeaderWidth,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [
-                        ShimmerPlaceholder.rect(
-                          width: Spacing.xxxl * 1.4,
-                          height: Spacing.lg,
-                          borderRadius: Spacing.radiusPill,
-                        ),
-                        SizedBox(height: Spacing.xs),
-                        ShimmerPlaceholder.rect(
-                          width: Spacing.xxxl * 1.8,
-                          height: Spacing.md,
-                          borderRadius: Spacing.radiusPill,
-                        ),
-                      ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    ShimmerPlaceholder.rect(
+                      width: Spacing.iconMd,
+                      height: Spacing.iconMd,
+                      borderRadius: Spacing.radiusXs,
                     ),
-                  ),
+                    SizedBox(width: Spacing.sm),
+                    ShimmerPlaceholder.rect(
+                      width: Spacing.xxxl * 3.5,
+                      height: Spacing.xl,
+                      borderRadius: Spacing.radiusPill,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: Spacing.xs),
+                const ShimmerPlaceholder.rect(
+                  width: Spacing.xxxl * 5.5,
+                  height: Spacing.md,
+                  borderRadius: Spacing.radiusPill,
                 ),
                 const SizedBox(height: Spacing.lg),
                 for (var index = 0; index < 3; index++)

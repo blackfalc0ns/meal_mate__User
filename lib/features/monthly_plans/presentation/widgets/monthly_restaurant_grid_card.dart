@@ -52,8 +52,12 @@ class _MonthlyRestaurantGridCardState extends State<MonthlyRestaurantGridCard> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.localization;
     final color = context.colorScheme;
+    final locale = context.localization;
+
+    final tierOrSubtitle = widget.restaurant.tierName.isNotEmpty
+        ? widget.restaurant.tierName
+        : widget.restaurant.subtitle;
 
     return Material(
       color: color.surface.withValues(alpha: 0),
@@ -98,18 +102,20 @@ class _MonthlyRestaurantGridCardState extends State<MonthlyRestaurantGridCard> {
                   color: color.onSurface,
                 ).copyWith(height: 1.25),
               ),
-              const SizedBox(height: Spacing.sm),
-              Text(
-                widget.restaurant.subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: getMediumStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
-                  color: color.onSurfaceVariant,
+              if (tierOrSubtitle.isNotEmpty) ...[
+                const SizedBox(height: Spacing.sm),
+                Text(
+                  tierOrSubtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: getMediumStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size11,
+                    color: color.onSurfaceVariant,
+                  ),
                 ),
-              ),
+              ],
 
               const Spacer(),
               Container(
@@ -120,7 +126,7 @@ class _MonthlyRestaurantGridCardState extends State<MonthlyRestaurantGridCard> {
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
                 child: Text(
-                  '${widget.restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
+                  '${widget.restaurant.bundleMeals} ${locale.subscription_details_meal_suffix}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(

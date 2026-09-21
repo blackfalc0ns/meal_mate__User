@@ -17,30 +17,43 @@ class RestaurantMenuProteinLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return Semantics(
-      label: '${locale.calendar_restaurant_name}: $label',
-      child: Container(
-        width: size,
-        height: size,
-        padding: const EdgeInsets.all(Spacing.xs),
-        decoration: BoxDecoration(
-          color: color.inverseSurface,
-          shape: BoxShape.circle,
-        ),
-        child: logoUrl != null && logoUrl!.isNotEmpty
-            ? AppCachedNetworkImage(
-                imageUrl: logoUrl,
-                fit: BoxFit.contain,
-                shape: BoxShape.circle,
-                semanticLabel: label,
-              )
-            : logoAsset == null
-            ? Center(
+    return Container(
+      width: size,
+      height: size,
+      padding: const EdgeInsets.all(Spacing.xs),
+      decoration: BoxDecoration(
+        color: color.inverseSurface,
+        shape: BoxShape.circle,
+      ),
+      child: logoUrl != null && logoUrl!.isNotEmpty
+          ? AppCachedNetworkImage(
+              imageUrl: logoUrl,
+              fit: BoxFit.contain,
+              shape: BoxShape.circle,
+              semanticLabel: label,
+            )
+          : logoAsset == null
+          ? Center(
+              child: Text(
+                label,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: size * 0.159,
+                  color: color.onInverseSurface,
+                ).copyWith(height: 1),
+              ),
+            )
+          : Image.asset(
+              logoAsset!,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Center(
                 child: Text(
                   label,
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
@@ -49,25 +62,8 @@ class RestaurantMenuProteinLogo extends StatelessWidget {
                     color: color.onInverseSurface,
                   ).copyWith(height: 1),
                 ),
-              )
-            : Image.asset(
-                logoAsset!,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => Center(
-                  child: Text(
-                    label,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: size * 0.159,
-                      color: color.onInverseSurface,
-                    ).copyWith(height: 1),
-                  ),
-                ),
               ),
-      ),
+            ),
     );
   }
 }

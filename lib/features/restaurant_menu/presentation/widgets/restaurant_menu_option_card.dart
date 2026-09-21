@@ -21,115 +21,109 @@ class RestaurantMenuOptionCard extends StatelessWidget {
     final showsSelectButton = onTap != null;
     final cardHeight = Spacing.restaurantDetailsMealCardHeight + Spacing.md;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.lg,
-        vertical: Spacing.xs,
-      ),
-      child: SizedBox(
-        height: isBlocked ? cardHeight + Spacing.lg : cardHeight,
-        child: Opacity(
-          opacity: isBlocked ? 0.58 : 1,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
+    return SizedBox(
+      height: isBlocked ? cardHeight + Spacing.lg : cardHeight,
+      child: Opacity(
+        opacity: isBlocked ? 0.58 : 1,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onDetailsTap ?? (isBlocked ? null : onTap),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  Spacing.restaurantDetailsMealImageRadius,
+                ),
+                child: option.imageUrl == null || option.imageUrl!.isEmpty
+                    ? Image.asset(
+                        option.imageAsset,
+                        width: Spacing.restaurantDetailsMealImageSize,
+                        height: Spacing.restaurantDetailsMealImageSize,
+                        fit: BoxFit.cover,
+                      )
+                    : AppCachedNetworkImage(
+                        imageUrl: option.imageUrl,
+                        width: Spacing.restaurantDetailsMealImageSize,
+                        height: Spacing.restaurantDetailsMealImageSize,
+                        fit: BoxFit.cover,
+                        semanticLabel: option.title,
+                      ),
+              ),
+            ),
+            const SizedBox(width: Spacing.md),
+            Expanded(
+              child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: onDetailsTap ?? (isBlocked ? null : onTap),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    Spacing.restaurantDetailsMealImageRadius,
-                  ),
-                  child: option.imageUrl == null || option.imageUrl!.isEmpty
-                      ? Image.asset(
-                          option.imageAsset,
-                          width: Spacing.restaurantDetailsMealImageSize,
-                          height: Spacing.restaurantDetailsMealImageSize,
-                          fit: BoxFit.cover,
-                        )
-                      : AppCachedNetworkImage(
-                          imageUrl: option.imageUrl,
-                          width: Spacing.restaurantDetailsMealImageSize,
-                          height: Spacing.restaurantDetailsMealImageSize,
-                          fit: BoxFit.cover,
-                          semanticLabel: option.title,
-                        ),
-                ),
-              ),
-              const SizedBox(width: Spacing.md),
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: onDetailsTap ?? (isBlocked ? null : onTap),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      option.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size16,
+                        color: color.onSurface,
+                      ).copyWith(height: 1.5),
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    RestaurantMenuNutritionRow(option: option),
+                    if (isBlocked) ...[
+                      const SizedBox(height: Spacing.xs),
                       Text(
-                        option.title,
+                        blockReason,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                         style: getMediumStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size16,
-                          color: color.onSurface,
-                        ).copyWith(height: 1.5),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      RestaurantMenuNutritionRow(option: option),
-                      if (isBlocked) ...[
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          blockReason,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size10,
-                            color: color.error,
-                          ),
+                          fontSize: FontSize.size10,
+                          color: color.error,
                         ),
-                      ],
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: Spacing.xs),
-                        child: Text(
-                          locale.calendar_ingredients,
-                          textAlign: TextAlign.start,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size10,
-                            color: color.onSurface,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      RestaurantMenuIngredientRow(
-                        ingredients: option.ingredients,
                       ),
                     ],
-                  ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: Spacing.xs),
+                      child: Text(
+                        locale.calendar_ingredients,
+                        textAlign: TextAlign.start,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    RestaurantMenuIngredientRow(
+                      ingredients: option.ingredients,
+                    ),
+                  ],
                 ),
               ),
-              if (showsSelectButton) ...[
-                const SizedBox(width: Spacing.lg),
-                SizedBox(
-                  height: Spacing.restaurantDetailsMealImageSize,
-                  child: Center(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: isBlocked ? null : onTap,
-                      child: RestaurantMenuSelectButton(
-                        selected: option.selected,
-                        enabled: !isBlocked,
-                      ),
+            ),
+            if (showsSelectButton) ...[
+              const SizedBox(width: Spacing.lg),
+              SizedBox(
+                height: Spacing.restaurantDetailsMealImageSize,
+                child: Center(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: isBlocked ? null : onTap,
+                    child: RestaurantMenuSelectButton(
+                      selected: option.selected,
+                      enabled: !isBlocked,
                     ),
                   ),
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );

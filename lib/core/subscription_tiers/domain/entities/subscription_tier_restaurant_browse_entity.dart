@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_pl
 class SubscriptionTierRestaurantBrowseEntity {
   const SubscriptionTierRestaurantBrowseEntity({
     required this.restaurantId,
+    this.nameRaw = '',
     required this.nameAr,
     required this.nameEn,
     required this.logoUrl,
@@ -11,6 +12,7 @@ class SubscriptionTierRestaurantBrowseEntity {
     required this.mealCount,
     required this.bundleMealCount,
     required this.tier,
+    this.tierNameRaw = '',
     required this.tierNameAr,
     required this.tierNameEn,
     required this.tierLogoUrl,
@@ -18,6 +20,7 @@ class SubscriptionTierRestaurantBrowseEntity {
   });
 
   final String restaurantId;
+  final String nameRaw;
   final String nameAr;
   final String nameEn;
   final String? logoUrl;
@@ -25,15 +28,26 @@ class SubscriptionTierRestaurantBrowseEntity {
   final int mealCount;
   final int bundleMealCount;
   final String tier;
+  final String tierNameRaw;
   final String tierNameAr;
   final String tierNameEn;
   final String? tierLogoUrl;
   final List<SubscriptionTierRestaurantClassificationEntity> classifications;
 
-  String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
+  String name(String localeName) {
+    if (localeName == 'ar' && nameAr.trim().isNotEmpty) return nameAr;
+    if (nameRaw.trim().isNotEmpty) return nameRaw;
+    if (nameEn.trim().isNotEmpty) return nameEn;
+    return nameAr;
+  }
 
-  String tierName(String localeName) =>
-      localeName == 'ar' ? tierNameAr : tierNameEn;
+  String tierName(String localeName) {
+    if (tierNameRaw.trim().isNotEmpty) return tierNameRaw;
+    if (localeName == 'ar' && tierNameAr.trim().isNotEmpty) return tierNameAr;
+    if (tierNameEn.trim().isNotEmpty) return tierNameEn;
+    if (tier.trim().isNotEmpty) return tier;
+    return tierNameAr;
+  }
 
   MonthlyRestaurantPlanEntity toRestaurantPlan({
     required String programId,
@@ -42,13 +56,15 @@ class SubscriptionTierRestaurantBrowseEntity {
     required Color brandColor,
   }) {
     final restaurantName = name(localeName);
+    final resolvedTierName = tierName(localeName);
 
     return MonthlyRestaurantPlanEntity(
       programId: programId,
       bundleId: bundleId,
       restaurantId: restaurantId,
       name: restaurantName,
-      subtitle: tierName(localeName),
+      subtitle: resolvedTierName,
+      tierName: resolvedTierName,
       meals: mealCount.toString(),
       bundleMeals: bundleMealCount.toString(),
       rating: rating == null ? '' : rating!.toStringAsFixed(1),
