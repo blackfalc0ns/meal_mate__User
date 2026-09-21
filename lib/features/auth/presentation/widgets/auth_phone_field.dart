@@ -32,15 +32,12 @@ class AuthPhoneField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            l10n.phone_number,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
-              color: AppColors.textPrimary,
-            ),
+        Text(
+          l10n.phone_number,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size14,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: Spacing.sm),

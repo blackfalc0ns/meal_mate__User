@@ -17,7 +17,6 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_details_content.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_readiness_bottom_sheet.dart';
 
@@ -55,11 +54,11 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
       child: BlocConsumer<SubscriptionPlanViewModel, SubscriptionPlanState>(
         listenWhen: (previous, current) =>
             previous.readiness != current.readiness ||
-            previous.readinessFailure != current.readinessFailure ||
-            previous.failure != current.failure,
+            (previous.failure != current.failure &&
+                current.hasFridayUnavailableFailure),
         listener: (context, state) {
           final failure = state.failure;
-          if (_shouldShowFailureDialog(failure)) {
+          if (state.hasFridayUnavailableFailure) {
             _showFailureDialog(context, failure!);
             return;
           }
@@ -84,7 +83,7 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
           );
 
           if (readiness.shouldOpenSummary &&
-              !_hasRestaurantCoverageBlock(readiness)) {
+              !readiness.hasRestaurantCoverageBlock) {
             final selectedTier = state.selectedTier;
             context.pushNamed(
               AppRoutes.subscriptionSummary,
@@ -240,20 +239,6 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  bool _hasRestaurantCoverageBlock(SubscriptionReadinessEntity readiness) {
-    final reason = readiness.checkoutBlockReason?.toLowerCase();
-
-    return (!readiness.canCheckout &&
-            readiness.deliveringRestaurantCount == 0) ||
-        reason == 'restaurant.not_eligible' ||
-        reason == 'subscription_flow.no_restaurants_for_address' ||
-        reason == 'checkout.no_restaurants_for_address';
-  }
-
-  bool _shouldShowFailureDialog(Failure? failure) {
-    return failure?.code == 'subscription_flow.friday_unavailable';
   }
 
   Future<void> _showFailureDialog(BuildContext context, Failure failure) {

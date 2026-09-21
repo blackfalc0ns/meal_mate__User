@@ -64,7 +64,7 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
     final items = readiness.incompleteItems;
-    final hasRestaurantBlock = _hasRestaurantBlock(readiness);
+    final hasRestaurantBlock = readiness.hasRestaurantCoverageBlock;
     final hasAddressItem = items.any(
       (item) => item.actionScreen.toUpperCase() == 'ADDRESS',
     );
@@ -142,15 +142,5 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  bool _hasRestaurantBlock(SubscriptionReadinessEntity readiness) {
-    final reason = readiness.checkoutBlockReason?.toLowerCase();
-
-    return (!readiness.canCheckout &&
-            readiness.deliveringRestaurantCount == 0) ||
-        reason == 'restaurant.not_eligible' ||
-        reason == 'subscription_flow.no_restaurants_for_address' ||
-        reason == 'checkout.no_restaurants_for_address';
   }
 }

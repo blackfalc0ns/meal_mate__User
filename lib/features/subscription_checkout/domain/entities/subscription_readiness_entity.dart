@@ -35,6 +35,15 @@ class SubscriptionReadinessEntity {
   bool get shouldOpenSummary =>
       canOpenSummary || nextAction.toUpperCase() == 'SUMMARY';
 
+  bool get hasRestaurantCoverageBlock {
+    final reason = checkoutBlockReason?.toLowerCase();
+
+    return (!canCheckout && deliveringRestaurantCount == 0) ||
+        reason == 'restaurant.not_eligible' ||
+        reason == 'subscription_flow.no_restaurants_for_address' ||
+        reason == 'checkout.no_restaurants_for_address';
+  }
+
   List<SubscriptionReadinessItemEntity> get incompleteItems =>
       items.where((item) => !item.isComplete).toList();
 }

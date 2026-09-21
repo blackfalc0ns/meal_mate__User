@@ -5,6 +5,6 @@ import 'package:meal_meat_user/features/subscription_programs/domain/entities/su
 abstract interface class SubscriptionProgramsRepository {
   Future<ApiResult<List<SubscriptionProgramEntity>>> getSubscriptionPrograms();
 
-  Future<ApiResult<List<SubscriptionBundleEntity>>>
+  Future<ApiResult<SubscriptionProgramBundlesEntity>>
   getSubscriptionProgramBundles(String programId);
 }

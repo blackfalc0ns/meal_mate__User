@@ -29,6 +29,19 @@ extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
   }
 }
 
+extension SubscriptionProgramBundlesResponseDtoMapper
+    on SubscriptionProgramBundlesResponseDto {
+  SubscriptionProgramBundlesEntity toProgramBundlesEntity() {
+    return SubscriptionProgramBundlesEntity(
+      hasDeliveryAddress: hasDeliveryAddress ?? false,
+      hasAllergies: hasAllergies ?? false,
+      hasDietaryPreferences: hasDietaryPreferences ?? false,
+      isProfileComplete: isProfileComplete ?? false,
+      bundles: (bundles ?? const []).map((item) => item.toEntity()).toList(),
+    );
+  }
+}
+
 extension SubscriptionBundleSlotResponseDtoMapper
     on SubscriptionBundleSlotResponseDto {
   SubscriptionBundleSlotEntity toEntity() {

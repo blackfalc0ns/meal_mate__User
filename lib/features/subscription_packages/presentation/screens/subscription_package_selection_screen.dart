@@ -9,10 +9,8 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_plan_details_args.dart';
 import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
@@ -43,6 +41,7 @@ class _SubscriptionPackageSelectionScreenState
   int? _selectedPackageIndex;
   int? _selectedPlanDetailsIndex;
   final bool _isFamilyPackageSelected = false;
+  bool _continueAfterProfileUpdate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,87 +60,78 @@ class _SubscriptionPackageSelectionScreenState
         }
         return viewModel;
       },
-      child: BlocConsumer<SubscriptionProgramsViewModel, SubscriptionProgramsState>(
-        listenWhen: (previous, current) =>
-            previous.prerequisitesCompleted != current.prerequisitesCompleted ||
-            previous.prerequisitesFailure != current.prerequisitesFailure,
-        listener: (context, state) async {
-          if (state.prerequisitesCompleted) {
-            _openSelectedPackage(state.bundles);
-            return;
-          }
-
-          final failure = state.prerequisitesFailure;
-          if (failure == null) return;
-          final destination = SubscriptionPrerequisiteDestination.fromErrorCode(
-            failure.code,
-          );
-          if (destination == null) {
-            CustomSnackbar.showError(
-              context: context,
-              message: mapFailureMessage(context, failure.errorMessage),
-            );
-            return;
-          }
-
-          await _showPrerequisiteSheet(context, destination);
-        },
-        builder: (context, state) => Scaffold(
-          backgroundColor: color.surface,
-          appBar: CustomAppBar(
-            titleWidget: const AppLogo(alignment: CrossAxisAlignment.center),
-            backgroundColor: color.surface,
-            onBackPressed: () => Navigator.maybePop(context),
-          ),
-          bottomNavigationBar:
-              BlocBuilder<
-                SubscriptionProgramsViewModel,
-                SubscriptionProgramsState
-              >(
-                builder: (context, state) {
-                  return SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.lg,
-                        vertical: Spacing.md,
-                      ),
-                      child: AppButton.filled(
-                        text: locale.subscription_choose_plan_button,
-                        onPressed:
-                            _selectedPlanDetailsIndex == null ||
-                                state.bundles.isEmpty
-                            ? null
-                            : () => context
-                                  .read<SubscriptionProgramsViewModel>()
-                                  .doIntent(
-                                    const CheckSubscriptionPrerequisitesEvent(),
+      child:
+          BlocConsumer<
+            SubscriptionProgramsViewModel,
+            SubscriptionProgramsState
+          >(
+            listenWhen: (previous, current) =>
+                _continueAfterProfileUpdate &&
+                previous.isLoading &&
+                !current.isLoading,
+            listener: (context, state) async {
+              _continueAfterProfileUpdate = false;
+              if (state.failure == null) {
+                await _continueWithProfileStatus(context, state);
+              }
+            },
+            builder: (context, state) => Scaffold(
+              backgroundColor: color.surface,
+              appBar: CustomAppBar(
+                titleWidget: const AppLogo(
+                  alignment: CrossAxisAlignment.center,
+                ),
+                backgroundColor: color.surface,
+                onBackPressed: () => Navigator.maybePop(context),
+              ),
+              bottomNavigationBar:
+                  BlocBuilder<
+                    SubscriptionProgramsViewModel,
+                    SubscriptionProgramsState
+                  >(
+                    builder: (context, state) {
+                      return SafeArea(
+                        top: false,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.lg,
+                            vertical: Spacing.md,
+                          ),
+                          child: AppButton.filled(
+                            text: locale.subscription_choose_plan_button,
+                            onPressed:
+                                _selectedPlanDetailsIndex == null ||
+                                    state.bundles.isEmpty
+                                ? null
+                                : () => _continueWithProfileStatus(
+                                    context,
+                                    state,
                                   ),
-                        isLoading: state.isPrerequisitesLoading,
-                        borderRadius: Spacing.radiusPill,
-                        textColor: color.onPrimary,
-                        fontSize: FontSize.size12,
-                        iconWidget: Icon(
-                          Icons.chevron_right_rounded,
-                          color: color.onPrimary,
-                          size: Spacing.iconMd,
+                            isLoading: state.isLoading,
+                            borderRadius: Spacing.radiusPill,
+                            textColor: color.onPrimary,
+                            fontSize: FontSize.size12,
+                            iconWidget: Icon(
+                              Icons.chevron_right_rounded,
+                              color: color.onPrimary,
+                              size: Spacing.iconMd,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-          body:
-              BlocBuilder<
-                SubscriptionProgramsViewModel,
-                SubscriptionProgramsState
-              >(
-                builder: (context, state) {
-                  return _buildBody(context, state, selectedProgram);
-                },
-              ),
-        ),
-      ),
+                      );
+                    },
+                  ),
+              body:
+                  BlocBuilder<
+                    SubscriptionProgramsViewModel,
+                    SubscriptionProgramsState
+                  >(
+                    builder: (context, state) {
+                      return _buildBody(context, state, selectedProgram);
+                    },
+                  ),
+            ),
+          ),
     );
   }
 
@@ -284,6 +274,24 @@ class _SubscriptionPackageSelectionScreenState
     );
   }
 
+  Future<void> _continueWithProfileStatus(
+    BuildContext context,
+    SubscriptionProgramsState state,
+  ) async {
+    final destination = SubscriptionPrerequisiteDestination.fromProfileStatus(
+      hasDeliveryAddress: state.hasDeliveryAddress,
+      hasAllergies: state.hasAllergies,
+      hasDietaryPreferences: state.hasDietaryPreferences,
+    );
+
+    if (destination != null) {
+      await _showPrerequisiteSheet(context, destination);
+      return;
+    }
+
+    _openSelectedPackage(state.bundles);
+  }
+
   Future<void> _showPrerequisiteSheet(
     BuildContext context,
     SubscriptionPrerequisiteDestination destination,
@@ -298,8 +306,11 @@ class _SubscriptionPackageSelectionScreenState
             arguments: const SubscriptionFlowArgs(),
           );
           if (updated == true && context.mounted) {
+            final selectedProgram = widget.selectedProgram;
+            if (selectedProgram == null) return;
+            _continueAfterProfileUpdate = true;
             context.read<SubscriptionProgramsViewModel>().doIntent(
-              const CheckSubscriptionPrerequisitesEvent(),
+              GetSubscriptionProgramBundlesEvent(selectedProgram.programId),
             );
           }
         },

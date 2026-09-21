@@ -30,5 +30,49 @@ void main() {
         isNull,
       );
     });
+
+    test('selects address as the first missing profile step', () {
+      expect(
+        SubscriptionPrerequisiteDestination.fromProfileStatus(
+          hasDeliveryAddress: false,
+          hasAllergies: false,
+          hasDietaryPreferences: false,
+        ),
+        SubscriptionPrerequisiteDestination.address,
+      );
+    });
+
+    test('selects allergies after the delivery address is complete', () {
+      expect(
+        SubscriptionPrerequisiteDestination.fromProfileStatus(
+          hasDeliveryAddress: true,
+          hasAllergies: false,
+          hasDietaryPreferences: false,
+        ),
+        SubscriptionPrerequisiteDestination.allergies,
+      );
+    });
+
+    test('selects dietary preferences after earlier steps are complete', () {
+      expect(
+        SubscriptionPrerequisiteDestination.fromProfileStatus(
+          hasDeliveryAddress: true,
+          hasAllergies: true,
+          hasDietaryPreferences: false,
+        ),
+        SubscriptionPrerequisiteDestination.dietaryPreferences,
+      );
+    });
+
+    test('returns no destination when every profile step is complete', () {
+      expect(
+        SubscriptionPrerequisiteDestination.fromProfileStatus(
+          hasDeliveryAddress: true,
+          hasAllergies: true,
+          hasDietaryPreferences: true,
+        ),
+        isNull,
+      );
+    });
   });
 }

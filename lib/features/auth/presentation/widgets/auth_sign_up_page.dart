@@ -101,15 +101,12 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                   ),
                 ),
                 const SizedBox(height: Spacing.sm),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    l10n.auth_name_label,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
-                      color: AppColors.textPrimary,
-                    ),
+                Text(
+                  l10n.auth_name_label,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size14,
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: Spacing.sm),

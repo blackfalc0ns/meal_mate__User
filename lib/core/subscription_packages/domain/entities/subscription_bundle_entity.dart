@@ -47,6 +47,22 @@ class SubscriptionBundleEntity {
       localeName == 'ar' ? descriptionAr : descriptionEn;
 }
 
+class SubscriptionProgramBundlesEntity {
+  const SubscriptionProgramBundlesEntity({
+    required this.hasDeliveryAddress,
+    required this.hasAllergies,
+    required this.hasDietaryPreferences,
+    required this.isProfileComplete,
+    required this.bundles,
+  });
+
+  final bool hasDeliveryAddress;
+  final bool hasAllergies;
+  final bool hasDietaryPreferences;
+  final bool isProfileComplete;
+  final List<SubscriptionBundleEntity> bundles;
+}
+
 class SubscriptionBundleSlotEntity {
   const SubscriptionBundleSlotEntity({
     required this.code,

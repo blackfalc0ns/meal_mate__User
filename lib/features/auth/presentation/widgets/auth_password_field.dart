@@ -35,15 +35,12 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            widget.labelText ?? l10n.password,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
-              color: AppColors.textPrimary,
-            ),
+        Text(
+          widget.labelText ?? l10n.password,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size14,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: Spacing.sm),

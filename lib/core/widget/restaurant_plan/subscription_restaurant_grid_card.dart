@@ -122,7 +122,7 @@ class _SubscriptionRestaurantGridCardState
                 ),
                 child: Text(
                   '${widget.restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,

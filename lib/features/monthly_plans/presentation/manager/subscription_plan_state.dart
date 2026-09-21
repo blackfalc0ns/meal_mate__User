@@ -50,6 +50,9 @@ class SubscriptionPlanState {
   final Failure? browseRestaurantsFailure;
   final Failure? readinessFailure;
 
+  bool get hasFridayUnavailableFailure =>
+      failure?.code == 'subscription_flow.friday_unavailable';
+
   SubscriptionDurationEntity? get selectedDuration {
     final index = selectedDurationIndex;
     if (index == null || index < 0 || index >= durations.length) return null;

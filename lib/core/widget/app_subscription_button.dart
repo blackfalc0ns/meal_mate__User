@@ -77,18 +77,13 @@ class AppSubscriptionButton extends StatelessWidget {
                         height: Spacing.monthlyPlanSubscribeDividerHeight,
                         color: foregroundColor,
                       ),
-                      // const Spacer(flex: 3),
-                      // Icon(
-                      //   Icons.monetization_on_rounded,
-                      //   color: foregroundColor,
-                      //   size: Spacing.monthlyPlanSubscribeCoinSize,
-                      // ),
+                      
                       const SizedBox(width: Spacing.sm),
                       Text(
                         price,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: Spacing.monthlyPlanSubscribePriceSize,
+                          fontSize: FontSize.size15,
                           color: foregroundColor,
                         ).copyWith(height: 1),
                       ),
@@ -97,7 +92,7 @@ class AppSubscriptionButton extends StatelessWidget {
                         currency,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: Spacing.monthlyPlanSubscribeCurrencySize,
+                          fontSize: FontSize.size15,
                           color: foregroundColor,
                         ),
                       ),
@@ -109,7 +104,7 @@ class AppSubscriptionButton extends StatelessWidget {
                       locale.subscription_details_subscribe_now,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size22,
+                        fontSize: FontSize.size15,
                         color: foregroundColor,
                       ).copyWith(height: 1),
                     ),

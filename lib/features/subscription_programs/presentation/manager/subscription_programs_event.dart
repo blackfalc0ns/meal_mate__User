@@ -11,7 +11,3 @@ class GetSubscriptionProgramBundlesEvent extends SubscriptionProgramsEvent {
 
   final String programId;
 }
-
-class CheckSubscriptionPrerequisitesEvent extends SubscriptionProgramsEvent {
-  const CheckSubscriptionPrerequisitesEvent();
-}

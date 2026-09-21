@@ -174,7 +174,7 @@ class Spacing {
   static const double subscriptionTypeFamilyImageTop = 0.0;
   static const double subscriptionTypeFamilyImageEnd = 0.0;
   static const double subscriptionPackageChoiceCardHeight = 100.0;
-  static const double subscriptionPackageChoiceFigmaHeight = 135.0;
+  static const double subscriptionPackageChoiceFigmaHeight = 140.0;
   static const double subscriptionPackageChoiceImageWidth = 139.0;
   static const double subscriptionPackageChoiceImageHeight = 94.0;
   static const double subscriptionPackageChoiceButtonWidth = 192.0;
@@ -526,7 +526,7 @@ class Spacing {
   static const double monthlyPlanPromotionRadius = 12.0;
   static const double monthlyPlanPromotionIconSize = 20.0;
   static const double monthlyPlanPromotionTextSize = 14.0;
-  static const double monthlyPlanSubscribeHeight = 50.0;
+  static const double monthlyPlanSubscribeHeight = 40.0;
   static const double monthlyPlanSubscribeRadius = 39.0;
   static const double monthlyPlanSubscribeShadowBlur = 18.0;
   static const double monthlyPlanSubscribeShadowOffset = 8.0;

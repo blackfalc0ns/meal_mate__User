@@ -9,7 +9,7 @@ class GetSubscriptionProgramBundlesUseCase {
 
   final SubscriptionProgramsRepository _repository;
 
-  Future<ApiResult<List<SubscriptionBundleEntity>>> call(String programId) {
+  Future<ApiResult<SubscriptionProgramBundlesEntity>> call(String programId) {
     return _repository.getSubscriptionProgramBundles(programId);
   }
 }

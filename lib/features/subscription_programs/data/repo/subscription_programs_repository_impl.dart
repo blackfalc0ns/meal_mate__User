@@ -23,15 +23,13 @@ class SubscriptionProgramsRepositoryImpl
   }
 
   @override
-  Future<ApiResult<List<SubscriptionBundleEntity>>>
+  Future<ApiResult<SubscriptionProgramBundlesEntity>>
   getSubscriptionProgramBundles(String programId) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getSubscriptionProgramBundles(
         programId,
       );
-      return (response.bundles ?? const [])
-          .map((item) => item.toEntity())
-          .toList();
+      return response.toProgramBundlesEntity();
     });
   }
 }

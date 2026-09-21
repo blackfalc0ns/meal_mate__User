@@ -62,10 +62,16 @@ class SubscriptionBundleResponseDto {
 class SubscriptionProgramBundlesResponseDto {
   const SubscriptionProgramBundlesResponseDto({
     this.hasDeliveryAddress,
+    this.hasAllergies,
+    this.hasDietaryPreferences,
+    this.isProfileComplete,
     this.bundles,
   });
 
   final bool? hasDeliveryAddress;
+  final bool? hasAllergies;
+  final bool? hasDietaryPreferences;
+  final bool? isProfileComplete;
   final List<SubscriptionBundleResponseDto>? bundles;
 
   factory SubscriptionProgramBundlesResponseDto.fromJson(

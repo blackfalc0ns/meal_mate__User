@@ -1267,13 +1267,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i887.InfluencerAnalyticsRemoteDataSource>(),
       ),
     );
-    gh.factory<_i420.SubscriptionProgramsViewModel>(
-      () => _i420.SubscriptionProgramsViewModel(
-        gh<_i178.GetSubscriptionProgramsUseCase>(),
-        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
-        gh<_i623.CheckSubscriptionPrerequisitesUseCase>(),
-      ),
-    );
     gh.factory<_i873.AbandonFamilyDraftUseCase>(
       () => _i873.AbandonFamilyDraftUseCase(
         gh<_i925.FamilySubscriptionSetupRepository>(),
@@ -1580,6 +1573,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i870.GetFamilyPlanTiersUseCase>(),
         gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
+      ),
+    );
+    gh.factory<_i420.SubscriptionProgramsViewModel>(
+      () => _i420.SubscriptionProgramsViewModel(
+        gh<_i178.GetSubscriptionProgramsUseCase>(),
+        gh<_i718.GetSubscriptionProgramBundlesUseCase>(),
       ),
     );
     gh.factory<_i932.FamilySubscriptionFlowViewModel>(

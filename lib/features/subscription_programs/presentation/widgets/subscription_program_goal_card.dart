@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
-import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_arrow_button.dart';
 
 class SubscriptionProgramGoalCard extends StatelessWidget {
   const SubscriptionProgramGoalCard({
@@ -179,7 +178,7 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.sm),
-              const SubscriptionProgramArrowButton(),
+             
             ],
           ),
         ),

@@ -113,9 +113,9 @@ class SubscriptionDurationOption extends StatelessWidget {
                     ),
                   ],
                 ),
-                Positioned(
+                PositionedDirectional(
                   top: Spacing.xs,
-                  right: 1,
+                  end: 1,
                   child: Icon(
                     isSelected
                         ? Icons.check_circle_rounded

@@ -11,4 +11,15 @@ enum SubscriptionPrerequisiteDestination {
       _ => null,
     };
   }
+
+  static SubscriptionPrerequisiteDestination? fromProfileStatus({
+    required bool hasDeliveryAddress,
+    required bool hasAllergies,
+    required bool hasDietaryPreferences,
+  }) {
+    if (!hasDeliveryAddress) return address;
+    if (!hasAllergies) return allergies;
+    if (!hasDietaryPreferences) return dietaryPreferences;
+    return null;
+  }
 }

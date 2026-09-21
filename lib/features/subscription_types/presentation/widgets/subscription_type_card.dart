@@ -168,21 +168,16 @@ class SubscriptionTypeCard extends StatelessWidget {
                                         const SizedBox(width: Spacing.sm),
 
                                         Flexible(
-                                          child: ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              maxWidth: cardWidth * 0.28,
-                                            ),
-                                            child: Text(
-                                              title,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                              style: getBoldStyle(
-                                                fontFamily:
-                                                    FontConstant.alexandria,
-                                                fontSize: FontSize.size15,
-                                                color: accentColor,
-                                              ),
+                                          child: Text(
+                                            title,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: getBoldStyle(
+                                              fontFamily:
+                                                  FontConstant.alexandria,
+                                              fontSize: FontSize.size15,
+                                              color: accentColor,
                                             ),
                                           ),
                                         ),
