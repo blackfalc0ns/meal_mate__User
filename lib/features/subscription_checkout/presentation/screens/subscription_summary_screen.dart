@@ -79,7 +79,6 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
           final hasSummary = summary != null;
 
           return Scaffold(
-            backgroundColor: color.surface,
             body: Semantics(
               label: locale.subscription_summary_title,
               child: Stack(
@@ -89,79 +88,73 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
                     slivers: [
                       SliverToBoxAdapter(
                         child: Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              maxWidth: Spacing.monthlyPlanDesignWidth,
-                            ),
-                            child: Column(
-                              children: [
-                                MonthlyPlanHeroSection(
-                                  plan: plan,
-                                  imageAsset: plan.heroImageAsset.isNotEmpty
-                                      ? plan.heroImageAsset
-                                      : Assets.monthlyPlanHero,
-                                  imageUrl:
-                                      summary?.imageUrl ??
-                                      summary?.programImageUrl,
-                                  onBack: () => Navigator.maybePop(context),
+                          child: Column(
+                            children: [
+                              MonthlyPlanHeroSection(
+                                plan: plan,
+                                imageAsset: plan.heroImageAsset.isNotEmpty
+                                    ? plan.heroImageAsset
+                                    : Assets.monthlyPlanHero,
+                                imageUrl:
+                                    summary?.imageUrl ??
+                                    summary?.programImageUrl,
+                                onBack: () => Navigator.maybePop(context),
+                              ),
+                              const SizedBox(height: Spacing.xl),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Spacing.md,
                                 ),
-                                const SizedBox(height: Spacing.xl),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: Spacing.md,
-                                  ),
-                                  child: state.isLoading && !hasSummary
-                                      ? const SubscriptionSummaryDetailsLoadingSkeleton()
-                                      : state.failure != null && !hasSummary
-                                      ? Column(
-                                          children: [
-                                            SubscriptionStartDatePickerCard(
-                                              selectedStartDate:
-                                                  _selectedStartDate,
-                                              onPressed: () =>
-                                                  _openDatePicker(context),
-                                            ),
-                                            const SizedBox(height: Spacing.md),
-                                            ApiErrorWidget(
-                                              exception:
-                                                  state.failure!.exception,
-                                              onRetry: () => context
-                                                  .read<
-                                                    SubscriptionSummaryViewModel
-                                                  >()
-                                                  .doIntent(
-                                                    GetSubscriptionSummaryEvent(
-                                                      _summaryRequest,
-                                                    ),
+                                child: state.isLoading && !hasSummary
+                                    ? const SubscriptionSummaryDetailsLoadingSkeleton()
+                                    : state.failure != null && !hasSummary
+                                    ? Column(
+                                        children: [
+                                          SubscriptionStartDatePickerCard(
+                                            selectedStartDate:
+                                                _selectedStartDate,
+                                            onPressed: () =>
+                                                _openDatePicker(context),
+                                          ),
+                                          const SizedBox(height: Spacing.md),
+                                          ApiErrorWidget(
+                                            exception: state.failure!.exception,
+                                            onRetry: () => context
+                                                .read<
+                                                  SubscriptionSummaryViewModel
+                                                >()
+                                                .doIntent(
+                                                  GetSubscriptionSummaryEvent(
+                                                    _summaryRequest,
                                                   ),
-                                            ),
-                                          ],
-                                        )
-                                      : Column(
-                                          children: [
-                                            SubscriptionStartDatePickerCard(
-                                              selectedStartDate:
-                                                  _selectedStartDate,
-                                              onPressed: () =>
-                                                  _openDatePicker(context),
-                                            ),
-                                            const SizedBox(height: Spacing.md),
-                                            SubscriptionSummaryDetailsCard(
-                                              plan: plan,
-                                              summary: summary,
-                                              selectedStartDate:
-                                                  _selectedStartDate,
-                                            ),
-                                          ],
-                                        ),
-                                ),
-                                const SizedBox(
-                                  height:
-                                      Spacing.monthlyPlanSubscribeHeight +
-                                      Spacing.xxxl,
-                                ),
-                              ],
-                            ),
+                                                ),
+                                          ),
+                                        ],
+                                      )
+                                    : Column(
+                                        children: [
+                                          SubscriptionStartDatePickerCard(
+                                            selectedStartDate:
+                                                _selectedStartDate,
+                                            onPressed: () =>
+                                                _openDatePicker(context),
+                                          ),
+                                          const SizedBox(height: Spacing.md),
+                                          SubscriptionSummaryDetailsCard(
+                                            plan: plan,
+                                            summary: summary,
+                                            selectedStartDate:
+                                                _selectedStartDate,
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                              const SizedBox(
+                                height:
+                                    Spacing.monthlyPlanSubscribeHeight +
+                                    Spacing.xxxl,
+                              ),
+                            ],
                           ),
                         ),
                       ),

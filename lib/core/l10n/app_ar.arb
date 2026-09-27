@@ -713,6 +713,8 @@
   "subscription_summary_includes_label": "يشمل اشتراكك",
   "subscription_summary_daily_meals": "4 وجبات يومياً (إفطار - غداء - عشاء - سناك)",
   "subscription_summary_restaurants": "أكثر من 100 مطعم",
+  "subscription_summary_show_more": "عرض المزيد",
+  "subscription_summary_all_restaurants": "المطاعم المتاحة",
   "subscription_summary_no_restaurants_for_address": "لا يوجد مطعم يغطي عنوان التوصيل الحالي.",
   "subscription_no_restaurants_for_area": "لا تتوفر مطاعم لمنطقتك.",
   "subscription_change_address": "تغيير العنوان",

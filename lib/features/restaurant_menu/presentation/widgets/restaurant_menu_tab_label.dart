@@ -30,7 +30,7 @@ class RestaurantMenuTabLabel extends StatelessWidget {
             style: getSemiBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size15,
-              color: active ? color.primary : color.onSurface,
+              color: active ? color.primary : color.onSurfaceVariant,
             ).copyWith(height: 12.48 / 13.52, letterSpacing: 0),
             child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),

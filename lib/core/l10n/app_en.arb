@@ -713,6 +713,8 @@
   "subscription_summary_includes_label": "Your subscription includes",
   "subscription_summary_daily_meals": "4 meals daily (breakfast - lunch - dinner - snack)",
   "subscription_summary_restaurants": "More than 100 restaurants",
+  "subscription_summary_show_more": "Show more",
+  "subscription_summary_all_restaurants": "Available restaurants",
   "subscription_summary_no_restaurants_for_address": "No restaurants currently cover this delivery address.",
   "subscription_no_restaurants_for_area": "No restaurants are available for your area.",
   "subscription_change_address": "Change address",

@@ -34,8 +34,8 @@ class RestaurantMenuTabs extends StatelessWidget {
               ),
             ),
             const Positioned(
-              left: Spacing.restaurantDetailsTabsHorizontalInset,
-              right: Spacing.restaurantDetailsTabsHorizontalInset,
+              left: 0,
+              right: 0,
               top: 0,
               bottom: 0,
               child: Row(
@@ -104,34 +104,36 @@ class RestaurantMenuTabs extends StatelessWidget {
                   ],
                 ),
           Positioned(
-            left: Spacing.restaurantDetailsTabsHorizontalInset,
-            right: Spacing.restaurantDetailsTabsHorizontalInset,
+            left: 0,
+            right: 0,
             bottom: 0,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final tabCount = labels.isEmpty ? 1 : labels.length;
+            child: IgnorePointer(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final tabCount = labels.isEmpty ? 1 : labels.length;
 
-                return AnimatedAlign(
-                  duration: const Duration(milliseconds: 260),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment(
-                    labels.length <= 1
-                        ? 1
-                        : 1 - ((selectedIndex * 2) / (labels.length - 1)),
-                    0,
-                  ),
-                  child: Container(
-                    width: constraints.maxWidth / tabCount,
-                    height: Spacing.restaurantDetailsTabsIndicatorHeight,
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(Spacing.radiusLg),
+                  return AnimatedAlign(
+                    duration: const Duration(milliseconds: 260),
+                    curve: Curves.easeOutCubic,
+                    alignment: AlignmentDirectional(
+                      tabCount <= 1
+                          ? 0.0
+                          : -1.0 + (selectedIndex * (2.0 / (tabCount - 1))),
+                      0,
+                    ),
+                    child: Container(
+                      width: constraints.maxWidth / tabCount,
+                      height: Spacing.restaurantDetailsTabsIndicatorHeight,
+                      decoration: BoxDecoration(
+                        color: color.primary,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(Spacing.radiusLg),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],

@@ -22,4 +22,16 @@ enum SubscriptionPrerequisiteDestination {
     if (!hasDietaryPreferences) return dietaryPreferences;
     return null;
   }
+
+  static List<SubscriptionPrerequisiteDestination> listFromProfileStatus({
+    required bool hasDeliveryAddress,
+    required bool hasAllergies,
+    required bool hasDietaryPreferences,
+  }) {
+    final list = <SubscriptionPrerequisiteDestination>[];
+    if (!hasDeliveryAddress) list.add(address);
+    if (!hasAllergies) list.add(allergies);
+    if (!hasDietaryPreferences) list.add(dietaryPreferences);
+    return list;
+  }
 }

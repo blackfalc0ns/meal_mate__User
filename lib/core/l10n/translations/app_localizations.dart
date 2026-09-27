@@ -3908,6 +3908,18 @@ abstract class AppLocalizations {
   /// **'More than 100 restaurants'**
   String get subscription_summary_restaurants;
 
+  /// No description provided for @subscription_summary_show_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get subscription_summary_show_more;
+
+  /// No description provided for @subscription_summary_all_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Available restaurants'**
+  String get subscription_summary_all_restaurants;
+
   /// No description provided for @subscription_summary_no_restaurants_for_address.
   ///
   /// In en, this message translates to:

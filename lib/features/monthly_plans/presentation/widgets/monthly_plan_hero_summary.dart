@@ -20,7 +20,7 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             FittedBox(
               child: RichText(
@@ -28,54 +28,34 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                 text: TextSpan(
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size26,
+                    fontSize: FontSize.size30,
                     color: color.onSurface,
-                  ).copyWith(height: 1.25),
+                  ),
                   children: [
                     if (plan.titlePrefix.isNotEmpty)
                       TextSpan(text: '${plan.titlePrefix} '),
-                    if (plan.titleHighlight.isNotEmpty)
-                      TextSpan(
-                        text: plan.titleHighlight,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size26,
-                          color: color.primary,
-                        ).copyWith(height: 1.25),
-                      ),
+                    // if (plan.titleHighlight.isNotEmpty)
+                    //   TextSpan(
+                    //     text: plan.titleHighlight,
+                    //     style: getBoldStyle(
+                    //       fontFamily: FontConstant.alexandria,
+                    //       fontSize: FontSize.size26,
+                    //       color: color.primary,
+                    //     ).copyWith(height: 1.25),
+                    //   ),
                   ],
                 ),
               ),
             ),
-            // if (plan.discountLabel.isNotEmpty) ...[
-            //   const SizedBox(height: Spacing.xs),
-            //   Container(
-            //     constraints: const BoxConstraints(
-            //       minHeight: Spacing.monthlyPlanPromotionHeight,
-            //     ),
-            //     padding: const EdgeInsets.symmetric(
-            //       horizontal: Spacing.monthlyPlanPromotionPadding,
-            //       vertical: Spacing.xs,
-            //     ),
-            //     decoration: BoxDecoration(
-            //       color: color.primary,
-            //       borderRadius: BorderRadius.circular(
-            //         Spacing.monthlyPlanPromotionRadius,
-            //       ),
-            //     ),
-            //     child: Text(
-            //       plan.discountLabel,
-            //       textAlign: TextAlign.center,
-            //       maxLines: 2,
-            //       overflow: TextOverflow.ellipsis,
-            //       style: getSemiBoldStyle(
-            //         fontFamily: FontConstant.alexandria,
-            //         fontSize: Spacing.monthlyPlanPromotionTextSize,
-            //         color: color.onPrimary,
-            //       ),
-            //     ),
-            //   ),
-            // ],
+            Text(
+              textAlign: TextAlign.center,
+              plan.titleHighlight,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size26,
+                color: color.primary,
+              ),
+            ),
           ],
         ),
       ),

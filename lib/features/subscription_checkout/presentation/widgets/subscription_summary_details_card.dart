@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_restaurants_sheet.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_value_tile.dart';
 
 class SubscriptionSummaryDetailsCard extends StatelessWidget {
@@ -39,9 +40,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size24,
+              fontSize: FontSize.size20,
               color: color.onSurface,
-            ).copyWith(height: FontSize.size30 / FontSize.size24),
+            ),
           ),
           const SizedBox(height: Spacing.lg),
           SubscriptionSummaryValueTile(
@@ -250,6 +251,48 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                         ],
                       ),
                     ),
+                  if ((summary?.restaurants.length ?? 0) > 4) ...[
+                    const SizedBox(height: Spacing.xs),
+                    InkWell(
+                      onTap: () {
+                        SubscriptionSummaryRestaurantsSheet.show(
+                          context: context,
+                          restaurants: summary!.restaurants,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: Spacing.sm,
+                          horizontal: Spacing.md,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              locale.subscription_summary_show_more,
+                              style: getSemiBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size13,
+                                color: color.primary,
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              size: Spacing.iconSm,
+                              color: color.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -6,7 +6,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
-import 'package:meal_meat_user/core/widget/loading_widget.dart';
+import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_loading_skeleton.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/manager/meal_details_event.dart';
@@ -57,58 +57,46 @@ class MealDetailsScreen extends StatelessWidget {
   ) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final textDirection = locale.localeName == 'ar'
-        ? TextDirection.rtl
-        : TextDirection.ltr;
 
     if (state.isLoading && state.meal == null) {
-      return Directionality(
-        textDirection: textDirection,
-        child: Scaffold(
-          backgroundColor: color.surface,
-          body: Stack(
-            children: [
-              const LoadingWidget.fullScreen(),
-              CustomBackButton(onPressed: () => Navigator.maybePop(context)),
-            ],
-          ),
+      return Scaffold(
+        backgroundColor: color.surface,
+        body: Stack(
+          children: [
+            const MealDetailsLoadingSkeleton(),
+            CustomBackButton(onPressed: () => Navigator.maybePop(context)),
+          ],
         ),
       );
     }
 
     if (state.failure != null && state.meal == null) {
-      return Directionality(
-        textDirection: textDirection,
-        child: Scaffold(
-          backgroundColor: color.surface,
-          body: ApiErrorWidget(
-            exception: state.failure!.exception,
-            onRetry: () {
-              context.read<MealDetailsViewModel>().doIntent(
-                GetMealDetailsEvent(
-                  programId: detailsArgs.programId,
-                  bundleId: detailsArgs.bundleId,
-                  restaurantId: detailsArgs.restaurantId,
-                  mealId: detailsArgs.mealId,
-                ),
-              );
-            },
-          ),
+      return Scaffold(
+        backgroundColor: color.surface,
+        body: ApiErrorWidget(
+          exception: state.failure!.exception,
+          onRetry: () {
+            context.read<MealDetailsViewModel>().doIntent(
+              GetMealDetailsEvent(
+                programId: detailsArgs.programId,
+                bundleId: detailsArgs.bundleId,
+                restaurantId: detailsArgs.restaurantId,
+                mealId: detailsArgs.mealId,
+              ),
+            );
+          },
         ),
       );
     }
 
     final mealDetails = state.meal;
     if (mealDetails == null) {
-      return Directionality(
-        textDirection: textDirection,
-        child: Scaffold(
-          backgroundColor: color.surface,
-          body: EmptyStateWidget(
-            title: locale.calendar_ingredients,
-            description: locale.subscription_packages_empty_description,
-            icon: Icons.restaurant_menu_rounded,
-          ),
+      return Scaffold(
+        backgroundColor: color.surface,
+        body: EmptyStateWidget(
+          title: locale.calendar_ingredients,
+          description: locale.subscription_packages_empty_description,
+          icon: Icons.restaurant_menu_rounded,
         ),
       );
     }

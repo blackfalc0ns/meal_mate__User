@@ -2064,6 +2064,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_summary_restaurants => 'More than 100 restaurants';
 
   @override
+  String get subscription_summary_show_more => 'Show more';
+
+  @override
+  String get subscription_summary_all_restaurants => 'Available restaurants';
+
+  @override
   String get subscription_summary_no_restaurants_for_address =>
       'No restaurants currently cover this delivery address.';
 

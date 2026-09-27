@@ -278,14 +278,15 @@ class _SubscriptionPackageSelectionScreenState
     BuildContext context,
     SubscriptionProgramsState state,
   ) async {
-    final destination = SubscriptionPrerequisiteDestination.fromProfileStatus(
-      hasDeliveryAddress: state.hasDeliveryAddress,
-      hasAllergies: state.hasAllergies,
-      hasDietaryPreferences: state.hasDietaryPreferences,
-    );
+    final destinations =
+        SubscriptionPrerequisiteDestination.listFromProfileStatus(
+          hasDeliveryAddress: state.hasDeliveryAddress,
+          hasAllergies: state.hasAllergies,
+          hasDietaryPreferences: state.hasDietaryPreferences,
+        );
 
-    if (destination != null) {
-      await _showPrerequisiteSheet(context, destination);
+    if (destinations.isNotEmpty) {
+      await _showPrerequisiteSheet(context, destinations);
       return;
     }
 
@@ -294,12 +295,12 @@ class _SubscriptionPackageSelectionScreenState
 
   Future<void> _showPrerequisiteSheet(
     BuildContext context,
-    SubscriptionPrerequisiteDestination destination,
+    List<SubscriptionPrerequisiteDestination> destinations,
   ) {
     return context.showAppBottomSheet<void>(
       builder: (sheetContext) => SubscriptionPrerequisiteBottomSheet(
-        destination: destination,
-        onPressed: () async {
+        destinations: destinations,
+        onDestinationSelected: (destination) async {
           Navigator.of(sheetContext).pop();
           final updated = await Navigator.of(context).pushNamed(
             _routeForPrerequisite(destination),
