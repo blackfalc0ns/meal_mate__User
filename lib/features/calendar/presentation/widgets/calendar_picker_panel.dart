@@ -111,18 +111,19 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                         child: SizedBox(
                           height: 42,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CalendarMonthArrowButton(
                                 icon: Icons.chevron_left_rounded,
                                 onPressed: () => _handleMonthArrow(-1),
                               ),
-                              const Spacer(),
+
                               Flexible(
                                 child: CalendarMonthTitle(
                                   monthTitle: widget.monthTitle,
                                 ),
                               ),
-                              const Spacer(),
+
                               CalendarMonthArrowButton(
                                 icon: Icons.chevron_right_rounded,
                                 onPressed: () => _handleMonthArrow(1),

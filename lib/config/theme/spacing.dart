@@ -846,9 +846,9 @@ class Spacing {
   static const double calendarHeaderIconTop = 62.0;
   static const double calendarHeaderHorizontalInset = 22.0;
   static const double calendarHeaderNotificationDotStart = 13.0;
-  static const double calendarEmptyMealsTopGap = 48.0;
+  static const double calendarEmptyMealsTopGap = 30.0;
   static const double calendarEmptyMealsIllustrationWidth = 280.0;
-  static const double calendarEmptyMealsIllustrationHeight = 203.0;
+  static const double calendarEmptyMealsIllustrationHeight = 150.0;
   static const double calendarEmptyMealsIllustrationOpacity = 0.3;
   static const double calendarEmptyMealsContentGap = 10.0;
   static const double calendarEmptyMealsDescriptionLineHeight = 30.0;

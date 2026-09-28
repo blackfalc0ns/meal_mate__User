@@ -19,7 +19,7 @@ class CalendarMonthTitle extends StatelessWidget {
       text: TextSpan(
         style: getBoldStyle(
           fontFamily: FontConstant.alexandria,
-          fontSize: 26,
+          fontSize: 20,
           color: color.onSurface,
         ).copyWith(height: 1),
         children: [

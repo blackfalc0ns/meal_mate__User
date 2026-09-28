@@ -112,12 +112,11 @@ class _CalendarContentState extends State<CalendarContent> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.screenH,
-                  vertical: Spacing.lg,
+                  // vertical: Spacing.lg,
                 ),
                 child: CalendarEmptyMealsState(
                   isNoSubscription: true,
-                  onAddMeals: () =>
-                      context.pushNamed(AppRoutes.subscriptions),
+                  onAddMeals: () => context.pushNamed(AppRoutes.subscriptions),
                 ),
               ),
             ),
