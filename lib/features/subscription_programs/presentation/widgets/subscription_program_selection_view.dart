@@ -47,52 +47,63 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                     top: Radius.circular(Spacing.radiusXl),
                   ),
                 ),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: Spacing.base,
-                          left: Spacing.subscriptionProgramsHorizontalPadding,
-                          right: Spacing.subscriptionProgramsHorizontalPadding,
-                        ),
-                        child: SubscriptionProgramHeader(),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsetsDirectional.only(
                         top: Spacing.base,
-                        left: Spacing.subscriptionProgramsHorizontalPadding,
-                        right: Spacing.subscriptionProgramsHorizontalPadding,
-                        bottom: showBottomSpace
-                            ? Spacing.subscriptionProgramsBottomSpace
-                            : Spacing.xl,
+                        start: Spacing.subscriptionProgramsHorizontalPadding,
+                        end: Spacing.subscriptionProgramsHorizontalPadding,
                       ),
-                      sliver: SliverList.separated(
-                        itemCount: programs.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: Spacing.sm),
-                        itemBuilder: (context, index) {
-                          final program = programs[index];
-                          final keywords = program.keywords(locale.localeName);
-
-                          return SubscriptionProgramGoalCard(
-                            title: program.name(locale.localeName),
-                            description: program.description(locale.localeName),
-                            imageUrl: program.imageUrl,
-                            fallbackImageAsset: program.fallbackImageAsset,
-                            primaryFeature: _featureAt(keywords, 0),
-                            secondaryFeature: _featureAt(keywords, 1),
-                            badgeIcon: _badgeIconForProgram(program),
-                            primaryFeatureIcon: _primaryFeatureIconForProgram(
-                              program,
+                      child: SubscriptionProgramHeader(),
+                    ),
+                    Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                            padding: EdgeInsetsDirectional.only(
+                              top: Spacing.base,
+                              start:
+                                  Spacing.subscriptionProgramsHorizontalPadding,
+                              end:
+                                  Spacing.subscriptionProgramsHorizontalPadding,
+                              bottom: showBottomSpace
+                                  ? Spacing.subscriptionProgramsBottomSpace
+                                  : Spacing.xl,
                             ),
-                            secondaryFeatureIcon:
-                                _secondaryFeatureIconForProgram(program),
-                            isSelected: index == selectedProgramIndex,
-                            onTap: () => onProgramSelected(index),
-                          );
-                        },
+                            sliver: SliverList.separated(
+                              itemCount: programs.length,
+                              separatorBuilder: (_, _) =>
+                                  const SizedBox(height: Spacing.sm),
+                              itemBuilder: (context, index) {
+                                final program = programs[index];
+                                final keywords = program.keywords(
+                                  locale.localeName,
+                                );
+
+                                return SubscriptionProgramGoalCard(
+                                  title: program.name(locale.localeName),
+                                  description: program.description(
+                                    locale.localeName,
+                                  ),
+                                  imageUrl: program.imageUrl,
+                                  fallbackImageAsset:
+                                      program.fallbackImageAsset,
+                                  primaryFeature: _featureAt(keywords, 0),
+                                  secondaryFeature: _featureAt(keywords, 1),
+                                  badgeIcon: _badgeIconForProgram(program),
+                                  primaryFeatureIcon:
+                                      _primaryFeatureIconForProgram(program),
+                                  secondaryFeatureIcon:
+                                      _secondaryFeatureIconForProgram(program),
+                                  isSelected: index == selectedProgramIndex,
+                                  onTap: () => onProgramSelected(index),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

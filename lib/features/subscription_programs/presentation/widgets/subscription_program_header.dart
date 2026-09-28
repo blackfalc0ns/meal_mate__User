@@ -21,7 +21,6 @@ class SubscriptionProgramHeader extends StatelessWidget {
           children: [
             Text(
               locale.subscription_program_title,
-
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size16,
@@ -31,7 +30,6 @@ class SubscriptionProgramHeader extends StatelessWidget {
             const SizedBox(height: Spacing.xs),
             Text(
               locale.subscription_program_subtitle,
-           
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size10,

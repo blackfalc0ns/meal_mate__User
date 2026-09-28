@@ -34,42 +34,50 @@ class SubscriptionProgramsLoadingSkeleton extends StatelessWidget {
                     top: Radius.circular(Spacing.radiusXl),
                   ),
                 ),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: Spacing.base,
-                          left: Spacing.subscriptionProgramsHorizontalPadding,
-                          right: Spacing.subscriptionProgramsHorizontalPadding,
-                        ),
-                        child: Align(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: ShimmerPlaceholder.rect(
-                            width: Spacing.subscriptionProgramsHeaderWidth,
-                            height: Spacing.xxl,
-                            borderRadius: Spacing.radiusSm,
-                          ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        top: Spacing.base,
+                        start: Spacing.subscriptionProgramsHorizontalPadding,
+                        end: Spacing.subscriptionProgramsHorizontalPadding,
+                      ),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: ShimmerPlaceholder.rect(
+                          width: Spacing.subscriptionProgramsHeaderWidth,
+                          height: Spacing.xxl,
+                          borderRadius: Spacing.radiusSm,
                         ),
                       ),
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.only(
-                        top: Spacing.base,
-                        left: Spacing.subscriptionProgramsHorizontalPadding,
-                        right: Spacing.subscriptionProgramsHorizontalPadding,
-                        bottom: Spacing.subscriptionProgramsBottomSpace,
-                      ),
-                      sliver: SliverList.separated(
-                        itemCount: 4,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: Spacing.sm),
-                        itemBuilder: (context, index) {
-                          return const ShimmerPlaceholder.rect(
-                            height: Spacing.subscriptionProgramCardHeight,
-                            borderRadius: Spacing.subscriptionProgramCardRadius,
-                          );
-                        },
+                    Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                            padding: const EdgeInsetsDirectional.only(
+                              top: Spacing.base,
+                              start:
+                                  Spacing.subscriptionProgramsHorizontalPadding,
+                              end:
+                                  Spacing.subscriptionProgramsHorizontalPadding,
+                              bottom: Spacing.subscriptionProgramsBottomSpace,
+                            ),
+                            sliver: SliverList.separated(
+                              itemCount: 4,
+                              separatorBuilder: (_, _) =>
+                                  const SizedBox(height: Spacing.sm),
+                              itemBuilder: (context, index) {
+                                return const ShimmerPlaceholder.rect(
+                                  height: Spacing.subscriptionProgramCardHeight,
+                                  borderRadius:
+                                      Spacing.subscriptionProgramCardRadius,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
