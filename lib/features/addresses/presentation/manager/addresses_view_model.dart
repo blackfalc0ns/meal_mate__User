@@ -16,6 +16,7 @@ import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existin
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
+import 'package:meal_meat_user/features/addresses/presentation/manager/address_catalog_matcher.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
@@ -53,6 +54,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   double? _lastReverseGeocodeLatitude;
   double? _lastReverseGeocodeLongitude;
   MapAddressAutofillEntity? _lastReverseGeocodeResult;
+  final Map<String, LocationAreaEntity> _areaBlocksCache = {};
 
   void configureFamilyMember(
     String memberId, {
@@ -185,7 +187,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     if (state.locations.isLoading) return;
 
     if (loadedData != null && loadedCountryCode == countryCode) {
-      final initialSelection = _findInitialSelection(
+      final initialSelection = AddressCatalogMatcher.findInitialSelection(
         loadedData,
         initialAddress,
       );
@@ -198,7 +200,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       final selectedArea = selectedAreaWithBlocks ?? initialArea;
       final selectedBlock = selectedArea == null
           ? null
-          : _findInitialBlock(selectedArea, initialAddress);
+          : AddressCatalogMatcher.findInitialBlock(selectedArea, initialAddress);
 
       emit(
         state.copyWith(
@@ -229,7 +231,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final initialSelection = _findInitialSelection(
+        final initialSelection = AddressCatalogMatcher.findInitialSelection(
           result.data,
           initialAddress,
         );
@@ -240,7 +242,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
         final selectedArea = selectedAreaWithBlocks ?? initialArea;
         final selectedBlock = selectedArea == null
             ? null
-            : _findInitialBlock(selectedArea, initialAddress);
+            : AddressCatalogMatcher.findInitialBlock(selectedArea, initialAddress);
 
         emit(
           state.copyWith(
@@ -291,6 +293,20 @@ class AddressesViewModel extends Cubit<AddressesState> {
       ),
     );
 
+    // Use memory cache first if blocks are already loaded
+    final cachedArea = _areaBlocksCache[area.id];
+    if (cachedArea != null && cachedArea.blocks.isNotEmpty) {
+      emit(
+        state.copyWith(
+          locations: state.locations.copyWith(
+            selectedArea: cachedArea,
+            clearSelectedBlock: true,
+          ),
+        ),
+      );
+      return;
+    }
+
     final countryCode = state.locations.data?.countryCode.isNotEmpty == true
         ? state.locations.data!.countryCode
         : 'KW';
@@ -302,7 +318,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final selectedAreaWithBlocks = _findAreaById(result.data, area.id);
+        final selectedAreaWithBlocks = AddressCatalogMatcher.findAreaById(result.data, area.id);
+        if (selectedAreaWithBlocks != null && selectedAreaWithBlocks.blocks.isNotEmpty) {
+          _areaBlocksCache[area.id] = selectedAreaWithBlocks;
+        }
         emit(
           state.copyWith(
             locations: state.locations.copyWith(
@@ -326,22 +345,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
   }
 
-  LocationAreaEntity? _findAreaById(
-    LocationsCatalogEntity locations,
-    String areaId,
-  ) {
-    for (final governorate in locations.governorates) {
-      for (final area in governorate.areas) {
-        if (area.id == areaId) return area;
-      }
-    }
-    return null;
-  }
-
   Future<LocationAreaEntity?> _loadAreaBlocks(
     String countryCode,
     String areaId,
   ) async {
+    final cached = _areaBlocksCache[areaId];
+    if (cached != null && cached.blocks.isNotEmpty) {
+      return cached;
+    }
+
     final result = await _getLocationsCatalogUseCase(
       countryCode,
       areaId: areaId,
@@ -349,94 +361,14 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     switch (result) {
       case ApiSuccessResult():
-        return _findAreaById(result.data, areaId);
+        final area = AddressCatalogMatcher.findAreaById(result.data, areaId);
+        if (area != null && area.blocks.isNotEmpty) {
+          _areaBlocksCache[areaId] = area;
+        }
+        return area;
       case ApiErrorResult():
         return null;
     }
-  }
-
-  _InitialLocationSelection _findInitialSelection(
-    LocationsCatalogEntity locations,
-    CustomerAddressEntity? address, {
-    MapAddressAutofillEntity? autofill,
-  }) {
-    if (address == null && autofill == null) {
-      return const _InitialLocationSelection();
-    }
-
-    for (final governorate in locations.governorates) {
-      for (final area in governorate.areas) {
-        if (_matchesArea(area, address, autofill: autofill)) {
-          return _InitialLocationSelection(
-            governorate: governorate,
-            area: area,
-          );
-        }
-      }
-    }
-
-    return const _InitialLocationSelection();
-  }
-
-  bool _matchesArea(
-    LocationAreaEntity area,
-    CustomerAddressEntity? address, {
-    MapAddressAutofillEntity? autofill,
-  }) {
-    if (autofill != null) {
-      if (_matchesValue(area.id, autofill.suggestedRegionId)) return true;
-      if (_matchesValue(area.nameAr, autofill.suggestedRegionNameAr)) {
-        return true;
-      }
-      if (_matchesValue(area.nameEn, autofill.suggestedRegionName)) return true;
-      if (_matchesValue(area.nameAr, autofill.area)) return true;
-      if (_matchesValue(area.nameEn, autofill.area)) return true;
-    }
-    if (address == null) return false;
-    return _matchesValue(area.id, address.regionId) ||
-        _matchesValue(area.code, address.area) ||
-        _matchesValue(area.nameAr, address.area) ||
-        _matchesValue(area.nameEn, address.area);
-  }
-
-  LocationBlockEntity? _findInitialBlock(
-    LocationAreaEntity area,
-    CustomerAddressEntity? address, {
-    MapAddressAutofillEntity? autofill,
-  }) {
-    if (address == null && autofill == null) return null;
-
-    for (final block in area.blocks) {
-      if (autofill != null) {
-        if (_matchesValue(block.id, autofill.suggestedBlockId)) return block;
-        if (_matchesValue(block.nameAr, autofill.suggestedBlockNameAr)) {
-          return block;
-        }
-        if (_matchesValue(block.nameEn, autofill.suggestedBlockName)) {
-          return block;
-        }
-        if (_matchesValue(block.nameAr, autofill.block)) return block;
-        if (_matchesValue(block.nameEn, autofill.block)) return block;
-      }
-      if (address != null &&
-          (_matchesValue(block.id, address.blockRegionId) ||
-              _matchesValue(block.code, address.block) ||
-              _matchesValue(block.nameAr, address.block) ||
-              _matchesValue(block.nameEn, address.block))) {
-        return block;
-      }
-    }
-    return null;
-  }
-
-  bool _matchesValue(String? first, String? second) {
-    final normalizedFirst = _normalize(first);
-    final normalizedSecond = _normalize(second);
-    return normalizedFirst.isNotEmpty && normalizedFirst == normalizedSecond;
-  }
-
-  String _normalize(String? value) {
-    return value?.trim().toLowerCase() ?? '';
   }
 
   Future<void> _reverseGeocode(
@@ -596,7 +528,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       notifyOnDelivery: false,
     );
 
-    final selection = _findInitialSelection(
+    final selection = AddressCatalogMatcher.findInitialSelection(
       catalog,
       tempAddress,
       autofill: autofill,
@@ -618,7 +550,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     final selectedArea = areaWithBlocks ?? selection.area;
     final selectedBlock = selectedArea != null
-        ? _findInitialBlock(selectedArea, tempAddress, autofill: autofill)
+        ? AddressCatalogMatcher.findInitialBlock(selectedArea, tempAddress, autofill: autofill)
         : null;
 
     if (!isClosed && memberGeneration == _familyMemberGeneration) {
@@ -641,12 +573,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
           action: state.action.copyWith(
             isLoading: false,
             isSuccess: false,
-            errorMessage: 'address.out_of_kuwait_bounds',
-            failure: Failure(
-              errorMessage:
-                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
-              code: 'address.out_of_kuwait_bounds',
-            ),
+            failure: AddressOutOfBoundsFailure(),
           ),
         ),
       );
@@ -674,12 +601,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
           action: state.action.copyWith(
             isLoading: false,
             isSuccess: false,
-            errorMessage: 'address.out_of_kuwait_bounds',
-            failure: Failure(
-              errorMessage:
-                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
-              code: 'address.out_of_kuwait_bounds',
-            ),
+            failure: AddressOutOfBoundsFailure(),
           ),
         ),
       );
@@ -790,11 +712,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
           coveragePreview: state.coveragePreview.copyWith(
             isLoading: false,
             isSuccess: false,
-            failure: Failure(
-              errorMessage:
-                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
-              code: 'address.out_of_kuwait_bounds',
-            ),
+            failure: AddressOutOfBoundsFailure(),
           ),
         ),
       );
@@ -856,11 +774,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
           coveragePreview: state.coveragePreview.copyWith(
             isLoading: false,
             isSuccess: false,
-            failure: Failure(
-              errorMessage:
-                  'Coordinates must be within Kuwait bounds (28.5–30.2, 46.5–48.5)',
-              code: 'address.out_of_kuwait_bounds',
-            ),
+            failure: AddressOutOfBoundsFailure(),
           ),
         ),
       );
@@ -989,11 +903,4 @@ class AddressesViewModel extends Cubit<AddressesState> {
   void _clearCoveragePreview() {
     emit(state.copyWith(coveragePreview: const AddressCoveragePreviewState()));
   }
-}
-
-class _InitialLocationSelection {
-  const _InitialLocationSelection({this.governorate, this.area});
-
-  final LocationGovernorateEntity? governorate;
-  final LocationAreaEntity? area;
 }

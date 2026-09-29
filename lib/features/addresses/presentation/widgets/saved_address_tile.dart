@@ -122,7 +122,7 @@ class SavedAddressTile extends StatelessWidget {
                   address,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.start,
                   style: getLightStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,

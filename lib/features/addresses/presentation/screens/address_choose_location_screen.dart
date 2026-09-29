@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
@@ -12,7 +11,7 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_map_view.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
@@ -55,7 +54,6 @@ class _AddressChooseLocationScreenState
         return viewModel;
       },
       child: Scaffold(
-        backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
         body: Stack(
           children: [
@@ -94,7 +92,7 @@ class _AddressChooseLocationScreenState
                   if (actionError != null && actionError.isNotEmpty) {
                     CustomSnackbar.showError(
                       context: context,
-                      message: mapFailureMessage(context, actionError),
+                      message: actionError,
                     );
                   }
 
@@ -103,7 +101,7 @@ class _AddressChooseLocationScreenState
                   if (previewError != null && previewError.isNotEmpty) {
                     CustomSnackbar.showError(
                       context: context,
-                      message: mapFailureMessage(context, previewError),
+                      message: previewError,
                     );
                   }
 
@@ -142,17 +140,18 @@ class _AddressChooseLocationScreenState
                               },
                               onChooseAnother: () {
                                 Navigator.of(sheetContext).pop();
-                                innerContext
-                                    .read<AddressesViewModel>()
-                                    .doIntent(
-                                      const ClearCoveragePreviewEvent(),
-                                    );
                               },
                             );
                           },
                         ),
                       ),
                     );
+
+                    if (context.mounted) {
+                      context.read<AddressesViewModel>().doIntent(
+                        const ClearCoveragePreviewEvent(),
+                      );
+                    }
                   }
                 },
                 buildWhen: (previous, current) =>
@@ -160,7 +159,7 @@ class _AddressChooseLocationScreenState
                     previous.action != current.action ||
                     previous.coveragePreview != current.coveragePreview,
                 builder: (context, state) {
-                  return AddressesFigmaFrame(
+                  return AddressChooseLocationMapView(
                     locations: state.locations,
                     isSubmitting:
                         state.action.isLoading ||

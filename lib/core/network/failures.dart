@@ -47,3 +47,31 @@ class ServerFailure extends Failure {
     );
   }
 }
+
+class AddressOutOfBoundsFailure extends Failure {
+  AddressOutOfBoundsFailure({
+    super.errorMessage = 'address.out_of_kuwait_bounds',
+    super.code = 'address.out_of_kuwait_bounds',
+  });
+}
+
+class LocationServiceDisabledFailure extends Failure {
+  LocationServiceDisabledFailure({
+    super.errorMessage = 'location_service_disabled',
+    super.code = 'location_service_disabled',
+  });
+}
+
+class LocationPermissionDeniedFailure extends Failure {
+  LocationPermissionDeniedFailure({
+    super.errorMessage = 'location_permission_denied',
+    super.code = 'location_permission_denied',
+  });
+}
+
+class LocationPermissionDeniedForeverFailure extends Failure {
+  LocationPermissionDeniedForeverFailure({
+    super.errorMessage = 'location_permission_denied_forever',
+    super.code = 'location_permission_denied_forever',
+  });
+}

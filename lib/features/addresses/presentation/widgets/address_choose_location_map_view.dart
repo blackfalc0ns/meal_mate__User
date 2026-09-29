@@ -5,28 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/location_service.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
+import 'package:meal_meat_user/features/addresses/presentation/manager/address_catalog_matcher.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/address_entry_flow_controller.dart';
+import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
-import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
 
-class AddressesFigmaFrame extends StatefulWidget {
-  const AddressesFigmaFrame({
+class AddressChooseLocationMapView extends StatefulWidget {
+  const AddressChooseLocationMapView({
     super.key,
     required this.locations,
     required this.isSubmitting,
     this.initialAddress,
     this.showInitialAddressDetails = true,
     this.flowController,
+    this.locationService,
   });
 
   static const double frameHeight = Spacing.addressesChooseLocationDesignHeight;
@@ -36,12 +42,15 @@ class AddressesFigmaFrame extends StatefulWidget {
   final CustomerAddressEntity? initialAddress;
   final bool showInitialAddressDetails;
   final AddressEntryFlowController? flowController;
+  final LocationService? locationService;
 
   @override
-  State<AddressesFigmaFrame> createState() => _AddressesFigmaFrameState();
+  State<AddressChooseLocationMapView> createState() =>
+      _AddressChooseLocationMapViewState();
 }
 
-class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
+class _AddressChooseLocationMapViewState
+    extends State<AddressChooseLocationMapView> {
   static const double _defaultLatitude = 29.34;
   static const double _defaultLongitude = 48.08;
 
@@ -70,6 +79,12 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
   final ValueNotifier<bool> _buildingNumberHasError = ValueNotifier(false);
   final TextEditingController _floorController = TextEditingController();
   final TextEditingController _apartmentController = TextEditingController();
+
+  LocationService get _locationService =>
+      widget.locationService ??
+      (getIt.isRegistered<LocationService>()
+          ? getIt<LocationService>()
+          : const LocationService());
 
   @override
   void initState() {
@@ -123,30 +138,36 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
             _setLocationResolving(false);
           }
         }
+        if (state.mapAutofill.displayErrorMessage != null &&
+            state.mapAutofill.displayErrorMessage!.isNotEmpty) {
+          _openDetailsAfterAutofill = false;
+          CustomSnackbar.showError(
+            context: context,
+            message: state.mapAutofill.displayErrorMessage!,
+          );
+        }
         if (state.mapAutofill.isSuccess && state.mapAutofill.autofill != null) {
           final autofill = state.mapAutofill.autofill!;
           final shouldAnimate = _animateCameraToAutofill;
           _animateCameraToAutofill = false;
-          setState(() {
-            if (shouldAnimate) {
-              _currentLatitude = autofill.latitude;
-              _currentLongitude = autofill.longitude;
-            }
-            if (autofill.street != null && autofill.street!.isNotEmpty) {
-              _streetController.text = autofill.street!;
-            }
-            if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
-              _avenueController.text = autofill.avenue!;
-            }
-            if (autofill.building != null &&
-                autofill.building!.trim().isNotEmpty &&
-                _buildingNumberController.text.trim().isEmpty) {
-              _buildingNumberController.text = autofill.building!.trim();
-            }
-            if (autofill.formattedAddress.isNotEmpty) {
-              _searchController.text = autofill.formattedAddress;
-            }
-          });
+          if (shouldAnimate) {
+            _currentLatitude = autofill.latitude;
+            _currentLongitude = autofill.longitude;
+          }
+          if (autofill.street != null && autofill.street!.isNotEmpty) {
+            _streetController.text = autofill.street!;
+          }
+          if (autofill.avenue != null && autofill.avenue!.isNotEmpty) {
+            _avenueController.text = autofill.avenue!;
+          }
+          if (autofill.building != null &&
+              autofill.building!.trim().isNotEmpty &&
+              _buildingNumberController.text.trim().isEmpty) {
+            _buildingNumberController.text = autofill.building!.trim();
+          }
+          if (autofill.formattedAddress.isNotEmpty) {
+            _searchController.text = autofill.formattedAddress;
+          }
           if (shouldAnimate) {
             _isProgrammaticMove = true;
             _mapController?.animateCamera(
@@ -225,7 +246,7 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
                         }
                       }
                     },
-                    onUseCurrentLocation: () => _onGpsPressed(context),
+                    onUseCurrentLocation: _onGpsPressed,
                     onConfirm: () => _prepareAndShowDetails(context),
                   ),
                 ),
@@ -287,31 +308,47 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 600), () {
       if (!mounted) return;
-      final sent = _triggerReverseGeocode(context);
-      if (sent && mounted) {
-        _setLocationResolving(true);
-      }
+      _triggerReverseGeocode(context);
     });
   }
 
-  void _onGpsPressed(BuildContext context) {
-    _mapController?.animateCamera(
-      CameraUpdate.newLatLng(LatLng(_currentLatitude, _currentLongitude)),
-    );
-    final sent = _triggerReverseGeocode(context, force: true);
-    if (sent && mounted) {
-      _setLocationResolving(true);
+  Future<void> _onGpsPressed() async {
+    _setLocationResolving(true);
+    final result = await _locationService.getCurrentLocation();
+    if (!mounted) return;
+
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        _currentLatitude = data.latitude;
+        _currentLongitude = data.longitude;
+        _isProgrammaticMove = true;
+
+        await _mapController?.animateCamera(
+          CameraUpdate.newLatLng(
+            LatLng(data.latitude, data.longitude),
+          ),
+        );
+
+        if (!mounted) return;
+
+        final sent = _triggerReverseGeocode(context, force: true);
+        if (!sent && mounted) {
+          _setLocationResolving(false);
+        }
+
+      case ApiErrorResult(:final failure):
+        _setLocationResolving(false);
+        CustomSnackbar.showError(
+          context: context,
+          message: failure.code.isNotEmpty ? failure.code : failure.errorMessage,
+        );
     }
   }
 
   void _onSearchSubmitted(String query) {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return;
-    _animateCameraToAutofill = true;
-    if (mounted) _setLocationResolving(true);
-    context.read<AddressesViewModel>().doIntent(
-      GeocodeAddressEvent(address: trimmed),
-    );
+    _executeSearch(trimmed);
   }
 
   void _onSearchChanged(String query) {
@@ -320,12 +357,16 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     if (trimmed.length < 3) return;
     _debounceTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
-      _animateCameraToAutofill = true;
-      _setLocationResolving(true);
-      context.read<AddressesViewModel>().doIntent(
-        GeocodeAddressEvent(address: trimmed),
-      );
+      _executeSearch(trimmed);
     });
+  }
+
+  void _executeSearch(String query) {
+    _animateCameraToAutofill = true;
+    if (mounted) _setLocationResolving(true);
+    context.read<AddressesViewModel>().doIntent(
+      GeocodeAddressEvent(address: query),
+    );
   }
 
   bool _triggerReverseGeocode(BuildContext context, {bool force = false}) {
@@ -376,46 +417,35 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
       onConfirm: () {
         if (_submitAddress(context)) Navigator.of(context).pop();
       },
-      content: LayoutBuilder(
-        builder: (context, constraints) {
-          return FittedBox(
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: Spacing.addressesHomeFormWidth,
-              child: BlocProvider<AddressesViewModel>.value(
-                value: viewModel,
-                child: BlocBuilder<AddressesViewModel, AddressesState>(
-                  buildWhen: (previous, current) =>
-                      previous.locations != current.locations,
-                  builder: (context, state) => HomeAddressFormCard(
-                    governorates: state.locations.governorates,
-                    areas: state.locations.areas,
-                    blocks: state.locations.blocks,
-                    selectedGovernorate: state.locations.selectedGovernorate,
-                    selectedArea: state.locations.selectedArea,
-                    selectedBlock: state.locations.selectedBlock,
-                    streetController: _streetController,
-                    avenueController: _avenueController,
-                    floorController: _floorController,
-                    buildingNumberController: _buildingNumberController,
-                    buildingNumberErrorListenable: _buildingNumberHasError,
-                    apartmentController: _apartmentController,
-                    onGovernorateSelected: (governorate) => context
-                        .read<AddressesViewModel>()
-                        .doIntent(SelectAddressGovernorateEvent(governorate)),
-                    onAreaSelected: (area) => context
-                        .read<AddressesViewModel>()
-                        .doIntent(SelectAddressAreaEvent(area)),
-                    onBlockSelected: (block) => context
-                        .read<AddressesViewModel>()
-                        .doIntent(SelectAddressBlockEvent(block)),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+      content: BlocProvider<AddressesViewModel>.value(
+        value: viewModel,
+        child: BlocBuilder<AddressesViewModel, AddressesState>(
+          buildWhen: (previous, current) =>
+              previous.locations != current.locations,
+          builder: (context, state) => HomeAddressFormCard(
+            governorates: state.locations.governorates,
+            areas: state.locations.areas,
+            blocks: state.locations.blocks,
+            selectedGovernorate: state.locations.selectedGovernorate,
+            selectedArea: state.locations.selectedArea,
+            selectedBlock: state.locations.selectedBlock,
+            streetController: _streetController,
+            avenueController: _avenueController,
+            floorController: _floorController,
+            buildingNumberController: _buildingNumberController,
+            buildingNumberErrorListenable: _buildingNumberHasError,
+            apartmentController: _apartmentController,
+            onGovernorateSelected: (governorate) => context
+                .read<AddressesViewModel>()
+                .doIntent(SelectAddressGovernorateEvent(governorate)),
+            onAreaSelected: (area) => context
+                .read<AddressesViewModel>()
+                .doIntent(SelectAddressAreaEvent(area)),
+            onBlockSelected: (block) => context
+                .read<AddressesViewModel>()
+                .doIntent(SelectAddressBlockEvent(block)),
+          ),
+        ),
       ),
     );
     if (mounted && _flowController.stage == AddressEntryStage.details) {
@@ -428,32 +458,30 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     final locale = context.localization;
     final languageCode = Localizations.localeOf(context).languageCode;
-    final autofill = context
-        .read<AddressesViewModel>()
-        .state
-        .mapAutofill
-        .autofill;
+    final viewModelState = context.read<AddressesViewModel>().state;
+    final autofill = viewModelState.mapAutofill.autofill;
+    final locationsState = viewModelState.locations;
 
-    var area = widget.locations.selectedArea;
-    var governorate = widget.locations.selectedGovernorate;
-    var block = widget.locations.selectedBlock;
+    var area = locationsState.selectedArea;
+    var governorate = locationsState.selectedGovernorate;
+    var block = locationsState.selectedBlock;
 
-    if (area == null && autofill?.suggestedRegionId != null) {
-      for (final g in widget.locations.governorates) {
-        for (final a in g.areas) {
-          if (a.id == autofill!.suggestedRegionId) {
-            area = a;
-            governorate = g;
-            break;
-          }
-        }
-        if (area != null) break;
+    // Use AddressCatalogMatcher if area wasn't pre-selected
+    if (area == null && locationsState.data != null && autofill != null) {
+      final matched = AddressCatalogMatcher.findInitialSelection(
+        locationsState.data!,
+        null,
+        autofill: autofill,
+      );
+      if (matched.area != null) {
+        area = matched.area;
+        governorate = matched.governorate;
       }
     }
 
-    if (area == null && widget.locations.areas.isNotEmpty) {
-      area = widget.locations.areas.first;
-      governorate ??= widget.locations.governorates.firstOrNull;
+    if (area == null && locationsState.areas.isNotEmpty) {
+      area = locationsState.areas.first;
+      governorate ??= locationsState.governorates.firstOrNull;
     }
 
     final street = _streetController.text.trim().isNotEmpty
@@ -476,9 +504,9 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
     final areaName = area?.nameForLanguage(languageCode) ?? autofill?.area;
     final blockName = block?.nameForLanguage(languageCode) ?? autofill?.block;
     final governorateCode =
-        _regionCode(governorate?.code) ?? autofill?.governorate;
-    final areaCode = _regionCode(area?.code) ?? autofill?.area;
-    final blockCode = _regionCode(block?.code) ?? autofill?.block;
+        governorate?.code.trim().nullIfEmpty ?? autofill?.governorate;
+    final areaCode = area?.code.trim().nullIfEmpty ?? autofill?.area;
+    final blockCode = block?.code.trim().nullIfEmpty ?? autofill?.block;
     final initialAddress = widget.initialAddress;
 
     final addressLine = _addressLine([
@@ -533,7 +561,10 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
 
     _searchController.text = address.addressLine;
     _streetController.text = address.street ?? '';
-    _avenueController.text = address.notes ?? '';
+    _avenueController.text =
+        address.avenue?.trim().isNotEmpty == true
+            ? address.avenue!.trim()
+            : (address.notes ?? '');
     _buildingNumberController.text = address.building ?? '';
     _floorController.text = address.floor ?? '';
     _apartmentController.text = address.unit ?? '';
@@ -545,9 +576,8 @@ class _AddressesFigmaFrameState extends State<AddressesFigmaFrame> {
         .map((part) => part!.trim())
         .join(', ');
   }
+}
 
-  String? _regionCode(String? code) {
-    final trimmedCode = code?.trim();
-    return trimmedCode == null || trimmedCode.isEmpty ? null : trimmedCode;
-  }
+extension on String {
+  String? get nullIfEmpty => trim().isEmpty ? null : trim();
 }

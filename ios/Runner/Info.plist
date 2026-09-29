@@ -34,6 +34,8 @@
 	<string>MealMate needs photo library access to save selected profile photos.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>MealMate uses Face ID to securely and quickly authenticate your session.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>MealMate needs your location to set your delivery address on the map.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

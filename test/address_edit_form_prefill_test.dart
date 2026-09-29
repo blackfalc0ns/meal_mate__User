@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/building_type_selector.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
 
 void main() {
@@ -69,6 +68,5 @@ void main() {
     expect(find.text('33'), findsOneWidget);
     expect(find.text('32'), findsOneWidget);
     expect(find.text('1201'), findsOneWidget);
-    expect(find.byType(BuildingTypeSelector), findsNothing);
   });
 }

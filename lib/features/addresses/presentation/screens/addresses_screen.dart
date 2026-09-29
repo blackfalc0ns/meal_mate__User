@@ -8,8 +8,6 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
@@ -52,7 +50,7 @@ class AddressesScreen extends StatelessWidget {
             if (errorMessage != null && errorMessage.isNotEmpty) {
               CustomSnackbar.showError(
                 context: context,
-                message: mapFailureMessage(context, errorMessage),
+                message: errorMessage,
               );
             }
 
@@ -60,7 +58,7 @@ class AddressesScreen extends StatelessWidget {
             if (previewError != null && previewError.isNotEmpty) {
               CustomSnackbar.showError(
                 context: context,
-                message: mapFailureMessage(context, previewError),
+                message: previewError,
               );
             }
 
@@ -90,15 +88,18 @@ class AddressesScreen extends StatelessWidget {
                         },
                         onChooseAnother: () {
                           Navigator.of(sheetContext).pop();
-                          innerContext.read<AddressesViewModel>().doIntent(
-                            const ClearCoveragePreviewEvent(),
-                          );
                         },
                       );
                     },
                   ),
                 ),
               );
+
+              if (context.mounted) {
+                context.read<AddressesViewModel>().doIntent(
+                  const ClearCoveragePreviewEvent(),
+                );
+              }
             }
 
             if (!context.mounted) return;
@@ -158,7 +159,46 @@ class AddressesScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: Spacing.sm),
-                      ..._buildAddressTiles(context, addressesState.items),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: addressesState.items.length,
+                        separatorBuilder: (_, _) =>
+                            const SizedBox(height: Spacing.addressesCardGap),
+                        itemBuilder: (context, index) {
+                          final address = addressesState.items[index];
+                          return SavedAddressTile(
+                            icon: _iconForAddress(address),
+                            title: address.label,
+                            address: address.addressLine,
+                            isDefault: address.isDefault,
+                            canDelete: address.canDelete,
+                            onEdit: () => _openAddressEditor(
+                              context,
+                              initialAddress: address,
+                            ),
+                            onSetDefault:
+                                address.addressId.isEmpty || address.isDefault
+                                ? null
+                                : () => context
+                                      .read<AddressesViewModel>()
+                                      .doIntent(
+                                        PreviewExistingAddressCoverageEvent(
+                                          address.addressId,
+                                        ),
+                                      ),
+                            onDelete: address.addressId.isEmpty
+                                ? null
+                                : () => context
+                                      .read<AddressesViewModel>()
+                                      .doIntent(
+                                        DeleteCustomerAddressEvent(
+                                          address.addressId,
+                                        ),
+                                      ),
+                          );
+                        },
+                      ),
                     ] else
                       EmptyStateWidget(
                         title: locale.addresses_saved_section,
@@ -207,16 +247,6 @@ class AddressesScreen extends StatelessWidget {
                       messageFontSize: FontSize.size12,
                       maxMessageLines: 1,
                     ),
-                    const SizedBox(height: Spacing.xxl),
-                    AppButton.filled(
-                      text: locale.addresses_save,
-                      onPressed: () {},
-                      height: Spacing.addressesSaveButtonHeight,
-                      borderRadius: Spacing.addressesSaveButtonRadius,
-                      color: color.primary,
-                      textColor: color.onPrimary,
-                      fontSize: FontSize.size13,
-                    ),
                   ],
                 ),
               ),
@@ -225,42 +255,6 @@ class AddressesScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Widget> _buildAddressTiles(
-    BuildContext context,
-    List<CustomerAddressEntity> addresses,
-  ) {
-    final children = <Widget>[];
-
-    for (var index = 0; index < addresses.length; index++) {
-      final address = addresses[index];
-      children.add(
-        SavedAddressTile(
-          icon: _iconForAddress(address),
-          title: address.label,
-          address: address.addressLine,
-          isDefault: address.isDefault,
-          canDelete: address.canDelete,
-          onEdit: () => _openAddressEditor(context, initialAddress: address),
-          onSetDefault: address.addressId.isEmpty || address.isDefault
-              ? null
-              : () => context.read<AddressesViewModel>().doIntent(
-                  PreviewExistingAddressCoverageEvent(address.addressId),
-                ),
-          onDelete: address.addressId.isEmpty
-              ? null
-              : () => context.read<AddressesViewModel>().doIntent(
-                  DeleteCustomerAddressEvent(address.addressId),
-                ),
-        ),
-      );
-      if (index != addresses.length - 1) {
-        children.add(const SizedBox(height: Spacing.addressesCardGap));
-      }
-    }
-
-    return children;
   }
 
   Future<void> _openAddressEditor(
@@ -280,11 +274,20 @@ class AddressesScreen extends StatelessWidget {
   }
 
   IconData _iconForAddress(CustomerAddressEntity address) {
-    final label = address.label.toLowerCase();
-    if (label.contains('work') || label.contains('عمل')) {
+    final label = address.label.trim().toLowerCase();
+    if (label.contains('work') ||
+        label.contains('office') ||
+        label.contains('عمل') ||
+        label.contains('مكتب') ||
+        label.contains('شغل')) {
       return Icons.business_center_rounded;
     }
-    if (label.contains('home') || label.contains('منزل')) {
+    if (label.contains('home') ||
+        label.contains('house') ||
+        label.contains('منزل') ||
+        label.contains('بيت') ||
+        label.contains('سكن') ||
+        label.contains('شقة')) {
       return Icons.home_rounded;
     }
     return Icons.location_on_rounded;

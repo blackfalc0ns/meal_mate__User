@@ -211,6 +211,14 @@ class MapAutofillState {
   final MapAddressAutofillEntity? autofill;
   final Failure? failure;
 
+  String? get displayErrorMessage {
+    final code = failure?.code.trim();
+    if (code != null && code.isNotEmpty && code != 'unknown') {
+      return code;
+    }
+    return failure?.errorMessage;
+  }
+
   MapAutofillState copyWith({
     bool? isLoading,
     bool? isSuccess,

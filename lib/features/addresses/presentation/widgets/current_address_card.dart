@@ -44,10 +44,10 @@ class CurrentAddressCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
+              padding: const EdgeInsetsDirectional.only(
                 top: Spacing.xss,
                 bottom: Spacing.xss,
-                right: Spacing.addressesCardContentPadding,
+                end: Spacing.addressesCardContentPadding,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.addressesMapRadius),
@@ -63,9 +63,8 @@ class CurrentAddressCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(
-                  top: Spacing.md,
-                  bottom: Spacing.md,
+                padding: const EdgeInsets.symmetric(
+                  vertical: Spacing.md,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

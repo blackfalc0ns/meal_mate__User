@@ -21,7 +21,7 @@ import 'package:meal_meat_user/features/addresses/presentation/widgets/address_c
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_form_field.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_figma_frame.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_map_view.dart';
 
 void main() {
   testWidgets('saved family address is shown in the location search field', (
@@ -60,7 +60,7 @@ void main() {
         home: Scaffold(
           body: BlocProvider.value(
             value: viewModel,
-            child: const AddressesFigmaFrame(
+            child: const AddressChooseLocationMapView(
               locations: LocationsCatalogState(),
               isSubmitting: false,
               initialAddress: address,
@@ -102,7 +102,7 @@ void main() {
         home: Scaffold(
           body: BlocProvider.value(
             value: viewModel,
-            child: const AddressesFigmaFrame(
+            child: const AddressChooseLocationMapView(
               locations: LocationsCatalogState(),
               isSubmitting: false,
               initialAddress: CustomerAddressEntity(

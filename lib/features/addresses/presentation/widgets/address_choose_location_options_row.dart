@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_mode_card.dart';
 
@@ -49,12 +47,11 @@ class AddressChooseLocationOptionsRow extends StatelessWidget {
               onModeChanged?.call(AddressLocationMode.currentLocation);
               onUseCurrentLocation?.call();
             },
-            icon:Icon(
+            icon: Icon(
               Icons.gps_fixed_rounded,
               size: Spacing.iconMd,
               color: color.primary,
             ),
-          
           ),
         ),
       ],
