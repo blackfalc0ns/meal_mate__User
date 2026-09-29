@@ -17,6 +17,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_v
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
+import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 
 class CalendarContent extends StatefulWidget {
   const CalendarContent({
@@ -108,15 +109,19 @@ class _CalendarContentState extends State<CalendarContent> {
             },
           ),
           Expanded(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.screenH,
-                  // vertical: Spacing.lg,
-                ),
+            child: SingleChildScrollView(
+              padding: EdgeInsetsDirectional.only(
+                start: Spacing.screenH,
+                end: Spacing.screenH,
+                top: Spacing.xs,
+                bottom: widget.showBottomSpace
+                    ? Spacing.bottomNavHeight + Spacing.xxxl + Spacing.md
+                    : Spacing.xl,
+              ),
+              child: Center(
                 child: CalendarEmptyMealsState(
                   isNoSubscription: true,
-                  onAddMeals: () => context.pushNamed(AppRoutes.subscriptions),
+                  onAddMeals: () => _navigateToSubscriptions(context),
                 ),
               ),
             ),
@@ -138,10 +143,17 @@ class _CalendarContentState extends State<CalendarContent> {
     }
 
     if (!state.hasCalendarData) {
-      return EmptyStateWidget(
-        title: locale.calendar_title,
-        description: locale.billing_no_subscription_description,
-        icon: Icons.calendar_month_rounded,
+      return Padding(
+        padding: EdgeInsetsDirectional.only(
+          bottom: widget.showBottomSpace
+              ? Spacing.bottomNavHeight + Spacing.xxxl
+              : Spacing.zero,
+        ),
+        child: EmptyStateWidget(
+          title: locale.calendar_title,
+          description: locale.billing_no_subscription_description,
+          icon: Icons.calendar_month_rounded,
+        ),
       );
     }
 
@@ -220,5 +232,13 @@ class _CalendarContentState extends State<CalendarContent> {
         hasMeals: false,
       );
     });
+  }
+
+  void _navigateToSubscriptions(BuildContext context) {
+    try {
+      context.read<HomeCubit>().selectTab(3);
+    } catch (_) {
+      context.pushNamed(AppRoutes.subscriptions);
+    }
   }
 }

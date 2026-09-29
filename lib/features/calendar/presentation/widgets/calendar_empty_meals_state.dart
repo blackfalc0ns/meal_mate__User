@@ -63,7 +63,7 @@ class CalendarEmptyMealsState extends StatelessWidget {
                     FontSize.size20,
               ),
         ),
-        const SizedBox(height: Spacing.xxl),
+        const SizedBox(height: Spacing.lg),
         SizedBox(
           width: Spacing.calendarEmptyMealsButtonWidth,
           child: AppButton(

@@ -34,9 +34,9 @@ class CalendarDayContent extends StatelessWidget {
       padding: EdgeInsetsDirectional.only(
         start: Spacing.screenH,
         end: Spacing.screenH,
-        top: hasMeals ? Spacing.xxxl : Spacing.calendarEmptyMealsTopGap,
+        top: hasMeals ? Spacing.xxxl : Spacing.base,
         bottom: showBottomSpace
-            ? Spacing.bottomNavHeight + Spacing.xxxl
+            ? Spacing.bottomNavHeight + Spacing.xxxl + Spacing.md
             : Spacing.xl,
       ),
       child: Column(

@@ -96,12 +96,12 @@ class _AppShellView extends StatelessWidget {
             ),
             body: _AnimatedShellBody(
               selectedIndex: state.selectedTabIndex,
-              children: [
-                const HomeScreen(),
-                const CalendarScreen(showBottomSpace: true),
-                const OffersScreen(),
-                const SubscriptionsScreen(showBottomSpace: true),
-                const ProfileScreen(),
+              children: const [
+                HomeScreen(),
+                CalendarScreen(showBottomSpace: true),
+                OffersScreen(),
+                SubscriptionsScreen(showBottomSpace: true),
+                ProfileScreen(),
               ],
             ),
           ),
