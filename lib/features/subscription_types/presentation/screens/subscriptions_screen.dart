@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -54,9 +56,11 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                     if (state.isConversionSuccess) {
                       final conversionOptions = state.conversionOptions;
                       if (conversionOptions != null) {
-                        context.pushNamed(
-                          AppRoutes.conversionOptions,
-                          arguments: conversionOptions,
+                        unawaited(
+                          context.pushNamed(
+                            AppRoutes.conversionOptions,
+                            arguments: conversionOptions,
+                          ),
                         );
                       }
                       return;
@@ -126,7 +130,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     if (!selectedType.isAvailable) return;
 
     if (!selectedType.isFamily) {
-      context.pushNamed(AppRoutes.subscriptionProgramSelection);
+      unawaited(context.pushNamed(AppRoutes.subscriptionProgramSelection));
       return;
     }
 
@@ -137,6 +141,6 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       return;
     }
 
-    context.pushNamed(AppRoutes.familyPackageSelection);
+    unawaited(context.pushNamed(AppRoutes.familyPackageSelection));
   }
 }

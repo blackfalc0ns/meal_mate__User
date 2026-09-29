@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -46,8 +48,10 @@ class ConversionOptionsPage extends StatelessWidget {
                         current.convertFromIndividualFailure,
                 listener: (context, state) {
                   if (state.isConvertFromIndividualSuccess) {
-                    context.pushReplacementNamed(
-                      AppRoutes.familySubscriptionSetup,
+                    unawaited(
+                      context.pushReplacementNamed(
+                        AppRoutes.familySubscriptionSetup,
+                      ),
                     );
                     return;
                   }
@@ -122,7 +126,9 @@ class ConversionOptionsPage extends StatelessWidget {
                           textColor: color.onPrimary,
                           fontSize: FontSize.size12,
                           iconWidget: Icon(
-                            Icons.chevron_right_rounded,
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.chevron_left_rounded
+                                : Icons.chevron_right_rounded,
                             color: color.onPrimary,
                             size: Spacing.iconMd,
                           ),

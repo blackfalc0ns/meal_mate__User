@@ -32,13 +32,11 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
             slivers: [
               SliverPadding(
                 padding: EdgeInsets.only(
-                  left: Spacing.screenH,
-                  right: Spacing.screenH,
                   top: Spacing.lg,
                   bottom: showBottomSpace
                       ? Spacing.subscriptionProgramsBottomSpace
                       : Spacing.xl,
-                ),
+                ).add(const EdgeInsets.symmetric(horizontal: Spacing.screenH)),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     const Center(

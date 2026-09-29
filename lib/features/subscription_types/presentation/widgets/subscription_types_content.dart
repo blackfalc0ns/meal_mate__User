@@ -26,9 +26,7 @@ class SubscriptionTypesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
-    color.surface;
     final selectedType = _selectedType(state.types);
 
     return Stack(

@@ -30,7 +30,6 @@ class SubscriptionTypeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final textDirection = Directionality.of(context);
     final accentColor = type.isFamily ? color.secondary : color.primary;
     final isEnabled = type.isAvailable;
     final dividerColor = type.isFamily
@@ -66,7 +65,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                 final featureTop = cardHeight * 0.61;
                 final dividerTop = cardHeight * 0.53;
 
-                return Container(
+                return DecoratedBox(
                   decoration: BoxDecoration(
                     color: type.isFamily
                         ? color.surface.withValues(alpha: 0.92)
@@ -138,15 +137,15 @@ class SubscriptionTypeCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                textDirection: textDirection,
                                 children: [
                                   Container(
                                     width: Spacing.xl,
                                     height: Spacing.xl,
                                     decoration: BoxDecoration(
                                       color: type.isFamily
-                                          ? color.secondaryContainer
-                                                .withValues(alpha: 0.85)
+                                          ? color.secondaryContainer.withValues(
+                                              alpha: 0.85,
+                                            )
                                           : color.surface,
                                       shape: BoxShape.circle,
                                     ),
@@ -167,8 +166,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.start,
                                       style: getBoldStyle(
-                                        fontFamily:
-                                            FontConstant.alexandria,
+                                        fontFamily: FontConstant.alexandria,
                                         fontSize: FontSize.size15,
                                         color: accentColor,
                                       ),
@@ -178,8 +176,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                               ),
                               const SizedBox(height: Spacing.sm),
                               Align(
-                                alignment:
-                                    AlignmentDirectional.centerStart,
+                                alignment: AlignmentDirectional.centerStart,
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
                                     maxWidth: cardWidth * 0.34,
@@ -207,9 +204,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                             width: Spacing.lg,
                             height: Spacing.lg,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? accentColor
-                                  : color.surface,
+                              color: isSelected ? accentColor : color.surface,
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: isSelected
@@ -243,33 +238,25 @@ class SubscriptionTypeCard extends StatelessWidget {
                           start: Spacing.xl,
                           width: contentWidth - Spacing.xxl,
                           child: Row(
-                            textDirection: textDirection,
                             children: [
-                              SubscriptionTypeFeatureItem(
-                                label: features[0],
-                                icon: icons[0],
-                                accentColor: accentColor,
-                              ),
-                              SizedBox(
-                                height: Spacing
-                                    .subscriptionTypeMobileFeatureDividerHeight,
-                                child: VerticalDivider(color: dividerColor),
-                              ),
-                              SubscriptionTypeFeatureItem(
-                                label: features[1],
-                                icon: icons[1],
-                                accentColor: accentColor,
-                              ),
-                              SizedBox(
-                                height: Spacing
-                                    .subscriptionTypeMobileFeatureDividerHeight,
-                                child: VerticalDivider(color: dividerColor),
-                              ),
-                              SubscriptionTypeFeatureItem(
-                                label: features[2],
-                                icon: icons[2],
-                                accentColor: accentColor,
-                              ),
+                              for (var i = 0;
+                                  i < features.length && i < icons.length;
+                                  i++) ...[
+                                SubscriptionTypeFeatureItem(
+                                  label: features[i],
+                                  icon: icons[i],
+                                  accentColor: accentColor,
+                                ),
+                                if (i < features.length - 1 &&
+                                    i < icons.length - 1)
+                                  SizedBox(
+                                    height: Spacing
+                                        .subscriptionTypeMobileFeatureDividerHeight,
+                                    child: VerticalDivider(
+                                      color: dividerColor,
+                                    ),
+                                  ),
+                              ],
                             ],
                           ),
                         ),

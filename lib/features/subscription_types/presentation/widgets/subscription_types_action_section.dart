@@ -38,7 +38,9 @@ class SubscriptionTypesActionSection extends StatelessWidget {
           textColor: color.onPrimary,
           fontSize: FontSize.size12,
           iconWidget: Icon(
-            Icons.chevron_right_rounded,
+            Directionality.of(context) == TextDirection.rtl
+                ? Icons.chevron_left_rounded
+                : Icons.chevron_right_rounded,
             color: color.onPrimary,
             size: Spacing.iconMd,
           ),

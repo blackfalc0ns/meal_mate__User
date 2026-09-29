@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/convert_from_individual_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_conversion_options_usecase.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/usecase/get_subscription_types_usecase.dart';
-import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_event.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_state.dart';
 
@@ -25,11 +27,11 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
   void doIntent(SubscriptionTypesEvent event) {
     switch (event) {
       case GetSubscriptionTypesEvent():
-        _getSubscriptionTypes();
+        unawaited(_getSubscriptionTypes());
       case GetSubscriptionConversionOptionsEvent():
-        _getSubscriptionConversionOptions();
+        unawaited(_getSubscriptionConversionOptions());
       case ConvertFromIndividualEvent():
-        _convertFromIndividual();
+        unawaited(_convertFromIndividual());
       case InitializeConversionOptionSelectionEvent():
         _initializeConversionOptionSelection(event.options);
       case SelectConversionOptionEvent():
@@ -40,8 +42,8 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
   void _initializeConversionOptionSelection(ConversionOptionsModel options) {
     final defaultOption =
         options.convertToFamilyManagerOption?.available == true
-        ? options.convertToFamilyManagerOption
-        : null;
+            ? options.convertToFamilyManagerOption
+            : null;
 
     emit(
       state.copyWith(
@@ -70,7 +72,6 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
 
     switch (result) {
       case ApiSuccessResult():
-        FamilyConversionDraftSession.markConvertedFamilyDraft();
         emit(
           state.copyWith(
             isLoading: false,
@@ -140,6 +141,7 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
 
     switch (result) {
       case ApiSuccessResult():
+        FamilyConversionDraftSession.markConvertedFamilyDraft();
         emit(
           state.copyWith(
             isConvertFromIndividualLoading: false,
