@@ -17,32 +17,23 @@ import 'package:meal_meat_user/features/food_preferences/presentation/widgets/di
 class AddAllergyContent extends StatelessWidget {
   const AddAllergyContent({
     super.key,
-    required this.state,
+    this.catalog,
   });
 
-  final FoodPreferencesState state;
+  final FoodPreferencesCatalogEntity? catalog;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final catalog = state.catalog.data;
-    final selection = state.selection;
 
-    final gridOptions = _catalogOptions(
+    final allOptions = _catalogOptions(
       catalog?.allergens ?? const [],
       locale.localeName,
     );
-    final filteredGridOptions = gridOptions
-        .where(
-          (option) => option.label.contains(selection.allergySearchQuery),
-        )
-        .toList();
-    final selectedLabels = _selectedAllergyLabels(
-      catalog?.allergens ?? const [],
-      selection.activeAllergies,
-      locale.localeName,
-    );
+    final allergenLabelsByCode = {
+      for (final option in allOptions) option.code: option.label,
+    };
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
@@ -62,8 +53,18 @@ class AddAllergyContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.md),
-          AddAllergySummaryCard(
-            selectedAllergies: selectedLabels,
+          BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, Set<String>>(
+            selector: (state) => state.selection.activeAllergies,
+            builder: (context, activeAllergies) {
+              final selectedLabels = activeAllergies
+                  .map((code) => allergenLabelsByCode[code])
+                  .nonNulls
+                  .where((label) => label.isNotEmpty)
+                  .toList();
+              return AddAllergySummaryCard(
+                selectedAllergies: selectedLabels,
+              );
+            },
           ),
           const SizedBox(height: Spacing.addAllergySectionGap),
           AddAllergySearchField(
@@ -72,13 +73,33 @@ class AddAllergyContent extends StatelessWidget {
                 .doIntent(FoodPreferenceAllergySearchChangedEvent(value)),
           ),
           const SizedBox(height: Spacing.addAllergySectionGap),
-          AddAllergyGridSection(
-            options: filteredGridOptions,
-            selectedCodes: selection.allergies,
+          BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, ({String query, Set<String> selectedCodes})>(
+            selector: (state) => (
+              query: state.selection.allergySearchQuery,
+              selectedCodes: state.selection.allergies,
+            ),
+            builder: (context, data) {
+              final query = data.query.trim().toLowerCase();
+              final filteredGridOptions = query.isEmpty
+                  ? allOptions
+                  : allOptions
+                      .where(
+                        (option) =>
+                            option.label.toLowerCase().contains(query),
+                      )
+                      .toList();
+              return AddAllergyGridSection(
+                options: filteredGridOptions,
+                selectedCodes: data.selectedCodes,
+              );
+            },
           ),
           const SizedBox(height: Spacing.addAllergySectionGap),
-          AddAllergySaveSection(
-            isLoading: state.action.isLoading,
+          BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, bool>(
+            selector: (state) => state.action.isLoading,
+            builder: (context, isLoading) => AddAllergySaveSection(
+              isLoading: isLoading,
+            ),
           ),
         ],
       ),
@@ -97,21 +118,6 @@ class AddAllergyContent extends StatelessWidget {
           ),
         )
         .where((item) => item.code.isNotEmpty && item.label.isNotEmpty)
-        .toList();
-  }
-
-  List<String> _selectedAllergyLabels(
-    List<FoodPreferenceCatalogItemEntity> items,
-    Set<String> selectedAllergies,
-    String localeName,
-  ) {
-    final itemsByCode = {for (final item in items) item.code: item};
-
-    return selectedAllergies
-        .map((code) => itemsByCode[code])
-        .nonNulls
-        .map((item) => localeName == 'ar' ? item.nameAr : item.nameEn)
-        .where((label) => label.isNotEmpty)
         .toList();
   }
 }

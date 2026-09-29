@@ -4,7 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class DietaryPreferencesNotesSection extends StatelessWidget {
+class DietaryPreferencesNotesSection extends StatefulWidget {
   const DietaryPreferencesNotesSection({
     super.key,
     this.initialValue,
@@ -13,6 +13,47 @@ class DietaryPreferencesNotesSection extends StatelessWidget {
 
   final String? initialValue;
   final ValueChanged<String>? onChanged;
+
+  @override
+  State<DietaryPreferencesNotesSection> createState() =>
+      _DietaryPreferencesNotesSectionState();
+}
+
+class _DietaryPreferencesNotesSectionState
+    extends State<DietaryPreferencesNotesSection> {
+  late final TextEditingController _controller;
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+    _focusNode = FocusNode()..addListener(_handleFocusChange);
+  }
+
+  void _handleFocusChange() {
+    if (!_focusNode.hasFocus) {
+      widget.onChanged?.call(_controller.text);
+    }
+  }
+
+  @override
+  void didUpdateWidget(DietaryPreferencesNotesSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialValue != null &&
+        widget.initialValue != _controller.text &&
+        !_focusNode.hasFocus) {
+      _controller.text = widget.initialValue!;
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    _focusNode.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +121,10 @@ class DietaryPreferencesNotesSection extends StatelessWidget {
                 horizontal: Spacing.dietaryNotesFieldHorizontalInset,
               ),
               child: TextFormField(
-                initialValue: initialValue,
-                onChanged: onChanged,
+                controller: _controller,
+                focusNode: _focusNode,
+                onFieldSubmitted: (value) => widget.onChanged?.call(value),
+                onTapOutside: (_) => _focusNode.unfocus(),
                 textAlign: TextAlign.start,
                 textDirection: Directionality.of(context),
                 style: getLightStyle(

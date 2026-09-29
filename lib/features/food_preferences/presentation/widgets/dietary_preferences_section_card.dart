@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_choice_chip.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_options_bottom_sheet.dart';
@@ -190,18 +191,26 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
   Future<void> _showOptionsBottomSheet(BuildContext context) {
     final color = context.colorScheme;
 
-    return showModalBottomSheet<void>(
+    return AppWoltModalSheet.show<void>(
       context: context,
-      backgroundColor: color.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(Spacing.bottomSheetRadius),
-        ),
+      titleWidget: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: iconColor, size: Spacing.iconMd),
+          const SizedBox(width: Spacing.xs),
+          Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: getSemiBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size14,
+              color: color.onSurface,
+            ),
+          ),
+        ],
       ),
-      builder: (_) => DietaryPreferencesOptionsBottomSheet(
-        title: title,
-        icon: icon,
-        iconColor: iconColor,
+      child: DietaryPreferencesOptionsBottomSheet(
         options: options,
         selectedOptions: selectedOptions,
         onOptionSelected: onOptionSelected,

@@ -456,7 +456,7 @@ class Spacing {
   static const double dietaryNotesFieldHorizontalInset = 11.04;
   static const double dietaryNotesFieldHeight = 40.0;
   static const double dietaryNoticeHeight = 56.28;
-  static const double dietarySaveButtonHeight = 31.51;
+  static const double dietarySaveButtonHeight = 40.51;
   static const double dietarySaveButtonRadius = 17.75;
   static const double dietaryIconSize = 18.13;
   static const double dietarySmallIconSize = 18.0;

@@ -10,8 +10,10 @@ import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_content.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_loading_skeleton.dart';
+import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_save_section.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 class DietaryPreferencesScreen extends StatelessWidget {
@@ -60,48 +62,86 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: locale.profile_dietary_preferences,
-        titleFontSize: FontSize.size15,
-        backgroundColor: color.surface,
-        showShadow: false,
-      ),
-      body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
-        buildWhen: (previous, current) =>
-            previous.preferences != current.preferences ||
-            previous.catalog != current.catalog ||
-            previous.action != current.action ||
-            previous.selection != current.selection,
-        builder: (context, state) {
-          final preferencesState = state.preferences;
-          final catalogState = state.catalog;
-          final catalog = catalogState.data;
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: CustomAppBar(
+            title: locale.profile_dietary_preferences,
+            titleFontSize: FontSize.size15,
+            backgroundColor: color.surface,
+            showShadow: false,
+          ),
+          body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
+            buildWhen: (previous, current) =>
+                previous.preferences.isLoading != current.preferences.isLoading ||
+                previous.preferences.data != current.preferences.data ||
+                previous.preferences.failure != current.preferences.failure ||
+                previous.catalog.isLoading != current.catalog.isLoading ||
+                previous.catalog.data != current.catalog.data ||
+                previous.catalog.failure != current.catalog.failure,
+            builder: (context, state) {
+              final preferencesState = state.preferences;
+              final catalogState = state.catalog;
+              final catalog = catalogState.data;
 
-          if ((preferencesState.isLoading && preferencesState.data == null) ||
-              (catalogState.isLoading && catalog == null)) {
-            return const DietaryPreferencesLoadingSkeleton();
-          }
+              if ((preferencesState.isLoading && preferencesState.data == null) ||
+                  (catalogState.isLoading && catalog == null)) {
+                return const DietaryPreferencesLoadingSkeleton();
+              }
 
-          final failure = preferencesState.failure ?? catalogState.failure;
-          if (failure != null &&
-              (preferencesState.data == null || catalog == null)) {
-            return ApiErrorWidget(
-              exception: failure.exception,
-              onRetry: () {
-                context.read<FoodPreferencesViewModel>()
-                  ..doIntent(const GetFoodPreferencesEvent())
-                  ..doIntent(const GetFoodPreferencesCatalogEvent());
-              },
+              final failure = preferencesState.failure ?? catalogState.failure;
+              if (failure != null &&
+                  (preferencesState.data == null || catalog == null)) {
+                return ApiErrorWidget(
+                  exception: failure.exception,
+                  onRetry: () {
+                    context.read<FoodPreferencesViewModel>()
+                      ..doIntent(const GetFoodPreferencesEvent())
+                      ..doIntent(const GetFoodPreferencesCatalogEvent());
+                  },
+                );
+              }
+
+              return SafeArea(
+                top: false,
+                child: DietaryPreferencesContent(catalog: catalog),
+              );
+            },
+          ),
+          bottomNavigationBar: BlocSelector<
+            FoodPreferencesViewModel,
+            FoodPreferencesState,
+            ({bool isReady, bool isLoading})
+          >(
+            selector: (state) => (
+              isReady: state.catalog.data != null && state.preferences.data != null,
+              isLoading: state.action.isLoading,
+            ),
+            builder: (context, data) {
+              if (!data.isReady) return const SizedBox.shrink();
+              return DietaryPreferencesSaveSection(
+                isLoading: data.isLoading,
+              );
+            },
+          ),
+        ),
+        BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, bool>(
+          selector: (state) => state.action.isLoading,
+          builder: (context, isLoading) {
+            if (!isLoading) return const SizedBox.shrink();
+            return Positioned.fill(
+              child: AbsorbPointer(
+                child: ColoredBox(
+                  color: color.scrim.withValues(alpha: 0.35),
+                  child: const Center(
+                    child: CustomProgressIndicator(),
+                  ),
+                ),
+              ),
             );
-          }
-
-          return SafeArea(
-            top: false,
-            child: DietaryPreferencesContent(state: state),
-          );
-        },
-      ),
+          },
+        ),
+      ],
     );
   }
 }

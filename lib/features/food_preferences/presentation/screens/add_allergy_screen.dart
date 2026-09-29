@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/widget/loading_widget.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_event.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_state.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/add_allergy_content.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
@@ -27,7 +28,7 @@ class AddAllergyScreen extends StatelessWidget {
       create: (_) => getIt<FoodPreferencesViewModel>()
         ..doIntent(const GetFoodPreferencesEvent())
         ..doIntent(const GetFoodPreferencesCatalogEvent()),
-      child: BlocConsumer<FoodPreferencesViewModel, FoodPreferencesState>(
+      child: BlocListener<FoodPreferencesViewModel, FoodPreferencesState>(
         listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
           if (state.action.failure != null) {
@@ -48,7 +49,7 @@ class AddAllergyScreen extends StatelessWidget {
             Navigator.of(context).pop(true);
           }
         },
-        builder: (context, state) => const _AddAllergyScreenBody(),
+        child: const _AddAllergyScreenBody(),
       ),
     );
   }
@@ -62,48 +63,70 @@ class _AddAllergyScreenBody extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: locale.add_allergy_title,
-        titleFontSize: FontSize.size15,
-        backgroundColor: color.surface,
-        showShadow: false,
-      ),
-      body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
-        buildWhen: (previous, current) =>
-            previous.preferences != current.preferences ||
-            previous.catalog != current.catalog ||
-            previous.action != current.action ||
-            previous.selection != current.selection,
-        builder: (context, state) {
-          final preferencesState = state.preferences;
-          final catalogState = state.catalog;
-          final catalog = catalogState.data;
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: CustomAppBar(
+            title: locale.add_allergy_title,
+            titleFontSize: FontSize.size15,
+            backgroundColor: color.surface,
+            showShadow: false,
+          ),
+          body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
+            buildWhen: (previous, current) =>
+                previous.preferences.isLoading != current.preferences.isLoading ||
+                previous.preferences.data != current.preferences.data ||
+                previous.preferences.failure != current.preferences.failure ||
+                previous.catalog.isLoading != current.catalog.isLoading ||
+                previous.catalog.data != current.catalog.data ||
+                previous.catalog.failure != current.catalog.failure,
+            builder: (context, state) {
+              final preferencesState = state.preferences;
+              final catalogState = state.catalog;
+              final catalog = catalogState.data;
 
-          if ((preferencesState.isLoading && preferencesState.data == null) ||
-              (catalogState.isLoading && catalog == null)) {
-            return const LoadingWidget.fullScreen();
-          }
+              if ((preferencesState.isLoading && preferencesState.data == null) ||
+                  (catalogState.isLoading && catalog == null)) {
+                return const LoadingWidget.fullScreen();
+              }
 
-          final failure = preferencesState.failure ?? catalogState.failure;
-          if (failure != null &&
-              (preferencesState.data == null || catalog == null)) {
-            return ApiErrorWidget(
-              exception: failure.exception,
-              onRetry: () {
-                context.read<FoodPreferencesViewModel>()
-                  ..doIntent(const GetFoodPreferencesEvent())
-                  ..doIntent(const GetFoodPreferencesCatalogEvent());
-              },
+              final failure = preferencesState.failure ?? catalogState.failure;
+              if (failure != null &&
+                  (preferencesState.data == null || catalog == null)) {
+                return ApiErrorWidget(
+                  exception: failure.exception,
+                  onRetry: () {
+                    context.read<FoodPreferencesViewModel>()
+                      ..doIntent(const GetFoodPreferencesEvent())
+                      ..doIntent(const GetFoodPreferencesCatalogEvent());
+                  },
+                );
+              }
+
+              return SafeArea(
+                top: false,
+                child: AddAllergyContent(catalog: catalog),
+              );
+            },
+          ),
+        ),
+        BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, bool>(
+          selector: (state) => state.action.isLoading,
+          builder: (context, isLoading) {
+            if (!isLoading) return const SizedBox.shrink();
+            return Positioned.fill(
+              child: AbsorbPointer(
+                child: ColoredBox(
+                  color: color.scrim.withValues(alpha: 0.35),
+                  child: const Center(
+                    child: CustomProgressIndicator(),
+                  ),
+                ),
+              ),
             );
-          }
-
-          return SafeArea(
-            top: false,
-            child: AddAllergyContent(state: state),
-          );
-        },
-      ),
+          },
+        ),
+      ],
     );
   }
 }

@@ -9,17 +9,11 @@ import 'package:meal_meat_user/features/food_preferences/presentation/widgets/di
 class DietaryPreferencesOptionsBottomSheet extends StatefulWidget {
   const DietaryPreferencesOptionsBottomSheet({
     super.key,
-    required this.title,
-    required this.icon,
-    required this.iconColor,
     required this.options,
     required this.selectedOptions,
     required this.onOptionSelected,
   });
 
-  final String title;
-  final IconData icon;
-  final Color iconColor;
   final List<DietaryPreferencesOption> options;
   final Set<String> selectedOptions;
   final ValueChanged<String> onOptionSelected;
@@ -42,107 +36,46 @@ class _DietaryPreferencesOptionsBottomSheetState
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = MaterialLocalizations.of(context);
+    final maxListHeight = MediaQuery.sizeOf(context).height * 0.45;
 
-    return SafeArea(
-      top: false,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxListHeight),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: Spacing.lg),
-            Container(
-              width: Spacing.searchFilterSheetHandleWidth,
-              height: Spacing.searchFilterSheetHandleHeight,
-              decoration: BoxDecoration(
-                color: color.outlineVariant,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-              ),
-            ),
-            const SizedBox(height: Spacing.sm),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(
-                      Icons.close_rounded,
-                      color: color.onSurfaceVariant,
-                      size: Spacing.iconMd,
-                    ),
-                    tooltip: locale.closeButtonTooltip,
-                  ),
-                ),
-                Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        widget.icon,
-                        color: widget.iconColor,
-                        size: Spacing.iconMd,
-                      ),
-                      const SizedBox(width: Spacing.xs),
-                      Text(
-                        widget.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getSemiBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size14,
-                          color: color.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: Spacing.md),
-            Flexible(
-              child: ListView.separated(
-                shrinkWrap: true,
-                itemCount: widget.options.length,
-                separatorBuilder: (_, _) => Divider(
-                  height: Spacing.border,
-                  thickness: Spacing.border,
-                  color: color.outlineVariant,
-                ),
-                itemBuilder: (context, index) {
-                  final option = widget.options[index];
-                  final isSelected = _selectedOptions.contains(option.code);
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: widget.options.length,
+          separatorBuilder: (_, _) => Divider(
+            height: Spacing.border,
+            thickness: Spacing.border,
+            color: color.outlineVariant,
+          ),
+          itemBuilder: (context, index) {
+            final option = widget.options[index];
+            final isSelected = _selectedOptions.contains(option.code);
 
-                  return ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      option.label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size16,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    trailing: isSelected
-                        ? Icon(
-                            Icons.check_circle_rounded,
-                            color: color.primary,
-                            size: Spacing.iconMd,
-                          )
-                        : null,
-                    onTap: () => _toggleOption(option.code),
-                  );
-                },
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                option.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size16,
+                  color: color.onSurface,
+                ),
               ),
-            ),
-            const SizedBox(height: Spacing.md),
-          ],
+              trailing: isSelected
+                  ? Icon(
+                      Icons.check_circle_rounded,
+                      color: color.primary,
+                      size: Spacing.iconMd,
+                    )
+                  : null,
+              onTap: () => _toggleOption(option.code),
+            );
+          },
         ),
       ),
     );

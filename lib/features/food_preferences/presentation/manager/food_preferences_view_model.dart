@@ -222,10 +222,12 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
   }
 
   void _changeNotes(String notes) {
+    if (state.selection.notes == notes) return;
     emit(state.copyWith(selection: state.selection.copyWith(notes: notes)));
   }
 
   void _changeAllergySearchQuery(String query) {
+    if (state.selection.allergySearchQuery == query) return;
     emit(
       state.copyWith(
         selection: state.selection.copyWith(allergySearchQuery: query),

@@ -42,10 +42,13 @@ class AddAllergySaveSection extends StatelessWidget {
           text: locale.add_allergy_save,
           onPressed: isLoading
               ? null
-              : () => context.read<FoodPreferencesViewModel>().doIntent(
-                    const SaveFoodPreferencesAllergiesEvent(),
-                  ),
-          isLoading: isLoading,
+              : () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  context.read<FoodPreferencesViewModel>().doIntent(
+                        const SaveFoodPreferencesAllergiesEvent(),
+                      );
+                },
+          isLoading: false,
           height: Spacing.addAllergyButtonHeight,
           borderRadius: Spacing.addAllergyButtonRadius,
           textColor: color.onPrimary,
