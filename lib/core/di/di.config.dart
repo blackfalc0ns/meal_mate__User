@@ -527,40 +527,11 @@ import '../services/app_navigator_service.dart' as _i179;
 import '../services/device_id_service.dart' as _i148;
 import '../services/language_interceptor.dart' as _i32;
 import '../services/language_service.dart' as _i819;
+import '../services/location_service.dart' as _i669;
 import '../services/push_notification_service.dart' as _i63;
 import '../services/retry_interceptor.dart' as _i844;
 import '../services/token_interceptor.dart' as _i1056;
 import '../services/token_service.dart' as _i227;
-import '../subscription_duration/data/data_source/subscription_duration_remote_data_source.dart'
-    as _i286;
-import '../subscription_duration/data/data_source/subscription_duration_remote_data_source_impl.dart'
-    as _i866;
-import '../subscription_duration/data/repo/subscription_duration_repository_impl.dart'
-    as _i593;
-import '../subscription_duration/domain/repo/subscription_duration_repository.dart'
-    as _i395;
-import '../subscription_duration/domain/usecase/get_subscription_durations_usecase.dart'
-    as _i809;
-import '../subscription_packages/data/data_source/subscription_packages_remote_data_source.dart'
-    as _i978;
-import '../subscription_packages/data/data_source/subscription_packages_remote_data_source_impl.dart'
-    as _i461;
-import '../subscription_packages/data/repo/subscription_packages_repository_impl.dart'
-    as _i384;
-import '../subscription_packages/domain/repo/subscription_packages_repository.dart'
-    as _i678;
-import '../subscription_packages/domain/usecase/get_subscription_packages_usecase.dart'
-    as _i537;
-import '../subscription_programs/data/data_source/subscription_programs_remote_data_source.dart'
-    as _i573;
-import '../subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart'
-    as _i829;
-import '../subscription_programs/data/repo/subscription_programs_repository_impl.dart'
-    as _i995;
-import '../subscription_programs/domain/repo/subscription_programs_repository.dart'
-    as _i1047;
-import '../subscription_programs/domain/usecase/get_subscription_programs_usecase.dart'
-    as _i314;
 import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source.dart'
     as _i1038;
 import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source_impl.dart'
@@ -569,8 +540,6 @@ import '../subscription_tiers/data/repo/subscription_tier_repository_impl.dart'
     as _i897;
 import '../subscription_tiers/domain/repo/subscription_tier_repository.dart'
     as _i317;
-import '../subscription_tiers/domain/usecase/check_subscription_prerequisites_usecase.dart'
-    as _i623;
 import '../subscription_tiers/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
     as _i726;
 import '../subscription_tiers/domain/usecase/get_subscription_tiers_usecase.dart'
@@ -613,6 +582,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i179.AppNavigatorService>(
       () => _i179.AppNavigatorService(),
+    );
+    gh.lazySingleton<_i669.LocationService>(
+      () => const _i669.LocationService(),
     );
     gh.lazySingleton<_i41.FamilyFlowSnapshotStore>(
       () => _i41.FamilyFlowSnapshotStore(),
@@ -692,11 +664,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
-    gh.factory<_i286.SubscriptionDurationRemoteDataSource>(
-      () => _i866.SubscriptionDurationRemoteDataSourceImpl(
-        gh<_i804.ApiServices>(),
-      ),
-    );
     gh.factory<_i322.FamilyManagementRemoteDataSource>(
       () => _i751.FamilyManagementRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -759,11 +726,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i317.SubscriptionTierRepository>(
       () => _i897.SubscriptionTierRepositoryImpl(
         gh<_i1038.SubscriptionTierRemoteDataSource>(),
-      ),
-    );
-    gh.factory<_i395.SubscriptionDurationRepository>(
-      () => _i593.SubscriptionDurationRepositoryImpl(
-        gh<_i286.SubscriptionDurationRemoteDataSource>(),
       ),
     );
     gh.factory<_i996.PaymentRepository>(
@@ -910,11 +872,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i603.FamilyProgramsRemoteDataSource>(
       () => _i567.FamilyProgramsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
-    gh.factory<_i623.CheckSubscriptionPrerequisitesUseCase>(
-      () => _i623.CheckSubscriptionPrerequisitesUseCase(
-        gh<_i317.SubscriptionTierRepository>(),
-      ),
-    );
     gh.factory<_i726.GetSubscriptionTierRestaurantsUseCase>(
       () => _i726.GetSubscriptionTierRestaurantsUseCase(
         gh<_i317.SubscriptionTierRepository>(),
@@ -951,11 +908,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i851.FamilyManagementRepository>(),
       ),
     );
-    gh.factory<_i978.SubscriptionPackagesRemoteDataSource>(
-      () => _i461.SubscriptionPackagesRemoteDataSourceImpl(
-        gh<_i804.ApiServices>(),
-      ),
-    );
     gh.factory<_i887.InfluencerAnalyticsRemoteDataSource>(
       () => _i467.InfluencerAnalyticsRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
@@ -967,11 +919,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i62.FoodPreferencesRepository>(
       () => _i1070.FoodPreferencesRepositoryImpl(
         gh<_i961.FoodPreferencesRemoteDataSource>(),
-      ),
-    );
-    gh.factory<_i573.SubscriptionProgramsRemoteDataSource>(
-      () => _i829.SubscriptionProgramsRemoteDataSourceImpl(
-        gh<_i804.ApiServices>(),
       ),
     );
     gh.factory<_i583.FamilyPackagesRepository>(
@@ -990,11 +937,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i845.ChangeCustomerPasswordUseCase>(
       () => _i845.ChangeCustomerPasswordUseCase(
         gh<_i229.ChangePasswordRepository>(),
-      ),
-    );
-    gh.factory<_i809.GetSubscriptionDurationsUseCase>(
-      () => _i809.GetSubscriptionDurationsUseCase(
-        gh<_i395.SubscriptionDurationRepository>(),
       ),
     );
     gh.factory<_i69.FamilyManagementViewModel>(
@@ -1062,11 +1004,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i801.GetFamilySizePackagesUseCase>(
       () => _i801.GetFamilySizePackagesUseCase(
         gh<_i583.FamilyPackagesRepository>(),
-      ),
-    );
-    gh.factory<_i1047.SubscriptionProgramsRepository>(
-      () => _i995.SubscriptionProgramsRepositoryImpl(
-        gh<_i573.SubscriptionProgramsRemoteDataSource>(),
       ),
     );
     gh.factory<_i62.MealDetailsRepository>(
@@ -1197,11 +1134,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i974.ResumeSubscriptionUseCase>(
       () => _i974.ResumeSubscriptionUseCase(
         gh<_i914.ProfileUncompletedSubscriptionRepository>(),
-      ),
-    );
-    gh.factory<_i678.SubscriptionPackagesRepository>(
-      () => _i384.SubscriptionPackagesRepositoryImpl(
-        gh<_i978.SubscriptionPackagesRemoteDataSource>(),
       ),
     );
     gh.factory<_i261.CreateSubscriptionUpgradeRequestUseCase>(
@@ -1389,14 +1321,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i285.GetCustomerOfferDetailsUseCase>(
       () => _i285.GetCustomerOfferDetailsUseCase(gh<_i1067.OffersRepository>()),
     );
-    gh.factory<_i527.SubscriptionPlanViewModel>(
-      () => _i527.SubscriptionPlanViewModel(
-        gh<_i809.GetSubscriptionDurationsUseCase>(),
-        gh<_i766.GetSubscriptionTiersUseCase>(),
-        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i462.GetSubscriptionReadinessUseCase>(),
-      ),
-    );
     gh.factory<_i736.OfferDetailsViewModel>(
       () => _i736.OfferDetailsViewModel(
         gh<_i285.GetCustomerOfferDetailsUseCase>(),
@@ -1412,11 +1336,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i986.SubscriptionPlanRepository>(),
       ),
     );
-    gh.factory<_i314.GetSubscriptionProgramsUseCase>(
-      () => _i314.GetSubscriptionProgramsUseCase(
-        gh<_i1047.SubscriptionProgramsRepository>(),
-      ),
-    );
     gh.factory<_i668.FamilyPackagesViewModel>(
       () => _i668.FamilyPackagesViewModel(
         gh<_i801.GetFamilySizePackagesUseCase>(),
@@ -1428,11 +1347,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i32.GetFoodPreferencesCatalogUseCase>(),
         gh<_i515.SaveFamilyMemberAllergiesUseCase>(),
         gh<_i758.SaveFamilyMemberDislikedIngredientsUseCase>(),
-      ),
-    );
-    gh.factory<_i537.GetSubscriptionPackagesUseCase>(
-      () => _i537.GetSubscriptionPackagesUseCase(
-        gh<_i678.SubscriptionPackagesRepository>(),
       ),
     );
     gh.factory<_i898.AddCustomerAddressUseCase>(
@@ -1638,6 +1552,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i275.GetSubscriptionDurationsUseCase>(),
+        gh<_i766.GetSubscriptionTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i462.GetSubscriptionReadinessUseCase>(),
+      ),
+    );
     gh.factory<_i603.FamilyAddressesViewModel>(
       () => _i603.FamilyAddressesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1750,6 +1672,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
+        gh<_i43.BiometricService>(),
       ),
     );
     return this;
