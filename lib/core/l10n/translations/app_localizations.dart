@@ -10801,6 +10801,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'meals'**
   String get meals_count;
+
+  /// No description provided for @notifications_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications_screen_title;
+
+  /// No description provided for @notifications_mark_all_read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notifications_mark_all_read;
+
+  /// No description provided for @notifications_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get notifications_filter_all;
+
+  /// No description provided for @notifications_filter_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders & Delivery'**
+  String get notifications_filter_orders;
+
+  /// No description provided for @notifications_filter_reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get notifications_filter_reminders;
+
+  /// No description provided for @notifications_filter_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get notifications_filter_offers;
+
+  /// No description provided for @notifications_group_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get notifications_group_today;
+
+  /// No description provided for @notifications_group_yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get notifications_group_yesterday;
+
+  /// No description provided for @notifications_group_earlier.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get notifications_group_earlier;
+
+  /// No description provided for @notifications_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notifications_empty_title;
+
+  /// No description provided for @notifications_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We will notify you when there are updates on your meals or subscriptions'**
+  String get notifications_empty_subtitle;
+
+  /// No description provided for @notifications_time_just_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get notifications_time_just_now;
+
+  /// No description provided for @notifications_time_minutes_ago.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String notifications_time_minutes_ago(int minutes);
+
+  /// No description provided for @notifications_time_hours_ago.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String notifications_time_hours_ago(int hours);
+
+  /// No description provided for @notifications_action_track.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Order'**
+  String get notifications_action_track;
+
+  /// No description provided for @notifications_action_select_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Meal'**
+  String get notifications_action_select_meal;
+
+  /// No description provided for @notifications_action_view_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'View Offer'**
+  String get notifications_action_view_offer;
+
+  /// No description provided for @notifications_tab_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get notifications_tab_all;
+
+  /// No description provided for @notifications_tab_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Package & Subscription'**
+  String get notifications_tab_subscription;
+
+  /// No description provided for @notifications_tab_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get notifications_tab_meals;
+
+  /// No description provided for @notifications_tab_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get notifications_tab_system;
+
+  /// No description provided for @notifications_clear_all.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Notifications'**
+  String get notifications_clear_all;
+
+  /// No description provided for @notif_today_meals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s meals ready to choose'**
+  String get notif_today_meals_title;
+
+  /// No description provided for @notif_today_meals_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not chosen meals for 2 family members'**
+  String get notif_today_meals_subtitle;
+
+  /// No description provided for @notif_meals_selected_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals selected successfully'**
+  String get notif_meals_selected_title;
+
+  /// No description provided for @notif_meals_selected_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahmed\'s meals for Monday have been chosen'**
+  String get notif_meals_selected_subtitle;
+
+  /// No description provided for @notif_package_renew_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Package Renewal'**
+  String get notif_package_renew_title;
+
+  /// No description provided for @notif_package_renew_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your family package has been renewed successfully'**
+  String get notif_package_renew_subtitle;
+
+  /// No description provided for @notif_delivery_coming_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Delivery'**
+  String get notif_delivery_coming_title;
+
+  /// No description provided for @notif_delivery_coming_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow\'s meals delivery between 8:00 AM - 10:00 AM'**
+  String get notif_delivery_coming_subtitle;
+
+  /// No description provided for @notif_new_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'New Offer'**
+  String get notif_new_offer_title;
+
+  /// No description provided for @notif_new_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a free meal when you invite a friend'**
+  String get notif_new_offer_subtitle;
+
+  /// No description provided for @notif_system_update_title.
+  ///
+  /// In en, this message translates to:
+  /// **'System Update'**
+  String get notif_system_update_title;
+
+  /// No description provided for @notif_system_update_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The app has been updated to the latest version'**
+  String get notif_system_update_subtitle;
+
+  /// No description provided for @notifications_prefs_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get notifications_prefs_title;
+
+  /// No description provided for @notifications_prefs_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the types of notifications you want to receive'**
+  String get notifications_prefs_subtitle;
+
+  /// No description provided for @notifications_prefs_allow_all.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Notifications'**
+  String get notifications_prefs_allow_all;
+
+  /// No description provided for @notifications_prefs_allow_all_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable or disable all notifications'**
+  String get notifications_prefs_allow_all_subtitle;
+
+  /// No description provided for @notifications_prefs_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get notifications_prefs_meals;
+
+  /// No description provided for @notifications_prefs_meals_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications regarding meal selection and preparation'**
+  String get notifications_prefs_meals_subtitle;
+
+  /// No description provided for @notifications_prefs_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get notifications_prefs_delivery;
+
+  /// No description provided for @notifications_prefs_delivery_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications regarding delivery status'**
+  String get notifications_prefs_delivery_subtitle;
+
+  /// No description provided for @notifications_prefs_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription & Payment'**
+  String get notifications_prefs_subscription;
+
+  /// No description provided for @notifications_prefs_subscription_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications regarding subscription and payments'**
+  String get notifications_prefs_subscription_subtitle;
+
+  /// No description provided for @notifications_prefs_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers & Rewards'**
+  String get notifications_prefs_offers;
+
+  /// No description provided for @notifications_prefs_offers_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special notifications for offers and rewards'**
+  String get notifications_prefs_offers_subtitle;
+
+  /// No description provided for @notifications_prefs_family.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get notifications_prefs_family;
+
+  /// No description provided for @notifications_prefs_family_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications related to family members'**
+  String get notifications_prefs_family_subtitle;
+
+  /// No description provided for @notifications_prefs_family_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible only to family manager'**
+  String get notifications_prefs_family_badge;
+
+  /// No description provided for @notifications_prefs_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & System'**
+  String get notifications_prefs_account;
+
+  /// No description provided for @notifications_prefs_account_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications about your account and app data'**
+  String get notifications_prefs_account_subtitle;
+
+  /// No description provided for @notifications_prefs_footer_info.
+  ///
+  /// In en, this message translates to:
+  /// **'You will receive notifications according to your settings; you can change them anytime.'**
+  String get notifications_prefs_footer_info;
 }
 
 class _AppLocalizationsDelegate

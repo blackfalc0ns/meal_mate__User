@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -5,6 +6,7 @@ import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
@@ -102,12 +104,19 @@ class HomeHeader extends StatelessWidget {
             child: SizedBox(
               width: Spacing.homeHeaderNotificationSize,
               height: Spacing.homeHeaderNotificationSize,
-              child: CircleAvatar(
-                backgroundColor: color.surface,
-                child: SvgPicture.asset(
-                  Assets.notificationBold,
-                  width: Spacing.iconMd,
-                  height: Spacing.iconMd,
+              child: GestureDetector(
+                onTap: () {
+                  unawaited(
+                    Navigator.of(context).pushNamed(AppRoutes.notifications),
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: color.surface,
+                  child: SvgPicture.asset(
+                    Assets.notificationBold,
+                    width: Spacing.iconMd,
+                    height: Spacing.iconMd,
+                  ),
                 ),
               ),
             ),

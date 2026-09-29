@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 
 class NotificationButton extends StatelessWidget {
@@ -15,7 +17,13 @@ class NotificationButton extends StatelessWidget {
       child: Tooltip(
         message: 'الإشعارات',
         child: InkResponse(
-          onTap: onTap,
+          onTap:
+              onTap ??
+              () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.notifications),
+                );
+              },
           radius: 22,
           child: SizedBox.square(
             dimension: 44,

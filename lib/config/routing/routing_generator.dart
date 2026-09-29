@@ -81,6 +81,8 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/scree
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_transactions_screen.dart';
+import 'package:meal_meat_user/features/notifications/presentation/screens/notifications_screen.dart';
+import 'package:meal_meat_user/features/notifications/presentation/screens/notification_preferences_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
@@ -569,6 +571,16 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const InfluencerWithdrawHistoryScreen(),
+        );
+      case AppRoutes.notifications:
+        return _buildRoute(
+          settings: settings,
+          page: const NotificationsScreen(),
+        );
+      case AppRoutes.notificationPreferences:
+        return _buildRoute(
+          settings: settings,
+          page: const NotificationPreferencesScreen(),
         );
       default:
         return _buildRoute(

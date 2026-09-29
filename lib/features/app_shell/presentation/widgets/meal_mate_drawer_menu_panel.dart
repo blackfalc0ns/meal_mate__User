@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -76,6 +78,11 @@ class MealMateDrawerSectionsList extends StatelessWidget {
             MealMateDrawerItemData(
               icon: Icons.notifications_none_rounded,
               label: l10n.drawer_notifications,
+              onTap: () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.notifications),
+                );
+              },
             ),
           ],
         ),
@@ -213,7 +220,7 @@ class MealMateDrawerItem extends StatelessWidget {
     final color = context.colorScheme;
 
     return InkWell(
-      onTap: () {},
+      onTap: item.onTap,
       borderRadius: BorderRadius.circular(Spacing.radiusSm),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
@@ -277,8 +284,13 @@ class MealMateDrawerLogoutButton extends StatelessWidget {
 }
 
 class MealMateDrawerItemData {
-  const MealMateDrawerItemData({required this.icon, required this.label});
+  const MealMateDrawerItemData({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   final IconData icon;
   final String label;
+  final VoidCallback? onTap;
 }

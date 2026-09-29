@@ -88,6 +88,18 @@ class ErrorMessagePresenter {
   static bool _looksTechnical(String message) {
     final lower = message.toLowerCase();
 
+    // Detect HTML tags or server redirect response bodies
+    if (lower.contains('<html') ||
+        lower.contains('<!doctype') ||
+        lower.contains('<head') ||
+        lower.contains('<body') ||
+        lower.contains('<title') ||
+        lower.contains('document moved') ||
+        lower.contains('object moved') ||
+        RegExp(r'<[a-zA-Z\/][^>]*>').hasMatch(message)) {
+      return true;
+    }
+
     const technicalFragments = <String>[
       'sql',
       'mysql',

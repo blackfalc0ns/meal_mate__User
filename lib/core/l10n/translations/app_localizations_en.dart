@@ -5809,4 +5809,181 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meals_count => 'meals';
+
+  @override
+  String get notifications_screen_title => 'Notifications';
+
+  @override
+  String get notifications_mark_all_read => 'Mark all as read';
+
+  @override
+  String get notifications_filter_all => 'All';
+
+  @override
+  String get notifications_filter_orders => 'Orders & Delivery';
+
+  @override
+  String get notifications_filter_reminders => 'Reminders';
+
+  @override
+  String get notifications_filter_offers => 'Offers';
+
+  @override
+  String get notifications_group_today => 'Today';
+
+  @override
+  String get notifications_group_yesterday => 'Yesterday';
+
+  @override
+  String get notifications_group_earlier => 'This Week';
+
+  @override
+  String get notifications_empty_title => 'No notifications yet';
+
+  @override
+  String get notifications_empty_subtitle =>
+      'We will notify you when there are updates on your meals or subscriptions';
+
+  @override
+  String get notifications_time_just_now => 'Just now';
+
+  @override
+  String notifications_time_minutes_ago(int minutes) {
+    return '${minutes}m ago';
+  }
+
+  @override
+  String notifications_time_hours_ago(int hours) {
+    return '${hours}h ago';
+  }
+
+  @override
+  String get notifications_action_track => 'Track Order';
+
+  @override
+  String get notifications_action_select_meal => 'Choose Meal';
+
+  @override
+  String get notifications_action_view_offer => 'View Offer';
+
+  @override
+  String get notifications_tab_all => 'All';
+
+  @override
+  String get notifications_tab_subscription => 'Package & Subscription';
+
+  @override
+  String get notifications_tab_meals => 'Meals';
+
+  @override
+  String get notifications_tab_system => 'System';
+
+  @override
+  String get notifications_clear_all => 'Clear Notifications';
+
+  @override
+  String get notif_today_meals_title => 'Today\'s meals ready to choose';
+
+  @override
+  String get notif_today_meals_subtitle =>
+      'You have not chosen meals for 2 family members';
+
+  @override
+  String get notif_meals_selected_title => 'Meals selected successfully';
+
+  @override
+  String get notif_meals_selected_subtitle =>
+      'Ahmed\'s meals for Monday have been chosen';
+
+  @override
+  String get notif_package_renew_title => 'Package Renewal';
+
+  @override
+  String get notif_package_renew_subtitle =>
+      'Your family package has been renewed successfully';
+
+  @override
+  String get notif_delivery_coming_title => 'Upcoming Delivery';
+
+  @override
+  String get notif_delivery_coming_subtitle =>
+      'Tomorrow\'s meals delivery between 8:00 AM - 10:00 AM';
+
+  @override
+  String get notif_new_offer_title => 'New Offer';
+
+  @override
+  String get notif_new_offer_subtitle =>
+      'Get a free meal when you invite a friend';
+
+  @override
+  String get notif_system_update_title => 'System Update';
+
+  @override
+  String get notif_system_update_subtitle =>
+      'The app has been updated to the latest version';
+
+  @override
+  String get notifications_prefs_title => 'Notification Settings';
+
+  @override
+  String get notifications_prefs_subtitle =>
+      'Choose the types of notifications you want to receive';
+
+  @override
+  String get notifications_prefs_allow_all => 'Allow Notifications';
+
+  @override
+  String get notifications_prefs_allow_all_subtitle =>
+      'Enable or disable all notifications';
+
+  @override
+  String get notifications_prefs_meals => 'Meals';
+
+  @override
+  String get notifications_prefs_meals_subtitle =>
+      'Notifications regarding meal selection and preparation';
+
+  @override
+  String get notifications_prefs_delivery => 'Delivery';
+
+  @override
+  String get notifications_prefs_delivery_subtitle =>
+      'Notifications regarding delivery status';
+
+  @override
+  String get notifications_prefs_subscription => 'Subscription & Payment';
+
+  @override
+  String get notifications_prefs_subscription_subtitle =>
+      'Notifications regarding subscription and payments';
+
+  @override
+  String get notifications_prefs_offers => 'Offers & Rewards';
+
+  @override
+  String get notifications_prefs_offers_subtitle =>
+      'Special notifications for offers and rewards';
+
+  @override
+  String get notifications_prefs_family => 'Family';
+
+  @override
+  String get notifications_prefs_family_subtitle =>
+      'Notifications related to family members';
+
+  @override
+  String get notifications_prefs_family_badge =>
+      'Visible only to family manager';
+
+  @override
+  String get notifications_prefs_account => 'Account & System';
+
+  @override
+  String get notifications_prefs_account_subtitle =>
+      'Notifications about your account and app data';
+
+  @override
+  String get notifications_prefs_footer_info =>
+      'You will receive notifications according to your settings; you can change them anytime.';
 }

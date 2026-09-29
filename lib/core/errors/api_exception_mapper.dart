@@ -141,7 +141,22 @@ class ApiExceptionMapper {
     if (statusCode != null && statusCode >= 400) {
       return ApiErrorType.badRequest;
     }
+    if (statusCode != null && statusCode >= 300) {
+      return ApiErrorType.serverError;
+    }
     return ApiErrorType.unknown;
+  }
+
+  static bool _isHtml(String text) {
+    final lower = text.toLowerCase();
+    return lower.contains('<html') ||
+        lower.contains('<!doctype') ||
+        lower.contains('<head') ||
+        lower.contains('<body') ||
+        lower.contains('<title') ||
+        lower.contains('document moved') ||
+        lower.contains('object moved') ||
+        RegExp(r'<[a-zA-Z\/][^>]*>').hasMatch(text);
   }
 
   static String? _extractBackendMessage(dynamic data) {
@@ -160,7 +175,10 @@ class ApiExceptionMapper {
     }
 
     if (data is String && data.trim().isNotEmpty) {
-      return data.trim();
+      final trimmed = data.trim();
+      if (!_isHtml(trimmed)) {
+        return trimmed;
+      }
     }
 
     return null;
@@ -168,6 +186,22 @@ class ApiExceptionMapper {
 
   static String? _extractMessageFromMap(dynamic data) {
     if (data is Map) {
+      // 1. Check ASP.NET Core Problem Details validation errors dictionary
+      final errors = data['errors'];
+      if (errors is Map) {
+        for (final value in errors.values) {
+          if (value is List && value.isNotEmpty) {
+            final first = value.first;
+            if (first is String && first.trim().isNotEmpty && !_isHtml(first)) {
+              return first.trim();
+            }
+          } else if (value is String && value.trim().isNotEmpty && !_isHtml(value)) {
+            return value.trim();
+          }
+        }
+      }
+
+      // 2. Check standard keys
       for (final key in const [
         'detail',
         'message',
@@ -178,7 +212,10 @@ class ApiExceptionMapper {
       ]) {
         final value = data[key];
         if (value is String && value.trim().isNotEmpty) {
-          return value.trim();
+          final trimmed = value.trim();
+          if (!_isHtml(trimmed)) {
+            return trimmed;
+          }
         }
       }
     }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -21,7 +22,11 @@ class SecurityPrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BiometricCubit>(
-      create: (_) => getIt<BiometricCubit>()..init(),
+      create: (_) {
+        final cubit = getIt<BiometricCubit>();
+        unawaited(cubit.init());
+        return cubit;
+      },
       child: const _SecurityPrivacyScreenContent(),
     );
   }
@@ -135,21 +140,23 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                                 activeTrackColor:
                                     color.primary.withValues(alpha: 0.5),
                                 onChanged: (value) {
-                                  context
-                                      .read<BiometricCubit>()
-                                      .toggleBiometric(
-                                        enable: value,
-                                        localizedReason:
-                                            locale.biometric_enable_reason,
-                                        notSupportedMessage:
-                                            locale.biometric_not_supported,
-                                        notEnrolledMessage:
-                                            locale.biometric_not_enrolled,
-                                        lockedOutMessage:
-                                            locale.biometric_locked_out,
-                                        genericErrorMessage:
-                                            locale.biometric_failed,
-                                      );
+                                  unawaited(
+                                    context
+                                        .read<BiometricCubit>()
+                                        .toggleBiometric(
+                                          enable: value,
+                                          localizedReason:
+                                              locale.biometric_enable_reason,
+                                          notSupportedMessage:
+                                              locale.biometric_not_supported,
+                                          notEnrolledMessage:
+                                              locale.biometric_not_enrolled,
+                                          lockedOutMessage:
+                                              locale.biometric_locked_out,
+                                          genericErrorMessage:
+                                              locale.biometric_failed,
+                                        ),
+                                  );
                                 },
                               ),
                       ),
@@ -173,7 +180,9 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                     Icons.notifications_rounded,
                     locale.profile_privacy_notifications,
                     locale.profile_privacy_notifications_subtitle,
-                    () => _showComingSoon(context),
+                    () => unawaited(
+                      Navigator.of(context).pushNamed(AppRoutes.notifications),
+                    ),
                   ),
                   (
                     Icons.description_rounded,

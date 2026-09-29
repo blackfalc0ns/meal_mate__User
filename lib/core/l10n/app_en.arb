@@ -2417,5 +2417,71 @@
   "offer_activation_order_title": "Activated Subscription Details",
   "offer_activation_paid_total": "Total Paid",
   "offer_activation_choose_plan_button": "Schedule & Choose Meals",
-  "meals_count": "meals"
+  "meals_count": "meals",
+  "notifications_screen_title": "Notifications",
+  "notifications_mark_all_read": "Mark all as read",
+  "notifications_filter_all": "All",
+  "notifications_filter_orders": "Orders & Delivery",
+  "notifications_filter_reminders": "Reminders",
+  "notifications_filter_offers": "Offers",
+  "notifications_group_today": "Today",
+  "notifications_group_yesterday": "Yesterday",
+  "notifications_group_earlier": "This Week",
+  "notifications_empty_title": "No notifications yet",
+  "notifications_empty_subtitle": "We will notify you when there are updates on your meals or subscriptions",
+  "notifications_time_just_now": "Just now",
+  "notifications_time_minutes_ago": "{minutes}m ago",
+  "@notifications_time_minutes_ago": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "notifications_time_hours_ago": "{hours}h ago",
+  "@notifications_time_hours_ago": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "notifications_action_track": "Track Order",
+  "notifications_action_select_meal": "Choose Meal",
+  "notifications_action_view_offer": "View Offer",
+  "notifications_tab_all": "All",
+  "notifications_tab_subscription": "Package & Subscription",
+  "notifications_tab_meals": "Meals",
+  "notifications_tab_system": "System",
+  "notifications_clear_all": "Clear Notifications",
+  "notif_today_meals_title": "Today's meals ready to choose",
+  "notif_today_meals_subtitle": "You have not chosen meals for 2 family members",
+  "notif_meals_selected_title": "Meals selected successfully",
+  "notif_meals_selected_subtitle": "Ahmed's meals for Monday have been chosen",
+  "notif_package_renew_title": "Package Renewal",
+  "notif_package_renew_subtitle": "Your family package has been renewed successfully",
+  "notif_delivery_coming_title": "Upcoming Delivery",
+  "notif_delivery_coming_subtitle": "Tomorrow's meals delivery between 8:00 AM - 10:00 AM",
+  "notif_new_offer_title": "New Offer",
+  "notif_new_offer_subtitle": "Get a free meal when you invite a friend",
+  "notif_system_update_title": "System Update",
+  "notif_system_update_subtitle": "The app has been updated to the latest version",
+  "notifications_prefs_title": "Notification Settings",
+  "notifications_prefs_subtitle": "Choose the types of notifications you want to receive",
+  "notifications_prefs_allow_all": "Allow Notifications",
+  "notifications_prefs_allow_all_subtitle": "Enable or disable all notifications",
+  "notifications_prefs_meals": "Meals",
+  "notifications_prefs_meals_subtitle": "Notifications regarding meal selection and preparation",
+  "notifications_prefs_delivery": "Delivery",
+  "notifications_prefs_delivery_subtitle": "Notifications regarding delivery status",
+  "notifications_prefs_subscription": "Subscription & Payment",
+  "notifications_prefs_subscription_subtitle": "Notifications regarding subscription and payments",
+  "notifications_prefs_offers": "Offers & Rewards",
+  "notifications_prefs_offers_subtitle": "Special notifications for offers and rewards",
+  "notifications_prefs_family": "Family",
+  "notifications_prefs_family_subtitle": "Notifications related to family members",
+  "notifications_prefs_family_badge": "Visible only to family manager",
+  "notifications_prefs_account": "Account & System",
+  "notifications_prefs_account_subtitle": "Notifications about your account and app data",
+  "notifications_prefs_footer_info": "You will receive notifications according to your settings; you can change them anytime."
 }

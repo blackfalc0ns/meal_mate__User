@@ -79,4 +79,6 @@ abstract class AppRoutes {
   static const String influencerWithdrawReview = '/influencer-withdraw-review';
   static const String influencerWithdrawHistory =
       '/influencer-withdraw-history';
+  static const String notifications = '/notifications';
+  static const String notificationPreferences = '/notification-preferences';
 }

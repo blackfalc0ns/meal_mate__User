@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = "http://maelmate.runasp.net";
+  static const String baseUrl = "https://maelmate.runasp.net";
   static const String authorization = 'Authorization';
   static const String bearer = "Bearer";
 }
@@ -215,12 +215,10 @@ abstract class EndPoints {
       '/api/v1/influencer-partner/me/analytics';
   static const String customerOffersAvailable =
       '/api/v1/customer/offers/available';
-  static const String customerOfferDetails =
-      '/api/v1/customer/offers/{id}';
+  static const String customerOfferDetails = '/api/v1/customer/offers/{id}';
   static const String customerOffersEvaluate =
       '/api/v1/customer/offers/evaluate';
-  static const String customerOffersRedeem =
-      '/api/v1/customer/offers/redeem';
+  static const String customerOffersRedeem = '/api/v1/customer/offers/redeem';
   static const String customerCampaignPricePreview =
       '/api/v1/customer/campaigns/price-preview';
   static const String customerCampaignCheckoutSession =

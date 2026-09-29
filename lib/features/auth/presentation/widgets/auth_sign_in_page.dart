@@ -8,8 +8,10 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/biometric/biometric_credentials.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_request_entity.dart';
@@ -112,7 +114,13 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
           return;
         }
 
-        final message = state.login.errorMessage;
+        final failure = state.login.failure;
+        final rawMessage = state.login.errorMessage;
+        final message = failure != null
+            ? ErrorMessagePresenter.fromFailure(context, failure)
+            : (rawMessage != null && rawMessage.isNotEmpty
+                ? mapFailureMessage(context, rawMessage)
+                : null);
         if (message != null && message.isNotEmpty) {
           CustomSnackbar.showError(context: context, message: message);
         }

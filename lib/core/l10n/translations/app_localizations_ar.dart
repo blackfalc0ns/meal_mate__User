@@ -5710,4 +5710,178 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get meals_count => 'وجبات';
+
+  @override
+  String get notifications_screen_title => 'الإشعارات';
+
+  @override
+  String get notifications_mark_all_read => 'تحديد الكل كمقروء';
+
+  @override
+  String get notifications_filter_all => 'الكل';
+
+  @override
+  String get notifications_filter_orders => 'الطلبات والتوصيل';
+
+  @override
+  String get notifications_filter_reminders => 'التذكيرات';
+
+  @override
+  String get notifications_filter_offers => 'العروض';
+
+  @override
+  String get notifications_group_today => 'اليوم';
+
+  @override
+  String get notifications_group_yesterday => 'أمس';
+
+  @override
+  String get notifications_group_earlier => 'هذا الأسبوع';
+
+  @override
+  String get notifications_empty_title => 'لا توجد إشعارات حالياً';
+
+  @override
+  String get notifications_empty_subtitle =>
+      'سنخبرك بكل جديد فور توفر تحديثات لوجباتك أو اشتراكك';
+
+  @override
+  String get notifications_time_just_now => 'الآن';
+
+  @override
+  String notifications_time_minutes_ago(int minutes) {
+    return 'منذ $minutes دقيقة';
+  }
+
+  @override
+  String notifications_time_hours_ago(int hours) {
+    return 'منذ $hours ساعة';
+  }
+
+  @override
+  String get notifications_action_track => 'تتبع الطلب';
+
+  @override
+  String get notifications_action_select_meal => 'اختيار الوجبة';
+
+  @override
+  String get notifications_action_view_offer => 'عرض العرض';
+
+  @override
+  String get notifications_tab_all => 'الكل';
+
+  @override
+  String get notifications_tab_subscription => 'الباقة والاشتراك';
+
+  @override
+  String get notifications_tab_meals => 'الوجبات';
+
+  @override
+  String get notifications_tab_system => 'النظام';
+
+  @override
+  String get notifications_clear_all => 'مسح الاشعارات';
+
+  @override
+  String get notif_today_meals_title => 'وجبات اليوم جاهزة للاختيار';
+
+  @override
+  String get notif_today_meals_subtitle =>
+      'لم تقم باختيار وجبات 2 من أفراد العائلة';
+
+  @override
+  String get notif_meals_selected_title => 'تم اختيار الوجبات بنجاح';
+
+  @override
+  String get notif_meals_selected_subtitle =>
+      'تم اختيار وجبات أحمد لليوم الإثنين';
+
+  @override
+  String get notif_package_renew_title => 'تجديد الباقة';
+
+  @override
+  String get notif_package_renew_subtitle => 'تم تجديد باقتك العائلية بنجاح';
+
+  @override
+  String get notif_delivery_coming_title => 'توصيل قادم';
+
+  @override
+  String get notif_delivery_coming_subtitle =>
+      'توصيل وجبات الغد بين 8:00 ص - 10:00 ص';
+
+  @override
+  String get notif_new_offer_title => 'عرض جديد';
+
+  @override
+  String get notif_new_offer_subtitle => 'احصل على وجبة مجانية عند دعوة صديق';
+
+  @override
+  String get notif_system_update_title => 'تحديث النظام';
+
+  @override
+  String get notif_system_update_subtitle =>
+      'تم تحديث التطبيق إلى الإصدار الجديد';
+
+  @override
+  String get notifications_prefs_title => 'إعدادات الإشعارات';
+
+  @override
+  String get notifications_prefs_subtitle =>
+      'اختر أنواع الإشعارات التي تريد استلامها';
+
+  @override
+  String get notifications_prefs_allow_all => 'السماح بالإشعارات';
+
+  @override
+  String get notifications_prefs_allow_all_subtitle =>
+      'تفعيل أو إيقاف جميع الإشعارات';
+
+  @override
+  String get notifications_prefs_meals => 'الوجبات';
+
+  @override
+  String get notifications_prefs_meals_subtitle =>
+      'إشعارات تتعلق باختيار وتجهيز الوجبات';
+
+  @override
+  String get notifications_prefs_delivery => 'التوصيل';
+
+  @override
+  String get notifications_prefs_delivery_subtitle =>
+      'إشعارات تتعلق بحالة التوصيل';
+
+  @override
+  String get notifications_prefs_subscription => 'الإشتراك والدفع';
+
+  @override
+  String get notifications_prefs_subscription_subtitle =>
+      'إشعارات تتعلق بالاشتراك والمدفوعات';
+
+  @override
+  String get notifications_prefs_offers => 'العروض والمكافآت';
+
+  @override
+  String get notifications_prefs_offers_subtitle =>
+      'إشعارات خاصة بالعروض والمكافآت';
+
+  @override
+  String get notifications_prefs_family => 'العائلة';
+
+  @override
+  String get notifications_prefs_family_subtitle =>
+      'إشعارات متعلقة بأفراد العائلة';
+
+  @override
+  String get notifications_prefs_family_badge => 'ظاهر فقط لمدير العائلة';
+
+  @override
+  String get notifications_prefs_account => 'الحساب والنظام';
+
+  @override
+  String get notifications_prefs_account_subtitle =>
+      'إشعارات تخص حسابك وبيانات التطبيق';
+
+  @override
+  String get notifications_prefs_footer_info =>
+      'ستصلك الإشعارات وفق إعداداتك، يمكنك تغييرها في أي وقت.';
 }

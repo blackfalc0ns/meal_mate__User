@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -46,7 +48,9 @@ class ProfileSettingsScreen extends StatelessWidget {
                     Icons.notifications_rounded,
                     locale.profile_settings_notifications,
                     locale.profile_settings_notifications_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(context).pushNamed(AppRoutes.notifications),
+                    ),
                   ),
                   (
                     Icons.language_rounded,

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -85,10 +87,17 @@ class InfluencerHeaderCard extends StatelessWidget
               height: Spacing.influencerHeaderLogoHeight,
             ),
             const Spacer(),
-            SvgPicture.asset(
-              Assets.notificationBold,
-              width: Spacing.influencerNotificationSize,
-              height: Spacing.influencerNotificationSize,
+            GestureDetector(
+              onTap: () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.notifications),
+                );
+              },
+              child: SvgPicture.asset(
+                Assets.notificationBold,
+                width: Spacing.influencerNotificationSize,
+                height: Spacing.influencerNotificationSize,
+              ),
             ),
           ],
         ),

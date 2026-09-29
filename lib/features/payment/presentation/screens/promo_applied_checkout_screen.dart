@@ -63,8 +63,8 @@ class _PromoAppliedCheckoutScreenState
             .toIso8601String()
             .split('T')
             .first,
-        callbackUrl: 'http://maelmate.runasp.net/payment/callback',
-        errorUrl: 'http://maelmate.runasp.net/payment/error',
+        callbackUrl: 'https://maelmate.runasp.net/payment/callback',
+        errorUrl: 'https://maelmate.runasp.net/payment/error',
         includeFriday: false,
         paymentMethodId: 1,
         correlationId: DateTime.now().millisecondsSinceEpoch.toString(),
