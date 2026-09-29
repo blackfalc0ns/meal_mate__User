@@ -87,9 +87,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: Spacing.xs,
-            ),
+            padding: const EdgeInsetsDirectional.only(start: Spacing.xs),
             child: Text(
               locale.addresses_home_address_title,
               maxLines: 1,

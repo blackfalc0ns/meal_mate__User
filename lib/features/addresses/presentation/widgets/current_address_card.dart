@@ -63,9 +63,7 @@ class CurrentAddressCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: Spacing.md,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: Spacing.md),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

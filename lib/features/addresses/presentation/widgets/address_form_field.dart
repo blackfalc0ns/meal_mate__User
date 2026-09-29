@@ -101,9 +101,7 @@ class AddressFormField extends StatelessWidget {
             color: hasError ? color.error : color.outlineVariant,
             width: Spacing.hairline,
           ),
-          borderRadius: BorderRadius.circular(
-            Spacing.buttonRadius,
-          ),
+          borderRadius: BorderRadius.circular(Spacing.buttonRadius),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,9 +111,7 @@ class AddressFormField extends StatelessWidget {
               height: iconBoxSize,
               decoration: BoxDecoration(
                 color: color.secondaryContainer,
-                borderRadius: BorderRadius.circular(
-                  Spacing.buttonSmallRadius,
-                ),
+                borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
               ),
               child: Center(
                 child: SvgPicture.asset(
