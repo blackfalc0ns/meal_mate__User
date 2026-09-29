@@ -1883,6 +1883,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'اختر الهدف الذي يناسبك لنقدم لك الباقات المناسبة';
 
   @override
+  String get subscription_programs_empty_title => 'لا توجد برامج متاحة حالياً';
+
+  @override
+  String get subscription_programs_empty_description =>
+      'لا توجد برامج اشتراك متاحة حالياً، يرجى المحاولة في وقت لاحق';
+
+  @override
   String get subscription_type_title => 'اختر نوع الاشتراك';
 
   @override

@@ -667,6 +667,8 @@
   "subscription_note": "All plans include 20% off all orders. You can pause or edit the plan anytime",
   "subscription_program_title": "Choose your program",
   "subscription_program_subtitle": "Choose the goal that suits you so we can show the right plans",
+  "subscription_programs_empty_title": "No programs available right now",
+  "subscription_programs_empty_description": "There are no subscription programs available at the moment. Please check back later",
   "subscription_type_title": "Choose subscription type",
   "subscription_type_subtitle": "Start by choosing whether you want an individual subscription or a family subscription",
   "subscription_type_hero_label": "Healthy food, better life",

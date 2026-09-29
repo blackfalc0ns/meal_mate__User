@@ -3632,6 +3632,18 @@ abstract class AppLocalizations {
   /// **'Choose the goal that suits you so we can show the right plans'**
   String get subscription_program_subtitle;
 
+  /// No description provided for @subscription_programs_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No programs available right now'**
+  String get subscription_programs_empty_title;
+
+  /// No description provided for @subscription_programs_empty_description.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no subscription programs available at the moment. Please check back later'**
+  String get subscription_programs_empty_description;
+
   /// No description provided for @subscription_type_title.
   ///
   /// In en, this message translates to:

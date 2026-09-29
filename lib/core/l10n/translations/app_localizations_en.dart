@@ -1910,6 +1910,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose the goal that suits you so we can show the right plans';
 
   @override
+  String get subscription_programs_empty_title =>
+      'No programs available right now';
+
+  @override
+  String get subscription_programs_empty_description =>
+      'There are no subscription programs available at the moment. Please check back later';
+
+  @override
   String get subscription_type_title => 'Choose subscription type';
 
   @override

@@ -121,8 +121,8 @@ class _SubscriptionProgramSelectionScreenState
 
     if (state.isSuccess && state.programs.isEmpty) {
       return EmptyStateWidget(
-        title: locale.subscription_program_title,
-        description: locale.subscription_program_subtitle,
+        title: locale.subscription_programs_empty_title,
+        description: locale.subscription_programs_empty_description,
         icon: Icons.restaurant_menu_rounded,
       );
     }

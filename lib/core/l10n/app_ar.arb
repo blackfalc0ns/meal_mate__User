@@ -667,6 +667,8 @@
   "subscription_note": "كل الباقات تشمل خصم 20% على جميع الطلبات يمكنك الإيقاف المؤقت أو تعديل الباقة في أي وقت",
   "subscription_program_title": "اختر برنامجك",
   "subscription_program_subtitle": "اختر الهدف الذي يناسبك لنقدم لك الباقات المناسبة",
+  "subscription_programs_empty_title": "لا توجد برامج متاحة حالياً",
+  "subscription_programs_empty_description": "لا توجد برامج اشتراك متاحة حالياً، يرجى المحاولة في وقت لاحق",
   "subscription_type_title": "اختر نوع الاشتراك",
   "subscription_type_subtitle": "ابدأ بتحديد ما إذا كنت تريد اشتراك فردي أو اشتراك عائلي",
   "subscription_type_hero_label": "أكل صحي ، حياة أفضل",
