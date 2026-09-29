@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
@@ -35,6 +36,26 @@ class AddressesState {
       coveragePreview: coveragePreview ?? this.coveragePreview,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddressesState &&
+          runtimeType == other.runtimeType &&
+          addresses == other.addresses &&
+          locations == other.locations &&
+          action == other.action &&
+          mapAutofill == other.mapAutofill &&
+          coveragePreview == other.coveragePreview;
+
+  @override
+  int get hashCode => Object.hash(
+        addresses,
+        locations,
+        action,
+        mapAutofill,
+        coveragePreview,
+      );
 }
 
 class CustomerAddressesState {
@@ -86,6 +107,24 @@ class CustomerAddressesState {
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerAddressesState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          isSuccess == other.isSuccess &&
+          failure == other.failure &&
+          listEquals(items, other.items);
+
+  @override
+  int get hashCode => Object.hash(
+        isLoading,
+        isSuccess,
+        failure,
+        Object.hashAll(items),
+      );
 }
 
 class LocationsCatalogState {
@@ -148,6 +187,30 @@ class LocationsCatalogState {
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationsCatalogState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          isSuccess == other.isSuccess &&
+          data == other.data &&
+          selectedGovernorate == other.selectedGovernorate &&
+          selectedArea == other.selectedArea &&
+          selectedBlock == other.selectedBlock &&
+          failure == other.failure;
+
+  @override
+  int get hashCode => Object.hash(
+        isLoading,
+        isSuccess,
+        data,
+        selectedGovernorate,
+        selectedArea,
+        selectedBlock,
+        failure,
+      );
 }
 
 class AddressesActionState {
@@ -196,6 +259,28 @@ class AddressesActionState {
           : deliveryChangeNotice ?? this.deliveryChangeNotice,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddressesActionState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          isSuccess == other.isSuccess &&
+          errorMessage == other.errorMessage &&
+          failure == other.failure &&
+          address == other.address &&
+          deliveryChangeNotice == other.deliveryChangeNotice;
+
+  @override
+  int get hashCode => Object.hash(
+        isLoading,
+        isSuccess,
+        errorMessage,
+        failure,
+        address,
+        deliveryChangeNotice,
+      );
 }
 
 class MapAutofillState {
@@ -234,6 +319,24 @@ class MapAutofillState {
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MapAutofillState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          isSuccess == other.isSuccess &&
+          autofill == other.autofill &&
+          failure == other.failure;
+
+  @override
+  int get hashCode => Object.hash(
+        isLoading,
+        isSuccess,
+        autofill,
+        failure,
+      );
 }
 
 enum AddressPendingActionType { add, update, setDefault }
@@ -291,4 +394,28 @@ class AddressCoveragePreviewState {
       failure: clearFailure ? null : failure ?? this.failure,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddressCoveragePreviewState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          isSuccess == other.isSuccess &&
+          preview == other.preview &&
+          pendingAction == other.pendingAction &&
+          targetAddressId == other.targetAddressId &&
+          pendingRequest == other.pendingRequest &&
+          failure == other.failure;
+
+  @override
+  int get hashCode => Object.hash(
+        isLoading,
+        isSuccess,
+        preview,
+        pendingAction,
+        targetAddressId,
+        pendingRequest,
+        failure,
+      );
 }

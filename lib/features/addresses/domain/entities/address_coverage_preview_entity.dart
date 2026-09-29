@@ -49,4 +49,25 @@ class AddressCoveragePreviewEntity {
         ? uncoveredRestaurantNameEn
         : uncoveredRestaurantNameAr;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddressCoveragePreviewEntity &&
+          runtimeType == other.runtimeType &&
+          canSetAsDefault == other.canSetAsDefault &&
+          isCurrentSubscriptionRestaurantCovered ==
+              other.isCurrentSubscriptionRestaurantCovered &&
+          conflictMessage == other.conflictMessage &&
+          resolvedRegionId == other.resolvedRegionId &&
+          hasActiveSubscription == other.hasActiveSubscription;
+
+  @override
+  int get hashCode => Object.hash(
+        canSetAsDefault,
+        isCurrentSubscriptionRestaurantCovered,
+        conflictMessage,
+        resolvedRegionId,
+        hasActiveSubscription,
+      );
 }

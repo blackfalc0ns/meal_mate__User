@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -57,7 +56,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
           top: Radius.circular(Spacing.bottomSheetRadius),
         ),
       ),
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: Spacing.xl,
         right: Spacing.xl,
         top: Spacing.md,
@@ -274,8 +273,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
               color: color.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
               border: Border.all(
-                color: AppColors.addressesInputLabel,
-                //color.outlineVariant,
+                color: color.outlineVariant,
                 width: Spacing.hairline,
               ),
             ),
@@ -288,7 +286,7 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
                   height: 38,
                   fit: BoxFit.contain,
                 ),
-                SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.xs),
                 Text(
                   name,
                   maxLines: 1,

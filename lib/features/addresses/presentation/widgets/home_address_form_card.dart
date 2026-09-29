@@ -80,18 +80,15 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
     final locale = context.localization;
     return Padding(
       padding: const EdgeInsetsDirectional.only(
-        start: Spacing.addressesHomeFormFieldStart,
-        end: Spacing.addressesHomeFormFieldStart,
-        top: Spacing.addressesHomeFormTitleTop,
-        bottom: Spacing.addressesHomeFormTitleTop,
+        top: Spacing.xs,
+        bottom: Spacing.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsetsDirectional.only(
-              start: Spacing
-                  .base, // Adjust the start padding as needed for alignment
+              start: Spacing.xs,
             ),
             child: Text(
               locale.addresses_home_address_title,
@@ -99,26 +96,26 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: Spacing.addressesHomeFormTitleSize,
+                fontSize: FontSize.size16,
                 color: color.primary,
               ),
             ),
           ),
-          SizedBox(height: Spacing.base),
+          const SizedBox(height: Spacing.xxs),
           Padding(
-            padding: const EdgeInsetsDirectional.only(start: Spacing.base),
+            padding: const EdgeInsetsDirectional.only(start: Spacing.xs),
             child: Text(
               locale.addresses_home_address_subtitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: Spacing.addressesHomeFormSubtitleSize,
+                fontSize: FontSize.size12,
                 color: color.onSurfaceVariant,
               ),
             ),
           ),
-          SizedBox(height: Spacing.base),
+          const SizedBox(height: Spacing.md),
           Builder(
             builder: (fieldContext) {
               return AddressFormField(
@@ -142,7 +139,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
               );
             },
           ),
-          const SizedBox(height: Spacing.base),
+          const SizedBox(height: Spacing.sm),
           Builder(
             builder: (fieldContext) {
               return AddressFormField(
@@ -168,7 +165,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
               );
             },
           ),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+          const SizedBox(height: Spacing.sm),
           Builder(
             builder: (fieldContext) {
               return AddressFormField(
@@ -194,7 +191,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
               );
             },
           ),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+          const SizedBox(height: Spacing.sm),
           AddressFormField(
             label: locale.addresses_street_label,
             hint: locale.addresses_street_hint,
@@ -202,7 +199,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
             controller: widget.streetController,
             textInputAction: TextInputAction.next,
           ),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+          const SizedBox(height: Spacing.sm),
           AddressFormField(
             label: locale.addresses_avenue_label,
             hint: locale.addresses_avenue_hint,
@@ -211,7 +208,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
             textInputAction: TextInputAction.next,
             optionalText: locale.addresses_optional,
           ),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+          const SizedBox(height: Spacing.sm),
           if (widget.buildingNumberErrorListenable case final errorListenable?)
             ValueListenableBuilder<bool>(
               valueListenable: errorListenable,
@@ -220,7 +217,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
             )
           else
             _buildHouseAndFloorFields(context, false),
-          const SizedBox(height: Spacing.addressesHomeFormFieldGap),
+          const SizedBox(height: Spacing.sm),
           AddressFormField(
             label: locale.addresses_apartment_number_label,
             hint: locale.addresses_apartment_number_hint,
@@ -256,7 +253,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
                 small: true,
               ),
             ),
-            const SizedBox(width: Spacing.addressesHomeFormFieldGap),
+            const SizedBox(width: Spacing.sm),
             Expanded(
               child: AddressFormField(
                 label: locale.addresses_floor_label,
@@ -309,7 +306,7 @@ class _HomeAddressFormCardState extends State<HomeAddressFormCard> {
     final selected = await showModalBottomSheet<T>(
       context: context,
       backgroundColor: color.surface,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(Spacing.bottomSheetRadius),
         ),

@@ -42,18 +42,18 @@ class AddressesLoadingSkeleton extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(Spacing.xss),
+                child: const Padding(
+                  padding: EdgeInsets.all(Spacing.xss),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const ShimmerPlaceholder.rect(
+                      ShimmerPlaceholder.rect(
                         width: Spacing.addressesMapSize,
                         height: Spacing.addressesMapSize,
                         borderRadius: Spacing.addressesMapRadius,
                       ),
-                      const SizedBox(width: Spacing.md),
-                      const Expanded(
+                      SizedBox(width: Spacing.md),
+                      Expanded(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: Spacing.xss),
                           child: Column(
@@ -82,8 +82,8 @@ class AddressesLoadingSkeleton extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: Spacing.sm),
-                      const ShimmerPlaceholder.rect(
+                      SizedBox(width: Spacing.sm),
+                      ShimmerPlaceholder.rect(
                         width: Spacing.profileSettingsIconContainer,
                         height: Spacing.profileSettingsIconContainer,
                         borderRadius: Spacing.radiusSm,

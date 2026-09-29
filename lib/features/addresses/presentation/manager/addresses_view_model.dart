@@ -55,6 +55,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   double? _lastReverseGeocodeLongitude;
   MapAddressAutofillEntity? _lastReverseGeocodeResult;
   final Map<String, LocationAreaEntity> _areaBlocksCache = {};
+  int _geocodeRequestId = 0;
 
   void configureFamilyMember(
     String memberId, {
@@ -381,8 +382,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
     if (!force &&
         lastLatitude != null &&
         lastLongitude != null &&
-        (latitude - lastLatitude).abs() < 0.00001 &&
-        (longitude - lastLongitude).abs() < 0.00001) {
+        (latitude - lastLatitude).abs() < 0.0001 &&
+        (longitude - lastLongitude).abs() < 0.0001) {
       final cached = _lastReverseGeocodeResult;
       if (cached != null && !state.mapAutofill.isSuccess) {
         emit(
@@ -401,6 +402,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
     _lastReverseGeocodeLatitude = latitude;
     _lastReverseGeocodeLongitude = longitude;
     final memberGeneration = _familyMemberGeneration;
+    _geocodeRequestId++;
+    final currentRequestId = _geocodeRequestId;
     if (isClosed) return;
 
     emit(
@@ -414,19 +417,26 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await _reverseGeocodeLocationUseCase(latitude, longitude);
-    if (isClosed || memberGeneration != _familyMemberGeneration) return;
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        currentRequestId != _geocodeRequestId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
         _lastReverseGeocodeResult = autofill;
-        await _applyAutofillToCatalog(
+        final updatedLocations = await _resolveAutofillCatalogState(
           autofill,
           memberGeneration: memberGeneration,
         );
-        if (!isClosed && memberGeneration == _familyMemberGeneration) {
+        if (!isClosed &&
+            memberGeneration == _familyMemberGeneration &&
+            currentRequestId == _geocodeRequestId) {
           emit(
             state.copyWith(
+              locations: updatedLocations ?? state.locations,
               mapAutofill: state.mapAutofill.copyWith(
                 isLoading: false,
                 isSuccess: true,
@@ -452,6 +462,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   Future<void> _geocodeAddress(String address, String countryCode) async {
     final memberGeneration = _familyMemberGeneration;
+    _geocodeRequestId++;
+    final currentRequestId = _geocodeRequestId;
     if (isClosed) return;
 
     emit(
@@ -468,18 +480,25 @@ class AddressesViewModel extends Cubit<AddressesState> {
       address,
       countryCode: countryCode,
     );
-    if (isClosed || memberGeneration != _familyMemberGeneration) return;
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        currentRequestId != _geocodeRequestId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
-        await _applyAutofillToCatalog(
+        final updatedLocations = await _resolveAutofillCatalogState(
           autofill,
           memberGeneration: memberGeneration,
         );
-        if (!isClosed && memberGeneration == _familyMemberGeneration) {
+        if (!isClosed &&
+            memberGeneration == _familyMemberGeneration &&
+            currentRequestId == _geocodeRequestId) {
           emit(
             state.copyWith(
+              locations: updatedLocations ?? state.locations,
               mapAutofill: state.mapAutofill.copyWith(
                 isLoading: false,
                 isSuccess: true,
@@ -501,13 +520,13 @@ class AddressesViewModel extends Cubit<AddressesState> {
     }
   }
 
-  Future<void> _applyAutofillToCatalog(
+  Future<LocationsCatalogState?> _resolveAutofillCatalogState(
     MapAddressAutofillEntity autofill, {
     required int memberGeneration,
   }) async {
-    if (memberGeneration != _familyMemberGeneration) return;
+    if (memberGeneration != _familyMemberGeneration) return null;
     final catalog = state.locations.data;
-    if (catalog == null) return;
+    if (catalog == null) return null;
 
     final tempAddress = CustomerAddressEntity(
       addressId: '',
@@ -533,7 +552,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       tempAddress,
       autofill: autofill,
     );
-    if (selection.governorate == null && selection.area == null) return;
+    if (selection.governorate == null && selection.area == null) return null;
 
     final countryCode = catalog.countryCode.isNotEmpty
         ? catalog.countryCode
@@ -550,20 +569,18 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     final selectedArea = areaWithBlocks ?? selection.area;
     final selectedBlock = selectedArea != null
-        ? AddressCatalogMatcher.findInitialBlock(selectedArea, tempAddress, autofill: autofill)
+        ? AddressCatalogMatcher.findInitialBlock(
+            selectedArea,
+            tempAddress,
+            autofill: autofill,
+          )
         : null;
 
-    if (!isClosed && memberGeneration == _familyMemberGeneration) {
-      emit(
-        state.copyWith(
-          locations: state.locations.copyWith(
-            selectedGovernorate: selection.governorate,
-            selectedArea: selectedArea,
-            selectedBlock: selectedBlock,
-          ),
-        ),
-      );
-    }
+    return state.locations.copyWith(
+      selectedGovernorate: selection.governorate,
+      selectedArea: selectedArea,
+      selectedBlock: selectedBlock,
+    );
   }
 
   Future<void> _addCustomerAddress(CustomerAddressRequestEntity request) async {
@@ -586,9 +603,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
           ? _addCustomerAddressUseCase(request)
           : _addFamilyMemberAddressUseCase!(familyMemberId, request),
     );
-    if (!isClosed && state.action.isSuccess && familyMemberId == null) {
-      await _getCustomerAddresses();
-    }
   }
 
   Future<void> _updateCustomerAddress(
@@ -611,9 +625,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
     await _runAddressAction(
       () => _updateCustomerAddressUseCase(addressId, request),
     );
-    if (!isClosed && state.action.isSuccess) {
-      await _getCustomerAddresses();
-    }
   }
 
   Future<void> _deleteCustomerAddress(String addressId) async {

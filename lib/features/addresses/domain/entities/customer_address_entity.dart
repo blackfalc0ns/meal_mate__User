@@ -50,6 +50,44 @@ class CustomerAddressEntity {
   final List<ServingRestaurantEntity> servingRestaurants;
 
   bool get canDelete => !isDeliveryActive;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerAddressEntity &&
+          runtimeType == other.runtimeType &&
+          addressId == other.addressId &&
+          label == other.label &&
+          addressLine == other.addressLine &&
+          regionId == other.regionId &&
+          governorate == other.governorate &&
+          area == other.area &&
+          block == other.block &&
+          blockRegionId == other.blockRegionId &&
+          street == other.street &&
+          avenue == other.avenue &&
+          building == other.building &&
+          unit == other.unit &&
+          floor == other.floor &&
+          latitude == other.latitude &&
+          longitude == other.longitude &&
+          notes == other.notes &&
+          isDefault == other.isDefault &&
+          isDeliveryActive == other.isDeliveryActive &&
+          notifyOnDelivery == other.notifyOnDelivery;
+
+  @override
+  int get hashCode => Object.hash(
+        addressId,
+        label,
+        addressLine,
+        regionId,
+        governorate,
+        area,
+        block,
+        isDefault,
+        isDeliveryActive,
+      );
 }
 
 class CustomerAddressCoverageNoticeEntity {

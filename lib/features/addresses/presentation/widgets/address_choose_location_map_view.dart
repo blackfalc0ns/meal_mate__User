@@ -59,12 +59,16 @@ class _AddressChooseLocationMapViewState
   double? _lastGeocodedLat;
   double? _lastGeocodedLng;
   GoogleMapController? _mapController;
-  Timer? _debounceTimer;
+  Timer? _mapDebounceTimer;
+  Timer? _searchDebounceTimer;
   bool _isInitialMapMove = true;
   bool _isProgrammaticMove = false;
   bool _animateCameraToAutofill = false;
   bool _openDetailsAfterAutofill = false;
-  bool _isLocationResolving = false;
+  final ValueNotifier<bool> _isLocationResolvingNotifier = ValueNotifier(false);
+  late final Set<Factory<OneSequenceGestureRecognizer>> _gestureRecognizers = {
+    const Factory<OneSequenceGestureRecognizer>(EagerGestureRecognizer.new),
+  };
   final OverlayPortalController _loadingOverlayController =
       OverlayPortalController();
   AddressLocationMode? _selectedMode;
@@ -109,7 +113,8 @@ class _AddressChooseLocationMapViewState
 
   @override
   void dispose() {
-    _debounceTimer?.cancel();
+    _mapDebounceTimer?.cancel();
+    _searchDebounceTimer?.cancel();
     _mapController?.dispose();
     _searchController.dispose();
     _streetController.dispose();
@@ -119,6 +124,7 @@ class _AddressChooseLocationMapViewState
     _buildingNumberHasError.dispose();
     _floorController.dispose();
     _apartmentController.dispose();
+    _isLocationResolvingNotifier.dispose();
     _flowController.removeListener(_onFlowStageChanged);
     if (_ownsFlowController) _flowController.dispose();
     super.dispose();
@@ -133,7 +139,8 @@ class _AddressChooseLocationMapViewState
       listenWhen: (previous, current) =>
           previous.mapAutofill != current.mapAutofill,
       listener: (context, state) {
-        if (_isLocationResolving && !state.mapAutofill.isLoading) {
+        if (_isLocationResolvingNotifier.value &&
+            !state.mapAutofill.isLoading) {
           if (mounted) {
             _setLocationResolving(false);
           }
@@ -209,11 +216,7 @@ class _AddressChooseLocationMapViewState
                   compassEnabled: false,
                   rotateGesturesEnabled: false,
                   tiltGesturesEnabled: false,
-                  gestureRecognizers: {
-                    Factory<OneSequenceGestureRecognizer>(
-                      () => EagerGestureRecognizer(),
-                    ),
-                  },
+                  gestureRecognizers: _gestureRecognizers,
                 ),
               ),
               const Positioned(
@@ -250,15 +253,20 @@ class _AddressChooseLocationMapViewState
                     onConfirm: () => _prepareAndShowDetails(context),
                   ),
                 ),
-              if (_isLocationResolving)
-                Positioned.fill(
-                  child: AbsorbPointer(
-                    child: ColoredBox(
-                      color: color.scrim.withValues(alpha: 0.2),
-                      child: const SizedBox.expand(),
+              ValueListenableBuilder<bool>(
+                valueListenable: _isLocationResolvingNotifier,
+                builder: (context, isResolving, _) {
+                  if (!isResolving) return const SizedBox.shrink();
+                  return Positioned.fill(
+                    child: AbsorbPointer(
+                      child: ColoredBox(
+                        color: color.scrim.withValues(alpha: 0.2),
+                        child: const SizedBox.expand(),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -267,8 +275,8 @@ class _AddressChooseLocationMapViewState
   }
 
   void _setLocationResolving(bool value) {
-    if (_isLocationResolving == value) return;
-    setState(() => _isLocationResolving = value);
+    if (_isLocationResolvingNotifier.value == value) return;
+    _isLocationResolvingNotifier.value = value;
     if (value) {
       _loadingOverlayController.show();
     } else {
@@ -305,8 +313,8 @@ class _AddressChooseLocationMapViewState
       _isProgrammaticMove = false;
       return;
     }
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 600), () {
+    _mapDebounceTimer?.cancel();
+    _mapDebounceTimer = Timer(const Duration(milliseconds: 600), () {
       if (!mounted) return;
       _triggerReverseGeocode(context);
     });
@@ -324,9 +332,7 @@ class _AddressChooseLocationMapViewState
         _isProgrammaticMove = true;
 
         await _mapController?.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(data.latitude, data.longitude),
-          ),
+          CameraUpdate.newLatLng(LatLng(data.latitude, data.longitude)),
         );
 
         if (!mounted) return;
@@ -340,7 +346,9 @@ class _AddressChooseLocationMapViewState
         _setLocationResolving(false);
         CustomSnackbar.showError(
           context: context,
-          message: failure.code.isNotEmpty ? failure.code : failure.errorMessage,
+          message: failure.code.isNotEmpty
+              ? failure.code
+              : failure.errorMessage,
         );
     }
   }
@@ -352,10 +360,10 @@ class _AddressChooseLocationMapViewState
   }
 
   void _onSearchChanged(String query) {
-    _debounceTimer?.cancel();
+    _searchDebounceTimer?.cancel();
     final trimmed = query.trim();
     if (trimmed.length < 3) return;
-    _debounceTimer = Timer(const Duration(milliseconds: 800), () {
+    _searchDebounceTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
       _executeSearch(trimmed);
     });
@@ -464,7 +472,7 @@ class _AddressChooseLocationMapViewState
 
     var area = locationsState.selectedArea;
     var governorate = locationsState.selectedGovernorate;
-    var block = locationsState.selectedBlock;
+    final block = locationsState.selectedBlock;
 
     // Use AddressCatalogMatcher if area wasn't pre-selected
     if (area == null && locationsState.data != null && autofill != null) {
@@ -561,10 +569,9 @@ class _AddressChooseLocationMapViewState
 
     _searchController.text = address.addressLine;
     _streetController.text = address.street ?? '';
-    _avenueController.text =
-        address.avenue?.trim().isNotEmpty == true
-            ? address.avenue!.trim()
-            : (address.notes ?? '');
+    _avenueController.text = address.avenue?.trim().isNotEmpty == true
+        ? address.avenue!.trim()
+        : (address.notes ?? '');
     _buildingNumberController.text = address.building ?? '';
     _floorController.text = address.floor ?? '';
     _apartmentController.text = address.unit ?? '';

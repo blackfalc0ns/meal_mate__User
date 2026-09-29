@@ -54,8 +54,10 @@ class _AddressChooseLocationScreenState
         return viewModel;
       },
       child: Scaffold(
+        backgroundColor: color.surfaceContainerHighest,
         drawerScrimColor: color.scrim,
         body: Stack(
+          fit: StackFit.expand,
           children: [
             Semantics(
               label: locale.addresses_choose_location_title,
@@ -73,14 +75,18 @@ class _AddressChooseLocationScreenState
                       navigator.pop(true);
                       return;
                     }
-                    var foundAddresses = false;
-                    navigator.popUntil((route) {
-                      foundAddresses =
-                          route.settings.name == AppRoutes.addresses;
-                      return foundAddresses || route.isFirst;
-                    });
-                    if (!foundAddresses) {
-                      navigator.pushNamed(AppRoutes.addresses);
+                    if (navigator.canPop()) {
+                      navigator.pop(true);
+                    } else {
+                      var foundAddresses = false;
+                      navigator.popUntil((route) {
+                        foundAddresses =
+                            route.settings.name == AppRoutes.addresses;
+                        return foundAddresses || route.isFirst;
+                      });
+                      if (!foundAddresses) {
+                        navigator.pushNamed(AppRoutes.addresses);
+                      }
                     }
                     CustomSnackbar.showSuccess(
                       context: navigator.context,
@@ -182,16 +188,10 @@ class _AddressChooseLocationScreenState
                   ),
                 ),
               ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  start: Spacing.sm,
-                  top: Spacing.xs,
-                ),
-                child: CustomBackButton(
-                  onPressed: () => Navigator.maybePop(context),
-                ),
-              ),
+            CustomBackButton(
+              top: MediaQuery.paddingOf(context).top + Spacing.xs,
+              end: Spacing.sm,
+              onPressed: () => Navigator.maybePop(context),
             ),
           ],
         ),

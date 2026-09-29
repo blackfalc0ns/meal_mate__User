@@ -261,16 +261,18 @@ class AddressesScreen extends StatelessWidget {
     BuildContext context, {
     CustomerAddressEntity? initialAddress,
   }) async {
-    await Navigator.of(context).pushNamed(
+    final result = await Navigator.of(context).pushNamed(
       AppRoutes.addressChooseLocation,
       arguments: AddressChooseLocationArgs(initialAddress: initialAddress),
     );
 
     if (!context.mounted) return;
 
-    context.read<AddressesViewModel>().doIntent(
-      const GetCustomerAddressesEvent(),
-    );
+    if (result == true) {
+      context.read<AddressesViewModel>().doIntent(
+        const GetCustomerAddressesEvent(),
+      );
+    }
   }
 
   IconData _iconForAddress(CustomerAddressEntity address) {

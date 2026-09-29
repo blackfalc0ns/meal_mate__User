@@ -18,17 +18,45 @@ class AddressesRepositoryImpl implements AddressesRepository {
 
   final AddressesRemoteDataSource _remoteDataSource;
 
+  static final Map<String, LocationsCatalogEntity> _catalogCache = {};
+  static final Map<String, LocationsCatalogEntity> _areaBlocksCache = {};
+
+  static void clearLocationsCache() {
+    _catalogCache.clear();
+    _areaBlocksCache.clear();
+  }
+
   @override
   Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
     String countryCode,
     String? areaId,
   ) {
+    if (areaId == null) {
+      final cachedCatalog = _catalogCache[countryCode];
+      if (cachedCatalog != null && cachedCatalog.governorates.isNotEmpty) {
+        return Future.value(ApiSuccessResult(data: cachedCatalog));
+      }
+    } else {
+      final cachedArea = _areaBlocksCache[areaId];
+      if (cachedArea != null) {
+        return Future.value(ApiSuccessResult(data: cachedArea));
+      }
+    }
+
     return safeApiCall(() async {
       final response = await _remoteDataSource.getLocationsCatalog(
         countryCode,
         areaId,
       );
-      return response.toEntity();
+      final entity = response.toEntity();
+      if (areaId == null) {
+        if (entity.governorates.isNotEmpty) {
+          _catalogCache[countryCode] = entity;
+        }
+      } else {
+        _areaBlocksCache[areaId] = entity;
+      }
+      return entity;
     });
   }
 

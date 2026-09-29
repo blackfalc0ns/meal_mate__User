@@ -39,17 +39,14 @@ class AddressFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final height = Spacing.addressesHomeFormCompactFieldHeight;
-    final iconBoxSize = Spacing.addressesHomeFormSmallIconBoxSize;
-    final iconSize = Spacing.addressesHomeFormSmallIconSize;
-    final iconInset = small
-        ? Spacing.addressesHomeFormSmallIconBoxInset
-        : Spacing.sm;
-    final labelSize = small ? FontSize.size15 : FontSize.size16;
-    final hintSize = small ? FontSize.size17 : FontSize.size18;
+    const height = Spacing.addressesHomeFormCompactFieldHeight;
+    const iconBoxSize = Spacing.addressesHomeFormSmallIconBoxSize;
+    const iconSize = Spacing.addressesHomeFormSmallIconSize;
+    final labelSize = small ? FontSize.size11 : FontSize.size12;
+    final hintSize = small ? FontSize.size13 : FontSize.size14;
     final optionalSize = small
         ? Spacing.addressesHomeFormSmallOptionalSize
-        : Spacing.addressesHomeFormOptionalSize;
+        : FontSize.size11;
 
     final isInput = !showDropdown;
     final displayValue = value ?? hint;
@@ -58,33 +55,33 @@ class AddressFormField extends StatelessWidget {
       fontFamily: FontConstant.alexandria,
       fontSize: labelSize,
       color: color.onSurfaceVariant,
-    ).copyWith(height: 1);
+    ).copyWith(height: 1.1);
     final optionalStyle = getRegularStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: optionalSize,
-      color: color.onSurfaceVariant,
-    ).copyWith(height: 1);
-    final inputTextStyle = getRegularStyle(
+      color: color.onSurfaceVariant.withValues(alpha: 0.8),
+    ).copyWith(height: 1.1);
+    final inputTextStyle = getMediumStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
       color: color.onSurface,
-    ).copyWith(height: 1);
+    ).copyWith(height: 1.2);
     final inputHintStyle = getRegularStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
-      color: color.onSurfaceVariant.withValues(alpha: 0.7),
-    ).copyWith(height: 1);
-    final displayTextStyle = getRegularStyle(
+      color: color.onSurfaceVariant.withValues(alpha: 0.6),
+    ).copyWith(height: 1.2);
+    final displayTextStyle = getMediumStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
       color: hasValue
           ? color.onSurface
-          : color.onSurfaceVariant.withValues(alpha: 0.7),
-    ).copyWith(height: 1);
+          : color.onSurfaceVariant.withValues(alpha: 0.6),
+    ).copyWith(height: 1.2);
     final textStrutStyle = StrutStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: hintSize,
-      height: 1,
+      height: 1.2,
       forceStrutHeight: true,
     );
 
@@ -94,15 +91,18 @@ class AddressFormField extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: height,
-        padding: EdgeInsetsDirectional.all(iconInset),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: Spacing.sm,
+          vertical: Spacing.xs,
+        ),
         decoration: BoxDecoration(
           color: color.surface,
           border: Border.all(
             color: hasError ? color.error : color.outlineVariant,
-            width: Spacing.addressesHomeFormFieldBorder,
+            width: Spacing.hairline,
           ),
           borderRadius: BorderRadius.circular(
-            Spacing.addressesHomeFormFieldRadius,
+            Spacing.buttonRadius,
           ),
         ),
         child: Row(
@@ -114,7 +114,7 @@ class AddressFormField extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color.secondaryContainer,
                 borderRadius: BorderRadius.circular(
-                  Spacing.addressesHomeFormIconBoxRadius,
+                  Spacing.buttonSmallRadius,
                 ),
               ),
               child: Center(
@@ -125,7 +125,7 @@ class AddressFormField extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: Spacing.base),
+            const SizedBox(width: Spacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +164,7 @@ class AddressFormField extends StatelessWidget {
                         ),
                     ],
                   ),
-                  const SizedBox(height: Spacing.base),
+                  const SizedBox(height: Spacing.xxs),
                   Row(
                     children: [
                       Expanded(
@@ -207,7 +207,7 @@ class AddressFormField extends StatelessWidget {
                       if (showDropdown)
                         Icon(
                           Icons.keyboard_arrow_down_rounded,
-                          size: Spacing.iconMd,
+                          size: Spacing.iconSm,
                           color: color.onSurfaceVariant,
                           semanticLabel: locale.addresses_choose_location_title,
                         ),

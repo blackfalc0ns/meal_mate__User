@@ -28,6 +28,16 @@ class LocationGovernorateEntity {
   String nameForLanguage(String languageCode) {
     return languageCode == 'ar' && nameAr.isNotEmpty ? nameAr : nameEn;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationGovernorateEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class LocationAreaEntity {
@@ -48,6 +58,17 @@ class LocationAreaEntity {
   String nameForLanguage(String languageCode) {
     return languageCode == 'ar' && nameAr.isNotEmpty ? nameAr : nameEn;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationAreaEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          blocks.length == other.blocks.length;
+
+  @override
+  int get hashCode => Object.hash(id, blocks.length);
 }
 
 class LocationBlockEntity {
@@ -66,4 +87,14 @@ class LocationBlockEntity {
   String nameForLanguage(String languageCode) {
     return languageCode == 'ar' && nameAr.isNotEmpty ? nameAr : nameEn;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationBlockEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

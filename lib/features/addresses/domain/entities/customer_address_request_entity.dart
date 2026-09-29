@@ -36,4 +36,41 @@ class CustomerAddressRequestEntity {
   final String? notes;
   final bool isDefault;
   final bool notifyOnDelivery;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerAddressRequestEntity &&
+          runtimeType == other.runtimeType &&
+          label == other.label &&
+          addressLine == other.addressLine &&
+          regionId == other.regionId &&
+          governorate == other.governorate &&
+          area == other.area &&
+          block == other.block &&
+          blockRegionId == other.blockRegionId &&
+          street == other.street &&
+          avenue == other.avenue &&
+          building == other.building &&
+          unit == other.unit &&
+          floor == other.floor &&
+          latitude == other.latitude &&
+          longitude == other.longitude &&
+          notes == other.notes &&
+          isDefault == other.isDefault &&
+          notifyOnDelivery == other.notifyOnDelivery;
+
+  @override
+  int get hashCode => Object.hash(
+        label,
+        addressLine,
+        regionId,
+        governorate,
+        area,
+        block,
+        street,
+        building,
+        latitude,
+        longitude,
+      );
 }
