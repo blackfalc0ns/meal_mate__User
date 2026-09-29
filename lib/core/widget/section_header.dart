@@ -93,7 +93,7 @@ class SectionHeader extends StatelessWidget {
                 ),
                 if (actionColor == null) const SizedBox(width: 4),
                 if (actionColor == null)
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 10,
                     color: AppColors.primary,

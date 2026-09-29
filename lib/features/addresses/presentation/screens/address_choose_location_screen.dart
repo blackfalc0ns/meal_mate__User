@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
@@ -192,6 +193,21 @@ class _AddressChooseLocationScreenState
               top: MediaQuery.paddingOf(context).top + Spacing.xs,
               end: Spacing.sm,
               onPressed: () => Navigator.maybePop(context),
+            ),
+            BlocSelector<AddressesViewModel, AddressesState, bool>(
+              selector: (state) =>
+                  state.action.isLoading || state.coveragePreview.isLoading,
+              builder: (context, isLoading) {
+                if (!isLoading) return const SizedBox.shrink();
+                return Positioned.fill(
+                  child: AbsorbPointer(
+                    child: ColoredBox(
+                      color: color.scrim.withValues(alpha: 0.32),
+                      child: const Center(child: CustomProgressIndicator()),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

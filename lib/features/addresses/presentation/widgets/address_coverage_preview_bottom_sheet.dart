@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 
@@ -49,99 +50,119 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
             ? '${locale.address_coverage_uncovered_desc} ($uncoveredName)'
             : locale.address_coverage_uncovered_desc);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(Spacing.bottomSheetRadius),
-        ),
-      ),
-      padding: const EdgeInsets.only(
-        left: Spacing.xl,
-        right: Spacing.xl,
-        top: Spacing.md,
-        //   bottom: MediaQuery.paddingOf(context).bottom + Spacing.lg,
-      ),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: Spacing.xs,
-                decoration: BoxDecoration(
-                  color: color.outlineVariant,
-                  borderRadius: BorderRadius.circular(Spacing.xs),
-                ),
-              ),
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(Spacing.bottomSheetRadius),
             ),
-            const SizedBox(height: Spacing.lg),
-            if (isCovered) ...[
-              _buildCoveredHeader(context, noticeText),
-            ] else ...[
-              _buildUncoveredBanner(context, conflictText),
-            ],
-            const SizedBox(height: Spacing.lg),
-            if (preview.servingRestaurants.isNotEmpty) ...[
-              Text(
-                locale.address_serving_restaurants_title,
-                textAlign: TextAlign.start,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onSurface,
-                ),
-              ),
-              const SizedBox(height: Spacing.sm),
-              _buildServingRestaurantsList(context, preview.servingRestaurants),
-            ] else if (isCovered) ...[
-              _buildNoRestaurantsNotice(context),
-            ],
-            const SizedBox(height: Spacing.xl),
-            AppButton.filled(
-              text: confirmButtonText,
-              isLoading: isSubmitting,
-              onPressed: isCovered && !isSubmitting
-                  ? () {
-                      if (popOnConfirm) Navigator.of(context).pop();
-                      onConfirm();
-                    }
-                  : null,
-              height: Spacing.buttonSmallHeight,
-              borderRadius: Spacing.radiusPill,
-              color: isCovered ? color.primary : color.outlineVariant,
-              textColor: isCovered ? color.onPrimary : color.onSurfaceVariant,
-              fontSize: FontSize.size13,
-            ),
-            if (!isCovered) ...[
-              const SizedBox(height: Spacing.md),
-              SizedBox(
-                height: Spacing.buttonHeight,
-                child: OutlinedButton(
-                  onPressed: isSubmitting ? null : onChooseAnother,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: color.outlineVariant),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+          ),
+          padding: const EdgeInsets.only(
+            left: Spacing.xl,
+            right: Spacing.xl,
+            top: Spacing.md,
+            //   bottom: MediaQuery.paddingOf(context).bottom + Spacing.lg,
+          ),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: Spacing.xs,
+                    decoration: BoxDecoration(
+                      color: color.outlineVariant,
+                      borderRadius: BorderRadius.circular(Spacing.xs),
                     ),
                   ),
-                  child: Text(
-                    locale.address_coverage_choose_another,
+                ),
+                const SizedBox(height: Spacing.lg),
+                if (isCovered) ...[
+                  _buildCoveredHeader(context, noticeText),
+                ] else ...[
+                  _buildUncoveredBanner(context, conflictText),
+                ],
+                const SizedBox(height: Spacing.lg),
+                if (preview.servingRestaurants.isNotEmpty) ...[
+                  Text(
+                    locale.address_serving_restaurants_title,
+                    textAlign: TextAlign.start,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
+                      fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
                   ),
+                  const SizedBox(height: Spacing.sm),
+                  _buildServingRestaurantsList(
+                    context,
+                    preview.servingRestaurants,
+                  ),
+                ] else if (isCovered) ...[
+                  _buildNoRestaurantsNotice(context),
+                ],
+                const SizedBox(height: Spacing.xl),
+                AppButton.filled(
+                  text: confirmButtonText,
+                  isLoading: false,
+                  onPressed: isCovered && !isSubmitting
+                      ? () {
+                          if (popOnConfirm) Navigator.of(context).pop();
+                          onConfirm();
+                        }
+                      : null,
+                  height: Spacing.buttonSmallHeight,
+                  borderRadius: Spacing.radiusPill,
+                  color: isCovered ? color.primary : color.outlineVariant,
+                  textColor: isCovered
+                      ? color.onPrimary
+                      : color.onSurfaceVariant,
+                  fontSize: FontSize.size13,
                 ),
-              ),
-            ],
-          ],
+                if (!isCovered) ...[
+                  const SizedBox(height: Spacing.md),
+                  SizedBox(
+                    height: Spacing.buttonHeight,
+                    child: OutlinedButton(
+                      onPressed: isSubmitting ? null : onChooseAnother,
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: color.outlineVariant),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        locale.address_coverage_choose_another,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size14,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
-      ),
+        if (isSubmitting)
+          Positioned.fill(
+            child: AbsorbPointer(
+              child: ColoredBox(
+                color: color.scrim.withValues(alpha: 0.32),
+                child: const Center(child: CustomProgressIndicator()),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

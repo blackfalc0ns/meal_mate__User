@@ -49,8 +49,8 @@ class AddressDetailsWoltSheet extends StatelessWidget {
             child: AppButton(
               fontSize: FontSize.size11,
               height: Spacing.buttonSmallHeight,
-              onPressed: onConfirm,
-              isLoading: isLoading,
+              onPressed: isLoading ? null : onConfirm,
+              isLoading: false,
               text: context.localization.address_preview_check_button,
             ),
           ),

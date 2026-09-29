@@ -74,8 +74,8 @@ class AddressChooseLocationSheet extends StatelessWidget {
             const SizedBox(height: Spacing.lg),
             AppButton.filled(
               text: locale.address_preview_check_button,
-              isLoading: isSubmitting,
-              onPressed: onConfirm,
+              isLoading: false,
+              onPressed: isSubmitting ? null : onConfirm,
               height: Spacing.buttonSmallHeight,
               borderRadius: Spacing.radiusPill,
               color: color.primary,

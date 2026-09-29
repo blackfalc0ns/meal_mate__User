@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 
@@ -49,4 +50,37 @@ void main() {
     expect(submissionCount, 1);
     expect(find.text('Confirm'), findsNothing);
   });
+
+  testWidgets(
+    'when submitting, shows centered CustomProgressIndicator and no button spinner',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: AddressCoveragePreviewBottomSheet(
+              preview: const AddressCoveragePreviewEntity(
+                canSetAsDefault: true,
+                isCurrentSubscriptionRestaurantCovered: true,
+                hasActiveSubscription: true,
+              ),
+              isSubmitting: true,
+              confirmButtonText: 'Confirm',
+              popOnConfirm: false,
+              onConfirm: () {},
+              onChooseAnother: () {},
+            ),
+          ),
+        ),
+      );
+
+      // Button must NOT contain a CircularProgressIndicator spinner
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+
+      // Instead, CustomProgressIndicator must be displayed in the center
+      expect(find.byType(CustomProgressIndicator), findsOneWidget);
+    },
+  );
 }
