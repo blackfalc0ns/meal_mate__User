@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_programs_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';

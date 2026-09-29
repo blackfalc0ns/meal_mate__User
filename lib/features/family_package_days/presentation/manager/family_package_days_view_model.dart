@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/get_family_plan_durations_usecase.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/get_family_plan_tiers_usecase.dart';

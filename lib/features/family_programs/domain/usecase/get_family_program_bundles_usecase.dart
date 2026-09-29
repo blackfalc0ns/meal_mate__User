@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/family_programs/domain/repo/family_programs_repository.dart';
 
 @injectable

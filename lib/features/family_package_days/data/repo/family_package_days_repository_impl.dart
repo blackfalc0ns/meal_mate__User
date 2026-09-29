@@ -6,8 +6,8 @@ import 'package:meal_meat_user/features/family_package_days/domain/repo/family_p
 import 'package:meal_meat_user/features/family_subscription_setup/data/mapper/family_subscription_setup_mapper.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
-import 'package:meal_meat_user/core/subscription_duration/data/mapper/subscription_duration_mapper.dart';
-import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/mapper/subscription_duration_mapper.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/data/mapper/subscription_tier_mapper.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
 

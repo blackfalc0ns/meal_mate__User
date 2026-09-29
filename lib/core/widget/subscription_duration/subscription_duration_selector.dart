@@ -3,8 +3,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_custom_duration_input.dart';
+import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_item.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_option.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector_skeleton.dart';
 
@@ -28,7 +28,7 @@ class SubscriptionDurationSelector extends StatefulWidget {
   final ValueChanged<bool> onFridayChanged;
   final int? customDurationDays;
   final ValueChanged<int?> onCustomDurationChanged;
-  final List<SubscriptionDurationEntity> durations;
+  final List<SubscriptionDurationItem> durations;
   final bool isFridayEnabled;
   final bool isLoading;
 
@@ -208,7 +208,7 @@ class _SubscriptionDurationSelectorState
     );
   }
 
-  List<SubscriptionDurationEntity> get _presetDurations => widget.durations
+  List<SubscriptionDurationItem> get _presetDurations => widget.durations
       .where(
         (duration) =>
             !duration.isCustom &&
@@ -218,7 +218,7 @@ class _SubscriptionDurationSelectorState
       .take(3)
       .toList();
 
-  SubscriptionDurationEntity? get _customDuration {
+  SubscriptionDurationItem? get _customDuration {
     for (final duration in widget.durations) {
       if (duration.isCustom &&
           duration.minDays != null &&
@@ -229,7 +229,7 @@ class _SubscriptionDurationSelectorState
     return null;
   }
 
-  int _customDurationValue(SubscriptionDurationEntity duration) {
+  int _customDurationValue(SubscriptionDurationItem duration) {
     final days = widget.customDurationDays;
     if (days != null) return days;
     final totalServiceDays = duration.totalServiceDays;
@@ -239,7 +239,7 @@ class _SubscriptionDurationSelectorState
 
   VoidCallback? _nextCustomDuration(
     int customIndex,
-    SubscriptionDurationEntity duration,
+    SubscriptionDurationItem duration,
   ) {
     final value = _customDurationValue(duration);
     final max = duration.maxDays!;
@@ -255,7 +255,7 @@ class _SubscriptionDurationSelectorState
 
   VoidCallback? _previousCustomDuration(
     int customIndex,
-    SubscriptionDurationEntity duration,
+    SubscriptionDurationItem duration,
   ) {
     final value = _customDurationValue(duration);
     final min = duration.minDays!;
@@ -271,14 +271,14 @@ class _SubscriptionDurationSelectorState
 
   void _selectCustomDuration(
     int customIndex,
-    SubscriptionDurationEntity duration,
+    SubscriptionDurationItem duration,
   ) {
     final current = _customDurationValue(duration);
     widget.onCustomDurationChanged(current);
     widget.onSelected(customIndex);
   }
 
-  String? _customDurationError(SubscriptionDurationEntity duration) {
+  String? _customDurationError(SubscriptionDurationItem duration) {
     final customDays = widget.customDurationDays;
     if (customDays == null) return null;
     final min = duration.minDays!;

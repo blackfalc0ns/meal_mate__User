@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/repo/family_package_days_repository.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_family_member_plan_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/domain/repo/family_programs_repository.dart';
@@ -193,8 +193,10 @@ class _FlowRepository implements FamilySubscriptionSetupRepository {
 
 class _ProgramsRepository implements FamilyProgramsRepository {
   @override
-  Future<ApiResult<List<SubscriptionProgramEntity>>>
-  getFamilyPrograms() async => ApiSuccessResult(
+  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
+    int? page,
+    int? pageSize,
+  }) async => ApiSuccessResult(
     data: const [
       SubscriptionProgramEntity(
         programId: 'program-1',

@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_packages/data/mapper/subscription_bundle_mapper.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
-import 'package:meal_meat_user/core/subscription_programs/data/mapper/subscription_program_mapper.dart';
-import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/family_programs/data/mapper/subscription_bundle_mapper.dart';
+import 'package:meal_meat_user/features/family_programs/data/mapper/subscription_program_mapper.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/family_programs/data/data_source/family_programs_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_programs/domain/repo/family_programs_repository.dart';
 

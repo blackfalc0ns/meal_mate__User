@@ -1,7 +1,7 @@
-import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
 
-extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
+extension FamilyBundleResponseDtoMapper on FamilyBundleResponseDto {
   SubscriptionBundleEntity toEntity() {
     return SubscriptionBundleEntity(
       bundleId: bundleId ?? '',
@@ -29,8 +29,20 @@ extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
   }
 }
 
-extension SubscriptionBundleSlotResponseDtoMapper
-    on SubscriptionBundleSlotResponseDto {
+extension FamilyProgramBundlesResponseDtoMapper
+    on FamilyProgramBundlesResponseDto {
+  SubscriptionProgramBundlesEntity toProgramBundlesEntity() {
+    return SubscriptionProgramBundlesEntity(
+      hasDeliveryAddress: hasDeliveryAddress ?? false,
+      hasAllergies: hasAllergies ?? false,
+      hasDietaryPreferences: hasDietaryPreferences ?? false,
+      isProfileComplete: isProfileComplete ?? false,
+      bundles: (bundles ?? const []).map((item) => item.toEntity()).toList(),
+    );
+  }
+}
+
+extension FamilyBundleSlotResponseDtoMapper on FamilyBundleSlotResponseDto {
   SubscriptionBundleSlotEntity toEntity() {
     return SubscriptionBundleSlotEntity(
       code: code ?? '',
@@ -41,8 +53,8 @@ extension SubscriptionBundleSlotResponseDtoMapper
   }
 }
 
-extension SubscriptionBundleRestaurantResponseDtoMapper
-    on SubscriptionBundleRestaurantResponseDto {
+extension FamilyBundleRestaurantResponseDtoMapper
+    on FamilyBundleRestaurantResponseDto {
   SubscriptionBundleRestaurantEntity toEntity() {
     return SubscriptionBundleRestaurantEntity(
       restaurantId: restaurantId ?? '',
@@ -51,8 +63,7 @@ extension SubscriptionBundleRestaurantResponseDtoMapper
   }
 }
 
-extension SubscriptionBundleBadgeResponseDtoMapper
-    on SubscriptionBundleBadgeResponseDto {
+extension FamilyBundleBadgeResponseDtoMapper on FamilyBundleBadgeResponseDto {
   SubscriptionBundleBadgeEntity toEntity() {
     return SubscriptionBundleBadgeEntity(
       code: code ?? '',

@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'subscription_program_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
-class SubscriptionProgramResponseDto {
-  const SubscriptionProgramResponseDto({
+class FamilyProgramResponseDto {
+  const FamilyProgramResponseDto({
     this.programId,
     this.code,
     this.shortCode,
@@ -32,6 +32,6 @@ class SubscriptionProgramResponseDto {
   final int? bundleCount;
   final List<String>? supportedSlots;
 
-  factory SubscriptionProgramResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionProgramResponseDtoFromJson(json);
+  factory FamilyProgramResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyProgramResponseDtoFromJson(json);
 }

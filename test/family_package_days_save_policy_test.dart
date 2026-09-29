@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
-import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
-import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/repo/subscription_tier_repository.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/family_package_days/domain/usecase/get_family_plan_durations_usecase.dart';
@@ -91,8 +91,10 @@ class _FlowRepository implements FamilySubscriptionSetupRepository {
 
 class _ProgramsRepository implements FamilyProgramsRepository {
   @override
-  Future<ApiResult<List<SubscriptionProgramEntity>>>
-  getFamilyPrograms() async => ApiSuccessResult(data: const []);
+  Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
+    int? page,
+    int? pageSize,
+  }) async => ApiSuccessResult(data: const []);
 
   @override
   Future<ApiResult<List<SubscriptionBundleEntity>>> getFamilyProgramBundles(

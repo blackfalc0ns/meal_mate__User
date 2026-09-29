@@ -1,12 +1,12 @@
-import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
-import 'package:meal_meat_user/core/subscription_programs/data/models/response/subscription_program_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_program_response_dto.dart';
 
 abstract class FamilyProgramsRemoteDataSource {
-  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms({
+  Future<List<FamilyProgramResponseDto>> getFamilyPrograms({
     int? page,
     int? pageSize,
   });
-  Future<List<SubscriptionBundleResponseDto>> getFamilyProgramBundles(
+  Future<List<FamilyBundleResponseDto>> getFamilyProgramBundles(
     String programId,
   );
 }

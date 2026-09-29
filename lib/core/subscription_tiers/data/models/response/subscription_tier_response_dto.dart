@@ -1,6 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meal_meat_user/core/subscription_duration/data/models/response/subscription_duration_response_dto.dart';
-
 part 'subscription_tier_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -64,4 +62,27 @@ class SubscriptionTierRestaurantResponseDto {
   factory SubscriptionTierRestaurantResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionTierRestaurantResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionFridayAvailabilityResponseDto {
+  const SubscriptionFridayAvailabilityResponseDto({
+    this.isAvailable,
+    this.restaurantCount,
+    this.code,
+    this.messageAr,
+    this.messageEn,
+    this.displayType,
+  });
+
+  final bool? isAvailable;
+  final int? restaurantCount;
+  final String? code;
+  final String? messageAr;
+  final String? messageEn;
+  final String? displayType;
+
+  factory SubscriptionFridayAvailabilityResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionFridayAvailabilityResponseDtoFromJson(json);
 }

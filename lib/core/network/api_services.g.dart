@@ -2493,7 +2493,7 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms({
+  Future<List<FamilyProgramResponseDto>> getFamilyPrograms({
     int? page,
     int? pageSize,
   }) async {
@@ -2505,7 +2505,7 @@ class _ApiServices implements ApiServices {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<SubscriptionProgramResponseDto>>(
+    final _options = _setStreamType<List<FamilyProgramResponseDto>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2516,13 +2516,12 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<SubscriptionProgramResponseDto> _value;
+    late List<FamilyProgramResponseDto> _value;
     try {
       _value = _result.data!
           .map(
-            (dynamic i) => SubscriptionProgramResponseDto.fromJson(
-              i as Map<String, dynamic>,
-            ),
+            (dynamic i) =>
+                FamilyProgramResponseDto.fromJson(i as Map<String, dynamic>),
           )
           .toList();
     } on Object catch (e, s) {
@@ -2533,14 +2532,14 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<SubscriptionBundleResponseDto>> getFamilyProgramBundles(
+  Future<List<FamilyBundleResponseDto>> getFamilyProgramBundles(
     String programId,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<SubscriptionBundleResponseDto>>(
+    final _options = _setStreamType<List<FamilyBundleResponseDto>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2551,13 +2550,12 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<SubscriptionBundleResponseDto> _value;
+    late List<FamilyBundleResponseDto> _value;
     try {
       _value = _result.data!
           .map(
-            (dynamic i) => SubscriptionBundleResponseDto.fromJson(
-              i as Map<String, dynamic>,
-            ),
+            (dynamic i) =>
+                FamilyBundleResponseDto.fromJson(i as Map<String, dynamic>),
           )
           .toList();
     } on Object catch (e, s) {

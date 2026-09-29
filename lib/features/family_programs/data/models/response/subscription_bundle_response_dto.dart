@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'subscription_bundle_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
-class SubscriptionBundleResponseDto {
-  const SubscriptionBundleResponseDto({
+class FamilyBundleResponseDto {
+  const FamilyBundleResponseDto({
     this.bundleId,
     this.programId,
     this.code,
@@ -43,24 +43,24 @@ class SubscriptionBundleResponseDto {
   final int? lunchCount;
   final int? dinnerCount;
   final int? snackCount;
-  final List<SubscriptionBundleSlotRequirementResponseDto>? slotRequirements;
+  final List<FamilyBundleSlotRequirementResponseDto>? slotRequirements;
   final int? sortOrder;
   final String? descriptionAr;
   final String? descriptionEn;
-  final List<SubscriptionBundleSlotResponseDto>? slots;
+  final List<FamilyBundleSlotResponseDto>? slots;
   final int? restaurantCount;
-  final List<SubscriptionBundleRestaurantResponseDto>? restaurants;
+  final List<FamilyBundleRestaurantResponseDto>? restaurants;
   final int? selectionCount;
   final bool? isMostSelected;
-  final SubscriptionBundleBadgeResponseDto? badge;
+  final FamilyBundleBadgeResponseDto? badge;
 
-  factory SubscriptionBundleResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionBundleResponseDtoFromJson(json);
+  factory FamilyBundleResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyBundleResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class SubscriptionProgramBundlesResponseDto {
-  const SubscriptionProgramBundlesResponseDto({
+class FamilyProgramBundlesResponseDto {
+  const FamilyProgramBundlesResponseDto({
     this.hasDeliveryAddress,
     this.hasAllergies,
     this.hasDietaryPreferences,
@@ -72,28 +72,27 @@ class SubscriptionProgramBundlesResponseDto {
   final bool? hasAllergies;
   final bool? hasDietaryPreferences;
   final bool? isProfileComplete;
-  final List<SubscriptionBundleResponseDto>? bundles;
+  final List<FamilyBundleResponseDto>? bundles;
 
-  factory SubscriptionProgramBundlesResponseDto.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SubscriptionProgramBundlesResponseDtoFromJson(json);
+  factory FamilyProgramBundlesResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyProgramBundlesResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class SubscriptionBundleSlotRequirementResponseDto {
-  const SubscriptionBundleSlotRequirementResponseDto({this.slot, this.count});
+class FamilyBundleSlotRequirementResponseDto {
+  const FamilyBundleSlotRequirementResponseDto({this.slot, this.count});
 
   final String? slot;
   final int? count;
 
-  factory SubscriptionBundleSlotRequirementResponseDto.fromJson(
+  factory FamilyBundleSlotRequirementResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) => _$SubscriptionBundleSlotRequirementResponseDtoFromJson(json);
+  ) => _$FamilyBundleSlotRequirementResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class SubscriptionBundleSlotResponseDto {
-  const SubscriptionBundleSlotResponseDto({
+class FamilyBundleSlotResponseDto {
+  const FamilyBundleSlotResponseDto({
     this.code,
     this.nameAr,
     this.nameEn,
@@ -107,14 +106,13 @@ class SubscriptionBundleSlotResponseDto {
   final String? name;
   final int? quantity;
 
-  factory SubscriptionBundleSlotResponseDto.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SubscriptionBundleSlotResponseDtoFromJson(json);
+  factory FamilyBundleSlotResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyBundleSlotResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class SubscriptionBundleRestaurantResponseDto {
-  const SubscriptionBundleRestaurantResponseDto({
+class FamilyBundleRestaurantResponseDto {
+  const FamilyBundleRestaurantResponseDto({
     this.restaurantId,
     this.logoUrl,
   });
@@ -122,14 +120,14 @@ class SubscriptionBundleRestaurantResponseDto {
   final String? restaurantId;
   final String? logoUrl;
 
-  factory SubscriptionBundleRestaurantResponseDto.fromJson(
+  factory FamilyBundleRestaurantResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) => _$SubscriptionBundleRestaurantResponseDtoFromJson(json);
+  ) => _$FamilyBundleRestaurantResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class SubscriptionBundleBadgeResponseDto {
-  const SubscriptionBundleBadgeResponseDto({
+class FamilyBundleBadgeResponseDto {
+  const FamilyBundleBadgeResponseDto({
     this.code,
     this.nameAr,
     this.nameEn,
@@ -139,7 +137,6 @@ class SubscriptionBundleBadgeResponseDto {
   final String? nameAr;
   final String? nameEn;
 
-  factory SubscriptionBundleBadgeResponseDto.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SubscriptionBundleBadgeResponseDtoFromJson(json);
+  factory FamilyBundleBadgeResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyBundleBadgeResponseDtoFromJson(json);
 }

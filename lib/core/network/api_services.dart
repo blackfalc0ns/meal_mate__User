@@ -42,10 +42,12 @@ import 'package:meal_meat_user/features/profile/data/models/response/profile_bil
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
-import 'package:meal_meat_user/core/subscription_duration/data/models/response/subscription_duration_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
-import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
-import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/request/calendar_save_meals_request_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/request/calendar_set_restaurant_request_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_available_meals_response_dto.dart';
@@ -57,8 +59,8 @@ import 'package:meal_meat_user/features/payment/data/models/response/payment_met
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
-import 'package:meal_meat_user/core/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
-import 'package:meal_meat_user/core/subscription_programs/data/models/response/subscription_program_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
@@ -559,13 +561,13 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.familySubscriptionFlowPrograms)
-  Future<List<SubscriptionProgramResponseDto>> getFamilyPrograms({
+  Future<List<FamilyProgramResponseDto>> getFamilyPrograms({
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
   });
 
   @GET(EndPoints.familySubscriptionFlowProgramBundles)
-  Future<List<SubscriptionBundleResponseDto>> getFamilyProgramBundles(
+  Future<List<FamilyBundleResponseDto>> getFamilyProgramBundles(
     @Path('programId') String programId,
   );
 

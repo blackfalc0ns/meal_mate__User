@@ -1,15 +1,15 @@
 import 'package:meal_meat_user/core/network/failures.dart';
-import 'package:meal_meat_user/core/subscription_duration/domain/entities/subscription_duration_entity.dart';
-import 'package:meal_meat_user/core/subscription_packages/domain/entities/subscription_bundle_entity.dart';
-import 'package:meal_meat_user/core/subscription_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
+import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 class FamilyPlanState {

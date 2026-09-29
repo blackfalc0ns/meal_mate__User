@@ -342,6 +342,10 @@ import '../../features/monthly_plans/domain/usecase/get_subscription_durations_u
     as _i275;
 import '../../features/monthly_plans/domain/usecase/get_subscription_restaurant_details_usecase.dart'
     as _i837;
+import '../../features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart'
+    as _i903;
+import '../../features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart'
+    as _i101;
 import '../../features/monthly_plans/presentation/manager/subscription_plan_view_model.dart'
     as _i527;
 import '../../features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart'
@@ -1411,6 +1415,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i982.FamilyAddressesRepository>(),
       ),
     );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i275.GetSubscriptionDurationsUseCase>(),
+        gh<_i101.GetSubscriptionTiersUseCase>(),
+        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i462.GetSubscriptionReadinessUseCase>(),
+      ),
+    );
     gh.factory<_i448.GetFamilyProgramBundlesUseCase>(
       () => _i448.GetFamilyProgramBundlesUseCase(
         gh<_i964.FamilyProgramsRepository>(),
@@ -1550,14 +1562,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i42.SharedPrefHelper>(),
         gh<_i63.PushNotificationService>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
-      ),
-    );
-    gh.factory<_i527.SubscriptionPlanViewModel>(
-      () => _i527.SubscriptionPlanViewModel(
-        gh<_i275.GetSubscriptionDurationsUseCase>(),
-        gh<_i766.GetSubscriptionTiersUseCase>(),
-        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i462.GetSubscriptionReadinessUseCase>(),
       ),
     );
     gh.factory<_i603.FamilyAddressesViewModel>(
