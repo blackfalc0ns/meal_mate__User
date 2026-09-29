@@ -3,24 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
-import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
-import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/add_address_button.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_loading_overlay.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_availability_notice.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_address_tile.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/saved_addresses_section.dart';
 
 class AddressesScreen extends StatelessWidget {
   const AddressesScreen({super.key});
@@ -74,11 +74,11 @@ class AddressesScreen extends StatelessWidget {
 
                   if (isNewPreviewSuccess) {
                     final preview = state.coveragePreview.preview!;
-                    await showModalBottomSheet<void>(
+                    await AppWoltModalSheet.show<void>(
                       context: context,
-                      isScrollControlled: true,
-                      backgroundColor: color.surface,
-                      builder: (sheetContext) => BlocProvider.value(
+                      hasTopBarLayer: false,
+                      showDragHandle: false,
+                      child: BlocProvider.value(
                         value: context.read<AddressesViewModel>(),
                         child: BlocBuilder<AddressesViewModel, AddressesState>(
                           builder: (innerContext, innerState) {
@@ -95,7 +95,7 @@ class AddressesScreen extends StatelessWidget {
                                     );
                               },
                               onChooseAnother: () {
-                                Navigator.of(sheetContext).pop();
+                                Navigator.of(innerContext).pop();
                               },
                             );
                           },
@@ -160,106 +160,29 @@ class AddressesScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: Spacing.addressesSectionGap),
                           ],
-                          if (addressesState.items.isNotEmpty) ...[
-                            Text(
-                              locale.addresses_saved_section,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size13,
-                                color: color.onSurface,
-                              ),
+                          SavedAddressesSection(
+                            addresses: addressesState.items,
+                            onEdit: (address) => _openAddressEditor(
+                              context,
+                              initialAddress: address,
                             ),
-                            const SizedBox(height: Spacing.sm),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: addressesState.items.length,
-                              separatorBuilder: (_, _) => const SizedBox(
-                                height: Spacing.addressesCardGap,
-                              ),
-                              itemBuilder: (context, index) {
-                                final address = addressesState.items[index];
-                                return SavedAddressTile(
-                                  icon: _iconForAddress(address),
-                                  title: address.label,
-                                  address: address.addressLine,
-                                  isDefault: address.isDefault,
-                                  canDelete: address.canDelete,
-                                  onEdit: () => _openAddressEditor(
-                                    context,
-                                    initialAddress: address,
-                                  ),
-                                  onSetDefault:
-                                      address.addressId.isEmpty ||
-                                          address.isDefault
-                                      ? null
-                                      : () => context
-                                            .read<AddressesViewModel>()
-                                            .doIntent(
-                                              PreviewExistingAddressCoverageEvent(
-                                                address.addressId,
-                                              ),
-                                            ),
-                                  onDelete: address.addressId.isEmpty
-                                      ? null
-                                      : () => context
-                                            .read<AddressesViewModel>()
-                                            .doIntent(
-                                              DeleteCustomerAddressEvent(
-                                                address.addressId,
-                                              ),
-                                            ),
-                                );
-                              },
-                            ),
-                          ] else
-                            EmptyStateWidget(
-                              title: locale.addresses_saved_section,
-                              description: locale.addresses_add_new,
-                              icon: Icons.location_off_rounded,
-                            ),
-                          const SizedBox(height: Spacing.addressesSectionGap),
-                          SizedBox(
-                            height: Spacing.addressesAddButtonHeight,
-                            child: OutlinedButton.icon(
-                              onPressed: () => _openAddressEditor(context),
-                              icon: Icon(
-                                Icons.add_circle_rounded,
-                                color: color.primary,
-                                size: Spacing.iconLg,
-                              ),
-                              label: Text(
-                                locale.addresses_add_new,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size12,
-                                  color: color.primary,
-                                ),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: color.primaryContainer),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    Spacing.addressesCardRadius,
+                            onSetDefault: (address) =>
+                                context.read<AddressesViewModel>().doIntent(
+                                  PreviewExistingAddressCoverageEvent(
+                                    address.addressId,
                                   ),
                                 ),
-                              ),
-                            ),
+                            onDelete: (address) =>
+                                context.read<AddressesViewModel>().doIntent(
+                                  DeleteCustomerAddressEvent(address.addressId),
+                                ),
                           ),
                           const SizedBox(height: Spacing.addressesSectionGap),
-                          CustomWarningWidget(
-                            icon: Icons.info_rounded,
-                            message: locale.addresses_availability_notice,
-                            isWarning: true,
-                            height: Spacing.addressesAvailabilityNoticeHeight,
-                            backgroundColor: color.secondaryContainer,
-                            borderColor: color.outlineVariant,
-                            horizontalPadding: Spacing.md,
-                            iconSize: Spacing.lg,
-                            iconTextSpacing: Spacing.sm,
-                            messageFontSize: FontSize.size12,
-                            maxMessageLines: 1,
+                          AddAddressButton(
+                            onPressed: () => _openAddressEditor(context),
                           ),
+                          const SizedBox(height: Spacing.addressesSectionGap),
+                          const AddressesAvailabilityNotice(),
                         ],
                       ),
                     ),
@@ -272,14 +195,7 @@ class AddressesScreen extends StatelessWidget {
                   state.action.isLoading || state.coveragePreview.isLoading,
               builder: (context, isLoading) {
                 if (!isLoading) return const SizedBox.shrink();
-                return Positioned.fill(
-                  child: AbsorbPointer(
-                    child: ColoredBox(
-                      color: color.scrim.withValues(alpha: 0.32),
-                      child: const Center(child: CustomProgressIndicator()),
-                    ),
-                  ),
-                );
+                return const AddressLoadingOverlay();
               },
             ),
           ],
@@ -304,25 +220,5 @@ class AddressesScreen extends StatelessWidget {
         const GetCustomerAddressesEvent(),
       );
     }
-  }
-
-  IconData _iconForAddress(CustomerAddressEntity address) {
-    final label = address.label.trim().toLowerCase();
-    if (label.contains('work') ||
-        label.contains('office') ||
-        label.contains('عمل') ||
-        label.contains('مكتب') ||
-        label.contains('شغل')) {
-      return Icons.business_center_rounded;
-    }
-    if (label.contains('home') ||
-        label.contains('house') ||
-        label.contains('منزل') ||
-        label.contains('بيت') ||
-        label.contains('سكن') ||
-        label.contains('شقة')) {
-      return Icons.home_rounded;
-    }
-    return Icons.location_on_rounded;
   }
 }

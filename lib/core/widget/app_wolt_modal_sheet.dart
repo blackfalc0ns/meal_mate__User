@@ -20,6 +20,7 @@ class AppWoltModalSheet {
     bool hasTopBarLayer = true,
     bool isTopBarLayerAlwaysVisible = true,
     bool useSafeArea = true,
+    double? navBarHeight,
     Widget? leadingNavBarWidget,
     Widget? trailingNavBarWidget,
     VoidCallback? onClose,
@@ -55,6 +56,8 @@ class AppWoltModalSheet {
           WoltModalSheetPage(
             backgroundColor: modalColor.surface,
             surfaceTintColor: modalColor.surface,
+            navBarHeight:
+                navBarHeight ?? (hasTopBarLayer ? null : Spacing.zero),
             hasTopBarLayer: hasTopBarLayer,
             isTopBarLayerAlwaysVisible: isTopBarLayerAlwaysVisible,
             topBarTitle: resolvedTitleWidget,

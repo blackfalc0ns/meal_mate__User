@@ -4,14 +4,15 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
-import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_map_view.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
@@ -125,21 +126,21 @@ class _AddressChooseLocationScreenState
                   if (isNewPreviewSuccess) {
                     final preview = state.coveragePreview.preview!;
                     _shownPreview = preview;
-                    await showModalBottomSheet<void>(
+                    await AppWoltModalSheet.show<void>(
                       context: context,
-                      isScrollControlled: true,
-                      backgroundColor: color.surface,
-                      builder: (sheetContext) => BlocProvider.value(
+                      hasTopBarLayer: false,
+                      showDragHandle: false,
+                      child: BlocProvider.value(
                         value: context.read<AddressesViewModel>(),
                         child: BlocBuilder<AddressesViewModel, AddressesState>(
-                          builder: (innerContext, innerState) {
+                          builder: (sheetContext, innerState) {
                             return AddressCoveragePreviewBottomSheet(
                               preview: preview,
                               isSubmitting: innerState.action.isLoading,
                               confirmButtonText:
                                   locale.address_coverage_confirm_save,
                               onConfirm: () {
-                                final viewModel = innerContext
+                                final viewModel = sheetContext
                                     .read<AddressesViewModel>();
                                 viewModel.doIntent(
                                   const ConfirmPendingAddressActionEvent(),
@@ -199,14 +200,7 @@ class _AddressChooseLocationScreenState
                   state.action.isLoading || state.coveragePreview.isLoading,
               builder: (context, isLoading) {
                 if (!isLoading) return const SizedBox.shrink();
-                return Positioned.fill(
-                  child: AbsorbPointer(
-                    child: ColoredBox(
-                      color: color.scrim.withValues(alpha: 0.32),
-                      child: const Center(child: CustomProgressIndicator()),
-                    ),
-                  ),
-                );
+                return const AddressLoadingOverlay();
               },
             ),
           ],

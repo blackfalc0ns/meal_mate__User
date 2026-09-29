@@ -6,7 +6,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 
 class AddressDetailsWoltSheet extends StatelessWidget {
   const AddressDetailsWoltSheet({
@@ -26,41 +26,29 @@ class AddressDetailsWoltSheet extends StatelessWidget {
     required bool isLoading,
     required VoidCallback onConfirm,
   }) {
-    final color = context.colorScheme;
-
-    return WoltModalSheet.show<void>(
+    return AppWoltModalSheet.show<void>(
       context: context,
-      useSafeArea: true,
-      modalTypeBuilder: (_) => WoltModalType.bottomSheet(),
-      modalBarrierColor: color.scrim.withValues(alpha: 0.08),
-      pageListBuilder: (_) => [
-        WoltModalSheetPage(
-          hasTopBarLayer: false,
-          navBarHeight: Spacing.zero,
-          backgroundColor: color.surface,
-          surfaceTintColor: color.surface,
-          stickyActionBar: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(
-              Spacing.addressesChooseLocationCardPadding,
-              Spacing.sm,
-              Spacing.addressesChooseLocationCardPadding,
-              Spacing.md,
-            ),
-            child: AppButton(
-              fontSize: FontSize.size11,
-              height: Spacing.buttonSmallHeight,
-              onPressed: isLoading ? null : onConfirm,
-              isLoading: false,
-              text: context.localization.address_preview_check_button,
-            ),
-          ),
-          child: AddressDetailsWoltSheet(
-            content: content,
-            isLoading: isLoading,
-            onConfirm: onConfirm,
-          ),
+      hasTopBarLayer: false,
+      stickyActionBar: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          Spacing.addressesChooseLocationCardPadding,
+          Spacing.sm,
+          Spacing.addressesChooseLocationCardPadding,
+          Spacing.md,
         ),
-      ],
+        child: AppButton(
+          fontSize: FontSize.size11,
+          height: Spacing.buttonSmallHeight,
+          onPressed: isLoading ? null : onConfirm,
+          isLoading: false,
+          text: context.localization.address_preview_check_button,
+        ),
+      ),
+      child: AddressDetailsWoltSheet(
+        content: content,
+        isLoading: isLoading,
+        onConfirm: onConfirm,
+      ),
     );
   }
 
