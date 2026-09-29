@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
@@ -15,6 +12,7 @@ import 'package:meal_meat_user/features/profile/domain/entities/update_customer_
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_event.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
 import 'package:meal_meat_user/features/profile/presentation/manager/profile_view_model.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/personal_information_form_card.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key, required this.profile});
@@ -95,113 +93,29 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.screenH,
-                ).copyWith(top: Spacing.xxxl),
+                ).copyWith(top: Spacing.base, bottom: Spacing.xl),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.lg,
-                          vertical: Spacing.xxl,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color.surface,
-                          borderRadius: BorderRadius.circular(Spacing.radiusXl),
-                          border: Border.all(color: color.outlineVariant),
-                          boxShadow: [
-                            BoxShadow(
-                              color: color.shadow.withValues(alpha: 0.08),
-                              blurRadius: Spacing.xl,
-                              offset: const Offset(0, Spacing.sm),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AppTextField(
-                              controller: _nameController,
-                              label: locale.auth_name_label,
-                              hint: locale.auth_name_hint,
-                              textInputAction: TextInputAction.next,
-                              prefixIcon: Icon(
-                                Icons.person_outline_rounded,
-                                color: color.primary,
-                                size: Spacing.iconLg,
-                              ),
-                              validator: (value) =>
-                                  Validations.validateName(context, value),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: Spacing.lg,
-                                vertical: Spacing.lg,
-                              ),
-                              borderRadius: Spacing.radiusXl,
-                              borderColor: color.outlineVariant,
-                              fillColor: color.surface,
-                              textStyle: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size18,
-                                color: color.onSurface,
-                              ),
-                              labelStyle: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size14,
-                                color: color.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(height: Spacing.xl),
-                            AppTextField(
-                              controller: _phoneController,
-                              label: locale.phone_number,
-                              hint: locale.phone_hint,
-                              keyboardType: TextInputType.phone,
-                              textInputAction: TextInputAction.done,
-                              prefixIcon: Icon(
-                                Icons.local_phone_outlined,
-                                color: color.primary,
-                                size: Spacing.iconLg,
-                              ),
-                              validator: (value) =>
-                                  Validations.validatePhoneNumber(
-                                    context,
-                                    value,
-                                  ),
-                              onSubmitted: (_) => _submit(context),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: Spacing.lg,
-                                vertical: Spacing.lg,
-                              ),
-                              borderRadius: Spacing.radiusXl,
-                              borderColor: color.outlineVariant,
-                              fillColor: color.surface,
-                              textStyle: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size18,
-                                color: color.onSurface,
-                              ),
-                              labelStyle: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size14,
-                                color: color.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
+                      PersonalInformationFormCard(
+                        nameController: _nameController,
+                        phoneController: _phoneController,
+                        onSubmitted: (_) => _submit(context),
                       ),
-                      const SizedBox(height: Spacing.xxl),
+                      const SizedBox(height: Spacing.xl),
                       AppButton.filled(
                         text: locale.profile_personal_info_save,
                         isLoading: state.action.isLoading,
                         onPressed: _hasChanges && !state.action.isLoading
                             ? () => _submit(context)
                             : null,
-                        height: Spacing.addressesChooseLocationButtonHeight,
-                        borderRadius: Spacing.lg,
+                        height: Spacing.buttonHeight,
+                        borderRadius: Spacing.buttonRadius,
                         color: color.primary,
                         textColor: color.onPrimary,
-                        fontSize: FontSize.size20,
+                        fontSize: FontSize.size14,
                       ),
                     ],
                   ),
