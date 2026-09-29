@@ -101,6 +101,8 @@ class AddressesScreen extends StatelessWidget {
               );
             }
 
+            if (!context.mounted) return;
+
             if (state.action.isSuccess && state.action.address != null) {
               CustomSnackbar.showSuccess(
                 context: context,
@@ -140,27 +142,29 @@ class AddressesScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CurrentAddressCard(
-                      address: addressesState.currentDeliveryAddress,
-                    ),
-                    const SizedBox(height: Spacing.addressesSectionGap),
-                    Text(
-                      locale.addresses_saved_section,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size13,
-                        color: color.onSurface,
+                    if (addressesState.currentDeliveryAddress != null) ...[
+                      CurrentAddressCard(
+                        address: addressesState.currentDeliveryAddress,
                       ),
-                    ),
-                    const SizedBox(height: Spacing.sm),
-                    if (addressesState.items.isEmpty)
+                      const SizedBox(height: Spacing.addressesSectionGap),
+                    ],
+                    if (addressesState.items.isNotEmpty) ...[
+                      Text(
+                        locale.addresses_saved_section,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size13,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.sm),
+                      ..._buildAddressTiles(context, addressesState.items),
+                    ] else
                       EmptyStateWidget(
                         title: locale.addresses_saved_section,
                         description: locale.addresses_add_new,
                         icon: Icons.location_off_rounded,
-                      )
-                    else
-                      ..._buildAddressTiles(context, addressesState.items),
+                      ),
                     const SizedBox(height: Spacing.addressesSectionGap),
                     SizedBox(
                       height: Spacing.addressesAddButtonHeight,

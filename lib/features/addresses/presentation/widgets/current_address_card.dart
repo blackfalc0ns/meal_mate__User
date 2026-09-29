@@ -13,9 +13,14 @@ class CurrentAddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentAddress = address;
+    if (currentAddress == null) {
+      return const SizedBox.shrink();
+    }
+
     final color = context.colorScheme;
     final locale = context.localization;
-    final badgeLabel = address?.isDeliveryActive == true
+    final badgeLabel = currentAddress.isDeliveryActive
         ? locale.addresses_active_delivery
         : locale.addresses_default;
 
