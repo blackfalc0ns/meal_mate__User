@@ -12,8 +12,8 @@ class SubscriptionProgramHero extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(color: color.primaryContainer),
+    return ColoredBox(
+      color: color.primaryContainer,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [

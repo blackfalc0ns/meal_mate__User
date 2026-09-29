@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -20,9 +22,9 @@ class SubscriptionProgramsViewModel extends Cubit<SubscriptionProgramsState> {
   void doIntent(SubscriptionProgramsEvent event) {
     switch (event) {
       case GetSubscriptionProgramsEvent():
-        _getSubscriptionPrograms();
+        unawaited(_getSubscriptionPrograms());
       case GetSubscriptionProgramBundlesEvent():
-        _getSubscriptionProgramBundles(event.programId);
+        unawaited(_getSubscriptionProgramBundles(event.programId));
     }
   }
 

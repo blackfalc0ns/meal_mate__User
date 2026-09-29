@@ -1,4 +1,3 @@
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 
@@ -20,16 +19,7 @@ extension SubscriptionProgramResponseDtoMapper
       imageUrl: imageUrl,
       bundleCount: bundleCount ?? 0,
       supportedSlots: supportedSlots ?? const [],
-      fallbackImageAsset: _fallbackImageAssetForCode(normalizedCode),
+      fallbackImageAsset: '',
     );
-  }
-
-  String _fallbackImageAssetForCode(String code) {
-    return switch (code) {
-      'PROG_WEIGHT_LOSS' => AssetsFake.subscriptionProgramWeightLoss,
-      'PROG_MUSCLE_GAIN' => AssetsFake.subscriptionProgramMuscleGain,
-      'PROG_BALANCED' => AssetsFake.subscriptionProgramBalanced,
-      _ => AssetsFake.subscriptionProgramCutting,
-    };
   }
 }

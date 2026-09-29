@@ -11,12 +11,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.imageUrl,
-    required this.fallbackImageAsset,
     required this.primaryFeature,
     required this.secondaryFeature,
-    required this.badgeIcon,
-    required this.primaryFeatureIcon,
-    required this.secondaryFeatureIcon,
     required this.isSelected,
     required this.onTap,
   });
@@ -24,12 +20,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
   final String title;
   final String description;
   final String? imageUrl;
-  final String fallbackImageAsset;
   final String primaryFeature;
   final String secondaryFeature;
-  final IconData badgeIcon;
-  final IconData primaryFeatureIcon;
-  final IconData secondaryFeatureIcon;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -87,7 +79,9 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.only(start: Spacing.sm),
+                      padding: const EdgeInsetsDirectional.only(
+                        start: Spacing.sm,
+                      ),
                       child: Text(
                         title,
                         maxLines: 1,
@@ -185,18 +179,15 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.sm),
-              Flexible(
-                flex: 0,
-                child: SizedBox(
+              SizedBox(
+                width: Spacing.subscriptionProgramImageWidth,
+                height: Spacing.subscriptionProgramImageHeight,
+                child: AppCachedNetworkImage(
+                  imageUrl: imageUrl,
                   width: Spacing.subscriptionProgramImageWidth,
                   height: Spacing.subscriptionProgramImageHeight,
-                  child: AppCachedNetworkImage(
-                    imageUrl: imageUrl,
-                    width: Spacing.subscriptionProgramImageWidth,
-                    height: Spacing.subscriptionProgramImageHeight,
-                    fit: BoxFit.contain,
-                    semanticLabel: title,
-                  ),
+                  fit: BoxFit.contain,
+                  semanticLabel: title,
                 ),
               ),
               const SizedBox(width: Spacing.sm),

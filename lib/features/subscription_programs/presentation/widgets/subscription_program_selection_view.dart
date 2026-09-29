@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
@@ -50,13 +51,21 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.only(
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
                         top: Spacing.base,
                         start: Spacing.subscriptionProgramsHorizontalPadding,
                         end: Spacing.subscriptionProgramsHorizontalPadding,
                       ),
-                      child: SubscriptionProgramHeader(),
+                      child: const SubscriptionProgramHeader()
+                          .animate()
+                          .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                          .slideY(
+                            begin: 0.1,
+                            end: 0,
+                            duration: 350.ms,
+                            curve: Curves.easeOut,
+                          ),
                     ),
                     Expanded(
                       child: CustomScrollView(
@@ -83,23 +92,30 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                 );
 
                                 return SubscriptionProgramGoalCard(
+                                  key: ValueKey(program.programId),
                                   title: program.name(locale.localeName),
                                   description: program.description(
                                     locale.localeName,
                                   ),
                                   imageUrl: program.imageUrl,
-                                  fallbackImageAsset:
-                                      program.fallbackImageAsset,
                                   primaryFeature: _featureAt(keywords, 0),
                                   secondaryFeature: _featureAt(keywords, 1),
-                                  badgeIcon: _badgeIconForProgram(program),
-                                  primaryFeatureIcon:
-                                      _primaryFeatureIconForProgram(program),
-                                  secondaryFeatureIcon:
-                                      _secondaryFeatureIconForProgram(program),
                                   isSelected: index == selectedProgramIndex,
                                   onTap: () => onProgramSelected(index),
-                                );
+                                )
+                                    .animate()
+                                    .fadeIn(
+                                      duration: 350.ms,
+                                      delay: (index * 70).ms,
+                                      curve: Curves.easeOut,
+                                    )
+                                    .slideY(
+                                      begin: 0.1,
+                                      end: 0,
+                                      duration: 350.ms,
+                                      delay: (index * 70).ms,
+                                      curve: Curves.easeOutCubic,
+                                    );
                               },
                             ),
                           ),
@@ -119,35 +135,5 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
   String _featureAt(List<String> keywords, int index) {
     if (index >= keywords.length) return '';
     return keywords[index];
-  }
-
-  IconData _badgeIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_WEIGHT_LOSS' => Icons.monitor_weight_outlined,
-      'PROG_MUSCLE_GAIN' => Icons.fitness_center_rounded,
-      'PROG_ATHLETE' => Icons.directions_run_rounded,
-      'PROG_KETO' => Icons.water_drop_rounded,
-      'PROG_BALANCED' => Icons.favorite_border_rounded,
-      'PROG_LOW_CARB' => Icons.eco_rounded,
-      _ => Icons.restaurant_menu_rounded,
-    };
-  }
-
-  IconData _primaryFeatureIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_WEIGHT_LOSS' => Icons.bar_chart_rounded,
-      'PROG_BALANCED' => Icons.eco_rounded,
-      'PROG_ATHLETE' => Icons.bolt_rounded,
-      _ => Icons.bolt_rounded,
-    };
-  }
-
-  IconData _secondaryFeatureIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_MUSCLE_GAIN' => Icons.sync_rounded,
-      'PROG_ATHLETE' => Icons.sync_rounded,
-      'PROG_LOW_CARB' => Icons.tune_rounded,
-      _ => Icons.my_location_rounded,
-    };
   }
 }
