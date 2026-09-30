@@ -3,6 +3,12 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_button.dart';
+
+enum AppSubscriptionButtonVariant {
+  checkout,
+  next,
+}
 
 class AppSubscriptionButton extends StatelessWidget {
   const AppSubscriptionButton({
@@ -10,18 +16,68 @@ class AppSubscriptionButton extends StatelessWidget {
     required this.price,
     required this.currency,
     required this.onPressed,
-  });
+    this.isLoading = false,
+  })  : text = null,
+        variant = AppSubscriptionButtonVariant.checkout;
 
-  final String price;
-  final String currency;
+  const AppSubscriptionButton.checkout({
+    super.key,
+    required this.price,
+    required this.currency,
+    required this.onPressed,
+    this.isLoading = false,
+  })  : text = null,
+        variant = AppSubscriptionButtonVariant.checkout;
+
+  const AppSubscriptionButton.next({
+    super.key,
+    required this.text,
+    this.onPressed,
+    this.isLoading = false,
+  })  : price = null,
+        currency = null,
+        variant = AppSubscriptionButtonVariant.next;
+
+  final String? price;
+  final String? currency;
+  final String? text;
   final VoidCallback? onPressed;
+  final bool isLoading;
+  final AppSubscriptionButtonVariant variant;
 
   @override
   Widget build(BuildContext context) {
+    if (variant == AppSubscriptionButtonVariant.next) {
+      return _buildNextButton(context);
+    }
+    return _buildCheckoutButton(context);
+  }
+
+  Widget _buildNextButton(BuildContext context) {
+    final color = context.colorScheme;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
+    return AppButton.filled(
+      iconBeforeText: false,
+      text: text ?? '',
+      onPressed: onPressed,
+      isLoading: isLoading,
+      borderRadius: Spacing.radiusPill,
+      textColor: color.onPrimary,
+      fontSize: FontSize.size12,
+      iconWidget: Icon(
+        isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+        color: color.onPrimary,
+        size: Spacing.iconMd,
+      ),
+    );
+  }
+
+  Widget _buildCheckoutButton(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
     final isEnabled = onPressed != null;
-    final hasPrice = price.isNotEmpty;
+    final hasPrice = (price ?? '').isNotEmpty;
     final foregroundColor = isEnabled
         ? color.onPrimary
         : color.onSurfaceVariant;
@@ -77,10 +133,9 @@ class AppSubscriptionButton extends StatelessWidget {
                         height: Spacing.monthlyPlanSubscribeDividerHeight,
                         color: foregroundColor,
                       ),
-                      
                       const SizedBox(width: Spacing.sm),
                       Text(
-                        price,
+                        price!,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size15,
@@ -89,7 +144,7 @@ class AppSubscriptionButton extends StatelessWidget {
                       ),
                       const SizedBox(width: Spacing.xs),
                       Text(
-                        currency,
+                        currency!,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size15,

@@ -49,12 +49,17 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
-              height: Spacing.subscriptionPackageChoiceFigmaHeight,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 280),
+              curve: Curves.fastOutSlowIn,
+              clipBehavior: Clip.antiAlias,
+              height: isSelected
+                  ? Spacing.subscriptionPackageChoiceFigmaHeight + Spacing.xl
+                  : Spacing.subscriptionPackageChoiceFigmaHeight,
               padding: const EdgeInsetsDirectional.only(
                 top: Spacing.md,
                 end: Spacing.md,
-                bottom: Spacing.xxl,
+                bottom: Spacing.xl + Spacing.xs,
                 start: Spacing.md,
               ),
               decoration: BoxDecoration(
@@ -72,9 +77,11 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.07),
-                    blurRadius: Spacing.lg,
-                    offset: const Offset(0, Spacing.xs),
+                    color: isSelected
+                        ? color.primary.withValues(alpha: 0.12)
+                        : color.shadow.withValues(alpha: 0.07),
+                    blurRadius: isSelected ? Spacing.xl : Spacing.lg,
+                    offset: Offset(0, isSelected ? Spacing.sm : Spacing.xs),
                   ),
                 ],
               ),
@@ -83,11 +90,13 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             Container(
-                              height: Spacing.xxl,
+                              width: Spacing.xl,
+                              height: Spacing.xl,
                               decoration: BoxDecoration(
                                 color: color.primaryContainer,
                                 shape: BoxShape.circle,
@@ -106,17 +115,16 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: getSemiBoldStyle(
                                   fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size14,
+                                  fontSize: FontSize.size13,
                                   color: color.onSurface,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.xs),
                         Text(
                           subtitle,
-                          maxLines: 1,
+                          maxLines: isSelected ? 2 : 1,
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
@@ -124,7 +132,6 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                             color: color.onSurfaceVariant,
                           ),
                         ),
-                        const SizedBox(height: Spacing.sm),
                         SubscriptionRestaurantLogoStack(
                           logoUrls: restaurantLogoUrls,
                         ),
@@ -149,7 +156,9 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               end: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
               start: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
               bottom: Spacing.xss,
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 280),
+                curve: Curves.fastOutSlowIn,
                 height: Spacing.subscriptionPackageChoiceButtonHeight,
                 alignment: AlignmentDirectional.center,
                 decoration: BoxDecoration(
@@ -168,9 +177,9 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               ),
             ),
             if (isPopular)
-              Positioned(
+              PositionedDirectional(
                 top: -Spacing.md,
-                left: Spacing.md,
+                start: Spacing.md,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Spacing.sm,

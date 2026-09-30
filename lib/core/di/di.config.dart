@@ -451,6 +451,18 @@ import '../../features/subscription_checkout/domain/usecase/get_subscription_sum
     as _i926;
 import '../../features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart'
     as _i356;
+import '../../features/subscription_packages/data/data_source/subscription_packages_remote_data_source.dart'
+    as _i466;
+import '../../features/subscription_packages/data/data_source/subscription_packages_remote_data_source_impl.dart'
+    as _i415;
+import '../../features/subscription_packages/data/repo/subscription_packages_repository_impl.dart'
+    as _i455;
+import '../../features/subscription_packages/domain/repo/subscription_packages_repository.dart'
+    as _i1068;
+import '../../features/subscription_packages/domain/usecase/get_subscription_packages_usecase.dart'
+    as _i790;
+import '../../features/subscription_packages/presentation/manager/subscription_packages_view_model.dart'
+    as _i854;
 import '../../features/subscription_programs/data/data_source/subscription_programs_remote_data_source.dart'
     as _i96;
 import '../../features/subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart'
@@ -912,6 +924,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i851.FamilyManagementRepository>(),
       ),
     );
+    gh.factory<_i466.SubscriptionPackagesRemoteDataSource>(
+      () => _i415.SubscriptionPackagesRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i887.InfluencerAnalyticsRemoteDataSource>(
       () => _i467.InfluencerAnalyticsRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
@@ -1140,6 +1157,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i914.ProfileUncompletedSubscriptionRepository>(),
       ),
     );
+    gh.factory<_i1068.SubscriptionPackagesRepository>(
+      () => _i455.SubscriptionPackagesRepositoryImpl(
+        gh<_i466.SubscriptionPackagesRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i261.CreateSubscriptionUpgradeRequestUseCase>(
       () => _i261.CreateSubscriptionUpgradeRequestUseCase(
         gh<_i603.RestaurantTierUpgradeRepository>(),
@@ -1345,6 +1367,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i801.GetFamilySizePackagesUseCase>(),
       ),
     );
+    gh.factory<_i790.GetSubscriptionPackagesUseCase>(
+      () => _i790.GetSubscriptionPackagesUseCase(
+        gh<_i1068.SubscriptionPackagesRepository>(),
+      ),
+    );
     gh.factory<_i911.FamilyAllergiesViewModel>(
       () => _i911.FamilyAllergiesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1542,6 +1569,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i760.InfluencerDashboardViewModel(
         gh<_i493.GetInfluencerHomeUseCase>(),
         gh<_i460.GetInfluencerLinksUseCase>(),
+      ),
+    );
+    gh.factory<_i854.SubscriptionPackagesViewModel>(
+      () => _i854.SubscriptionPackagesViewModel(
+        gh<_i790.GetSubscriptionPackagesUseCase>(),
       ),
     );
     gh.lazySingleton<_i63.PushNotificationService>(

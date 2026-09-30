@@ -41,13 +41,12 @@ class SubscriptionFamilyPackageBanner extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
             child: Row(
-              textDirection: TextDirection.rtl,
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(
+                    padding: const EdgeInsetsDirectional.only(
                       top: Spacing.md,
-                      right: Spacing.md,
+                      end: Spacing.md,
                       bottom: Spacing.sm,
                     ),
                     child: Column(

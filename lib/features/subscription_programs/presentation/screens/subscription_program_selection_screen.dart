@@ -10,7 +10,7 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_subscription_next_button.dart';
+import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
@@ -77,7 +77,7 @@ class _SubscriptionProgramSelectionScreenState
                     bottom: Spacing.lg,
                     child: SafeArea(
                       top: false,
-                      child: AppSubscriptionNextButton(
+                      child: AppSubscriptionButton.next(
                         text: locale.family_next_package_days,
                         onPressed:
                             isEnabled

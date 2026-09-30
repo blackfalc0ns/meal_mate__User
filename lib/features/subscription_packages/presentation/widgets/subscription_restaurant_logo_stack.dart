@@ -12,7 +12,7 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final visibleLogoUrls = logoUrls.take(3).toList();
+    final count = logoUrls.length > 3 ? 3 : logoUrls.length;
 
     return SizedBox(
       width: Spacing.xxxl * 2.15,
@@ -20,9 +20,9 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          for (final entry in visibleLogoUrls.indexed)
+          for (var i = 0; i < count; i++)
             PositionedDirectional(
-              start: entry.$1 * Spacing.md,
+              start: i * Spacing.md,
               child: Container(
                 width: Spacing.lg + Spacing.xs,
                 height: Spacing.lg + Spacing.xs,
@@ -32,7 +32,7 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
                   border: Border.all(color: color.surface, width: Spacing.xs),
                 ),
                 child: AppCachedNetworkImage(
-                  imageUrl: entry.$2,
+                  imageUrl: logoUrls[i],
                   shape: BoxShape.circle,
                   semanticLabel: locale.nav_subscription,
                 ),

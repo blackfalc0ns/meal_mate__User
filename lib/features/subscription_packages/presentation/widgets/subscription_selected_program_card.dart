@@ -15,7 +15,9 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final textDirection = Directionality.of(context);
+    //  final textDirection = Directionality.of(context);
+
+    final keywords = program.keywords(locale.localeName);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,30 +55,13 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
             ],
           ),
           child: Row(
-            textDirection: textDirection,
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      textDirection: textDirection,
                       children: [
-                        // Container(
-                        //   width: Spacing.xxl,
-                        //   height: Spacing.xxl,
-                        //   decoration: BoxDecoration(
-                        //     color: color.primaryContainer.withValues(
-                        //       alpha: 0.7,
-                        //     ),
-                        //     shape: BoxShape.circle,
-                        //   ),
-                        //   child: Icon(
-                        //     _badgeIconForProgram(program),
-                        //     size: Spacing.iconSm,
-                        //     color: color.primary,
-                        //   ),
-                        // ),
                         const SizedBox(width: Spacing.sm),
                         Expanded(
                           child: Column(
@@ -128,7 +113,6 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     Row(
-                      textDirection: textDirection,
                       children: [
                         Icon(
                           _primaryFeatureIconForProgram(program),
@@ -138,7 +122,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         const SizedBox(width: Spacing.xs),
                         Flexible(
                           child: Text(
-                            _featureAt(program.keywords(locale.localeName), 0),
+                            _featureAt(keywords, 0),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
@@ -166,7 +150,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         const SizedBox(width: Spacing.xs),
                         Flexible(
                           child: Text(
-                            _featureAt(program.keywords(locale.localeName), 1),
+                            _featureAt(keywords, 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
@@ -218,18 +202,6 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
   String _featureAt(List<String> keywords, int index) {
     if (index >= keywords.length) return '';
     return keywords[index];
-  }
-
-  IconData _badgeIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_WEIGHT_LOSS' => Icons.monitor_weight_outlined,
-      'PROG_MUSCLE_GAIN' => Icons.fitness_center_rounded,
-      'PROG_ATHLETE' => Icons.directions_run_rounded,
-      'PROG_KETO' => Icons.water_drop_rounded,
-      'PROG_BALANCED' => Icons.favorite_border_rounded,
-      'PROG_LOW_CARB' => Icons.eco_rounded,
-      _ => Icons.restaurant_menu_rounded,
-    };
   }
 
   IconData _primaryFeatureIconForProgram(SubscriptionProgramEntity program) {

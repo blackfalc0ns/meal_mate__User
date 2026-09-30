@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
-import 'package:meal_meat_user/core/widget/app_subscription_next_button.dart';
+import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 
 void main() {
   Widget buildTestWidget({
@@ -17,12 +17,12 @@ void main() {
     );
   }
 
-  group('AppSubscriptionNextButton Tests', () {
+  group('AppSubscriptionButton.next Tests', () {
     testWidgets('renders chevron_left_rounded in RTL', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(
           textDirection: TextDirection.rtl,
-          child: AppSubscriptionNextButton(
+          child: AppSubscriptionButton.next(
             text: 'التالي',
             onPressed: () {},
           ),
@@ -39,7 +39,7 @@ void main() {
       await tester.pumpWidget(
         buildTestWidget(
           textDirection: TextDirection.ltr,
-          child: AppSubscriptionNextButton(
+          child: AppSubscriptionButton.next(
             text: 'Next',
             onPressed: () {},
           ),
@@ -57,7 +57,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: AppSubscriptionNextButton(
+          child: AppSubscriptionButton.next(
             text: 'التالي',
             onPressed: () => tapped = true,
           ),
@@ -65,14 +65,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(AppSubscriptionNextButton));
+      await tester.tap(find.byType(AppSubscriptionButton));
       expect(tapped, isTrue);
     });
 
     testWidgets('shows loading state when isLoading is true', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: AppSubscriptionNextButton(
+          child: AppSubscriptionButton.next(
             text: 'التالي',
             isLoading: true,
             onPressed: () {},
