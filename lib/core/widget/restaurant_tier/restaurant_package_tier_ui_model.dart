@@ -8,6 +8,9 @@ class RestaurantPackageTierUiModel {
     this.restaurantLogoUrls = const [],
     this.isPopular = false,
     this.id,
+    this.price = '',
+    this.currency = '',
+    this.priceSubtitle = '',
   });
 
   final String title;
@@ -18,4 +21,7 @@ class RestaurantPackageTierUiModel {
   final List<String?> restaurantLogoUrls;
   final bool isPopular;
   final String? id;
+  final String price;
+  final String currency;
+  final String priceSubtitle;
 }

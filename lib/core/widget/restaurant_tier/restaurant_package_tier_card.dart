@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_icon.dart';
+import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_price.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_tier_logos_row.dart';
 
@@ -35,29 +36,60 @@ class RestaurantPackageTierCard extends StatelessWidget {
     final locale = context.localization;
 
     final isFeatured = isCentered;
-    final isMax = package.iconName.toLowerCase() == 'diamond';
-    final isPlus = isFeatured || package.iconName.toLowerCase() == 'crown';
+    final lower = package.iconName.toLowerCase();
+    final tierLower = package.id?.toLowerCase() ?? '';
+    final titleLower = title.toLowerCase();
+
+    final isMax =
+        lower.contains('max') ||
+        lower.contains('diamond') ||
+        lower.contains('elite') ||
+        tierLower.contains('max') ||
+        tierLower.contains('elite') ||
+        titleLower.contains('max') ||
+        title.contains('ماكس');
+
+    final isPlus =
+        !isMax &&
+        (isFeatured ||
+            lower.contains('plus') ||
+            lower.contains('crown') ||
+            lower.contains('platinum') ||
+            tierLower.contains('plus') ||
+            tierLower.contains('platinum') ||
+            titleLower.contains('plus') ||
+            titleLower.contains('platinum') ||
+            title.contains('بلس'));
+
+    final isAr = locale.localeName == 'ar';
+    final String displayTitle = isMax
+        ? (isAr ? 'ماكس' : 'Max')
+        : isPlus
+        ? (isAr ? 'بلس' : 'Plus')
+        : (isAr ? 'سيلكت' : 'Select');
 
     final countLabel = package.restaurantCount > 0
         ? '+${package.restaurantCount}'
         : '';
 
     final List<Color> cardGradient = isPlus
-        ? const [Color(0xFF0EA366), Color(0xFF067844)]
+        ? const [Color(0xFF0D986A), Color(0xFF087A4D)]
         : isMax
         ? const [Color(0xFF26282B), Color(0xFF1B1C1E)]
         : [color.surface, color.surface];
 
     final Color borderColor = isPlus
-        ? const Color(0xFF0EA366)
+        ? const Color(0xFF0D986A)
         : isMax
         ? const Color(0xFF33353A)
-        : color.outlineVariant.withValues(alpha: 0.6);
+        : color.outlineVariant;
 
     final Color shadowColor = isPlus
         ? const Color(0x38057241)
         : isMax
         ? const Color(0x40000000)
+        : isSelected
+        ? color.primary.withValues(alpha: 0.15)
         : color.shadow.withValues(alpha: 0.08);
 
     final Color titleColor = isPlus
@@ -73,13 +105,31 @@ class RestaurantPackageTierCard extends StatelessWidget {
         : color.primary;
 
     final Color buttonForegroundColor = isPlus
-        ? color.primary
+        ? const Color(0xFF0D986A)
         : color.onPrimary;
+
+    final Color priceColor = isPlus
+        ? color.onPrimary
+        : isMax
+        ? color.onPrimary
+        : color.primary;
+
+    final Color priceSubtitleColor = isPlus
+        ? color.onPrimary.withValues(alpha: 0.85)
+        : isMax
+        ? color.onPrimary.withValues(alpha: 0.75)
+        : color.primary.withValues(alpha: 0.85);
+
+    final Color dividerColor = isPlus
+        ? color.onPrimary.withValues(alpha: 0.35)
+        : isMax
+        ? color.onPrimary.withValues(alpha: 0.25)
+        : color.primary.withValues(alpha: 0.35);
 
     return Semantics(
       button: true,
       selected: isSelected,
-      label: title,
+      label: displayTitle,
       child: SizedBox(
         width: width,
         height: height,
@@ -108,85 +158,6 @@ class RestaurantPackageTierCard extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    right: Spacing.monthlyPlanPackageIconEnd,
-                    top: Spacing.monthlyPlanPackageIconTop,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size22,
-                            color: titleColor,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.sm),
-                        RestaurantPackageTierIcon(
-                          iconName: package.iconName,
-                          logoUrl: package.logoUrl,
-                          usesLightForeground: isPlus || isMax,
-                          isSelected: isSelected,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    left: Spacing.monthlyPlanPackageButtonStart,
-                    top: Spacing.monthlyPlanPackageButtonTop,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: onBrowseRestaurants,
-                      child: Container(
-                        width: Spacing.monthlyPlanPackageButtonWidth,
-                        height: Spacing.monthlyPlanPackageButtonHeight,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.md,
-                        ),
-                        decoration: BoxDecoration(
-                          color: buttonBackgroundColor,
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusPill,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: color.shadow.withValues(alpha: 0.10),
-                              blurRadius: Spacing.xs,
-                              offset: const Offset(0, Spacing.hairline),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.chevron_left_rounded,
-                              size: Spacing.iconSm,
-                              color: buttonForegroundColor,
-                            ),
-                            const SizedBox(width: Spacing.xs),
-                            Flexible(
-                              child: Text(
-                                locale.calendar_browse_restaurants,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size11,
-                                  color: buttonForegroundColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
                     right: Spacing.monthlyPlanPackageIndicatorEnd,
                     top: Spacing.monthlyPlanPackageIndicatorTop,
                     child: IgnorePointer(
@@ -200,7 +171,7 @@ class RestaurantPackageTierCard extends StatelessWidget {
                           border: Border.all(
                             color: isSelected
                                 ? color.primary
-                                : const Color(0xFFBDBDBD),
+                                : color.outlineVariant,
                             width: Spacing.border,
                           ),
                           boxShadow: [
@@ -219,6 +190,110 @@ class RestaurantPackageTierCard extends StatelessWidget {
                               )
                             : null,
                       ),
+                    ),
+                  ),
+                  Positioned(
+                    left: Spacing.monthlyPlanPackageLogoStart,
+                    right: Spacing.sm,
+                    top: Spacing.monthlyPlanPackageTitleTop,
+                    bottom: Spacing.sm,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        RestaurantPackageTierPrice(
+                          price: package.price,
+                          currency: package.currency,
+                          priceSubtitle: package.priceSubtitle,
+                          priceColor: priceColor,
+                          subtitleColor: priceSubtitleColor,
+                          dividerColor: dividerColor,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: onBrowseRestaurants,
+                              child: Container(
+                                height: Spacing.monthlyPlanPackageButtonHeight,
+                                constraints: const BoxConstraints(
+                                  maxWidth: 122.0,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Spacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: buttonBackgroundColor,
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.radiusPill,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: color.shadow.withValues(
+                                        alpha: 0.10,
+                                      ),
+                                      blurRadius: Spacing.xs,
+                                      offset: const Offset(0, Spacing.hairline),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.chevron_left_rounded,
+                                      size: Spacing.iconSm,
+                                      color: buttonForegroundColor,
+                                    ),
+                                    // const SizedBox(width: Spacing.xxs),
+                                    Flexible(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          locale.calendar_browse_restaurants,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.center,
+                                          style: getBoldStyle(
+                                            fontFamily: FontConstant.alexandria,
+                                            fontSize: FontSize.size10,
+                                            color: buttonForegroundColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          displayTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size20,
+                            color: titleColor,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        RestaurantPackageTierIcon(
+                          iconName: isMax
+                              ? 'diamond'
+                              : isPlus
+                              ? 'crown'
+                              : 'heart',
+                          logoUrl: package.logoUrl,
+                          usesLightForeground: isPlus || isMax,
+                          isSelected: isSelected,
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -267,10 +342,10 @@ class _RestaurantPackageTierCardPainter extends CustomPainter {
   }
 
   Path _createPath(Size size) {
-    final bodyTop = Spacing.monthlyPlanPackageBodyTop;
+    const bodyTop = Spacing.monthlyPlanPackageBodyTop;
     final bodyBottom = size.height;
-    final curveStart = size.width * 0.60;
-    final curveWidth = size.width * 0.13;
+    final curveStart = size.width * 0.53;
+    final curveWidth = size.width * 0.11;
 
     return Path()
       ..moveTo(radius, bodyTop)

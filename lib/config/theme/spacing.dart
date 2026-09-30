@@ -593,8 +593,8 @@ class Spacing {
   static const double monthlyPlanPackageIndicatorSize = 20.0;
   static const double monthlyPlanPackageIndicatorEnd = 12.0;
   static const double monthlyPlanPackageIndicatorTop = 6.0;
-  static const double monthlyPlanPackageButtonWidth = 154.0;
-  static const double monthlyPlanPackageButtonHeight = 32.0;
+  static const double monthlyPlanPackageButtonWidth = 110.0;
+  static const double monthlyPlanPackageButtonHeight = 28.0;
   static const double monthlyPlanRestaurantLogoSize = 32.0;
   static const double monthlyPlanRestaurantLogoGap = 6.0;
   static const double monthlyPlanRestaurantLogoOverlap = -6.0;

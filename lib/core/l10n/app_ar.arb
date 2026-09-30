@@ -706,6 +706,7 @@
   "subscription_tier_elite": "سيليكت",
   "subscription_tier_plus": "بلس",
   "subscription_tier_max": "ماكس",
+  "subscription_until_end_of_subscription": "حتى نهاية الاشتراك",
   "subscription_summary_title": "ملخص الاشتراك",
   "subscription_summary_duration_label": "المدة",
   "subscription_summary_duration_value": "شهر واحد",

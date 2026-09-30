@@ -706,6 +706,7 @@
   "subscription_tier_elite": "Select",
   "subscription_tier_plus": "Plus",
   "subscription_tier_max": "Max",
+  "subscription_until_end_of_subscription": "Until subscription ends",
   "subscription_summary_title": "Subscription summary",
   "subscription_summary_duration_label": "Duration",
   "subscription_summary_duration_value": "One month",

@@ -3866,6 +3866,12 @@ abstract class AppLocalizations {
   /// **'Max'**
   String get subscription_tier_max;
 
+  /// No description provided for @subscription_until_end_of_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Until subscription ends'**
+  String get subscription_until_end_of_subscription;
+
   /// No description provided for @subscription_summary_title.
   ///
   /// In en, this message translates to:

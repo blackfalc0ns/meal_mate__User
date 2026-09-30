@@ -54,26 +54,21 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        for (var i = 0; i < 3; i++)
-                          Transform.translate(
-                            offset: Offset(
-                              (i + 1) *
-                                  Spacing.monthlyPlanRestaurantLogoOverlap,
-                              0,
-                            ),
-                            child: Container(
-                              width: Spacing.monthlyPlanRestaurantLogoSize,
-                              height: Spacing.monthlyPlanRestaurantLogoSize,
-                              decoration: BoxDecoration(
-                                color: placeholderColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: color.surface,
-                                  width: 1.5,
-                                ),
+                        for (var i = 0; i < 3; i++) ...[
+                          const SizedBox(width: Spacing.xs),
+                          Container(
+                            width: Spacing.monthlyPlanRestaurantLogoSize,
+                            height: Spacing.monthlyPlanRestaurantLogoSize,
+                            decoration: BoxDecoration(
+                              color: placeholderColor,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: color.surface,
+                                width: 1.5,
                               ),
                             ),
                           ),
+                        ],
                       ],
                     ),
                   ),
@@ -172,10 +167,10 @@ class _RestaurantPackageTierCardSkeletonPainter extends CustomPainter {
   }
 
   Path _createPath(Size size) {
-    final bodyTop = Spacing.monthlyPlanPackageBodyTop;
+    const bodyTop = Spacing.monthlyPlanPackageBodyTop;
     final bodyBottom = size.height;
-    final curveStart = size.width * 0.60;
-    final curveWidth = size.width * 0.13;
+    final curveStart = size.width * 0.53;
+    final curveWidth = size.width * 0.11;
 
     return Path()
       ..moveTo(radius, bodyTop)

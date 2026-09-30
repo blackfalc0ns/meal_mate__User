@@ -171,6 +171,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         isSuccess: true,
         durations: validDurations,
         tiers: validTiers,
+        selectedTierIndex:
+            state.selectedTierIndex ?? (validTiers.isNotEmpty ? 0 : null),
       ),
     );
   }
@@ -209,11 +211,14 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final validTiers =
+            result.data.where((tier) => tier.tier.isNotEmpty).toList();
         emit(
           state.copyWith(
             isTiersLoading: false,
             isSuccess: true,
-            tiers: result.data.where((tier) => tier.tier.isNotEmpty).toList(),
+            tiers: validTiers,
+            selectedTierIndex: validTiers.isNotEmpty ? 0 : null,
           ),
         );
       case ApiErrorResult():
@@ -256,11 +261,14 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final validTiers =
+            result.data.where((tier) => tier.tier.isNotEmpty).toList();
         emit(
           state.copyWith(
             isTiersLoading: false,
             isSuccess: true,
-            tiers: result.data.where((tier) => tier.tier.isNotEmpty).toList(),
+            tiers: validTiers,
+            selectedTierIndex: validTiers.isNotEmpty ? 0 : null,
           ),
         );
       case ApiErrorResult():

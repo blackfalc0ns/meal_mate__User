@@ -43,20 +43,65 @@ class SubscriptionTierEntity {
   final int? fridayDays;
   final int? totalServiceDays;
 
-  String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
+  String name(String localeName) {
+    final lower = tier.toLowerCase();
+    final isAr = localeName == 'ar';
+
+    if (lower.contains('platinum') || lower.contains('plus')) {
+      return isAr ? 'بلس' : 'Plus';
+    }
+    if (lower.contains('elite') ||
+        lower.contains('max') ||
+        lower.contains('diamond')) {
+      return isAr ? 'ماكس' : 'Max';
+    }
+    if (lower.contains('basic') || lower.contains('select')) {
+      return isAr ? 'سيلكت' : 'Select';
+    }
+
+    if (isAr) {
+      if (nameAr.trim().isNotEmpty && nameAr != tier) return nameAr;
+      if (nameEn.trim().isNotEmpty && nameEn != tier) return nameEn;
+    } else {
+      if (nameEn.trim().isNotEmpty && nameEn != tier) return nameEn;
+      if (nameAr.trim().isNotEmpty && nameAr != tier) return nameAr;
+    }
+
+    return isAr ? 'سيلكت' : 'Select';
+  }
 
   String description(String localeName) =>
       localeName == 'ar' ? descriptionAr : descriptionEn;
 
   MonthlyPackageTierEntity toPackageTier(String localeName) {
+    final lower = tier.toLowerCase();
+    final icon = lower.contains('max') ||
+            lower.contains('diamond') ||
+            lower.contains('elite')
+        ? 'diamond'
+        : lower.contains('plus') ||
+                lower.contains('crown') ||
+                lower.contains('platinum')
+        ? 'crown'
+        : 'heart';
+
+    final effectivePrice = totalPrice ?? dailyPrice ?? priceDifference;
+    final formattedPriceStr = effectivePrice != null
+        ? effectivePrice.formattedPrice
+        : '';
+    final defaultCurrency = localeName == 'ar' ? 'د.ك' : 'KWD';
+    final effectiveCurrency = currencyCode.isNotEmpty
+        ? (currencyCode == 'KWD' ? defaultCurrency : currencyCode)
+        : defaultCurrency;
+
     return MonthlyPackageTierEntity(
       title: name(localeName),
       subtitle: description(localeName),
-      price: totalPrice == null ? '' : totalPrice!.formattedPrice,
-      currency: currencyCode,
+      price: formattedPriceStr,
+      currency: effectiveCurrency,
       period: '',
       bullets: const [],
-      iconName: tier.toLowerCase(),
+      iconName: icon,
       logoUrl: logoUrl,
       restaurantCount: restaurantCount,
       restaurantLogoUrls: restaurants
@@ -69,11 +114,24 @@ class SubscriptionTierEntity {
 
   RestaurantPackageTierUiModel toTierUiModel(String localeName) {
     final lower = tier.toLowerCase();
-    final icon = lower.contains('max') || lower.contains('elite')
+    final icon = lower.contains('max') ||
+            lower.contains('diamond') ||
+            lower.contains('elite')
         ? 'diamond'
-        : lower.contains('plus')
+        : lower.contains('plus') ||
+                lower.contains('crown') ||
+                lower.contains('platinum')
         ? 'crown'
         : 'heart';
+
+    final effectivePrice = totalPrice ?? dailyPrice ?? priceDifference;
+    final formattedPriceStr = effectivePrice != null
+        ? effectivePrice.formattedPrice
+        : '';
+    final defaultCurrency = localeName == 'ar' ? 'د.ك' : 'KWD';
+    final effectiveCurrency = currencyCode.isNotEmpty
+        ? (currencyCode == 'KWD' ? defaultCurrency : currencyCode)
+        : defaultCurrency;
 
     return RestaurantPackageTierUiModel(
       id: tier,
@@ -87,6 +145,8 @@ class SubscriptionTierEntity {
           .whereType<String>()
           .toList(),
       isPopular: isRecommended,
+      price: formattedPriceStr,
+      currency: effectiveCurrency,
     );
   }
 }

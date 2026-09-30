@@ -2043,6 +2043,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_tier_max => 'Max';
 
   @override
+  String get subscription_until_end_of_subscription =>
+      'Until subscription ends';
+
+  @override
   String get subscription_summary_title => 'Subscription summary';
 
   @override

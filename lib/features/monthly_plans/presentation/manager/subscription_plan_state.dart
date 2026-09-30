@@ -206,10 +206,16 @@ class SubscriptionPlanState {
       mealsPerDay: bundle.description(localeName),
       discountLabel: selected?.name(localeName) ?? '',
       subscribeLabel: subscribeLabel,
-      price: selected?.totalPrice == null
-          ? ''
-          : selected!.totalPrice!.formattedPrice,
-      currency: selected?.currencyCode ?? '',
+      price: selected?.totalPrice != null
+          ? selected!.totalPrice!.formattedPrice
+          : (selected?.dailyPrice != null
+              ? selected!.dailyPrice!.formattedPrice
+              : ''),
+      currency: (selected?.currencyCode.isNotEmpty ?? false)
+          ? (selected!.currencyCode == 'KWD'
+              ? (localeName == 'ar' ? 'د.ك' : 'KWD')
+              : selected.currencyCode)
+          : (localeName == 'ar' ? 'د.ك' : 'KWD'),
       heroImageAsset: Assets.monthlyPlanHero,
       description: program.description(localeName),
       features: const [],

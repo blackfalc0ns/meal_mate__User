@@ -29,6 +29,9 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
             restaurantCount: p.restaurantCount,
             restaurantLogoUrls: p.restaurantLogoUrls,
             isPopular: p.isPopular,
+            price: p.price,
+            currency: p.currency,
+            priceSubtitle: p.period,
           ),
         )
         .toList();

@@ -31,7 +31,7 @@ class RestaurantTierLogosRow extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (countLabel.isNotEmpty)
+            if (countLabel.isNotEmpty) ...[
               Container(
                 width: Spacing.monthlyPlanRestaurantLogoSize,
                 height: Spacing.monthlyPlanRestaurantLogoSize,
@@ -58,48 +58,54 @@ class RestaurantTierLogosRow extends StatelessWidget {
                   ).copyWith(height: 1),
                 ),
               ),
-            for (var i = 0; i < visibleLogoUrls.length; i++)
-              Transform.translate(
-                offset: Offset(
-                  (countLabel.isNotEmpty ? (i + 1) : i) *
-                      Spacing.monthlyPlanRestaurantLogoOverlap,
-                  0,
+              if (visibleLogoUrls.isNotEmpty)
+                const SizedBox(width: Spacing.xs),
+            ],
+            for (var i = 0; i < visibleLogoUrls.length; i++) ...[
+              if (i > 0) const SizedBox(width: Spacing.xs),
+              Container(
+                width: Spacing.monthlyPlanRestaurantLogoSize,
+                height: Spacing.monthlyPlanRestaurantLogoSize,
+                decoration: BoxDecoration(
+                  color: color.surface,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: borderColor,
+                    width: Spacing.border,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.shadow.withValues(alpha: 0.08),
+                      blurRadius: Spacing.xs,
+                      offset: const Offset(0, Spacing.hairline),
+                    ),
+                  ],
                 ),
-                child: Container(
-                  width: Spacing.monthlyPlanRestaurantLogoSize,
-                  height: Spacing.monthlyPlanRestaurantLogoSize,
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: borderColor,
-                      width: Spacing.border,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.shadow.withValues(alpha: 0.08),
-                        blurRadius: Spacing.xs,
-                        offset: const Offset(0, Spacing.hairline),
-                      ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: AppCachedNetworkImage(
-                      imageUrl: visibleLogoUrls[i],
-                      width: Spacing.monthlyPlanRestaurantLogoSize,
-                      height: Spacing.monthlyPlanRestaurantLogoSize,
-                      shape: BoxShape.circle,
-                      fit: BoxFit.contain,
-                      semanticLabel: locale.calendar_browse_restaurants,
-                      errorWidget: Icon(
-                        Icons.restaurant_rounded,
-                        size: FontSize.size14,
-                        color: color.primary,
-                      ),
-                    ),
-                  ),
+                child: ClipOval(
+                  child: (visibleLogoUrls[i] != null &&
+                          visibleLogoUrls[i]!.startsWith('assets/'))
+                      ? Image.asset(
+                          visibleLogoUrls[i]!,
+                          width: Spacing.monthlyPlanRestaurantLogoSize,
+                          height: Spacing.monthlyPlanRestaurantLogoSize,
+                          fit: BoxFit.contain,
+                        )
+                      : AppCachedNetworkImage(
+                          imageUrl: visibleLogoUrls[i],
+                          width: Spacing.monthlyPlanRestaurantLogoSize,
+                          height: Spacing.monthlyPlanRestaurantLogoSize,
+                          shape: BoxShape.circle,
+                          fit: BoxFit.contain,
+                          semanticLabel: locale.calendar_browse_restaurants,
+                          errorWidget: Icon(
+                            Icons.restaurant_rounded,
+                            size: FontSize.size14,
+                            color: color.primary,
+                          ),
+                        ),
                 ),
               ),
+            ],
           ],
         ),
       ),

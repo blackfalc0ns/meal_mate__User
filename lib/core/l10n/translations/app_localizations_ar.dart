@@ -2012,6 +2012,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_tier_max => 'ماكس';
 
   @override
+  String get subscription_until_end_of_subscription => 'حتى نهاية الاشتراك';
+
+  @override
   String get subscription_summary_title => 'ملخص الاشتراك';
 
   @override
