@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -17,7 +19,7 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
   final SubscriptionRestaurantDetailsArgs? args;
 
   void _onBackPressed(BuildContext context) {
-    Navigator.maybePop(context);
+    unawaited(Navigator.maybePop(context));
   }
 
   @override

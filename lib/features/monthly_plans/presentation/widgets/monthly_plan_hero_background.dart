@@ -22,7 +22,6 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     return Semantics(
@@ -42,16 +41,11 @@ class MonthlyPlanHeroBackground extends StatelessWidget {
                 size: Spacing.monthlyPlanHeroBackSize,
                 iconSize: Spacing.iconMd,
               ),
-              Positioned(
+              const Positioned(
                 top: Spacing.monthlyPlanHeroLogoTop,
                 left: 0,
                 right: 0,
-                child: const MonthlyPlanHeroLogo(),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: ColoredBox(color: color.surface.withValues(alpha: 0)),
-                ),
+                child: MonthlyPlanHeroLogo(),
               ),
             ],
           ),

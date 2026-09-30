@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart';
@@ -27,46 +31,58 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
   void doIntent(SubscriptionPlanEvent event) {
     switch (event) {
       case GetSubscriptionDurationsEvent():
-        _getDurations(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          includeFriday: event.includeFriday,
+        unawaited(
+          _getDurations(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            includeFriday: event.includeFriday,
+          ),
         );
       case ToggleSubscriptionFridayEvent():
         if (event.includeFriday && !state.canToggleFriday) return;
-        _getDurations(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          includeFriday: event.includeFriday,
+        unawaited(
+          _getDurations(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            includeFriday: event.includeFriday,
+          ),
         );
       case SelectSubscriptionDurationEvent():
-        _selectDuration(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          durationIndex: event.durationIndex,
+        unawaited(
+          _selectDuration(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            durationIndex: event.durationIndex,
+          ),
         );
       case UpdateCustomSubscriptionDurationEvent():
-        _updateCustomDuration(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          durationDays: event.durationDays,
+        unawaited(
+          _updateCustomDuration(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            durationDays: event.durationDays,
+          ),
         );
       case SelectSubscriptionTierEvent():
         emit(state.copyWith(selectedTierIndex: event.tierIndex));
       case BrowseSubscriptionTierRestaurantsEvent():
-        _browseTierRestaurants(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          tierIndex: event.tierIndex,
+        unawaited(
+          _browseTierRestaurants(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            tierIndex: event.tierIndex,
+          ),
         );
       case CheckSubscriptionReadinessEvent():
-        _checkReadiness(
-          SubscriptionSummaryRequestEntity(
-            includeFriday: event.includeFriday,
-            durationDays: event.durationDays,
-            tier: event.tier,
-            bundleId: event.bundleId,
-            programId: event.programId,
+        unawaited(
+          _checkReadiness(
+            SubscriptionSummaryRequestEntity(
+              includeFriday: event.includeFriday,
+              durationDays: event.durationDays,
+              tier: event.tier,
+              bundleId: event.bundleId,
+              programId: event.programId,
+            ),
           ),
         );
     }
@@ -90,65 +106,73 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       ),
     );
 
-    final durationsResult = await _getSubscriptionDurationsUseCase(
-      programId: programId,
-      bundleId: bundleId,
-      includeFriday: includeFriday,
-    );
+    final results = await Future.wait([
+      _getSubscriptionDurationsUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        includeFriday: includeFriday,
+      ),
+      _getSubscriptionTiersUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        durationDays: null,
+        includeFriday: includeFriday,
+      ),
+    ]);
 
-    final tiersResult = await _getSubscriptionTiersUseCase(
-      programId: programId,
-      bundleId: bundleId,
-      durationDays: null,
-      includeFriday: includeFriday,
-    );
+    final durationsResult =
+        results[0] as ApiResult<List<SubscriptionDurationEntity>>;
+    final tiersResult = results[1] as ApiResult<List<SubscriptionTierEntity>>;
 
-    switch (durationsResult) {
-      case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            isDurationsLoading: false,
-            isSuccess: true,
-            durations: durationsResult.data
-                .where(
-                  (duration) =>
-                      (duration.durationDays ?? 0) > 0 || duration.isCustom,
-                )
-                .toList(),
-          ),
-        );
-      case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isDurationsLoading: false,
-            isTiersLoading: false,
-            isSuccess: false,
-            failure: durationsResult.failure,
-          ),
-        );
-        return;
+    if (durationsResult is ApiErrorResult<List<SubscriptionDurationEntity>>) {
+      emit(
+        state.copyWith(
+          isDurationsLoading: false,
+          isTiersLoading: false,
+          isSuccess: false,
+          failure: durationsResult.failure,
+        ),
+      );
+      return;
     }
 
-    switch (tiersResult) {
-      case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            isTiersLoading: false,
-            isSuccess: true,
-            tiers: tiersResult.data
-                .where((tier) => tier.tier.isNotEmpty)
-                .toList(),
-          ),
-        );
-      case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isTiersLoading: false,
-            isSuccess: false,
-            failure: tiersResult.failure,
-          ),
-        );
+    final validDurations =
+        (durationsResult as ApiSuccessResult<List<SubscriptionDurationEntity>>)
+            .data
+            .where(
+              (duration) =>
+                  (duration.durationDays ?? 0) > 0 || duration.isCustom,
+            )
+            .toList();
+
+    if (tiersResult is ApiErrorResult<List<SubscriptionTierEntity>>) {
+      emit(
+        state.copyWith(
+          isDurationsLoading: false,
+          isTiersLoading: false,
+          isSuccess: false,
+          durations: validDurations,
+          failure: tiersResult.failure,
+        ),
+      );
+      return;
     }
+
+    final validTiers =
+        (tiersResult as ApiSuccessResult<List<SubscriptionTierEntity>>)
+            .data
+            .where((tier) => tier.tier.isNotEmpty)
+            .toList();
+
+    emit(
+      state.copyWith(
+        isDurationsLoading: false,
+        isTiersLoading: false,
+        isSuccess: true,
+        durations: validDurations,
+        tiers: validTiers,
+      ),
+    );
   }
 
   Future<void> _selectDuration({

@@ -23,9 +23,9 @@ class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  children: [
                     ShimmerPlaceholder.rect(
                       width: Spacing.iconMd,
                       height: Spacing.iconMd,

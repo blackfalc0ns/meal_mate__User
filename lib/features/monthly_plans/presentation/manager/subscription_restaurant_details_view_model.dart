@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -18,10 +20,12 @@ class SubscriptionRestaurantDetailsViewModel
   void doIntent(SubscriptionRestaurantDetailsEvent event) {
     switch (event) {
       case GetSubscriptionRestaurantDetailsEvent():
-        _getDetails(
-          programId: event.programId,
-          bundleId: event.bundleId,
-          restaurantId: event.restaurantId,
+        unawaited(
+          _getDetails(
+            programId: event.programId,
+            bundleId: event.bundleId,
+            restaurantId: event.restaurantId,
+          ),
         );
     }
   }

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/custom_warning_widget.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_loading_skeleton.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_section.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_loading_skeleton.dart';
-import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_section.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_view.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_view.dart';
 
 class MonthlyPlanDetailsContent extends StatefulWidget {
   const MonthlyPlanDetailsContent({
@@ -128,142 +126,43 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
       locale.localeName,
     );
 
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 360),
-      reverseDuration: const Duration(milliseconds: 220),
+      duration: const Duration(milliseconds: 320),
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) {
-        final slideAnimation = Tween<Offset>(
-          begin: const Offset(0, 0.08),
-          end: Offset.zero,
-        ).animate(animation);
-
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: slideAnimation,
-            child: RepaintBoundary(child: child),
-          ),
-        );
-      },
       child: _isRestaurantsView
-          ? _MonthlyPlanRestaurantsView(
+          ? MonthlyPlanRestaurantsView(
               key: const ValueKey('restaurants-view'),
               state: state,
               plan: plan,
               onClose: () => setState(() => _isRestaurantsView = false),
               onRetry: _onRetryBrowseRestaurants,
             )
-          : _MonthlyPlanPackagesView(
+              .animate(key: const ValueKey('restaurants-view-anim'))
+              .fadeIn(duration: 320.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: isRtl ? -0.15 : 0.15,
+                end: 0,
+                duration: 320.ms,
+                curve: Curves.easeOutCubic,
+              )
+          : MonthlyPlanPackagesView(
               key: const ValueKey('packages-view'),
               state: state,
               plan: plan,
               fridayUnavailableMessage: fridayUnavailableMessage,
               onBrowseRestaurants: _onBrowseRestaurants,
-            ),
-    );
-  }
-}
-
-class _MonthlyPlanPackagesView extends StatelessWidget {
-  const _MonthlyPlanPackagesView({
-    super.key,
-    required this.state,
-    required this.plan,
-    required this.fridayUnavailableMessage,
-    required this.onBrowseRestaurants,
-  });
-
-  final SubscriptionPlanState state;
-  final MonthlyPlanDetailsEntity plan;
-  final String fridayUnavailableMessage;
-  final ValueChanged<int> onBrowseRestaurants;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (fridayUnavailableMessage.isNotEmpty) ...[
-          CustomWarningWidget(
-            icon: Icons.warning_rounded,
-            message: fridayUnavailableMessage,
-            isWarning: true,
-            maxMessageLines: 3,
-          ),
-          const SizedBox(height: Spacing.md),
-        ],
-        MonthlyPlanPackagesSection(
-          packages: plan.packageTiers,
-          selectedIndex: state.selectedTierIndex,
-          onSelected: (index) => context
-              .read<SubscriptionPlanViewModel>()
-              .doIntent(SelectSubscriptionTierEvent(index)),
-          onBrowseRestaurants: onBrowseRestaurants,
-        ),
-      ],
-    );
-  }
-}
-
-class _MonthlyPlanRestaurantsView extends StatelessWidget {
-  const _MonthlyPlanRestaurantsView({
-    super.key,
-    required this.state,
-    required this.plan,
-    required this.onClose,
-    required this.onRetry,
-  });
-
-  final SubscriptionPlanState state;
-  final MonthlyPlanDetailsEntity plan;
-  final VoidCallback onClose;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            visualDensity: VisualDensity.compact,
-            onPressed: onClose,
-            icon: Icon(
-              Icons.close_rounded,
-              color: color.onSurface,
-              size: Spacing.iconLg,
-              semanticLabel: locale.go_back,
-            ),
-          ),
-        ),
-        const SizedBox(height: Spacing.xs),
-        if (state.isBrowseRestaurantsLoading && state.browseRestaurants.isEmpty)
-          const MonthlyPlanRestaurantsLoadingSkeleton()
-        else if (state.browseRestaurantsFailure != null &&
-            state.browseRestaurants.isEmpty)
-          ApiErrorWidget(
-            exception: state.browseRestaurantsFailure!.exception,
-            onRetry: onRetry,
-          )
-        else if (state.browseRestaurants.isEmpty)
-          EmptyStateWidget(
-            title: locale.subscription_restaurant_categories_title,
-            description: locale.subscription_restaurant_categories_subtitle,
-            icon: Icons.restaurant_rounded,
-          )
-        else
-          MonthlyPlanRestaurantsSection(
-            mode: SubscriptionPlanViewMode.grid,
-            restaurants: plan.restaurants,
-          ),
-      ],
+            )
+              .animate(key: const ValueKey('packages-view-anim'))
+              .fadeIn(duration: 320.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: isRtl ? 0.15 : -0.15,
+                end: 0,
+                duration: 320.ms,
+                curve: Curves.easeOutCubic,
+              ),
     );
   }
 }
