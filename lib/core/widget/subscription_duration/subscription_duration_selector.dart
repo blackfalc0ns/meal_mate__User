@@ -120,28 +120,34 @@ class _SubscriptionDurationSelectorState
                           ),
                         ),
                       ],
-                      const Spacer(),
-                      if (customDuration != null && customIndex != null)
-                        SubscriptionCustomDurationInput(
-                          label: customDuration.name(locale.localeName),
-                          isSelected: widget.selectedIndex == customIndex,
-                          value: _customDurationValue(customDuration),
-                          minDays: customDuration.minDays!,
-                          maxDays: customDuration.maxDays!,
-                          errorText: _customDurationError(customDuration),
-                          onTap: () => _selectCustomDuration(
-                            customIndex,
-                            customDuration,
-                          ),
-                          onIncrement: _nextCustomDuration(
-                            customIndex,
-                            customDuration,
-                          ),
-                          onDecrement: _previousCustomDuration(
-                            customIndex,
-                            customDuration,
+                      if (customDuration != null && customIndex != null) ...[
+                        const SizedBox(width: Spacing.xs),
+                        Expanded(
+                          child: Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: SubscriptionCustomDurationInput(
+                              label: customDuration.name(locale.localeName),
+                              isSelected: widget.selectedIndex == customIndex,
+                              value: _customDurationValue(customDuration),
+                              minDays: customDuration.minDays!,
+                              maxDays: customDuration.maxDays!,
+                              errorText: _customDurationError(customDuration),
+                              onTap: () => _selectCustomDuration(
+                                customIndex,
+                                customDuration,
+                              ),
+                              onIncrement: _nextCustomDuration(
+                                customIndex,
+                                customDuration,
+                              ),
+                              onDecrement: _previousCustomDuration(
+                                customIndex,
+                                customDuration,
+                              ),
+                            ),
                           ),
                         ),
+                      ],
                     ],
                   ),
                 ),

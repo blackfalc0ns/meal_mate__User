@@ -60,8 +60,13 @@ class SubscriptionDurationSelectorSkeleton extends StatelessWidget {
                         if (index > 0) const SizedBox(width: Spacing.sm),
                         const SubscriptionPresetDurationSkeleton(),
                       ],
-                      const Spacer(),
-                      const SubscriptionCustomDurationSkeleton(),
+                      const SizedBox(width: Spacing.xs),
+                      const Expanded(
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: SubscriptionCustomDurationSkeleton(),
+                        ),
+                      ),
                     ],
                   ),
                 ),

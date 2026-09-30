@@ -62,21 +62,21 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                     Row(
                       textDirection: textDirection,
                       children: [
-                        Container(
-                          width: Spacing.xxl,
-                          height: Spacing.xxl,
-                          decoration: BoxDecoration(
-                            color: color.primaryContainer.withValues(
-                              alpha: 0.7,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            _badgeIconForProgram(program),
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                          ),
-                        ),
+                        // Container(
+                        //   width: Spacing.xxl,
+                        //   height: Spacing.xxl,
+                        //   decoration: BoxDecoration(
+                        //     color: color.primaryContainer.withValues(
+                        //       alpha: 0.7,
+                        //     ),
+                        //     shape: BoxShape.circle,
+                        //   ),
+                        //   child: Icon(
+                        //     _badgeIconForProgram(program),
+                        //     size: Spacing.iconSm,
+                        //     color: color.primary,
+                        //   ),
+                        // ),
                         const SizedBox(width: Spacing.sm),
                         Expanded(
                           child: Column(
@@ -109,91 +109,75 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xxl,
-                      ),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            program.description(locale.localeName),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size12,
-                              color: color.onSurfaceVariant,
-                            ),
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          program.description(locale.localeName),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size12,
+                            color: color.onSurfaceVariant,
                           ),
                         ),
                       ),
                     ),
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.xl,
-                      ),
-                      child: Row(
-                        textDirection: textDirection,
-                        children: [
-                          Icon(
-                            _primaryFeatureIconForProgram(program),
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Flexible(
-                            child: Text(
-                              _featureAt(
-                                program.keywords(locale.localeName),
-                                0,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              style: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.onSurfaceVariant,
-                              ),
+                    Row(
+                      textDirection: textDirection,
+                      children: [
+                        Icon(
+                          _primaryFeatureIconForProgram(program),
+                          size: Spacing.iconSm,
+                          color: color.primary,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: Text(
+                            _featureAt(program.keywords(locale.localeName), 0),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: color.onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(width: Spacing.md),
-                          SizedBox(
-                            height: Spacing.base,
-                            child: VerticalDivider(
-                              width: Spacing.border,
-                              color: color.outlineVariant,
+                        ),
+                        const SizedBox(width: Spacing.md),
+                        SizedBox(
+                          height: Spacing.base,
+                          child: VerticalDivider(
+                            width: Spacing.border,
+                            color: color.outlineVariant,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.md),
+                        Icon(
+                          _secondaryFeatureIconForProgram(program),
+                          size: Spacing.iconSm,
+                          color: color.primary,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: Text(
+                            _featureAt(program.keywords(locale.localeName), 1),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: color.onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(width: Spacing.md),
-                          Icon(
-                            _secondaryFeatureIconForProgram(program),
-                            size: Spacing.iconSm,
-                            color: color.primary,
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Flexible(
-                            child: Text(
-                              _featureAt(
-                                program.keywords(locale.localeName),
-                                1,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              style: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

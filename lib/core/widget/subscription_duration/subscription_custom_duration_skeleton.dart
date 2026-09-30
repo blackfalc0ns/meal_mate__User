@@ -7,34 +7,48 @@ class SubscriptionCustomDurationSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: Spacing.monthlyPlanDurationCustomGroupWidth,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: Spacing.monthlyPlanDurationCustomGroupWidth,
+      ),
       child: Column(
         children: [
-          ShimmerPlaceholder.rect(
+          const ShimmerPlaceholder.rect(
             width: Spacing.monthlyPlanCustomDurationWidth,
             height: Spacing.md,
             borderRadius: Spacing.radiusPill,
           ),
-          SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.xs),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ShimmerPlaceholder.circle(
+              const ShimmerPlaceholder.circle(
                 size: Spacing.monthlyPlanDurationControlWidth,
               ),
-              ShimmerPlaceholder.rect(
-                width: Spacing.monthlyPlanCustomDurationWidth,
-                height: Spacing.monthlyPlanDurationCustomInputHeight,
-                borderRadius: Spacing.monthlyPlanDurationOptionRadius,
+              const SizedBox(width: Spacing.xxs),
+              Flexible(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: Spacing.monthlyPlanCustomDurationWidth,
+                  ),
+                  child: const SizedBox(
+                    height: Spacing.monthlyPlanDurationCustomInputHeight,
+                    width: double.infinity,
+                    child: ShimmerPlaceholder.rect(
+                      height: Spacing.monthlyPlanDurationCustomInputHeight,
+                      borderRadius: Spacing.monthlyPlanDurationOptionRadius,
+                    ),
+                  ),
+                ),
               ),
-              ShimmerPlaceholder.circle(
+              const SizedBox(width: Spacing.xxs),
+              const ShimmerPlaceholder.circle(
                 size: Spacing.monthlyPlanDurationControlWidth,
               ),
             ],
           ),
-          SizedBox(height: Spacing.xs),
-          ShimmerPlaceholder.rect(
+          const SizedBox(height: Spacing.xs),
+          const ShimmerPlaceholder.rect(
             width: Spacing.monthlyPlanDurationCustomGroupWidth,
             height: Spacing.sm,
             borderRadius: Spacing.radiusPill,

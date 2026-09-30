@@ -33,59 +33,68 @@ class MonthlyPlanCustomDurationInput extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return SizedBox(
-      width: Spacing.monthlyPlanDurationCustomGroupWidth,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: Spacing.monthlyPlanDurationCustomGroupWidth,
+      ),
       child: Column(
         children: [
-          SizedBox(
-            width: Spacing.monthlyPlanCustomDurationWidth,
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
-                color: color.onSurfaceVariant,
-              ),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size11,
+              color: color.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: Spacing.xs),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _customControl(
                 color: color,
                 icon: Icons.add_rounded,
                 onPressed: onIncrement,
               ),
-              SizedBox(
-                width: Spacing.monthlyPlanCustomDurationWidth,
-                height: Spacing.monthlyPlanDurationCustomInputHeight,
-                child: OutlinedButton(
-                  onPressed: onTap,
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    side: BorderSide(
-                      color: isSelected ? color.primary : color.outlineVariant,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.monthlyPlanDurationOptionRadius,
-                      ),
-                    ),
+              const SizedBox(width: Spacing.xxs),
+              Flexible(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: Spacing.monthlyPlanCustomDurationWidth,
                   ),
-                  child: Text(
-                    value.toString(),
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size15,
-                      color: isSelected ? color.primary : color.onSurface,
+                  child: SizedBox(
+                    height: Spacing.monthlyPlanDurationCustomInputHeight,
+                    child: OutlinedButton(
+                      onPressed: onTap,
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        side: BorderSide(
+                          color: isSelected
+                              ? color.primary
+                              : color.outlineVariant,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Spacing.monthlyPlanDurationOptionRadius,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        value.toString(),
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size15,
+                          color: isSelected ? color.primary : color.onSurface,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(width: Spacing.xxs),
               _customControl(
                 color: color,
                 icon: Icons.remove_rounded,
@@ -121,7 +130,7 @@ class MonthlyPlanCustomDurationInput extends StatelessWidget {
       child: IconButton(
         onPressed: onPressed,
         padding: EdgeInsets.zero,
-        constraints: BoxConstraints.tightFor(
+        constraints: const BoxConstraints.tightFor(
           width: Spacing.monthlyPlanDurationControlWidth,
           height: Spacing.monthlyPlanDurationControlWidth,
         ),

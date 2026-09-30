@@ -48,9 +48,6 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
             vertical: Spacing.sm,
           ),
           decoration: BoxDecoration(
-            color: isSelected
-                ? color.surfaceContainerHighest.withValues(alpha: 0.24)
-                : color.surface,
             borderRadius: BorderRadius.circular(
               Spacing.subscriptionProgramCardRadius,
             ),
