@@ -102,7 +102,7 @@ class SubscriptionPackageListSection extends StatelessWidget {
           ),
         ),
         const SliverToBoxAdapter(
-          child: SizedBox(height: Spacing.xl),
+          child: SizedBox(height: Spacing.subscriptionProgramsBottomSpace),
         ),
       ],
     );

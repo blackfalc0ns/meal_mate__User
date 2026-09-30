@@ -5,10 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
-enum AppSubscriptionButtonVariant {
-  checkout,
-  next,
-}
+enum AppSubscriptionButtonVariant { checkout, next }
 
 class AppSubscriptionButton extends StatelessWidget {
   const AppSubscriptionButton({
@@ -17,8 +14,8 @@ class AppSubscriptionButton extends StatelessWidget {
     required this.currency,
     required this.onPressed,
     this.isLoading = false,
-  })  : text = null,
-        variant = AppSubscriptionButtonVariant.checkout;
+  }) : text = null,
+       variant = AppSubscriptionButtonVariant.checkout;
 
   const AppSubscriptionButton.checkout({
     super.key,
@@ -26,17 +23,17 @@ class AppSubscriptionButton extends StatelessWidget {
     required this.currency,
     required this.onPressed,
     this.isLoading = false,
-  })  : text = null,
-        variant = AppSubscriptionButtonVariant.checkout;
+  }) : text = null,
+       variant = AppSubscriptionButtonVariant.checkout;
 
   const AppSubscriptionButton.next({
     super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
-  })  : price = null,
-        currency = null,
-        variant = AppSubscriptionButtonVariant.next;
+  }) : price = null,
+       currency = null,
+       variant = AppSubscriptionButtonVariant.next;
 
   final String? price;
   final String? currency;
@@ -58,7 +55,7 @@ class AppSubscriptionButton extends StatelessWidget {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return AppButton.filled(
-      iconBeforeText: false,
+      iconBeforeText: isRtl ? false : true,
       text: text ?? '',
       onPressed: onPressed,
       isLoading: isLoading,
@@ -66,7 +63,7 @@ class AppSubscriptionButton extends StatelessWidget {
       textColor: color.onPrimary,
       fontSize: FontSize.size12,
       iconWidget: Icon(
-        isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+        isRtl ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
         color: color.onPrimary,
         size: Spacing.iconMd,
       ),

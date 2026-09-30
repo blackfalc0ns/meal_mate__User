@@ -75,53 +75,64 @@ class _SubscriptionPackageSelectionScreenState
             backgroundColor: color.surface,
             onBackPressed: () => Navigator.maybePop(context),
           ),
-          bottomNavigationBar: BlocSelector<
-            SubscriptionPackagesViewModel,
-            SubscriptionPackagesState,
-            ({bool hasBundles, bool isLoading})
-          >(
-            selector: (state) => (
-              hasBundles: state.bundles.isNotEmpty,
-              isLoading: state.isLoading,
-            ),
-            builder: (context, data) {
-              return SubscriptionPackagesBottomBar(
-                selectedPackageNotifier: _flowController.selectedPackageNotifier,
-                hasBundles: data.hasBundles,
-                isLoading: data.isLoading,
-                onContinue: () {
-                  final state = _viewModel.state;
-                  unawaited(
-                    _flowController.continueWithProfileStatus(context, state),
+          body: Stack(
+            children: [
+              BlocBuilder<
+                SubscriptionPackagesViewModel,
+                SubscriptionPackagesState
+              >(
+                buildWhen: (previous, current) =>
+                    previous.isLoading != current.isLoading ||
+                    previous.isSuccess != current.isSuccess ||
+                    previous.failure != current.failure ||
+                    previous.bundles != current.bundles,
+                builder: (context, state) {
+                  return SubscriptionPackageSelectionBody(
+                    state: state,
+                    selectedProgram: selectedProgram,
+                    selectedPackageNotifier:
+                        _flowController.selectedPackageNotifier,
+                    onPackageSelected: _flowController.selectPackage,
+                    onRetry: () {
+                      if (selectedProgram != null) {
+                        _viewModel.doIntent(
+                          GetSubscriptionPackagesEvent(
+                            selectedProgram.programId,
+                          ),
+                        );
+                      }
+                    },
                   );
                 },
-              );
-            },
-          ),
-          body: BlocBuilder<
-            SubscriptionPackagesViewModel,
-            SubscriptionPackagesState
-          >(
-            buildWhen: (previous, current) =>
-                previous.isLoading != current.isLoading ||
-                previous.isSuccess != current.isSuccess ||
-                previous.failure != current.failure ||
-                previous.bundles != current.bundles,
-            builder: (context, state) {
-              return SubscriptionPackageSelectionBody(
-                state: state,
-                selectedProgram: selectedProgram,
-                selectedPackageNotifier: _flowController.selectedPackageNotifier,
-                onPackageSelected: _flowController.selectPackage,
-                onRetry: () {
-                  if (selectedProgram != null) {
-                    _viewModel.doIntent(
-                      GetSubscriptionPackagesEvent(selectedProgram.programId),
-                    );
-                  }
+              ),
+              BlocSelector<
+                SubscriptionPackagesViewModel,
+                SubscriptionPackagesState,
+                ({bool hasBundles, bool isLoading})
+              >(
+                selector: (state) => (
+                  hasBundles: state.bundles.isNotEmpty,
+                  isLoading: state.isLoading,
+                ),
+                builder: (context, data) {
+                  return SubscriptionPackagesBottomBar(
+                    selectedPackageNotifier:
+                        _flowController.selectedPackageNotifier,
+                    hasBundles: data.hasBundles,
+                    isLoading: data.isLoading,
+                    onContinue: () {
+                      final state = _viewModel.state;
+                      unawaited(
+                        _flowController.continueWithProfileStatus(
+                          context,
+                          state,
+                        ),
+                      );
+                    },
+                  );
                 },
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
@@ -22,13 +23,12 @@ class SubscriptionPackagesBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.lg,
-          vertical: Spacing.md,
-        ),
+    return PositionedDirectional(
+      start: Spacing.subscriptionProgramsHorizontalPadding,
+      end: Spacing.subscriptionProgramsHorizontalPadding,
+      bottom: Spacing.lg,
+      child: SafeArea(
+        top: false,
         child: ValueListenableBuilder<int?>(
           valueListenable: selectedPackageNotifier,
           builder: (context, selectedIndex, _) {
@@ -41,7 +41,15 @@ class SubscriptionPackagesBottomBar extends StatelessWidget {
             );
           },
         ),
-      ),
+      )
+          .animate()
+          .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+          .slideY(
+            begin: 0.15,
+            end: 0,
+            duration: 350.ms,
+            curve: Curves.easeOutCubic,
+          ),
     );
   }
 }
