@@ -32,13 +32,14 @@ class RestaurantPackageTiersSection extends StatelessWidget {
           final width = constraints.maxWidth.isFinite
               ? constraints.maxWidth
               : Spacing.monthlyPlanPackagesWidth;
-          final cardWidth = width < Spacing.monthlyPlanPackagesWidth
-              ? width
-              : Spacing.monthlyPlanPackagesWidth;
+          // final cardWidth = width < Spacing.monthlyPlanPackagesWidth
+          //     ? width
+          //     : Spacing.monthlyPlanPackagesWidth;
 
           return Center(
             child: SizedBox(
-              width: cardWidth,
+              width: double.infinity, // width:
+              //cardWidth,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -89,7 +90,7 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                       child: RestaurantPackageTierCard(
                         package: packages[index],
                         title: packages[index].title,
-                        width: cardWidth,
+                        width: double.infinity,
                         height: Spacing.monthlyPlanPackageSideHeight,
                         isCentered: index == 1,
                         isSelected: selectedIndex == index,

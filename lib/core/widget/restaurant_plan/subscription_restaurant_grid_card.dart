@@ -69,11 +69,9 @@ class _SubscriptionRestaurantGridCardState
           Spacing.monthlyRestaurantCardRadius,
         ),
         child: Ink(
-          padding: const EdgeInsetsDirectional.only(
-            top: Spacing.md,
-            bottom: Spacing.sm,
-            start: Spacing.md,
-            end: Spacing.md,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.xs,
+            vertical: Spacing.sm,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
@@ -99,12 +97,12 @@ class _SubscriptionRestaurantGridCardState
                 textAlign: TextAlign.center,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
+                  fontSize: FontSize.size12,
                   color: color.onSurface,
-                ).copyWith(height: 1.25),
+                ).copyWith(height: 1.2),
               ),
               if (tierOrSubtitle.isNotEmpty) ...[
-                const SizedBox(height: Spacing.sm),
+                const SizedBox(height: Spacing.xs),
                 Text(
                   tierOrSubtitle,
                   maxLines: 1,
@@ -112,12 +110,12 @@ class _SubscriptionRestaurantGridCardState
                   textAlign: TextAlign.center,
                   style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size11,
+                    fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ),
                 ),
               ],
-              const Spacer(),
+              //   const Spacer(),
               Container(
                 width: double.infinity,
                 height: Spacing.monthlyRestaurantCardMetaHeight,

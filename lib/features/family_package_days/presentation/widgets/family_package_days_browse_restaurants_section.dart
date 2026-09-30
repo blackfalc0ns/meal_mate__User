@@ -76,7 +76,7 @@ class FamilyPackageDaysBrowseRestaurantsSection extends StatelessWidget {
         else
           SubscriptionRestaurantsGrid(
             crossAxisCount: 3,
-            childAspectRatio: 0.78,
+            childAspectRatio: 0.65,
             restaurants: state.browseRestaurants.map((restaurant) {
               return restaurant.toRestaurantPlan(
                 programId: resolvedProgramId,

@@ -8,7 +8,7 @@ class SubscriptionRestaurantsGrid extends StatelessWidget {
     super.key,
     required this.restaurants,
     this.crossAxisCount = 3,
-    this.childAspectRatio = 0.78,
+    this.childAspectRatio = 0.55,
   });
 
   final List<MonthlyRestaurantPlanEntity> restaurants;
@@ -26,7 +26,7 @@ class SubscriptionRestaurantsGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: Spacing.sm,
         crossAxisSpacing: Spacing.sm,
-        childAspectRatio: childAspectRatio,
+        childAspectRatio: 0.73,
       ),
       itemCount: restaurants.length,
       itemBuilder: (context, index) {

@@ -84,20 +84,15 @@ class SubscriptionDurationOption extends StatelessWidget {
                                 ).animate(animation),
                                 child: child,
                               ),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.only(
-                              start: Spacing.xs,
-                            ),
-                            child: Text(
-                              days.toString(),
-                              key: ValueKey(days),
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size17,
-                                color: isSelected
-                                    ? color.primary
-                                    : color.onSurface,
-                              ),
+                          child: Text(
+                            days.toString(),
+                            key: ValueKey(days),
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size17,
+                              color: isSelected
+                                  ? color.primary
+                                  : color.onSurface,
                             ),
                           ),
                         ),
@@ -115,13 +110,19 @@ class SubscriptionDurationOption extends StatelessWidget {
                 ),
                 PositionedDirectional(
                   top: Spacing.xs,
-                  end: 1,
-                  child: Icon(
-                    isSelected
-                        ? Icons.check_circle_rounded
-                        : Icons.calendar_month_outlined,
-                    color: isSelected ? color.primary : color.onSurfaceVariant,
-                    size: Spacing.monthlyPlanDurationStatusIconSize,
+                  start: Spacing.xs,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      isSelected
+                          ? Icons.check_circle_rounded
+                          : Icons.calendar_month_outlined,
+                      key: ValueKey(isSelected),
+                      color: isSelected
+                          ? color.primary
+                          : color.onSurfaceVariant,
+                      size: Spacing.monthlyPlanDurationStatusIconSize,
+                    ),
                   ),
                 ),
               ],

@@ -7,7 +7,7 @@ class SubscriptionRestaurantsLoadingSkeleton extends StatelessWidget {
     super.key,
     this.itemCount = 9,
     this.crossAxisCount = 3,
-    this.childAspectRatio = 0.78,
+    this.childAspectRatio = 0.65,
   });
 
   final int itemCount;

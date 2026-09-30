@@ -78,8 +78,9 @@ class RestaurantPackageTierPrice extends StatelessWidget {
                           height: 14.0,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius:
-                                BorderRadius.circular(Spacing.radiusXs),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusXs,
+                            ),
                           ),
                         ),
                       )
@@ -110,9 +111,9 @@ class RestaurantPackageTierPrice extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size12,
+                                  fontSize: FontSize.size14,
                                   color: priceColor,
-                                ).copyWith(height: 1.15),
+                                ),
                               ),
                             ),
                           ],

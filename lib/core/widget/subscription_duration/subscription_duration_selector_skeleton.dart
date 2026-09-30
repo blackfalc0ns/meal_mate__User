@@ -70,10 +70,10 @@ class SubscriptionDurationSelectorSkeleton extends StatelessWidget {
                     ],
                   ),
                 ),
-                Center(
+                const Center(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       ShimmerPlaceholder.circle(
                         size: Spacing.monthlyPlanDurationControlSize,
                       ),

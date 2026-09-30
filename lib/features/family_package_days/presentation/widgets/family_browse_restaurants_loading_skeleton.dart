@@ -11,7 +11,7 @@ class FamilyBrowseRestaurantsLoadingSkeleton extends StatelessWidget {
     return SubscriptionRestaurantsLoadingSkeleton(
       itemCount: itemCount,
       crossAxisCount: 3,
-      childAspectRatio: 0.78,
+      childAspectRatio: 0.65,
     );
   }
 }

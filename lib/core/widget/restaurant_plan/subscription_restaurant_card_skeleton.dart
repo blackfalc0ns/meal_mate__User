@@ -11,11 +11,9 @@ class SubscriptionRestaurantCardSkeleton extends StatelessWidget {
     final color = context.colorScheme;
 
     return Container(
-      padding: const EdgeInsetsDirectional.only(
-        top: Spacing.md,
-        bottom: Spacing.sm,
-        start: Spacing.md,
-        end: Spacing.md,
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.xs,
+        vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
         color: color.surface,

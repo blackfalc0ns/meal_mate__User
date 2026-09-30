@@ -128,7 +128,7 @@ class SubscriptionCustomDurationInput extends StatelessWidget {
       child: IconButton(
         onPressed: onPressed,
         padding: EdgeInsets.zero,
-        constraints: BoxConstraints.tightFor(
+        constraints: const BoxConstraints.tightFor(
           width: Spacing.monthlyPlanDurationControlWidth,
           height: Spacing.monthlyPlanDurationControlWidth,
         ),
