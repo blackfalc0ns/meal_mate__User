@@ -34,6 +34,7 @@ class SubscriptionDurationEntity implements SubscriptionDurationItem {
   final SubscriptionPlanBadgeEntity? badge;
   final bool supportsFriday;
   final bool includeFriday;
+  @override
   final int fridayDays;
   @override
   final int totalServiceDays;
@@ -42,6 +43,12 @@ class SubscriptionDurationEntity implements SubscriptionDurationItem {
 
   @override
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
+
+  bool get canToggleFriday =>
+      supportsFriday ||
+      fridayDays > 0 ||
+      (fridayOption.isEnabled && fridayAvailability.isAvailable) ||
+      (totalServiceDays > 0 || (durationDays != null && durationDays! > 0));
 }
 
 class SubscriptionPlanBadgeEntity {
@@ -95,4 +102,9 @@ class SubscriptionFridayAvailabilityEntity {
 
   String message(String localeName) =>
       localeName == 'ar' ? messageAr : messageEn;
+
+  String unavailableMessage(String localeName) {
+    if (isAvailable) return '';
+    return message(localeName);
+  }
 }

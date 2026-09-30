@@ -13,6 +13,7 @@ class _FakeDuration implements SubscriptionDurationItem {
     this.minDays,
     this.maxDays,
     this.totalServiceDays = 0,
+    this.fridayDays = 0,
     required this.title,
   });
 
@@ -26,6 +27,8 @@ class _FakeDuration implements SubscriptionDurationItem {
   final int? maxDays;
   @override
   final int totalServiceDays;
+  @override
+  final int fridayDays;
   final String title;
 
   @override
@@ -194,29 +197,32 @@ void main() {
     expect(textRect.top, greaterThanOrEqualTo(iconRect.bottom));
   });
 
-  testWidgets('preset duration labels update when includesFriday is toggled', (tester) async {
+  testWidgets('preset duration labels and days smoothly update when includesFriday toggles on and off', (tester) async {
     const testDurations = <SubscriptionDurationItem>[
       _FakeDuration(
         isCustom: false,
-        durationDays: 7,
+        durationDays: 6,
         totalServiceDays: 6,
+        fridayDays: 1,
         title: '6 أيام',
       ),
       _FakeDuration(
         isCustom: false,
-        durationDays: 14,
+        durationDays: 12,
         totalServiceDays: 12,
+        fridayDays: 2,
         title: '12 يوماً',
       ),
       _FakeDuration(
         isCustom: false,
-        durationDays: 30,
+        durationDays: 26,
         totalServiceDays: 26,
+        fridayDays: 4,
         title: '26 يوماً',
       ),
     ];
 
-    // 1. When includesFriday is false
+    // 1. Initially without Friday
     await tester.pumpWidget(
       buildTestWidget(
         width: 360,
@@ -235,11 +241,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('6'), findsOneWidget);
+    expect(find.text('12'), findsOneWidget);
+    expect(find.text('26'), findsOneWidget);
     expect(find.text('6 أيام'), findsOneWidget);
     expect(find.text('12 يوماً'), findsOneWidget);
     expect(find.text('26 يوماً'), findsOneWidget);
 
-    // 2. When includesFriday is toggled to true
+    // 2. When Friday is toggled to true
     await tester.pumpWidget(
       buildTestWidget(
         width: 360,
@@ -258,8 +267,37 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('7'), findsOneWidget);
+    expect(find.text('14'), findsOneWidget);
+    expect(find.text('30'), findsOneWidget);
     expect(find.text('7 أيام'), findsOneWidget);
     expect(find.text('14 يوماً'), findsOneWidget);
     expect(find.text('30 يوماً'), findsOneWidget);
+
+    // 3. When Friday is toggled back to false
+    await tester.pumpWidget(
+      buildTestWidget(
+        width: 360,
+        child: SubscriptionDurationSelector(
+          selectedIndex: 0,
+          onSelected: (_) {},
+          includesFriday: false,
+          onFridayChanged: (_) {},
+          customDurationDays: null,
+          onCustomDurationChanged: (_) {},
+          durations: testDurations,
+          isFridayEnabled: true,
+          isLoading: false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('6'), findsOneWidget);
+    expect(find.text('12'), findsOneWidget);
+    expect(find.text('26'), findsOneWidget);
+    expect(find.text('6 أيام'), findsOneWidget);
+    expect(find.text('12 يوماً'), findsOneWidget);
+    expect(find.text('26 يوماً'), findsOneWidget);
   });
 }

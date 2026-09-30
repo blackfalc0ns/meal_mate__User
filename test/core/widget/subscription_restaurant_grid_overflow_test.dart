@@ -97,6 +97,7 @@ void main() {
       buildTestWidget(
         child: SubscriptionRestaurantsGrid(
           restaurants: sampleRestaurants,
+          childAspectRatio: 0.86,
         ),
       ),
     );

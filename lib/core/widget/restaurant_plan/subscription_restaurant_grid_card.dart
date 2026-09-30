@@ -69,9 +69,11 @@ class _SubscriptionRestaurantGridCardState
           Spacing.monthlyRestaurantCardRadius,
         ),
         child: Ink(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.xs,
-            vertical: Spacing.sm,
+          padding: const EdgeInsets.only(
+            left: Spacing.xs,
+            right: Spacing.xs,
+            top: Spacing.xs,
+            bottom: Spacing.xss,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
@@ -83,26 +85,30 @@ class _SubscriptionRestaurantGridCardState
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SubscriptionRestaurantLogo(
                 restaurant: widget.restaurant,
-                size: Spacing.iconXl,
+                size: 36.0,
               ),
-              const SizedBox(height: Spacing.xs),
-              Text(
-                widget.restaurant.name,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.onSurface,
-                ).copyWith(height: 1.2),
+              const SizedBox(height: 3.0),
+              SizedBox(
+                height: 30,
+                child: Center(
+                  child: Text(
+                    widget.restaurant.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size11,
+                      color: color.onSurface,
+                    ).copyWith(height: 1.2),
+                  ),
+                ),
               ),
               if (tierOrSubtitle.isNotEmpty) ...[
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.monthlyRestaurantCardTinyGap),
                 Text(
                   tierOrSubtitle,
                   maxLines: 1,

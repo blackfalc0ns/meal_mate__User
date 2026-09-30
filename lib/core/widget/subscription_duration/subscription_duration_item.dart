@@ -4,5 +4,6 @@ abstract interface class SubscriptionDurationItem {
   int? get minDays;
   int? get maxDays;
   int get totalServiceDays;
+  int get fridayDays;
   String name(String localeName);
 }

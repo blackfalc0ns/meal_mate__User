@@ -27,20 +27,10 @@ class RestaurantPackageTiersSection extends StatelessWidget {
 
     return Semantics(
       label: locale.calendar_browse_restaurants,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth.isFinite
-              ? constraints.maxWidth
-              : Spacing.monthlyPlanPackagesWidth;
-          // final cardWidth = width < Spacing.monthlyPlanPackagesWidth
-          //     ? width
-          //     : Spacing.monthlyPlanPackagesWidth;
-
-          return Center(
-            child: SizedBox(
-              width: double.infinity, // width:
-              //cardWidth,
-              child: Column(
+      child: Center(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
@@ -53,31 +43,35 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                         color: color.primary,
                       ),
                       const SizedBox(width: Spacing.sm),
-                      Flexible(
-                        child: Text(
-                          locale.subscription_restaurant_categories_title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size20,
-                            color: color.onSurface,
-                          ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              locale.subscription_restaurant_categories_title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size15,
+                                color: color.onSurface,
+                              ),
+                            ),
+                            Text(
+                              locale.subscription_restaurant_categories_subtitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: Spacing.xs),
-                  Text(
-                    locale.subscription_restaurant_categories_subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onSurfaceVariant,
-                    ),
                   ),
                   const SizedBox(height: Spacing.lg),
                   for (var index = 0; index < packages.length; index++)
@@ -99,11 +93,9 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                       ),
                     ),
                 ],
-              ),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        ),
+      );
+    }
 }

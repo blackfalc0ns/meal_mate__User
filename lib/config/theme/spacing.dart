@@ -599,7 +599,7 @@ class Spacing {
   static const double monthlyPlanRestaurantLogoGap = 6.0;
   static const double monthlyPlanRestaurantLogoOverlap = -6.0;
   static const double monthlyRestaurantCardBottomPadding = 7.0;
-  static const double monthlyRestaurantCardRadius = 15.7;
+  static const double monthlyRestaurantCardRadius = 20.7;
   static const double monthlyRestaurantCardBorderWidth = 1.2;
   static const double monthlyRestaurantCardShadowBlur = 10.0;
   static const double monthlyRestaurantCardLogoSize = 47.0;

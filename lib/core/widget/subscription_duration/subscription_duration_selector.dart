@@ -218,12 +218,25 @@ class _SubscriptionDurationSelectorState
   }
 
   int _durationDays(SubscriptionDurationItem duration) {
-    if (widget.includesFriday) {
-      return duration.durationDays ?? duration.totalServiceDays;
-    }
-    return duration.totalServiceDays > 0
+    final base = duration.totalServiceDays > 0
         ? duration.totalServiceDays
         : (duration.durationDays ?? 0);
+    if (widget.includesFriday) {
+      final fridays = _fridaysCount(duration, base);
+      return base + fridays;
+    }
+    return base;
+  }
+
+  static int _fridaysCount(SubscriptionDurationItem duration, int baseDays) {
+    if (duration.fridayDays > 0) {
+      return duration.fridayDays;
+    }
+    if (baseDays == 6) return 1;
+    if (baseDays == 12) return 2;
+    if (baseDays == 26) return 4;
+    if (baseDays > 0) return (baseDays / 6).round();
+    return 0;
   }
 
   String _durationLabel(
@@ -233,21 +246,17 @@ class _SubscriptionDurationSelectorState
     if (duration.isCustom) {
       return duration.name(localeName);
     }
-
     if (widget.includesFriday) {
       final days = _durationDays(duration);
-      if (days > 0) {
-        if (localeName == 'ar') {
-          if (days >= 3 && days <= 10) {
-            return '$days أيام';
-          }
-          return '$days يوماً';
-        } else {
-          return days == 1 ? '1 Day' : '$days Days';
+      if (localeName == 'ar') {
+        if (days >= 3 && days <= 10) {
+          return '$days أيام';
         }
+        return '$days يوماً';
+      } else {
+        return days == 1 ? '1 Day' : '$days Days';
       }
     }
-
     return duration.name(localeName);
   }
 
