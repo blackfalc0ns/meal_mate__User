@@ -83,7 +83,7 @@ class _SubscriptionRestaurantGridCardState
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SubscriptionRestaurantLogo(
                 restaurant: widget.restaurant,
@@ -115,7 +115,7 @@ class _SubscriptionRestaurantGridCardState
                   ),
                 ),
               ],
-              //   const Spacer(),
+              const Spacer(),
               Container(
                 width: double.infinity,
                 height: Spacing.monthlyRestaurantCardMetaHeight,

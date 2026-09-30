@@ -12,7 +12,7 @@ class SubscriptionPackagesLoadingSkeleton extends StatelessWidget {
     final locale = context.localization;
 
     return Semantics(
-      label: locale.nav_subscription,
+      label: locale.subscription_choose_plan_title,
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -27,16 +27,61 @@ class SubscriptionPackagesLoadingSkeleton extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index == 1) {
                   return const ShimmerPlaceholder.rect(
-                    width: Spacing.xxxl * 3,
+                    width: Spacing.subscriptionProgramsHeaderWidth,
                     height: Spacing.lg,
                     borderRadius: Spacing.radiusSm,
                   );
                 }
 
+                if (index == 0) {
+                  return Container(
+                    height: Spacing.subscriptionProgramCardHeight,
+                    padding: const EdgeInsets.all(Spacing.md),
+                    decoration: BoxDecoration(
+                      color: color.surface,
+                      borderRadius: BorderRadius.circular(
+                        Spacing.subscriptionProgramCardRadius,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.shadow.withValues(alpha: 0.05),
+                          blurRadius: Spacing.lg,
+                          offset: const Offset(0, Spacing.xss),
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ShimmerPlaceholder.rect(
+                                width: Spacing.subscriptionChooseButtonWidth,
+                                height: Spacing.md,
+                                borderRadius: Spacing.radiusSm,
+                              ),
+                              SizedBox(height: Spacing.sm),
+                              ShimmerPlaceholder.rect(
+                                width: double.infinity,
+                                height: Spacing.sm,
+                                borderRadius: Spacing.radiusSm,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: Spacing.md),
+                        ShimmerPlaceholder.circle(
+                          size: Spacing.avatarLg,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 return Container(
-                  height: index == 0
-                      ? Spacing.subscriptionProgramCardHeight + Spacing.xs
-                      : Spacing.subscriptionPackageChoiceFigmaHeight,
+                  height: Spacing.subscriptionPackageChoiceFigmaHeight,
                   padding: const EdgeInsets.all(Spacing.md),
                   decoration: BoxDecoration(
                     color: color.surface,
@@ -53,35 +98,42 @@ class SubscriptionPackagesLoadingSkeleton extends StatelessWidget {
                   ),
                   child: const Row(
                     children: [
-                      ShimmerPlaceholder.rect(
-                        width: Spacing.xxxl * 2,
-                        height: Spacing.xxxl * 1.5,
-                        borderRadius: Spacing.radiusMd,
-                      ),
-                      SizedBox(width: Spacing.md),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ShimmerPlaceholder.rect(
-                              width: double.infinity,
-                              height: Spacing.md,
-                              borderRadius: Spacing.radiusSm,
+                            Row(
+                              children: [
+                                ShimmerPlaceholder.circle(size: Spacing.xl),
+                                SizedBox(width: Spacing.xs),
+                                Expanded(
+                                  child: ShimmerPlaceholder.rect(
+                                    width: double.infinity,
+                                    height: Spacing.md,
+                                    borderRadius: Spacing.radiusSm,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: Spacing.sm),
                             ShimmerPlaceholder.rect(
-                              width: Spacing.xxxl * 2.5,
+                              width: Spacing.subscriptionChooseButtonWidth,
                               height: Spacing.sm,
                               borderRadius: Spacing.radiusSm,
                             ),
-                            Spacer(),
                             ShimmerPlaceholder.rect(
-                              width: Spacing.xxxl * 2,
+                              width: Spacing.avatarLg,
                               height: Spacing.lg,
                               borderRadius: Spacing.radiusPill,
                             ),
                           ],
                         ),
+                      ),
+                      SizedBox(width: Spacing.sm),
+                      ShimmerPlaceholder.rect(
+                        width: Spacing.subscriptionPackageChoiceImageWidth,
+                        height: Spacing.subscriptionPackageChoiceImageHeight,
+                        borderRadius: Spacing.radiusMd,
                       ),
                     ],
                   ),

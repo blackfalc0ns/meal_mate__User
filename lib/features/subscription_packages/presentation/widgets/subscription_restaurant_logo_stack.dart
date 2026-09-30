@@ -11,30 +11,49 @@ class SubscriptionRestaurantLogoStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    final count = logoUrls.length > 3 ? 3 : logoUrls.length;
+    final validLogos = logoUrls
+        .where((url) => url != null && url.isNotEmpty)
+        .toList(growable: false);
+
+    if (validLogos.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final count = validLogos.length > 3 ? 3 : validLogos.length;
+    const logoSize = Spacing.xl;
+    final double stackWidth = switch (count) {
+      1 => Spacing.xl,
+      2 => Spacing.buttonSmallHeight,
+      _ => Spacing.appBarHeight,
+    };
 
     return SizedBox(
-      width: Spacing.xxxl * 2.15,
-      height: Spacing.lg + Spacing.xs,
+      width: stackWidth,
+      height: logoSize,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           for (var i = 0; i < count; i++)
             PositionedDirectional(
-              start: i * Spacing.md,
+              start: switch (i) {
+                1 => Spacing.base,
+                2 => Spacing.xxl,
+                _ => Spacing.zero,
+              },
               child: Container(
-                width: Spacing.lg + Spacing.xs,
-                height: Spacing.lg + Spacing.xs,
+                width: logoSize,
+                height: logoSize,
                 decoration: BoxDecoration(
                   color: color.surface,
                   shape: BoxShape.circle,
-                  border: Border.all(color: color.surface, width: Spacing.xs),
+                  border: Border.all(
+                    color: color.surface,
+                    width: Spacing.border,
+                  ),
                 ),
                 child: AppCachedNetworkImage(
-                  imageUrl: logoUrls[i],
+                  imageUrl: validLogos[i],
                   shape: BoxShape.circle,
-                  semanticLabel: locale.nav_subscription,
                 ),
               ),
             ),

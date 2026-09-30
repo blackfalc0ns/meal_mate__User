@@ -33,7 +33,9 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.sm),
         Container(
-          height: Spacing.subscriptionProgramCardHeight,
+          constraints: const BoxConstraints(
+            minHeight: Spacing.subscriptionProgramCardHeight,
+          ),
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.md,
             vertical: Spacing.md,
@@ -58,18 +60,6 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      locale.subscription_selected_program_label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xxs),
                     Text(
                       program.name(locale.localeName),
                       maxLines: 1,
@@ -98,8 +88,8 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.md),
               SizedBox(
-                width: Spacing.xxxl * 2,
-                height: Spacing.xxxl * 1.72,
+                width: Spacing.avatarLg,
+                height: Spacing.avatarLg,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: color.surface,

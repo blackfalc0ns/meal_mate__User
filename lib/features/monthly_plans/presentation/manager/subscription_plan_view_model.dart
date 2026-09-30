@@ -44,7 +44,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       case ToggleSubscriptionFridayEvent():
         if (event.includeFriday && !state.canToggleFriday) return;
         unawaited(
-          _getDurations(
+          _toggleFriday(
             programId: event.programId,
             bundleId: event.bundleId,
             includeFriday: event.includeFriday,
@@ -177,6 +177,137 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         tiers: validTiers,
         selectedTierIndex:
             state.selectedTierIndex ?? (validTiers.isNotEmpty ? 0 : null),
+      ),
+    );
+  }
+
+  Future<void> _toggleFriday({
+    required String programId,
+    required String bundleId,
+    required bool includeFriday,
+  }) async {
+    _customDurationDebounceTimer?.cancel();
+
+    final previousDuration = state.selectedDuration;
+    final previousCustomDays = state.customDurationDays;
+    final previousTier = state.selectedTier;
+    final previousTierIndex = state.selectedTierIndex;
+    final durationDays = state.selectedDurationDays;
+
+    emit(
+      state.copyWith(
+        isDurationsLoading: true,
+        isTiersLoading: true,
+        isSuccess: false,
+        includeFriday: includeFriday,
+        clearFailure: true,
+      ),
+    );
+
+    final results = await Future.wait([
+      _getSubscriptionDurationsUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        includeFriday: includeFriday,
+      ),
+      _getSubscriptionTiersUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        durationDays: durationDays,
+        includeFriday: includeFriday,
+      ),
+    ]);
+
+    if (isClosed) return;
+
+    final durationsResult =
+        results[0] as ApiResult<List<SubscriptionDurationEntity>>;
+    final tiersResult = results[1] as ApiResult<List<SubscriptionTierEntity>>;
+
+    if (durationsResult is ApiErrorResult<List<SubscriptionDurationEntity>>) {
+      emit(
+        state.copyWith(
+          isDurationsLoading: false,
+          isTiersLoading: false,
+          isSuccess: false,
+          failure: durationsResult.failure,
+        ),
+      );
+      return;
+    }
+
+    final validDurations =
+        (durationsResult as ApiSuccessResult<List<SubscriptionDurationEntity>>)
+            .data
+            .where(
+              (duration) =>
+                  (duration.durationDays ?? 0) > 0 || duration.isCustom,
+            )
+            .toList();
+
+    if (tiersResult is ApiErrorResult<List<SubscriptionTierEntity>>) {
+      emit(
+        state.copyWith(
+          isDurationsLoading: false,
+          isTiersLoading: false,
+          isSuccess: false,
+          durations: validDurations,
+          failure: tiersResult.failure,
+        ),
+      );
+      return;
+    }
+
+    final validTiers =
+        (tiersResult as ApiSuccessResult<List<SubscriptionTierEntity>>)
+            .data
+            .where((tier) => tier.tier.isNotEmpty)
+            .toList();
+
+    int? targetDurationIndex;
+    if (previousDuration != null) {
+      if (previousDuration.isCustom) {
+        final customIndex = validDurations.indexWhere((d) => d.isCustom);
+        if (customIndex != -1) {
+          targetDurationIndex = customIndex;
+        }
+      } else {
+        final matchIndex = validDurations.indexWhere(
+          (d) => d.durationDays == previousDuration.durationDays,
+        );
+        if (matchIndex != -1) {
+          targetDurationIndex = matchIndex;
+        }
+      }
+    }
+
+    int? targetTierIndex;
+    if (previousTier != null) {
+      final matchTierIndex = validTiers.indexWhere(
+        (t) => t.tier == previousTier.tier,
+      );
+      if (matchTierIndex != -1) {
+        targetTierIndex = matchTierIndex;
+      } else if (previousTierIndex != null &&
+          previousTierIndex < validTiers.length) {
+        targetTierIndex = previousTierIndex;
+      } else {
+        targetTierIndex = validTiers.isNotEmpty ? 0 : null;
+      }
+    } else {
+      targetTierIndex = validTiers.isNotEmpty ? 0 : null;
+    }
+
+    emit(
+      state.copyWith(
+        isDurationsLoading: false,
+        isTiersLoading: false,
+        isSuccess: true,
+        durations: validDurations,
+        tiers: validTiers,
+        selectedDurationIndex: targetDurationIndex,
+        selectedTierIndex: targetTierIndex,
+        customDurationDays: previousCustomDays,
       ),
     );
   }

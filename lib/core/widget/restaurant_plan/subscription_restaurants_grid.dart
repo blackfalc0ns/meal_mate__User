@@ -26,7 +26,7 @@ class SubscriptionRestaurantsGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: Spacing.sm,
         crossAxisSpacing: Spacing.sm,
-        childAspectRatio: 0.73,
+        childAspectRatio: 0.80,
       ),
       itemCount: restaurants.length,
       itemBuilder: (context, index) {

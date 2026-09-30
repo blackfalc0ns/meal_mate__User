@@ -17,9 +17,13 @@ extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
       lunchCount: lunchCount ?? 0,
       dinnerCount: dinnerCount ?? 0,
       snackCount: snackCount ?? 0,
-      slots: (slots ?? const []).map((slot) => slot.toEntity()).toList(),
+      slots: (slots ?? const [])
+          .whereType<SubscriptionBundleSlotResponseDto>()
+          .map((slot) => slot.toEntity())
+          .toList(),
       restaurantCount: restaurantCount ?? 0,
       restaurants: (restaurants ?? const [])
+          .whereType<SubscriptionBundleRestaurantResponseDto>()
           .map((restaurant) => restaurant.toEntity())
           .toList(),
       selectionCount: selectionCount ?? 0,
@@ -37,7 +41,10 @@ extension SubscriptionProgramBundlesResponseDtoMapper
       hasAllergies: hasAllergies ?? false,
       hasDietaryPreferences: hasDietaryPreferences ?? false,
       isProfileComplete: isProfileComplete ?? false,
-      bundles: (bundles ?? const []).map((item) => item.toEntity()).toList(),
+      bundles: (bundles ?? const [])
+          .whereType<SubscriptionBundleResponseDto>()
+          .map((item) => item.toEntity())
+          .toList(),
     );
   }
 }

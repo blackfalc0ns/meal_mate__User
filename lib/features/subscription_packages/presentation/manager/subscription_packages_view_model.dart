@@ -26,6 +26,7 @@ class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
     emit(state.copyWith(isLoading: true, isSuccess: false, clearFailure: true));
 
     final result = await _getSubscriptionPackagesUseCase(programId);
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():

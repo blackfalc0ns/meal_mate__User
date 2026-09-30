@@ -48,6 +48,7 @@ class _SubscriptionPackageSelectionScreenState
   @override
   void dispose() {
     _flowController.dispose();
+    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -115,6 +116,10 @@ class _SubscriptionPackageSelectionScreenState
                   isLoading: state.isLoading,
                 ),
                 builder: (context, data) {
+                  if (!data.hasBundles) {
+                    return const SizedBox.shrink();
+                  }
+
                   return SubscriptionPackagesBottomBar(
                     selectedPackageNotifier:
                         _flowController.selectedPackageNotifier,
