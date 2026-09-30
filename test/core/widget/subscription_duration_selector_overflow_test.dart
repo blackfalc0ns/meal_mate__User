@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_item.dart';
+import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_option.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector_skeleton.dart';
 
@@ -153,5 +154,43 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(find.byType(SubscriptionDurationSelector), findsOneWidget);
+  });
+
+  testWidgets('SubscriptionDurationOption icon does not overlap with days text', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestWidget(
+        width: 360,
+        child: SubscriptionDurationSelector(
+          selectedIndex: 0,
+          onSelected: (_) {},
+          includesFriday: false,
+          onFridayChanged: (_) {},
+          customDurationDays: 20,
+          onCustomDurationChanged: (_) {},
+          durations: durations,
+          isFridayEnabled: true,
+          isLoading: false,
+        ),
+      ),
+    );
+
+    final text26 = find.text('26');
+    expect(text26, findsOneWidget);
+    final textRect = tester.getRect(text26);
+
+    // Find the icon associated with 26
+    // The option with '26' is the 3rd preset option
+    final options = find.byType(SubscriptionDurationOption);
+    expect(options, findsNWidgets(3));
+    final option3 = options.at(2);
+    final icon = find.descendant(of: option3, matching: find.byType(Icon));
+    expect(icon, findsOneWidget);
+    final iconRect = tester.getRect(icon);
+
+    // Assert that the text does not overlap with the icon
+    expect(textRect.overlaps(iconRect), isFalse);
+    expect(textRect.top, greaterThanOrEqualTo(iconRect.bottom));
   });
 }

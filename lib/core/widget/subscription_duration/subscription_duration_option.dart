@@ -61,56 +61,61 @@ class SubscriptionDurationOption extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: Spacing.xl,
-                      child: ClipRect(
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 400),
-                          switchInCurve: Curves.easeOutCubic,
-                          switchOutCurve: Curves.easeInCubic,
-                          layoutBuilder: (currentChild, previousChildren) =>
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [...previousChildren, ?currentChild],
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: Spacing.sm + Spacing.xxs,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: Spacing.lg,
+                        child: ClipRect(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 400),
+                            switchInCurve: Curves.easeOutCubic,
+                            switchOutCurve: Curves.easeInCubic,
+                            layoutBuilder: (currentChild, previousChildren) =>
+                                Stack(
+                                  alignment: Alignment.center,
+                                  children: [...previousChildren, ?currentChild],
+                                ),
+                            transitionBuilder: (child, animation) =>
+                                SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(0, -1),
+                                    end: Offset.zero,
+                                  ).animate(animation),
+                                  child: child,
+                                ),
+                            child: Text(
+                              days.toString(),
+                              key: ValueKey(days),
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size13,
+                                color: isSelected
+                                    ? color.primary
+                                    : color.onSurface,
                               ),
-                          transitionBuilder: (child, animation) =>
-                              SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0, -1),
-                                  end: Offset.zero,
-                                ).animate(animation),
-                                child: child,
-                              ),
-                          child: Text(
-                            days.toString(),
-                            key: ValueKey(days),
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size17,
-                              color: isSelected
-                                  ? color.primary
-                                  : color.onSurface,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Text(
-                      locale.subscription_day,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
+                      Text(
+                        locale.subscription_day,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size9,
+                          color: color.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 PositionedDirectional(
-                  top: Spacing.xs,
-                  start: Spacing.xs,
+                  top: Spacing.xxs,
+                  start: Spacing.xxs,
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
