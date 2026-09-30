@@ -16,6 +16,7 @@ class SubscriptionTypesContent extends StatelessWidget {
     required this.selectedTypeIndex,
     required this.onSelectType,
     required this.onOpenSelectedType,
+    this.scrollController,
   });
 
   final SubscriptionTypesState state;
@@ -23,6 +24,7 @@ class SubscriptionTypesContent extends StatelessWidget {
   final int? selectedTypeIndex;
   final ValueChanged<int> onSelectType;
   final VoidCallback onOpenSelectedType;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class SubscriptionTypesContent extends StatelessWidget {
           ),
         ),
         CustomScrollView(
+          controller: scrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverPadding(

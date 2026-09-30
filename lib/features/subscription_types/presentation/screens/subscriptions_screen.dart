@@ -27,6 +27,19 @@ class SubscriptionsScreen extends StatefulWidget {
 
 class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   int? _selectedTypeIndex;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +114,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                     return SubscriptionTypesContent(
                       state: state,
                       showBottomSpace: widget.showBottomSpace,
+                      scrollController: _scrollController,
                       selectedTypeIndex: _selectedTypeIndex,
                       onSelectType: _selectSubscriptionType,
                       onOpenSelectedType: () {
@@ -116,7 +130,20 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   }
 
   void _selectSubscriptionType(int index) {
-    setState(() => _selectedTypeIndex = index);
+    if (_selectedTypeIndex != index) {
+      setState(() => _selectedTypeIndex = index);
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scrollController.hasClients) return;
+      unawaited(
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutCubic,
+        ),
+      );
+    });
   }
 
   void _openSelectedSubscription(
