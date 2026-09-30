@@ -6,14 +6,24 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 
 class MonthlyPlanHeroSummary extends StatelessWidget {
-  const MonthlyPlanHeroSummary({super.key, required this.plan});
+  const MonthlyPlanHeroSummary({
+    super.key,
+    this.titlePrefix,
+    this.titleHighlight,
+    this.plan,
+  });
 
-  final MonthlyPlanDetailsEntity plan;
+  final String? titlePrefix;
+  final String? titleHighlight;
+  final MonthlyPlanDetailsEntity? plan;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final effectiveTitlePrefix = titlePrefix ?? plan?.titlePrefix ?? '';
+    final effectiveTitleHighlight =
+        titleHighlight ?? plan?.titleHighlight ?? '';
 
     return Semantics(
       label: locale.nav_subscription,
@@ -22,11 +32,11 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (plan.titlePrefix.isNotEmpty)
+            if (effectiveTitlePrefix.isNotEmpty)
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  plan.titlePrefix,
+                  effectiveTitlePrefix,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
@@ -35,12 +45,12 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
                   ),
                 ),
               ),
-            if (plan.titleHighlight.isNotEmpty) ...[
+            if (effectiveTitleHighlight.isNotEmpty) ...[
               const SizedBox(height: Spacing.xxs),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  plan.titleHighlight,
+                  effectiveTitleHighlight,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,

@@ -8,14 +8,18 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/month
 class MonthlyPlanHeroSection extends StatelessWidget {
   const MonthlyPlanHeroSection({
     super.key,
-    required this.plan,
+    this.titlePrefix,
+    this.titleHighlight,
+    this.plan,
     required this.imageAsset,
     this.imageUrl,
     this.durationSelector,
     required this.onBack,
   });
 
-  final MonthlyPlanDetailsEntity plan;
+  final String? titlePrefix;
+  final String? titleHighlight;
+  final MonthlyPlanDetailsEntity? plan;
   final String imageAsset;
   final String? imageUrl;
   final Widget? durationSelector;
@@ -47,7 +51,11 @@ class MonthlyPlanHeroSection extends StatelessWidget {
                 top: Spacing.monthlyPlanHeroSummaryTop,
                 start: 0,
                 end: 0,
-                child: MonthlyPlanHeroSummary(plan: plan),
+                child: MonthlyPlanHeroSummary(
+                  titlePrefix: titlePrefix,
+                  titleHighlight: titleHighlight,
+                  plan: plan,
+                ),
               ),
               if (durationSelector != null)
                 PositionedDirectional(
