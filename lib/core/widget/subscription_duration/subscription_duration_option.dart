@@ -62,9 +62,7 @@ class SubscriptionDurationOption extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: Spacing.sm + Spacing.xxs,
-                  ),
+                  padding: const EdgeInsets.only(top: Spacing.sm + Spacing.xxs),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -78,7 +76,10 @@ class SubscriptionDurationOption extends StatelessWidget {
                             layoutBuilder: (currentChild, previousChildren) =>
                                 Stack(
                                   alignment: Alignment.center,
-                                  children: [...previousChildren, ?currentChild],
+                                  children: [
+                                    ...previousChildren,
+                                    ?currentChild,
+                                  ],
                                 ),
                             transitionBuilder: (child, animation) =>
                                 SlideTransition(
@@ -93,7 +94,7 @@ class SubscriptionDurationOption extends StatelessWidget {
                               key: ValueKey(days),
                               style: getBoldStyle(
                                 fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size13,
+                                fontSize: FontSize.size14,
                                 color: isSelected
                                     ? color.primary
                                     : color.onSurface,
