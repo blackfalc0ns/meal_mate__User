@@ -165,5 +165,37 @@ void main() {
       expect(find.text('Max'), findsOneWidget);
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
     });
+
+    testWidgets('renders shimmer widget for prices when isPriceLoading is true while keeping cards intact', (tester) async {
+      final loadingPackages = samplePackages
+          .map((p) => p.copyWith(isPriceLoading: true))
+          .toList();
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: RestaurantPackageTiersSection(
+            packages: loadingPackages,
+            selectedIndex: 0,
+            onSelected: (_) {},
+            onBrowseRestaurants: (_) {},
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // Card structure remains intact
+      expect(find.text('سيلكت'), findsOneWidget);
+      expect(find.text('بلس'), findsOneWidget);
+      expect(find.text('ماكس'), findsOneWidget);
+      expect(find.text('استعراض المطاعم'), findsNWidgets(3));
+      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+
+      // Price text is NOT shown while loading
+      expect(find.text('6.5'), findsNothing);
+
+      // Shimmer loading is rendered in the price area
+      expect(find.byKey(const ValueKey('price-shimmer-loading')), findsNWidgets(3));
+    });
   });
 }
+

@@ -208,6 +208,7 @@ class RestaurantPackageTierCard extends StatelessWidget {
                           priceColor: priceColor,
                           subtitleColor: priceSubtitleColor,
                           dividerColor: dividerColor,
+                          isLoading: package.isPriceLoading,
                         ),
                         const SizedBox(width: Spacing.xs),
                         Expanded(

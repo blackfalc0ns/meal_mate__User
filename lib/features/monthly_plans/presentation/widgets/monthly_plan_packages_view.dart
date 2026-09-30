@@ -38,6 +38,7 @@ class MonthlyPlanPackagesView extends StatelessWidget {
         MonthlyPlanPackagesSection(
           packages: plan.packageTiers,
           selectedIndex: state.selectedTierIndex,
+          isPriceLoading: state.isTiersLoading,
           onSelected: (index) => context
               .read<SubscriptionPlanViewModel>()
               .doIntent(SelectSubscriptionTierEvent(index)),

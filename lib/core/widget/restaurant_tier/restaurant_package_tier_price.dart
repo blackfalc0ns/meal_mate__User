@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 
 class RestaurantPackageTierPrice extends StatelessWidget {
   const RestaurantPackageTierPrice({
@@ -13,6 +14,7 @@ class RestaurantPackageTierPrice extends StatelessWidget {
     required this.priceColor,
     required this.subtitleColor,
     required this.dividerColor,
+    this.isLoading = false,
   });
 
   final String price;
@@ -21,6 +23,7 @@ class RestaurantPackageTierPrice extends StatelessWidget {
   final Color priceColor;
   final Color subtitleColor;
   final Color dividerColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -65,41 +68,56 @@ class RestaurantPackageTierPrice extends StatelessWidget {
                     ),
                   );
                 },
-                child: Row(
-                  key: ValueKey<String>(
-                    '$cleanPrice-$effectiveCurrency-$hasPrice',
-                  ),
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      effectiveCurrency,
-                      maxLines: 1,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: priceColor,
-                      ).copyWith(height: 1.15),
-                    ),
-                    const SizedBox(width: Spacing.xxs),
-
-                    if (hasPrice) ...[
-                      Flexible(
-                        child: Text(
-                          cleanPrice,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: priceColor,
-                          ).copyWith(height: 1.15),
+                child: isLoading
+                    ? ShimmerWidget(
+                        key: const ValueKey<String>('price-shimmer-loading'),
+                        baseColor: priceColor.withValues(alpha: 0.18),
+                        highlightColor: priceColor.withValues(alpha: 0.42),
+                        child: Container(
+                          width: 52.0,
+                          height: 14.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.circular(Spacing.radiusXs),
+                          ),
                         ),
+                      )
+                    : Row(
+                        key: ValueKey<String>(
+                          '$cleanPrice-$effectiveCurrency-$hasPrice',
+                        ),
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            effectiveCurrency,
+                            maxLines: 1,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size10,
+                              color: priceColor,
+                            ).copyWith(height: 1.15),
+                          ),
+                          const SizedBox(width: Spacing.xxs),
+
+                          if (hasPrice) ...[
+                            Flexible(
+                              child: Text(
+                                cleanPrice,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size12,
+                                  color: priceColor,
+                                ).copyWith(height: 1.15),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
-                    ],
-                  ],
-                ),
               ),
               const SizedBox(height: Spacing.xxs),
               Text(

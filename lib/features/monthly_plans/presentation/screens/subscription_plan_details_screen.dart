@@ -279,6 +279,7 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                     >(
                       buildWhen: (previous, current) =>
                           previous.selectedTier != current.selectedTier ||
+                          previous.isTiersLoading != current.isTiersLoading ||
                           previous.isSelectedDurationValid !=
                               current.isSelectedDurationValid ||
                           previous.isReadinessLoading !=
@@ -286,6 +287,7 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                       builder: (context, state) {
                         final selectedTier = state.selectedTier;
                         final canSubscribe =
+                            !state.isTiersLoading &&
                             state.isSelectedDurationValid &&
                             selectedTier != null &&
                             selectedTier.totalPrice != null;

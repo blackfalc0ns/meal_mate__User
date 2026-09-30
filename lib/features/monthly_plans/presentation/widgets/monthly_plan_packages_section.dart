@@ -10,12 +10,14 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
     required this.selectedIndex,
     required this.onSelected,
     required this.onBrowseRestaurants,
+    this.isPriceLoading = false,
   });
 
   final List<MonthlyPackageTierEntity> packages;
   final int? selectedIndex;
   final ValueChanged<int> onSelected;
   final ValueChanged<int> onBrowseRestaurants;
+  final bool isPriceLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
             price: p.price,
             currency: p.currency,
             priceSubtitle: p.period,
+            isPriceLoading: isPriceLoading,
           ),
         )
         .toList();
