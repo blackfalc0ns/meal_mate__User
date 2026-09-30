@@ -26,12 +26,17 @@ class MonthlyPlanBottomBarSection extends StatelessWidget {
       bottom: Spacing.monthlyPlanContentHorizontalPadding,
       child: BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
         buildWhen: (previous, current) =>
+            previous.browsedTierIndex != current.browsedTierIndex ||
             previous.selectedTier != current.selectedTier ||
             previous.isTiersLoading != current.isTiersLoading ||
             previous.isSelectedDurationValid !=
                 current.isSelectedDurationValid ||
             previous.isReadinessLoading != current.isReadinessLoading,
         builder: (context, state) {
+          if (state.isBrowsingRestaurants) {
+            return const SizedBox.shrink();
+          }
+
           final selectedTier = state.selectedTier;
           final canSubscribe =
               !state.isTiersLoading &&

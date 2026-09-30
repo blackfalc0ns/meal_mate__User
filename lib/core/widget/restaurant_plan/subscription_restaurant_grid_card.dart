@@ -76,6 +76,7 @@ class _SubscriptionRestaurantGridCardState
             bottom: Spacing.xss,
           ),
           decoration: BoxDecoration(
+            color: color.surface,
             borderRadius: BorderRadius.circular(
               Spacing.monthlyRestaurantCardRadius,
             ),
@@ -85,14 +86,15 @@ class _SubscriptionRestaurantGridCardState
             ),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SubscriptionRestaurantLogo(
                 restaurant: widget.restaurant,
-                size: 36.0,
+                size: 26.0,
               ),
-              const SizedBox(height: 3.0),
+              const SizedBox(height: Spacing.xxs),
               SizedBox(
-                height: 30,
+                height: 24,
                 child: Center(
                   child: Text(
                     widget.restaurant.name,
@@ -101,26 +103,62 @@ class _SubscriptionRestaurantGridCardState
                     textAlign: TextAlign.center,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size10,
                       color: color.onSurface,
-                    ).copyWith(height: 1.2),
+                    ).copyWith(height: 1.15),
                   ),
                 ),
               ),
               if (tierOrSubtitle.isNotEmpty) ...[
-                const SizedBox(height: Spacing.monthlyRestaurantCardTinyGap),
+                const SizedBox(height: Spacing.xxs),
                 Text(
                   tierOrSubtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: getMediumStyle(
+                  style: getSemiBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size12,
                     color: color.onSurfaceVariant,
                   ),
                 ),
               ],
+              const SizedBox(height: Spacing.xxs),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (widget.restaurant.rating.isNotEmpty) ...[
+                    Icon(Icons.star_rounded, size: 11.0, color: color.primary),
+                    const SizedBox(width: 2.0),
+                    Text(
+                      widget.restaurant.rating,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size9,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                  ],
+                  if (widget.restaurant.meals.isNotEmpty)
+                    Flexible(
+                      child: Text(
+                        widget.restaurant.meals.contains(
+                              locale.subscription_details_meal_suffix,
+                            )
+                            ? widget.restaurant.meals
+                            : '${widget.restaurant.meals} ${locale.subscription_details_meal_suffix}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size9,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
               const Spacer(),
               Container(
                 width: double.infinity,
@@ -130,15 +168,29 @@ class _SubscriptionRestaurantGridCardState
                   color: color.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 ),
-                child: Text(
-                  '${widget.restaurant.bundleMeals} ${locale.subscription_details_meal_suffix}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
-                    color: color.onSurfaceVariant,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.ramen_dining_rounded,
+                      size: 11.0,
+                      color: color.primary,
+                    ),
+                    const SizedBox(width: 3.0),
+                    Flexible(
+                      child: Text(
+                        '${widget.restaurant.bundleMeals} ${locale.subscription_details_meals_in_plan}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size8,
+                          color: color.primary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

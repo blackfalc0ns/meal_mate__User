@@ -77,6 +77,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
             tierIndex: event.tierIndex,
           ),
         );
+      case CloseSubscriptionTierRestaurantsEvent():
+        _closeTierRestaurants();
       case CheckSubscriptionReadinessEvent():
         unawaited(
           _checkReadiness(
@@ -291,6 +293,17 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
           ),
         );
     }
+  }
+
+  void _closeTierRestaurants() {
+    emit(
+      state.copyWith(
+        clearBrowsedTier: true,
+        clearBrowseRestaurants: true,
+        clearBrowseRestaurantsFailure: true,
+        isBrowseRestaurantsLoading: false,
+      ),
+    );
   }
 
   Future<void> _checkReadiness(SubscriptionSummaryRequestEntity request) async {

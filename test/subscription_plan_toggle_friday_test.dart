@@ -289,4 +289,35 @@ void main() {
     expect(viewModel.state.selectedTierIndex, 1);
     expect(viewModel.state.selectedTier?.tier, 'vip');
   });
+
+  test('BrowseSubscriptionTierRestaurantsEvent and CloseSubscriptionTierRestaurantsEvent toggle isBrowsingRestaurants', () async {
+    viewModel.doIntent(
+      const GetSubscriptionDurationsEvent(
+        programId: 'prog-1',
+        bundleId: 'bundle-1',
+        includeFriday: false,
+      ),
+    );
+    await pumpEventQueue();
+
+    expect(viewModel.state.isBrowsingRestaurants, isFalse);
+
+    viewModel.doIntent(
+      const BrowseSubscriptionTierRestaurantsEvent(
+        programId: 'prog-1',
+        bundleId: 'bundle-1',
+        tierIndex: 0,
+      ),
+    );
+    await pumpEventQueue();
+
+    expect(viewModel.state.isBrowsingRestaurants, isTrue);
+    expect(viewModel.state.browsedTierIndex, 0);
+
+    viewModel.doIntent(const CloseSubscriptionTierRestaurantsEvent());
+    await pumpEventQueue();
+
+    expect(viewModel.state.isBrowsingRestaurants, isFalse);
+    expect(viewModel.state.browsedTierIndex, isNull);
+  });
 }

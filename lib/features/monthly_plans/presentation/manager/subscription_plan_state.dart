@@ -67,6 +67,8 @@ class SubscriptionPlanState {
     return tiers[index];
   }
 
+  bool get isBrowsingRestaurants => browsedTierIndex != null;
+
   bool get canToggleFriday =>
       selectedDuration?.canToggleFriday ??
       durations.any((duration) => duration.canToggleFriday);

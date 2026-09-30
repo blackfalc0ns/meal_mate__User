@@ -12,7 +12,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/month
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_packages_view.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_restaurants_view.dart';
 
-class MonthlyPlanDetailsContent extends StatefulWidget {
+class MonthlyPlanDetailsContent extends StatelessWidget {
   const MonthlyPlanDetailsContent({
     super.key,
     required this.state,
@@ -26,61 +26,58 @@ class MonthlyPlanDetailsContent extends StatefulWidget {
   final String programId;
   final String bundleId;
 
-  @override
-  State<MonthlyPlanDetailsContent> createState() =>
-      _MonthlyPlanDetailsContentState();
-}
-
-class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
-  bool _isRestaurantsView = false;
-
-  void _onBrowseRestaurants(int tierIndex) {
+  void _onBrowseRestaurants(BuildContext context, int tierIndex) {
     context.read<SubscriptionPlanViewModel>()
       ..doIntent(SelectSubscriptionTierEvent(tierIndex))
       ..doIntent(
         BrowseSubscriptionTierRestaurantsEvent(
-          programId: widget.programId,
-          bundleId: widget.bundleId,
+          programId: programId,
+          bundleId: bundleId,
           tierIndex: tierIndex,
         ),
       );
-    setState(() => _isRestaurantsView = true);
   }
 
-  void _onRetryDurations() {
+  void _onCloseRestaurants(BuildContext context) {
+    context.read<SubscriptionPlanViewModel>().doIntent(
+      const CloseSubscriptionTierRestaurantsEvent(),
+    );
+  }
+
+  void _onRetryDurations(BuildContext context) {
     context.read<SubscriptionPlanViewModel>().doIntent(
       GetSubscriptionDurationsEvent(
-        programId: widget.programId,
-        bundleId: widget.bundleId,
-        includeFriday: widget.state.includeFriday,
+        programId: programId,
+        bundleId: bundleId,
+        includeFriday: state.includeFriday,
       ),
     );
   }
 
-  void _onRetryTiers() {
-    final durationIndex = widget.state.selectedDurationIndex;
+  void _onRetryTiers(BuildContext context) {
+    final durationIndex = state.selectedDurationIndex;
     context.read<SubscriptionPlanViewModel>().doIntent(
       durationIndex == null
           ? GetSubscriptionDurationsEvent(
-              programId: widget.programId,
-              bundleId: widget.bundleId,
-              includeFriday: widget.state.includeFriday,
+              programId: programId,
+              bundleId: bundleId,
+              includeFriday: state.includeFriday,
             )
           : SelectSubscriptionDurationEvent(
-              programId: widget.programId,
-              bundleId: widget.bundleId,
+              programId: programId,
+              bundleId: bundleId,
               durationIndex: durationIndex,
             ),
     );
   }
 
-  void _onRetryBrowseRestaurants() {
-    final browsedTierIndex = widget.state.browsedTierIndex;
+  void _onRetryBrowseRestaurants(BuildContext context) {
+    final browsedTierIndex = state.browsedTierIndex;
     if (browsedTierIndex == null) return;
     context.read<SubscriptionPlanViewModel>().doIntent(
       BrowseSubscriptionTierRestaurantsEvent(
-        programId: widget.programId,
-        bundleId: widget.bundleId,
+        programId: programId,
+        bundleId: bundleId,
         tierIndex: browsedTierIndex,
       ),
     );
@@ -89,8 +86,6 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final state = widget.state;
-    final plan = widget.plan;
 
     if (state.isDurationsLoading && state.durations.isEmpty) {
       return const MonthlyPlanPackagesLoadingSkeleton();
@@ -99,7 +94,7 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
     if (state.failure != null && state.durations.isEmpty) {
       return ApiErrorWidget(
         exception: state.failure!.exception,
-        onRetry: _onRetryDurations,
+        onRetry: () => _onRetryDurations(context),
       );
     }
 
@@ -118,7 +113,7 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
     if (state.failure != null && state.tiers.isEmpty) {
       return ApiErrorWidget(
         exception: state.failure!.exception,
-        onRetry: _onRetryTiers,
+        onRetry: () => _onRetryTiers(context),
       );
     }
 
@@ -127,18 +122,19 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
     );
 
     final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final isRestaurantsView = state.isBrowsingRestaurants;
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 320),
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
-      child: _isRestaurantsView
+      child: isRestaurantsView
           ? MonthlyPlanRestaurantsView(
               key: const ValueKey('restaurants-view'),
               state: state,
               plan: plan,
-              onClose: () => setState(() => _isRestaurantsView = false),
-              onRetry: _onRetryBrowseRestaurants,
+              onClose: () => _onCloseRestaurants(context),
+              onRetry: () => _onRetryBrowseRestaurants(context),
             )
               .animate(key: const ValueKey('restaurants-view-anim'))
               .fadeIn(duration: 320.ms, curve: Curves.easeOut)
@@ -153,7 +149,8 @@ class _MonthlyPlanDetailsContentState extends State<MonthlyPlanDetailsContent> {
               state: state,
               plan: plan,
               fridayUnavailableMessage: fridayUnavailableMessage,
-              onBrowseRestaurants: _onBrowseRestaurants,
+              onBrowseRestaurants: (tierIndex) =>
+                  _onBrowseRestaurants(context, tierIndex),
             )
               .animate(key: const ValueKey('packages-view-anim'))
               .fadeIn(duration: 320.ms, curve: Curves.easeOut)

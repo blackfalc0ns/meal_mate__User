@@ -172,6 +172,9 @@ class AppColors {
   static const Color subscriptionDivider = Color(0x36C0B8B8);
   static const Color subscriptionSelectedOverlay = Color(0x08000000);
   static const Color subscriptionDotInactive = Color(0x330C6C3F);
+  static const Color subscriptionRestaurantsSheetBackground = Color(0xFFE3E3E3);
+  static const Color subscriptionRestaurantsSheetBorder = Color(0xFFE1E1E1);
+
   static const Color drawerBackground = Color(0xFF0C7946);
 
   // Calendar.
@@ -226,4 +229,16 @@ class AppColors {
 extension CalendarColorScheme on ColorScheme {
   LinearGradient get calendarNoSubscriptionGradient =>
       AppColors.calendarNoSubscriptionGradient;
+}
+
+extension MonthlyPlansColorScheme on ColorScheme {
+  Color get subscriptionRestaurantsSheetBackground =>
+      brightness == Brightness.dark
+          ? AppColors.cardDark
+          : AppColors.subscriptionRestaurantsSheetBackground;
+
+  Color get subscriptionRestaurantsSheetBorder =>
+      brightness == Brightness.dark
+          ? AppColors.dividerDark
+          : AppColors.subscriptionRestaurantsSheetBorder;
 }

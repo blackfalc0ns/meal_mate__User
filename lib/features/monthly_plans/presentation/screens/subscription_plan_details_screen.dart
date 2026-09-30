@@ -137,24 +137,47 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
             ),
           );
         },
-        child: Scaffold(
-          backgroundColor: color.surface,
-          body: Stack(
-            children: [
-              CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  MonthlyPlanHeroSliverSection(detailsArgs: detailsArgs),
-                  MonthlyPlanContentSliverSection(detailsArgs: detailsArgs),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: Spacing.xxxl * 2),
+        child:
+            BlocSelector<
+              SubscriptionPlanViewModel,
+              SubscriptionPlanState,
+              bool
+            >(
+              selector: (state) => state.isBrowsingRestaurants,
+              builder: (context, isBrowsing) {
+                return PopScope(
+                  canPop: !isBrowsing,
+                  onPopInvokedWithResult: (didPop, _) {
+                    if (didPop) return;
+                    context.read<SubscriptionPlanViewModel>().doIntent(
+                      const CloseSubscriptionTierRestaurantsEvent(),
+                    );
+                  },
+                  child: Scaffold(
+                    backgroundColor: color.surface,
+                    body: Stack(
+                      children: [
+                        CustomScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          slivers: [
+                            MonthlyPlanHeroSliverSection(
+                              detailsArgs: detailsArgs,
+                            ),
+                            MonthlyPlanContentSliverSection(
+                              detailsArgs: detailsArgs,
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: Spacing.xxxl * 2),
+                            ),
+                          ],
+                        ),
+                        MonthlyPlanBottomBarSection(detailsArgs: detailsArgs),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              MonthlyPlanBottomBarSection(detailsArgs: detailsArgs),
-            ],
-          ),
-        ),
+                );
+              },
+            ),
       ),
     );
   }

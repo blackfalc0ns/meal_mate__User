@@ -14,6 +14,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
     required this.imageAsset,
     this.imageUrl,
     this.durationSelector,
+    this.isBrowsingRestaurants = false,
     required this.onBack,
   });
 
@@ -23,6 +24,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
   final String imageAsset;
   final String? imageUrl;
   final Widget? durationSelector;
+  final bool isBrowsingRestaurants;
   final VoidCallback onBack;
 
   @override
@@ -35,11 +37,14 @@ class MonthlyPlanHeroSection extends StatelessWidget {
       child: ColoredBox(
         color: color.surface,
         child: SizedBox(
-          height: durationSelector == null
-              ? Spacing.monthlyPlanHeroHeight
-              : Spacing.monthlyPlanDurationCardTop +
-                    Spacing.monthlyPlanDurationHeight,
+          height: isBrowsingRestaurants
+              ? Spacing.monthlyPlanDurationCardTop
+              : (durationSelector == null
+                  ? Spacing.monthlyPlanHeroHeight
+                  : Spacing.monthlyPlanDurationCardTop +
+                      Spacing.monthlyPlanDurationHeight),
           child: Stack(
+            clipBehavior: Clip.hardEdge,
             children: [
               MonthlyPlanHeroBackground(
                 imageAsset: imageAsset,
@@ -57,7 +62,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
                   plan: plan,
                 ),
               ),
-              if (durationSelector != null)
+              if (durationSelector != null && !isBrowsingRestaurants)
                 PositionedDirectional(
                   top: Spacing.monthlyPlanDurationCardTop,
                   start: Spacing.monthlyPlanDurationHorizontalPadding,

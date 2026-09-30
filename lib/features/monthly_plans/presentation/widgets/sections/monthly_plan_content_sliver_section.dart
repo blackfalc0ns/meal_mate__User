@@ -20,44 +20,51 @@ class MonthlyPlanContentSliverSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.screenH,
-      ).copyWith(top: Spacing.xs, bottom: Spacing.screenV),
-      sliver: SliverToBoxAdapter(
-        child: BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
-          buildWhen: (previous, current) =>
-              previous.tiers != current.tiers ||
-              previous.selectedTierIndex != current.selectedTierIndex ||
-              previous.browseRestaurants != current.browseRestaurants ||
-              previous.browsedTierIndex != current.browsedTierIndex ||
-              previous.isTiersLoading != current.isTiersLoading ||
-              previous.isBrowseRestaurantsLoading !=
-                  current.isBrowseRestaurantsLoading ||
-              previous.failure != current.failure ||
-              previous.browseRestaurantsFailure !=
-                  current.browseRestaurantsFailure ||
-              previous.includeFriday != current.includeFriday,
-          builder: (context, state) {
-            final plan = state.toPlanDetails(
-              program: detailsArgs.program,
-              bundle: detailsArgs.bundle,
-              localeName: locale.localeName,
-              titlePrefix: locale.drawer_month_package,
-              dayLabel: locale.subscription_day,
-              subscribeLabel: locale.subscription_details_subscribe_now,
-              primaryColor: color.primary,
-            );
+    return BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
+      buildWhen: (previous, current) =>
+          previous.browsedTierIndex != current.browsedTierIndex ||
+          previous.tiers != current.tiers ||
+          previous.selectedTierIndex != current.selectedTierIndex ||
+          previous.browseRestaurants != current.browseRestaurants ||
+          previous.isTiersLoading != current.isTiersLoading ||
+          previous.isBrowseRestaurantsLoading !=
+              current.isBrowseRestaurantsLoading ||
+          previous.failure != current.failure ||
+          previous.browseRestaurantsFailure !=
+              current.browseRestaurantsFailure ||
+          previous.includeFriday != current.includeFriday,
+      builder: (context, state) {
+        final plan = state.toPlanDetails(
+          program: detailsArgs.program,
+          bundle: detailsArgs.bundle,
+          localeName: locale.localeName,
+          titlePrefix: locale.drawer_month_package,
+          dayLabel: locale.subscription_day,
+          subscribeLabel: locale.subscription_details_subscribe_now,
+          primaryColor: color.primary,
+        );
 
-            return MonthlyPlanDetailsContent(
+        final isBrowsing = state.isBrowsingRestaurants;
+
+        return SliverPadding(
+          padding: isBrowsing
+              ? EdgeInsets.zero
+              : const EdgeInsets.symmetric(
+                  horizontal: Spacing.screenH,
+                ).copyWith(
+                  top: Spacing.xs,
+                  bottom: Spacing.screenV,
+                ),
+          sliver: SliverToBoxAdapter(
+            child: MonthlyPlanDetailsContent(
               state: state,
               plan: plan,
               programId: detailsArgs.program.programId,
               bundleId: detailsArgs.bundle.bundleId,
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

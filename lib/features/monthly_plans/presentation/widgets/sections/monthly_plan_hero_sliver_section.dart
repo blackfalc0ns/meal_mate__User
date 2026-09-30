@@ -23,63 +23,64 @@ class MonthlyPlanHeroSliverSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
-    return SliverToBoxAdapter(
-      child: MonthlyPlanHeroSection(
-        titlePrefix: locale.drawer_month_package,
-        titleHighlight: detailsArgs.program.name(locale.localeName),
-        imageAsset: Assets.monthlyPlanHero,
-        imageUrl: null,
-        durationSelector:
-            BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
-              buildWhen: (previous, current) =>
-                  previous.durations != current.durations ||
-                  previous.selectedDurationIndex !=
-                      current.selectedDurationIndex ||
-                  previous.includeFriday != current.includeFriday ||
-                  previous.customDurationDays != current.customDurationDays ||
-                  previous.canToggleFriday != current.canToggleFriday ||
-                  previous.isDurationsLoading != current.isDurationsLoading,
-              builder: (context, state) {
-                return SubscriptionDurationSelector(
-                  selectedIndex: state.selectedDurationIndex,
-                  onSelected: (index) => context
-                      .read<SubscriptionPlanViewModel>()
-                      .doIntent(
-                        SelectSubscriptionDurationEvent(
-                          programId: detailsArgs.program.programId,
-                          bundleId: detailsArgs.bundle.bundleId,
-                          durationIndex: index,
+    return BlocBuilder<SubscriptionPlanViewModel, SubscriptionPlanState>(
+      buildWhen: (previous, current) =>
+          previous.browsedTierIndex != current.browsedTierIndex ||
+          previous.durations != current.durations ||
+          previous.selectedDurationIndex != current.selectedDurationIndex ||
+          previous.includeFriday != current.includeFriday ||
+          previous.customDurationDays != current.customDurationDays ||
+          previous.canToggleFriday != current.canToggleFriday ||
+          previous.isDurationsLoading != current.isDurationsLoading,
+      builder: (context, state) {
+        final isBrowsing = state.isBrowsingRestaurants;
+
+        return SliverToBoxAdapter(
+          child: MonthlyPlanHeroSection(
+            titlePrefix: locale.drawer_month_package,
+            titleHighlight: detailsArgs.program.name(locale.localeName),
+            imageAsset: Assets.monthlyPlanHero,
+            imageUrl: null,
+            isBrowsingRestaurants: isBrowsing,
+            durationSelector: isBrowsing
+                ? null
+                : SubscriptionDurationSelector(
+                    selectedIndex: state.selectedDurationIndex,
+                    onSelected: (index) =>
+                        context.read<SubscriptionPlanViewModel>().doIntent(
+                          SelectSubscriptionDurationEvent(
+                            programId: detailsArgs.program.programId,
+                            bundleId: detailsArgs.bundle.bundleId,
+                            durationIndex: index,
+                          ),
                         ),
-                      ),
-                  includesFriday: state.includeFriday,
-                  onFridayChanged: (value) => context
-                      .read<SubscriptionPlanViewModel>()
-                      .doIntent(
-                        ToggleSubscriptionFridayEvent(
-                          programId: detailsArgs.program.programId,
-                          bundleId: detailsArgs.bundle.bundleId,
-                          includeFriday: value,
+                    includesFriday: state.includeFriday,
+                    onFridayChanged: (value) =>
+                        context.read<SubscriptionPlanViewModel>().doIntent(
+                          ToggleSubscriptionFridayEvent(
+                            programId: detailsArgs.program.programId,
+                            bundleId: detailsArgs.bundle.bundleId,
+                            includeFriday: value,
+                          ),
                         ),
-                      ),
-                  customDurationDays: state.customDurationDays,
-                  onCustomDurationChanged: (value) => context
-                      .read<SubscriptionPlanViewModel>()
-                      .doIntent(
-                        UpdateCustomSubscriptionDurationEvent(
-                          programId: detailsArgs.program.programId,
-                          bundleId: detailsArgs.bundle.bundleId,
-                          durationDays: value,
+                    customDurationDays: state.customDurationDays,
+                    onCustomDurationChanged: (value) =>
+                        context.read<SubscriptionPlanViewModel>().doIntent(
+                          UpdateCustomSubscriptionDurationEvent(
+                            programId: detailsArgs.program.programId,
+                            bundleId: detailsArgs.bundle.bundleId,
+                            durationDays: value,
+                          ),
                         ),
-                      ),
-                  durations: state.durations,
-                  isFridayEnabled: state.canToggleFriday,
-                  isLoading:
-                      state.isDurationsLoading && state.durations.isEmpty,
-                );
-              },
-            ),
-        onBack: onBack ?? () => Navigator.maybePop(context),
-      ),
+                    durations: state.durations,
+                    isFridayEnabled: state.canToggleFriday,
+                    isLoading:
+                        state.isDurationsLoading && state.durations.isEmpty,
+                  ),
+            onBack: onBack ?? () => Navigator.maybePop(context),
+          ),
+        );
+      },
     );
   }
 }

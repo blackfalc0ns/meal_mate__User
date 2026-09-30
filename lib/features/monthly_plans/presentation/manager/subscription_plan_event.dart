@@ -83,3 +83,7 @@ class CheckSubscriptionReadinessEvent extends SubscriptionPlanEvent {
   final int durationDays;
   final bool includeFriday;
 }
+
+class CloseSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
+  const CloseSubscriptionTierRestaurantsEvent();
+}

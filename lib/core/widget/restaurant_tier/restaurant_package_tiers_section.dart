@@ -31,71 +31,71 @@ class RestaurantPackageTiersSection extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Icon(
-                        Icons.grid_view_rounded,
-                        size: Spacing.iconMd,
-                        color: color.primary,
-                      ),
-                      const SizedBox(width: Spacing.sm),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              locale.subscription_restaurant_categories_title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size15,
-                                color: color.onSurface,
-                              ),
-                            ),
-                            Text(
-                              locale.subscription_restaurant_categories_subtitle,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              style: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  Icon(
+                    Icons.grid_view_rounded,
+                    size: Spacing.iconMd,
+                    color: color.primary,
                   ),
-                  const SizedBox(height: Spacing.lg),
-                  for (var index = 0; index < packages.length; index++)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: index == packages.length - 1
-                            ? Spacing.zero
-                            : Spacing.monthlyPlanPackageGap,
-                      ),
-                      child: RestaurantPackageTierCard(
-                        package: packages[index],
-                        title: packages[index].title,
-                        width: double.infinity,
-                        height: Spacing.monthlyPlanPackageSideHeight,
-                        isCentered: index == 1,
-                        isSelected: selectedIndex == index,
-                        onTap: () => onSelected(index),
-                        onBrowseRestaurants: () => onBrowseRestaurants(index),
-                      ),
+                  const SizedBox(width: Spacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          locale.subscription_restaurant_categories_title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size15,
+                            color: color.onSurface,
+                          ),
+                        ),
+                        Text(
+                          locale.subscription_restaurant_categories_subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: getMediumStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
                 ],
-            ),
+              ),
+              const SizedBox(height: Spacing.lg),
+              for (var index = 0; index < packages.length; index++)
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: index == packages.length - 1
+                        ? Spacing.zero
+                        : Spacing.monthlyPlanPackageGap,
+                  ),
+                  child: RestaurantPackageTierCard(
+                    package: packages[index],
+                    title: packages[index].title,
+                    width: double.infinity,
+                    height: Spacing.monthlyPlanPackageSideHeight,
+                    isCentered: index == 1,
+                    isSelected: selectedIndex == index,
+                    onTap: () => onSelected(index),
+                    onBrowseRestaurants: () => onBrowseRestaurants(index),
+                  ),
+                ),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 }
