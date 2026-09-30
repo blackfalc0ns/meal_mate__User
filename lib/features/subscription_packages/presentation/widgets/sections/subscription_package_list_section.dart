@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -5,22 +6,21 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_packages/domain/entities/subscription_bundle_entity.dart';
-import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_package_choice_card.dart';
-import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/subscription_selected_program_card.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 
-class SubscriptionPackageSelectionView extends StatelessWidget {
-  const SubscriptionPackageSelectionView({
+class SubscriptionPackageListSection extends StatelessWidget {
+  const SubscriptionPackageListSection({
     super.key,
-    required this.selectedProgram,
     required this.bundles,
+    required this.selectedProgram,
     required this.selectedPackageNotifier,
     required this.onPackageSelected,
   });
 
-  final SubscriptionProgramEntity selectedProgram;
   final List<SubscriptionBundleEntity> bundles;
-  final ValueNotifier<int?> selectedPackageNotifier;
+  final SubscriptionProgramEntity selectedProgram;
+  final ValueListenable<int?> selectedPackageNotifier;
   final ValueChanged<int> onPackageSelected;
 
   @override
@@ -28,29 +28,8 @@ class SubscriptionPackageSelectionView extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
+    return SliverMainAxisGroup(
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsetsDirectional.only(
-            top: Spacing.xl,
-            start: Spacing.lg,
-            end: Spacing.lg,
-          ),
-          sliver: SliverToBoxAdapter(
-            child: SubscriptionSelectedProgramCard(
-              program: selectedProgram,
-            )
-                .animate()
-                .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-                .slideY(
-                  begin: 0.1,
-                  end: 0,
-                  duration: 350.ms,
-                  curve: Curves.easeOut,
-                ),
-          ),
-        ),
         SliverPadding(
           padding: const EdgeInsetsDirectional.only(
             top: Spacing.md,
@@ -97,8 +76,7 @@ class SubscriptionPackageSelectionView extends StatelessWidget {
                     key: ValueKey(bundle.bundleId),
                     title: bundle.name(locale.localeName),
                     subtitle: bundle.formattedSubtitle(locale.localeName),
-                    imageUrl: selectedProgram.imageUrl,
-                    fallbackImageAsset: selectedProgram.fallbackImageAsset,
+                    imageUrl: bundle.imageUrl ?? selectedProgram.imageUrl,
                     restaurantLogoUrls: bundle.restaurantLogoUrls,
                     badgeLabel: bundle.badge?.name(locale.localeName),
                     isSelected: isSelected,

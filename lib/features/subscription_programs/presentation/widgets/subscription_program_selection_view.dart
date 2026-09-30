@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -12,13 +13,13 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
     super.key,
     required this.showBottomSpace,
     required this.programs,
-    required this.selectedProgramIndex,
+    required this.selectedProgramNotifier,
     required this.onProgramSelected,
   });
 
   final bool showBottomSpace;
   final List<SubscriptionProgramEntity> programs;
-  final int? selectedProgramIndex;
+  final ValueListenable<int?> selectedProgramNotifier;
   final ValueChanged<int> onProgramSelected;
 
   @override
@@ -91,17 +92,25 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                   locale.localeName,
                                 );
 
-                                return SubscriptionProgramGoalCard(
-                                  key: ValueKey(program.programId),
-                                  title: program.name(locale.localeName),
-                                  description: program.description(
-                                    locale.localeName,
-                                  ),
-                                  imageUrl: program.imageUrl,
-                                  primaryFeature: _featureAt(keywords, 0),
-                                  secondaryFeature: _featureAt(keywords, 1),
-                                  isSelected: index == selectedProgramIndex,
-                                  onTap: () => onProgramSelected(index),
+                                return ValueListenableBuilder<int?>(
+                                  valueListenable: selectedProgramNotifier,
+                                  builder: (context, selectedProgramIndex, _) {
+                                    final isSelected =
+                                        index == selectedProgramIndex;
+
+                                    return SubscriptionProgramGoalCard(
+                                      key: ValueKey(program.programId),
+                                      title: program.name(locale.localeName),
+                                      description: program.description(
+                                        locale.localeName,
+                                      ),
+                                      imageUrl: program.imageUrl,
+                                      primaryFeature: _featureAt(keywords, 0),
+                                      secondaryFeature: _featureAt(keywords, 1),
+                                      isSelected: isSelected,
+                                      onTap: () => onProgramSelected(index),
+                                    );
+                                  },
                                 )
                                     .animate()
                                     .fadeIn(

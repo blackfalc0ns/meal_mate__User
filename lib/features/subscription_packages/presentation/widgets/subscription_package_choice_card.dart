@@ -12,26 +12,20 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.isSelected,
-    required this.fallbackImageAsset,
     this.isPopular = false,
     this.imageUrl,
     this.restaurantLogoUrls = const [],
     this.badgeLabel,
-    this.price,
-    this.currency,
     this.onTap,
   });
 
   final String title;
   final String subtitle;
   final bool isSelected;
-  final String fallbackImageAsset;
   final bool isPopular;
   final String? imageUrl;
   final List<String?> restaurantLogoUrls;
   final String? badgeLabel;
-  final String? price;
-  final String? currency;
   final VoidCallback? onTap;
 
   @override
@@ -139,7 +133,6 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
-
                   SizedBox(
                     width: Spacing.subscriptionPackageChoiceImageWidth,
                     height: Spacing.subscriptionPackageChoiceImageHeight,
@@ -153,25 +146,28 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
               ),
             ),
             PositionedDirectional(
-              end: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
-              start: Spacing.xxxl + Spacing.xxxl - Spacing.xs,
+              start: 0,
+              end: 0,
               bottom: Spacing.xss,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 280),
-                curve: Curves.fastOutSlowIn,
-                height: Spacing.subscriptionPackageChoiceButtonHeight,
-                alignment: AlignmentDirectional.center,
-                decoration: BoxDecoration(
-                  color: isSelected ? color.primary : color.surface,
-                  border: Border.all(color: color.primary),
-                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                ),
-                child: Text(
-                  locale.subscription_choose_plan_button,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: isSelected ? color.onPrimary : color.primary,
+              child: Center(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 280),
+                  curve: Curves.fastOutSlowIn,
+                  width: Spacing.subscriptionPackageChoiceButtonWidth,
+                  height: Spacing.subscriptionPackageChoiceButtonHeight,
+                  alignment: AlignmentDirectional.center,
+                  decoration: BoxDecoration(
+                    color: isSelected ? color.primary : color.surface,
+                    border: Border.all(color: color.primary),
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Text(
+                    locale.subscription_choose_plan_button,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: isSelected ? color.onPrimary : color.primary,
+                    ),
                   ),
                 ),
               ),
@@ -198,7 +194,6 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                         color: color.onPrimary,
                       ),
                       const SizedBox(width: Spacing.xs),
-
                       Text(
                         badgeLabel ?? locale.subscription_details_most_selected,
                         style: getSemiBoldStyle(

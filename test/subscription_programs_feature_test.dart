@@ -104,7 +104,7 @@ void main() {
           child: SubscriptionProgramSelectionView(
             showBottomSpace: true,
             programs: const [sampleProgram],
-            selectedProgramIndex: null,
+            selectedProgramNotifier: ValueNotifier<int?>(null),
             onProgramSelected: (index) => selectedIndex = index,
           ),
         ),

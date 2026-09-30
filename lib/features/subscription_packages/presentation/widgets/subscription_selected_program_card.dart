@@ -15,9 +15,6 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    //  final textDirection = Directionality.of(context);
-
-    final keywords = program.keywords(locale.localeName);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +33,7 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.sm),
         Container(
-          height: Spacing.subscriptionProgramCardHeight + Spacing.xs,
+          height: Spacing.subscriptionProgramCardHeight,
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.md,
             vertical: Spacing.md,
@@ -59,109 +56,42 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        const SizedBox(width: Spacing.sm),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                locale.subscription_selected_program_label,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                                style: getMediumStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size10,
-                                  color: color.onSurfaceVariant,
-                                ),
-                              ),
-                              Text(
-                                program.name(locale.localeName),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size15,
-                                  color: color.onSurface,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          program.description(locale.localeName),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: color.onSurfaceVariant,
-                          ),
-                        ),
+                    Text(
+                      locale.subscription_selected_program_label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
                       ),
                     ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Icon(
-                          _primaryFeatureIconForProgram(program),
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Flexible(
-                          child: Text(
-                            _featureAt(keywords, 0),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        SizedBox(
-                          height: Spacing.base,
-                          child: VerticalDivider(
-                            width: Spacing.border,
-                            color: color.outlineVariant,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.md),
-                        Icon(
-                          _secondaryFeatureIconForProgram(program),
-                          size: Spacing.iconSm,
-                          color: color.primary,
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Flexible(
-                          child: Text(
-                            _featureAt(keywords, 1),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: getRegularStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size10,
-                              color: color.onSurfaceVariant,
-                            ),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: Spacing.xxs),
+                    Text(
+                      program.name(locale.localeName),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size15,
+                        color: color.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    Text(
+                      program.description(locale.localeName),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -197,28 +127,5 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _featureAt(List<String> keywords, int index) {
-    if (index >= keywords.length) return '';
-    return keywords[index];
-  }
-
-  IconData _primaryFeatureIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_WEIGHT_LOSS' => Icons.bar_chart_rounded,
-      'PROG_BALANCED' => Icons.eco_rounded,
-      'PROG_ATHLETE' => Icons.bolt_rounded,
-      _ => Icons.bolt_rounded,
-    };
-  }
-
-  IconData _secondaryFeatureIconForProgram(SubscriptionProgramEntity program) {
-    return switch (program.code) {
-      'PROG_MUSCLE_GAIN' => Icons.sync_rounded,
-      'PROG_ATHLETE' => Icons.sync_rounded,
-      'PROG_LOW_CARB' => Icons.tune_rounded,
-      _ => Icons.my_location_rounded,
-    };
   }
 }

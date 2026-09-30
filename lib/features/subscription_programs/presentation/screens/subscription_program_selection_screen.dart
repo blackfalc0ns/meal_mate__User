@@ -29,7 +29,15 @@ class SubscriptionProgramSelectionScreen extends StatefulWidget {
 
 class _SubscriptionProgramSelectionScreenState
     extends State<SubscriptionProgramSelectionScreen> {
-  int? _selectedProgramIndex;
+  final ValueNotifier<int?> _selectedProgramNotifier = ValueNotifier<int?>(
+    null,
+  );
+
+  @override
+  void dispose() {
+    _selectedProgramNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,21 +76,27 @@ class _SubscriptionProgramSelectionScreenState
               >(
                 selector: (state) => state.programs,
                 builder: (context, programs) {
-                  final isEnabled =
-                      _selectedProgramIndex != null && programs.isNotEmpty;
-
                   return PositionedDirectional(
                     start: Spacing.subscriptionProgramsHorizontalPadding,
                     end: Spacing.subscriptionProgramsHorizontalPadding,
                     bottom: Spacing.lg,
                     child: SafeArea(
                       top: false,
-                      child: AppSubscriptionButton.next(
-                        text: locale.family_next_package_days,
-                        onPressed:
-                            isEnabled
-                                ? () => _openPackageSelection(programs)
-                                : null,
+                      child: ValueListenableBuilder<int?>(
+                        valueListenable: _selectedProgramNotifier,
+                        builder: (context, selectedProgramIndex, _) {
+                          final isEnabled =
+                              selectedProgramIndex != null &&
+                              programs.isNotEmpty;
+
+                          return AppSubscriptionButton.next(
+                            text: locale.family_next_package_days,
+                            onPressed:
+                                isEnabled
+                                    ? () => _openPackageSelection(programs)
+                                    : null,
+                          );
+                        },
                       ),
                     )
                         .animate()
@@ -130,17 +144,18 @@ class _SubscriptionProgramSelectionScreenState
     return SubscriptionProgramSelectionView(
       showBottomSpace: true,
       programs: state.programs,
-      selectedProgramIndex: _selectedProgramIndex,
+      selectedProgramNotifier: _selectedProgramNotifier,
       onProgramSelected: _selectProgram,
     );
   }
 
   void _selectProgram(int index) {
-    setState(() => _selectedProgramIndex = index);
+    if (_selectedProgramNotifier.value == index) return;
+    _selectedProgramNotifier.value = index;
   }
 
   void _openPackageSelection(List<SubscriptionProgramEntity> programs) {
-    final selectedProgramIndex = _selectedProgramIndex;
+    final selectedProgramIndex = _selectedProgramNotifier.value;
     if (selectedProgramIndex == null ||
         selectedProgramIndex < 0 ||
         selectedProgramIndex >= programs.length) {
