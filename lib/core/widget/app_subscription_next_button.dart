@@ -22,6 +22,7 @@ class AppSubscriptionNextButton extends StatelessWidget {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return AppButton.filled(
+      iconBeforeText: isRtl ? false : true,
       text: text,
       onPressed: onPressed,
       isLoading: isLoading,
@@ -29,7 +30,7 @@ class AppSubscriptionNextButton extends StatelessWidget {
       textColor: color.onPrimary,
       fontSize: FontSize.size12,
       iconWidget: Icon(
-        isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+        isRtl ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
         color: color.onPrimary,
         size: Spacing.iconMd,
       ),

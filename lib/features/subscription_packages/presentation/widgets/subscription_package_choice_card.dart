@@ -58,6 +58,9 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                 start: Spacing.md,
               ),
               decoration: BoxDecoration(
+                color: isSelected
+                    ? color.primaryContainer.withValues(alpha: 0.14)
+                    : color.surface,
                 borderRadius: BorderRadius.circular(
                   Spacing.subscriptionProgramCardRadius,
                 ),
