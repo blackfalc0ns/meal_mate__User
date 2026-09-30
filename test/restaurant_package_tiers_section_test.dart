@@ -97,7 +97,8 @@ void main() {
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
 
       // Check prices
-      expect(find.text('د.ك 6.5'), findsNWidgets(3));
+      expect(find.text('6.5'), findsNWidgets(3));
+      expect(find.text('د.ك'), findsNWidgets(3));
       expect(find.text('حتى نهاية الاشتراك'), findsNWidgets(3));
 
       // Tap card 1 to select
@@ -135,7 +136,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text(' د.ك'), findsOneWidget);
+      expect(find.text('د.ك'), findsOneWidget);
       expect(find.text('حتى نهاية الاشتراك'), findsOneWidget);
     });
 

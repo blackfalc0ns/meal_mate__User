@@ -38,13 +38,6 @@ class RestaurantPackageTierPrice extends StatelessWidget {
         ? priceSubtitle!
         : locale.subscription_until_end_of_subscription;
 
-    final isAr = locale.localeName == 'ar';
-    final displayPriceText = hasPrice
-        ? (isAr
-            ? '$effectiveCurrency $cleanPrice'
-            : '$cleanPrice $effectiveCurrency')
-        : ' $effectiveCurrency';
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,17 +65,40 @@ class RestaurantPackageTierPrice extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
-                  displayPriceText,
-                  key: ValueKey<String>(displayPriceText),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: priceColor,
-                  ).copyWith(height: 1.15),
+                child: Row(
+                  key: ValueKey<String>(
+                    '$cleanPrice-$effectiveCurrency-$hasPrice',
+                  ),
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      effectiveCurrency,
+                      maxLines: 1,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: priceColor,
+                      ).copyWith(height: 1.15),
+                    ),
+                    const SizedBox(width: Spacing.xxs),
+
+                    if (hasPrice) ...[
+                      Flexible(
+                        child: Text(
+                          cleanPrice,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size12,
+                            color: priceColor,
+                          ).copyWith(height: 1.15),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
               const SizedBox(height: Spacing.xxs),

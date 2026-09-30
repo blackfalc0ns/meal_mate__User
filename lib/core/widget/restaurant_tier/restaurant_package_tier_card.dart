@@ -222,7 +222,7 @@ class RestaurantPackageTierCard extends StatelessWidget {
                                   maxWidth: 122.0,
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: Spacing.xs,
+                                  horizontal: Spacing.sm,
                                 ),
                                 decoration: BoxDecoration(
                                   color: buttonBackgroundColor,
