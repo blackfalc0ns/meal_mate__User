@@ -27,15 +27,19 @@ class SubscriptionDurationOption extends StatelessWidget {
       children: [
         SizedBox(
           width: Spacing.monthlyPlanDurationOptionWidth,
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size11,
-              color: color.onSurfaceVariant,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 220),
+            child: Text(
+              label,
+              key: ValueKey(label),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size11,
+                color: color.onSurfaceVariant,
+              ),
             ),
           ),
         ),

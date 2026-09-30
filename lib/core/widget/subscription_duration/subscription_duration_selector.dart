@@ -113,8 +113,11 @@ class _SubscriptionDurationSelectorState
                       ) ...[
                         if (index > 0) const SizedBox(width: Spacing.sm),
                         _option(
-                          label: presetDurations[index].name(locale.localeName),
-                          days: presetDurations[index].totalServiceDays,
+                          label: _durationLabel(
+                            presetDurations[index],
+                            locale.localeName,
+                          ),
+                          days: _durationDays(presetDurations[index]),
                           index: widget.durations.indexOf(
                             presetDurations[index],
                           ),
@@ -212,6 +215,40 @@ class _SubscriptionDurationSelectorState
         onTap: () => widget.onSelected(index),
       ),
     );
+  }
+
+  int _durationDays(SubscriptionDurationItem duration) {
+    if (widget.includesFriday) {
+      return duration.durationDays ?? duration.totalServiceDays;
+    }
+    return duration.totalServiceDays > 0
+        ? duration.totalServiceDays
+        : (duration.durationDays ?? 0);
+  }
+
+  String _durationLabel(
+    SubscriptionDurationItem duration,
+    String localeName,
+  ) {
+    if (duration.isCustom) {
+      return duration.name(localeName);
+    }
+
+    if (widget.includesFriday) {
+      final days = _durationDays(duration);
+      if (days > 0) {
+        if (localeName == 'ar') {
+          if (days >= 3 && days <= 10) {
+            return '$days أيام';
+          }
+          return '$days يوماً';
+        } else {
+          return days == 1 ? '1 Day' : '$days Days';
+        }
+      }
+    }
+
+    return duration.name(localeName);
   }
 
   List<SubscriptionDurationItem> get _presetDurations => widget.durations

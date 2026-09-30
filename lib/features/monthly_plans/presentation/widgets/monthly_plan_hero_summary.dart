@@ -20,42 +20,36 @@ class MonthlyPlanHeroSummary extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            FittedBox(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
+            if (plan.titlePrefix.isNotEmpty)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  plan.titlePrefix,
+                  textAlign: TextAlign.center,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size30,
+                    fontSize: FontSize.size24,
                     color: color.onSurface,
                   ),
-                  children: [
-                    if (plan.titlePrefix.isNotEmpty)
-                      TextSpan(text: '${plan.titlePrefix} '),
-                    // if (plan.titleHighlight.isNotEmpty)
-                    //   TextSpan(
-                    //     text: plan.titleHighlight,
-                    //     style: getBoldStyle(
-                    //       fontFamily: FontConstant.alexandria,
-                    //       fontSize: FontSize.size26,
-                    //       color: color.primary,
-                    //     ).copyWith(height: 1.25),
-                    //   ),
-                  ],
                 ),
               ),
-            ),
-            Text(
-              textAlign: TextAlign.center,
-              plan.titleHighlight,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size26,
-                color: color.primary,
+            if (plan.titleHighlight.isNotEmpty) ...[
+              const SizedBox(height: Spacing.xxs),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  plan.titleHighlight,
+                  textAlign: TextAlign.center,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size20,
+                    color: color.primary,
+                  ),
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),

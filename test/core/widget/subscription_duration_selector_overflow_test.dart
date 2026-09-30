@@ -193,4 +193,73 @@ void main() {
     expect(textRect.overlaps(iconRect), isFalse);
     expect(textRect.top, greaterThanOrEqualTo(iconRect.bottom));
   });
+
+  testWidgets('preset duration labels update when includesFriday is toggled', (tester) async {
+    const testDurations = <SubscriptionDurationItem>[
+      _FakeDuration(
+        isCustom: false,
+        durationDays: 7,
+        totalServiceDays: 6,
+        title: '6 أيام',
+      ),
+      _FakeDuration(
+        isCustom: false,
+        durationDays: 14,
+        totalServiceDays: 12,
+        title: '12 يوماً',
+      ),
+      _FakeDuration(
+        isCustom: false,
+        durationDays: 30,
+        totalServiceDays: 26,
+        title: '26 يوماً',
+      ),
+    ];
+
+    // 1. When includesFriday is false
+    await tester.pumpWidget(
+      buildTestWidget(
+        width: 360,
+        child: SubscriptionDurationSelector(
+          selectedIndex: 0,
+          onSelected: (_) {},
+          includesFriday: false,
+          onFridayChanged: (_) {},
+          customDurationDays: null,
+          onCustomDurationChanged: (_) {},
+          durations: testDurations,
+          isFridayEnabled: true,
+          isLoading: false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('6 أيام'), findsOneWidget);
+    expect(find.text('12 يوماً'), findsOneWidget);
+    expect(find.text('26 يوماً'), findsOneWidget);
+
+    // 2. When includesFriday is toggled to true
+    await tester.pumpWidget(
+      buildTestWidget(
+        width: 360,
+        child: SubscriptionDurationSelector(
+          selectedIndex: 0,
+          onSelected: (_) {},
+          includesFriday: true,
+          onFridayChanged: (_) {},
+          customDurationDays: null,
+          onCustomDurationChanged: (_) {},
+          durations: testDurations,
+          isFridayEnabled: true,
+          isLoading: false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('7 أيام'), findsOneWidget);
+    expect(find.text('14 يوماً'), findsOneWidget);
+    expect(find.text('30 يوماً'), findsOneWidget);
+  });
 }

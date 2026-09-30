@@ -507,7 +507,7 @@ class Spacing {
   static const double monthlyPlanDesignWidth = 390.0;
   static const double monthlyPlanHeroHeight = 328.0;
   static const double monthlyPlanHeroFadeHeight = 631.0;
-  static const double monthlyPlanHeroSummaryTop = 200.0;
+  static const double monthlyPlanHeroSummaryTop = 180.0;
   static const double monthlyPlanHeroLogoTop = 24.0;
   static const double monthlyPlanHeroLogoWidth = 44.0;
   static const double monthlyPlanHeroLogoHeight = 51.0;
