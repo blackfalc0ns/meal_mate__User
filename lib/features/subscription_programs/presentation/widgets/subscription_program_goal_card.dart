@@ -29,164 +29,144 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Material(
-      color: color.surface.withValues(alpha: 0),
-      child: InkWell(
-        onTap: onTap,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 280),
+      curve: Curves.fastOutSlowIn,
+      constraints: const BoxConstraints(
+        minHeight: Spacing.subscriptionProgramCardHeight,
+      ),
+      decoration: BoxDecoration(
+        color: color.surface,
         borderRadius: BorderRadius.circular(
           Spacing.subscriptionProgramCardRadius,
         ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 280),
-          curve: Curves.fastOutSlowIn,
-          clipBehavior: Clip.antiAlias,
-          height: isSelected
-              ? Spacing.subscriptionProgramCardHeight + Spacing.lg
-              : Spacing.subscriptionProgramCardHeight,
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.sm,
-            vertical: Spacing.sm,
+        border: Border.all(
+          color: isSelected
+              ? color.primary
+              : color.outlineVariant.withValues(alpha: 0.35),
+          width: isSelected ? Spacing.border : Spacing.hairline,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isSelected
+                ? color.primary.withValues(alpha: 0.12)
+                : color.shadow.withValues(alpha: 0.06),
+            offset: Offset(0, isSelected ? Spacing.xs : Spacing.xss),
+            blurRadius: isSelected ? Spacing.lg : Spacing.base,
+            spreadRadius: Spacing.zero,
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              Spacing.subscriptionProgramCardRadius,
-            ),
-            border: Border.all(
-              color: isSelected ? color.primary : color.outlineVariant,
-              width: isSelected ? Spacing.border : Spacing.hairline,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: isSelected
-                    ? color.primary.withValues(alpha: 0.08)
-                    : color.shadow.withValues(alpha: 0.05),
-                offset: Offset(0, isSelected ? Spacing.xs : Spacing.xss),
-                blurRadius: isSelected ? Spacing.md : Spacing.sm,
-              ),
-            ],
+        ],
+      ),
+      child: Material(
+        color: color.surface.withValues(alpha: 0),
+        borderRadius: BorderRadius.circular(
+          Spacing.subscriptionProgramCardRadius,
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(
+            Spacing.subscriptionProgramCardRadius,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.sm,
-                      ),
-                      child: Text(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.base,
+              vertical: Spacing.md,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
-                        style: getSemiBoldStyle(
+                        style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size14,
                           color: color.onSurface,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.sm,
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ).copyWith(height: 1.35),
                       ),
-                      child: AnimatedCrossFade(
-                        duration: const Duration(milliseconds: 280),
-                        firstCurve: Curves.easeOut,
-                        secondCurve: Curves.easeIn,
-                        sizeCurve: Curves.fastOutSlowIn,
-                        crossFadeState: isSelected
-                            ? CrossFadeState.showSecond
-                            : CrossFadeState.showFirst,
-                        firstChild: Text(
-                          description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.onSurfaceVariant,
-                          ),
-                        ),
-                        secondChild: Text(
-                          description,
-                          textAlign: TextAlign.start,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: Spacing.sm,
-                      ),
-                      child: Row(
+                      const SizedBox(height: Spacing.sm),
+                      Row(
                         children: [
-                          Flexible(
-                            child: Text(
-                              primaryFeature,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              style: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.primary,
+                          if (primaryFeature.isNotEmpty)
+                            Flexible(
+                              child: Text(
+                                primaryFeature,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: getRegularStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size10,
+                                  color: color.onSurfaceVariant,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: Spacing.md),
-                          SizedBox(
-                            height: Spacing.base,
-                            child: VerticalDivider(
-                              width: Spacing.border,
-                              thickness: Spacing.border,
-                              color: color.primary,
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Flexible(
-                            child: Text(
-                              secondaryFeature,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              style: getMediumStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size10,
-                                color: color.primary,
+                          if (primaryFeature.isNotEmpty &&
+                              secondaryFeature.isNotEmpty) ...[
+                            const SizedBox(width: Spacing.sm),
+                            SizedBox(
+                              height: Spacing.md,
+                              child: VerticalDivider(
+                                width: Spacing.border,
+                                thickness: Spacing.border,
+                                color: color.outlineVariant,
                               ),
                             ),
-                          ),
+                            const SizedBox(width: Spacing.sm),
+                          ],
+                          if (secondaryFeature.isNotEmpty)
+                            Flexible(
+                              child: Text(
+                                secondaryFeature,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: getRegularStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size10,
+                                  color: color.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              SizedBox(
-                width: Spacing.subscriptionProgramImageWidth,
-                height: Spacing.subscriptionProgramImageHeight,
-                child: AppCachedNetworkImage(
-                  imageUrl: imageUrl,
+                const SizedBox(width: Spacing.md),
+                SizedBox(
                   width: Spacing.subscriptionProgramImageWidth,
                   height: Spacing.subscriptionProgramImageHeight,
-                  fit: BoxFit.contain,
-                  semanticLabel: title,
+                  child: AppCachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: Spacing.subscriptionProgramImageWidth,
+                    height: Spacing.subscriptionProgramImageHeight,
+                    fit: BoxFit.contain,
+                    semanticLabel: title,
+                  ),
                 ),
-              ),
-              const SizedBox(width: Spacing.sm),
-            ],
+              ],
+            ),
           ),
         ),
       ),

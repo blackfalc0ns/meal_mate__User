@@ -113,7 +113,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: getSemiBoldStyle(
                                       fontFamily: FontConstant.alexandria,
-                                      fontSize: FontSize.size13,
+                                      fontSize: FontSize.size14,
                                       color: color.onSurface,
                                     ),
                                   ),
@@ -187,7 +187,7 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
         if (isPopular)
           PositionedDirectional(
             top: -Spacing.sm,
-            start: Spacing.md,
+            end: Spacing.md,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.sm,
