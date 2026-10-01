@@ -79,6 +79,7 @@ class PaymentMethodTile extends StatelessWidget {
       PaymentMethodType.visa => l10n.payment_method_visa,
       PaymentMethodType.applePay => l10n.payment_method_apple,
       PaymentMethodType.wallet => l10n.payment_method_wallet,
+      PaymentMethodType.sandbox => 'إكمال بدون دفع — تجربة',
     };
   }
 
@@ -90,6 +91,7 @@ class PaymentMethodTile extends StatelessWidget {
       PaymentMethodType.visa => l10n.payment_method_visa_subtitle,
       PaymentMethodType.applePay => l10n.payment_method_apple_subtitle,
       PaymentMethodType.wallet => l10n.payment_method_wallet_balance,
+      PaymentMethodType.sandbox => 'بيئة تجريبية بدون خصم فعلي',
     };
   }
 
@@ -173,7 +175,33 @@ class _PaymentLogo extends StatelessWidget {
         return _ApplePayLogo();
       case PaymentMethodType.wallet:
         return _WalletLogo();
+      case PaymentMethodType.sandbox:
+        return _SandboxLogo();
     }
+  }
+}
+
+class _SandboxLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 24,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF39C12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      alignment: Alignment.center,
+      child: const Text(
+        'تجربة',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 11,
+          fontFamily: FontConstant.alexandria,
+        ),
+      ),
+    );
   }
 }
 

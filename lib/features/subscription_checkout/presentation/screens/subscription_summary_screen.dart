@@ -99,7 +99,7 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
                                     summary?.programImageUrl,
                                 onBack: () => Navigator.maybePop(context),
                               ),
-                              const SizedBox(height: Spacing.xl),
+                              const SizedBox(height: Spacing.md),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: Spacing.md,

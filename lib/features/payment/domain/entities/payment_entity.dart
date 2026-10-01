@@ -4,7 +4,7 @@
 
 library;
 
-enum PaymentMethodType { mada, visa, applePay, wallet }
+enum PaymentMethodType { mada, visa, applePay, wallet, sandbox }
 
 class OrderSummaryEntity {
   const OrderSummaryEntity({
@@ -79,7 +79,7 @@ class PaymentCheckoutRequestEntity {
       startDate.isNotEmpty &&
       callbackUrl.isNotEmpty &&
       errorUrl.isNotEmpty &&
-      paymentMethodId > 0 &&
+      paymentMethodId != 0 &&
       correlationId.isNotEmpty;
 }
 

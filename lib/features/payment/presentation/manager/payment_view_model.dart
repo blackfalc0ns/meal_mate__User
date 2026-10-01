@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,13 +41,13 @@ class PaymentViewModel extends Cubit<PaymentState> {
   void doIntent(PaymentEvent event) {
     switch (event) {
       case LoadPaymentEvent():
-        _load(event.args);
+        unawaited(_load(event.args));
       case SelectPaymentMethodEvent():
         emit(state.copyWith(selectedMethod: event.method));
       case CheckoutPaymentEvent():
-        _checkout(event.args);
+        unawaited(_checkout(event.args));
       case VerifyPaymentFulfillmentEvent():
-        _verifyFulfillment(event.subscriptionId);
+        unawaited(_verifyFulfillment(event.subscriptionId));
       case MarkPaymentFailedEvent():
         emit(
           state.copyWith(
@@ -58,7 +59,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           ),
         );
       case PollSubscriptionCalendarEvent():
-        _pollCalendar(event.subscriptionId);
+        unawaited(_pollCalendar(event.subscriptionId));
     }
   }
 
@@ -85,7 +86,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
         final methods = methodsResult.data
             .where(
               (method) =>
-                  method.id > 0 &&
+                  method.id != 0 &&
                   method.isAvailable &&
                   method.type != PaymentMethodType.wallet,
             )
@@ -147,6 +148,10 @@ class PaymentViewModel extends Cubit<PaymentState> {
             clearCheckoutFailure: true,
           ),
         );
+        if (result.data.paymentUrl.isEmpty &&
+            result.data.subscriptionId.isNotEmpty) {
+          await _verifyFulfillment(result.data.subscriptionId);
+        }
       case ApiErrorResult():
         final pendingSubscriptionId = _pendingSubscriptionIdFromFailure(
           result.failure,

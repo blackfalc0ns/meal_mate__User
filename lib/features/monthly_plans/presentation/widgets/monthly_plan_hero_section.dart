@@ -40,7 +40,7 @@ class MonthlyPlanHeroSection extends StatelessWidget {
           height: isBrowsingRestaurants
               ? Spacing.monthlyPlanDurationCardTop
               : (durationSelector == null
-                  ? Spacing.monthlyPlanHeroHeight
+                  ? (Spacing.monthlyPlanHeroSummaryTop + 72.0)
                   : Spacing.monthlyPlanDurationCardTop +
                       Spacing.monthlyPlanDurationHeight),
           child: Stack(
@@ -49,7 +49,9 @@ class MonthlyPlanHeroSection extends StatelessWidget {
               MonthlyPlanHeroBackground(
                 imageAsset: imageAsset,
                 imageUrl: imageUrl,
-                height: Spacing.monthlyPlanHeroHeight,
+                height: durationSelector == null
+                    ? (Spacing.monthlyPlanHeroSummaryTop + 72.0)
+                    : Spacing.monthlyPlanHeroHeight,
                 onBack: onBack,
               ),
               PositionedDirectional(

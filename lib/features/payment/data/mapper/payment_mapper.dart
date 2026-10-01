@@ -27,6 +27,13 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
       titleEn,
     ].whereType<String>().join(' ').toLowerCase();
 
+    if (value.contains('sandbox') ||
+        value.contains('تجربة') ||
+        value.contains('without_payment') ||
+        (paymentMethodId != null && paymentMethodId! < 0) ||
+        (id != null && id! < 0)) {
+      return PaymentMethodType.sandbox;
+    }
     if (value.contains('wallet')) return PaymentMethodType.wallet;
     if (value.contains('apple')) return PaymentMethodType.applePay;
     if (value.contains('visa') || value.contains('master')) {
