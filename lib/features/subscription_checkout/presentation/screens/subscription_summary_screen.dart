@@ -20,7 +20,6 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/manag
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_button_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_details_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_details_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_start_date_picker_card.dart';
 
 class SubscriptionSummaryScreen extends StatefulWidget {
   const SubscriptionSummaryScreen({super.key, required this.args});
@@ -108,45 +107,24 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
                                 child: state.isLoading && !hasSummary
                                     ? const SubscriptionSummaryDetailsLoadingSkeleton()
                                     : state.failure != null && !hasSummary
-                                    ? Column(
-                                        children: [
-                                          SubscriptionStartDatePickerCard(
-                                            selectedStartDate:
-                                                _selectedStartDate,
-                                            onPressed: () =>
-                                                _openDatePicker(context),
-                                          ),
-                                          const SizedBox(height: Spacing.md),
-                                          ApiErrorWidget(
-                                            exception: state.failure!.exception,
-                                            onRetry: () => context
-                                                .read<
-                                                  SubscriptionSummaryViewModel
-                                                >()
-                                                .doIntent(
-                                                  GetSubscriptionSummaryEvent(
-                                                    _summaryRequest,
-                                                  ),
-                                                ),
-                                          ),
-                                        ],
+                                    ? ApiErrorWidget(
+                                        exception: state.failure!.exception,
+                                        onRetry: () => context
+                                            .read<
+                                              SubscriptionSummaryViewModel
+                                            >()
+                                            .doIntent(
+                                              GetSubscriptionSummaryEvent(
+                                                _summaryRequest,
+                                              ),
+                                            ),
                                       )
-                                    : Column(
-                                        children: [
-                                          SubscriptionStartDatePickerCard(
-                                            selectedStartDate:
-                                                _selectedStartDate,
-                                            onPressed: () =>
-                                                _openDatePicker(context),
-                                          ),
-                                          const SizedBox(height: Spacing.md),
-                                          SubscriptionSummaryDetailsCard(
-                                            plan: plan,
-                                            summary: summary,
-                                            selectedStartDate:
-                                                _selectedStartDate,
-                                          ),
-                                        ],
+                                    : SubscriptionSummaryDetailsCard(
+                                        plan: plan,
+                                        summary: summary,
+                                        selectedStartDate: _selectedStartDate,
+                                        onEditStartDate: () =>
+                                            _openDatePicker(context),
                                       ),
                               ),
                               const SizedBox(

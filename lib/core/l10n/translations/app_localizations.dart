@@ -3974,6 +3974,72 @@ abstract class AppLocalizations {
   /// **'Total price'**
   String get subscription_summary_total_price_label;
 
+  /// No description provided for @subscription_participating_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Participating restaurants'**
+  String get subscription_participating_restaurants;
+
+  /// No description provided for @subscription_view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get subscription_view_all;
+
+  /// No description provided for @subscription_payment_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment date'**
+  String get subscription_payment_date;
+
+  /// No description provided for @subscription_start_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription start date'**
+  String get subscription_start_date;
+
+  /// No description provided for @subscription_end_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription end date'**
+  String get subscription_end_date;
+
+  /// No description provided for @subscription_with_friday.
+  ///
+  /// In en, this message translates to:
+  /// **'(With Friday)'**
+  String get subscription_with_friday;
+
+  /// No description provided for @subscription_without_friday.
+  ///
+  /// In en, this message translates to:
+  /// **'(Without Friday)'**
+  String get subscription_without_friday;
+
+  /// No description provided for @subscription_certified_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified meals to choose from'**
+  String get subscription_certified_meals;
+
+  /// No description provided for @subscription_address_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get subscription_address_title;
+
+  /// No description provided for @subscription_meals_count_daily.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals daily'**
+  String get subscription_meals_count_daily;
+
+  /// No description provided for @subscription_meals_breakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast - Lunch - Dinner - Snack'**
+  String get subscription_meals_breakdown;
+
   /// No description provided for @subscription_start_date_picker_label.
   ///
   /// In en, this message translates to:

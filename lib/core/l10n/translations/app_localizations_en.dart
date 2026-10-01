@@ -2102,6 +2102,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_summary_total_price_label => 'Total price';
 
   @override
+  String get subscription_participating_restaurants =>
+      'Participating restaurants';
+
+  @override
+  String get subscription_view_all => 'View all';
+
+  @override
+  String get subscription_payment_date => 'Payment date';
+
+  @override
+  String get subscription_start_date => 'Subscription start date';
+
+  @override
+  String get subscription_end_date => 'Subscription end date';
+
+  @override
+  String get subscription_with_friday => '(With Friday)';
+
+  @override
+  String get subscription_without_friday => '(Without Friday)';
+
+  @override
+  String get subscription_certified_meals => 'Certified meals to choose from';
+
+  @override
+  String get subscription_address_title => 'Address';
+
+  @override
+  String get subscription_meals_count_daily => '4 meals daily';
+
+  @override
+  String get subscription_meals_breakdown =>
+      'Breakfast - Lunch - Dinner - Snack';
+
+  @override
   String get subscription_start_date_picker_label => 'Subscription starts from';
 
   @override

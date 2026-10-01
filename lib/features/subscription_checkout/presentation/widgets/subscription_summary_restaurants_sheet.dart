@@ -29,9 +29,8 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
           top: Radius.circular(Spacing.bottomSheetRadius),
         ),
       ),
-      builder: (_) => SubscriptionSummaryRestaurantsSheet(
-        restaurants: restaurants,
-      ),
+      builder: (_) =>
+          SubscriptionSummaryRestaurantsSheet(restaurants: restaurants),
     );
   }
 
@@ -133,9 +132,7 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final restaurant = restaurants[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: Spacing.sm,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
                       child: Row(
                         children: [
                           ClipOval(

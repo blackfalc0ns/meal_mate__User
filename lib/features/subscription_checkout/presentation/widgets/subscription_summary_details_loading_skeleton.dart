@@ -10,18 +10,17 @@ class SubscriptionSummaryDetailsLoadingSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    Widget skeletonBox({required double height, double? width}) {
+
+    Widget skeletonCard({required double height, double? width}) {
       return ShimmerWidget(
         baseColor: color.surfaceContainerHighest,
         highlightColor: color.surface,
         child: Container(
-          width: width,
+          width: width ?? double.infinity,
           height: height,
           decoration: BoxDecoration(
             color: color.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(
-              Spacing.subscriptionSummaryCardRadius,
-            ),
+            borderRadius: BorderRadius.circular(Spacing.radiusLg),
           ),
         ),
       );
@@ -36,34 +35,25 @@ class SubscriptionSummaryDetailsLoadingSkeleton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Center(
-              child: skeletonBox(
-                width: Spacing.subscriptionSummaryTitleWidth,
-                height: Spacing.subscriptionSummaryTitleHeight,
-              ),
-            ),
-            const SizedBox(height: Spacing.lg),
+            skeletonCard(height: 280),
+            const SizedBox(height: Spacing.md),
+            skeletonCard(height: 110),
+            const SizedBox(height: Spacing.md),
+            skeletonCard(height: 60),
+            const SizedBox(height: Spacing.md),
+            skeletonCard(height: 60),
+            const SizedBox(height: Spacing.md),
+            skeletonCard(height: 60),
+            const SizedBox(height: Spacing.md),
             Row(
               children: [
-                Expanded(
-                  child: skeletonBox(
-                    height: Spacing.subscriptionSummaryTopTileHeight,
-                  ),
-                ),
-                const SizedBox(width: Spacing.md),
-                Expanded(
-                  child: skeletonBox(
-                    height: Spacing.subscriptionSummaryTopTileHeight,
-                  ),
-                ),
+                Expanded(child: skeletonCard(height: 64)),
+                const SizedBox(width: Spacing.xss),
+                Expanded(child: skeletonCard(height: 64)),
+                const SizedBox(width: Spacing.xss),
+                Expanded(child: skeletonCard(height: 64)),
               ],
             ),
-            const SizedBox(height: Spacing.md),
-            skeletonBox(height: Spacing.subscriptionSummaryTopTileHeight),
-            const SizedBox(height: Spacing.md),
-            skeletonBox(height: Spacing.subscriptionSummaryIncludesHeight),
-            const SizedBox(height: Spacing.md),
-            skeletonBox(height: Spacing.subscriptionSummaryPriceHeight),
           ],
         ),
       ),

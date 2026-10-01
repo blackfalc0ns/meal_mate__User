@@ -2068,6 +2068,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_summary_total_price_label => 'السعر الإجمالي';
 
   @override
+  String get subscription_participating_restaurants => 'المطاعم المشاركة';
+
+  @override
+  String get subscription_view_all => 'استعراض الكل';
+
+  @override
+  String get subscription_payment_date => 'تاريخ الدفع';
+
+  @override
+  String get subscription_start_date => 'تاريخ بدء الاشتراك';
+
+  @override
+  String get subscription_end_date => 'تاريخ انتهاء الاشتراك';
+
+  @override
+  String get subscription_with_friday => '(مع يوم جمعة)';
+
+  @override
+  String get subscription_without_friday => '(بدون يوم جمعة)';
+
+  @override
+  String get subscription_certified_meals => 'وجبات معتمدة للاختيار';
+
+  @override
+  String get subscription_address_title => 'العنوان';
+
+  @override
+  String get subscription_meals_count_daily => '4 وجبات يومياً';
+
+  @override
+  String get subscription_meals_breakdown => 'إفطار - غداء - عشاء - سناك';
+
+  @override
   String get subscription_start_date_picker_label => 'يبدأ الاشتراك من';
 
   @override

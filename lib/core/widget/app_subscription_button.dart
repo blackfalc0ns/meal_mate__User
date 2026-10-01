@@ -63,7 +63,7 @@ class AppSubscriptionButton extends StatelessWidget {
       textColor: color.onPrimary,
       fontSize: FontSize.size12,
       iconWidget: Icon(
-        isRtl ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
+        isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
         color: color.onPrimary,
         size: Spacing.iconMd,
       ),
@@ -111,56 +111,89 @@ class AppSubscriptionButton extends StatelessWidget {
             Spacing.monthlyPlanSubscribeRadius,
           ),
           child: SizedBox(
-            height: Spacing.monthlyPlanSubscribeHeight,
-            child: hasPrice
-                ? Row(
-                    children: [
-                      const Spacer(flex: 5),
-                      Text(
+            height: Spacing.buttonHeight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+              child: hasPrice
+                  ? Row(
+                      children: [
+                        Container(
+                          width: Spacing.iconLg + Spacing.unit,
+                          height: Spacing.iconLg + Spacing.unit,
+                          decoration: BoxDecoration(
+                            color: color.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.chevron_left_rounded
+                                : Icons.chevron_right_rounded,
+                            color: color.primary,
+                            size: Spacing.iconMd,
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          locale.subscription_details_subscribe_now,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size20,
+                            color: foregroundColor,
+                          ).copyWith(height: 1),
+                        ),
+                        const Spacer(),
+                        Container(
+                          width: Spacing.monthlyPlanSubscribeDividerWidth,
+                          height: Spacing.monthlyPlanSubscribeDividerHeight,
+                          color: foregroundColor.withValues(alpha: 0.6),
+                        ),
+                        const SizedBox(width: Spacing.sm),
+                        Text(
+                          price!,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size16,
+                            color: foregroundColor,
+                          ).copyWith(height: 1),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          currency!,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size12,
+                            color: foregroundColor,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.sm),
+                        Container(
+                          width: Spacing.avatarSm - Spacing.unit,
+                          height: Spacing.avatarSm - Spacing.unit,
+                          decoration: BoxDecoration(
+                            color: color.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.attach_money_rounded,
+                            color: color.primary,
+                            size: Spacing.iconSm,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
                         locale.subscription_details_subscribe_now,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size22,
+                          fontSize: FontSize.size18,
                           color: foregroundColor,
                         ).copyWith(height: 1),
                       ),
-                      const Spacer(flex: 4),
-                      Container(
-                        width: Spacing.monthlyPlanSubscribeDividerWidth,
-                        height: Spacing.monthlyPlanSubscribeDividerHeight,
-                        color: foregroundColor,
-                      ),
-                      const SizedBox(width: Spacing.sm),
-                      Text(
-                        price!,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size15,
-                          color: foregroundColor,
-                        ).copyWith(height: 1),
-                      ),
-                      const SizedBox(width: Spacing.xs),
-                      Text(
-                        currency!,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size15,
-                          color: foregroundColor,
-                        ),
-                      ),
-                      const Spacer(flex: 4),
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      locale.subscription_details_subscribe_now,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size15,
-                        color: foregroundColor,
-                      ).copyWith(height: 1),
                     ),
-                  ),
+            ),
           ),
         ),
       ),

@@ -22,7 +22,8 @@ class SubscriptionPrerequisiteBottomSheet extends StatelessWidget {
   final SubscriptionPrerequisiteDestination? destination;
   final VoidCallback? onPressed;
   final List<SubscriptionPrerequisiteDestination>? destinations;
-  final ValueChanged<SubscriptionPrerequisiteDestination>? onDestinationSelected;
+  final ValueChanged<SubscriptionPrerequisiteDestination>?
+  onDestinationSelected;
 
   @override
   Widget build(BuildContext context) {

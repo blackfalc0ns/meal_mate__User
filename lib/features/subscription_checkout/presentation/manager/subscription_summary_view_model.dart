@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -16,7 +18,7 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
   void doIntent(SubscriptionSummaryEvent event) {
     switch (event) {
       case GetSubscriptionSummaryEvent():
-        _getSummary(event.request);
+        unawaited(_getSummary(event.request));
     }
   }
 
