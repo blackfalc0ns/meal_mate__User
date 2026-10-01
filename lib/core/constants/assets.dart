@@ -172,6 +172,8 @@ class Assets {
       '$_images/calendar/figma/calendar_frozen_day_illustration.png';
   static const String calendarSnowflake =
       '$_images/calendar/figma/calendar_snowflake.svg';
+  static const String calendarMealsConfirmedIllustration =
+      '$_images/calendar/figma/calendar_meals_confirmed_illustration.png';
 
   // Meal details
   static const String mealDetailsHero =

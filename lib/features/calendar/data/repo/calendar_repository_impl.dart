@@ -143,4 +143,19 @@ class CalendarRepositoryImpl implements CalendarRepository {
       return response.toEntity(localeName);
     });
   }
+
+  @override
+  Future<ApiResult<CalendarDayEntity>> confirmDayMeals({
+    required String subscriptionId,
+    required String date,
+    required String localeName,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.confirmDayMeals(
+        subscriptionId: subscriptionId,
+        date: date,
+      );
+      return response.toEntity(localeName);
+    });
+  }
 }

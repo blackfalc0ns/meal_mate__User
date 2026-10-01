@@ -1823,6 +1823,36 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<CalendarDayResponseDto> confirmSubscriptionCalendarDay(
+    String subscriptionId,
+    String date,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CalendarDayResponseDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/days/${date}/confirm',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CalendarDayResponseDto _value;
+    try {
+      _value = CalendarDayResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ProfileBillingCurrentResponseDto>
   getCurrentCustomerSubscription() async {
     final _extra = <String, dynamic>{};

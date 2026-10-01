@@ -3373,6 +3373,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_meals_save_success => 'Meal added successfully.';
 
   @override
+  String get calendar_confirm_meals => 'Confirm Meals';
+
+  @override
+  String get calendar_confirm_selections => 'Confirm Selections';
+
+  @override
+  String get calendar_confirm_selection_header => 'Confirm Meal Selection';
+
+  @override
+  String get calendar_confirm_meals_success =>
+      'Meals sent to the restaurant for review';
+
+  @override
+  String get calendar_confirmed_sheet_title => 'Meals Confirmed';
+
+  @override
+  String get calendar_confirmed_sheet_subtitle =>
+      'Your selections have been saved successfully and meals will be prepared for the selected day.';
+
+  @override
+  String get calendar_confirmed_sheet_status_label => 'Status';
+
+  @override
+  String get calendar_status_awaiting_restaurant =>
+      'Awaiting Restaurant Confirmation';
+
+  @override
+  String get calendar_confirmed_sheet_note =>
+      'You can edit meals before the daily cutoff time.';
+
+  @override
+  String get calendar_confirmed_sheet_back_to_calendar => 'Back to Calendar';
+
+  @override
+  String get calendar_confirmed_sheet_view_meals => 'View Meals';
+
+  @override
+  String get calendar_error_box_incomplete =>
+      'Please select all required meals first';
+
+  @override
+  String get calendar_error_selection_locked =>
+      'This day is locked and can no longer be edited';
+
+  @override
+  String get calendar_error_day_unavailable =>
+      'This day is currently unavailable';
+
+  @override
+  String get calendar_error_fulfillment_not_ready =>
+      'Subscription is not ready yet, please try again later';
+
+  @override
   String get meal_details_optional_notes_title => 'Optional notes';
 
   @override

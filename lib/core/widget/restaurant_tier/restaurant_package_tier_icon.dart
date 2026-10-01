@@ -23,10 +23,12 @@ class RestaurantPackageTierIcon extends StatelessWidget {
     final locale = context.localization;
 
     final lower = iconName.toLowerCase();
-    final isDiamond = lower.contains('diamond') ||
+    final isDiamond =
+        lower.contains('diamond') ||
         lower.contains('max') ||
         lower.contains('elite');
-    final isCrown = !isDiamond &&
+    final isCrown =
+        !isDiamond &&
         (lower.contains('crown') ||
             lower.contains('plus') ||
             lower.contains('platinum'));
@@ -49,12 +51,6 @@ class RestaurantPackageTierIcon extends StatelessWidget {
             shape: BoxShape.circle,
             fit: BoxFit.contain,
             semanticLabel: locale.nav_subscription,
-            errorWidget: Image.asset(
-              assetPath,
-              width: Spacing.monthlyPlanPackageIconSize,
-              height: Spacing.monthlyPlanPackageIconSize,
-              fit: BoxFit.contain,
-            ),
           ),
         ),
       );

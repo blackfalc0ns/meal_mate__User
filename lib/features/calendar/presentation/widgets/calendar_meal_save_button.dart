@@ -20,7 +20,7 @@ class CalendarMealSaveButton extends StatelessWidget {
       ({bool canSave, bool isSaving})
     >(
       selector: (state) =>
-          (canSave: state.canSaveMeals, isSaving: state.isSaving),
+          (canSave: state.canSaveMeals, isSaving: state.isSaving || state.isConfirming),
       builder: (context, buttonState) {
         final color = context.colorScheme;
         final locale = context.localization;
@@ -28,10 +28,10 @@ class CalendarMealSaveButton extends StatelessWidget {
           builder: (context, constraints) {
             return RoundedLoadingButton(
               controller: controller,
-              onPressed: buttonState.canSave
+              onPressed: buttonState.canSave && !buttonState.isSaving
                   ? () {
                       context.read<CalendarViewModel>().doIntent(
-                        SaveCalendarDayMealsEvent(
+                        ConfirmCalendarDayMealsEvent(
                           localeName: locale.localeName,
                         ),
                       );
@@ -48,7 +48,7 @@ class CalendarMealSaveButton extends StatelessWidget {
               disabledColor: color.outlineVariant,
               valueColor: color.onPrimary,
               child: Text(
-                locale.calendar_done,
+                locale.calendar_confirm_meals,
                 locale: Locale(locale.localeName),
                 textAlign: TextAlign.center,
                 maxLines: 1,

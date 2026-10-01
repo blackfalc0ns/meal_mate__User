@@ -19,12 +19,15 @@ class CalendarState {
     this.isAvailableMealsLoading = false,
     this.isSaving = false,
     this.saveSuccessCount = 0,
+    this.isConfirming = false,
+    this.confirmSuccessCount = 0,
     this.isLoadingMoreMeals = false,
     this.calendarFailure,
     this.restaurantsFailure,
     this.availableMealsFailure,
     this.loadMoreMealsFailure,
     this.saveFailure,
+    this.confirmFailure,
     this.hasNoSubscription = false,
   });
 
@@ -40,12 +43,15 @@ class CalendarState {
   final bool isAvailableMealsLoading;
   final bool isSaving;
   final int saveSuccessCount;
+  final bool isConfirming;
+  final int confirmSuccessCount;
   final bool isLoadingMoreMeals;
   final Failure? calendarFailure;
   final Failure? restaurantsFailure;
   final Failure? availableMealsFailure;
   final Failure? loadMoreMealsFailure;
   final Failure? saveFailure;
+  final Failure? confirmFailure;
   final bool hasNoSubscription;
 
   CalendarDayEntity? get selectedDay {
@@ -96,6 +102,19 @@ class CalendarState {
     return true;
   }
 
+  bool get canConfirmSelectedDayMeals {
+    final day = selectedDay;
+    if (day == null || !day.isEditable || isConfirming || isSaving) return false;
+    final meals = selectedDayMeals;
+    if (meals.isEmpty) return false;
+    final requiredCount = day.slotRequirements.fold<int>(
+      0,
+      (total, requirement) => total + requirement.count,
+    );
+    if (requiredCount > 0 && meals.length != requiredCount) return false;
+    return true;
+  }
+
   List<CalendarRestaurantOptionEntity> restaurantsWithUsageLimits() {
     return restaurants;
   }
@@ -113,12 +132,15 @@ class CalendarState {
     bool? isAvailableMealsLoading,
     bool? isSaving,
     int? saveSuccessCount,
+    bool? isConfirming,
+    int? confirmSuccessCount,
     bool? isLoadingMoreMeals,
     Failure? calendarFailure,
     Failure? restaurantsFailure,
     Failure? availableMealsFailure,
     Failure? loadMoreMealsFailure,
     Failure? saveFailure,
+    Failure? confirmFailure,
     bool? hasNoSubscription,
     bool clearRestaurants = false,
     bool clearAvailableMeals = false,
@@ -127,6 +149,7 @@ class CalendarState {
     bool clearAvailableMealsFailure = false,
     bool clearLoadMoreMealsFailure = false,
     bool clearSaveFailure = false,
+    bool clearConfirmFailure = false,
   }) {
     return CalendarState(
       subscriptionId: subscriptionId ?? this.subscriptionId,
@@ -146,6 +169,8 @@ class CalendarState {
           isAvailableMealsLoading ?? this.isAvailableMealsLoading,
       isSaving: isSaving ?? this.isSaving,
       saveSuccessCount: saveSuccessCount ?? this.saveSuccessCount,
+      isConfirming: isConfirming ?? this.isConfirming,
+      confirmSuccessCount: confirmSuccessCount ?? this.confirmSuccessCount,
       isLoadingMoreMeals: isLoadingMoreMeals ?? this.isLoadingMoreMeals,
       calendarFailure: clearCalendarFailure
           ? null
@@ -160,6 +185,8 @@ class CalendarState {
           ? null
           : loadMoreMealsFailure ?? this.loadMoreMealsFailure,
       saveFailure: clearSaveFailure ? null : saveFailure ?? this.saveFailure,
+      confirmFailure:
+          clearConfirmFailure ? null : confirmFailure ?? this.confirmFailure,
       hasNoSubscription: hasNoSubscription ?? this.hasNoSubscription,
     );
   }

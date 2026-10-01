@@ -192,6 +192,13 @@ class _CalendarContentState extends State<CalendarContent> {
             onSelectRestaurant: widget.onSelectRestaurant,
             onChangeMeal: widget.onChangeMeal,
             onMealTap: widget.onMealTap,
+            onConfirmSelections: () {
+              context.read<CalendarViewModel>().doIntent(
+                ConfirmCalendarDayMealsEvent(localeName: locale.localeName),
+              );
+            },
+            isConfirming: widget.state.isConfirming,
+            canConfirm: widget.state.canConfirmSelectedDayMeals,
           ),
         ),
       ],

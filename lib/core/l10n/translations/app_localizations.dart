@@ -6350,6 +6350,96 @@ abstract class AppLocalizations {
   /// **'Meal added successfully.'**
   String get calendar_meals_save_success;
 
+  /// No description provided for @calendar_confirm_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Meals'**
+  String get calendar_confirm_meals;
+
+  /// No description provided for @calendar_confirm_selections.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Selections'**
+  String get calendar_confirm_selections;
+
+  /// No description provided for @calendar_confirm_selection_header.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Meal Selection'**
+  String get calendar_confirm_selection_header;
+
+  /// No description provided for @calendar_confirm_meals_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals sent to the restaurant for review'**
+  String get calendar_confirm_meals_success;
+
+  /// No description provided for @calendar_confirmed_sheet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Confirmed'**
+  String get calendar_confirmed_sheet_title;
+
+  /// No description provided for @calendar_confirmed_sheet_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your selections have been saved successfully and meals will be prepared for the selected day.'**
+  String get calendar_confirmed_sheet_subtitle;
+
+  /// No description provided for @calendar_confirmed_sheet_status_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get calendar_confirmed_sheet_status_label;
+
+  /// No description provided for @calendar_status_awaiting_restaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Restaurant Confirmation'**
+  String get calendar_status_awaiting_restaurant;
+
+  /// No description provided for @calendar_confirmed_sheet_note.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit meals before the daily cutoff time.'**
+  String get calendar_confirmed_sheet_note;
+
+  /// No description provided for @calendar_confirmed_sheet_back_to_calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Calendar'**
+  String get calendar_confirmed_sheet_back_to_calendar;
+
+  /// No description provided for @calendar_confirmed_sheet_view_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'View Meals'**
+  String get calendar_confirmed_sheet_view_meals;
+
+  /// No description provided for @calendar_error_box_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select all required meals first'**
+  String get calendar_error_box_incomplete;
+
+  /// No description provided for @calendar_error_selection_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked and can no longer be edited'**
+  String get calendar_error_selection_locked;
+
+  /// No description provided for @calendar_error_day_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is currently unavailable'**
+  String get calendar_error_day_unavailable;
+
+  /// No description provided for @calendar_error_fulfillment_not_ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription is not ready yet, please try again later'**
+  String get calendar_error_fulfillment_not_ready;
+
   /// No description provided for @meal_details_optional_notes_title.
   ///
   /// In en, this message translates to:

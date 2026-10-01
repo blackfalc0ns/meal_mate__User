@@ -95,6 +95,8 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/meals/slot';
   static const String subscriptionCalendarAutoSelect =
       '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/complete';
+  static const String subscriptionCalendarConfirm =
+      '/api/v1/customer/subscriptions/{subscriptionId}/days/{date}/confirm';
   static const String customerSubscriptionCurrent =
       '/api/v1/customer/subscriptions/current';
   static const String customerUncompletedSubscriptions =

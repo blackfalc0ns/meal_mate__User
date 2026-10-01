@@ -8,7 +8,7 @@ class SubscriptionRestaurantsGrid extends StatelessWidget {
     super.key,
     required this.restaurants,
     this.crossAxisCount = 3,
-    this.childAspectRatio = 0.85,
+    this.childAspectRatio = 0.76,
   });
 
   final List<MonthlyRestaurantPlanEntity> restaurants;

@@ -53,4 +53,10 @@ abstract interface class CalendarRepository {
     required String date,
     required String localeName,
   });
+
+  Future<ApiResult<CalendarDayEntity>> confirmDayMeals({
+    required String subscriptionId,
+    required String date,
+    required String localeName,
+  });
 }

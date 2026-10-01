@@ -450,6 +450,12 @@ abstract class ApiServices {
     @Path('date') String date,
   );
 
+  @POST(EndPoints.subscriptionCalendarConfirm)
+  Future<CalendarDayResponseDto> confirmSubscriptionCalendarDay(
+    @Path('subscriptionId') String subscriptionId,
+    @Path('date') String date,
+  );
+
   @GET(EndPoints.customerSubscriptionCurrent)
   Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
 

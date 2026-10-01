@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
@@ -14,6 +15,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_v
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meals_confirmation_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_selection_sheet.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/mapper/calendar_meal_details_mapper.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
@@ -39,6 +41,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   bool _suppressMealSheetAutoOpen = false;
   bool _didLoad = false;
   int _handledSaveSuccessCount = 0;
+  int _handledConfirmSuccessCount = 0;
+  Failure? _lastHandledConfirmFailure;
   Route<void>? _mealPickerRoute;
   final RoundedLoadingButtonController _mealSaveButtonController =
       RoundedLoadingButtonController();
@@ -81,7 +85,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
             previous.isAvailableMealsLoading !=
                 current.isAvailableMealsLoading ||
             previous.isSaving != current.isSaving ||
-            previous.saveSuccessCount != current.saveSuccessCount,
+            previous.saveSuccessCount != current.saveSuccessCount ||
+            previous.isConfirming != current.isConfirming ||
+            previous.confirmSuccessCount != current.confirmSuccessCount ||
+            previous.confirmFailure != current.confirmFailure,
         listener: _handleStateSideEffects,
         builder: (context, state) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -144,12 +151,59 @@ class _CalendarScreenState extends State<CalendarScreen> {
       return;
     }
 
+    if (state.confirmSuccessCount != _handledConfirmSuccessCount &&
+        !state.isConfirming &&
+        state.confirmFailure == null) {
+      _handledConfirmSuccessCount = state.confirmSuccessCount;
+      if (_mealSheetOpen) {
+        _closeMealPickerRoute();
+        _mealSaveButtonController.reset();
+      }
+      CustomSnackbar.showSuccess(
+        context: context,
+        message: context.localization.calendar_confirm_meals_success,
+      );
+      CalendarMealsConfirmationSheet.show(
+        context,
+        statusText: context.localization.calendar_status_awaiting_restaurant,
+      );
+      return;
+    }
+
+    if (state.confirmFailure != null &&
+        !state.isConfirming &&
+        state.confirmFailure != _lastHandledConfirmFailure) {
+      _lastHandledConfirmFailure = state.confirmFailure;
+      _mealSaveButtonController.stop();
+      final message = _mapConfirmErrorMessage(context, state.confirmFailure);
+      CustomSnackbar.showError(context: context, message: message);
+    }
+
     if (_mealSheetOpen) {
-      if (state.isSaving) {
+      if (state.isSaving || state.isConfirming) {
         _mealSaveButtonController.start();
       } else {
         _mealSaveButtonController.stop();
       }
+    }
+  }
+
+  String _mapConfirmErrorMessage(BuildContext context, Failure? failure) {
+    if (failure == null) return '';
+    final locale = context.localization;
+    switch (failure.code) {
+      case 'calendar.box_incomplete':
+        return locale.calendar_error_box_incomplete;
+      case 'calendar.selection_locked':
+        return locale.calendar_error_selection_locked;
+      case 'calendar.day_unavailable':
+        return locale.calendar_error_day_unavailable;
+      case 'calendar.fulfillment_not_ready':
+        return locale.calendar_error_fulfillment_not_ready;
+      default:
+        return failure.errorMessage.isNotEmpty
+            ? failure.errorMessage
+            : locale.error_unknown_desc;
     }
   }
 

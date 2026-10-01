@@ -9,7 +9,7 @@ class SubscriptionPlanRestaurantsSection extends StatelessWidget {
     required this.mode,
     required this.restaurants,
     this.gridCrossAxisCount = 3,
-    this.gridChildAspectRatio = 0.85,
+    this.gridChildAspectRatio = 0.76,
   });
 
   final SubscriptionPlanViewMode mode;

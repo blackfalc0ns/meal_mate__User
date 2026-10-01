@@ -3318,6 +3318,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_meals_save_success => 'تمت إضافة الوجبة بنجاح.';
 
   @override
+  String get calendar_confirm_meals => 'تأكيد الوجبات';
+
+  @override
+  String get calendar_confirm_selections => 'تأكيد الاختيارات';
+
+  @override
+  String get calendar_confirm_selection_header => 'تأكيد اختيار الوجبات';
+
+  @override
+  String get calendar_confirm_meals_success =>
+      'تم إرسال الوجبات للمطعم للمراجعة';
+
+  @override
+  String get calendar_confirmed_sheet_title => 'تم تأكيد الوجبات';
+
+  @override
+  String get calendar_confirmed_sheet_subtitle =>
+      'تم حفظ اختياراتك بنجاح وسيتم تجهيز وجباتك لليوم المحدد';
+
+  @override
+  String get calendar_confirmed_sheet_status_label => 'الحالة';
+
+  @override
+  String get calendar_status_awaiting_restaurant => 'في انتظار تأكيد المطعم';
+
+  @override
+  String get calendar_confirmed_sheet_note =>
+      'يمكنك تعديل الوجبات قبل موعد الإغلاق اليومي';
+
+  @override
+  String get calendar_confirmed_sheet_back_to_calendar => 'العودة للتقويم';
+
+  @override
+  String get calendar_confirmed_sheet_view_meals => 'عرض الوجبات';
+
+  @override
+  String get calendar_error_box_incomplete =>
+      'يرجى اختيار كل الوجبات المطلوبة أولاً';
+
+  @override
+  String get calendar_error_selection_locked =>
+      'تم قفل هذا اليوم ولم يعد قابلاً للتعديل';
+
+  @override
+  String get calendar_error_day_unavailable => 'هذا اليوم غير متاح حالياً';
+
+  @override
+  String get calendar_error_fulfillment_not_ready =>
+      'الاشتراك غير جاهز حالياً، يرجى إعادة المحاولة لاحقاً';
+
+  @override
   String get meal_details_optional_notes_title => 'ملاحظات اختيارية';
 
   @override

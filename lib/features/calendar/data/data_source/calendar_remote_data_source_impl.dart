@@ -92,4 +92,12 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }) {
     return _apiServices.autoSelectSubscriptionCalendarDay(subscriptionId, date);
   }
+
+  @override
+  Future<CalendarDayResponseDto> confirmDayMeals({
+    required String subscriptionId,
+    required String date,
+  }) {
+    return _apiServices.confirmSubscriptionCalendarDay(subscriptionId, date);
+  }
 }

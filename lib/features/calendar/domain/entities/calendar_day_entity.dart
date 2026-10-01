@@ -59,27 +59,43 @@ class CalendarDayEntity {
     return selectedMealIds.isNotEmpty || meals.any((meal) => meal.selected);
   }
 
+  bool get isAwaitingRestaurantConfirmation {
+    final normalizedStatus = status.toLowerCase();
+    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
+    return normalizedStatus == 'senttorestaurant' ||
+        normalizedStatus == 'sent_to_restaurant' ||
+        normalizedStatus == 'awaitingrestaurantconfirmation' ||
+        normalizedUiStatus == 'awaiting_restaurant' ||
+        normalizedUiStatus == 'awaitingrestaurantconfirmation';
+  }
+
   bool get isRestaurantClosed {
     if (isFrozen) return true;
     final normalizedStatus = status.toLowerCase();
+    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
     return isLocked ||
         normalizedStatus == 'senttorestaurant' ||
         normalizedStatus == 'sent_to_restaurant' ||
         normalizedStatus == 'locked' ||
         normalizedStatus == 'completed' ||
-        normalizedStatus == 'cancelled';
+        normalizedStatus == 'cancelled' ||
+        normalizedUiStatus == 'awaiting_restaurant' ||
+        normalizedUiStatus == 'awaitingrestaurantconfirmation';
   }
 
   bool get isEditable {
     if (date == null || isLocked || isFrozen || canEdit == false) return false;
     final normalizedStatus = status.toLowerCase();
+    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
     if (normalizedStatus == 'senttorestaurant' ||
         normalizedStatus == 'sent_to_restaurant' ||
         normalizedStatus == 'locked' ||
         normalizedStatus == 'completed' ||
         normalizedStatus == 'cancelled' ||
         normalizedStatus == 'frozen' ||
-        normalizedStatus == '12') {
+        normalizedStatus == '12' ||
+        normalizedUiStatus == 'awaiting_restaurant' ||
+        normalizedUiStatus == 'awaitingrestaurantconfirmation') {
       return false;
     }
 
@@ -96,6 +112,7 @@ class CalendarDayEntity {
   }
 
   CalendarDayEntity copyWith({
+    String? status,
     bool? isSelected,
     bool? isMuted,
     bool? hasMeals,
@@ -103,20 +120,22 @@ class CalendarDayEntity {
     String? uiStatus,
     bool? canEdit,
     String? failureReasonCode,
+    List<CalendarMealEntity>? meals,
+    bool? isLocked,
   }) {
     return CalendarDayEntity(
       id: id,
-      status: status,
+      status: status ?? this.status,
       uiStatus: uiStatus ?? this.uiStatus,
       canEdit: canEdit ?? this.canEdit,
       failureReasonCode: failureReasonCode ?? this.failureReasonCode,
       restaurantId: restaurantId,
       restaurant: restaurant,
-      meals: meals,
+      meals: meals ?? this.meals,
       selectedMealIds: selectedMealIds,
       nutritionTotals: nutritionTotals ?? this.nutritionTotals,
       slotRequirements: slotRequirements,
-      isLocked: isLocked,
+      isLocked: isLocked ?? this.isLocked,
       editDeadlineUtc: editDeadlineUtc,
       dayNumber: dayNumber,
       weekday: weekday,

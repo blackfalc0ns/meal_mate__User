@@ -82,6 +82,8 @@ import '../../features/calendar/data/repo/calendar_repository_impl.dart'
 import '../../features/calendar/domain/repo/calendar_repository.dart' as _i333;
 import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart'
     as _i147;
+import '../../features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart'
+    as _i438;
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart'
     as _i389;
 import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart'
@@ -1496,6 +1498,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i147.AutoSelectCalendarDayUseCase>(
       () => _i147.AutoSelectCalendarDayUseCase(gh<_i333.CalendarRepository>()),
     );
+    gh.factory<_i438.ConfirmCalendarDayMealsUseCase>(
+      () =>
+          _i438.ConfirmCalendarDayMealsUseCase(gh<_i333.CalendarRepository>()),
+    );
     gh.factory<_i389.GetCalendarAvailableMealsUseCase>(
       () => _i389.GetCalendarAvailableMealsUseCase(
         gh<_i333.CalendarRepository>(),
@@ -1685,6 +1691,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i389.GetCalendarAvailableMealsUseCase>(),
         gh<_i896.SaveCalendarDayMealsUseCase>(),
         gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i438.ConfirmCalendarDayMealsUseCase>(),
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
       ),

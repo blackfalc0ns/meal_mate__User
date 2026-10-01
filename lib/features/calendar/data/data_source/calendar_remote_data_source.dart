@@ -43,4 +43,9 @@ abstract interface class CalendarRemoteDataSource {
     required String subscriptionId,
     required String date,
   });
+
+  Future<CalendarDayResponseDto> confirmDayMeals({
+    required String subscriptionId,
+    required String date,
+  });
 }

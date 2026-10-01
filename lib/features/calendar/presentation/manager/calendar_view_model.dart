@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_availa
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
@@ -31,6 +32,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
     this._getAvailableMealsUseCase,
     this._saveDayMealsUseCase,
     this._autoSelectDayUseCase,
+    this._confirmDayMealsUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
     this._sharedPrefHelper,
   ) : super(const CalendarState());
@@ -42,6 +44,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
   final GetCalendarAvailableMealsUseCase _getAvailableMealsUseCase;
   final SaveCalendarDayMealsUseCase _saveDayMealsUseCase;
   final AutoSelectCalendarDayUseCase _autoSelectDayUseCase;
+  final ConfirmCalendarDayMealsUseCase _confirmDayMealsUseCase;
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
@@ -70,6 +73,8 @@ class CalendarViewModel extends Cubit<CalendarState> {
         _saveMeals(event.localeName);
       case AutoSelectCalendarDayEvent():
         _autoSelect(event.localeName);
+      case ConfirmCalendarDayMealsEvent():
+        _confirmMeals(event.localeName);
       case LoadMoreCalendarMealsEvent():
         _loadMoreMeals(slot: event.slot, localeName: event.localeName);
     }
@@ -568,6 +573,98 @@ class CalendarViewModel extends Cubit<CalendarState> {
     }
   }
 
+  Future<void> _confirmMeals(String localeName) async {
+    if (state.isConfirming || state.isSaving) return;
+
+    final day = state.selectedDay;
+    final date = _dateParam(day);
+    if (day == null || date.isEmpty) return;
+
+    final available = state.availableMeals;
+    if (available != null) {
+      if (!state.canSaveMeals) return;
+      final selectedMeals = available.meals
+          .where((meal) => state.localSelectedMealIds.contains(meal.id))
+          .toList();
+      if (selectedMeals.length != state.localSelectedMealIds.length) return;
+
+      emit(
+        state.copyWith(
+          isConfirming: true,
+          clearConfirmFailure: true,
+          clearSaveFailure: true,
+        ),
+      );
+
+      final saveResult = await _saveDayMealsUseCase(
+        subscriptionId: state.subscriptionId,
+        date: date,
+        meals: selectedMeals,
+        localeName: localeName,
+      );
+
+      if (isClosed) return;
+
+      switch (saveResult) {
+        case ApiSuccessResult():
+          _replaceDay(saveResult.data);
+        case ApiErrorResult():
+          emit(
+            state.copyWith(
+              isConfirming: false,
+              confirmFailure: saveResult.failure,
+            ),
+          );
+          return;
+      }
+    } else {
+      if (!state.canConfirmSelectedDayMeals) return;
+      emit(state.copyWith(isConfirming: true, clearConfirmFailure: true));
+    }
+
+    final result = await _confirmDayMealsUseCase(
+      subscriptionId: state.subscriptionId,
+      date: date,
+      localeName: localeName,
+    );
+
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        final currentMeals = day.meals;
+        final confirmedDay = result.data.copyWith(
+          meals:
+              result.data.meals.isNotEmpty ? result.data.meals : currentMeals,
+          canEdit: false,
+        );
+        _replaceDay(confirmedDay);
+        emit(
+          state.copyWith(
+            isConfirming: false,
+            confirmSuccessCount: state.confirmSuccessCount + 1,
+            clearAvailableMeals: true,
+            clearConfirmFailure: true,
+          ),
+        );
+      case ApiErrorResult():
+        if (result.failure.code == 'calendar.selection_locked') {
+          _replaceDay(day.copyWith(canEdit: false, isLocked: true));
+        } else if (result.failure.code == 'calendar.day_unavailable') {
+          _loadCalendar(
+            subscriptionId: state.subscriptionId,
+            localeName: localeName,
+          );
+        }
+        emit(
+          state.copyWith(
+            isConfirming: false,
+            confirmFailure: result.failure,
+          ),
+        );
+    }
+  }
+
   DateTime? _initialSelectedDate(List<CalendarDayEntity> days) {
     if (days.isEmpty) return null;
     final today = DateTime.now();
@@ -616,7 +713,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
       if (day.date == null || !_isSameDay(day.date!, updatedDay.date!)) {
         return day;
       }
-      return updatedDay;
+      final resolvedMeals =
+          updatedDay.meals.isNotEmpty ? updatedDay.meals : day.meals;
+      return updatedDay.copyWith(meals: resolvedMeals);
     }).toList();
     emit(
       state.copyWith(
