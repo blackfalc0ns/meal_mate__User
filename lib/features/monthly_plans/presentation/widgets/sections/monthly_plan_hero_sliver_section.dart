@@ -37,8 +37,8 @@ class MonthlyPlanHeroSliverSection extends StatelessWidget {
 
         return SliverToBoxAdapter(
           child: MonthlyPlanHeroSection(
-            titlePrefix: locale.drawer_month_package,
-            titleHighlight: detailsArgs.program.name(locale.localeName),
+            titlePrefix: detailsArgs.program.name(locale.localeName),
+            titleHighlight: detailsArgs.bundle.name(locale.localeName),
             imageAsset: Assets.monthlyPlanHero,
             imageUrl: null,
             isBrowsingRestaurants: isBrowsing,

@@ -41,6 +41,26 @@ class SubscriptionDateCard extends StatelessWidget {
         children: [
           Row(
             children: [
+              Icon(
+                Icons.calendar_today_rounded,
+                size: Spacing.iconXs,
+                color: color.primary,
+              ),
+
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+              ),
+
               if (isEditable) ...[
                 Container(
                   width: Spacing.iconSm,
@@ -58,25 +78,6 @@ class SubscriptionDateCard extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xxs),
               ],
-              Expanded(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
-                    color: color.onSurfaceVariant,
-                  ),
-                ),
-              ),
-              const SizedBox(width: Spacing.xxs),
-              Icon(
-                Icons.calendar_today_rounded,
-                size: Spacing.iconXs,
-                color: color.primary,
-              ),
             ],
           ),
           const SizedBox(height: Spacing.xs),
@@ -97,7 +98,7 @@ class SubscriptionDateCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
+                fontSize: FontSize.size10,
                 color: color.primary,
               ),
             ),

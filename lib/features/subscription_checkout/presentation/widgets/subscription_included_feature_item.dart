@@ -40,11 +40,11 @@ class SubscriptionIncludedFeatureItem extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: getBoldStyle(
+          style: getMediumStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size8,
             color: color.onSurface,
-          ).copyWith(height: 1.2),
+          ),
         ),
         if (subtitle != null && subtitle!.trim().isNotEmpty) ...[
           const SizedBox(height: Spacing.xxs),

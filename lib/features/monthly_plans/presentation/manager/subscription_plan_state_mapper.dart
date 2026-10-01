@@ -12,7 +12,7 @@ extension SubscriptionPlanStateMapper on SubscriptionPlanState {
     required SubscriptionProgramEntity program,
     required SubscriptionBundleEntity bundle,
     required String localeName,
-    required String titlePrefix,
+    String? titlePrefix,
     required String dayLabel,
     required String subscribeLabel,
     required Color primaryColor,
@@ -21,8 +21,8 @@ extension SubscriptionPlanStateMapper on SubscriptionPlanState {
     final selected = selectedTier;
 
     return MonthlyPlanDetailsEntity(
-      titlePrefix: titlePrefix,
-      titleHighlight: program.name(localeName),
+      titlePrefix: titlePrefix ?? program.name(localeName),
+      titleHighlight: bundle.name(localeName),
       duration: duration == null
           ? ''
           : selectedDurationDays == null

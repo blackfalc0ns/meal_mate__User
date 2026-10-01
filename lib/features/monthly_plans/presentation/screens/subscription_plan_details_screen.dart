@@ -94,7 +94,7 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
             program: detailsArgs.program,
             bundle: detailsArgs.bundle,
             localeName: locale.localeName,
-            titlePrefix: locale.drawer_month_package,
+            titlePrefix: detailsArgs.program.name(locale.localeName),
             dayLabel: locale.subscription_day,
             subscribeLabel: locale.subscription_details_subscribe_now,
             primaryColor: color.primary,

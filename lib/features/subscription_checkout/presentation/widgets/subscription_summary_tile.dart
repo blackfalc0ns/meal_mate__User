@@ -63,7 +63,7 @@ class SubscriptionSummaryTile extends StatelessWidget {
                 const SizedBox(height: Spacing.xxs),
                 Text(
                   value,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
