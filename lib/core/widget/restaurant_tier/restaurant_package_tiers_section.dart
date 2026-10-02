@@ -73,7 +73,7 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: Spacing.lg),
+              const SizedBox(height: Spacing.sm),
               for (var index = 0; index < packages.length; index++)
                 Padding(
                   padding: EdgeInsets.only(

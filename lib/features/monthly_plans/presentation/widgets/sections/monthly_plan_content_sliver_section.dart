@@ -8,10 +8,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_details_content.dart';
 
 class MonthlyPlanContentSliverSection extends StatelessWidget {
-  const MonthlyPlanContentSliverSection({
-    super.key,
-    required this.detailsArgs,
-  });
+  const MonthlyPlanContentSliverSection({super.key, required this.detailsArgs});
 
   final SubscriptionPlanDetailsArgs detailsArgs;
 
@@ -51,10 +48,7 @@ class MonthlyPlanContentSliverSection extends StatelessWidget {
               ? EdgeInsets.zero
               : const EdgeInsets.symmetric(
                   horizontal: Spacing.screenH,
-                ).copyWith(
-                  top: Spacing.xs,
-                  bottom: Spacing.screenV,
-                ),
+                ).copyWith(top: Spacing.md, bottom: Spacing.screenV),
           sliver: SliverToBoxAdapter(
             child: MonthlyPlanDetailsContent(
               state: state,

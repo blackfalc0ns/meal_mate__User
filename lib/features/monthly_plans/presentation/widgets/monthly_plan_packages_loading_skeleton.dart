@@ -8,61 +8,54 @@ class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth.isFinite
-            ? constraints.maxWidth
-            : Spacing.monthlyPlanPackagesWidth;
-        final cardWidth = width < Spacing.monthlyPlanPackagesWidth
-            ? width
-            : Spacing.monthlyPlanPackagesWidth;
-
-        return Center(
-          child: SizedBox(
-            width: cardWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ShimmerPlaceholder.rect(
-                      width: Spacing.iconMd,
-                      height: Spacing.iconMd,
-                      borderRadius: Spacing.radiusXs,
-                    ),
-                    SizedBox(width: Spacing.sm),
-                    ShimmerPlaceholder.rect(
-                      width: Spacing.xxxl * 3.5,
-                      height: Spacing.xl,
-                      borderRadius: Spacing.radiusPill,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Spacing.xs),
-                const ShimmerPlaceholder.rect(
-                  width: Spacing.xxxl * 5.5,
-                  height: Spacing.md,
-                  borderRadius: Spacing.radiusPill,
-                ),
-                const SizedBox(height: Spacing.lg),
-                for (var index = 0; index < 3; index++)
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: index == 2
-                          ? Spacing.zero
-                          : Spacing.monthlyPlanPackageGap,
-                    ),
-                    child: RestaurantPackageTierCardSkeleton(
-                      width: cardWidth,
-                      height: Spacing.monthlyPlanPackageSideHeight,
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ShimmerPlaceholder.rect(
+              width: Spacing.iconMd,
+              height: Spacing.iconMd,
+              borderRadius: Spacing.radiusXs,
+            ),
+            SizedBox(width: Spacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShimmerPlaceholder.rect(
+                    width: Spacing.xxxl * 3.5,
+                    height: Spacing.base,
+                    borderRadius: Spacing.radiusPill,
                   ),
-              ],
+                  SizedBox(height: Spacing.xs),
+                  ShimmerPlaceholder.rect(
+                    width: Spacing.xxxl * 5.0,
+                    height: Spacing.xss + Spacing.xs,
+                    borderRadius: Spacing.radiusPill,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: Spacing.lg),
+        for (var index = 0; index < 3; index++)
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: index == 2
+                  ? Spacing.zero
+                  : Spacing.monthlyPlanPackageGap,
+            ),
+            child: RestaurantPackageTierCardSkeleton(
+              width: double.infinity,
+              height: Spacing.monthlyPlanPackageSideHeight,
+              index: index,
             ),
           ),
-        );
-      },
+      ],
     );
   }
 }

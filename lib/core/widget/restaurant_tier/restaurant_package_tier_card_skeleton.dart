@@ -8,16 +8,32 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
     super.key,
     required this.width,
     required this.height,
+    this.index = 0,
   });
 
   final double width;
   final double height;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-
     final placeholderColor = color.surfaceContainerHighest;
+
+    final isPlus = index == 1;
+    final isMax = index == 2;
+
+    final cardFillColor = isPlus
+        ? color.primary.withValues(alpha: 0.08)
+        : isMax
+        ? color.onSurface.withValues(alpha: 0.06)
+        : color.surface;
+
+    final cardBorderColor = isPlus
+        ? color.primary.withValues(alpha: 0.3)
+        : isMax
+        ? color.outlineVariant.withValues(alpha: 0.8)
+        : color.outlineVariant.withValues(alpha: 0.6);
 
     return SizedBox(
       width: width,
@@ -30,16 +46,19 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
             CustomPaint(
               size: Size(width, height),
               painter: _RestaurantPackageTierCardSkeletonPainter(
-                fillColor: color.surface,
-                borderColor: color.outlineVariant.withValues(alpha: 0.6),
+                fillColor: cardFillColor,
+                borderColor: cardBorderColor,
                 shadowColor: color.shadow.withValues(alpha: 0.08),
                 radius: Spacing.monthlyPlanPackageSideRadius,
               ),
             ),
             ShimmerWidget(
+              baseColor: color.surfaceContainerHighest,
+              highlightColor: color.surface,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
+                  // Top left: Logos row tab
                   Positioned(
                     left: Spacing.monthlyPlanPackageLogoStart,
                     top: Spacing.monthlyPlanPackageLogoTop,
@@ -72,49 +91,8 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Positioned(
-                    right: Spacing.monthlyPlanPackageIconEnd,
-                    top: Spacing.monthlyPlanPackageIconTop,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: Spacing.monthlyPlanPackageTitleWidth,
-                          height: Spacing.base,
-                          decoration: BoxDecoration(
-                            color: placeholderColor,
-                            borderRadius: BorderRadius.circular(
-                              Spacing.radiusPill,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.sm),
-                        Container(
-                          width: Spacing.monthlyPlanPackageIconSize,
-                          height: Spacing.monthlyPlanPackageIconSize,
-                          decoration: BoxDecoration(
-                            color: placeholderColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    left: Spacing.monthlyPlanPackageButtonStart,
-                    top: Spacing.monthlyPlanPackageButtonTop,
-                    child: Container(
-                      width: Spacing.monthlyPlanPackageButtonWidth,
-                      height: Spacing.monthlyPlanPackageButtonHeight,
-                      decoration: BoxDecoration(
-                        color: placeholderColor,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
-                      ),
-                    ),
-                  ),
+
+                  // Top right: Radio indicator
                   Positioned(
                     right: Spacing.monthlyPlanPackageIndicatorEnd,
                     top: Spacing.monthlyPlanPackageIndicatorTop,
@@ -122,10 +100,96 @@ class RestaurantPackageTierCardSkeleton extends StatelessWidget {
                       width: Spacing.monthlyPlanPackageIndicatorSize,
                       height: Spacing.monthlyPlanPackageIndicatorSize,
                       decoration: BoxDecoration(
-                        color: color.surface,
+                        color: placeholderColor,
                         shape: BoxShape.circle,
                         border: Border.all(color: color.outlineVariant),
                       ),
+                    ),
+                  ),
+
+                  // Bottom content: Price block | Centered Button | Title + Icon
+                  Positioned(
+                    left: Spacing.monthlyPlanPackageLogoStart,
+                    right: Spacing.sm,
+                    top: Spacing.monthlyPlanPackageTitleTop,
+                    bottom: Spacing.sm,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Price & period block
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                color: placeholderColor,
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusXs,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: Spacing.xxs),
+                            Container(
+                              width: 68,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: placeholderColor,
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusXs,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: Spacing.xs),
+
+                        // Centered browse restaurants button
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              height: Spacing.monthlyPlanPackageButtonHeight,
+                              constraints: const BoxConstraints(
+                                maxWidth: 122.0,
+                              ),
+                              decoration: BoxDecoration(
+                                color: placeholderColor,
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusPill,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+
+                        // Title placeholder
+                        Container(
+                          width: 55,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: placeholderColor,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusXs,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+
+                        // Tier badge icon placeholder
+                        Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: placeholderColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
