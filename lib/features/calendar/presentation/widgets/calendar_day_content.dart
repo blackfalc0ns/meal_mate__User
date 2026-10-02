@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -88,7 +89,15 @@ class CalendarDayContent extends StatelessWidget {
                 restaurant: restaurant,
                 day: selectedDay,
                 onMorePressed: readOnly ? null : onSelectRestaurant,
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 200.ms)
+                  .slideY(
+                    begin: 0.03,
+                    end: 0,
+                    duration: 200.ms,
+                    curve: Curves.easeOut,
+                  ),
               const SizedBox(height: Spacing.xl),
             ],
             for (final meal in meals) ...[
@@ -97,7 +106,15 @@ class CalendarDayContent extends StatelessWidget {
                 readOnly: readOnly,
                 onTap: () => onMealTap(meal, restaurant),
                 onChangeMeal: onChangeMeal,
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 200.ms)
+                  .slideY(
+                    begin: 0.03,
+                    end: 0,
+                    duration: 200.ms,
+                    curve: Curves.easeOut,
+                  ),
               const SizedBox(height: Spacing.md),
             ],
             if (!readOnly && canConfirm) ...[

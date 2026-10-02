@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -83,9 +84,9 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
       width: double.infinity,
       child: AnimatedSize(
         alignment: Alignment.topCenter,
-        duration: const Duration(milliseconds: 620),
-        reverseDuration: const Duration(milliseconds: 560),
-        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 260),
+        reverseDuration: const Duration(milliseconds: 240),
+        curve: Curves.fastOutSlowIn,
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
@@ -136,12 +137,12 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                       ),
                     ),
                     AnimatedContainer(
-                      duration: const Duration(milliseconds: 520),
-                      curve: Curves.easeInOutCubic,
+                      duration: const Duration(milliseconds: 260),
+                      curve: Curves.fastOutSlowIn,
                       height: widget.isExpanded ? 6 : 1,
                     ),
                     PageTransitionSwitcher(
-                      duration: const Duration(milliseconds: 400),
+                      duration: const Duration(milliseconds: 260),
                       reverse: _isMonthTransition
                           ? (_monthDirection < 0)
                           : !widget.isExpanded,
@@ -151,7 +152,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                               animation: primaryAnimation,
                               secondaryAnimation: secondaryAnimation,
                               transitionType: _isMonthTransition
-                                  ? SharedAxisTransitionType.horizontal
+                                   ? SharedAxisTransitionType.horizontal
                                   : SharedAxisTransitionType.vertical,
                               fillColor:
                                   widget.backgroundColor ?? color.surface,
@@ -162,8 +163,8 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                         key: ValueKey(
                           '${widget.monthTitle}_${widget.isExpanded}',
                         ),
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOutCubic,
+                        duration: const Duration(milliseconds: 260),
+                        curve: Curves.fastOutSlowIn,
                         padding: EdgeInsets.symmetric(
                           horizontal: widget.isExpanded ? 18 : 31,
                         ),
