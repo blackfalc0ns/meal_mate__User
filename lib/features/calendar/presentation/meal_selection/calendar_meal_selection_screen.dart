@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_e
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/meal_selection/calendar_meal_save_button.dart';
+import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_menu_mapper.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
@@ -63,14 +64,19 @@ class CalendarMealSelectionScreen extends StatelessWidget {
                 initialRestaurant?.rating ??
                 currentDayRestaurant?.rating;
             final restaurantInitials = _getInitials(restaurantName);
-            return RestaurantMenuScreen(
-              mode: RestaurantMenuMode.selection,
+            final menuData = CalendarMenuMapper.toMenuData(
+              availableMeals: state.availableMeals,
+              selectedMealIds: state.localSelectedMealIds,
+              locale: locale,
               restaurantName: restaurantName,
               restaurantLogoUrl: restaurantLogoUrl,
               restaurantInitials: restaurantInitials,
               restaurantRating: restaurantRating,
-              availableMeals: state.availableMeals,
-              selectedMealIds: state.localSelectedMealIds,
+            );
+
+            return RestaurantMenuScreen(
+              mode: RestaurantMenuMode.selection,
+              menuData: menuData,
               onMealToggled: (mealId) {
                 context.read<CalendarViewModel>().doIntent(
                   ToggleCalendarMealEvent(mealId),

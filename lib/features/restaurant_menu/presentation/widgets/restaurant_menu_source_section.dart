@@ -3,13 +3,11 @@ part of 'restaurant_menu_view.dart';
 class RestaurantMenuSourceSection extends StatelessWidget {
   const RestaurantMenuSourceSection({
     super.key,
-    this.coreIngredients = const [],
     this.origins = const [],
     this.isLoading = false,
   });
 
-  final List<CalendarCoreIngredientEntity> coreIngredients;
-  final List<SubscriptionRestaurantIngredientOriginEntity> origins;
+  final List<RestaurantMenuOrigin> origins;
   final bool isLoading;
 
   @override
@@ -49,11 +47,9 @@ class RestaurantMenuSourceSection extends StatelessWidget {
       );
     }
 
-    if (coreIngredients.isEmpty && origins.isEmpty) {
+    if (origins.isEmpty) {
       return const SizedBox.shrink();
     }
-
-    final cards = _cards(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,73 +68,21 @@ class RestaurantMenuSourceSection extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              for (var index = 0; index < cards.length; index++) ...[
+              for (var index = 0; index < origins.length; index++) ...[
                 if (index > 0) const SizedBox(width: Spacing.base),
-                cards[index],
+                RestaurantMenuSourceCard(
+                  icon: origins[index].icon,
+                  iconUrl: origins[index].iconUrl,
+                  title: origins[index].title,
+                  subtitle: origins[index].subtitle,
+                  country: origins[index].country,
+                ),
               ],
             ],
           ),
         ),
       ],
     );
-  }
-
-  List<Widget> _cards(BuildContext context) {
-    final locale = context.localization;
-    if (coreIngredients.isNotEmpty) {
-      return coreIngredients.map((ingredient) {
-        return RestaurantMenuSourceCard(
-          icon: Icons.eco_rounded,
-          iconUrl: ingredient.iconUrl,
-          title: ingredient.name,
-          subtitle: ingredient.isLocal
-              ? locale.calendar_fresh_local
-              : locale.calendar_imported,
-          country: _countryLabel(ingredient),
-        );
-      }).toList();
-    }
-
-    final ordered = [...origins]
-      ..sort((a, b) {
-        const order = ['meat', 'poultry', 'seafood', 'oils'];
-        final aIndex = order.indexOf(a.category);
-        final bIndex = order.indexOf(b.category);
-        return (aIndex == -1 ? order.length : aIndex).compareTo(
-          bIndex == -1 ? order.length : bIndex,
-        );
-      });
-
-    return ordered.map((origin) {
-      return RestaurantMenuSourceCard(
-        icon: _iconFor(origin.category),
-        iconUrl: origin.iconUrl,
-        title: origin.name(locale.localeName),
-        subtitle: origin.source(locale.localeName),
-        country: origin.originCountryName(locale.localeName),
-      );
-    }).toList();
-  }
-
-  String _countryLabel(CalendarCoreIngredientEntity ingredient) {
-    final country = ingredient.originCountryName;
-    final flag = ingredient.flagEmoji;
-    if (flag == null || flag.isEmpty) return country;
-    if (country.isEmpty) return flag;
-    return '$flag $country';
-  }
-
-  IconData _iconFor(String category) {
-    return switch (category) {
-      'meat' => Icons.set_meal_rounded,
-      'poultry' => Icons.egg_alt_rounded,
-      'seafood' => Icons.phishing_rounded,
-      'oils' => Icons.energy_savings_leaf_rounded,
-      'grains' => Icons.rice_bowl_rounded,
-      'produce' => Icons.spa_rounded,
-      'dairy' => Icons.local_drink_rounded,
-      _ => Icons.eco_rounded,
-    };
   }
 
   Widget _shimmerCard(BuildContext context) {

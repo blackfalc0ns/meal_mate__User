@@ -11,6 +11,9 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_state.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_restaurant_details_view_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/subscription_restaurant_details_loading_skeleton.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/mapper/subscription_menu_mapper.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
 
 class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
@@ -92,20 +95,34 @@ class SubscriptionRestaurantDetailsScreen extends StatelessWidget {
                 );
               }
 
-              return RestaurantMenuScreen(
-                mode: RestaurantMenuMode.preview,
-                restaurantName: details.name(locale.localeName).isEmpty
-                    ? detailsArgs.restaurantName
-                    : details.name(locale.localeName),
-                restaurantLogoUrl:
-                    details.logoUrl ?? detailsArgs.restaurantLogoUrl,
+              final menuData = SubscriptionMenuMapper.toMenuData(
+                details: details,
+                locale: locale,
+                restaurantName: detailsArgs.restaurantName,
+                restaurantLogoUrl: detailsArgs.restaurantLogoUrl,
                 restaurantInitials: detailsArgs.restaurantInitials,
                 restaurantRating: detailsArgs.restaurantRating,
-                programId: detailsArgs.programId,
-                bundleId: detailsArgs.bundleId,
-                restaurantId: detailsArgs.restaurantId,
-                details: details,
+              );
+
+              return RestaurantMenuScreen(
+                mode: RestaurantMenuMode.preview,
+                menuData: menuData,
                 onBackPressed: () => _onBackPressed(context),
+                onOptionDetails: (option) {
+                  unawaited(
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.mealDetails,
+                      arguments: SubscriptionMealDetailsArgs(
+                        programId: detailsArgs.programId,
+                        bundleId: detailsArgs.bundleId,
+                        restaurantId: detailsArgs.restaurantId,
+                        mealId: option.id,
+                        restaurantInitials: detailsArgs.restaurantInitials,
+                        restaurantRating: detailsArgs.restaurantRating,
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),

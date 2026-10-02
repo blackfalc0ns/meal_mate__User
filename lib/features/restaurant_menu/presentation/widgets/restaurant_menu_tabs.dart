@@ -126,7 +126,7 @@ class RestaurantMenuTabs extends StatelessWidget {
                       height: Spacing.restaurantDetailsTabsIndicatorHeight,
                       decoration: BoxDecoration(
                         color: color.primary,
-                        borderRadius: BorderRadius.vertical(
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(Spacing.radiusLg),
                         ),
                       ),

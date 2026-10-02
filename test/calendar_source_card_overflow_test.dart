@@ -7,6 +7,8 @@ import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
+import 'package:meal_meat_user/core/l10n/translations/app_localizations_en.dart';
+import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_menu_mapper.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
 
 void main() {
@@ -81,11 +83,21 @@ void main() {
     ];
 
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: RestaurantMenuSourceSection(coreIngredients: ingredients),
+          body: RestaurantMenuSourceSection(
+            origins: ingredients
+                .map(
+                  (i) => RestaurantMenuOrigin(
+                    title: i.name,
+                    subtitle: 'Local',
+                    country: i.originCountryName,
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ),
     );
@@ -108,19 +120,14 @@ void main() {
             body: SizedBox(
               width: 160,
               child: RestaurantMenuNutritionRow(
-                option: (
+                option: RestaurantMenuOption(
                   id: 'meal-1',
                   slot: 'lunch',
                   title: 'meal',
-                  imageAsset: '',
-                  imageUrl: null,
                   calories: '210',
                   protein: '14',
                   carbs: '3',
                   fat: '16',
-                  ingredients: [],
-                  selected: false,
-                  blockReason: null,
                 ),
               ),
             ),
@@ -147,23 +154,20 @@ void main() {
             body: SizedBox(
               width: 390,
               child: RestaurantMenuOptionCard(
-                option: (
+                option: const RestaurantMenuOption(
                   id: 'meal-1',
                   slot: 'lunch',
                   title: 'دجاج مشوي مع أرز',
                   imageAsset:
                       'assets/images/calendar/figma/meal_picker_hero-47a8dd.png',
-                  imageUrl: null,
                   calories: '620',
                   protein: '38',
                   carbs: '5',
                   fat: '50',
-                  ingredients: const [
-                    CalendarMealIngredientEntity(label: 'سبانخ', asset: ''),
-                    CalendarMealIngredientEntity(label: 'قرنبيط', asset: ''),
+                  ingredients: [
+                    RestaurantMenuIngredient(label: 'سبانخ'),
+                    RestaurantMenuIngredient(label: 'قرنبيط'),
                   ],
-                  selected: false,
-                  blockReason: null,
                 ),
                 onTap: () {},
               ),
@@ -211,23 +215,26 @@ void main() {
           home: Scaffold(
             body: RestaurantMenuView(
               mode: RestaurantMenuMode.selection,
-              availableMeals: CalendarAvailableMealsEntity(
-                restaurant: null,
-                meals: [
-                  _meal(id: 'meal-1', selected: true),
-                  _meal(id: 'meal-2'),
-                ],
-                slotRequirements: const [
-                  CalendarSlotRequirementEntity(
-                    slot: 'lunch',
-                    displayName: 'Lunch',
-                    slotNameAr: 'الغداء',
-                    slotNameEn: 'Lunch',
-                    count: 1,
-                  ),
-                ],
+              menuData: CalendarMenuMapper.toMenuData(
+                availableMeals: CalendarAvailableMealsEntity(
+                  restaurant: null,
+                  meals: [
+                    _meal(id: 'meal-1', selected: true),
+                    _meal(id: 'meal-2'),
+                  ],
+                  slotRequirements: const [
+                    CalendarSlotRequirementEntity(
+                      slot: 'lunch',
+                      displayName: 'Lunch',
+                      slotNameAr: 'الغداء',
+                      slotNameEn: 'Lunch',
+                      count: 1,
+                    ),
+                  ],
+                ),
+                selectedMealIds: const ['meal-2'],
+                locale: AppLocalizationsEn(),
               ),
-              selectedMealIds: const ['meal-2'],
               onMealToggled: (_) {},
             ),
           ),

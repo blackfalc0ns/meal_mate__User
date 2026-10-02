@@ -17,20 +17,20 @@ class MealDetailsLoadingSkeleton extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       child: Stack(
         children: [
-          Positioned(
+          const Positioned(
             top: Spacing.zero,
             left: Spacing.zero,
             right: Spacing.zero,
             child: Stack(
               children: [
-                const ShimmerPlaceholder.rect(
+                ShimmerPlaceholder.rect(
                   height: imageHeight,
                   borderRadius: Spacing.zero,
                 ),
                 Positioned(
                   left: Spacing.xl,
                   bottom: Spacing.xxl + overlap,
-                  child: const ShimmerPlaceholder.rect(
+                  child: ShimmerPlaceholder.rect(
                     width: 100,
                     height: 28,
                     borderRadius: Spacing.radiusSm,
@@ -282,9 +282,7 @@ class MealDetailsLoadingSkeleton extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: color.surface,
                           border: Border.all(color: color.outlineVariant),
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusSm,
-                          ),
+                          borderRadius: BorderRadius.circular(Spacing.radiusSm),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

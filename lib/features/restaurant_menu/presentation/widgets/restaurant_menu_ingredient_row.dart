@@ -3,7 +3,7 @@ part of 'restaurant_menu_view.dart';
 class RestaurantMenuIngredientRow extends StatelessWidget {
   const RestaurantMenuIngredientRow({super.key, required this.ingredients});
 
-  final List<CalendarMealIngredientEntity> ingredients;
+  final List<RestaurantMenuIngredient> ingredients;
 
   @override
   Widget build(BuildContext context) {

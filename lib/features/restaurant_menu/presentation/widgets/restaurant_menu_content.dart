@@ -14,7 +14,6 @@ class RestaurantMenuContent extends StatelessWidget {
     required this.restaurantLogoAsset,
     required this.restaurantLogoUrl,
     required this.restaurantInitials,
-    required this.coreIngredients,
     required this.origins,
     required this.mealTabs,
     required this.selectedTab,
@@ -27,6 +26,7 @@ class RestaurantMenuContent extends StatelessWidget {
     required this.onSave,
     required this.bottomContentPadding,
   });
+
   final bool isFullPage;
   final bool isLoading;
   final bool isLoadingMore;
@@ -38,8 +38,7 @@ class RestaurantMenuContent extends StatelessWidget {
   final String? restaurantLogoAsset;
   final String? restaurantLogoUrl;
   final String? restaurantInitials;
-  final List<CalendarCoreIngredientEntity> coreIngredients;
-  final List<SubscriptionRestaurantIngredientOriginEntity> origins;
+  final List<RestaurantMenuOrigin> origins;
   final List<String> mealTabs;
   final int selectedTab;
   final String selectedSlot;
@@ -50,6 +49,7 @@ class RestaurantMenuContent extends StatelessWidget {
   final ValueChanged<String>? onLoadMore;
   final VoidCallback? onSave;
   final double bottomContentPadding;
+
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
@@ -84,7 +84,6 @@ class RestaurantMenuContent extends StatelessWidget {
                   const RestaurantMenuDescription(),
                   const RestaurantMenuDividerLine(),
                   RestaurantMenuSourceSection(
-                    coreIngredients: coreIngredients,
                     origins: origins,
                     isLoading: isLoading,
                   ),
@@ -93,9 +92,7 @@ class RestaurantMenuContent extends StatelessWidget {
                     labels: mealTabs,
                     selectedIndex: selectedTab,
                     isLoading: isLoading,
-                    onChanged: (index) {
-                      onTabChanged(index);
-                    },
+                    onChanged: onTabChanged,
                   ),
                   const SizedBox(height: Spacing.sm),
                   if (failure != null)

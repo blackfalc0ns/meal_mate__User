@@ -19,7 +19,7 @@ class RestaurantMenuOptionCard extends StatelessWidget {
     final blockReason = option.blockReason;
     final isBlocked = blockReason != null && blockReason.isNotEmpty;
     final showsSelectButton = onTap != null;
-    final cardHeight = Spacing.restaurantDetailsMealCardHeight + Spacing.md;
+    const cardHeight = Spacing.restaurantDetailsMealCardHeight + Spacing.md;
 
     return SizedBox(
       height: isBlocked ? cardHeight + Spacing.lg : cardHeight,
@@ -35,19 +35,24 @@ class RestaurantMenuOptionCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   Spacing.restaurantDetailsMealImageRadius,
                 ),
-                child: option.imageUrl == null || option.imageUrl!.isEmpty
+                child: (option.imageUrl != null && option.imageUrl!.isNotEmpty)
+                    ? AppCachedNetworkImage(
+                        imageUrl: option.imageUrl,
+                        width: Spacing.restaurantDetailsMealImageSize,
+                        height: Spacing.restaurantDetailsMealImageSize,
+                        fit: BoxFit.cover,
+                        semanticLabel: option.title,
+                      )
+                    : option.imageAsset.isNotEmpty
                     ? Image.asset(
                         option.imageAsset,
                         width: Spacing.restaurantDetailsMealImageSize,
                         height: Spacing.restaurantDetailsMealImageSize,
                         fit: BoxFit.cover,
                       )
-                    : AppCachedNetworkImage(
-                        imageUrl: option.imageUrl,
+                    : const SizedBox(
                         width: Spacing.restaurantDetailsMealImageSize,
                         height: Spacing.restaurantDetailsMealImageSize,
-                        fit: BoxFit.cover,
-                        semanticLabel: option.title,
                       ),
               ),
             ),

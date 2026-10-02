@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -13,12 +15,10 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
-import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
-import 'package:meal_meat_user/features/meal_details/presentation/mapper/calendar_meal_details_mapper.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_entity.dart';
+import 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant_menu_models.dart';
+
+export 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant_menu_models.dart';
 
 part 'restaurant_menu_content.dart';
 part 'restaurant_menu_frame.dart';
@@ -45,37 +45,13 @@ part 'restaurant_menu_protein_logo.dart';
 
 enum RestaurantMenuMode { preview, selection }
 
-typedef RestaurantMenuOption = ({
-  String id,
-  String slot,
-  String title,
-  String imageAsset,
-  String? imageUrl,
-  String calories,
-  String protein,
-  String carbs,
-  String fat,
-  List<CalendarMealIngredientEntity> ingredients,
-  bool selected,
-  String? blockReason,
-});
-
 class RestaurantMenuView extends StatefulWidget {
   const RestaurantMenuView({
     super.key,
     required this.mode,
-    this.restaurantName,
-    this.restaurantLogoAsset,
-    this.restaurantLogoUrl,
-    this.restaurantInitials,
-    this.restaurantRating,
-    this.programId,
-    this.bundleId,
-    this.restaurantId,
-    this.details,
-    this.availableMeals,
-    this.selectedMealIds = const [],
+    required this.menuData,
     this.onMealToggled,
+    this.onOptionDetails,
     this.onLoadMore,
     this.onSave,
     this.canSave = false,
@@ -89,18 +65,9 @@ class RestaurantMenuView extends StatefulWidget {
   });
 
   final RestaurantMenuMode mode;
-  final String? restaurantName;
-  final String? restaurantLogoAsset;
-  final String? restaurantLogoUrl;
-  final String? restaurantInitials;
-  final String? restaurantRating;
-  final String? programId;
-  final String? bundleId;
-  final String? restaurantId;
-  final SubscriptionRestaurantDetailsEntity? details;
-  final CalendarAvailableMealsEntity? availableMeals;
-  final List<String> selectedMealIds;
+  final RestaurantMenuData menuData;
   final ValueChanged<String>? onMealToggled;
+  final ValueChanged<RestaurantMenuOption>? onOptionDetails;
   final ValueChanged<String>? onLoadMore;
   final VoidCallback? onSave;
   final bool canSave;
@@ -122,63 +89,30 @@ class RestaurantMenuViewState extends State<RestaurantMenuView> {
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
+    final menuData = widget.menuData;
     final restaurantName =
-        widget.restaurantName ?? locale.calendar_restaurant_name;
-    final details = widget.details;
-    final groups = details?.mealGroups ?? const [];
-    final availableMeals = widget.availableMeals;
-    final apiSlotRequirements = availableMeals?.slotRequirements ?? const [];
-    final apiSlots = apiSlotRequirements
-        .map((requirement) => requirement.slot)
-        .where((slot) => slot.isNotEmpty)
-        .toList();
-    final apiSlotLabels = apiSlotRequirements
-        .map((requirement) {
-          final label = requirement.displayName;
-          return label.isNotEmpty ? label : requirement.slot;
-        })
-        .where((slot) => slot.isNotEmpty)
-        .toList();
-    final mealTabs = apiSlotLabels.isNotEmpty
-        ? apiSlotLabels
-        : groups.isEmpty
+        menuData.restaurantName ?? locale.calendar_restaurant_name;
+    final tabs = menuData.tabs;
+    final mealTabs = tabs.isEmpty
         ? [
             locale.calendar_breakfast,
             locale.calendar_lunch,
             locale.calendar_dinner,
           ]
-        : groups.map((group) => group.name(locale.localeName)).toList();
+        : tabs.map((t) => t.label).toList();
     final selectedTab = mealTabs.isEmpty
         ? 0
         : _selectedTab.clamp(0, mealTabs.length - 1);
-    final selectedSlot = apiSlots.isNotEmpty
-        ? apiSlots[selectedTab.clamp(0, apiSlots.length - 1)]
+    final selectedSlot = tabs.isNotEmpty
+        ? tabs[selectedTab.clamp(0, tabs.length - 1)].key
         : mealTabs[selectedTab];
-    final options = availableMeals != null
-        ? _optionsFromAvailableMeals(
-            availableMeals.meals,
-            selectedSlot,
-            locale.calendar_more,
-            widget.selectedMealIds,
-          )
-        : groups.isEmpty
-        ? const <RestaurantMenuOption>[]
-        : _optionsFromGroup(
-            groups[selectedTab],
-            locale.localeName,
-            locale.calendar_more,
-          );
-    final resolvedRestaurantName =
-        widget.restaurantName ??
-        availableMeals?.restaurant?.name ??
-        restaurantName;
-    final restaurantLogoUrl =
-        widget.restaurantLogoUrl ??
-        details?.logoUrl ??
-        availableMeals?.restaurant?.logoUrl;
+    final options = tabs.isNotEmpty && selectedTab < tabs.length
+        ? tabs[selectedTab].options
+        : const <RestaurantMenuOption>[];
+
     return RestaurantMenuFrame(
       restaurantName: restaurantName,
-      coverImageUrl: details?.coverImageUrl,
+      coverImageUrl: menuData.coverImageUrl,
       onBackPressed: widget.onBackPressed,
       child: RestaurantMenuContent(
         isFullPage: widget.isFullPage,
@@ -188,12 +122,11 @@ class RestaurantMenuViewState extends State<RestaurantMenuView> {
         canSave: widget.canSave,
         failure: widget.failure,
         mode: widget.mode,
-        resolvedRestaurantName: resolvedRestaurantName,
-        restaurantLogoAsset: widget.restaurantLogoAsset,
-        restaurantLogoUrl: restaurantLogoUrl,
-        restaurantInitials: widget.restaurantInitials,
-        coreIngredients: availableMeals?.coreIngredients ?? const [],
-        origins: details?.ingredientOrigins ?? const [],
+        resolvedRestaurantName: restaurantName,
+        restaurantLogoAsset: menuData.restaurantLogoAsset,
+        restaurantLogoUrl: menuData.restaurantLogoUrl,
+        restaurantInitials: menuData.restaurantInitials,
+        origins: menuData.origins,
         mealTabs: mealTabs,
         selectedTab: selectedTab,
         selectedSlot: selectedSlot,
@@ -202,22 +135,13 @@ class RestaurantMenuViewState extends State<RestaurantMenuView> {
           if (_selectedTab == index) return;
           setState(() => _selectedTab = index);
         },
-        onOptionSelected:
-            widget.mode == RestaurantMenuMode.selection &&
-                availableMeals != null &&
+        onOptionSelected: widget.mode == RestaurantMenuMode.selection &&
                 widget.onMealToggled != null
             ? (index) => widget.onMealToggled!(options[index].id)
             : null,
-        onOptionDetailsSelected: availableMeals != null
-            ? (index) {
-                final meal = availableMeals.meals
-                    .where((meal) => meal.id == options[index].id)
-                    .firstOrNull;
-                if (meal != null) _openMealDetailsForCalendarMeal(meal);
-              }
-            : groups.isEmpty
+        onOptionDetailsSelected: options.isEmpty
             ? null
-            : (index) => _openMealDetails(groups[selectedTab].meals[index]),
+            : (index) => _openOptionDetails(options[index]),
         onLoadMore: widget.onLoadMore,
         onSave: widget.onSave,
         bottomContentPadding: widget.bottomContentPadding,

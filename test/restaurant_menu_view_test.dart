@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
@@ -28,7 +26,7 @@ void main() {
                 MaterialPageRoute<void>(
                   builder: (_) => RestaurantMenuScreen(
                     mode: RestaurantMenuMode.selection,
-                    availableMeals: _availableMeals(),
+                    menuData: _menuData(),
                     onMealToggled: (id) => selectedMeal = id,
                   ),
                 ),
@@ -67,8 +65,7 @@ void main() {
         home: Scaffold(
           body: RestaurantMenuView(
             mode: RestaurantMenuMode.preview,
-            availableMeals: _availableMeals(),
-            selectedMealIds: const ['meal-1'],
+            menuData: _menuData(selectedMealIds: const ['meal-1']),
             onMealToggled: (_) {},
           ),
         ),
@@ -89,8 +86,7 @@ void main() {
         home: Scaffold(
           body: RestaurantMenuView(
             mode: RestaurantMenuMode.selection,
-            availableMeals: _availableMeals(),
-            selectedMealIds: const ['meal-1'],
+            menuData: _menuData(selectedMealIds: const ['meal-1']),
             onMealToggled: (_) {},
           ),
         ),
@@ -123,8 +119,7 @@ void main() {
         home: Scaffold(
           body: RestaurantMenuView(
             mode: RestaurantMenuMode.selection,
-            availableMeals: _availableMeals(),
-            selectedMealIds: const ['meal-1'],
+            menuData: _menuData(selectedMealIds: const ['meal-1']),
             onMealToggled: (_) {},
           ),
         ),
@@ -146,36 +141,21 @@ Finder get _selectButtons {
   );
 }
 
-CalendarAvailableMealsEntity _availableMeals() {
-  return CalendarAvailableMealsEntity(
-    restaurant: null,
-    meals: [_meal(id: 'meal-1', selected: true)],
-    slotRequirements: const [
-      CalendarSlotRequirementEntity(
-        slot: 'lunch',
-        displayName: 'Lunch',
-        slotNameAr: 'الغداء',
-        slotNameEn: 'Lunch',
-        count: 1,
+RestaurantMenuData _menuData({List<String> selectedMealIds = const []}) {
+  return RestaurantMenuData(
+    tabs: [
+      RestaurantMenuTab(
+        key: 'lunch',
+        label: 'Lunch',
+        options: [
+          RestaurantMenuOption(
+            id: 'meal-1',
+            slot: 'lunch',
+            title: 'meal-1',
+            selected: selectedMealIds.contains('meal-1'),
+          ),
+        ],
       ),
     ],
-  );
-}
-
-CalendarMealEntity _meal({required String id, bool selected = false}) {
-  return CalendarMealEntity(
-    id: id,
-    slot: 'lunch',
-    selected: selected,
-    mealType: 'Lunch',
-    title: id,
-    time: '',
-    calories: '',
-    protein: '',
-    carbs: '',
-    fat: '',
-    ingredients: const [],
-    imageAsset: '',
-    actionLabel: '',
   );
 }
