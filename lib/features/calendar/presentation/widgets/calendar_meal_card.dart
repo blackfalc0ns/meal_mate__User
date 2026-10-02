@@ -68,8 +68,8 @@ class CalendarMealCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(Spacing.radiusSm),
                       child: AppCachedNetworkImage(
                         imageUrl: meal.imageUrl,
-                        width: 83,
-                        height: 96,
+                        width: 95,
+                        height: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -109,8 +109,21 @@ class _CalendarContentState extends State<CalendarContent> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.state != null) {
-      return _buildFromState(context, widget.state!);
+    final staticState = widget.state;
+    if (staticState != null) {
+      return _buildViewForMode(
+        context,
+        mode: _determineViewMode(staticState),
+        dataView: _buildDataLayout(
+          days: staticState.days,
+          selectedDate: staticState.selectedDate,
+          selectedDay: staticState.selectedDay,
+          isConfirming: staticState.isConfirming,
+          canConfirm: staticState.canConfirmSelectedDayMeals,
+          onDaySelected: (_) {},
+          onConfirmSelections: () {},
+        ),
+      );
     }
 
     return BlocListener<CalendarViewModel, CalendarState>(
@@ -129,26 +142,22 @@ class _CalendarContentState extends State<CalendarContent> {
       child: BlocSelector<CalendarViewModel, CalendarState, _CalendarViewMode>(
         selector: _determineViewMode,
         builder: (context, viewMode) {
-          switch (viewMode) {
-            case _CalendarViewMode.loading:
-              return const Center(child: CircularProgressIndicator());
-            case _CalendarViewMode.noSubscription:
-              return _buildNoSubscriptionView(context);
-            case _CalendarViewMode.error:
-              return _buildErrorView(context);
-            case _CalendarViewMode.empty:
-              return _buildEmptyView(context);
-            case _CalendarViewMode.data:
-              return _buildReactiveDataView(context);
-          }
+          return _buildViewForMode(
+            context,
+            mode: viewMode,
+            dataView: _buildReactiveDataView(context),
+          );
         },
       ),
     );
   }
 
-  Widget _buildFromState(BuildContext context, CalendarState state) {
-    final viewMode = _determineViewMode(state);
-    switch (viewMode) {
+  Widget _buildViewForMode(
+    BuildContext context, {
+    required _CalendarViewMode mode,
+    required Widget dataView,
+  }) {
+    switch (mode) {
       case _CalendarViewMode.loading:
         return const Center(child: CircularProgressIndicator());
       case _CalendarViewMode.noSubscription:
@@ -158,7 +167,7 @@ class _CalendarContentState extends State<CalendarContent> {
       case _CalendarViewMode.empty:
         return _buildEmptyView(context);
       case _CalendarViewMode.data:
-        return _buildStaticDataView(context, state);
+        return dataView;
     }
   }
 
@@ -251,123 +260,83 @@ class _CalendarContentState extends State<CalendarContent> {
   Widget _buildReactiveDataView(BuildContext context) {
     final locale = context.localization;
 
-    return Column(
-      children: [
-        BlocSelector<
-          CalendarViewModel,
-          CalendarState,
-          ({DateTime? selectedDate, List<CalendarDayEntity> days})
-        >(
-          selector: (state) =>
-              (selectedDate: state.selectedDate, days: state.days),
-          builder: (context, pickerData) {
-            final days = _isExpanded
-                ? CalendarDaysBuilder.monthDays(
-                    focusedMonth: _focusedMonth,
-                    selectedDate: pickerData.selectedDate,
-                    serviceDays: pickerData.days,
-                  )
-                : CalendarDaysBuilder.serviceDays(
-                    pickerData.days,
-                    selectedDate: pickerData.selectedDate,
-                  );
-
-            return CalendarPickerPanel(
-              monthTitle: DateFormat.yMMMM(
-                locale.localeName,
-              ).format(_focusedMonth),
-              days: days,
-              isExpanded: _isExpanded,
-              onToggleExpanded: () {
-                setState(() => _isExpanded = !_isExpanded);
-              },
-              onMonthChanged: _changeMonth,
-              onDaySelected: (day) {
-                context.read<CalendarViewModel>().doIntent(
-                  SelectCalendarDayEvent(
-                    day: day,
-                    localeName: locale.localeName,
-                  ),
-                );
-              },
+    return BlocSelector<
+      CalendarViewModel,
+      CalendarState,
+      ({
+        DateTime? selectedDate,
+        List<CalendarDayEntity> days,
+        CalendarDayEntity? selectedDay,
+        bool isConfirming,
+        bool canConfirm,
+      })
+    >(
+      selector: (state) => (
+        selectedDate: state.selectedDate,
+        days: state.days,
+        selectedDay: state.selectedDay,
+        isConfirming: state.isConfirming,
+        canConfirm: state.canConfirmSelectedDayMeals,
+      ),
+      builder: (context, data) {
+        return _buildDataLayout(
+          days: data.days,
+          selectedDate: data.selectedDate,
+          selectedDay: data.selectedDay,
+          isConfirming: data.isConfirming,
+          canConfirm: data.canConfirm,
+          onDaySelected: (day) {
+            context.read<CalendarViewModel>().doIntent(
+              SelectCalendarDayEvent(
+                day: day,
+                localeName: locale.localeName,
+              ),
             );
           },
-        ),
-        Expanded(
-          child: BlocSelector<
-            CalendarViewModel,
-            CalendarState,
-            ({
-              CalendarDayEntity? selectedDay,
-              bool isConfirming,
-              bool canConfirm,
-            })
-          >(
-            selector: (state) => (
-              selectedDay: state.selectedDay,
-              isConfirming: state.isConfirming,
-              canConfirm: state.canConfirmSelectedDayMeals,
-            ),
-            builder: (context, dayData) {
-              return CalendarDayContent(
-                selectedDay: dayData.selectedDay,
-                showBottomSpace: widget.showBottomSpace,
-                onSelectRestaurant: widget.onSelectRestaurant,
-                onChangeMeal: widget.onChangeMeal,
-                onMealTap: widget.onMealTap,
-                onConfirmSelections: () {
-                  context.read<CalendarViewModel>().doIntent(
-                    ConfirmCalendarDayMealsEvent(
-                      localeName: locale.localeName,
-                    ),
-                  );
-                },
-                isConfirming: dayData.isConfirming,
-                canConfirm: dayData.canConfirm,
-              );
-            },
-          ),
-        ),
-      ],
+          onConfirmSelections: () {
+            context.read<CalendarViewModel>().doIntent(
+              ConfirmCalendarDayMealsEvent(
+                localeName: locale.localeName,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Widget _buildStaticDataView(BuildContext context, CalendarState state) {
+  Widget _buildDataLayout({
+    required List<CalendarDayEntity> days,
+    required DateTime? selectedDate,
+    required CalendarDayEntity? selectedDay,
+    required bool isConfirming,
+    required bool canConfirm,
+    required ValueChanged<CalendarDayEntity> onDaySelected,
+    required VoidCallback onConfirmSelections,
+  }) {
     final locale = context.localization;
-    final selectedDay = state.selectedDay;
-    final days = _isExpanded
+    final displayDays = _isExpanded
         ? CalendarDaysBuilder.monthDays(
             focusedMonth: _focusedMonth,
-            selectedDate: state.selectedDate,
-            serviceDays: state.days,
+            selectedDate: selectedDate,
+            serviceDays: days,
           )
         : CalendarDaysBuilder.serviceDays(
-            state.days,
-            selectedDate: state.selectedDate,
+            days,
+            selectedDate: selectedDate,
           );
 
     return Column(
       children: [
         CalendarPickerPanel(
-          monthTitle: DateFormat.yMMMM(
-            locale.localeName,
-          ).format(_focusedMonth),
-          days: days,
+          monthTitle: DateFormat.yMMMM(locale.localeName).format(_focusedMonth),
+          days: displayDays,
           isExpanded: _isExpanded,
           onToggleExpanded: () {
             setState(() => _isExpanded = !_isExpanded);
           },
           onMonthChanged: _changeMonth,
-          onDaySelected: (day) {
-            if (widget.state == null) {
-              context.read<CalendarViewModel>().doIntent(
-                SelectCalendarDayEvent(
-                  day: day,
-                  localeName: locale.localeName,
-                ),
-              );
-            }
-          },
+          onDaySelected: onDaySelected,
         ),
         Expanded(
           child: CalendarDayContent(
@@ -376,17 +345,9 @@ class _CalendarContentState extends State<CalendarContent> {
             onSelectRestaurant: widget.onSelectRestaurant,
             onChangeMeal: widget.onChangeMeal,
             onMealTap: widget.onMealTap,
-            onConfirmSelections: () {
-              if (widget.state == null) {
-                context.read<CalendarViewModel>().doIntent(
-                  ConfirmCalendarDayMealsEvent(
-                    localeName: locale.localeName,
-                  ),
-                );
-              }
-            },
-            isConfirming: state.isConfirming,
-            canConfirm: state.canConfirmSelectedDayMeals,
+            onConfirmSelections: onConfirmSelections,
+            isConfirming: isConfirming,
+            canConfirm: canConfirm,
           ),
         ),
       ],
