@@ -229,6 +229,10 @@ class AppColors {
 extension CalendarColorScheme on ColorScheme {
   LinearGradient get calendarNoSubscriptionGradient =>
       AppColors.calendarNoSubscriptionGradient;
+  Color get calendarNutritionCalories => AppColors.calendarNutritionCalories;
+  Color get calendarNutritionFat => AppColors.calendarNutritionFat;
+  Color get calendarNutritionCarbs => AppColors.calendarNutritionCarbs;
+  Color get calendarNutritionProtein => AppColors.calendarNutritionProtein;
 }
 
 extension MonthlyPlansColorScheme on ColorScheme {

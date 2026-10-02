@@ -32,7 +32,7 @@ class CalendarScrollableDayStripState
       vsync: this,
       duration: const Duration(milliseconds: 380),
     );
-    _staggerController.forward();
+    unawaited(_staggerController.forward());
     WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
   }
 
@@ -40,7 +40,7 @@ class CalendarScrollableDayStripState
   void didUpdateWidget(covariant CalendarScrollableDayStrip oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.days != widget.days) {
-      _staggerController.forward(from: 0.0);
+      unawaited(_staggerController.forward(from: 0.0));
       WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
     }
   }
@@ -104,10 +104,12 @@ class CalendarScrollableDayStripState
       widget.controller.position.maxScrollExtent,
     );
 
-    widget.controller.animateTo(
-      targetOffset,
-      duration: const Duration(milliseconds: 280),
-      curve: Curves.easeOutCubic,
+    unawaited(
+      widget.controller.animateTo(
+        targetOffset,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+      ),
     );
   }
 }

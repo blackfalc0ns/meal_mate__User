@@ -39,7 +39,6 @@ class CalendarDayContent extends StatelessWidget {
     final locale = context.localization;
     final restaurant = selectedDay?.restaurant;
     final meals = selectedDay?.meals ?? const [];
-    final selectedMeals = meals.where((meal) => meal.selected).toList();
     final readOnly = selectedDay?.isEditable != true;
     final hasMeals = meals.isNotEmpty;
     return SingleChildScrollView(
@@ -47,7 +46,7 @@ class CalendarDayContent extends StatelessWidget {
       padding: EdgeInsetsDirectional.only(
         start: Spacing.screenH,
         end: Spacing.screenH,
-        top: hasMeals ? Spacing.base : Spacing.base,
+        top: Spacing.base,
         bottom: showBottomSpace
             ? Spacing.bottomNavHeight + Spacing.xxxl + Spacing.md
             : Spacing.xl,
@@ -58,6 +57,7 @@ class CalendarDayContent extends StatelessWidget {
             const CalendarFrozenDayState()
           else if (!hasMeals)
             CalendarEmptyMealsState(
+              // ignore: unnecessary_lambdas
               onAddMeals: readOnly ? null : () => onSelectRestaurant(),
             )
           else ...[
@@ -83,8 +83,7 @@ class CalendarDayContent extends StatelessWidget {
             if (restaurant != null) ...[
               CalendarRestaurantSummaryCard(
                 key: ValueKey(
-                  '${selectedDay?.date?.toIso8601String() ?? ''}'
-                  '-${_mealsSignature(selectedMeals)}',
+                  '${selectedDay?.date?.toIso8601String() ?? ''}-${restaurant.id}-${meals.length}',
                 ),
                 restaurant: restaurant,
                 day: selectedDay,
@@ -151,14 +150,5 @@ class CalendarDayContent extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _mealsSignature(List<CalendarMealEntity> meals) {
-    return meals
-        .map(
-          (meal) =>
-              '${meal.id}:${meal.protein}:${meal.carbs}:${meal.fat}:${meal.calories}',
-        )
-        .join('|');
   }
 }

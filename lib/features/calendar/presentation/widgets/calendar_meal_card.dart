@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -11,7 +9,6 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_e
 part 'calendar_meal_details.dart';
 part 'calendar_meal_type_badge.dart';
 part 'calendar_nutrition_row.dart';
-part 'calendar_nutrition_item.dart';
 part 'calendar_ingredient_chip.dart';
 
 class CalendarMealCard extends StatelessWidget {
@@ -32,7 +29,7 @@ class CalendarMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final mealCardBodyHeight = 140.0;
+    const mealCardBodyHeight = 140.0;
     return SizedBox(
       height: readOnly
           ? mealCardBodyHeight
@@ -64,30 +61,16 @@ class CalendarMealCard extends StatelessWidget {
                   ],
                 ),
                 child: Row(
-                  textDirection: TextDirection.ltr,
                   children: [
+                    Expanded(child: CalendarMealDetails(meal: meal)),
+                    const SizedBox(width: Spacing.sm),
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: meal.imageUrl == null || meal.imageUrl!.isEmpty
-                          ? Image.asset(
-                              Assets.calendarMealPickerHero,
-                              width: 83,
-                              height: 96,
-                              fit: BoxFit.cover,
-                            )
-                          : AppCachedNetworkImage(
-                              imageUrl: meal.imageUrl,
-                              width: 83,
-                              height: 96,
-                              fit: BoxFit.cover,
-                              semanticLabel: meal.title,
-                            ),
-                    ),
-                    const SizedBox(width: Spacing.lg),
-                    Expanded(
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: CalendarMealDetails(meal: meal),
+                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                      child: AppCachedNetworkImage(
+                        imageUrl: meal.imageUrl,
+                        width: 83,
+                        height: 96,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ],

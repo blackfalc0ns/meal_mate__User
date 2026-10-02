@@ -20,11 +20,33 @@ class CalendarMealSelectionScreen extends StatelessWidget {
   final RoundedLoadingButtonController saveButtonController;
   final CalendarRestaurantOptionEntity? initialRestaurant;
 
+  static final RegExp _whitespaceRegex = RegExp(r'\s+');
+
+  static String _getInitials(String? name) {
+    if (name == null || name.trim().isEmpty) return '';
+    return name
+        .trim()
+        .split(_whitespaceRegex)
+        .where((word) => word.isNotEmpty)
+        .take(3)
+        .map((word) => word.characters.first)
+        .join();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         BlocBuilder<CalendarViewModel, CalendarState>(
+          buildWhen: (previous, current) =>
+              previous.availableMeals != current.availableMeals ||
+              previous.localSelectedMealIds != current.localSelectedMealIds ||
+              previous.isLoadingMoreMeals != current.isLoadingMoreMeals ||
+              previous.isAvailableMealsLoading !=
+                  current.isAvailableMealsLoading ||
+              previous.availableMealsFailure != current.availableMealsFailure ||
+              previous.saveFailure != current.saveFailure ||
+              previous.selectedDay?.restaurant != current.selectedDay?.restaurant,
           builder: (context, state) {
             final locale = context.localization;
             final currentDayRestaurant = state.selectedDay?.restaurant;
@@ -40,13 +62,7 @@ class CalendarMealSelectionScreen extends StatelessWidget {
                 state.availableMeals?.restaurant?.rating ??
                 initialRestaurant?.rating ??
                 currentDayRestaurant?.rating;
-            final restaurantInitials = (restaurantName ?? '')
-                .trim()
-                .split(RegExp(r'\s+'))
-                .where((word) => word.isNotEmpty)
-                .take(3)
-                .map((word) => word.characters.first)
-                .join();
+            final restaurantInitials = _getInitials(restaurantName);
             return RestaurantMenuScreen(
               mode: RestaurantMenuMode.selection,
               restaurantName: restaurantName,

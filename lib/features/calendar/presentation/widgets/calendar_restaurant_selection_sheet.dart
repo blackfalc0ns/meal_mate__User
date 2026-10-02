@@ -13,6 +13,11 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
     return BlocBuilder<CalendarViewModel, CalendarState>(
+      buildWhen: (previous, current) =>
+          previous.restaurants != current.restaurants ||
+          previous.isRestaurantsLoading != current.isRestaurantsLoading ||
+          previous.restaurantsFailure != current.restaurantsFailure ||
+          previous.hasRestaurantPool != current.hasRestaurantPool,
       builder: (context, sheetState) {
         final failure = sheetState.restaurantsFailure;
         if (failure != null && !sheetState.hasRestaurantPool) {
@@ -25,7 +30,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
         }
 
         return CalendarRestaurantPickerSheet(
-          restaurants: sheetState.restaurantsWithUsageLimits(),
+          restaurants: sheetState.restaurants,
           isLoading: sheetState.isRestaurantsLoading,
           onSearchChanged: (query) {
             context.read<CalendarViewModel>().doIntent(

@@ -25,32 +25,38 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.46),
           child: Opacity(
             opacity: isDisabled ? 0.48 : 1,
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.46),
                 border: Border.all(color: color.outlineVariant, width: 1.55),
               ),
-              padding: const EdgeInsets.fromLTRB(7.4, 4.6, 7.4, 4.8),
-              child: Row(
-                textDirection: TextDirection.ltr,
-                children: [
-                  const CalendarArrowBubble(),
-                  const SizedBox(width: 27.6),
-                  CalendarRating(
-                    value: restaurant.rating,
-                    ratingCount: restaurant.ratingCount,
-                  ),
-                  const SizedBox(width: 27.6),
-                  Expanded(
-                    child: CalendarRestaurantCopy(restaurant: restaurant),
-                  ),
-                  const SizedBox(width: 10.5),
-                  CalendarRestaurantPickerLogo(
-                    type: restaurant.logoType,
-                    logoUrl: restaurant.logoUrl,
-                    semanticLabel: restaurant.name,
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  7.4,
+                  4.6,
+                  7.4,
+                  4.8,
+                ),
+                child: Row(
+                  children: [
+                    CalendarRestaurantPickerLogo(
+                      type: restaurant.logoType,
+                      logoUrl: restaurant.logoUrl,
+                      semanticLabel: restaurant.name,
+                    ),
+                    const SizedBox(width: 10.5),
+                    Expanded(
+                      child: CalendarRestaurantCopy(restaurant: restaurant),
+                    ),
+                    const SizedBox(width: 27.6),
+                    CalendarRating(
+                      value: restaurant.rating,
+                      ratingCount: restaurant.ratingCount,
+                    ),
+                    const SizedBox(width: 27.6),
+                    const CalendarArrowBubble(),
+                  ],
+                ),
               ),
             ),
           ),

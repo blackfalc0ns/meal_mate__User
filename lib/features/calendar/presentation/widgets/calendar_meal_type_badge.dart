@@ -11,8 +11,6 @@ class CalendarMealTypeBadge extends StatelessWidget {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      textDirection: TextDirection.rtl,
-
       children: [
         Text(
           mealType,
@@ -22,9 +20,27 @@ class CalendarMealTypeBadge extends StatelessWidget {
             color: color.primary,
           ),
         ),
-        const SizedBox(width: 2),
-        Icon(Icons.wb_sunny_rounded, color: color.primary, size: 13),
+        const SizedBox(width: Spacing.xss),
+        Icon(
+          _iconForMealType(mealType),
+          color: color.primary,
+          size: Spacing.iconXs,
+        ),
       ],
     );
+  }
+
+  IconData _iconForMealType(String type) {
+    final lower = type.toLowerCase();
+    if (lower.contains('break') || lower.contains('فطور')) {
+      return Icons.wb_sunny_rounded;
+    }
+    if (lower.contains('lunch') || lower.contains('غداء')) {
+      return Icons.restaurant_rounded;
+    }
+    if (lower.contains('dinner') || lower.contains('عشاء')) {
+      return Icons.nightlight_round;
+    }
+    return Icons.restaurant_menu_rounded;
   }
 }

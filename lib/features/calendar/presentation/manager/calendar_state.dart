@@ -54,6 +54,10 @@ class CalendarState {
   final Failure? confirmFailure;
   final bool hasNoSubscription;
 
+  List<CalendarRestaurantOptionEntity> restaurantsWithUsageLimits() {
+    return restaurants;
+  }
+
   CalendarDayEntity? get selectedDay {
     final date = selectedDate;
     if (date == null) return days.firstOrNull;
@@ -113,10 +117,6 @@ class CalendarState {
     );
     if (requiredCount > 0 && meals.length != requiredCount) return false;
     return true;
-  }
-
-  List<CalendarRestaurantOptionEntity> restaurantsWithUsageLimits() {
-    return restaurants;
   }
 
   CalendarState copyWith({

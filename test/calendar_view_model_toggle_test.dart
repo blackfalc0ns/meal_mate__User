@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscr
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
@@ -79,6 +80,7 @@ void main() {
         GetCalendarAvailableMealsUseCase(calendarRepository),
         SaveCalendarDayMealsUseCase(calendarRepository),
         AutoSelectCalendarDayUseCase(calendarRepository),
+        ConfirmCalendarDayMealsUseCase(calendarRepository),
         GetCurrentCustomerSubscriptionUseCase(profileRepository),
         SharedPrefHelper(sharedPreferences),
       );
@@ -120,6 +122,7 @@ void main() {
       GetCalendarAvailableMealsUseCase(calendarRepository),
       SaveCalendarDayMealsUseCase(calendarRepository),
       AutoSelectCalendarDayUseCase(calendarRepository),
+      ConfirmCalendarDayMealsUseCase(calendarRepository),
       GetCurrentCustomerSubscriptionUseCase(profileRepository),
       SharedPrefHelper(sharedPreferences),
     );
@@ -178,6 +181,7 @@ void main() {
       GetCalendarAvailableMealsUseCase(calendarRepository),
       SaveCalendarDayMealsUseCase(calendarRepository),
       AutoSelectCalendarDayUseCase(calendarRepository),
+      ConfirmCalendarDayMealsUseCase(calendarRepository),
       GetCurrentCustomerSubscriptionUseCase(profileRepository),
       SharedPrefHelper(sharedPreferences),
     );
@@ -418,6 +422,7 @@ Future<_TestCalendarViewModel> _calendarViewModel() async {
     GetCalendarAvailableMealsUseCase(calendarRepository),
     SaveCalendarDayMealsUseCase(calendarRepository),
     AutoSelectCalendarDayUseCase(calendarRepository),
+    ConfirmCalendarDayMealsUseCase(calendarRepository),
     GetCurrentCustomerSubscriptionUseCase(profileRepository),
     SharedPrefHelper(sharedPreferences),
   );
@@ -449,6 +454,7 @@ class _TestCalendarViewModel extends CalendarViewModel {
     super.getAvailableMealsUseCase,
     super.saveDayMealsUseCase,
     super.autoSelectDayUseCase,
+    super.confirmDayMealsUseCase,
     super.getCurrentCustomerSubscriptionUseCase,
     super.sharedPrefHelper,
   );
@@ -461,6 +467,22 @@ class _CalendarRepositoryFake implements CalendarRepository {
   int autoSelectCalls = 0;
   int saveCalls = 0;
   int getDayCalls = 0;
+
+  @override
+  Future<ApiResult<CalendarDayEntity>> confirmDayMeals({
+    required String subscriptionId,
+    required String date,
+    required String localeName,
+  }) async {
+    return ApiSuccessResult(
+      data: const CalendarDayEntity(
+        id: 'confirmed-day',
+        status: 'SentToRestaurant',
+        dayNumber: 1,
+        weekday: 'Mon',
+      ),
+    );
+  }
 
   @override
   Future<ApiResult<CalendarDayEntity>> autoSelect({

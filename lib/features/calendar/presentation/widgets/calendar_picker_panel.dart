@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -210,14 +212,15 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                   width: 52,
                   height: 36,
                   child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: 22,
                       height: 22,
-                      decoration: BoxDecoration(
-                        color: color.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: AnimatedSwitcher(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: color.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 260),
                         switchInCurve: Curves.easeOutCubic,
                         switchOutCurve: Curves.easeInCubic,
@@ -247,7 +250,8 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                 ),
               ),
             ),
-          ],
+          ),
+        ],
         ),
       ),
     );
@@ -260,10 +264,12 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
     final targetOffset = (_weekController.offset + direction * _weekScrollStep)
         .clamp(position.minScrollExtent, position.maxScrollExtent);
 
-    _weekController.animateTo(
-      targetOffset,
-      duration: const Duration(milliseconds: 260),
-      curve: Curves.easeOutCubic,
+    unawaited(
+      _weekController.animateTo(
+        targetOffset,
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
+      ),
     );
   }
 

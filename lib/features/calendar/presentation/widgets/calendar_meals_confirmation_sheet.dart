@@ -27,7 +27,7 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
       builder: (_) => CalendarMealsConfirmationSheet(
         onBackToCalendar: onBackToCalendar,
         onViewMeals: onViewMeals,

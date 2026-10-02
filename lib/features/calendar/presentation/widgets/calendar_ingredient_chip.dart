@@ -27,7 +27,7 @@ class CalendarMealCardIngredientChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (!isMore) ...[
+          if (!isMore && ingredient.iconUrl?.isNotEmpty == true) ...[
             SizedBox(
               width: 10,
               height: 10,

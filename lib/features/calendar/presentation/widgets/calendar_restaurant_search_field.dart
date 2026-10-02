@@ -10,14 +10,16 @@ class CalendarRestaurantSearchField extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
+    return SizedBox(
       height: 35,
-      padding: const EdgeInsetsDirectional.fromSTEB(13, 0, 13, 0),
-      decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(17.5),
-      ),
-      child: Row(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: color.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(17.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 13),
+          child: Row(
         children: [
           Icon(
             Icons.search_rounded,
@@ -45,8 +47,10 @@ class CalendarRestaurantSearchField extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 22),
-        ],
+              const SizedBox(width: 22),
+            ],
+          ),
+        ),
       ),
     );
   }

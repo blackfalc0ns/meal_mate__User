@@ -7,17 +7,23 @@ class CalendarArrowBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Container(
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
+    return SizedBox(
       width: 24.74,
       height: 24.74,
-      decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        Icons.arrow_forward_ios_rounded,
-        color: color.onSurface,
-        size: 15,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: color.surfaceContainerHighest,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          isRtl
+              ? Icons.arrow_back_ios_new_rounded
+              : Icons.arrow_forward_ios_rounded,
+          color: color.onSurface,
+          size: 15,
+        ),
       ),
     );
   }

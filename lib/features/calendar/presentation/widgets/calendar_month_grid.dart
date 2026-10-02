@@ -25,14 +25,14 @@ class _CalendarMonthGridState extends State<CalendarMonthGrid>
       vsync: this,
       duration: const Duration(milliseconds: 380),
     );
-    _staggerController.forward();
+    unawaited(_staggerController.forward());
   }
 
   @override
   void didUpdateWidget(covariant CalendarMonthGrid oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.days != widget.days) {
-      _staggerController.forward(from: 0.0);
+      unawaited(_staggerController.forward(from: 0.0));
     }
   }
 
@@ -58,10 +58,7 @@ class _CalendarMonthGridState extends State<CalendarMonthGrid>
 
     return SizedBox(
       key: const ValueKey('month-grid'),
-      width: 354,
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: GridView.builder(
+      child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: weekdays.length + widget.days.length,
@@ -102,7 +99,6 @@ class _CalendarMonthGridState extends State<CalendarMonthGrid>
             );
           },
         ),
-      ),
     );
   }
 }

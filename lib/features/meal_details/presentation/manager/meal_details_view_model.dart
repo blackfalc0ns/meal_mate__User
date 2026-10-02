@@ -12,10 +12,10 @@ class MealDetailsViewModel extends Cubit<MealDetailsState> {
 
   final GetSubscriptionMealDetailsUseCase _getSubscriptionMealDetailsUseCase;
 
-  void doIntent(MealDetailsEvent event) {
+  Future<void> doIntent(MealDetailsEvent event) async {
     switch (event) {
       case GetMealDetailsEvent():
-        _getDetails(
+        await _getDetails(
           programId: event.programId,
           bundleId: event.bundleId,
           restaurantId: event.restaurantId,

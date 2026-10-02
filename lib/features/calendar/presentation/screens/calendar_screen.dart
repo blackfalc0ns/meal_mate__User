@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void dispose() {
-    _viewModel.close();
+    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -79,7 +80,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return BlocProvider<CalendarViewModel>.value(
       value: _viewModel,
-      child: BlocConsumer<CalendarViewModel, CalendarState>(
+      child: BlocListener<CalendarViewModel, CalendarState>(
         listenWhen: (previous, current) =>
             previous.availableMeals != current.availableMeals ||
             previous.isAvailableMealsLoading !=
@@ -90,41 +91,39 @@ class _CalendarScreenState extends State<CalendarScreen> {
             previous.confirmSuccessCount != current.confirmSuccessCount ||
             previous.confirmFailure != current.confirmFailure,
         listener: _handleStateSideEffects,
-        builder: (context, state) {
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: color.primary,
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.dark,
-            ),
-            child: Scaffold(
-              backgroundColor: color.surface,
-              body: Column(
-                children: [
-                  CalendarHeader(title: locale.calendar_title),
-                  Expanded(
-                    child: CalendarContent(
-                      state: state,
-                      showBottomSpace: widget.showBottomSpace,
-                      onSelectRestaurant: () => _openRestaurantPicker(context),
-                      onMealTap: (meal, restaurant) =>
-                          _openMealDetails(context, meal, restaurant),
-                      onChangeMeal: () {
-                        _suppressMealSheetAutoOpen = false;
-                        _openMealPicker(context);
-                        _viewModel.doIntent(
-                          LoadCalendarAvailableMealsEvent(
-                            localeName: locale.localeName,
-                          ),
-                        );
-                      },
-                    ),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: color.primary,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            backgroundColor: color.surface,
+            body: Column(
+              children: [
+                CalendarHeader(title: locale.calendar_title),
+                Expanded(
+                  child: CalendarContent(
+                    showBottomSpace: widget.showBottomSpace,
+                    onSelectRestaurant: () => _openRestaurantPicker(context),
+                    onMealTap: (meal, restaurant) =>
+                        _openMealDetails(context, meal, restaurant),
+                    onChangeMeal: () {
+                      _suppressMealSheetAutoOpen = false;
+                      // ignore: discarded_futures
+                      _openMealPicker(context);
+                      _viewModel.doIntent(
+                        LoadCalendarAvailableMealsEvent(
+                          localeName: locale.localeName,
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -133,7 +132,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (state.availableMeals != null &&
         !_mealSheetOpen &&
         !_suppressMealSheetAutoOpen) {
-      _openMealPicker(context);
+      unawaited(_openMealPicker(context));
     }
 
     if (_mealSheetOpen &&
@@ -163,9 +162,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         context: context,
         message: context.localization.calendar_confirm_meals_success,
       );
-      CalendarMealsConfirmationSheet.show(
-        context,
-        statusText: context.localization.calendar_status_awaiting_restaurant,
+      unawaited(
+        CalendarMealsConfirmationSheet.show(
+          context,
+          statusText: context.localization.calendar_status_awaiting_restaurant,
+        ),
       );
       return;
     }
@@ -293,17 +294,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
     CalendarRestaurantEntity? restaurant,
   ) {
     final locale = context.localization;
-    Navigator.of(context).pushNamed(
-      AppRoutes.mealDetails,
-      arguments: CalendarMealDetailsMapper.map(
-        meal: meal,
-        locale: locale,
-        restaurantName: restaurant?.name.isNotEmpty == true
-            ? restaurant!.name
-            : locale.calendar_restaurant_name,
-        restaurantLogoUrl: restaurant?.logoUrl,
-        ratingValue: restaurant?.rating ?? '',
-        deliveryWindow: restaurant?.deliveryWindow ?? '',
+    unawaited(
+      Navigator.of(context).pushNamed(
+        AppRoutes.mealDetails,
+        arguments: CalendarMealDetailsMapper.map(
+          meal: meal,
+          locale: locale,
+          restaurantName: restaurant?.name.isNotEmpty == true
+              ? restaurant!.name
+              : locale.calendar_restaurant_name,
+          restaurantLogoUrl: restaurant?.logoUrl,
+          ratingValue: restaurant?.rating ?? '',
+          deliveryWindow: restaurant?.deliveryWindow ?? '',
+        ),
       ),
     );
   }

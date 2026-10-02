@@ -15,7 +15,6 @@ part 'calendar_rating.dart';
 part 'calendar_restaurant_copy.dart';
 part 'calendar_restaurant_picker_logo.dart';
 part 'calendar_circle_text_logo.dart';
-part 'calendar_image_circle_logo.dart';
 part 'calendar_restaurant_picker_loading_skeleton.dart';
 
 class CalendarRestaurantPickerSheet extends StatefulWidget {
@@ -59,10 +58,9 @@ class _CalendarRestaurantPickerSheetState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        height: MediaQuery.sizeOf(context).height * 0.75,
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.75,
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: color.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
@@ -70,9 +68,9 @@ class _CalendarRestaurantPickerSheetState
         ),
         child: Stack(
           children: [
-            Positioned(
+            PositionedDirectional(
               top: 11,
-              left: 17,
+              end: 17,
               child: IconButton(
                 onPressed: () => Navigator.pop(context),
                 padding: EdgeInsets.zero,
@@ -87,25 +85,27 @@ class _CalendarRestaurantPickerSheetState
                 ),
               ),
             ),
-            Positioned(
+            PositionedDirectional(
               top: 11,
-              left: 0,
-              right: 0,
+              start: 0,
+              end: 0,
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: 31,
                   height: 3,
-                  decoration: BoxDecoration(
-                    color: color.outline,
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: color.outline,
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                    ),
                   ),
                 ),
               ),
             ),
-            Positioned(
+            PositionedDirectional(
               top: 30,
-              left: 0,
-              right: 0,
+              start: 0,
+              end: 0,
               child: Column(
                 children: [
                   Text(
@@ -144,16 +144,16 @@ class _CalendarRestaurantPickerSheetState
                 ],
               ),
             ),
-            Positioned(
+            PositionedDirectional(
               top: 87,
-              left: 42,
-              right: 42,
+              start: 42,
+              end: 42,
               child: CalendarRestaurantSearchField(onChanged: _onSearchChanged),
             ),
-            Positioned(
+            PositionedDirectional(
               top: 149,
-              left: 19,
-              right: 20,
+              start: 19,
+              end: 20,
               bottom: 24,
               child: widget.isLoading
                   ? const CalendarRestaurantPickerLoadingSkeleton()

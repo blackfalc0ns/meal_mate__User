@@ -19,8 +19,6 @@ class CalendarMetaChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    assert(locale.localeName.isNotEmpty);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -35,18 +33,20 @@ class CalendarMetaChip extends StatelessWidget {
             ),
           )
         else
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+          DecoratedBox(
             decoration: BoxDecoration(
               color: badgeColor,
               borderRadius: BorderRadius.circular(Spacing.radiusXs),
             ),
-            child: Text(
-              label,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
-                color: color.onPrimary,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+              child: Text(
+                label,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size11,
+                  color: color.onPrimary,
+                ),
               ),
             ),
           ),
@@ -55,9 +55,7 @@ class CalendarMetaChip extends StatelessWidget {
           AppCachedNetworkImage(
             width: 25,
             height: 25,
-            imageUrl: imageUrl!,
-            // width: badgeColor == null ? FontSize.size11 : FontSize.size10,
-            // height: badgeColor == null ? FontSize.size11 : FontSize.size10,
+            imageUrl: imageUrl,
             fit: BoxFit.cover,
           )
         else

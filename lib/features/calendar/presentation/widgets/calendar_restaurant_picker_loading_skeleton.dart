@@ -8,32 +8,32 @@ class CalendarRestaurantPickerLoadingSkeleton extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.zero,
       itemCount: 5,
-      separatorBuilder: (_, _) => const SizedBox(height: 9.2),
+      separatorBuilder: (_, _) => const SizedBox(height: Spacing.sm),
       itemBuilder: (context, index) {
         return SizedBox(
-          height: 74.22,
+          height: 74,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.46),
+              borderRadius: BorderRadius.circular(Spacing.radiusLg),
               border: Border.all(
                 color: context.colorScheme.outlineVariant,
-                width: 1.55,
+                width: Spacing.border,
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.5,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Spacing.sm,
                 vertical: Spacing.sm,
               ),
               child: Row(
                 children: [
-                  const ShimmerPlaceholder.circle(size: 46),
-                  const SizedBox(width: Spacing.md),
+                  ShimmerPlaceholder.circle(size: 46),
+                  SizedBox(width: Spacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         ShimmerPlaceholder.rect(width: 132, height: 13),
                         SizedBox(height: Spacing.xs),
                         ShimmerPlaceholder.rect(width: 188, height: 10),
@@ -42,8 +42,8 @@ class CalendarRestaurantPickerLoadingSkeleton extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: Spacing.md),
-                  const ShimmerPlaceholder.circle(size: 46),
+                  SizedBox(width: Spacing.md),
+                  ShimmerPlaceholder.circle(size: 46),
                 ],
               ),
             ),

@@ -112,20 +112,25 @@ class CalendarRepositoryImpl implements CalendarRepository {
     required String localeName,
   }) {
     return safeApiCall(() async {
-      CalendarDayEntity? updatedDay;
-      for (final meal in meals) {
-        final response = await _remoteDataSource.saveDayMeals(
+      if (meals.isEmpty) {
+        final dayResponse = await _remoteDataSource.getDay(
           subscriptionId: subscriptionId,
           date: date,
-          request: meal.toSaveMealsDto(),
         );
-        updatedDay = response.toEntity(localeName);
+        return dayResponse.toEntity(localeName);
       }
-      return updatedDay ??
-          (await _remoteDataSource.getDay(
+
+      final responses = await Future.wait(
+        meals.map(
+          (meal) => _remoteDataSource.saveDayMeals(
             subscriptionId: subscriptionId,
             date: date,
-          )).toEntity(localeName);
+            request: meal.toSaveMealsDto(),
+          ),
+        ),
+      );
+
+      return responses.last.toEntity(localeName);
     });
   }
 

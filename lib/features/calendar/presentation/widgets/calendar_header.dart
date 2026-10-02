@@ -12,8 +12,6 @@ class CalendarHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    assert(locale.localeName.isNotEmpty);
 
     return SizedBox(
       height: Spacing.calendarHeaderHeight,

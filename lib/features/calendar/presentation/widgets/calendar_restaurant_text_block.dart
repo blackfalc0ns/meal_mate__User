@@ -9,7 +9,6 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    assert(locale.localeName.isNotEmpty);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

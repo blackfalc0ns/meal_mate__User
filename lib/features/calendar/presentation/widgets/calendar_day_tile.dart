@@ -30,7 +30,7 @@ class CalendarDayTile extends StatelessWidget {
         : color.onSurface;
 
     final backgroundColor = isFrozen
-        ? const Color(0xFFEBF5FA)
+        ? color.secondaryContainer.withValues(alpha: 0.3)
         : selected
         ? color.primary
         : compact
@@ -47,11 +47,11 @@ class CalendarDayTile extends StatelessWidget {
         borderRadius: borderRadius,
         elevation: compact || selected || isFrozen ? 0 : 2,
         shadowColor: color.shadow.withValues(alpha: 0.04),
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: borderRadius,
             border: isFrozen && selected
-                ? Border.all(color: const Color(0xFF4A9AC2), width: 1.5)
+                ? Border.all(color: color.secondary, width: 1.5)
                 : null,
           ),
           child: InkWell(

@@ -25,7 +25,7 @@ class CalendarMealDetails extends StatelessWidget {
 
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: 13,
+            fontSize: FontSize.size13,
             color: color.onSurface,
           ).copyWith(height: 1.15),
         ),
@@ -42,13 +42,12 @@ class CalendarMealDetails extends StatelessWidget {
         ),
         if (meal.ingredients.isNotEmpty) ...[
           const SizedBox(height: Spacing.xss),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          Wrap(
+            spacing: Spacing.xs,
+            runSpacing: Spacing.xss,
             children: [
-              for (final ingredient in meal.ingredients) ...[
+              for (final ingredient in meal.ingredients)
                 CalendarMealCardIngredientChip(ingredient: ingredient),
-                const SizedBox(width: 4.3),
-              ],
             ],
           ),
         ],

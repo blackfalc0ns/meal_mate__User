@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
@@ -52,31 +53,37 @@ class CalendarViewModel extends Cubit<CalendarState> {
   void doIntent(CalendarEvent event) {
     switch (event) {
       case LoadCalendarEvent():
-        _loadCalendar(
-          subscriptionId: event.subscriptionId,
-          localeName: event.localeName,
+        unawaited(
+          _loadCalendar(
+            subscriptionId: event.subscriptionId,
+            localeName: event.localeName,
+          ),
         );
       case SelectCalendarDayEvent():
         _selectDay(day: event.day, localeName: event.localeName);
       case LoadCalendarRestaurantsEvent():
-        _loadRestaurants(event.localeName, query: event.query);
+        unawaited(_loadRestaurants(event.localeName, query: event.query));
       case SelectCalendarRestaurantEvent():
-        _selectRestaurant(
-          restaurant: event.restaurant,
-          localeName: event.localeName,
+        unawaited(
+          _selectRestaurant(
+            restaurant: event.restaurant,
+            localeName: event.localeName,
+          ),
         );
       case LoadCalendarAvailableMealsEvent():
-        _loadAvailableMeals(event.localeName);
+        unawaited(_loadAvailableMeals(event.localeName));
       case ToggleCalendarMealEvent():
         _toggleMeal(event.mealId);
       case SaveCalendarDayMealsEvent():
-        _saveMeals(event.localeName);
+        unawaited(_saveMeals(event.localeName));
       case AutoSelectCalendarDayEvent():
-        _autoSelect(event.localeName);
+        unawaited(_autoSelect(event.localeName));
       case ConfirmCalendarDayMealsEvent():
-        _confirmMeals(event.localeName);
+        unawaited(_confirmMeals(event.localeName));
       case LoadMoreCalendarMealsEvent():
-        _loadMoreMeals(slot: event.slot, localeName: event.localeName);
+        unawaited(
+          _loadMoreMeals(slot: event.slot, localeName: event.localeName),
+        );
     }
   }
 
@@ -456,7 +463,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
         clearSaveFailure: true,
       ),
     );
-    _loadSelectedDayDetailsForDate(day.date!, localeName: localeName);
+    unawaited(
+      _loadSelectedDayDetailsForDate(day.date!, localeName: localeName),
+    );
   }
 
   void _toggleMeal(String mealId) {
@@ -634,8 +643,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
       case ApiSuccessResult():
         final currentMeals = day.meals;
         final confirmedDay = result.data.copyWith(
-          meals:
-              result.data.meals.isNotEmpty ? result.data.meals : currentMeals,
+          meals: result.data.meals.isNotEmpty
+              ? result.data.meals
+              : currentMeals,
           canEdit: false,
         );
         _replaceDay(confirmedDay);
@@ -657,10 +667,7 @@ class CalendarViewModel extends Cubit<CalendarState> {
           );
         }
         emit(
-          state.copyWith(
-            isConfirming: false,
-            confirmFailure: result.failure,
-          ),
+          state.copyWith(isConfirming: false, confirmFailure: result.failure),
         );
     }
   }
@@ -713,8 +720,9 @@ class CalendarViewModel extends Cubit<CalendarState> {
       if (day.date == null || !_isSameDay(day.date!, updatedDay.date!)) {
         return day;
       }
-      final resolvedMeals =
-          updatedDay.meals.isNotEmpty ? updatedDay.meals : day.meals;
+      final resolvedMeals = updatedDay.meals.isNotEmpty
+          ? updatedDay.meals
+          : day.meals;
       return updatedDay.copyWith(meals: resolvedMeals);
     }).toList();
     emit(

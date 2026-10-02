@@ -57,7 +57,10 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CalendarRestaurantSummaryLogo(),
+              CalendarRestaurantSummaryLogo(
+                logoUrl: restaurant.logoUrl,
+                semanticLabel: restaurant.name,
+              ),
               const SizedBox(width: Spacing.calendarRestaurantSummaryLogoGap),
               Expanded(
                 child: CalendarRestaurantTextBlock(restaurant: restaurant),
