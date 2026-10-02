@@ -50,7 +50,7 @@ class SubscriptionTotalPriceCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size16,
+                fontSize: FontSize.size12,
                 color: color.onSurface,
               ),
             ),

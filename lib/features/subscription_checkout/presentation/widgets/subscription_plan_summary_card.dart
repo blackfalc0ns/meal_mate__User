@@ -160,7 +160,9 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.sm),
                     Text(
-                      locale.subscription_summary_includes_label,
+                      summary?.includes.title(locale.localeName).trim().isNotEmpty == true
+                          ? summary!.includes.title(locale.localeName)
+                          : locale.subscription_summary_includes_label,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size14,
@@ -172,79 +174,11 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
                 const SizedBox(height: Spacing.md),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SubscriptionIncludedFeatureItem(
-                        icon: Icon(
-                          Icons.dinner_dining_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                        title: dailyMealsTitle,
-                        subtitle: locale.subscription_meals_breakdown,
-                      ),
-                    ),
-                    Container(
-                      width: Spacing.border,
-                      height: Spacing.xxl,
-                      color: color.outlineVariant,
-                    ),
-                    Expanded(
-                      child: SubscriptionIncludedFeatureItem(
-                        icon: Icon(
-                          Icons.soup_kitchen_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                        title: locale.subscription_summary_restaurants,
-                      ),
-                    ),
-                    Container(
-                      width: Spacing.border,
-                      height: Spacing.xxl,
-                      color: color.outlineVariant,
-                    ),
-                    Expanded(
-                      child: SubscriptionIncludedFeatureItem(
-                        icon: Icon(
-                          Icons.verified_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                        title: locale.subscription_summary_quality,
-                      ),
-                    ),
-                    Container(
-                      width: Spacing.border,
-                      height: Spacing.xxl,
-                      color: color.outlineVariant,
-                    ),
-                    Expanded(
-                      child: SubscriptionIncludedFeatureItem(
-                        icon: Icon(
-                          Icons.eco_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                        title: locale.subscription_summary_variety,
-                      ),
-                    ),
-                    Container(
-                      width: Spacing.border,
-                      height: Spacing.xxl,
-                      color: color.outlineVariant,
-                    ),
-                    Expanded(
-                      child: SubscriptionIncludedFeatureItem(
-                        icon: Icon(
-                          Icons.check_circle_outline_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                        title: locale.subscription_certified_meals,
-                      ),
-                    ),
-                  ],
+                  children: _buildFeatureItems(
+                    color: color,
+                    locale: locale,
+                    dailyMealsTitle: dailyMealsTitle,
+                  ),
                 ),
               ],
             ),
@@ -252,5 +186,118 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildFeatureItems({
+    required ColorScheme color,
+    required dynamic locale,
+    required String dailyMealsTitle,
+  }) {
+    final dynamicItems = summary?.includes.items ?? const [];
+    final widgets = <Widget>[];
+
+    if (dynamicItems.isNotEmpty) {
+      for (var i = 0; i < dynamicItems.length; i++) {
+        final item = dynamicItems[i];
+        if (i > 0) {
+          widgets.add(
+            Container(
+              width: Spacing.border,
+              height: Spacing.xxl,
+              color: color.outlineVariant,
+            ),
+          );
+        }
+        widgets.add(
+          Expanded(
+            child: SubscriptionIncludedFeatureItem(
+              icon: Icon(
+                _resolveIcon(item.code),
+                color: color.primary,
+                size: Spacing.iconSm,
+              ),
+              title: item.text(locale.localeName),
+            ),
+          ),
+        );
+      }
+      return widgets;
+    }
+
+    final fallbackItems = [
+      SubscriptionIncludedFeatureItem(
+        icon: Icon(
+          Icons.dinner_dining_rounded,
+          color: color.primary,
+          size: Spacing.iconSm,
+        ),
+        title: dailyMealsTitle,
+        subtitle: locale.subscription_meals_breakdown,
+      ),
+      SubscriptionIncludedFeatureItem(
+        icon: Icon(
+          Icons.soup_kitchen_rounded,
+          color: color.primary,
+          size: Spacing.iconSm,
+        ),
+        title: locale.subscription_summary_restaurants,
+      ),
+      SubscriptionIncludedFeatureItem(
+        icon: Icon(
+          Icons.verified_rounded,
+          color: color.primary,
+          size: Spacing.iconSm,
+        ),
+        title: locale.subscription_summary_quality,
+      ),
+      SubscriptionIncludedFeatureItem(
+        icon: Icon(
+          Icons.eco_rounded,
+          color: color.primary,
+          size: Spacing.iconSm,
+        ),
+        title: locale.subscription_summary_variety,
+      ),
+      SubscriptionIncludedFeatureItem(
+        icon: Icon(
+          Icons.check_circle_outline_rounded,
+          color: color.primary,
+          size: Spacing.iconSm,
+        ),
+        title: locale.subscription_certified_meals,
+      ),
+    ];
+
+    for (var i = 0; i < fallbackItems.length; i++) {
+      if (i > 0) {
+        widgets.add(
+          Container(
+            width: Spacing.border,
+            height: Spacing.xxl,
+            color: color.outlineVariant,
+          ),
+        );
+      }
+      widgets.add(Expanded(child: fallbackItems[i]));
+    }
+
+    return widgets;
+  }
+
+  IconData _resolveIcon(String code) {
+    final lower = code.toLowerCase();
+    if (lower.contains('meal') || lower.contains('food')) {
+      return Icons.dinner_dining_rounded;
+    }
+    if (lower.contains('restaurant')) {
+      return Icons.soup_kitchen_rounded;
+    }
+    if (lower.contains('quality') || lower.contains('cert')) {
+      return Icons.verified_rounded;
+    }
+    if (lower.contains('variety') || lower.contains('eco')) {
+      return Icons.eco_rounded;
+    }
+    return Icons.check_circle_outline_rounded;
   }
 }

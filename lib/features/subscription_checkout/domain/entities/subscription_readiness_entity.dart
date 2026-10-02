@@ -1,6 +1,7 @@
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
+export 'subscription_flow_args.dart';
 
 class SubscriptionReadinessEntity {
+
   const SubscriptionReadinessEntity({
     required this.isComplete,
     required this.canOpenSummary,
@@ -120,10 +121,4 @@ class SubscriptionReadinessRestaurantEntity {
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 }
 
-class SubscriptionFlowArgs {
-  const SubscriptionFlowArgs({this.request});
 
-  final SubscriptionSummaryRequestEntity? request;
-
-  bool get isSubscriptionSource => true;
-}

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -13,60 +15,60 @@ import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/widgets/monthly_plan_hero_section.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
-import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
+
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_ui_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_button_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_details_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_details_loading_skeleton.dart';
 
-class SubscriptionSummaryScreen extends StatefulWidget {
+class SubscriptionSummaryScreen extends StatelessWidget {
   const SubscriptionSummaryScreen({super.key, required this.args});
 
   final SubscriptionSummaryArgs? args;
 
   @override
-  State<SubscriptionSummaryScreen> createState() =>
-      _SubscriptionSummaryScreenState();
-}
-
-class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
-  late String _selectedStartDate;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedStartDate =
-        widget.args?.request.startDate.trim().isNotEmpty == true
-        ? widget.args!.request.startDate
-        : _formatApiDate(_kuwaitToday);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final summaryArgs = widget.args;
+    final summaryArgs = args;
 
     if (summaryArgs == null) {
       return Scaffold(
         backgroundColor: color.surface,
         body: EmptyStateWidget(
           title: locale.subscription_summary_title,
-          description: locale.subscription_program_subtitle,
+          description: locale.subscription_summary_title,
           icon: Icons.receipt_long_rounded,
         ),
       );
     }
 
+    final initialStartDate =
+        summaryArgs.request.startDate.trim().isNotEmpty
+            ? summaryArgs.request.startDate
+            : _formatApiDate(_kuwaitToday);
+
+    final initialRequest = summaryArgs.request.copyWith(
+      startDate: initialStartDate,
+    );
+
     return BlocProvider<SubscriptionSummaryViewModel>(
       create: (_) =>
           getIt<SubscriptionSummaryViewModel>()
-            ..doIntent(GetSubscriptionSummaryEvent(_summaryRequest)),
+            ..doIntent(GetSubscriptionSummaryEvent(initialRequest)),
       child: BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
         builder: (context, state) {
           final summary = state.summary;
+          final currentStartDate = state.selectedStartDate.isNotEmpty
+              ? state.selectedStartDate
+              : initialStartDate;
+          final activeRequest = summaryArgs.request.copyWith(
+            startDate: currentStartDate,
+          );
+
           final plan = summary == null
               ? summaryArgs.initialPlan
               : summary.toPlanDetails(
@@ -115,16 +117,19 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
                                             >()
                                             .doIntent(
                                               GetSubscriptionSummaryEvent(
-                                                _summaryRequest,
+                                                activeRequest,
                                               ),
                                             ),
                                       )
                                     : SubscriptionSummaryDetailsCard(
                                         plan: plan,
                                         summary: summary,
-                                        selectedStartDate: _selectedStartDate,
-                                        onEditStartDate: () =>
-                                            _openDatePicker(context),
+                                        selectedStartDate: currentStartDate,
+                                        onEditStartDate: () => _openDatePicker(
+                                          context: context,
+                                          currentStartDate: currentStartDate,
+                                          summaryArgs: summaryArgs,
+                                        ),
                                       ),
                               ),
                               const SizedBox(
@@ -152,7 +157,7 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
                                     AppRoutes.payment,
                                     arguments: PaymentArgs(
                                       summary: summary,
-                                      summaryRequest: _summaryRequest,
+                                      summaryRequest: activeRequest,
                                       restaurantId:
                                           summary.firstRestaurantId ??
                                           summaryArgs.restaurantId,
@@ -170,19 +175,20 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
     );
   }
 
-  SubscriptionSummaryRequestEntity get _summaryRequest =>
-      widget.args!.request.copyWith(startDate: _selectedStartDate);
-
-  DateTime get _kuwaitToday {
+  static DateTime get _kuwaitToday {
     final kuwaitNow = DateTime.now().toUtc().add(const Duration(hours: 3));
     return DateUtils.dateOnly(
       DateTime(kuwaitNow.year, kuwaitNow.month, kuwaitNow.day),
     );
   }
 
-  Future<void> _openDatePicker(BuildContext context) async {
+  static Future<void> _openDatePicker({
+    required BuildContext context,
+    required String currentStartDate,
+    required SubscriptionSummaryArgs summaryArgs,
+  }) async {
     final locale = context.localization;
-    final currentDate = _parseApiDate(_selectedStartDate) ?? _kuwaitToday;
+    final currentDate = _parseApiDate(currentStartDate) ?? _kuwaitToday;
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: currentDate.isBefore(_kuwaitToday)
@@ -193,27 +199,24 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
       locale: Locale(locale.localeName),
     );
 
-    if (pickedDate == null || !mounted) {
+    if (pickedDate == null || !context.mounted) {
       return;
     }
 
     final formattedDate = _formatApiDate(pickedDate);
-    if (formattedDate == _selectedStartDate) {
+    if (formattedDate == currentStartDate) {
       return;
     }
 
-    setState(() {
-      _selectedStartDate = formattedDate;
-    });
-    if (!context.mounted) {
-      return;
-    }
     context.read<SubscriptionSummaryViewModel>().doIntent(
-      GetSubscriptionSummaryEvent(_summaryRequest),
+      ChangeSubscriptionStartDateEvent(
+        startDate: formattedDate,
+        baseRequest: summaryArgs.request,
+      ),
     );
   }
 
-  DateTime? _parseApiDate(String value) {
+  static DateTime? _parseApiDate(String value) {
     try {
       return DateUtils.dateOnly(DateTime.parse(value));
     } on FormatException {
@@ -221,7 +224,7 @@ class _SubscriptionSummaryScreenState extends State<SubscriptionSummaryScreen> {
     }
   }
 
-  String _formatApiDate(DateTime date) {
+  static String _formatApiDate(DateTime date) {
     return DateFormat('yyyy-MM-dd').format(DateUtils.dateOnly(date));
   }
 }

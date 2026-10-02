@@ -9,3 +9,13 @@ class GetSubscriptionSummaryEvent extends SubscriptionSummaryEvent {
 
   final SubscriptionSummaryRequestEntity request;
 }
+
+class ChangeSubscriptionStartDateEvent extends SubscriptionSummaryEvent {
+  const ChangeSubscriptionStartDateEvent({
+    required this.startDate,
+    required this.baseRequest,
+  });
+
+  final String startDate;
+  final SubscriptionSummaryRequestEntity baseRequest;
+}

@@ -55,7 +55,7 @@ class SubscriptionDateCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),
                 ),

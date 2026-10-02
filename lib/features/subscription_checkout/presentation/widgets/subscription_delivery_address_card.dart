@@ -15,11 +15,16 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final primaryLine = address?.addressLine.trim().isNotEmpty == true
-        ? address!.addressLine
-        : address?.label ?? '';
+    final hasCustomLabel = address?.label.trim().isNotEmpty == true &&
+        address!.label.trim() != address?.addressLine.trim();
 
-    final secondaryLine = address?.formattedAddress;
+    final title = hasCustomLabel
+        ? address!.label.trim()
+        : locale.subscription_address_title;
+
+    final detailLine = address?.addressLine.trim().isNotEmpty == true
+        ? address!.addressLine.trim()
+        : (address?.formattedAddress ?? '');
 
     return Container(
       padding: const EdgeInsets.all(Spacing.base),
@@ -51,7 +56,7 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  locale.subscription_address_title,
+                  title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: getBoldStyle(
@@ -60,25 +65,10 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
                     color: color.onSurface,
                   ),
                 ),
-                if (primaryLine.isNotEmpty) ...[
+                if (detailLine.isNotEmpty) ...[
                   const SizedBox(height: Spacing.xxs),
                   Text(
-                    primaryLine,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-                if (secondaryLine != null &&
-                    secondaryLine.isNotEmpty &&
-                    secondaryLine != primaryLine) ...[
-                  const SizedBox(height: Spacing.xxs),
-                  Text(
-                    secondaryLine,
+                    detailLine,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(

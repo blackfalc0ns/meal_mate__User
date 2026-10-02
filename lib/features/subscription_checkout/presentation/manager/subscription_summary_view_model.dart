@@ -19,12 +19,35 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
     switch (event) {
       case GetSubscriptionSummaryEvent():
         unawaited(_getSummary(event.request));
+      case ChangeSubscriptionStartDateEvent():
+        unawaited(
+          _changeStartDate(
+            startDate: event.startDate,
+            baseRequest: event.baseRequest,
+          ),
+        );
     }
+  }
+
+  Future<void> _changeStartDate({
+    required String startDate,
+    required SubscriptionSummaryRequestEntity baseRequest,
+  }) async {
+    final updatedRequest = baseRequest.copyWith(startDate: startDate);
+    emit(state.copyWith(selectedStartDate: startDate));
+    await _getSummary(updatedRequest);
   }
 
   Future<void> _getSummary(SubscriptionSummaryRequestEntity request) async {
     emit(
-      state.copyWith(isLoading: true, clearSummary: true, clearFailure: true),
+      state.copyWith(
+        isLoading: true,
+        clearSummary: true,
+        clearFailure: true,
+        selectedStartDate: request.startDate.isNotEmpty
+            ? request.startDate
+            : state.selectedStartDate,
+      ),
     );
 
     final result = await _getSubscriptionSummaryUseCase(request);

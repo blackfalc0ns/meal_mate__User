@@ -6,16 +6,19 @@ class SubscriptionSummaryState {
     this.isLoading = false,
     this.summary,
     this.failure,
+    this.selectedStartDate = '',
   });
 
   final bool isLoading;
   final SubscriptionSummaryEntity? summary;
   final Failure? failure;
+  final String selectedStartDate;
 
   SubscriptionSummaryState copyWith({
     bool? isLoading,
     SubscriptionSummaryEntity? summary,
     Failure? failure,
+    String? selectedStartDate,
     bool clearSummary = false,
     bool clearFailure = false,
   }) {
@@ -23,6 +26,7 @@ class SubscriptionSummaryState {
       isLoading: isLoading ?? this.isLoading,
       summary: clearSummary ? null : summary ?? this.summary,
       failure: clearFailure ? null : failure ?? this.failure,
+      selectedStartDate: selectedStartDate ?? this.selectedStartDate,
     );
   }
 }

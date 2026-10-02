@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coverage_error_banner.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_dates_row.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_delivery_address_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_participating_restaurants_card.dart';
@@ -29,7 +29,6 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     final repetitionLimit = summary?.restaurantRepetition?.limit ?? 0;
@@ -82,25 +81,8 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           ],
           if (noRestaurantsError) ...[
             const SizedBox(height: Spacing.md),
-            Container(
-              padding: const EdgeInsets.all(Spacing.md),
-              decoration: BoxDecoration(
-                color: color.errorContainer,
-                borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                border: Border.all(
-                  color: color.error.withValues(alpha: 0.3),
-                  width: Spacing.border,
-                ),
-              ),
-              child: Text(
-                locale.subscription_summary_no_restaurants_for_address,
-                textAlign: TextAlign.center,
-                style: getMediumStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
-                  color: color.onErrorContainer,
-                ),
-              ),
+            SubscriptionCoverageErrorBanner(
+              message: locale.subscription_summary_no_restaurants_for_address,
             ),
           ],
           const SizedBox(height: Spacing.md),
