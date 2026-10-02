@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/core/widget/app_order_summary_price_row.dart';
 
 class AppOrderSummaryCard extends StatelessWidget {
   const AppOrderSummaryCard({
@@ -35,228 +36,185 @@ class AppOrderSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    final parsedDiscount = double.tryParse(discountAmount) ?? 0.0;
+    final hasDiscount = parsedDiscount > 0.0001;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
+      padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE7ECE7)),
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.06),
-            blurRadius: 14,
+            color: color.shadow.withValues(alpha: 0.06),
+            blurRadius: Spacing.md,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              textDirection: TextDirection.ltr,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppCachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 165,
-                  height: 130,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          summaryTitle ?? l10n.payment_order_summary_title,
-                          textAlign: TextAlign.right,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size18,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          textAlign: TextAlign.right,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '$planTitle - ',
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size16,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                              TextSpan(
-                                text: planDuration,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size16,
-                                  color: AppColors.primaryVariant,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          mealsPerDay,
-                          textAlign: TextAlign.right,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size13,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            _PriceRow(
-              label: l10n.payment_base_price_label,
-              value: '$originalPrice ${l10n.currency}',
-              valueColor: const Color(0xFF6F737A),
-            ),
-            const SizedBox(height: 6),
-            _PriceRow(
-              label: _discountText(l10n.payment_discount_label),
-              value: '-$discountAmount ${l10n.currency}',
-              valueColor: AppColors.primaryVariant,
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Text(
-                  l10n.payment_total_after_discount,
-                  textAlign: TextAlign.right,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size16,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-                const Expanded(
-                  child: Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: Color(0xFFF0F0F0),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  '$totalPrice ${l10n.currency}',
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size20,
-                    color: AppColors.primaryVariant,
-                  ),
-                ),
-              ],
-            ),
-            if (couponHint != null) ...[
-              const SizedBox(height: 14),
-              Container(
-                height: 42,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF8F8F8),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: const Color(0xFFF0F0F0)),
-                ),
-                child: Row(
-                  textDirection: TextDirection.rtl,
-                  children: [
-                    const Icon(
-                      Icons.sell_outlined,
-                      color: AppColors.primary,
-                      size: 22,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        couponHint!,
-                        textAlign: TextAlign.center,
-                        style: getMediumStyle(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: Spacing.xs),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        summaryTitle ?? locale.payment_order_summary_title,
+                        style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size13,
-                          color: AppColors.textPrimary,
+                          fontSize: FontSize.size16,
+                          color: color.onSurface,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: Spacing.sm),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '$planTitle - ',
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size15,
+                                color: color.onSurface,
+                              ),
+                            ),
+                            TextSpan(
+                              text: planDuration,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size15,
+                                color: color.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        mealsPerDay,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size13,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: Spacing.sm),
+
+              AppCachedNetworkImage(
+                imageUrl: imageUrl,
+                width: 140,
+                height: 110,
+                fit: BoxFit.contain,
+              ),
+            ],
+          ),
+          if (hasDiscount) ...[
+            const SizedBox(height: Spacing.md),
+            AppOrderSummaryPriceRow(
+              label: locale.payment_base_price_label,
+              value: '$originalPrice ${locale.currency}',
+              valueColor: color.onSurfaceVariant,
+            ),
+            const SizedBox(height: Spacing.xs),
+            AppOrderSummaryPriceRow(
+              label: _discountText(locale.payment_discount_label),
+              value: '-$discountAmount ${locale.currency}',
+              valueColor: color.primary,
+            ),
+          ],
+          const SizedBox(height: Spacing.md),
+          Row(
+            children: [
+              Text(
+                hasDiscount
+                    ? locale.payment_total_after_discount
+                    : locale.subscription_summary_total_price_label,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size15,
+                  color: color.onSurface,
+                ),
+              ),
+              const SizedBox(width: Spacing.sm),
+              Expanded(
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: color.outlineVariant.withValues(alpha: 0.5),
+                ),
+              ),
+              const SizedBox(width: Spacing.sm),
+              Text(
+                '$totalPrice ${locale.currency}',
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size18,
+                  color: color.primary,
                 ),
               ),
             ],
+          ),
+          if (couponHint != null && couponHint!.trim().isNotEmpty) ...[
+            const SizedBox(height: Spacing.md),
+            Container(
+              height: Spacing.buttonSmallHeight,
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+              decoration: BoxDecoration(
+                color: color.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(Spacing.sm),
+                border: Border.all(color: color.outlineVariant),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.sell_outlined,
+                    color: color.primary,
+                    size: Spacing.iconSm + Spacing.xs,
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Expanded(
+                    child: Text(
+                      couponHint!,
+                      textAlign: TextAlign.center,
+                      style: getMediumStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
 
   String _discountText(String fallbackLabel) {
-    if (discountLabel == null || discountLabel!.isEmpty) {
+    if (discountLabel == null || discountLabel!.trim().isEmpty) {
       return fallbackLabel;
     }
 
     final baseLabel = fallbackLabel.contains('(')
         ? fallbackLabel.substring(0, fallbackLabel.indexOf('(')).trim()
         : fallbackLabel;
-    return '$baseLabel($discountLabel)';
-  }
-}
-
-class _PriceRow extends StatelessWidget {
-  const _PriceRow({
-    required this.label,
-    required this.value,
-    required this.valueColor,
-  });
-
-  final String label;
-  final String value;
-  final Color valueColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          textAlign: TextAlign.right,
-          style: getMediumStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size13,
-            color: const Color(0xFF8A8F98),
-          ),
-        ),
-        const SizedBox(width: 8),
-        const Expanded(
-          child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
-        ),
-        const SizedBox(width: 8),
-
-        Text(
-          value,
-          style: getSemiBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size11,
-            color: valueColor,
-          ),
-        ),
-      ],
-    );
+    return '$baseLabel ($discountLabel)';
   }
 }

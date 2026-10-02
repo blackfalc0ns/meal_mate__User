@@ -19,6 +19,9 @@ class PaymentOrderSummarySection extends StatelessWidget {
 
     final discountAmount =
         summary.campaignDiscount + summary.promoDiscount + summary.walletCredit;
+    final basePriceValue = summary.basePrice > 0
+        ? summary.basePrice
+        : summary.finalPrice;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
@@ -26,7 +29,7 @@ class PaymentOrderSummarySection extends StatelessWidget {
         planTitle: summary.bundleName(localeName),
         planDuration: '${summary.durationDays} ${locale.subscription_day}',
         mealsPerDay: summary.programName(localeName),
-        originalPrice: summary.finalPrice.toStringAsFixed(3),
+        originalPrice: basePriceValue.toStringAsFixed(3),
         discountAmount: discountAmount.toStringAsFixed(3),
         totalPrice: summary.finalPrice.toStringAsFixed(3),
         imageAsset: Assets.monthlyPlanHero,

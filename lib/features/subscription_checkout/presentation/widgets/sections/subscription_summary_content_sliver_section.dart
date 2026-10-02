@@ -30,8 +30,8 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
         final currentStartDate = summary?.startDate.trim().isNotEmpty == true
             ? summary!.startDate.trim()
             : (state.selectedStartDate.trim().isNotEmpty
-                ? state.selectedStartDate.trim()
-                : initialStartDate);
+                  ? state.selectedStartDate.trim()
+                  : initialStartDate);
 
         final activeRequest = summaryArgs.request.copyWith(
           startDate: currentStartDate,
@@ -39,13 +39,11 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
 
         return SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.md,
-            ).copyWith(
-              top: Spacing.md,
-              bottom:
-                  Spacing.monthlyPlanSubscribeHeight + Spacing.xxxl,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH)
+                .copyWith(
+                  top: Spacing.md,
+                  bottom: Spacing.monthlyPlanSubscribeHeight + Spacing.xxxl,
+                ),
             child: Center(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 320),
@@ -53,18 +51,18 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
                 switchOutCurve: Curves.easeInCubic,
                 child: state.isLoading || !hasSummary
                     ? (state.failure != null && !hasSummary
-                        ? ApiErrorWidget(
-                            key: const ValueKey('summary-error'),
-                            exception: state.failure!.exception,
-                            onRetry: () => context
-                                .read<SubscriptionSummaryViewModel>()
-                                .doIntent(
-                                  GetSubscriptionSummaryEvent(activeRequest),
-                                ),
-                          )
-                        : const SubscriptionSummaryDetailsLoadingSkeleton(
-                            key: ValueKey('summary-skeleton'),
-                          ))
+                          ? ApiErrorWidget(
+                              key: const ValueKey('summary-error'),
+                              exception: state.failure!.exception,
+                              onRetry: () => context
+                                  .read<SubscriptionSummaryViewModel>()
+                                  .doIntent(
+                                    GetSubscriptionSummaryEvent(activeRequest),
+                                  ),
+                            )
+                          : const SubscriptionSummaryDetailsLoadingSkeleton(
+                              key: ValueKey('summary-skeleton'),
+                            ))
                     : SubscriptionSummaryDetailsCard(
                         key: const ValueKey('summary-details-card'),
                         summary: summary,
@@ -73,8 +71,7 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
                           context: context,
                           currentStartDate: currentStartDate,
                           summaryArgs: summaryArgs,
-                          earliestStartDate:
-                              state.earliestStartDate.isNotEmpty
+                          earliestStartDate: state.earliestStartDate.isNotEmpty
                               ? state.earliestStartDate
                               : summary.startDate,
                         ),
