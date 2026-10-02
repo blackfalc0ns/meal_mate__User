@@ -47,9 +47,7 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: color.tertiaryContainer,
-              borderRadius: BorderRadius.circular(
-                Spacing.radiusPill,
-              ),
+              borderRadius: BorderRadius.circular(Spacing.radiusPill),
             ),
             child: Text(
               '${restaurants.length}',
@@ -123,29 +121,6 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (restaurant.tier.isNotEmpty) ...[
-                    const SizedBox(width: Spacing.sm),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.xxs,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusXs,
-                        ),
-                      ),
-                      child: Text(
-                        restaurant.tier,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.primary,
-                        ),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             );

@@ -96,7 +96,7 @@ class SubscriptionParticipatingRestaurantsCard extends StatelessWidget {
                             locale.subscription_view_all,
                             style: getSemiBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size12,
+                              fontSize: FontSize.size10,
                               color: color.primary,
                             ),
                           ),
@@ -116,7 +116,7 @@ class SubscriptionParticipatingRestaurantsCard extends StatelessWidget {
           const SizedBox(height: Spacing.base),
           if (displayedRestaurants.isNotEmpty)
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final restaurant in displayedRestaurants)
                   SubscriptionRestaurantCircleAvatar(

@@ -79,6 +79,11 @@ class AppSubscriptionButton extends StatelessWidget {
         ? color.onPrimary
         : color.onSurfaceVariant;
 
+    final effectiveCurrency =
+        (currency == null || currency!.isEmpty || currency == 'KWD')
+        ? locale.currency_kwd
+        : currency!;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Spacing.monthlyPlanSubscribeRadius),
@@ -117,38 +122,22 @@ class AppSubscriptionButton extends StatelessWidget {
               child: hasPrice
                   ? Row(
                       children: [
-                        Container(
-                          width: Spacing.iconLg + Spacing.unit,
-                          height: Spacing.iconLg + Spacing.unit,
-                          decoration: BoxDecoration(
-                            color: color.surface,
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Directionality.of(context) == TextDirection.rtl
-                                ? Icons.chevron_left_rounded
-                                : Icons.chevron_right_rounded,
-                            color: color.primary,
-                            size: Spacing.iconMd,
-                          ),
-                        ),
-                        const Spacer(),
+                        const Spacer(flex: 4),
                         Text(
                           locale.subscription_details_subscribe_now,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size20,
+                            fontSize: FontSize.size18,
                             color: foregroundColor,
                           ).copyWith(height: 1),
                         ),
-                        const Spacer(),
+                        const Spacer(flex: 4),
                         Container(
                           width: Spacing.monthlyPlanSubscribeDividerWidth,
                           height: Spacing.monthlyPlanSubscribeDividerHeight,
                           color: foregroundColor.withValues(alpha: 0.6),
                         ),
-                        const SizedBox(width: Spacing.sm),
+                        const SizedBox(width: Spacing.md),
                         Text(
                           price!,
                           style: getBoldStyle(
@@ -159,28 +148,14 @@ class AppSubscriptionButton extends StatelessWidget {
                         ),
                         const SizedBox(width: Spacing.xs),
                         Text(
-                          currency!,
+                          effectiveCurrency,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
                             color: foregroundColor,
                           ),
                         ),
-                        const SizedBox(width: Spacing.sm),
-                        Container(
-                          width: Spacing.avatarSm - Spacing.unit,
-                          height: Spacing.avatarSm - Spacing.unit,
-                          decoration: BoxDecoration(
-                            color: color.surface,
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.attach_money_rounded,
-                            color: color.primary,
-                            size: Spacing.iconSm,
-                          ),
-                        ),
+                        const Spacer(flex: 2),
                       ],
                     )
                   : Center(

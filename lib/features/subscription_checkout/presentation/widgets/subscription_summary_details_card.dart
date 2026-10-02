@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coverage_error_banner.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_dates_row.dart';
@@ -55,6 +56,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
       localeName: locale.localeName,
     );
 
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final slideBegin = isRtl ? 0.12 : -0.12;
+
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: Spacing.subscriptionSummaryDetailsWidth,
@@ -62,38 +66,100 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SubscriptionPlanSummaryCard(summary: summary),
+          SubscriptionPlanSummaryCard(summary: summary)
+              .animate()
+              .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: slideBegin,
+                end: 0,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
           const SizedBox(height: Spacing.md),
           SubscriptionParticipatingRestaurantsCard(
             restaurants: summary.restaurants,
             totalCount: summary.restaurantCount,
-          ),
+          )
+              .animate()
+              .fadeIn(delay: 70.ms, duration: 350.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: slideBegin,
+                end: 0,
+                delay: 70.ms,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
           if (repetitionLimit > 0) ...[
             const SizedBox(height: Spacing.md),
-            SubscriptionRestaurantRepetitionCard(limit: repetitionLimit),
+            SubscriptionRestaurantRepetitionCard(limit: repetitionLimit)
+                .animate()
+                .fadeIn(delay: 120.ms, duration: 350.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: slideBegin,
+                  end: 0,
+                  delay: 120.ms,
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                ),
           ],
           if (hasAddress) ...[
             const SizedBox(height: Spacing.md),
-            SubscriptionDeliveryAddressCard(address: summary.address!),
+            SubscriptionDeliveryAddressCard(address: summary.address!)
+                .animate()
+                .fadeIn(delay: 160.ms, duration: 350.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: slideBegin,
+                  end: 0,
+                  delay: 160.ms,
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                ),
           ],
           if (noRestaurantsError) ...[
             const SizedBox(height: Spacing.md),
             SubscriptionCoverageErrorBanner(
               message: locale.subscription_summary_no_restaurants_for_address,
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 350.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: slideBegin,
+                  end: 0,
+                  delay: 200.ms,
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                ),
           ],
           const SizedBox(height: Spacing.md),
           SubscriptionTotalPriceCard(
             price: summary.finalPrice.formattedPrice,
             currency: summary.currencyCode,
-          ),
+          )
+              .animate()
+              .fadeIn(delay: 220.ms, duration: 350.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: slideBegin,
+                end: 0,
+                delay: 220.ms,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
           const SizedBox(height: Spacing.md),
           SubscriptionDatesRow(
             paymentDate: paymentDateFormatted,
             startDate: startDateFormatted,
             endDate: endDateFormatted,
             onEditStartDate: onEditStartDate,
-          ),
+          )
+              .animate()
+              .fadeIn(delay: 280.ms, duration: 350.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: slideBegin,
+                end: 0,
+                delay: 280.ms,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
         ],
       ),
     );

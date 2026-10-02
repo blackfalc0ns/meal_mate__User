@@ -19,6 +19,11 @@ class SubscriptionTotalPriceCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final effectiveCurrency =
+        (currency.isEmpty || currency == 'KWD')
+            ? locale.currency_kwd
+            : currency;
+
     return Container(
       padding: const EdgeInsets.all(Spacing.base),
       decoration: BoxDecoration(
@@ -71,7 +76,7 @@ class SubscriptionTotalPriceCard extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.xs),
               Text(
-                currency,
+                effectiveCurrency,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size14,
