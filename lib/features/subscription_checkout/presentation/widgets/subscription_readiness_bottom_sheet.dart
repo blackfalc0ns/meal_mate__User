@@ -3,6 +3,7 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
@@ -42,9 +43,11 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
         onItemPressed: (item) async {
           Navigator.of(sheetContext).pop();
           final route = switch (item.actionScreen.toUpperCase()) {
-            'ADDRESS' => AppRoutes.addressChooseLocation,
-            'DIETARY_PREFERENCES' => AppRoutes.dietaryPreferences,
-            'ALLERGIES' => AppRoutes.addAllergy,
+            SubscriptionErrorCodes.actionAddress =>
+              AppRoutes.addressChooseLocation,
+            SubscriptionErrorCodes.actionDietaryPreferences =>
+              AppRoutes.dietaryPreferences,
+            SubscriptionErrorCodes.actionAllergies => AppRoutes.addAllergy,
             _ => null,
           };
           if (route == null) return;
@@ -66,7 +69,9 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
     final items = readiness.incompleteItems;
     final hasRestaurantBlock = readiness.hasRestaurantCoverageBlock;
     final hasAddressItem = items.any(
-      (item) => item.actionScreen.toUpperCase() == 'ADDRESS',
+      (item) =>
+          item.actionScreen.toUpperCase() ==
+          SubscriptionErrorCodes.actionAddress,
     );
     final readinessWarning = readiness.warning(locale.localeName).trim();
     final warning = readinessWarning.isNotEmpty

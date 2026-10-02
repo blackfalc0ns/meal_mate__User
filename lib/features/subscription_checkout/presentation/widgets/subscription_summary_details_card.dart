@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
@@ -35,12 +36,13 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
     final hasAddress = summary?.address != null;
     final noRestaurantsError =
         summary?.canCheckout == false &&
-        summary?.checkoutBlockReason ==
-            'subscription_flow.no_restaurants_for_address';
+        (summary?.checkoutBlockReason ==
+                SubscriptionErrorCodes.noRestaurantsForAddress ||
+            summary?.checkoutBlockReason ==
+                SubscriptionErrorCodes.checkoutNoRestaurantsForAddress);
 
     final paymentDateFormatted = _formatDisplayDate(
       dateString: summary?.chosenStartDate,
-      fallbackDate: _kuwaitToday,
       localeName: locale.localeName,
     );
 
@@ -48,13 +50,11 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
       dateString: summary?.startDate.trim().isNotEmpty == true
           ? summary!.startDate
           : selectedStartDate,
-      fallbackDate: _kuwaitToday,
       localeName: locale.localeName,
     );
 
     final endDateFormatted = _formatDisplayDate(
       dateString: summary?.endDate,
-      fallbackDate: _calculateEndDate(summary?.durationDays ?? 30),
       localeName: locale.localeName,
     );
 
@@ -102,24 +102,12 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
     );
   }
 
-  DateTime get _kuwaitToday {
-    final kuwaitNow = DateTime.now().toUtc().add(const Duration(hours: 3));
-    return DateUtils.dateOnly(
-      DateTime(kuwaitNow.year, kuwaitNow.month, kuwaitNow.day),
-    );
-  }
-
-  DateTime _calculateEndDate(int durationDays) {
-    return _kuwaitToday.add(Duration(days: durationDays));
-  }
-
   String _formatDisplayDate({
     required String? dateString,
-    required DateTime fallbackDate,
     required String localeName,
   }) {
     if (dateString == null || dateString.trim().isEmpty) {
-      return DateFormat('d MMMM yyyy', localeName).format(fallbackDate);
+      return '-';
     }
     final parsed = DateTime.tryParse(dateString.trim());
     if (parsed == null) {

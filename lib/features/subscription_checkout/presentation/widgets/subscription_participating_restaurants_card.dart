@@ -43,8 +43,8 @@ class SubscriptionParticipatingRestaurantsCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 20,
-                height: 20,
+                width: Spacing.avatarSm,
+                height: Spacing.avatarSm,
                 decoration: BoxDecoration(
                   color: color.primaryContainer,
                   borderRadius: BorderRadius.circular(Spacing.radiusSm),

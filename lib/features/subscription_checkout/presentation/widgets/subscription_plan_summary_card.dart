@@ -160,7 +160,11 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.sm),
                     Text(
-                      summary?.includes.title(locale.localeName).trim().isNotEmpty == true
+                      summary?.includes
+                                  .title(locale.localeName)
+                                  .trim()
+                                  .isNotEmpty ==
+                              true
                           ? summary!.includes.title(locale.localeName)
                           : locale.subscription_summary_includes_label,
                       style: getBoldStyle(

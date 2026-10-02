@@ -54,10 +54,19 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final backendStartDate = result.data.startDate.trim();
         emit(
           state.copyWith(
             isLoading: false,
             summary: result.data,
+            selectedStartDate: backendStartDate.isNotEmpty
+                ? backendStartDate
+                : (request.startDate.isNotEmpty
+                      ? request.startDate
+                      : state.selectedStartDate),
+            earliestStartDate: state.earliestStartDate.isNotEmpty
+                ? state.earliestStartDate
+                : backendStartDate,
             clearFailure: true,
           ),
         );

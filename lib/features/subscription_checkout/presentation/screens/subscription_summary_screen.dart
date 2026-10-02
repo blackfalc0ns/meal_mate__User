@@ -46,11 +46,10 @@ class SubscriptionSummaryScreen extends StatelessWidget {
       );
     }
 
-    final initialStartDate =
-        summaryArgs.request.startDate.trim().isNotEmpty
-            ? summaryArgs.request.startDate
-            : _formatApiDate(_kuwaitToday);
-
+    final today = DateUtils.dateOnly(DateTime.now());
+    final initialStartDate = summaryArgs.request.startDate.trim().isNotEmpty
+        ? summaryArgs.request.startDate.trim()
+        : _formatApiDate(today);
     final initialRequest = summaryArgs.request.copyWith(
       startDate: initialStartDate,
     );
@@ -62,9 +61,11 @@ class SubscriptionSummaryScreen extends StatelessWidget {
       child: BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
         builder: (context, state) {
           final summary = state.summary;
-          final currentStartDate = state.selectedStartDate.isNotEmpty
-              ? state.selectedStartDate
-              : initialStartDate;
+          final currentStartDate = summary?.startDate.trim().isNotEmpty == true
+              ? summary!.startDate.trim()
+              : (state.selectedStartDate.trim().isNotEmpty
+                  ? state.selectedStartDate.trim()
+                  : initialStartDate);
           final activeRequest = summaryArgs.request.copyWith(
             startDate: currentStartDate,
           );
@@ -129,6 +130,10 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                           context: context,
                                           currentStartDate: currentStartDate,
                                           summaryArgs: summaryArgs,
+                                          earliestStartDate:
+                                              state.earliestStartDate.isNotEmpty
+                                              ? state.earliestStartDate
+                                              : summary?.startDate,
                                         ),
                                       ),
                               ),
@@ -175,27 +180,31 @@ class SubscriptionSummaryScreen extends StatelessWidget {
     );
   }
 
-  static DateTime get _kuwaitToday {
-    final kuwaitNow = DateTime.now().toUtc().add(const Duration(hours: 3));
-    return DateUtils.dateOnly(
-      DateTime(kuwaitNow.year, kuwaitNow.month, kuwaitNow.day),
-    );
-  }
-
   static Future<void> _openDatePicker({
     required BuildContext context,
     required String currentStartDate,
     required SubscriptionSummaryArgs summaryArgs,
+    String? earliestStartDate,
   }) async {
     final locale = context.localization;
-    final currentDate = _parseApiDate(currentStartDate) ?? _kuwaitToday;
+    final today = DateUtils.dateOnly(DateTime.now());
+    final minBackendDate = _parseApiDate(earliestStartDate ?? '');
+    final effectiveFirstDate = minBackendDate ?? today;
+    final firstDate = effectiveFirstDate.isBefore(today)
+        ? today
+        : effectiveFirstDate;
+
+    final currentDate = _parseApiDate(currentStartDate) ?? firstDate;
+    final initialDate = currentDate.isBefore(firstDate)
+        ? firstDate
+        : currentDate;
+    final lastDate = DateTime(today.year + 1, today.month, today.day);
+
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: currentDate.isBefore(_kuwaitToday)
-          ? _kuwaitToday
-          : currentDate,
-      firstDate: _kuwaitToday,
-      lastDate: DateTime(2100, 12, 31),
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
       locale: Locale(locale.localeName),
     );
 

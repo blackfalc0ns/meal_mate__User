@@ -1,5 +1,7 @@
 export 'subscription_flow_args.dart';
 
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
+
 class SubscriptionReadinessEntity {
 
   const SubscriptionReadinessEntity({
@@ -40,9 +42,9 @@ class SubscriptionReadinessEntity {
     final reason = checkoutBlockReason?.toLowerCase();
 
     return (!canCheckout && deliveringRestaurantCount == 0) ||
-        reason == 'restaurant.not_eligible' ||
-        reason == 'subscription_flow.no_restaurants_for_address' ||
-        reason == 'checkout.no_restaurants_for_address';
+        reason == SubscriptionErrorCodes.restaurantNotEligible ||
+        reason == SubscriptionErrorCodes.noRestaurantsForAddress ||
+        reason == SubscriptionErrorCodes.checkoutNoRestaurantsForAddress;
   }
 
   List<SubscriptionReadinessItemEntity> get incompleteItems =>
