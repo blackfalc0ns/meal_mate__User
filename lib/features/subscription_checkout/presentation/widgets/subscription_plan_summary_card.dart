@@ -3,7 +3,6 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_included_feature_item.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_tile.dart';
@@ -11,40 +10,25 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/widge
 class SubscriptionPlanSummaryCard extends StatelessWidget {
   const SubscriptionPlanSummaryCard({
     super.key,
-    required this.plan,
     required this.summary,
   });
 
-  final MonthlyPlanDetailsEntity plan;
-  final SubscriptionSummaryEntity? summary;
+  final SubscriptionSummaryEntity summary;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final durationValue = summary != null
-        ? '${summary!.durationDays} ${locale.subscription_day}'
-        : plan.duration;
-
-    final packageValue = summary != null
-        ? summary!.bundleName(locale.localeName)
-        : (plan.packageTiers.isEmpty
-              ? plan.mealsPerDay
-              : plan.packageTiers.first.title);
-
-    final tierValue = summary != null
-        ? summary!.tierName(locale.localeName)
-        : plan.discountLabel;
-
-    final fridaySubtext = summary?.includeFriday == true
+    final durationValue = '${summary.durationDays} ${locale.subscription_day}';
+    final packageValue = summary.bundleName(locale.localeName);
+    final tierValue = summary.tierName(locale.localeName);
+    final fridaySubtext = summary.includeFriday
         ? locale.subscription_with_friday
-        : (summary?.includeFriday == false
-              ? locale.subscription_without_friday
-              : null);
+        : locale.subscription_without_friday;
 
-    final dailyMealsTitle = summary?.slotRequirements.isNotEmpty == true
-        ? summary!.slotRequirements
+    final dailyMealsTitle = summary.slotRequirements.isNotEmpty
+        ? summary.slotRequirements
               .where((r) => r.count > 0)
               .map((r) => '${r.count} ${r.name(locale.localeName)}')
               .join(' + ')
@@ -160,12 +144,11 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.sm),
                     Text(
-                      summary?.includes
-                                  .title(locale.localeName)
-                                  .trim()
-                                  .isNotEmpty ==
-                              true
-                          ? summary!.includes.title(locale.localeName)
+                      summary.includes
+                              .title(locale.localeName)
+                              .trim()
+                              .isNotEmpty
+                          ? summary.includes.title(locale.localeName)
                           : locale.subscription_summary_includes_label,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
@@ -197,7 +180,7 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
     required dynamic locale,
     required String dailyMealsTitle,
   }) {
-    final dynamicItems = summary?.includes.items ?? const [];
+    final dynamicItems = summary.includes.items;
     final widgets = <Widget>[];
 
     if (dynamicItems.isNotEmpty) {

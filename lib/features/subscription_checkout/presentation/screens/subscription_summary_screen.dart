@@ -18,7 +18,6 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/entities/su
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
-import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_ui_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_button_loading_skeleton.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_details_card.dart';
@@ -70,15 +69,17 @@ class SubscriptionSummaryScreen extends StatelessWidget {
             startDate: currentStartDate,
           );
 
-          final plan = summary == null
-              ? summaryArgs.initialPlan
-              : summary.toPlanDetails(
-                  localeName: locale.localeName,
-                  dayLabel: locale.subscription_day,
-                  primaryColor: color.primary,
-                  initialPlan: summaryArgs.initialPlan,
-                );
           final hasSummary = summary != null;
+          final titlePrefix = hasSummary
+              ? summary.programName(locale.localeName)
+              : summaryArgs.initialPlan.titlePrefix;
+          final titleHighlight = hasSummary
+              ? summary.bundleName(locale.localeName)
+              : summaryArgs.initialPlan.titleHighlight;
+          final heroImageAsset =
+              summaryArgs.initialPlan.heroImageAsset.isNotEmpty
+                  ? summaryArgs.initialPlan.heroImageAsset
+                  : Assets.monthlyPlanHero;
 
           return Scaffold(
             body: Semantics(
@@ -93,10 +94,9 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               MonthlyPlanHeroSection(
-                                plan: plan,
-                                imageAsset: plan.heroImageAsset.isNotEmpty
-                                    ? plan.heroImageAsset
-                                    : Assets.monthlyPlanHero,
+                                titlePrefix: titlePrefix,
+                                titleHighlight: titleHighlight,
+                                imageAsset: heroImageAsset,
                                 imageUrl:
                                     summary?.imageUrl ??
                                     summary?.programImageUrl,
@@ -123,8 +123,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                             ),
                                       )
                                     : SubscriptionSummaryDetailsCard(
-                                        plan: plan,
-                                        summary: summary,
+                                        summary: summary!,
                                         selectedStartDate: currentStartDate,
                                         onEditStartDate: () => _openDatePicker(
                                           context: context,
@@ -133,7 +132,7 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                                           earliestStartDate:
                                               state.earliestStartDate.isNotEmpty
                                               ? state.earliestStartDate
-                                              : summary?.startDate,
+                                              : summary.startDate,
                                         ),
                                       ),
                               ),
@@ -155,8 +154,12 @@ class SubscriptionSummaryScreen extends StatelessWidget {
                     child: state.isLoading && !hasSummary
                         ? const SubscriptionSummaryButtonLoadingSkeleton()
                         : AppSubscriptionButton(
-                            price: hasSummary ? plan.price : '',
-                            currency: hasSummary ? plan.currency : '',
+                            price: hasSummary
+                                ? summary.finalPrice.formattedPrice
+                                : '',
+                            currency: hasSummary
+                                ? summary.currencyCode
+                                : '',
                             onPressed: hasSummary && summary.canCheckout
                                 ? () => context.pushNamed(
                                     AppRoutes.payment,

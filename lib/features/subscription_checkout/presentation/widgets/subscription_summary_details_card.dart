@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coverage_error_banner.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_dates_row.dart';
@@ -17,14 +16,12 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/widge
 class SubscriptionSummaryDetailsCard extends StatelessWidget {
   const SubscriptionSummaryDetailsCard({
     super.key,
-    required this.plan,
     required this.summary,
     required this.selectedStartDate,
     required this.onEditStartDate,
   });
 
-  final MonthlyPlanDetailsEntity plan;
-  final SubscriptionSummaryEntity? summary;
+  final SubscriptionSummaryEntity summary;
   final String selectedStartDate;
   final VoidCallback onEditStartDate;
 
@@ -32,29 +29,29 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
-    final repetitionLimit = summary?.restaurantRepetition?.limit ?? 0;
-    final hasAddress = summary?.address != null;
+    final repetitionLimit = summary.restaurantRepetition?.limit ?? 0;
+    final hasAddress = summary.address != null;
     final noRestaurantsError =
-        summary?.canCheckout == false &&
-        (summary?.checkoutBlockReason ==
+        !summary.canCheckout &&
+        (summary.checkoutBlockReason ==
                 SubscriptionErrorCodes.noRestaurantsForAddress ||
-            summary?.checkoutBlockReason ==
+            summary.checkoutBlockReason ==
                 SubscriptionErrorCodes.checkoutNoRestaurantsForAddress);
 
     final paymentDateFormatted = _formatDisplayDate(
-      dateString: summary?.chosenStartDate,
+      dateString: summary.chosenStartDate,
       localeName: locale.localeName,
     );
 
     final startDateFormatted = _formatDisplayDate(
-      dateString: summary?.startDate.trim().isNotEmpty == true
-          ? summary!.startDate
+      dateString: summary.startDate.trim().isNotEmpty
+          ? summary.startDate
           : selectedStartDate,
       localeName: locale.localeName,
     );
 
     final endDateFormatted = _formatDisplayDate(
-      dateString: summary?.endDate,
+      dateString: summary.endDate,
       localeName: locale.localeName,
     );
 
@@ -65,11 +62,11 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SubscriptionPlanSummaryCard(plan: plan, summary: summary),
+          SubscriptionPlanSummaryCard(summary: summary),
           const SizedBox(height: Spacing.md),
           SubscriptionParticipatingRestaurantsCard(
-            restaurants: summary?.restaurants ?? const [],
-            totalCount: summary?.restaurantCount ?? 0,
+            restaurants: summary.restaurants,
+            totalCount: summary.restaurantCount,
           ),
           if (repetitionLimit > 0) ...[
             const SizedBox(height: Spacing.md),
@@ -77,7 +74,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           ],
           if (hasAddress) ...[
             const SizedBox(height: Spacing.md),
-            SubscriptionDeliveryAddressCard(address: summary!.address),
+            SubscriptionDeliveryAddressCard(address: summary.address!),
           ],
           if (noRestaurantsError) ...[
             const SizedBox(height: Spacing.md),
@@ -87,8 +84,8 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           ],
           const SizedBox(height: Spacing.md),
           SubscriptionTotalPriceCard(
-            price: plan.price,
-            currency: plan.currency,
+            price: summary.finalPrice.formattedPrice,
+            currency: summary.currencyCode,
           ),
           const SizedBox(height: Spacing.md),
           SubscriptionDatesRow(
