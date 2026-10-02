@@ -566,7 +566,6 @@ class Spacing {
   static const double monthlyPlanDurationHintTop = 84.0;
   static const double monthlyPlanDurationFridayTop = 115.0;
   static const double monthlyPlanPackagesHeaderWidth = 346.0;
-  static const double monthlyPlanPackagesSectionTopGap = 20.0;
   static const double monthlyPlanPackagesWidth = 348.0;
   static const double monthlyPlanPackageHeight = 90.0;
   static const double monthlyPlanPackageBodyTop = 26.0;
