@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/labeled_card_field.dart';
 
 class CardDetailsForm extends StatelessWidget {
   const CardDetailsForm({
@@ -23,6 +23,7 @@ class CardDetailsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final l10n = context.localization;
 
     return Padding(
@@ -35,38 +36,38 @@ class CardDetailsForm extends StatelessWidget {
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size16,
-              color: AppColors.textPrimary,
+              color: color.onSurface,
             ),
           ),
           const SizedBox(height: Spacing.md),
-          _LabeledCardField(
+          LabeledCardField(
             label: l10n.payment_card_number_label,
             child: AppTextField(
               controller: cardNumberController,
               hint: l10n.payment_card_number_hint,
-              suffixIcon: const Icon(
+              suffixIcon: Icon(
                 Icons.credit_card_outlined,
-                color: AppColors.textHint,
-                size: 20,
+                color: color.onSurfaceVariant,
+                size: Spacing.iconSm + Spacing.unit,
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
-                _CardNumberFormatter(),
+                const CardNumberInputFormatter(),
                 LengthLimitingTextInputFormatter(19),
               ],
               textAlign: TextAlign.start,
-              fillColor: AppColors.white,
+              fillColor: color.surface,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: Spacing.base,
-                vertical: 15,
+                vertical: Spacing.base - Spacing.hairline,
               ),
-              borderColor: AppColors.border,
+              borderColor: color.outlineVariant,
               borderRadius: Spacing.inputRadius,
               textStyle: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
-                color: AppColors.textPrimary,
+                color: color.onSurface,
               ),
             ),
           ),
@@ -74,49 +75,49 @@ class CardDetailsForm extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _LabeledCardField(
+                child: LabeledCardField(
                   label: l10n.payment_expiry_label,
                   child: AppTextField(
                     controller: expiryController,
                     hint: l10n.payment_expiry_hint,
-                    suffixIcon: const Icon(
+                    suffixIcon: Icon(
                       Icons.calendar_today_outlined,
-                      color: AppColors.textHint,
-                      size: 18,
+                      color: color.onSurfaceVariant,
+                      size: Spacing.iconSm + Spacing.xxs,
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
-                      _ExpiryFormatter(),
+                      const CardExpiryInputFormatter(),
                       LengthLimitingTextInputFormatter(5),
                     ],
                     textAlign: TextAlign.start,
-                    fillColor: AppColors.white,
+                    fillColor: color.surface,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Spacing.base,
-                      vertical: 15,
+                      vertical: Spacing.base - Spacing.hairline,
                     ),
-                    borderColor: AppColors.border,
+                    borderColor: color.outlineVariant,
                     borderRadius: Spacing.inputRadius,
                     textStyle: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
-                      color: AppColors.textPrimary,
+                      color: color.onSurface,
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: Spacing.sm),
               Expanded(
-                child: _LabeledCardField(
+                child: LabeledCardField(
                   label: l10n.payment_cvv_label,
                   child: AppTextField(
                     controller: cvvController,
                     hint: l10n.payment_cvv_hint,
-                    suffixIcon: const Icon(
+                    suffixIcon: Icon(
                       Icons.help_outline_rounded,
-                      color: AppColors.textHint,
-                      size: 18,
+                      color: color.onSurfaceVariant,
+                      size: Spacing.iconSm + Spacing.xxs,
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -125,17 +126,17 @@ class CardDetailsForm extends StatelessWidget {
                     ],
                     obscureText: true,
                     textAlign: TextAlign.start,
-                    fillColor: AppColors.white,
+                    fillColor: color.surface,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Spacing.base,
-                      vertical: 15,
+                      vertical: Spacing.base - Spacing.hairline,
                     ),
-                    borderColor: AppColors.border,
+                    borderColor: color.outlineVariant,
                     borderRadius: Spacing.inputRadius,
                     textStyle: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size14,
-                      color: AppColors.textPrimary,
+                      color: color.onSurface,
                     ),
                   ),
                 ),
@@ -143,30 +144,25 @@ class CardDetailsForm extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Spacing.sm),
-          _LabeledCardField(
+          LabeledCardField(
             label: l10n.payment_card_holder_label,
             child: AppTextField(
-              prefixIcon: const Icon(
+              prefixIcon: Icon(
                 Icons.person_outline_rounded,
-                color: AppColors.textHint,
-                size: 20,
+                color: color.onSurfaceVariant,
+                size: Spacing.iconSm + Spacing.unit,
               ),
               controller: holderNameController,
               hint: l10n.payment_card_holder_hint,
-
               keyboardType: TextInputType.name,
               textAlign: TextAlign.start,
-              fillColor: AppColors.white,
-              // contentPadding: const EdgeInsets.symmetric(
-              //   horizontal: Spacing.base,
-              //   vertical: 15,
-              // ),
-              borderColor: AppColors.border,
+              fillColor: color.surface,
+              borderColor: color.outlineVariant,
               borderRadius: Spacing.inputRadius,
               textStyle: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
-                color: AppColors.textPrimary,
+                color: color.onSurface,
               ),
             ),
           ),
@@ -176,33 +172,9 @@ class CardDetailsForm extends StatelessWidget {
   }
 }
 
-class _LabeledCardField extends StatelessWidget {
-  const _LabeledCardField({required this.label, required this.child});
+class CardNumberInputFormatter extends TextInputFormatter {
+  const CardNumberInputFormatter();
 
-  final String label;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size12,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: Spacing.xs),
-        child,
-      ],
-    );
-  }
-}
-
-class _CardNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
@@ -226,7 +198,9 @@ class _CardNumberFormatter extends TextInputFormatter {
   }
 }
 
-class _ExpiryFormatter extends TextInputFormatter {
+class CardExpiryInputFormatter extends TextInputFormatter {
+  const CardExpiryInputFormatter();
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,

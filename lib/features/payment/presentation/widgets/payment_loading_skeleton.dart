@@ -28,22 +28,22 @@ class PaymentLoadingSkeleton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(Spacing.cardRadius),
                       border: Border.all(color: color.outlineVariant),
                     ),
-                    child: Column(
+                    child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const ShimmerPlaceholder.rect(
+                            ShimmerPlaceholder.rect(
                               width: Spacing.xxxl * 3.5,
                               height: Spacing.xxxl * 2.7,
                               borderRadius: Spacing.sm,
                             ),
-                            const SizedBox(width: Spacing.sm),
+                            SizedBox(width: Spacing.sm),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
+                                children: [
                                   ShimmerPlaceholder.rect(
                                     width: Spacing.xxxl * 2,
                                     height: Spacing.lg,
@@ -71,24 +71,24 @@ class PaymentLoadingSkeleton extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.md),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.md),
+                        ShimmerPlaceholder.rect(
                           height: Spacing.md,
                           borderRadius: Spacing.radiusPill,
                         ),
-                        const SizedBox(height: Spacing.sm),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.sm),
+                        ShimmerPlaceholder.rect(
                           height: Spacing.md,
                           borderRadius: Spacing.radiusPill,
                         ),
-                        const SizedBox(height: Spacing.base),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.base),
+                        ShimmerPlaceholder.rect(
                           width: Spacing.xxxl * 3,
                           height: Spacing.xxl,
                           borderRadius: Spacing.radiusPill,
                         ),
-                        const SizedBox(height: Spacing.base),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.base),
+                        ShimmerPlaceholder.rect(
                           height: Spacing.xxl,
                           borderRadius: Spacing.sm,
                         ),
@@ -97,12 +97,10 @@ class PaymentLoadingSkeleton extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: Spacing.xl),
-                Align(
+                const Align(
                   alignment: AlignmentDirectional.centerEnd,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.base,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: Spacing.base),
                     child: ShimmerPlaceholder.rect(
                       width: Spacing.xxxl * 3,
                       height: Spacing.xl,

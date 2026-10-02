@@ -101,4 +101,46 @@ class PaymentState {
           : calendarFailure ?? this.calendarFailure,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PaymentState &&
+          runtimeType == other.runtimeType &&
+          isMethodsLoading == other.isMethodsLoading &&
+          isCheckoutLoading == other.isCheckoutLoading &&
+          isFulfillmentLoading == other.isFulfillmentLoading &&
+          isCalendarLoading == other.isCalendarLoading &&
+          isFulfillmentSuccess == other.isFulfillmentSuccess &&
+          isCalendarSuccess == other.isCalendarSuccess &&
+          isPaymentFailed == other.isPaymentFailed &&
+          selectedMethod?.id == other.selectedMethod?.id &&
+          checkout?.subscriptionId == other.checkout?.subscriptionId &&
+          pendingSubscriptionId == other.pendingSubscriptionId &&
+          paymentStatus?.isPaid == other.paymentStatus?.isPaid &&
+          methodsFailure == other.methodsFailure &&
+          checkoutFailure == other.checkoutFailure &&
+          fulfillmentFailure == other.fulfillmentFailure &&
+          calendarFailure == other.calendarFailure &&
+          methods.length == other.methods.length;
+
+  @override
+  int get hashCode => Object.hash(
+    isMethodsLoading,
+    isCheckoutLoading,
+    isFulfillmentLoading,
+    isCalendarLoading,
+    isFulfillmentSuccess,
+    isCalendarSuccess,
+    isPaymentFailed,
+    selectedMethod?.id,
+    checkout?.subscriptionId,
+    pendingSubscriptionId,
+    paymentStatus?.isPaid,
+    methodsFailure,
+    checkoutFailure,
+    fulfillmentFailure,
+    calendarFailure,
+    methods.length,
+  );
 }

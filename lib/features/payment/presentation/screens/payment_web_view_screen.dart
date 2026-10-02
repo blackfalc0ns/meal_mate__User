@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -8,6 +10,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/payment_redirect_web_view.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
@@ -33,7 +36,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
   @override
   void dispose() {
-    _viewModel.close();
+    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -61,15 +64,26 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             previous.isPaymentFailed != current.isPaymentFailed,
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
-            Navigator.of(
-              context,
-            ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-            Navigator.of(context).pushNamed(AppRoutes.profileBilling);
+            final checkout = args.checkout;
+            final successArgs = PaymentSuccessArgs(
+              subscriptionId: checkout.subscriptionId,
+              paymentDate: DateTime.now().toIso8601String().split('T').first,
+              startDate: checkout.startDate.isNotEmpty
+                  ? checkout.startDate
+                  : checkout.chosenStartDate,
+            );
+            unawaited(
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.paymentSuccess,
+                (route) => false,
+                arguments: successArgs,
+              ),
+            );
             return;
           }
 
           if (state.isPaymentFailed) {
-            Navigator.maybePop(context);
+            unawaited(Navigator.maybePop(context));
           }
         },
         builder: (context, state) {

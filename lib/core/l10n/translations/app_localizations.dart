@@ -11275,6 +11275,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You will receive notifications according to your settings; you can change them anytime.'**
   String get notifications_prefs_footer_info;
+
+  /// No description provided for @subscription_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has been activated successfully'**
+  String get subscription_success_title;
+
+  /// No description provided for @subscription_success_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription is ready now, and you can start selecting your meals and customizing your diet plan.'**
+  String get subscription_success_subtitle;
+
+  /// No description provided for @subscription_success_summary_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Summary'**
+  String get subscription_success_summary_title;
+
+  /// No description provided for @subscription_success_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get subscription_success_package_label;
+
+  /// No description provided for @subscription_success_duration_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get subscription_success_duration_label;
+
+  /// No description provided for @subscription_success_tier_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant Tier'**
+  String get subscription_success_tier_label;
+
+  /// No description provided for @subscription_success_payment_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Date'**
+  String get subscription_success_payment_date_label;
+
+  /// No description provided for @subscription_success_start_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Start Date'**
+  String get subscription_success_start_date_label;
+
+  /// No description provided for @subscription_success_end_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription End Date'**
+  String get subscription_success_end_date_label;
+
+  /// No description provided for @subscription_success_payment_confirmed_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment confirmed and subscription activated'**
+  String get subscription_success_payment_confirmed_title;
+
+  /// No description provided for @subscription_success_payment_confirmed_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can manage your subscription and menus from your account anytime.'**
+  String get subscription_success_payment_confirmed_desc;
+
+  /// No description provided for @subscription_success_next_step_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Step'**
+  String get subscription_success_next_step_title;
+
+  /// No description provided for @subscription_success_next_step_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your meals for upcoming days and select the restaurant that suits you.'**
+  String get subscription_success_next_step_desc;
+
+  /// No description provided for @subscription_success_start_meals_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start choosing your meals'**
+  String get subscription_success_start_meals_button;
+
+  /// No description provided for @subscription_success_view_subscription_button.
+  ///
+  /// In en, this message translates to:
+  /// **'View Subscription'**
+  String get subscription_success_view_subscription_button;
+
+  /// No description provided for @sandbox_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox'**
+  String get sandbox_badge;
+
+  /// No description provided for @sandbox_checkout_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete without payment — Sandbox'**
+  String get sandbox_checkout_title;
+
+  /// No description provided for @sandbox_checkout_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Test environment without actual charge'**
+  String get sandbox_checkout_subtitle;
 }
 
 class _AppLocalizationsDelegate

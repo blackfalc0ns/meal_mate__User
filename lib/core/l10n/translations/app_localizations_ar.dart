@@ -5971,4 +5971,62 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get notifications_prefs_footer_info =>
       'ستصلك الإشعارات وفق إعداداتك، يمكنك تغييرها في أي وقت.';
+
+  @override
+  String get subscription_success_title => 'تم تفعيل اشتراكك بنجاح';
+
+  @override
+  String get subscription_success_subtitle =>
+      'اشتراكك جاهز الآن، ويمكنك البدء باختيار وجباتك وتخصيص خطتك الغذائية.';
+
+  @override
+  String get subscription_success_summary_title => 'ملخص الاشتراك';
+
+  @override
+  String get subscription_success_package_label => 'الباقة';
+
+  @override
+  String get subscription_success_duration_label => 'المدة';
+
+  @override
+  String get subscription_success_tier_label => 'تصنيف المطاعم';
+
+  @override
+  String get subscription_success_payment_date_label => 'تاريخ الدفع';
+
+  @override
+  String get subscription_success_start_date_label => 'تاريخ بدأ الاشتراك';
+
+  @override
+  String get subscription_success_end_date_label => 'تاريخ انتهاء الاشتراك';
+
+  @override
+  String get subscription_success_payment_confirmed_title =>
+      'تم تأكيد الدفع وتفعيل الاشتراك';
+
+  @override
+  String get subscription_success_payment_confirmed_desc =>
+      'يمكنك إدارة اشتراكك والقوائم من حسابك في أي وقت.';
+
+  @override
+  String get subscription_success_next_step_title => 'الخطوة التالية';
+
+  @override
+  String get subscription_success_next_step_desc =>
+      'اختر وجباتك للأيام القادمة وحدد المطعم المناسب لك.';
+
+  @override
+  String get subscription_success_start_meals_button => 'ابدأ اختيار وجباتك';
+
+  @override
+  String get subscription_success_view_subscription_button => 'عرض الاشتراك';
+
+  @override
+  String get sandbox_badge => 'تجربة';
+
+  @override
+  String get sandbox_checkout_title => 'إكمال بدون دفع — تجربة';
+
+  @override
+  String get sandbox_checkout_subtitle => 'بيئة تجريبية بدون خصم فعلي';
 }

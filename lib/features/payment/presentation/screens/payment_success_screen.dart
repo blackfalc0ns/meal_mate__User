@@ -1,125 +1,121 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_next_step_banner.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_payment_confirmed_banner.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_action_buttons.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_hero_header.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_summary_card.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_top_bar.dart';
 
-/// ─────────────────────────────────────────────────────────────
-/// Shown after a successful payment — animated checkmark + CTA.
-/// ─────────────────────────────────────────────────────────────
-class PaymentSuccessScreen extends StatefulWidget {
-  const PaymentSuccessScreen({super.key});
+/// Screen displayed after a successful subscription payment / activation.
+/// Conforms to Figma M-06.08 - Subscription / Success (node 3356:7428).
+class PaymentSuccessScreen extends StatelessWidget {
+  const PaymentSuccessScreen({super.key, this.args});
 
-  @override
-  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
-}
-
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _scaleAnim;
-  late final Animation<double> _fadeAnim;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 700),
-    );
-    _scaleAnim = CurvedAnimation(parent: _controller, curve: Curves.elasticOut);
-    _fadeAnim = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  final PaymentSuccessArgs? args;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.xl),
+    final resolvedArgs =
+        args ??
+        PaymentSuccessArgs(
+          subscriptionId: '',
+          packageName: locale.subscription_healthy_balanced,
+          durationDays: 30,
+          durationLabel: '30 ${locale.health_goals_days}',
+          restaurantTier: locale.subscription_summary_restaurant_tier_value,
+          paymentDate: DateTime.now().toIso8601String().split('T').first,
+          startDate: DateTime.now()
+              .add(const Duration(days: 1))
+              .toIso8601String()
+              .split('T')
+              .first,
+          endDate: DateTime.now()
+              .add(const Duration(days: 31))
+              .toIso8601String()
+              .split('T')
+              .first,
+        );
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        unawaited(
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: color.surface,
+        body: SafeArea(
           child: Column(
             children: [
-              const Spacer(flex: 2),
-
-              // ── Animated success icon ──
-              ScaleTransition(
-                scale: _scaleAnim,
-                child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.primarySurface,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.20),
-                        blurRadius: 32,
-                        spreadRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    color: AppColors.primary,
-                    size: 60,
-                  ),
-                ),
-              ),
-              const SizedBox(height: Spacing.xl),
-
-              // ── Title & subtitle ──
-              FadeTransition(
-                opacity: _fadeAnim,
-                child: Column(
-                  children: [
-                    Text(
-                      l10n.payment_success_title,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size22,
-                        color: AppColors.textPrimary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: Spacing.sm),
-                    Text(
-                      l10n.payment_success_subtitle,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size14,
-                        color: AppColors.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              const Spacer(flex: 3),
-
-              // ── CTA button ──
-              AppButton(
-                text: l10n.payment_success_button,
-                onPressed: () {
-                  Navigator.of(
-                    context,
-                  ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+              SubscriptionSuccessTopBar(
+                onNotificationPressed: () {
+                  unawaited(
+                    Navigator.of(context).pushNamed(AppRoutes.notifications),
+                  );
+                },
+                onClosePressed: () {
+                  unawaited(
+                    Navigator.of(
+                      context,
+                    ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
+                  );
                 },
               ),
-              const SizedBox(height: Spacing.xl),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SubscriptionSuccessHeroHeader(),
+                      SubscriptionSuccessSummaryCard(args: resolvedArgs),
+                      const SizedBox(height: Spacing.xs),
+                      const SubscriptionPaymentConfirmedBanner(),
+                      const SizedBox(height: Spacing.xs),
+                      const SubscriptionNextStepBanner(),
+                      const SizedBox(height: Spacing.sm),
+                    ],
+                  ),
+                ),
+              ),
+              SubscriptionSuccessActionButtons(
+                onStartMeals: () {
+                  final subId = resolvedArgs.subscriptionId;
+                  if (subId.isNotEmpty) {
+                    unawaited(
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.calendar,
+                        (route) => false,
+                        arguments: subId,
+                      ),
+                    );
+                  } else {
+                    unawaited(
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.calendar,
+                        (route) => false,
+                      ),
+                    );
+                  }
+                },
+                onViewSubscription: () {
+                  unawaited(
+                    Navigator.of(context).pushNamed(AppRoutes.profileBilling),
+                  );
+                },
+              ),
             ],
           ),
         ),

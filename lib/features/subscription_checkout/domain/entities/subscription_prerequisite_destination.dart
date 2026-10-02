@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
+
 enum SubscriptionPrerequisiteDestination {
   address,
   allergies,
@@ -5,9 +7,10 @@ enum SubscriptionPrerequisiteDestination {
 
   static SubscriptionPrerequisiteDestination? fromErrorCode(String code) {
     return switch (code) {
-      'checkout.address_required' => address,
-      'checkout.allergies_required' || 'family.allergies_required' => allergies,
-      'checkout.dietary_preferences_required' => dietaryPreferences,
+      SubscriptionErrorCodes.addressRequired => address,
+      SubscriptionErrorCodes.allergiesRequired ||
+      'family.allergies_required' => allergies,
+      SubscriptionErrorCodes.dietaryPreferencesRequired => dietaryPreferences,
       _ => null,
     };
   }

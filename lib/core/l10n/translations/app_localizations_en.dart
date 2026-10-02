@@ -6078,4 +6078,66 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifications_prefs_footer_info =>
       'You will receive notifications according to your settings; you can change them anytime.';
+
+  @override
+  String get subscription_success_title =>
+      'Your subscription has been activated successfully';
+
+  @override
+  String get subscription_success_subtitle =>
+      'Your subscription is ready now, and you can start selecting your meals and customizing your diet plan.';
+
+  @override
+  String get subscription_success_summary_title => 'Subscription Summary';
+
+  @override
+  String get subscription_success_package_label => 'Package';
+
+  @override
+  String get subscription_success_duration_label => 'Duration';
+
+  @override
+  String get subscription_success_tier_label => 'Restaurant Tier';
+
+  @override
+  String get subscription_success_payment_date_label => 'Payment Date';
+
+  @override
+  String get subscription_success_start_date_label => 'Subscription Start Date';
+
+  @override
+  String get subscription_success_end_date_label => 'Subscription End Date';
+
+  @override
+  String get subscription_success_payment_confirmed_title =>
+      'Payment confirmed and subscription activated';
+
+  @override
+  String get subscription_success_payment_confirmed_desc =>
+      'You can manage your subscription and menus from your account anytime.';
+
+  @override
+  String get subscription_success_next_step_title => 'Next Step';
+
+  @override
+  String get subscription_success_next_step_desc =>
+      'Choose your meals for upcoming days and select the restaurant that suits you.';
+
+  @override
+  String get subscription_success_start_meals_button =>
+      'Start choosing your meals';
+
+  @override
+  String get subscription_success_view_subscription_button =>
+      'View Subscription';
+
+  @override
+  String get sandbox_badge => 'Sandbox';
+
+  @override
+  String get sandbox_checkout_title => 'Complete without payment — Sandbox';
+
+  @override
+  String get sandbox_checkout_subtitle =>
+      'Test environment without actual charge';
 }

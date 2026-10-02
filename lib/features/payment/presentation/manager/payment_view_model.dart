@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
@@ -81,6 +82,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
       amount: args.summary.finalPrice,
     );
 
+    if (isClosed) return;
+
     switch (methodsResult) {
       case ApiSuccessResult():
         final methods = methodsResult.data
@@ -91,6 +94,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                   method.type != PaymentMethodType.wallet,
             )
             .toList();
+        if (isClosed) return;
         emit(
           state.copyWith(
             isMethodsLoading: false,
@@ -100,6 +104,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           ),
         );
       case ApiErrorResult():
+        if (isClosed) return;
         emit(
           state.copyWith(
             isMethodsLoading: false,
@@ -110,6 +115,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
   }
 
   Future<void> _checkout(PaymentArgs args) async {
+    if (state.isCheckoutLoading) return;
     final selectedMethod = state.selectedMethod;
     if (selectedMethod == null) return;
 
@@ -138,6 +144,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
     );
 
     final result = await _checkoutSubscriptionUseCase(request);
+
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -196,13 +204,16 @@ class PaymentViewModel extends Cubit<PaymentState> {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
+      if (isClosed) return;
 
       final result = await _getSubscriptionPaymentStatusUseCase(subscriptionId);
+      if (isClosed) return;
 
       switch (result) {
         case ApiSuccessResult():
           if (_isPaymentPaid(result.data)) {
             await _syncCurrentSubscriptionCache();
+            if (isClosed) return;
             emit(
               state.copyWith(
                 isFulfillmentLoading: false,
@@ -216,6 +227,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           }
 
           if (_isPaymentFailed(result.data)) {
+            if (isClosed) return;
             emit(
               state.copyWith(
                 isFulfillmentLoading: false,
@@ -230,6 +242,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
           continue;
         case ApiErrorResult():
+          if (isClosed) return;
           emit(
             state.copyWith(
               isFulfillmentLoading: false,
@@ -240,6 +253,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
+    if (isClosed) return;
     emit(state.copyWith(isFulfillmentLoading: false));
   }
 
@@ -290,8 +304,10 @@ class PaymentViewModel extends Cubit<PaymentState> {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
+      if (isClosed) return;
 
       final result = await _getSubscriptionCalendarUseCase(subscriptionId);
+      if (isClosed) return;
 
       switch (result) {
         case ApiSuccessResult():
@@ -299,6 +315,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
             key: StorageKeys.currentSubscriptionId,
             val: subscriptionId,
           );
+          if (isClosed) return;
           emit(
             state.copyWith(
               isCalendarLoading: false,
@@ -311,6 +328,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           lastFailure = result.failure;
           if (!_isCalendarFulfillmentNotReady(result.failure) &&
               !_isRetryableCalendarFailure(result.failure)) {
+            if (isClosed) return;
             emit(
               state.copyWith(
                 isCalendarLoading: false,
@@ -323,6 +341,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
+    if (isClosed) return;
     emit(
       state.copyWith(isCalendarLoading: false, calendarFailure: lastFailure),
     );
@@ -359,7 +378,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
   }
 
   String? _pendingSubscriptionIdFromFailure(Failure failure) {
-    if (failure.code != 'checkout.existing_subscription') return null;
+    if (failure.code != SubscriptionErrorCodes.existingSubscription) {
+      return null;
+    }
     final response = failure.exception.response;
     if (response is Map) {
       final value = response['subscriptionId'];

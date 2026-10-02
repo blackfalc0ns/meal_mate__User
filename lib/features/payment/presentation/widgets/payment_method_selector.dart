@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/payment_method_tile.dart';
 
-/// ─────────────────────────────────────────────────────────────
-/// Section that lists all available payment methods and tracks
-/// the selected one. Calls [onMethodSelected] on change.
-/// ─────────────────────────────────────────────────────────────
 class PaymentMethodSelector extends StatelessWidget {
   const PaymentMethodSelector({
     super.key,
@@ -25,7 +20,8 @@ class PaymentMethodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
@@ -33,11 +29,11 @@ class PaymentMethodSelector extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.payment_method_section_title,
+            locale.payment_method_section_title,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size16,
-              color: AppColors.textPrimary,
+              color: color.onSurface,
             ),
           ),
           const SizedBox(height: Spacing.md),

@@ -60,21 +60,12 @@ class AppOrderSummaryCard extends StatelessWidget {
               textDirection: TextDirection.ltr,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                imageUrl == null || imageUrl!.isEmpty
-                    ? Image.asset(
-                        imageAsset,
-                        width: 165,
-                        height: 130,
-                        fit: BoxFit.contain,
-                      )
-                    : AppCachedNetworkImage(
-                        imageUrl: imageUrl,
-                        width: 165,
-                        height: 130,
-                        fit: BoxFit.contain,
-                        semanticLabel: l10n.payment_order_summary_title,
-                        backgroundColor: AppColors.white,
-                      ),
+                AppCachedNetworkImage(
+                  imageUrl: imageUrl,
+                  width: 165,
+                  height: 130,
+                  fit: BoxFit.contain,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Padding(

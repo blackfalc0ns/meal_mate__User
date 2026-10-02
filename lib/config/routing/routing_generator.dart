@@ -27,6 +27,7 @@ import 'package:meal_meat_user/features/payment/domain/entities/activation_succe
 import 'package:meal_meat_user/features/payment/presentation/screens/promo_applied_checkout_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/activation_success_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_web_view_screen.dart';
@@ -438,9 +439,12 @@ class RouteGenerator {
           page: PaymentWebViewScreen(args: args),
         );
       case AppRoutes.paymentSuccess:
+        final args = settings.arguments is PaymentSuccessArgs
+            ? settings.arguments! as PaymentSuccessArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const PaymentSuccessScreen(),
+          page: PaymentSuccessScreen(args: args),
         );
       case AppRoutes.splash:
         return _buildRoute(settings: settings, page: const SplashScreen());

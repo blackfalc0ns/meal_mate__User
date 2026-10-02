@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -20,10 +19,11 @@ class PaymentFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localization;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: Spacing.lg,
         vertical: Spacing.base,
       ),
@@ -31,82 +31,84 @@ class PaymentFooter extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.md,
+              vertical: Spacing.sm,
+            ),
             decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              color: color.surface,
+              borderRadius: BorderRadius.circular(Spacing.sm),
+              border: Border.all(color: color.outlineVariant),
             ),
             child: Row(
-              textDirection: TextDirection.rtl,
               children: [
-                const Icon(
+                Icon(
                   Icons.keyboard_arrow_down_rounded,
                   size: 18,
-                  color: AppColors.textPrimary,
+                  color: color.onSurface,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: Spacing.xs),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.payment_total_label,
+                      locale.payment_total_label,
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size13,
-                        color: AppColors.textPrimary,
+                        color: color.onSurface,
                       ),
                     ),
                     Text(
-                      l10n.payment_total_includes_tax,
+                      locale.payment_total_includes_tax,
                       style: getRegularStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
-                        color: AppColors.textHint,
+                        color: color.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
                 const Spacer(),
                 Text(
-                  '${totalAmount.toStringAsFixed(3)} ${l10n.currency}',
+                  '${totalAmount.toStringAsFixed(3)} ${locale.currency}',
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size20,
-                    color: AppColors.primaryVariant,
+                    color: color.primary,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: Spacing.md),
           CustomAppButton(
-            text: l10n.payment_pay_now_button,
-            height: 40,
+            text: locale.payment_pay_now_button,
+            height: Spacing.xxxl,
             isLoading: isLoading,
             onPressed: isLoading ? null : onPayNow,
-            iconWidget: const Icon(
+            iconWidget: Icon(
               Icons.lock_outline_rounded,
-              color: AppColors.white,
+              color: color.onPrimary,
               size: 15,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: Spacing.xs),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.lock_outline_rounded,
                 size: 11,
-                color: AppColors.textHint,
+                color: color.onSurfaceVariant,
               ),
-              const SizedBox(width: 3),
+              const SizedBox(width: Spacing.xxs),
               Text(
-                l10n.payment_secure_label,
+                locale.payment_secure_label,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size10,
-                  color: AppColors.textHint,
+                  color: color.onSurfaceVariant,
                 ),
               ),
             ],
