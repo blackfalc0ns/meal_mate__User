@@ -27,7 +27,7 @@ class CalendarHeader extends StatelessWidget {
         decoration: BoxDecoration(
           color: color.primary,
           borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(Spacing.calendarHeaderRadius),
+            //   bottom: Radius.circular(Spacing.calendarHeaderRadius),
           ),
         ),
         child: SafeArea(
@@ -35,19 +35,7 @@ class CalendarHeader extends StatelessWidget {
           child: Stack(
             children: [
               PositionedDirectional(
-                top: Spacing.lg,
-                start: Spacing.calendarHeaderHorizontalInset,
-                child: IconButton(
-                  onPressed: onBackPressed ?? () => Navigator.maybePop(context),
-                  icon: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: color.onPrimary,
-                    size: Spacing.iconMd,
-                  ),
-                ),
-              ),
-              PositionedDirectional(
-                top: Spacing.lg,
+                top: Spacing.xxl,
                 end: Spacing.calendarHeaderHorizontalInset,
                 child: IconButton(
                   onPressed: onNotificationPressed,
@@ -60,8 +48,8 @@ class CalendarHeader extends StatelessWidget {
                         size: Spacing.iconLg,
                       ),
                       PositionedDirectional(
-                        top: 0,
-                        end: 2,
+                        top: 2,
+                        end: 3,
                         child: Container(
                           width: Spacing.sm,
                           height: Spacing.sm,
@@ -80,7 +68,7 @@ class CalendarHeader extends StatelessWidget {
                 ),
               ),
               PositionedDirectional(
-                top: Spacing.xxl,
+                top: Spacing.xl,
                 start: 0,
                 end: 0,
                 child: Text(

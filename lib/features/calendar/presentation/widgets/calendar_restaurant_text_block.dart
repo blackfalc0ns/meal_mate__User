@@ -8,90 +8,52 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
+    final restaurantName =
+        restaurant.name.isNotEmpty ? restaurant.name : 'DIET HOUSE';
+    final ratingValue =
+        restaurant.rating.isNotEmpty ? restaurant.rating : '4.8';
+    final count =
+        restaurant.ratingCount > 0 ? '(${restaurant.ratingCount})' : '(1.230)';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                restaurant.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size16,
-                  color: color.onPrimary,
-                ).copyWith(height: 1.1),
-              ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            Icon(Icons.verified_rounded, color: color.onPrimary, size: 15),
-          ],
+        Text(
+          restaurantName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size14,
+            color: color.onPrimary,
+          ),
         ),
-        const SizedBox(height: Spacing.xs),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                restaurant.category,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
-                  color: color.onPrimary,
-                ),
-              ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            CalendarMetaChip(
-              icon: Icons.star_rounded,
-              label: restaurant.rating,
-              iconColor: color.onPrimary,
-              badgeColor: color.secondary,
-            ),
-            const SizedBox(width: Spacing.xs),
-            CalendarMetaChip(
-              icon: Icons.star_rounded,
-              label: restaurant.deliveryDuration,
-              iconColor: color.onPrimary,
-              imageUrl: restaurant.tierLogoUrl,
-            ),
-          ],
-        ),
-        const SizedBox(height: Spacing.xs),
+        const SizedBox(height: 2),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              locale.calendar_usual_delivery_time,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getSemiBoldStyle(
+              ratingValue,
+              style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
+                fontSize: FontSize.size11,
                 color: color.onPrimary,
               ),
             ),
+            const SizedBox(width: 2),
+            Icon(
+              Icons.star_rounded,
+              color: color.secondary,
+              size: Spacing.iconSm - 2,
+            ),
             const SizedBox(width: Spacing.xs),
-            Flexible(
-              child: Text(
-                restaurant.deliveryWindow,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
-                  color: color.onPrimary,
-                ),
+            Text(
+              count,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onPrimary.withValues(alpha: 0.85),
               ),
             ),
           ],

@@ -58,12 +58,9 @@ class CalendarDayTile extends StatelessWidget {
             borderRadius: borderRadius,
             onTap: day.isMuted ? null : onPressed,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: compact ? 4 : 3,
-                horizontal: 4,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '${day.dayNumber}',

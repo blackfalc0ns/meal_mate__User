@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -23,7 +24,7 @@ class CalendarRestaurantNutritionRow extends StatelessWidget {
           label: locale.calendar_protein,
           value: totals.proteinG,
           percentage: totals.proteinPercentage?.round(),
-          iconColor: color.primary,
+          color: color.calendarNutritionProtein,
         ),
         const SizedBox(width: Spacing.calendarRestaurantSummaryNutritionGap),
         CalendarRestaurantNutritionItem(
@@ -32,7 +33,7 @@ class CalendarRestaurantNutritionRow extends StatelessWidget {
           label: locale.calendar_carbs,
           value: totals.carbsG,
           percentage: totals.carbsPercentage?.round(),
-          iconColor: color.primary,
+          color: color.calendarNutritionCarbs,
         ),
         const SizedBox(width: Spacing.calendarRestaurantSummaryNutritionGap),
         CalendarRestaurantNutritionItem(
@@ -41,7 +42,7 @@ class CalendarRestaurantNutritionRow extends StatelessWidget {
           label: locale.calendar_fat,
           value: totals.fatG,
           percentage: totals.fatPercentage?.round(),
-          iconColor: color.secondary,
+          color: color.calendarNutritionFat,
         ),
         const SizedBox(width: Spacing.calendarRestaurantSummaryNutritionGap),
         CalendarRestaurantNutritionItem(
@@ -49,7 +50,7 @@ class CalendarRestaurantNutritionRow extends StatelessWidget {
           animationAsset: Assets.fireAnimation,
           label: locale.calendar_calories,
           value: totals.calories,
-          iconColor: color.secondary,
+          color: color.calendarNutritionCalories,
         ),
       ],
     );

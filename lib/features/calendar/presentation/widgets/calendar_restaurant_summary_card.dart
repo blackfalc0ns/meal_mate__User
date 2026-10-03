@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_badge.dart';
+
 part 'calendar_restaurant_text_block.dart';
 part 'calendar_meta_chip.dart';
 part 'calendar_restaurant_summary_logo.dart';
@@ -26,39 +28,84 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    const cardHeight = 126.0;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.md),
+      height: cardHeight,
       decoration: BoxDecoration(
-        color: color.primary,
+        color: color.primary.withValues(alpha: 0.90),
         borderRadius: BorderRadius.circular(
           Spacing.calendarRestaurantSummaryRadius,
         ),
         boxShadow: [
           BoxShadow(
-            color: color.primary.withValues(alpha: 0.20),
-            blurRadius: Spacing.sm,
+            color: color.primary.withValues(alpha: 0.18),
+            blurRadius: 8,
             offset: const Offset(Spacing.zero, Spacing.xs),
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
         children: [
-          Row(
-            children: [
-              CalendarRestaurantSummaryLogo(
-                logoUrl: restaurant.logoUrl,
-                semanticLabel: restaurant.name,
-              ),
-              const SizedBox(width: Spacing.calendarRestaurantSummaryLogoGap),
-              Expanded(
-                child: CalendarRestaurantTextBlock(restaurant: restaurant),
-              ),
-            ],
+          PositionedDirectional(
+            top: 0,
+            bottom: 0,
+            end: 0,
+            width: context.width * 0.60,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  restaurant.imageUrl?.isNotEmpty == true
+                      ? restaurant.imageUrl!
+                      : AssetsFake.familyDietHouseMeal,
+                  fit: BoxFit.cover,
+                ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: AlignmentDirectional.centerStart,
+                      end: AlignmentDirectional.centerEnd,
+                      colors: [
+                        color.primary.withValues(alpha: 0.55),
+                        color.primary.withValues(alpha: 0.0),
+                      ],
+                      stops: const [0.0, 0.75],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: Spacing.md),
-          _buildAction(context),
+          const PositionedDirectional(
+            top: Spacing.sm,
+            end: Spacing.sm,
+            child: CalendarRestaurantBadge(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.md,
+              vertical: Spacing.sm,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CalendarRestaurantSummaryLogo(
+                      logoUrl: restaurant.logoUrl,
+                      semanticLabel: restaurant.name,
+                    ),
+                    const SizedBox(width: Spacing.sm),
+                    CalendarRestaurantTextBlock(restaurant: restaurant),
+                    const Spacer(),
+                  ],
+                ),
+                const Spacer(),
+                _buildAction(context),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -69,6 +116,7 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
     final locale = context.localization;
     final selectedDay = day;
     final showStatus = onMorePressed == null && selectedDay != null;
+    const buttonHeight = Spacing.calendarRestaurantSummaryButtonHeight + 6;
 
     if (showStatus) {
       final isClosed =
@@ -85,25 +133,20 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
           : color.onSecondaryContainer;
 
       return Container(
-        height: Spacing.calendarRestaurantSummaryButtonHeight,
+        height: buttonHeight,
         width: double.infinity,
         alignment: Alignment.center,
-        padding: EdgeInsets.zero,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: Spacing.iconSm, color: foregroundColor),
+            Icon(icon, size: Spacing.iconSm - 2, color: foregroundColor),
             const SizedBox(width: Spacing.xs),
             Text(
               label,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size11,
@@ -115,16 +158,38 @@ class CalendarRestaurantSummaryCard extends StatelessWidget {
       );
     }
 
-    return AppButton(
-      text: locale.calendar_change_restaurant,
-      onPressed: onMorePressed,
-      height: Spacing.calendarRestaurantSummaryButtonHeight,
-      borderRadius: Spacing.radiusPill,
+    return Material(
       color: color.surface,
-      textColor: color.primary,
-      fontSize: FontSize.size11,
-      icon: Icons.sync_rounded,
-      padding: EdgeInsets.zero,
+      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+      child: InkWell(
+        onTap: onMorePressed,
+        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+        child: Container(
+          height: buttonHeight,
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            textDirection: TextDirection.ltr,
+            children: [
+              Icon(
+                Icons.sync_rounded,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Text(
+                locale.calendar_change_restaurant,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size11,
+                  color: color.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

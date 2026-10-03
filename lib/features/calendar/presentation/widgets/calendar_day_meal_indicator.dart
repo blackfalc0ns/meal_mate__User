@@ -23,10 +23,7 @@ class CalendarDayMealIndicator extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(
-            color: color.onPrimary,
-            width: 1.2,
-          ),
+          border: Border.all(color: color.onPrimary, width: 1.2),
         ),
       );
     }
@@ -35,10 +32,7 @@ class CalendarDayMealIndicator extends StatelessWidget {
       return Container(
         width: size,
         height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color.primary,
-        ),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: color.primary),
       );
     }
 
@@ -47,10 +41,7 @@ class CalendarDayMealIndicator extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: color.outlineVariant,
-          width: 1.0,
-        ),
+        border: Border.all(color: color.onSecondaryContainer, width: 1.0),
       ),
     );
   }

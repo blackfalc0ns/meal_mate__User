@@ -2,6 +2,7 @@ class CalendarRestaurantEntity {
   const CalendarRestaurantEntity({
     this.id = '',
     this.logoUrl,
+    this.imageUrl,
     this.tierLogoUrl,
     this.ratingCount = 0,
     this.maxUsageCount,
@@ -14,6 +15,7 @@ class CalendarRestaurantEntity {
 
   final String id;
   final String? logoUrl;
+  final String? imageUrl;
   final String? tierLogoUrl;
   final int ratingCount;
   final int? maxUsageCount;

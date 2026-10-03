@@ -45,10 +45,10 @@ class CalendarDailyMacrosCard extends StatelessWidget {
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
-              color: color.onSurfaceVariant,
+              color: color.onSurface,
             ),
           ),
-          const SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.md),
           CalendarRestaurantNutritionRow(totals: totals),
         ],
       ),

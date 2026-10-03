@@ -5,6 +5,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
     return CalendarRestaurantEntity(
       id: _firstNotEmpty([restaurantId, id]),
       logoUrl: _firstNullableNotEmpty([logoUrl, imageUrl]),
+      imageUrl: imageUrl,
       tierLogoUrl: tierLogoUrl,
       ratingCount: ratingCount ?? 0,
       maxUsageCount: maxUsageCount,

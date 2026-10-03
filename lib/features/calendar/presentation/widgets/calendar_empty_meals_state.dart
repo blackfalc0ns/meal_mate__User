@@ -23,6 +23,7 @@ class CalendarEmptyMealsState extends StatelessWidget {
     final locale = context.localization;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         Opacity(
