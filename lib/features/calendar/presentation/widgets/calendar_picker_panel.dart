@@ -95,7 +95,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color:
-                      widget.backgroundColor ?? color.surfaceContainerHighest,
+                      widget.backgroundColor ?? color.surface,
                   border: widget.showBottomBorder
                       ? Border(bottom: BorderSide(color: color.outlineVariant))
                       : null,

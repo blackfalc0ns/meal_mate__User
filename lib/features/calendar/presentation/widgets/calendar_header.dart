@@ -5,9 +5,16 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CalendarHeader extends StatelessWidget {
-  const CalendarHeader({super.key, required this.title});
+  const CalendarHeader({
+    super.key,
+    required this.title,
+    this.onBackPressed,
+    this.onNotificationPressed,
+  });
 
   final String title;
+  final VoidCallback? onBackPressed;
+  final VoidCallback? onNotificationPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +37,46 @@ class CalendarHeader extends StatelessWidget {
               PositionedDirectional(
                 top: Spacing.lg,
                 start: Spacing.calendarHeaderHorizontalInset,
-                child: Icon(
-                  Icons.notifications_rounded,
-                  color: color.onPrimary,
-                  size: Spacing.iconLg,
+                child: IconButton(
+                  onPressed: onBackPressed ?? () => Navigator.maybePop(context),
+                  icon: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: color.onPrimary,
+                    size: Spacing.iconMd,
+                  ),
                 ),
               ),
               PositionedDirectional(
                 top: Spacing.lg,
                 end: Spacing.calendarHeaderHorizontalInset,
-                child: Icon(
-                  Icons.volume_mute_rounded,
-                  color: color.onPrimary,
-                  size: Spacing.iconLg,
+                child: IconButton(
+                  onPressed: onNotificationPressed,
+                  icon: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Icon(
+                        Icons.notifications_outlined,
+                        color: color.onPrimary,
+                        size: Spacing.iconLg,
+                      ),
+                      PositionedDirectional(
+                        top: 0,
+                        end: 2,
+                        child: Container(
+                          width: Spacing.sm,
+                          height: Spacing.sm,
+                          decoration: BoxDecoration(
+                            color: color.error,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: color.primary,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               PositionedDirectional(

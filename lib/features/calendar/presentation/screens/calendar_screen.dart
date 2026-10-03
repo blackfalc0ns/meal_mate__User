@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
@@ -101,7 +102,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
             backgroundColor: color.surface,
             body: Column(
               children: [
-                CalendarHeader(title: locale.calendar_title),
+                CalendarHeader(
+                  title: locale.calendar_title,
+                  onBackPressed: () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    } else {
+                      try {
+                        context.read<HomeCubit>().selectTab(0);
+                      } catch (_) {}
+                    }
+                  },
+                ),
                 Expanded(
                   child: CalendarContent(
                     showBottomSpace: widget.showBottomSpace,

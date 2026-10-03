@@ -17,18 +17,40 @@ class CalendarDayMealIndicator extends StatelessWidget {
     final color = context.colorScheme;
     final size = compact ? 6.0 : 9.5;
 
+    if (selected) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: color.onPrimary,
+            width: 1.2,
+          ),
+        ),
+      );
+    }
+
+    if (muted) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color.primary,
+        ),
+      );
+    }
+
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: muted ? color.primary : null,
-        border: muted
-            ? null
-            : Border.all(
-                color: selected ? color.onPrimary : color.onSurface,
-                width: 0.95,
-              ),
+        border: Border.all(
+          color: color.outlineVariant,
+          width: 1.0,
+        ),
       ),
     );
   }

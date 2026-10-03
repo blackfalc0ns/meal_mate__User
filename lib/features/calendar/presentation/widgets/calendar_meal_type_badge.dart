@@ -32,15 +32,23 @@ class CalendarMealTypeBadge extends StatelessWidget {
 
   IconData _iconForMealType(String type) {
     final lower = type.toLowerCase();
-    if (lower.contains('break') || lower.contains('فطور')) {
-      return Icons.wb_sunny_rounded;
+    if (lower.contains('break') ||
+        lower.contains('فطور') ||
+        lower.contains('إفطار') ||
+        lower.contains('افطار')) {
+      return Icons.wb_sunny_outlined;
     }
-    if (lower.contains('lunch') || lower.contains('غداء')) {
-      return Icons.restaurant_rounded;
+    if (lower.contains('lunch') ||
+        lower.contains('غداء') ||
+        lower.contains('غدا')) {
+      return Icons.wb_sunny_rounded;
     }
     if (lower.contains('dinner') || lower.contains('عشاء')) {
       return Icons.nightlight_round;
     }
-    return Icons.restaurant_menu_rounded;
+    if (lower.contains('snack') || lower.contains('سناك')) {
+      return Icons.cookie_outlined;
+    }
+    return Icons.restaurant_rounded;
   }
 }

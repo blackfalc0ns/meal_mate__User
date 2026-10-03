@@ -31,7 +31,7 @@ class CalendarMealDetails extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xss),
         CalendarMealCardNutritionRow(meal: meal),
-        const Spacer(),
+        const SizedBox(height: Spacing.xs),
         Text(
           locale.calendar_ingredients,
           style: getSemiBoldStyle(

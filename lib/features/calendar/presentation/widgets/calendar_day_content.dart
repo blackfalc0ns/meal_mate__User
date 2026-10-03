@@ -8,6 +8,8 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_daily_macros_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_meals_loading_skeleton.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_frozen_day_state.dart';
@@ -101,6 +103,19 @@ class CalendarDayContent extends StatelessWidget {
                             restaurant: restaurant,
                             day: selectedDay,
                             onMorePressed: readOnly ? null : onSelectRestaurant,
+                          )
+                          .animate()
+                          .fadeIn(duration: 200.ms)
+                          .slideY(
+                            begin: 0.03,
+                            end: 0,
+                            duration: 200.ms,
+                            curve: Curves.easeOut,
+                          ),
+                      const SizedBox(height: Spacing.md),
+                      CalendarDailyMacrosCard(
+                            totals: selectedDay?.nutritionTotals ??
+                                const CalendarNutritionTotalsEntity(),
                           )
                           .animate()
                           .fadeIn(duration: 200.ms)

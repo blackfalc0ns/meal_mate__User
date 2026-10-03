@@ -29,79 +29,78 @@ class CalendarMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    const mealCardBodyHeight = 140.0;
-    return SizedBox(
-      height: readOnly
-          ? mealCardBodyHeight
-          : (mealCardBodyHeight + Spacing.sm + 25.0),
+
+    return Container(
+      padding: const EdgeInsets.all(Spacing.md),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(
+          color: color.primary.withValues(alpha: 0.35),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: mealCardBodyHeight,
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(15),
-              child: Container(
-                padding: const EdgeInsetsDirectional.only(
-                  top: Spacing.calendarMealCardVerticalPadding,
-                  bottom: Spacing.calendarMealCardVerticalPadding,
-                  start: Spacing.md,
-                  end: Spacing.md,
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(Spacing.radiusSm),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: CalendarMealDetails(meal: meal)),
+                const SizedBox(width: Spacing.sm),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                  child: AppCachedNetworkImage(
+                    imageUrl: meal.imageUrl,
+                    width: 90,
+                    height: 90,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: color.surface,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: color.primary),
-                  boxShadow: [
-                    BoxShadow(
-                      color: color.shadow.withValues(alpha: 0.10),
-                      blurRadius: 4,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(child: CalendarMealDetails(meal: meal)),
-                    const SizedBox(width: Spacing.sm),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                      child: AppCachedNetworkImage(
-                        imageUrl: meal.imageUrl,
-                        width: 95,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
           ),
           if (!readOnly) ...[
-            const SizedBox(height: Spacing.sm),
-            SizedBox(
-              height: 25,
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: onChangeMeal,
-                icon: const Icon(Icons.edit_rounded, size: 13),
-                label: Text(locale.calendar_change_meal),
-                style: FilledButton.styleFrom(
-                  backgroundColor: color.primary,
-                  foregroundColor: color.onPrimary,
-                  padding: EdgeInsets.zero,
-                  textStyle: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onPrimary,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  minimumSize: Size.zero,
-                  fixedSize: const Size.fromHeight(25),
+            const SizedBox(height: Spacing.md),
+            InkWell(
+              onTap: onChangeMeal,
+              borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              child: Container(
+                height: 36,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: color.primary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.edit_rounded,
+                      size: 14,
+                      color: color.primary,
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    Text(
+                      locale.calendar_change_meal,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.primary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
