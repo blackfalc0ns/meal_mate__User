@@ -281,9 +281,17 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
 
   Future<ApiResult<CalendarDayEntity>> autoSelect({
     required String localeName,
+    DateTime? date,
+    String? subscriptionId,
   }) async {
-    final date = state.date;
-    if (date == null || state.isSaving || state.isConfirming) {
+    final targetDate = date ?? state.date;
+    final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
+        ? subscriptionId
+        : state.subscriptionId;
+    if (targetDate == null ||
+        targetSubId.isEmpty ||
+        state.isSaving ||
+        state.isConfirming) {
       return ApiErrorResult(
         failure: Failure(
           errorMessage: 'Invalid state for auto-select',
@@ -293,9 +301,9 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
     }
 
     emit(state.copyWith(isSaving: true, clearSaveFailure: true));
-    final dateStr = DateFormat('yyyy-MM-dd').format(date);
+    final dateStr = DateFormat('yyyy-MM-dd').format(targetDate);
     final result = await _autoSelectDayUseCase(
-      subscriptionId: state.subscriptionId,
+      subscriptionId: targetSubId,
       date: dateStr,
       localeName: localeName,
     );
@@ -314,9 +322,17 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
 
   Future<ApiResult<CalendarDayEntity>> confirm({
     required String localeName,
+    DateTime? date,
+    String? subscriptionId,
   }) async {
-    final date = state.date;
-    if (date == null || state.isSaving || state.isConfirming) {
+    final targetDate = date ?? state.date;
+    final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
+        ? subscriptionId
+        : state.subscriptionId;
+    if (targetDate == null ||
+        targetSubId.isEmpty ||
+        state.isSaving ||
+        state.isConfirming) {
       return ApiErrorResult(
         failure: Failure(
           errorMessage: 'Cannot confirm in current state',
@@ -325,7 +341,7 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
       );
     }
 
-    final dateStr = DateFormat('yyyy-MM-dd').format(date);
+    final dateStr = DateFormat('yyyy-MM-dd').format(targetDate);
     final available = state.availableMeals;
     if (available != null) {
       if (!state.canSave) {
@@ -358,7 +374,7 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
       );
 
       final saveResult = await _saveDayMealsUseCase(
-        subscriptionId: state.subscriptionId,
+        subscriptionId: targetSubId,
         date: dateStr,
         meals: selectedMeals,
         localeName: localeName,
@@ -380,7 +396,7 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
     }
 
     final result = await _confirmDayMealsUseCase(
-      subscriptionId: state.subscriptionId,
+      subscriptionId: targetSubId,
       date: dateStr,
       localeName: localeName,
     );
