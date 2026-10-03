@@ -228,7 +228,7 @@ class MealMateDrawerItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(item.icon, color: color.onPrimary, size: 18),
-            const SizedBox(width: 8),
+            const SizedBox(width: Spacing.sm),
             Flexible(
               child: Text(
                 item.label,

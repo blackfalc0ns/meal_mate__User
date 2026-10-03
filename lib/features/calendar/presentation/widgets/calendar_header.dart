@@ -26,52 +26,31 @@ class CalendarHeader extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color.primary,
-          borderRadius: const BorderRadius.vertical(
-            //   bottom: Radius.circular(Spacing.calendarHeaderRadius),
-          ),
         ),
         child: SafeArea(
           bottom: false,
-          child: Stack(
-            children: [
-              PositionedDirectional(
-                top: Spacing.xxl,
-                end: Spacing.calendarHeaderHorizontalInset,
-                child: IconButton(
-                  onPressed: onNotificationPressed,
-                  icon: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Icon(
-                        Icons.notifications_outlined,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.calendarHeaderHorizontalInset,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (onBackPressed != null)
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: IconButton(
+                      onPressed: onBackPressed,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: Icon(
+                        Icons.arrow_forward_ios_rounded,
                         color: color.onPrimary,
-                        size: Spacing.iconLg,
+                        size: Spacing.iconMd,
                       ),
-                      PositionedDirectional(
-                        top: 2,
-                        end: 3,
-                        child: Container(
-                          width: Spacing.sm,
-                          height: Spacing.sm,
-                          decoration: BoxDecoration(
-                            color: color.error,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: color.primary,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              PositionedDirectional(
-                top: Spacing.xl,
-                start: 0,
-                end: 0,
-                child: Text(
+                Text(
                   title,
                   textAlign: TextAlign.center,
                   style: getBoldStyle(
@@ -80,8 +59,42 @@ class CalendarHeader extends StatelessWidget {
                     color: color.onPrimary,
                   ),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: IconButton(
+                    onPressed: onNotificationPressed,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Icon(
+                          Icons.notifications_none_rounded,
+                          color: color.onPrimary,
+                          size: Spacing.iconLg,
+                        ),
+                        PositionedDirectional(
+                          top: 1,
+                          end: 1,
+                          child: Container(
+                            width: Spacing.sm,
+                            height: Spacing.sm,
+                            decoration: BoxDecoration(
+                              color: color.error,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: color.primary,
+                                width: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -112,9 +112,10 @@ class CalendarDayContent extends StatelessWidget {
                             duration: 200.ms,
                             curve: Curves.easeOut,
                           ),
-                      const SizedBox(height: Spacing.md),
+                      const SizedBox(height: Spacing.sm),
                       CalendarDailyMacrosCard(
-                            totals: selectedDay?.nutritionTotals ??
+                            totals:
+                                selectedDay?.nutritionTotals ??
                                 const CalendarNutritionTotalsEntity(),
                           )
                           .animate()
@@ -125,7 +126,7 @@ class CalendarDayContent extends StatelessWidget {
                             duration: 200.ms,
                             curve: Curves.easeOut,
                           ),
-                      const SizedBox(height: Spacing.xl),
+                      const SizedBox(height: Spacing.sm),
                     ],
                     for (final meal in meals) ...[
                       CalendarMealCard(

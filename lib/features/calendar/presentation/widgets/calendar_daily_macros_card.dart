@@ -7,10 +7,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrit
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_nutrition_row.dart';
 
 class CalendarDailyMacrosCard extends StatelessWidget {
-  const CalendarDailyMacrosCard({
-    super.key,
-    required this.totals,
-  });
+  const CalendarDailyMacrosCard({super.key, required this.totals});
 
   final CalendarNutritionTotalsEntity totals;
 
@@ -44,11 +41,11 @@ class CalendarDailyMacrosCard extends StatelessWidget {
             locale.calendar_daily_nutrition_total,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
+              fontSize: FontSize.size10,
               color: color.onSurface,
             ),
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.xs),
           CalendarRestaurantNutritionRow(totals: totals),
         ],
       ),
