@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
@@ -130,11 +131,13 @@ class _AnimatedShellBodyState extends State<_AnimatedShellBody>
   late final Animation<double> _animation;
   int _previousIndex = 0;
   double _slideDirection = 1;
+  final Set<int> _visitedIndices = <int>{};
 
   @override
   void initState() {
     super.initState();
     _previousIndex = widget.selectedIndex;
+    _visitedIndices.add(widget.selectedIndex);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 280),
@@ -150,9 +153,10 @@ class _AnimatedShellBodyState extends State<_AnimatedShellBody>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectedIndex == widget.selectedIndex) return;
 
+    _visitedIndices.add(widget.selectedIndex);
     _slideDirection = widget.selectedIndex > _previousIndex ? 1 : -1;
     _previousIndex = widget.selectedIndex;
-    _controller.forward(from: 0);
+    unawaited(_controller.forward(from: 0));
   }
 
   @override
@@ -163,22 +167,42 @@ class _AnimatedShellBodyState extends State<_AnimatedShellBody>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      child: IndexedStack(
-        index: widget.selectedIndex,
-        children: widget.children,
-      ),
-      builder: (context, child) {
-        final value = _animation.value;
-        return Opacity(
-          opacity: value,
-          child: Transform.translate(
-            offset: Offset((1 - value) * 18 * _slideDirection, 0),
-            child: child,
+    return Stack(
+      fit: StackFit.expand,
+      children: List.generate(widget.children.length, (index) {
+        if (!_visitedIndices.contains(index)) {
+          return SizedBox.shrink(key: ValueKey('tab_$index'));
+        }
+
+        final isSelected = index == widget.selectedIndex;
+
+        return KeyedSubtree(
+          key: ValueKey('tab_$index'),
+          child: Offstage(
+            offstage: !isSelected,
+            child: TickerMode(
+              enabled: isSelected,
+              child: AnimatedBuilder(
+                animation: _animation,
+                child: widget.children[index],
+                builder: (context, child) {
+                  final value = _animation.value;
+                  return Opacity(
+                    opacity: isSelected ? value : 0.0,
+                    child: Transform.translate(
+                      offset: Offset(
+                        isSelected ? (1 - value) * 18 * _slideDirection : 0.0,
+                        0,
+                      ),
+                      child: child,
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         );
-      },
+      }),
     );
   }
 }
