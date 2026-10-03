@@ -98,6 +98,14 @@ import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_useca
     as _i133;
 import '../../features/calendar/presentation/manager/calendar_view_model.dart'
     as _i127;
+import '../../features/calendar/presentation/manager/flow/calendar_flow_cubit.dart'
+    as _i115;
+import '../../features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart'
+    as _i337;
+import '../../features/calendar/presentation/manager/overview/calendar_overview_cubit.dart'
+    as _i420;
+import '../../features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart'
+    as _i878;
 import '../../features/change_password/data/data_source/change_password_remote_data_source.dart'
     as _i263;
 import '../../features/change_password/data/data_source/change_password_remote_data_source_impl.dart'
@@ -1558,6 +1566,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
       ),
     );
+    gh.factory<_i420.CalendarOverviewCubit>(
+      () => _i420.CalendarOverviewCubit(
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+      ),
+    );
     gh.factory<_i665.FamilyCheckoutViewModel>(
       () => _i665.FamilyCheckoutViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1655,6 +1671,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i832.GetSubscriptionMealDetailsUseCase>(),
       ),
     );
+    gh.factory<_i878.RestaurantPickerCubit>(
+      () => _i878.RestaurantPickerCubit(
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
+      ),
+    );
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
         gh<_i945.GetCustomerAddressesUseCase>(),
@@ -1667,6 +1689,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1022.PreviewNewAddressCoverageUseCase>(),
         gh<_i577.PreviewExistingAddressCoverageUseCase>(),
         gh<_i267.ConfirmSetDefaultAddressUseCase>(),
+      ),
+    );
+    gh.factory<_i337.MealSelectionCubit>(
+      () => _i337.MealSelectionCubit(
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i438.ConfirmCalendarDayMealsUseCase>(),
       ),
     );
     gh.factory<_i851.SubscriptionRestaurantDetailsViewModel>(
@@ -1694,6 +1724,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i438.ConfirmCalendarDayMealsUseCase>(),
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
         gh<_i42.SharedPrefHelper>(),
+      ),
+    );
+    gh.factory<_i115.CalendarFlowCubit>(
+      () => _i115.CalendarFlowCubit(
+        overviewCubit: gh<_i420.CalendarOverviewCubit>(),
+        restaurantPickerCubit: gh<_i878.RestaurantPickerCubit>(),
+        mealSelectionCubit: gh<_i337.MealSelectionCubit>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

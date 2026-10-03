@@ -14,6 +14,10 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_failure_message_mapper.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
@@ -28,17 +32,32 @@ class CalendarScreen extends StatefulWidget {
     super.key,
     this.showBottomSpace = false,
     this.subscriptionId,
+    this.overviewCubit,
+    this.restaurantPickerCubit,
+    this.mealSelectionCubit,
+    this.flowCubit,
+    this.viewModel,
   });
 
   final bool showBottomSpace;
   final String? subscriptionId;
+  final CalendarOverviewCubit? overviewCubit;
+  final RestaurantPickerCubit? restaurantPickerCubit;
+  final MealSelectionCubit? mealSelectionCubit;
+  final CalendarFlowCubit? flowCubit;
+  final CalendarViewModel? viewModel;
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  late final CalendarOverviewCubit _overviewCubit;
+  late final RestaurantPickerCubit _restaurantPickerCubit;
+  late final MealSelectionCubit _mealSelectionCubit;
+  late final CalendarFlowCubit _flowCubit;
   late final CalendarViewModel _viewModel;
+
   bool _restaurantSheetOpen = false;
   bool _mealSheetOpen = false;
   bool _suppressMealSheetAutoOpen = false;
@@ -53,7 +72,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt<CalendarViewModel>();
+    _overviewCubit = widget.overviewCubit ?? getIt<CalendarOverviewCubit>();
+    _restaurantPickerCubit =
+        widget.restaurantPickerCubit ?? getIt<RestaurantPickerCubit>();
+    _mealSelectionCubit =
+        widget.mealSelectionCubit ?? getIt<MealSelectionCubit>();
+    _flowCubit = widget.flowCubit ??
+        CalendarFlowCubit(
+          overviewCubit: _overviewCubit,
+          restaurantPickerCubit: _restaurantPickerCubit,
+          mealSelectionCubit: _mealSelectionCubit,
+        );
+    _viewModel = widget.viewModel ?? getIt<CalendarViewModel>();
   }
 
   @override
@@ -61,6 +91,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.didChangeDependencies();
     if (_didLoad) return;
     _didLoad = true;
+    unawaited(
+      _overviewCubit.loadCalendar(
+        subscriptionId: widget.subscriptionId,
+        localeName: context.localization.localeName,
+      ),
+    );
     _viewModel.doIntent(
       LoadCalendarEvent(
         subscriptionId: widget.subscriptionId,
@@ -71,6 +107,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void dispose() {
+    unawaited(_flowCubit.close());
+    unawaited(_mealSelectionCubit.close());
+    unawaited(_restaurantPickerCubit.close());
+    unawaited(_overviewCubit.close());
     unawaited(_viewModel.close());
     super.dispose();
   }
@@ -80,8 +120,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return BlocProvider<CalendarViewModel>.value(
-      value: _viewModel,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CalendarOverviewCubit>.value(value: _overviewCubit),
+        BlocProvider<RestaurantPickerCubit>.value(
+          value: _restaurantPickerCubit,
+        ),
+        BlocProvider<MealSelectionCubit>.value(value: _mealSelectionCubit),
+        BlocProvider<CalendarFlowCubit>.value(value: _flowCubit),
+        BlocProvider<CalendarViewModel>.value(value: _viewModel),
+      ],
       child: BlocListener<CalendarViewModel, CalendarState>(
         listenWhen: (previous, current) =>
             previous.availableMeals != current.availableMeals ||

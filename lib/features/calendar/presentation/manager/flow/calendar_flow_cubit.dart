@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
@@ -10,6 +11,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selec
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
 
+@injectable
 class CalendarFlowCubit extends Cubit<CalendarFlowState> {
   final CalendarOverviewCubit overviewCubit;
   final RestaurantPickerCubit restaurantPickerCubit;
