@@ -3,8 +3,15 @@ part of 'calendar_view_model.dart';
 mixin CalendarViewModelDays on Cubit<CalendarState> {
   GetCalendarUseCase get _getCalendarUseCase;
   GetCalendarDayUseCase get _getCalendarDayUseCase;
-  GetCurrentCustomerSubscriptionUseCase get _getCurrentCustomerSubscriptionUseCase;
+  GetCurrentCustomerSubscriptionUseCase
+  get _getCurrentCustomerSubscriptionUseCase;
   SharedPrefHelper get _sharedPrefHelper;
+
+  int _calendarRequestGeneration = 0;
+  int _dayRequestGeneration = 0;
+
+  void _invalidateDependentOnDayChange();
+
   Future<void> _loadCalendar({
     required String? subscriptionId,
     required String localeName,
@@ -25,13 +32,18 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
       return;
     }
 
+    final generation = ++_calendarRequestGeneration;
+    _invalidateDependentOnDayChange();
+
     emit(
       state.copyWith(
         subscriptionId: resolvedSubscriptionId,
         isCalendarLoading: true,
+        isLoadingMoreMeals: false,
         hasNoSubscription: false,
         clearCalendarFailure: true,
         clearAvailableMeals: true,
+        clearLoadMoreMealsFailure: true,
       ),
     );
 
@@ -39,7 +51,7 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
       subscriptionId: resolvedSubscriptionId,
       localeName: localeName,
     );
-    if (isClosed) return;
+    if (isClosed || generation != _calendarRequestGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -90,16 +102,21 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
     required String localeName,
   }) {
     if (day.date == null) return;
+    _dayRequestGeneration++;
+    _invalidateDependentOnDayChange();
+
     final needsLoading = day.meals.isEmpty && day.isEditable;
     emit(
       state.copyWith(
         selectedDate: day.date,
         localSelectedMealIds: day.selectedMealIds,
         isSelectedDayLoading: needsLoading,
+        isLoadingMoreMeals: false,
         clearRestaurants: true,
         clearAvailableMeals: true,
         clearAvailableMealsFailure: true,
         clearSaveFailure: true,
+        clearLoadMoreMealsFailure: true,
       ),
     );
     unawaited(
@@ -133,13 +150,18 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
     required String localeName,
   }) async {
     if (state.subscriptionId.isEmpty || localeName.isEmpty) return;
+    final generation = ++_dayRequestGeneration;
     final date = DateFormat('yyyy-MM-dd').format(selectedDate);
     final result = await _getCalendarDayUseCase(
       subscriptionId: state.subscriptionId,
       date: date,
       localeName: localeName,
     );
-    if (isClosed || !_isSameSelectedDate(selectedDate)) return;
+    if (isClosed ||
+        generation != _dayRequestGeneration ||
+        !_isSameSelectedDate(selectedDate)) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():

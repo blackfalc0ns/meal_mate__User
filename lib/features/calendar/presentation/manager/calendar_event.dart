@@ -75,4 +75,3 @@ class LoadMoreCalendarMealsEvent extends CalendarEvent {
   final String slot;
   final String localeName;
 }
-

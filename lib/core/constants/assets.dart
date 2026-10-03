@@ -10,14 +10,11 @@ class Assets {
   static const String onboardingTwo = '$_images/on_boarding2.png';
   static const String onboardingThree = '$_images/on_boarding3.png';
   static const String loginIcon = '$_images/login_icon.svg';
-  static const String homeFigmaAvatar = '$_images/home/figma/home_avatar.png';
   static const String homePersonAvatar =
       '$_images/home/figma/home_person_avatar.png';
   static const String profileAvatar = '$_images/profile/profile_avatar.png';
   static const String profileDefaultAddressMap =
       '$_images/profile/profile_default_address_map.png';
-  static const String addressesChooseLocationMap =
-      '$_images/profile/addresses_choose_location_map.png';
   static const String addressesIconApartment =
       '$_images/profile/addresses_icon_apartment.svg';
   static const String addressesIconArea =
@@ -26,18 +23,12 @@ class Assets {
       '$_images/profile/addresses_icon_avenue.svg';
   static const String addressesIconBlock =
       '$_images/profile/addresses_icon_block.svg';
-  static const String addressesIconBuilding =
-      '$_images/profile/addresses_icon_building.svg';
   static const String addressesIconFloor =
       '$_images/profile/addresses_icon_floor.svg';
   static const String addressesIconGovernorate =
       '$_images/profile/addresses_icon_governorate.svg';
-  static const String addressesIconGps =
-      '$_images/profile/addresses_icon_gps.svg';
   static const String addressesIconHome =
       '$_images/profile/addresses_icon_home.svg';
-  static const String addressesIconHomeOutline =
-      '$_images/profile/addresses_icon_home_outline.svg';
   static const String addressesIconNumber =
       '$_images/profile/addresses_icon_number.svg';
   static const String addressesIconPin =
@@ -74,7 +65,6 @@ class Assets {
       '$_images/profile/dietary_preferences_selected_check.svg';
   static const String healthGoalTarget =
       '$_images/profile/health_goal_target.png';
-  static const String healthGoalBack = '$_images/profile/health_goal_back.svg';
   static const String healthGoalCheck =
       '$_images/profile/health_goal_check.svg';
   static const String healthGoalRunning =
@@ -130,8 +120,6 @@ class Assets {
       '$_images/home/figma/home_subscription_plan.svg';
   static const String homeSubscriptionFire =
       '$_images/home/figma/home_subscription_fire.svg';
-  static const String homeSubscriptionProgress =
-      '$_images/home/figma/home_subscription_progress.svg';
   static const String homeSubscriptionPlant =
       '$_images/home/figma/home_subscription_plant.svg';
   static const String homeSubscriptionArrow =
@@ -156,10 +144,6 @@ class Assets {
       '$_images/home/figma/home_nutrition_fire_badge.svg';
   static const String homeNutritionHeart =
       '$_images/home/figma/home_nutrition_heart.svg';
-  static const String homeNutritionDivider =
-      '$_images/home/figma/home_nutrition_divider.svg';
-  static const String nutritionDetailsBack =
-      '$_images/home/figma/nutrition_details_back.svg';
   static const String nutritionDetailsCalorieRing =
       '$_images/home/figma/nutrition_details_calorie_ring.svg';
 
@@ -179,16 +163,10 @@ class Assets {
   static const String mealDetailsHero =
       '$_images/meal_details/figma/meal_details_hero.png';
   // Subscriptions
-  static const String subscriptionNoteMeal =
-      '$_images/subscriptions/subscription_note_meal.png';
   static const String monthlyPlanHero =
       '$_images/subscriptions/figma/monthly_product_hero.png';
   static const String monthlyProductLogo =
       '$_images/subscriptions/figma/monthly_product_logo.svg';
-  static const String monthlyDurationSelector =
-      '$_images/subscriptions/figma/monthly_duration_selector.svg';
-  static const String monthlyPackageTiers =
-      '$_images/subscriptions/figma/monthly_package_tiers.svg';
   static const String subscriptionProgramsHero =
       '$_images/subscriptions/figma/programs_hero.png';
   static const String subscriptionProgramsLogo =
@@ -202,10 +180,6 @@ class Assets {
   static const String subscriptionTypeFamilyProduct =
       '$_images/subscriptions/figma/subscription_type_family_product-465c7d.png';
   static const String mealMateLogo = '$_svg/meal_mate_logo.svg';
-  static const String subscriptionWeightLossProgram =
-      '$_images/subscriptions/figma/weight_loss_program.png';
-  static const String subscriptionPackageMealBox =
-      '$_images/subscriptions/figma/package_meal_box.png';
   static const String subscriptionRestaurantStack =
       '$_images/subscriptions/figma/restaurant_stack.svg';
   static const String restaurantTierSelect =
@@ -221,8 +195,6 @@ class Assets {
       '$_images/subscriptions/figma/family_manage_plan_card.png';
   static const String familyManagePermissions =
       '$_images/subscriptions/figma/family_manage_permissions.svg';
-  static const String familyManageInvoice =
-      '$_images/subscriptions/figma/family_manage_invoice.svg';
   static const String familyManageSubscription =
       '$_images/subscriptions/figma/family_manage_subscription.svg';
   static const String familyManageMeals =

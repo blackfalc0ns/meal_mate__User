@@ -94,8 +94,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
               padding: const EdgeInsets.only(bottom: Spacing.lg),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color:
-                      widget.backgroundColor ?? color.surface,
+                  color: widget.backgroundColor ?? color.surface,
                   border: widget.showBottomBorder
                       ? Border(bottom: BorderSide(color: color.outlineVariant))
                       : null,
@@ -151,7 +150,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                               animation: primaryAnimation,
                               secondaryAnimation: secondaryAnimation,
                               transitionType: _isMonthTransition
-                                   ? SharedAxisTransitionType.horizontal
+                                  ? SharedAxisTransitionType.horizontal
                                   : SharedAxisTransitionType.vertical,
                               fillColor:
                                   widget.backgroundColor ?? color.surface,
@@ -221,28 +220,29 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                           shape: BoxShape.circle,
                         ),
                         child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 260),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        transitionBuilder: (child, animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: ScaleTransition(
-                              scale: Tween<double>(
-                                begin: 0.82,
-                                end: 1,
-                              ).animate(animation),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: Icon(
-                          widget.isExpanded
-                              ? Icons.keyboard_arrow_up_rounded
-                              : Icons.keyboard_arrow_down_rounded,
-                          key: ValueKey(widget.isExpanded),
-                          color: color.onPrimary,
-                          size: 18,
+                          duration: const Duration(milliseconds: 260),
+                          switchInCurve: Curves.easeOutCubic,
+                          switchOutCurve: Curves.easeInCubic,
+                          transitionBuilder: (child, animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: ScaleTransition(
+                                scale: Tween<double>(
+                                  begin: 0.82,
+                                  end: 1,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            widget.isExpanded
+                                ? Icons.keyboard_arrow_up_rounded
+                                : Icons.keyboard_arrow_down_rounded,
+                            key: ValueKey(widget.isExpanded),
+                            color: color.onPrimary,
+                            size: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -250,8 +250,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );

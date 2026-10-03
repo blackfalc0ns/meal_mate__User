@@ -1,7 +1,6 @@
 part of 'calendar_view_model.dart';
 
-mixin CalendarViewModelActions
-    on Cubit<CalendarState>, CalendarViewModelDays {
+mixin CalendarViewModelActions on Cubit<CalendarState>, CalendarViewModelDays {
   SaveCalendarDayMealsUseCase get _saveDayMealsUseCase;
   AutoSelectCalendarDayUseCase get _autoSelectDayUseCase;
   ConfirmCalendarDayMealsUseCase get _confirmDayMealsUseCase;

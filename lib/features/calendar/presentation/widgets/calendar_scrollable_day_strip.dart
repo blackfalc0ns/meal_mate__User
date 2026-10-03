@@ -17,8 +17,7 @@ class CalendarScrollableDayStrip extends StatefulWidget {
       CalendarScrollableDayStripState();
 }
 
-class CalendarScrollableDayStripState
-    extends State<CalendarScrollableDayStrip>
+class CalendarScrollableDayStripState extends State<CalendarScrollableDayStrip>
     with SingleTickerProviderStateMixin {
   static const _tileWidth = 46.0;
   static const _tileGap = 8.0;
@@ -39,7 +38,8 @@ class CalendarScrollableDayStripState
   @override
   void didUpdateWidget(covariant CalendarScrollableDayStrip oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final isStructuralChange = oldWidget.days.length != widget.days.length ||
+    final isStructuralChange =
+        oldWidget.days.length != widget.days.length ||
         (oldWidget.days.isNotEmpty &&
             widget.days.isNotEmpty &&
             oldWidget.days.first.date != widget.days.first.date);

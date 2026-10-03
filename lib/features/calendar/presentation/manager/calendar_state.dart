@@ -126,8 +126,9 @@ class CalendarState {
           ? null
           : loadMoreMealsFailure ?? this.loadMoreMealsFailure,
       saveFailure: clearSaveFailure ? null : saveFailure ?? this.saveFailure,
-      confirmFailure:
-          clearConfirmFailure ? null : confirmFailure ?? this.confirmFailure,
+      confirmFailure: clearConfirmFailure
+          ? null
+          : confirmFailure ?? this.confirmFailure,
       hasNoSubscription: hasNoSubscription ?? this.hasNoSubscription,
     );
   }

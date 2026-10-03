@@ -8,12 +8,15 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final restaurantName =
-        restaurant.name.isNotEmpty ? restaurant.name : 'DIET HOUSE';
-    final ratingValue =
-        restaurant.rating.isNotEmpty ? restaurant.rating : '4.8';
-    final count =
-        restaurant.ratingCount > 0 ? '(${restaurant.ratingCount})' : '(1.230)';
+    final restaurantName = restaurant.name.isNotEmpty
+        ? restaurant.name
+        : 'DIET HOUSE';
+    final ratingValue = restaurant.rating.isNotEmpty
+        ? restaurant.rating
+        : '4.8';
+    final count = restaurant.ratingCount > 0
+        ? '(${restaurant.ratingCount})'
+        : '(1.230)';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

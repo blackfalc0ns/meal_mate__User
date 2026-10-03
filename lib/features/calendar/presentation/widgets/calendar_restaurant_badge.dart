@@ -13,17 +13,11 @@ class CalendarRestaurantBadge extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.sm,
-        vertical: 3,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.sm, vertical: 3),
       decoration: BoxDecoration(
         color: color.primary,
         borderRadius: BorderRadius.circular(Spacing.radiusPill),
-        border: Border.all(
-          color: color.surface,
-          width: 1.2,
-        ),
+        border: Border.all(color: color.surface, width: 1.2),
       ),
       child: Text(
         locale.calendar_pick_restaurant_second,

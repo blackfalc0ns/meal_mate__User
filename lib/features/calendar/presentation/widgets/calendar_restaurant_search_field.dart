@@ -20,33 +20,33 @@ class CalendarRestaurantSearchField extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 13),
           child: Row(
-        children: [
-          Icon(
-            Icons.search_rounded,
-            color: color.onSurface.withValues(alpha: 0.62),
-            size: 22,
-          ),
-          Expanded(
-            child: TextField(
-              onChanged: onChanged,
-              textAlign: TextAlign.center,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: 13,
-                color: color.onSurface,
-              ).copyWith(height: 20 / 13),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                isCollapsed: true,
-                hintText: locale.calendar_search_restaurant_hint,
-                hintStyle: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: 13,
-                  color: color.onSurface.withValues(alpha: 0.62),
-                ).copyWith(height: 20 / 13),
+            children: [
+              Icon(
+                Icons.search_rounded,
+                color: color.onSurface.withValues(alpha: 0.62),
+                size: 22,
               ),
-            ),
-          ),
+              Expanded(
+                child: TextField(
+                  onChanged: onChanged,
+                  textAlign: TextAlign.center,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: 13,
+                    color: color.onSurface,
+                  ).copyWith(height: 20 / 13),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isCollapsed: true,
+                    hintText: locale.calendar_search_restaurant_hint,
+                    hintStyle: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: 13,
+                      color: color.onSurface.withValues(alpha: 0.62),
+                    ).copyWith(height: 20 / 13),
+                  ),
+                ),
+              ),
               const SizedBox(width: 22),
             ],
           ),

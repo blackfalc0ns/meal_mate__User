@@ -55,7 +55,9 @@ extension CalendarStateX on CalendarState {
 
   bool get canConfirmSelectedDayMeals {
     final day = selectedDay;
-    if (day == null || !day.isEditable || isConfirming || isSaving) return false;
+    if (day == null || !day.isEditable || isConfirming || isSaving) {
+      return false;
+    }
     final meals = selectedDayMeals;
     if (meals.isEmpty) return false;
     final requiredCount = day.slotRequirements.fold<int>(

@@ -100,10 +100,7 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
             decoration: BoxDecoration(
               color: color.secondaryContainer.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(Spacing.radiusMd),
-              border: Border.all(
-                color: color.secondaryContainer,
-                width: 1,
-              ),
+              border: Border.all(color: color.secondaryContainer, width: 1),
             ),
             child: Row(
               children: [

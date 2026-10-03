@@ -19,8 +19,10 @@ class CalendarMealSaveButton extends StatelessWidget {
       CalendarState,
       ({bool canSave, bool isSaving})
     >(
-      selector: (state) =>
-          (canSave: state.canSaveMeals, isSaving: state.isSaving || state.isConfirming),
+      selector: (state) => (
+        canSave: state.canSaveMeals,
+        isSaving: state.isSaving || state.isConfirming,
+      ),
       builder: (context, buttonState) {
         final color = context.colorScheme;
         final locale = context.localization;

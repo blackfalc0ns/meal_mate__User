@@ -24,9 +24,7 @@ class CalendarHeader extends StatelessWidget {
       height: Spacing.calendarHeaderHeight,
       width: double.infinity,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: color.primary,
-        ),
+        decoration: BoxDecoration(color: color.primary),
         child: SafeArea(
           bottom: false,
           child: Padding(

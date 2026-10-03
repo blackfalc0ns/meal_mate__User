@@ -58,11 +58,7 @@ class CalendarRestaurantSummaryLogo extends StatelessWidget {
                 ).copyWith(height: 1),
               ),
               const SizedBox(width: 1),
-              Icon(
-                Icons.eco_rounded,
-                color: color.primary,
-                size: 10,
-              ),
+              Icon(Icons.eco_rounded, color: color.primary, size: 10),
             ],
           ),
           const SizedBox(height: 1),

@@ -40,7 +40,8 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
     final resolvedUnit = unit ?? _resolveUnit(locale);
     final resolvedTarget = target ?? _resolveTarget();
     final effectiveValue = value > 0 ? value : _fallbackValue();
-    final resolvedPercentage = percentage ??
+    final resolvedPercentage =
+        percentage ??
         (resolvedTarget > 0
             ? ((effectiveValue / resolvedTarget) * 100).round()
             : _fallbackPercentage());
@@ -108,11 +109,7 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                     ),
                   )
                 else if (icon != null)
-                  Icon(
-                    icon,
-                    size: 18,
-                    color: resolvedColor,
-                  ),
+                  Icon(icon, size: 18, color: resolvedColor),
               ],
             ),
             FittedBox(

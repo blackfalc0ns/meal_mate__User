@@ -21,19 +21,6 @@ class CalendarMealSelectionScreen extends StatelessWidget {
   final RoundedLoadingButtonController saveButtonController;
   final CalendarRestaurantOptionEntity? initialRestaurant;
 
-  static final RegExp _whitespaceRegex = RegExp(r'\s+');
-
-  static String _getInitials(String? name) {
-    if (name == null || name.trim().isEmpty) return '';
-    return name
-        .trim()
-        .split(_whitespaceRegex)
-        .where((word) => word.isNotEmpty)
-        .take(3)
-        .map((word) => word.characters.first)
-        .join();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -47,7 +34,8 @@ class CalendarMealSelectionScreen extends StatelessWidget {
                   current.isAvailableMealsLoading ||
               previous.availableMealsFailure != current.availableMealsFailure ||
               previous.saveFailure != current.saveFailure ||
-              previous.selectedDay?.restaurant != current.selectedDay?.restaurant,
+              previous.selectedDay?.restaurant !=
+                  current.selectedDay?.restaurant,
           builder: (context, state) {
             final locale = context.localization;
             final currentDayRestaurant = state.selectedDay?.restaurant;
@@ -63,14 +51,12 @@ class CalendarMealSelectionScreen extends StatelessWidget {
                 state.availableMeals?.restaurant?.rating ??
                 initialRestaurant?.rating ??
                 currentDayRestaurant?.rating;
-            final restaurantInitials = _getInitials(restaurantName);
             final menuData = CalendarMenuMapper.toMenuData(
               availableMeals: state.availableMeals,
               selectedMealIds: state.localSelectedMealIds,
               locale: locale,
               restaurantName: restaurantName,
               restaurantLogoUrl: restaurantLogoUrl,
-              restaurantInitials: restaurantInitials,
               restaurantRating: restaurantRating,
             );
 

@@ -21,13 +21,7 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_l
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 
-enum _CalendarViewMode {
-  loading,
-  noSubscription,
-  error,
-  empty,
-  data,
-}
+enum _CalendarViewMode { loading, noSubscription, error, empty, data }
 
 class CalendarContent extends StatefulWidget {
   const CalendarContent({
@@ -64,7 +58,8 @@ class _CalendarContentState extends State<CalendarContent> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       _isInitialized = true;
-      final initialDate = widget.state?.selectedDate ??
+      final initialDate =
+          widget.state?.selectedDate ??
           (widget.state == null
               ? context.read<CalendarViewModel>().state.selectedDate
               : null) ??
@@ -186,9 +181,7 @@ class _CalendarContentState extends State<CalendarContent> {
     return Column(
       children: [
         CalendarPickerPanel(
-          monthTitle: DateFormat.yMMMM(
-            locale.localeName,
-          ).format(_focusedMonth),
+          monthTitle: DateFormat.yMMMM(locale.localeName).format(_focusedMonth),
           days: days,
           isExpanded: _isExpanded,
           onToggleExpanded: () => setState(() => _isExpanded = !_isExpanded),
@@ -292,17 +285,12 @@ class _CalendarContentState extends State<CalendarContent> {
           isSelectedDayLoading: data.isSelectedDayLoading,
           onDaySelected: (day) {
             context.read<CalendarViewModel>().doIntent(
-              SelectCalendarDayEvent(
-                day: day,
-                localeName: locale.localeName,
-              ),
+              SelectCalendarDayEvent(day: day, localeName: locale.localeName),
             );
           },
           onConfirmSelections: () {
             context.read<CalendarViewModel>().doIntent(
-              ConfirmCalendarDayMealsEvent(
-                localeName: locale.localeName,
-              ),
+              ConfirmCalendarDayMealsEvent(localeName: locale.localeName),
             );
           },
         );
@@ -327,10 +315,7 @@ class _CalendarContentState extends State<CalendarContent> {
             selectedDate: selectedDate,
             serviceDays: days,
           )
-        : CalendarDaysBuilder.serviceDays(
-            days,
-            selectedDate: selectedDate,
-          );
+        : CalendarDaysBuilder.serviceDays(days, selectedDate: selectedDate);
 
     return Column(
       children: [
@@ -367,7 +352,8 @@ class _CalendarContentState extends State<CalendarContent> {
         _focusedMonth.year,
         _focusedMonth.month + direction,
       );
-      final hasNoSub = widget.state?.hasNoSubscription ??
+      final hasNoSub =
+          widget.state?.hasNoSubscription ??
           (widget.state == null &&
               context.read<CalendarViewModel>().state.hasNoSubscription);
       if (hasNoSub) {

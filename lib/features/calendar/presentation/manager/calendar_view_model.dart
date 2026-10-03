@@ -71,6 +71,12 @@ class CalendarViewModel extends Cubit<CalendarState>
   @override
   final SharedPrefHelper _sharedPrefHelper;
 
+  @override
+  void _invalidateDependentOnDayChange() {
+    _invalidateRestaurantRequests();
+    _invalidateMealsRequests();
+  }
+
   void doIntent(CalendarEvent event) {
     switch (event) {
       case LoadCalendarEvent():

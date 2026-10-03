@@ -86,11 +86,7 @@ class CalendarMealCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.edit_rounded,
-                      size: 14,
-                      color: color.primary,
-                    ),
+                    Icon(Icons.edit_rounded, size: 14, color: color.primary),
                     const SizedBox(width: Spacing.xs),
                     Text(
                       locale.calendar_change_meal,

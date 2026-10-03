@@ -66,11 +66,9 @@ class CalendarMenuMapper {
           locale.calendar_more,
           selectedMealIds,
         );
-        tabs.add(RestaurantMenuTab(
-          key: slotKey,
-          label: slotLabel,
-          options: options,
-        ));
+        tabs.add(
+          RestaurantMenuTab(key: slotKey, label: slotLabel, options: options),
+        );
       }
     } else {
       final defaultSlots = [
@@ -79,16 +77,18 @@ class CalendarMenuMapper {
         (key: 'dinner', label: locale.calendar_dinner),
       ];
       for (final slot in defaultSlots) {
-        tabs.add(RestaurantMenuTab(
-          key: slot.key,
-          label: slot.label,
-          options: _optionsFromMeals(
-            availableMeals.meals,
-            slot.key,
-            locale.calendar_more,
-            selectedMealIds,
+        tabs.add(
+          RestaurantMenuTab(
+            key: slot.key,
+            label: slot.label,
+            options: _optionsFromMeals(
+              availableMeals.meals,
+              slot.key,
+              locale.calendar_more,
+              selectedMealIds,
+            ),
           ),
-        ));
+        );
       }
     }
 
@@ -140,12 +140,11 @@ class CalendarMenuMapper {
     String moreLabel,
   ) {
     final list = ingredients
-        .map((i) => RestaurantMenuIngredient(label: i.label, iconUrl: i.iconUrl))
+        .map(
+          (i) => RestaurantMenuIngredient(label: i.label, iconUrl: i.iconUrl),
+        )
         .toList();
     if (list.length <= 4) return list;
-    return [
-      ...list.take(4),
-      RestaurantMenuIngredient(label: moreLabel),
-    ];
+    return [...list.take(4), RestaurantMenuIngredient(label: moreLabel)];
   }
 }

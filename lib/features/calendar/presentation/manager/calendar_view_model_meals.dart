@@ -3,6 +3,14 @@ part of 'calendar_view_model.dart';
 mixin CalendarViewModelMeals on Cubit<CalendarState> {
   GetCalendarAvailableMealsUseCase get _getAvailableMealsUseCase;
 
+  int _availableMealsRequestGeneration = 0;
+  int _loadMoreRequestGeneration = 0;
+
+  void _invalidateMealsRequests() {
+    _availableMealsRequestGeneration++;
+    _loadMoreRequestGeneration++;
+  }
+
   Future<void> _loadAvailableMeals(
     String localeName, {
     String? restaurantId,
@@ -19,6 +27,11 @@ mixin CalendarViewModelMeals on Cubit<CalendarState> {
       return;
     }
 
+    final generation = ++_availableMealsRequestGeneration;
+    _loadMoreRequestGeneration++;
+    final capturedDate = date;
+    final capturedRestaurantId = resolvedRestaurantId;
+
     emit(
       state.copyWith(
         isAvailableMealsLoading: true,
@@ -33,7 +46,13 @@ mixin CalendarViewModelMeals on Cubit<CalendarState> {
       restaurantId: resolvedRestaurantId,
       localeName: localeName,
     );
-    if (isClosed) return;
+    if (isClosed ||
+        generation != _availableMealsRequestGeneration ||
+        _dateParam(state.selectedDay) != capturedDate ||
+        (state.selectedDay?.restaurantId != null &&
+            state.selectedDay?.restaurantId != capturedRestaurantId)) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -85,6 +104,11 @@ mixin CalendarViewModelMeals on Cubit<CalendarState> {
       return;
     }
 
+    final generation = ++_loadMoreRequestGeneration;
+    final capturedDate = date;
+    final capturedRestaurantId = restaurantId;
+    final capturedSlot = currentSlotEntity.slot;
+
     emit(
       state.copyWith(isLoadingMoreMeals: true, clearLoadMoreMealsFailure: true),
     );
@@ -100,14 +124,24 @@ mixin CalendarViewModelMeals on Cubit<CalendarState> {
       slot: currentSlotEntity.slot,
     );
 
-    if (isClosed) return;
+    if (isClosed ||
+        generation != _loadMoreRequestGeneration ||
+        _dateParam(state.selectedDay) != capturedDate ||
+        state.availableMeals == null ||
+        (state.selectedDay?.restaurantId ??
+                state.availableMeals?.restaurant?.id) !=
+            capturedRestaurantId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
+        final currentAvailable = state.availableMeals;
+        if (currentAvailable == null) return;
         final updatedAvailableMeals = CalendarMealsMerger.mergeMoreMeals(
-          current: available,
+          current: currentAvailable,
           incoming: result.data,
-          requestedSlot: currentSlotEntity.slot,
+          requestedSlot: capturedSlot,
         );
         emit(
           state.copyWith(

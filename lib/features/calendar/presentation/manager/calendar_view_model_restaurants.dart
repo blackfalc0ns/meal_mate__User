@@ -5,10 +5,22 @@ mixin CalendarViewModelRestaurants
   GetCalendarRestaurantsUseCase get _getRestaurantsUseCase;
   SetCalendarDayRestaurantUseCase get _setDayRestaurantUseCase;
 
+  int _restaurantRequestGeneration = 0;
+  int _setRestaurantRequestGeneration = 0;
+
+  void _invalidateRestaurantRequests() {
+    _restaurantRequestGeneration++;
+    _setRestaurantRequestGeneration++;
+  }
+
   Future<void> _loadRestaurants(String localeName, {String? query}) async {
     final day = state.selectedDay;
     final date = _dateParam(day);
     if (state.subscriptionId.isEmpty || date.isEmpty) return;
+
+    final generation = ++_restaurantRequestGeneration;
+    final capturedDate = date;
+
     emit(
       state.copyWith(isRestaurantsLoading: true, clearRestaurantsFailure: true),
     );
@@ -18,7 +30,11 @@ mixin CalendarViewModelRestaurants
       localeName: localeName,
       query: query,
     );
-    if (isClosed) return;
+    if (isClosed ||
+        generation != _restaurantRequestGeneration ||
+        _dateParam(state.selectedDay) != capturedDate) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -52,13 +68,20 @@ mixin CalendarViewModelRestaurants
       return;
     }
 
+    final generation = ++_setRestaurantRequestGeneration;
+    _invalidateMealsRequests();
+    final capturedDayDate = day.date;
+    final capturedRestaurantId = restaurant.id;
+
     emit(
       state.copyWith(
         isAvailableMealsLoading: true,
+        isLoadingMoreMeals: false,
         localSelectedMealIds: const [],
         clearAvailableMeals: true,
         clearAvailableMealsFailure: true,
         clearSaveFailure: true,
+        clearLoadMoreMealsFailure: true,
       ),
     );
     final result = await _setDayRestaurantUseCase(
@@ -67,14 +90,19 @@ mixin CalendarViewModelRestaurants
       restaurantId: restaurant.id,
       localeName: localeName,
     );
-    if (isClosed) return;
+    if (isClosed ||
+        generation != _setRestaurantRequestGeneration ||
+        capturedDayDate == null ||
+        !_isSameSelectedDate(capturedDayDate)) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
         _replaceDay(result.data);
         await _loadAvailableMeals(
           localeName,
-          restaurantId: restaurant.id,
+          restaurantId: capturedRestaurantId,
           selectedRestaurant: restaurant,
         );
       case ApiErrorResult():
