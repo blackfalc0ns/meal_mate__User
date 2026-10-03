@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
@@ -636,11 +637,11 @@ void main() {
         ApiErrorResult(
           failure: Failure(
             errorMessage: 'Locked',
-            code: 'calendar.selection_locked',
-            exception: ApiException(
+            code: SubscriptionErrorCodes.calendarSelectionLocked,
+            exception: const ApiException(
               errorType: ApiErrorType.badRequest,
               message: 'Locked',
-              backendErrorCode: 'calendar.selection_locked',
+              backendErrorCode: SubscriptionErrorCodes.calendarSelectionLocked,
             ),
           ),
         ),
@@ -648,7 +649,10 @@ void main() {
       await Future<void>.delayed(Duration.zero);
 
       expect(viewModel.state.isConfirming, isFalse);
-      expect(viewModel.state.confirmFailure?.code, 'calendar.selection_locked');
+      expect(
+        viewModel.state.confirmFailure?.code,
+        SubscriptionErrorCodes.calendarSelectionLocked,
+      );
       expect(viewModel.state.selectedDay?.isLocked, isTrue);
       expect(viewModel.state.selectedDay?.isEditable, isFalse);
     });
@@ -676,11 +680,11 @@ void main() {
         ApiErrorResult(
           failure: Failure(
             errorMessage: 'Unavailable',
-            code: 'calendar.day_unavailable',
-            exception: ApiException(
+            code: SubscriptionErrorCodes.calendarDayUnavailable,
+            exception: const ApiException(
               errorType: ApiErrorType.badRequest,
               message: 'Unavailable',
-              backendErrorCode: 'calendar.day_unavailable',
+              backendErrorCode: SubscriptionErrorCodes.calendarDayUnavailable,
             ),
           ),
         ),

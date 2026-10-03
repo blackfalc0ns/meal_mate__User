@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_failure_message_mapper.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
@@ -202,22 +203,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   String _mapConfirmErrorMessage(BuildContext context, Failure? failure) {
-    if (failure == null) return '';
-    final locale = context.localization;
-    switch (failure.code) {
-      case 'calendar.box_incomplete':
-        return locale.calendar_error_box_incomplete;
-      case 'calendar.selection_locked':
-        return locale.calendar_error_selection_locked;
-      case 'calendar.day_unavailable':
-        return locale.calendar_error_day_unavailable;
-      case 'calendar.fulfillment_not_ready':
-        return locale.calendar_error_fulfillment_not_ready;
-      default:
-        return failure.errorMessage.isNotEmpty
-            ? failure.errorMessage
-            : locale.error_unknown_desc;
-    }
+    return CalendarFailureMessageMapper.map(
+      failure: failure,
+      locale: context.localization,
+    );
   }
 
   Future<void> _openRestaurantPicker(BuildContext context) async {

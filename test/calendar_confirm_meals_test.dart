@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 
@@ -69,7 +68,7 @@ void main() {
     test('returns failure when repository fails', () async {
       repo.failure = Failure(
         errorMessage: 'selection locked',
-        code: 'calendar.selection_locked',
+        code: SubscriptionErrorCodes.calendarSelectionLocked,
       );
 
       final result = await useCase(
@@ -81,7 +80,7 @@ void main() {
       expect(repo.confirmCalls, 1);
       expect(result, isA<ApiErrorResult<CalendarDayEntity>>());
       final err = (result as ApiErrorResult<CalendarDayEntity>).failure;
-      expect(err.code, 'calendar.selection_locked');
+      expect(err.code, SubscriptionErrorCodes.calendarSelectionLocked);
     });
   });
 

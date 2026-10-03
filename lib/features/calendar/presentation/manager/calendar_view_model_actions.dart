@@ -143,9 +143,11 @@ mixin CalendarViewModelActions on Cubit<CalendarState>, CalendarViewModelDays {
           ),
         );
       case ApiErrorResult():
-        if (result.failure.code == 'calendar.selection_locked') {
+        if (result.failure.code ==
+            SubscriptionErrorCodes.calendarSelectionLocked) {
           _replaceDay(day.copyWith(canEdit: false, isLocked: true));
-        } else if (result.failure.code == 'calendar.day_unavailable') {
+        } else if (result.failure.code ==
+            SubscriptionErrorCodes.calendarDayUnavailable) {
           _loadCalendar(
             subscriptionId: state.subscriptionId,
             localeName: localeName,

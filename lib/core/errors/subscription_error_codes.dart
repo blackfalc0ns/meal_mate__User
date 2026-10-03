@@ -36,6 +36,20 @@ class SubscriptionErrorCodes {
   /// User must complete dietary preferences.
   static const String actionDietaryPreferences = 'DIETARY_PREFERENCES';
 
-  /// User must specify allergies.
-  static const String actionAllergies = 'ALLERGIES';
+  // ── Calendar flow ──
+  /// The selected day box requirements are not met.
+  static const String calendarBoxIncomplete = 'calendar.box_incomplete';
+
+  /// Selection is locked for this day and cannot be changed.
+  static const String calendarSelectionLocked = 'calendar.selection_locked';
+
+  /// The day is unavailable for ordering or editing.
+  static const String calendarDayUnavailable = 'calendar.day_unavailable';
+
+  /// Fulfillment is not ready for the selected day.
+  static const String calendarFulfillmentNotReady =
+      'calendar.fulfillment_not_ready';
+
+  /// Generic not found error code from common backend errors.
+  static const String commonNotFound = 'errors.common.not_found';
 }

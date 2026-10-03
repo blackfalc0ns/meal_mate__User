@@ -237,7 +237,8 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
 
   bool _isNotFound(Failure failure) {
     return failure.exception.errorType == ApiErrorType.notFound ||
-        failure.code == 'errors.common.not_found' ||
-        failure.exception.backendErrorCode == 'errors.common.not_found';
+        failure.code == SubscriptionErrorCodes.commonNotFound ||
+        failure.exception.backendErrorCode ==
+            SubscriptionErrorCodes.commonNotFound;
   }
 }
