@@ -49,15 +49,7 @@ class CalendarMonthGrid extends StatelessWidget {
             onPressed: () => onDaySelected(day),
           );
         },
-      )
-          .animate()
-          .fadeIn(duration: 220.ms, curve: Curves.easeOut)
-          .scale(
-            begin: const Offset(0.98, 0.98),
-            end: const Offset(1, 1),
-            duration: 220.ms,
-            curve: Curves.easeOutCubic,
-          ),
+      ),
     );
   }
 }

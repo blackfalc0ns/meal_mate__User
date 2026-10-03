@@ -39,10 +39,14 @@ class CalendarScrollableDayStripState
   @override
   void didUpdateWidget(covariant CalendarScrollableDayStrip oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.days != widget.days) {
+    final isStructuralChange = oldWidget.days.length != widget.days.length ||
+        (oldWidget.days.isNotEmpty &&
+            widget.days.isNotEmpty &&
+            oldWidget.days.first.date != widget.days.first.date);
+    if (isStructuralChange) {
       unawaited(_staggerController.forward(from: 0.0));
-      WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) => _centerSelectedDay());
   }
 
   @override

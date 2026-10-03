@@ -90,10 +90,12 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
     required String localeName,
   }) {
     if (day.date == null) return;
+    final needsLoading = day.meals.isEmpty && day.isEditable;
     emit(
       state.copyWith(
         selectedDate: day.date,
         localSelectedMealIds: day.selectedMealIds,
+        isSelectedDayLoading: needsLoading,
         clearRestaurants: true,
         clearAvailableMeals: true,
         clearAvailableMealsFailure: true,
@@ -143,7 +145,12 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
       case ApiSuccessResult():
         _replaceDay(result.data);
       case ApiErrorResult():
-        emit(state.copyWith(calendarFailure: result.failure));
+        emit(
+          state.copyWith(
+            calendarFailure: result.failure,
+            isSelectedDayLoading: false,
+          ),
+        );
     }
   }
 
@@ -161,6 +168,7 @@ mixin CalendarViewModelDays on Cubit<CalendarState> {
     emit(
       state.copyWith(
         days: updatedDays,
+        isSelectedDayLoading: false,
         localSelectedMealIds: _isSameSelectedDate(updatedDay.date!)
             ? updatedDay.selectedMealIds
             : state.localSelectedMealIds,

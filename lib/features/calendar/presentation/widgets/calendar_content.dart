@@ -17,6 +17,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_s
 import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_loading_skeleton.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 
@@ -120,6 +121,7 @@ class _CalendarContentState extends State<CalendarContent> {
           selectedDay: staticState.selectedDay,
           isConfirming: staticState.isConfirming,
           canConfirm: staticState.canConfirmSelectedDayMeals,
+          isSelectedDayLoading: staticState.isSelectedDayLoading,
           onDaySelected: (_) {},
           onConfirmSelections: () {},
         ),
@@ -159,7 +161,7 @@ class _CalendarContentState extends State<CalendarContent> {
   }) {
     switch (mode) {
       case _CalendarViewMode.loading:
-        return const Center(child: CircularProgressIndicator());
+        return CalendarLoadingSkeleton(showBottomSpace: widget.showBottomSpace);
       case _CalendarViewMode.noSubscription:
         return _buildNoSubscriptionView(context);
       case _CalendarViewMode.error:
@@ -269,6 +271,7 @@ class _CalendarContentState extends State<CalendarContent> {
         CalendarDayEntity? selectedDay,
         bool isConfirming,
         bool canConfirm,
+        bool isSelectedDayLoading,
       })
     >(
       selector: (state) => (
@@ -277,6 +280,7 @@ class _CalendarContentState extends State<CalendarContent> {
         selectedDay: state.selectedDay,
         isConfirming: state.isConfirming,
         canConfirm: state.canConfirmSelectedDayMeals,
+        isSelectedDayLoading: state.isSelectedDayLoading,
       ),
       builder: (context, data) {
         return _buildDataLayout(
@@ -285,6 +289,7 @@ class _CalendarContentState extends State<CalendarContent> {
           selectedDay: data.selectedDay,
           isConfirming: data.isConfirming,
           canConfirm: data.canConfirm,
+          isSelectedDayLoading: data.isSelectedDayLoading,
           onDaySelected: (day) {
             context.read<CalendarViewModel>().doIntent(
               SelectCalendarDayEvent(
@@ -311,6 +316,7 @@ class _CalendarContentState extends State<CalendarContent> {
     required CalendarDayEntity? selectedDay,
     required bool isConfirming,
     required bool canConfirm,
+    required bool isSelectedDayLoading,
     required ValueChanged<CalendarDayEntity> onDaySelected,
     required VoidCallback onConfirmSelections,
   }) {
@@ -348,6 +354,7 @@ class _CalendarContentState extends State<CalendarContent> {
             onConfirmSelections: onConfirmSelections,
             isConfirming: isConfirming,
             canConfirm: canConfirm,
+            isLoading: isSelectedDayLoading,
           ),
         ),
       ],
