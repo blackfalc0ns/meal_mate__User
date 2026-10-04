@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 
 class CalendarMealsConfirmationSheet extends StatelessWidget {
   const CalendarMealsConfirmationSheet({
@@ -24,11 +25,11 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
     VoidCallback? onViewMeals,
     String? statusText,
   }) {
-    return showModalBottomSheet<void>(
+    return AppWoltModalSheet.show<void>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: context.colorScheme.surface.withValues(alpha: 0),
-      builder: (_) => CalendarMealsConfirmationSheet(
+      hasTopBarLayer: false,
+      showDragHandle: true,
+      child: CalendarMealsConfirmationSheet(
         onBackToCalendar: onBackToCalendar,
         onViewMeals: onViewMeals,
         statusText: statusText,
@@ -41,13 +42,7 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: color.surface,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(Spacing.bottomSheetRadius),
-        ),
-      ),
+    return Padding(
       padding: const EdgeInsetsDirectional.only(
         top: Spacing.md,
         start: Spacing.xl,
@@ -57,15 +52,7 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 48,
-            height: 4,
-            decoration: BoxDecoration(
-              color: color.outlineVariant.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(Spacing.radiusPill),
-            ),
-          ),
-          const SizedBox(height: Spacing.xl),
+          const SizedBox(height: Spacing.sm),
           Image.asset(
             Assets.calendarMealsConfirmedIllustration,
             height: 140,
