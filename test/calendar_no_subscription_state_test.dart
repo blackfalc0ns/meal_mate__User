@@ -11,7 +11,7 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_e
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 
 class _FakeOverviewCubit extends Cubit<CalendarOverviewState>
-    implements CalendarOverviewCubit {
+    implements CalendarOverviewViewModel {
   _FakeOverviewCubit(super.state);
 
   @override
@@ -43,7 +43,7 @@ void main() {
                 const Scaffold(body: Text('Subscriptions route')),
           },
           home: Scaffold(
-            body: BlocProvider<CalendarOverviewCubit>.value(
+            body: BlocProvider<CalendarOverviewViewModel>.value(
               value: cubit,
               child: CalendarContent(
                 showBottomSpace: false,

@@ -207,10 +207,10 @@ void main() {
   late _FakeCalendarRepo calendarRepo;
   late _FakeProfileRepo profileRepo;
   late SharedPrefHelper prefHelper;
-  late CalendarOverviewCubit overviewCubit;
-  late RestaurantPickerCubit restaurantPickerCubit;
-  late MealSelectionCubit mealSelectionCubit;
-  late CalendarFlowCubit flowCubit;
+  late CalendarOverviewViewModel overviewCubit;
+  late RestaurantPickerViewModel restaurantPickerCubit;
+  late MealSelectionViewModel mealSelectionCubit;
+  late CalendarFlowViewModel flowCubit;
 
   final testDate = DateTime.utc(2026, 10, 15);
 
@@ -269,29 +269,29 @@ void main() {
     calendarRepo = _FakeCalendarRepo();
     profileRepo = _FakeProfileRepo();
 
-    overviewCubit = CalendarOverviewCubit(
+    overviewCubit = CalendarOverviewViewModel(
       GetCalendarUseCase(calendarRepo),
       GetCalendarDayUseCase(calendarRepo),
       GetCurrentCustomerSubscriptionUseCase(profileRepo),
       prefHelper,
     );
 
-    restaurantPickerCubit = RestaurantPickerCubit(
+    restaurantPickerCubit = RestaurantPickerViewModel(
       GetCalendarRestaurantsUseCase(calendarRepo),
       SetCalendarDayRestaurantUseCase(calendarRepo),
     );
 
-    mealSelectionCubit = MealSelectionCubit(
+    mealSelectionCubit = MealSelectionViewModel(
       GetCalendarAvailableMealsUseCase(calendarRepo),
       SaveCalendarDayMealsUseCase(calendarRepo),
       AutoSelectCalendarDayUseCase(calendarRepo),
       ConfirmCalendarDayMealsUseCase(calendarRepo),
     );
 
-    flowCubit = CalendarFlowCubit(
-      overviewCubit: overviewCubit,
-      restaurantPickerCubit: restaurantPickerCubit,
-      mealSelectionCubit: mealSelectionCubit,
+    flowCubit = CalendarFlowViewModel(
+      overviewViewModel: overviewCubit,
+      restaurantPickerViewModel: restaurantPickerCubit,
+      mealSelectionViewModel: mealSelectionCubit,
     );
   });
 

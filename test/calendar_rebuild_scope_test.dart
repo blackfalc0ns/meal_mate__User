@@ -12,7 +12,7 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_p
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_selected_day_section.dart';
 
 class _FakeOverviewCubit extends Cubit<CalendarOverviewState>
-    implements CalendarOverviewCubit {
+    implements CalendarOverviewViewModel {
   _FakeOverviewCubit(super.state);
 
   void emitState(CalendarOverviewState newState) => emit(newState);
@@ -22,7 +22,7 @@ class _FakeOverviewCubit extends Cubit<CalendarOverviewState>
 }
 
 class _FakeMealSelectionCubit extends Cubit<MealSelectionState>
-    implements MealSelectionCubit {
+    implements MealSelectionViewModel {
   _FakeMealSelectionCubit(super.state);
 
   void emitState(MealSelectionState newState) => emit(newState);
@@ -66,8 +66,10 @@ void main() {
           home: Scaffold(
             body: MultiBlocProvider(
               providers: [
-                BlocProvider<CalendarOverviewCubit>.value(value: overviewCubit),
-                BlocProvider<MealSelectionCubit>.value(value: mealCubit),
+                BlocProvider<CalendarOverviewViewModel>.value(
+                  value: overviewCubit,
+                ),
+                BlocProvider<MealSelectionViewModel>.value(value: mealCubit),
               ],
               child: Builder(
                 builder: (context) {

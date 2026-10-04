@@ -32,8 +32,8 @@ class CalendarNavigationCoordinator {
     if (_restaurantSheetOpen) return;
     _restaurantSheetOpen = true;
 
-    final restaurantPickerCubit = context.read<RestaurantPickerCubit>();
-    final flowCubit = context.read<CalendarFlowCubit>();
+    final restaurantPickerCubit = context.read<RestaurantPickerViewModel>();
+    final flowCubit = context.read<CalendarFlowViewModel>();
     final locale = context.localization;
 
     final selectedRestaurant =
@@ -42,7 +42,7 @@ class CalendarNavigationCoordinator {
           isScrollControlled: true,
           backgroundColor: context.colorScheme.surface,
           builder: (sheetContext) {
-            return BlocProvider<RestaurantPickerCubit>.value(
+            return BlocProvider<RestaurantPickerViewModel>.value(
               value: restaurantPickerCubit,
               child: const CalendarRestaurantSelectionSheet(),
             );
@@ -69,15 +69,17 @@ class CalendarNavigationCoordinator {
     if (_mealPickerOpen) return;
     _mealPickerOpen = true;
 
-    final mealSelectionCubit = context.read<MealSelectionCubit>();
-    final flowCubit = context.read<CalendarFlowCubit>();
+    final mealSelectionCubit = context.read<MealSelectionViewModel>();
+    final flowCubit = context.read<CalendarFlowViewModel>();
 
     final route = MaterialPageRoute<void>(
       builder: (_) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<MealSelectionCubit>.value(value: mealSelectionCubit),
-            BlocProvider<CalendarFlowCubit>.value(value: flowCubit),
+            BlocProvider<MealSelectionViewModel>.value(
+              value: mealSelectionCubit,
+            ),
+            BlocProvider<CalendarFlowViewModel>.value(value: flowCubit),
           ],
           child: CalendarMealSelectionScreen(
             saveButtonController:

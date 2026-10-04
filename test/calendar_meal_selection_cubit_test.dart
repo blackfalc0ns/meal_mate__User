@@ -136,12 +136,12 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late _ControllableCalendarRepo repo;
-  late MealSelectionCubit cubit;
+  late MealSelectionViewModel cubit;
   final testDate = DateTime(2026, 10, 15);
 
   setUp(() {
     repo = _ControllableCalendarRepo();
-    cubit = MealSelectionCubit(
+    cubit = MealSelectionViewModel(
       GetCalendarAvailableMealsUseCase(repo),
       SaveCalendarDayMealsUseCase(repo),
       AutoSelectCalendarDayUseCase(repo),

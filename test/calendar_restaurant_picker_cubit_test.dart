@@ -64,11 +64,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late _ControllableCalendarRepo repo;
-  late RestaurantPickerCubit cubit;
+  late RestaurantPickerViewModel cubit;
 
   setUp(() {
     repo = _ControllableCalendarRepo();
-    cubit = RestaurantPickerCubit(
+    cubit = RestaurantPickerViewModel(
       GetCalendarRestaurantsUseCase(repo),
       SetCalendarDayRestaurantUseCase(repo),
     );

@@ -156,5 +156,3 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     emit(const RestaurantPickerState());
   }
 }
-
-typedef RestaurantPickerCubit = RestaurantPickerViewModel;

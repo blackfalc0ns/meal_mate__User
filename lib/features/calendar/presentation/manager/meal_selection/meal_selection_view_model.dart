@@ -474,5 +474,3 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
     );
   }
 }
-
-typedef MealSelectionCubit = MealSelectionViewModel;

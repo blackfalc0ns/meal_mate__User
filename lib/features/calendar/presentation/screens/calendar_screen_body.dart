@@ -87,17 +87,17 @@ class CalendarScreenBody extends StatelessWidget {
                     onChangeMeal ??
                     () {
                       final day = context
-                          .read<CalendarOverviewCubit>()
+                          .read<CalendarOverviewViewModel>()
                           .state
                           .selectedDay;
                       final date =
                           context
-                              .read<CalendarOverviewCubit>()
+                              .read<CalendarOverviewViewModel>()
                               .state
                               .selectedDate ??
                           day?.date;
                       final subId = context
-                          .read<CalendarOverviewCubit>()
+                          .read<CalendarOverviewViewModel>()
                           .state
                           .subscriptionId;
                       final restaurant = day?.restaurant;
@@ -106,7 +106,7 @@ class CalendarScreenBody extends StatelessWidget {
                           subId.isNotEmpty &&
                           restaurant != null) {
                         unawaited(
-                          context.read<MealSelectionCubit>().load(
+                          context.read<MealSelectionViewModel>().load(
                             subscriptionId: subId,
                             date: date,
                             restaurantId: restaurant.id,

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_menu_mapper.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_save_button.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
@@ -25,7 +25,7 @@ class CalendarMealSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        BlocBuilder<MealSelectionCubit, MealSelectionState>(
+        BlocBuilder<MealSelectionViewModel, MealSelectionState>(
           buildWhen: (previous, current) =>
               previous.availableMeals != current.availableMeals ||
               previous.selectedMealIds != current.selectedMealIds ||
@@ -58,11 +58,11 @@ class CalendarMealSelectionScreen extends StatelessWidget {
               mode: RestaurantMenuMode.selection,
               menuData: menuData,
               onMealToggled: (mealId) {
-                context.read<MealSelectionCubit>().toggleMeal(mealId);
+                context.read<MealSelectionViewModel>().toggleMeal(mealId);
               },
               onLoadMore: (slot) {
                 unawaited(
-                  context.read<MealSelectionCubit>().loadMore(
+                  context.read<MealSelectionViewModel>().loadMore(
                     slot: slot,
                     localeName: locale.localeName,
                   ),

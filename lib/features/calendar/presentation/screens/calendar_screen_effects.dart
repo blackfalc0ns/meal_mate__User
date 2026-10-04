@@ -22,7 +22,7 @@ class CalendarScreenEffects extends StatelessWidget {
   Widget build(BuildContext context) {
     final activeCoordinator = coordinator ?? CalendarNavigationCoordinator();
 
-    return BlocListener<CalendarFlowCubit, CalendarFlowState>(
+    return BlocListener<CalendarFlowViewModel, CalendarFlowState>(
       listenWhen: (previous, current) =>
           current.effect != null && previous.effect?.id != current.effect?.id,
       listener: (context, state) {

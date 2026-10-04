@@ -58,7 +58,7 @@ class CalendarContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<
-      CalendarOverviewCubit,
+      CalendarOverviewViewModel,
       CalendarOverviewState,
       CalendarViewMode
     >(
@@ -137,7 +137,7 @@ class CalendarContent extends StatelessWidget {
   Widget _buildErrorView(BuildContext context) {
     final locale = context.localization;
     final failure = context
-        .watch<CalendarOverviewCubit>()
+        .watch<CalendarOverviewViewModel>()
         .state
         .calendarFailure;
     if (failure == null) return const SizedBox.shrink();
@@ -146,11 +146,11 @@ class CalendarContent extends StatelessWidget {
       exception: failure.exception,
       onRetry: () {
         final subId = context
-            .read<CalendarOverviewCubit>()
+            .read<CalendarOverviewViewModel>()
             .state
             .subscriptionId;
         unawaited(
-          context.read<CalendarOverviewCubit>().loadCalendar(
+          context.read<CalendarOverviewViewModel>().loadCalendar(
             subscriptionId: subId,
             localeName: locale.localeName,
           ),

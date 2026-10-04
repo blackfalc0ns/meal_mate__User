@@ -37,7 +37,10 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
       _isInitialized = true;
       DateTime? initialDate;
       try {
-        initialDate = context.read<CalendarOverviewCubit>().state.selectedDate;
+        initialDate = context
+            .read<CalendarOverviewViewModel>()
+            .state
+            .selectedDate;
       } catch (_) {}
       final effectiveDate = initialDate ?? DateTime.now();
       _focusedMonth = DateTime(effectiveDate.year, effectiveDate.month);
@@ -116,7 +119,7 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
     }
 
     return BlocSelector<
-      CalendarOverviewCubit,
+      CalendarOverviewViewModel,
       CalendarOverviewState,
       ({List<CalendarDayEntity> days, DateTime? selectedDate})
     >(
@@ -149,7 +152,7 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
           onDaySelected:
               widget.onDaySelected ??
               (day) {
-                context.read<CalendarOverviewCubit>().selectDay(
+                context.read<CalendarOverviewViewModel>().selectDay(
                   day: day,
                   localeName: locale.localeName,
                 );

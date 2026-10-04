@@ -33,7 +33,7 @@ class CalendarSelectedDaySection extends StatelessWidget {
     final locale = context.localization;
 
     return BlocSelector<
-      CalendarOverviewCubit,
+      CalendarOverviewViewModel,
       CalendarOverviewState,
       ({
         CalendarDayEntity? selectedDay,
@@ -47,7 +47,7 @@ class CalendarSelectedDaySection extends StatelessWidget {
         canConfirm: state.canConfirmSelectedDayMeals,
       ),
       builder: (context, overviewData) {
-        return BlocSelector<MealSelectionCubit, MealSelectionState, bool>(
+        return BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(
           selector: (mealState) => mealState.isConfirming,
           builder: (context, isConfirming) {
             return CalendarDayContent(
@@ -61,13 +61,13 @@ class CalendarSelectedDaySection extends StatelessWidget {
                   () {
                     try {
                       unawaited(
-                        context.read<CalendarFlowCubit>().confirmMeals(
+                        context.read<CalendarFlowViewModel>().confirmMeals(
                           localeName: locale.localeName,
                         ),
                       );
                     } catch (_) {
                       unawaited(
-                        context.read<MealSelectionCubit>().confirm(
+                        context.read<MealSelectionViewModel>().confirm(
                           localeName: locale.localeName,
                         ),
                       );

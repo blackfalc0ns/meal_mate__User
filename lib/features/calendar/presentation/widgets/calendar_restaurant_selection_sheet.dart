@@ -25,7 +25,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
     String? effectiveSubId = subscriptionId;
 
     try {
-      final overviewState = context.read<CalendarOverviewCubit>().state;
+      final overviewState = context.read<CalendarOverviewViewModel>().state;
       effectiveDate ??=
           overviewState.selectedDate ?? overviewState.selectedDay?.date;
       effectiveSubId ??= overviewState.subscriptionId;
@@ -34,7 +34,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
     final resolvedDate = effectiveDate ?? DateTime.now();
     final resolvedSubId = effectiveSubId ?? '';
 
-    return BlocBuilder<RestaurantPickerCubit, RestaurantPickerState>(
+    return BlocBuilder<RestaurantPickerViewModel, RestaurantPickerState>(
       buildWhen: (previous, current) =>
           previous.restaurants != current.restaurants ||
           previous.isLoading != current.isLoading ||
@@ -46,7 +46,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
           return ApiErrorWidget(
             exception: failure.exception,
             onRetry: () => unawaited(
-              context.read<RestaurantPickerCubit>().load(
+              context.read<RestaurantPickerViewModel>().load(
                 date: resolvedDate,
                 subscriptionId: resolvedSubId,
                 localeName: locale.localeName,
@@ -60,7 +60,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
           isLoading: sheetState.isLoading,
           onSearchChanged: (query) {
             unawaited(
-              context.read<RestaurantPickerCubit>().load(
+              context.read<RestaurantPickerViewModel>().load(
                 date: resolvedDate,
                 subscriptionId: resolvedSubId,
                 localeName: locale.localeName,

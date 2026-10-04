@@ -54,7 +54,7 @@ void main() {
       changeMealCallbackIndex,
     );
     final loadAvailableMealsIndex = source.indexOf(
-      'context.read<MealSelectionCubit>().load(',
+      'context.read<MealSelectionViewModel>().load(',
       changeMealCallbackIndex,
     );
 
@@ -97,7 +97,11 @@ void main() {
           ).readAsStringSync();
 
       expect(openMealPickerSource, contains('BlocSelector<'));
-      expect(openMealPickerSource, contains('MealSelectionCubit,'));
+      expect(
+        openMealPickerSource.contains('MealSelectionViewModel,') ||
+            openMealPickerSource.contains('MealSelectionCubit,'),
+        isTrue,
+      );
       expect(openMealPickerSource, contains('MealSelectionState,'));
       expect(openMealPickerSource, contains('state.isSaving'));
       expect(

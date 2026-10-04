@@ -257,5 +257,3 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
             SubscriptionErrorCodes.commonNotFound;
   }
 }
-
-typedef CalendarOverviewCubit = CalendarOverviewViewModel;

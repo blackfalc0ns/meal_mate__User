@@ -7,7 +7,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selec
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_save_button.dart';
 
 class _FakeMealSelectionCubit extends Cubit<MealSelectionState>
-    implements MealSelectionCubit {
+    implements MealSelectionViewModel {
   _FakeMealSelectionCubit([super.state = const MealSelectionState()]);
 
   void emitState(MealSelectionState newState) {
@@ -23,7 +23,7 @@ void main() {
     bool? isLoading,
     bool? enabled,
     VoidCallback? onPressed,
-    MealSelectionCubit? cubit,
+    MealSelectionViewModel? cubit,
   }) {
     return MaterialApp(
       locale: const Locale('en'),
@@ -31,7 +31,7 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: cubit != null
-            ? BlocProvider<MealSelectionCubit>.value(
+            ? BlocProvider<MealSelectionViewModel>.value(
                 value: cubit,
                 child: CalendarMealSaveButton(
                   isLoading: isLoading,

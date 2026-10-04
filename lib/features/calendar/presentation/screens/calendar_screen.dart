@@ -26,10 +26,10 @@ class CalendarScreen extends StatefulWidget {
 
   final bool showBottomSpace;
   final String? subscriptionId;
-  final CalendarOverviewCubit? overviewCubit;
-  final RestaurantPickerCubit? restaurantPickerCubit;
-  final MealSelectionCubit? mealSelectionCubit;
-  final CalendarFlowCubit? flowCubit;
+  final CalendarOverviewViewModel? overviewCubit;
+  final RestaurantPickerViewModel? restaurantPickerCubit;
+  final MealSelectionViewModel? mealSelectionCubit;
+  final CalendarFlowViewModel? flowCubit;
   final CalendarNavigationCoordinator? coordinator;
   final VoidCallback? onBackPressed;
 
@@ -38,10 +38,10 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late final CalendarOverviewCubit _overviewCubit;
-  late final RestaurantPickerCubit _restaurantPickerCubit;
-  late final MealSelectionCubit _mealSelectionCubit;
-  late final CalendarFlowCubit _flowCubit;
+  late final CalendarOverviewViewModel _overviewCubit;
+  late final RestaurantPickerViewModel _restaurantPickerCubit;
+  late final MealSelectionViewModel _mealSelectionCubit;
+  late final CalendarFlowViewModel _flowCubit;
   late final CalendarNavigationCoordinator _coordinator;
 
   bool _didLoad = false;
@@ -49,14 +49,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _overviewCubit = widget.overviewCubit ?? getIt<CalendarOverviewCubit>();
+    _overviewCubit = widget.overviewCubit ?? getIt<CalendarOverviewViewModel>();
     _restaurantPickerCubit =
-        widget.restaurantPickerCubit ?? getIt<RestaurantPickerCubit>();
+        widget.restaurantPickerCubit ?? getIt<RestaurantPickerViewModel>();
     _mealSelectionCubit =
-        widget.mealSelectionCubit ?? getIt<MealSelectionCubit>();
+        widget.mealSelectionCubit ?? getIt<MealSelectionViewModel>();
     _flowCubit =
         widget.flowCubit ??
-        CalendarFlowCubit(
+        CalendarFlowViewModel(
           overviewCubit: _overviewCubit,
           restaurantPickerCubit: _restaurantPickerCubit,
           mealSelectionCubit: _mealSelectionCubit,
@@ -90,12 +90,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CalendarOverviewCubit>.value(value: _overviewCubit),
-        BlocProvider<RestaurantPickerCubit>.value(
+        BlocProvider<CalendarOverviewViewModel>.value(value: _overviewCubit),
+        BlocProvider<RestaurantPickerViewModel>.value(
           value: _restaurantPickerCubit,
         ),
-        BlocProvider<MealSelectionCubit>.value(value: _mealSelectionCubit),
-        BlocProvider<CalendarFlowCubit>.value(value: _flowCubit),
+        BlocProvider<MealSelectionViewModel>.value(value: _mealSelectionCubit),
+        BlocProvider<CalendarFlowViewModel>.value(value: _flowCubit),
       ],
       child: CalendarScreenEffects(
         coordinator: _coordinator,

@@ -36,7 +36,7 @@ class CalendarMealSaveButton extends StatelessWidget {
     }
 
     return BlocSelector<
-      MealSelectionCubit,
+      MealSelectionViewModel,
       MealSelectionState,
       ({bool loading, bool enabled})
     >(
@@ -55,13 +55,13 @@ class CalendarMealSaveButton extends StatelessWidget {
                 final locale = context.localization;
                 try {
                   unawaited(
-                    context.read<CalendarFlowCubit>().confirmMeals(
+                    context.read<CalendarFlowViewModel>().confirmMeals(
                       localeName: locale.localeName,
                     ),
                   );
                 } catch (_) {
                   unawaited(
-                    context.read<MealSelectionCubit>().confirm(
+                    context.read<MealSelectionViewModel>().confirm(
                       localeName: locale.localeName,
                     ),
                   );

@@ -73,7 +73,7 @@ class _FakeNavigationCoordinator implements CalendarNavigationCoordinator {
 }
 
 class _TestFlowCubit extends Cubit<CalendarFlowState>
-    implements CalendarFlowCubit {
+    implements CalendarFlowViewModel {
   _TestFlowCubit() : super(const CalendarFlowState());
 
   void emitEffect(CalendarFlowEffect effect) {
@@ -93,8 +93,8 @@ void main() {
       locale: const Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: BlocProvider<CalendarFlowCubit>.value(
-        value: flowCubit as dynamic,
+      home: BlocProvider<CalendarFlowViewModel>.value(
+        value: flowCubit,
         child: CalendarScreenEffects(
           coordinator: coordinator,
           child: const Scaffold(body: Text('Content')),

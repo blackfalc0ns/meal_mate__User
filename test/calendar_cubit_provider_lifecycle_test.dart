@@ -78,7 +78,7 @@ class _FakeProfileRepo implements ProfileRepository {
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError();
 }
 
-class _TrackingOverviewCubit extends CalendarOverviewCubit {
+class _TrackingOverviewCubit extends CalendarOverviewViewModel {
   final List<String> closeLog;
   int closeCount = 0;
 
@@ -98,7 +98,7 @@ class _TrackingOverviewCubit extends CalendarOverviewCubit {
   }
 }
 
-class _TrackingRestaurantPickerCubit extends RestaurantPickerCubit {
+class _TrackingRestaurantPickerCubit extends RestaurantPickerViewModel {
   final List<String> closeLog;
   int closeCount = 0;
 
@@ -112,7 +112,7 @@ class _TrackingRestaurantPickerCubit extends RestaurantPickerCubit {
   }
 }
 
-class _TrackingMealSelectionCubit extends MealSelectionCubit {
+class _TrackingMealSelectionCubit extends MealSelectionViewModel {
   final List<String> closeLog;
   int closeCount = 0;
 
@@ -132,7 +132,7 @@ class _TrackingMealSelectionCubit extends MealSelectionCubit {
   }
 }
 
-class _TrackingFlowCubit extends CalendarFlowCubit {
+class _TrackingFlowCubit extends CalendarFlowViewModel {
   final List<String> closeLog;
   int closeCount = 0;
 
@@ -232,10 +232,12 @@ void main() {
 
       // Verify exactly the passed instances were provided via MultiBlocProvider
       final descendantElement = tester.element(find.byType(CalendarHeader));
-      final providedOverview = descendantElement.read<CalendarOverviewCubit>();
-      final providedPicker = descendantElement.read<RestaurantPickerCubit>();
-      final providedMeals = descendantElement.read<MealSelectionCubit>();
-      final providedFlow = descendantElement.read<CalendarFlowCubit>();
+      final providedOverview = descendantElement
+          .read<CalendarOverviewViewModel>();
+      final providedPicker = descendantElement
+          .read<RestaurantPickerViewModel>();
+      final providedMeals = descendantElement.read<MealSelectionViewModel>();
+      final providedFlow = descendantElement.read<CalendarFlowViewModel>();
       expect(providedOverview, same(overviewCubit));
       expect(providedPicker, same(restaurantPickerCubit));
       expect(providedMeals, same(mealSelectionCubit));

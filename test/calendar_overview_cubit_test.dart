@@ -70,7 +70,7 @@ class _ControllableProfileRepo implements ProfileRepository {
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError();
 }
 
-class _TestOverviewCubit extends CalendarOverviewCubit {
+class _TestOverviewCubit extends CalendarOverviewViewModel {
   _TestOverviewCubit(
     super.getCalendarUseCase,
     super.getCalendarDayUseCase,

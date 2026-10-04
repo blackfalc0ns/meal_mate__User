@@ -14,17 +14,29 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant
 
 @injectable
 class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
-  final CalendarOverviewViewModel overviewCubit;
-  final RestaurantPickerViewModel restaurantPickerCubit;
-  final MealSelectionViewModel mealSelectionCubit;
+  final CalendarOverviewViewModel overviewViewModel;
+  final RestaurantPickerViewModel restaurantPickerViewModel;
+  final MealSelectionViewModel mealSelectionViewModel;
+
+  CalendarOverviewViewModel get overviewCubit => overviewViewModel;
+  RestaurantPickerViewModel get restaurantPickerCubit =>
+      restaurantPickerViewModel;
+  MealSelectionViewModel get mealSelectionCubit => mealSelectionViewModel;
 
   int _nextEffectId = 1;
 
   CalendarFlowViewModel({
-    required this.overviewCubit,
-    required this.restaurantPickerCubit,
-    required this.mealSelectionCubit,
-  }) : super(const CalendarFlowState());
+    CalendarOverviewViewModel? overviewViewModel,
+    RestaurantPickerViewModel? restaurantPickerViewModel,
+    MealSelectionViewModel? mealSelectionViewModel,
+    CalendarOverviewViewModel? overviewCubit,
+    RestaurantPickerViewModel? restaurantPickerCubit,
+    MealSelectionViewModel? mealSelectionCubit,
+  }) : overviewViewModel = (overviewViewModel ?? overviewCubit)!,
+       restaurantPickerViewModel =
+           (restaurantPickerViewModel ?? restaurantPickerCubit)!,
+       mealSelectionViewModel = (mealSelectionViewModel ?? mealSelectionCubit)!,
+       super(const CalendarFlowState());
 
   void doIntent(CalendarFlowEvent event) {
     switch (event) {
@@ -317,5 +329,3 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     return super.close();
   }
 }
-
-typedef CalendarFlowCubit = CalendarFlowViewModel;
