@@ -3255,6 +3255,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_restaurant_name => 'Restaurant name';
 
   @override
+  String get calendar_restaurant_subtitle =>
+      'Balanced healthy meals with natural ingredients';
+
+  @override
   String get calendar_restaurant_description =>
       'We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.';
 
@@ -3385,8 +3389,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get calendar_restaurant_repetition_prefix => 'Repeat';
+
+  @override
+  String calendar_restaurant_usage_badge(int used, int limit) {
+    return 'Used $used/$limit';
+  }
+
+  @override
   String calendar_restaurant_quota_exhausted(int limit) {
     return 'Quota limit reached ($limit/$limit)';
+  }
+
+  @override
+  String calendar_restaurant_quota_exhausted_badge(int limit) {
+    return 'Limit reached ($limit/$limit)';
   }
 
   @override

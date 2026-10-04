@@ -3201,6 +3201,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_restaurant_name => 'اسم المطعم';
 
   @override
+  String get calendar_restaurant_subtitle =>
+      'وجبات صحية متوازنة بمكونات طبيعية';
+
+  @override
   String get calendar_restaurant_description =>
       'نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة\nوطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.';
 
@@ -3328,8 +3332,21 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get calendar_restaurant_repetition_prefix => 'تكرار';
+
+  @override
+  String calendar_restaurant_usage_badge(int used, int limit) {
+    return 'تكرار $limit/$used';
+  }
+
+  @override
   String calendar_restaurant_quota_exhausted(int limit) {
     return 'تم استهلاك الحد ($limit/$limit)';
+  }
+
+  @override
+  String calendar_restaurant_quota_exhausted_badge(int limit) {
+    return 'مكتمل ($limit/$limit)';
   }
 
   @override

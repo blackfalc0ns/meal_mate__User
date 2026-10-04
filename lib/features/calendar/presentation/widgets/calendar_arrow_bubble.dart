@@ -10,19 +10,21 @@ class CalendarArrowBubble extends StatelessWidget {
     final color = context.colorScheme;
 
     return SizedBox(
-      width: 24.74,
-      height: 24.74,
+      width: 30,
+      height: 30,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color.surfaceContainerHighest,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          isLocked
-              ? Icons.lock_outline_rounded
-              : Icons.arrow_back_ios_new_rounded,
-          color: isLocked ? color.error : color.onSurface,
-          size: isLocked ? 13 : 13,
+        child: Center(
+          child: Icon(
+            isLocked
+                ? Icons.lock_outline_rounded
+                : Icons.arrow_forward_ios_rounded,
+            color: isLocked ? color.error : color.onSurface,
+            size: Spacing.iconSm,
+          ),
         ),
       ),
     );

@@ -6,7 +6,7 @@ class CalendarRestaurantPickerLogo extends StatelessWidget {
     this.type,
     this.logoUrl,
     this.semanticLabel,
-    this.size = 80,
+    this.size = 64,
   });
 
   final CalendarRestaurantLogoType? type;

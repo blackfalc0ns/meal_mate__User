@@ -6122,6 +6122,12 @@ abstract class AppLocalizations {
   /// **'Restaurant name'**
   String get calendar_restaurant_name;
 
+  /// No description provided for @calendar_restaurant_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced healthy meals with natural ingredients'**
+  String get calendar_restaurant_subtitle;
+
   /// No description provided for @calendar_restaurant_description.
   ///
   /// In en, this message translates to:
@@ -6368,11 +6374,29 @@ abstract class AppLocalizations {
   /// **'Used {used} of {limit}'**
   String calendar_restaurant_usage_limit(int used, int limit);
 
+  /// No description provided for @calendar_restaurant_repetition_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get calendar_restaurant_repetition_prefix;
+
+  /// No description provided for @calendar_restaurant_usage_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Used {used}/{limit}'**
+  String calendar_restaurant_usage_badge(int used, int limit);
+
   /// No description provided for @calendar_restaurant_quota_exhausted.
   ///
   /// In en, this message translates to:
   /// **'Quota limit reached ({limit}/{limit})'**
   String calendar_restaurant_quota_exhausted(int limit);
+
+  /// No description provided for @calendar_restaurant_quota_exhausted_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit reached ({limit}/{limit})'**
+  String calendar_restaurant_quota_exhausted_badge(int limit);
 
   /// No description provided for @calendar_meal_suffix.
   ///

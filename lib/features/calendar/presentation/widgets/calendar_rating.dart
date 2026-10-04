@@ -15,25 +15,22 @@ class CalendarRating extends StatelessWidget {
     final color = context.colorScheme;
     final showRating = value.trim().isNotEmpty;
 
-    return SizedBox(
-      width: 38,
-      child: showRating
-          ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.star_rounded, color: color.primary, size: 13),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  value,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: 10.96,
-                    color: color.onSurface,
-                  ).copyWith(letterSpacing: 0),
-                ),
-              ],
-            )
-          : const SizedBox.shrink(),
+    if (!showRating) return const SizedBox.shrink();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          value,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size12,
+            color: color.onSurface,
+          ),
+        ),
+        const SizedBox(width: Spacing.xxs),
+        Icon(Icons.star_rounded, color: color.primary, size: 15),
+      ],
     );
   }
 }

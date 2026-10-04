@@ -1159,6 +1159,7 @@
     }
   },
   "calendar_restaurant_name": "Restaurant name",
+  "calendar_restaurant_subtitle": "Balanced healthy meals with natural ingredients",
   "calendar_restaurant_description": "We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.",
   "calendar_ingredient_origin_title": "Origin country for main ingredients",
   "calendar_meat": "Meat",
@@ -1210,8 +1211,28 @@
       }
     }
   },
+  "calendar_restaurant_repetition_prefix": "Repeat",
+  "calendar_restaurant_usage_badge": "Used {used}/{limit}",
+  "@calendar_restaurant_usage_badge": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "calendar_restaurant_quota_exhausted": "Quota limit reached ({limit}/{limit})",
   "@calendar_restaurant_quota_exhausted": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_restaurant_quota_exhausted_badge": "Limit reached ({limit}/{limit})",
+  "@calendar_restaurant_quota_exhausted_badge": {
     "placeholders": {
       "limit": {
         "type": "int"

@@ -1155,6 +1155,7 @@
     }
   },
   "calendar_restaurant_name": "اسم المطعم",
+  "calendar_restaurant_subtitle": "وجبات صحية متوازنة بمكونات طبيعية",
   "calendar_restaurant_description": "نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة\nوطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.",
   "calendar_ingredient_origin_title": "بلد المنشأ للمكونات الأساسية",
   "calendar_meat": "اللحوم",
@@ -1206,8 +1207,28 @@
       }
     }
   },
+  "calendar_restaurant_repetition_prefix": "تكرار",
+  "calendar_restaurant_usage_badge": "تكرار {limit}/{used}",
+  "@calendar_restaurant_usage_badge": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "calendar_restaurant_quota_exhausted": "تم استهلاك الحد ({limit}/{limit})",
   "@calendar_restaurant_quota_exhausted": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_restaurant_quota_exhausted_badge": "مكتمل ({limit}/{limit})",
+  "@calendar_restaurant_quota_exhausted_badge": {
     "placeholders": {
       "limit": {
         "type": "int"
