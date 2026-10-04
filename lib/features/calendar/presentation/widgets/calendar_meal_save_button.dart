@@ -5,8 +5,8 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 

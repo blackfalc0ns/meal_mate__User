@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscr
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';

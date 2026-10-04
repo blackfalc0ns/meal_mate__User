@@ -98,16 +98,10 @@ import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_useca
     as _i133;
 import '../../features/calendar/presentation/manager/flow/calendar_flow_view_model.dart'
     as _i807;
-import '../../features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart'
-    as _i337;
 import '../../features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart'
     as _i1020;
-import '../../features/calendar/presentation/manager/overview/calendar_overview_cubit.dart'
-    as _i420;
 import '../../features/calendar/presentation/manager/overview/calendar_overview_view_model.dart'
     as _i568;
-import '../../features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart'
-    as _i878;
 import '../../features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart'
     as _i154;
 import '../../features/change_password/data/data_source/change_password_remote_data_source.dart'
@@ -618,13 +612,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i41.FamilyFlowSnapshotStore>(
       () => _i41.FamilyFlowSnapshotStore(),
-    );
-    gh.factory<_i807.CalendarFlowViewModel>(
-      () => _i807.CalendarFlowViewModel(
-        overviewCubit: gh<_i420.CalendarOverviewCubit>(),
-        restaurantPickerCubit: gh<_i878.RestaurantPickerCubit>(),
-        mealSelectionCubit: gh<_i337.MealSelectionCubit>(),
-      ),
     );
     gh.factory<_i12.FamilyCalendarViewModel>(
       () => _i12.FamilyCalendarViewModel(
@@ -1721,6 +1708,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i577.GetFamilyProgramsUseCase>(),
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
+    gh.factory<_i807.CalendarFlowViewModel>(
+      () => _i807.CalendarFlowViewModel(
+        overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
+        restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
+        mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

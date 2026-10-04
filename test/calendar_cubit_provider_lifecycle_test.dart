@@ -17,10 +17,10 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_res
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';

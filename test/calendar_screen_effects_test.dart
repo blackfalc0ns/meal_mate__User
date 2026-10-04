@@ -5,7 +5,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_effect.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';

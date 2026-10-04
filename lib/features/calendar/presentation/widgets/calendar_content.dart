@@ -9,7 +9,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_loading_skeleton.dart';

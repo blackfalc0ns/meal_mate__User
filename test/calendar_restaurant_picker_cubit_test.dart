@@ -7,7 +7,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 
 class _ControllableCalendarRepo implements CalendarRepository {
   final List<Completer<ApiResult<List<CalendarRestaurantOptionEntity>>>>

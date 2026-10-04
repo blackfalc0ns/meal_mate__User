@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_save_button.dart';
 

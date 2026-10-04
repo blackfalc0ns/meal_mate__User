@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 

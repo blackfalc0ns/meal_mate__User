@@ -5,10 +5,10 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_content.dart';
 

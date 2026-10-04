@@ -10,6 +10,10 @@ void main() {
     'features/calendar/presentation/manager/calendar_view_model.dart',
     'features/calendar/presentation/manager/calendar_state.dart',
     'features/calendar/presentation/manager/calendar_event.dart',
+    'calendar_overview_cubit.dart',
+    'restaurant_picker_cubit.dart',
+    'meal_selection_cubit.dart',
+    'calendar_flow_cubit.dart',
   ];
 
   const duplicateDirectories = <String>[
@@ -28,6 +32,10 @@ void main() {
     'lib/features/calendar/presentation/manager/calendar_state.dart',
     'lib/features/calendar/presentation/manager/calendar_state_extensions.dart',
     'lib/features/calendar/presentation/manager/calendar_event.dart',
+    'lib/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart',
+    'lib/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart',
+    'lib/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart',
+    'lib/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart',
   ];
 
   test('duplicate calendar presentation directories do not exist', () {

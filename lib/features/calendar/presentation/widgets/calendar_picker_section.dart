@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_days_builder.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 

@@ -8,15 +8,15 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_effect.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_state.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 
 @injectable
 class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
-  final CalendarOverviewCubit overviewCubit;
-  final RestaurantPickerCubit restaurantPickerCubit;
-  final MealSelectionCubit mealSelectionCubit;
+  final CalendarOverviewViewModel overviewCubit;
+  final RestaurantPickerViewModel restaurantPickerCubit;
+  final MealSelectionViewModel mealSelectionCubit;
 
   int _nextEffectId = 1;
 

@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_cale
 import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 
 class _ControllableCalendarRepo implements CalendarRepository {

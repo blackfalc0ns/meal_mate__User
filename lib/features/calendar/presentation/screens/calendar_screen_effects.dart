@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_effect.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_failure_message_mapper.dart';

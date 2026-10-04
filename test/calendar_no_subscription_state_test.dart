@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
