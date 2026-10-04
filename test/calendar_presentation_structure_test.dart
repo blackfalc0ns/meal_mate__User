@@ -7,6 +7,9 @@ void main() {
     'features/calendar/presentation/meal_selection/',
     'features/calendar/presentation/restaurant_picker/',
     'features/calendar/presentation/shared_calendar_widgets/',
+    'features/calendar/presentation/manager/calendar_view_model.dart',
+    'features/calendar/presentation/manager/calendar_state.dart',
+    'features/calendar/presentation/manager/calendar_event.dart',
   ];
 
   const duplicateDirectories = <String>[
@@ -14,6 +17,17 @@ void main() {
     'lib/features/calendar/presentation/meal_selection',
     'lib/features/calendar/presentation/restaurant_picker',
     'lib/features/calendar/presentation/shared_calendar_widgets',
+  ];
+
+  const legacyManagerFiles = <String>[
+    'lib/features/calendar/presentation/manager/calendar_view_model.dart',
+    'lib/features/calendar/presentation/manager/calendar_view_model_days.dart',
+    'lib/features/calendar/presentation/manager/calendar_view_model_restaurants.dart',
+    'lib/features/calendar/presentation/manager/calendar_view_model_meals.dart',
+    'lib/features/calendar/presentation/manager/calendar_view_model_actions.dart',
+    'lib/features/calendar/presentation/manager/calendar_state.dart',
+    'lib/features/calendar/presentation/manager/calendar_state_extensions.dart',
+    'lib/features/calendar/presentation/manager/calendar_event.dart',
   ];
 
   test('duplicate calendar presentation directories do not exist', () {
@@ -26,8 +40,54 @@ void main() {
     }
   });
 
+  test('legacy combined manager files do not exist', () {
+    for (final filePath in legacyManagerFiles) {
+      expect(
+        File(filePath).existsSync(),
+        isFalse,
+        reason: 'Legacy manager file $filePath should have been removed',
+      );
+    }
+  });
+
+  test('each sub-manager contains state, event, and viewmodel', () {
+    const expectedSubManagers = <String, List<String>>{
+      'overview': [
+        'calendar_overview_state.dart',
+        'calendar_overview_event.dart',
+        'calendar_overview_view_model.dart',
+      ],
+      'restaurant_picker': [
+        'restaurant_picker_state.dart',
+        'restaurant_picker_event.dart',
+        'restaurant_picker_view_model.dart',
+      ],
+      'meal_selection': [
+        'meal_selection_state.dart',
+        'meal_selection_event.dart',
+        'meal_selection_view_model.dart',
+      ],
+      'flow': [
+        'calendar_flow_state.dart',
+        'calendar_flow_event.dart',
+        'calendar_flow_view_model.dart',
+      ],
+    };
+
+    for (final entry in expectedSubManagers.entries) {
+      final subDir = 'lib/features/calendar/presentation/manager/${entry.key}';
+      expect(Directory(subDir).existsSync(), isTrue,
+          reason: 'Sub-manager directory $subDir must exist');
+      for (final fileName in entry.value) {
+        final filePath = '$subDir/$fileName';
+        expect(File(filePath).existsSync(), isTrue,
+            reason: '$filePath must exist in $subDir');
+      }
+    }
+  });
+
   test(
-    'no dart file imports forbidden duplicate calendar presentation paths',
+    'no dart file imports forbidden duplicate or legacy calendar presentation paths',
     () {
       final libDir = Directory('lib');
       expect(libDir.existsSync(), isTrue);

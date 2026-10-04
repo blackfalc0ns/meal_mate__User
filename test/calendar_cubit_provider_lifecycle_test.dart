@@ -17,7 +17,6 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_res
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
@@ -156,28 +155,7 @@ class _TrackingFlowCubit extends CalendarFlowCubit {
   }
 }
 
-class _TrackingViewModel extends CalendarViewModel {
-  int closeCount = 0;
 
-  _TrackingViewModel(
-    super.getCalendarUseCase,
-    super.getCalendarDayUseCase,
-    super.getRestaurantsUseCase,
-    super.getAvailableMealsUseCase,
-    super.saveDayMealsUseCase,
-    super.setDayRestaurantUseCase,
-    super.getCurrentCustomerSubscriptionUseCase,
-    super.sharedPrefHelper,
-    super.autoSelectDayUseCase,
-    super.confirmDayMealsUseCase,
-  );
-
-  @override
-  Future<void> close() {
-    closeCount++;
-    return super.close();
-  }
-}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -225,19 +203,6 @@ void main() {
       closeLog: closeLog,
     );
 
-    final viewModel = _TrackingViewModel(
-      GetCalendarUseCase(calendarRepo),
-      GetCalendarDayUseCase(calendarRepo),
-      GetCalendarRestaurantsUseCase(calendarRepo),
-      SetCalendarDayRestaurantUseCase(calendarRepo),
-      GetCalendarAvailableMealsUseCase(calendarRepo),
-      SaveCalendarDayMealsUseCase(calendarRepo),
-      AutoSelectCalendarDayUseCase(calendarRepo),
-      ConfirmCalendarDayMealsUseCase(calendarRepo),
-      GetCurrentCustomerSubscriptionUseCase(profileRepo),
-      prefHelper,
-    );
-
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.lightTheme,
@@ -256,7 +221,6 @@ void main() {
                       restaurantPickerCubit: restaurantPickerCubit,
                       mealSelectionCubit: mealSelectionCubit,
                       flowCubit: flowCubit,
-                      viewModel: viewModel,
                     ),
                   ),
                 );
@@ -288,7 +252,6 @@ void main() {
     expect(restaurantPickerCubit.closeCount, 0);
     expect(mealSelectionCubit.closeCount, 0);
     expect(flowCubit.closeCount, 0);
-    expect(viewModel.closeCount, 0);
 
     // Pop the CalendarScreen route
     final navigator = tester.state<NavigatorState>(find.byType(Navigator));
@@ -300,7 +263,6 @@ void main() {
     expect(overviewCubit.closeCount, 1);
     expect(restaurantPickerCubit.closeCount, 1);
     expect(mealSelectionCubit.closeCount, 1);
-    expect(viewModel.closeCount, 1);
 
     // Verify close order: flow was closed first!
     expect(closeLog.first, 'flow');

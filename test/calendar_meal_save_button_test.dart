@@ -8,8 +8,7 @@ import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_m
 
 class _FakeMealSelectionCubit extends Cubit<MealSelectionState>
     implements MealSelectionCubit {
-  _FakeMealSelectionCubit([MealSelectionState state = const MealSelectionState()])
-      : super(state);
+  _FakeMealSelectionCubit([super.state = const MealSelectionState()]);
 
   void emitState(MealSelectionState newState) {
     emit(newState);

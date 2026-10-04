@@ -22,6 +22,9 @@ class RestaurantPickerState {
 
   bool get hasRestaurants => restaurants.isNotEmpty;
 
+  List<CalendarRestaurantOptionEntity> restaurantsWithUsageLimits() =>
+      restaurants;
+
   RestaurantPickerState copyWith({
     List<CalendarRestaurantOptionEntity>? restaurants,
     String? query,

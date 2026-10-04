@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
@@ -22,7 +20,6 @@ class CalendarScreen extends StatefulWidget {
     this.restaurantPickerCubit,
     this.mealSelectionCubit,
     this.flowCubit,
-    this.viewModel,
     this.coordinator,
     this.onBackPressed,
   });
@@ -33,7 +30,6 @@ class CalendarScreen extends StatefulWidget {
   final RestaurantPickerCubit? restaurantPickerCubit;
   final MealSelectionCubit? mealSelectionCubit;
   final CalendarFlowCubit? flowCubit;
-  final CalendarViewModel? viewModel;
   final CalendarNavigationCoordinator? coordinator;
   final VoidCallback? onBackPressed;
 
@@ -46,7 +42,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late final RestaurantPickerCubit _restaurantPickerCubit;
   late final MealSelectionCubit _mealSelectionCubit;
   late final CalendarFlowCubit _flowCubit;
-  late final CalendarViewModel _viewModel;
   late final CalendarNavigationCoordinator _coordinator;
 
   bool _didLoad = false;
@@ -65,7 +60,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           restaurantPickerCubit: _restaurantPickerCubit,
           mealSelectionCubit: _mealSelectionCubit,
         );
-    _viewModel = widget.viewModel ?? getIt<CalendarViewModel>();
     _coordinator = widget.coordinator ?? CalendarNavigationCoordinator();
   }
 
@@ -80,12 +74,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         localeName: context.localization.localeName,
       ),
     );
-    _viewModel.doIntent(
-      LoadCalendarEvent(
-        subscriptionId: widget.subscriptionId,
-        localeName: context.localization.localeName,
-      ),
-    );
   }
 
   @override
@@ -94,7 +82,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     unawaited(_mealSelectionCubit.close());
     unawaited(_restaurantPickerCubit.close());
     unawaited(_overviewCubit.close());
-    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -108,7 +95,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
         BlocProvider<MealSelectionCubit>.value(value: _mealSelectionCubit),
         BlocProvider<CalendarFlowCubit>.value(value: _flowCubit),
-        BlocProvider<CalendarViewModel>.value(value: _viewModel),
       ],
       child: CalendarScreenEffects(
         coordinator: _coordinator,

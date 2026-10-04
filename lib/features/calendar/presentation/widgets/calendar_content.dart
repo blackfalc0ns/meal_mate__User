@@ -9,7 +9,6 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
@@ -22,7 +21,6 @@ enum CalendarViewMode { loading, noSubscription, error, empty, data }
 class CalendarContent extends StatelessWidget {
   const CalendarContent({
     super.key,
-    this.state,
     required this.showBottomSpace,
     required this.onSelectRestaurant,
     required this.onChangeMeal,
@@ -30,7 +28,6 @@ class CalendarContent extends StatelessWidget {
     this.onNavigateToSubscriptions,
   });
 
-  final CalendarState? state;
   final bool showBottomSpace;
   final VoidCallback onSelectRestaurant;
   final VoidCallback onChangeMeal;
@@ -60,15 +57,6 @@ class CalendarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state != null) {
-      final staticMode = determineViewMode(
-        isLoading: state!.isCalendarLoading,
-        hasCalendarData: state!.hasCalendarData,
-        hasNoSubscription: state!.hasNoSubscription,
-        hasFailure: state!.calendarFailure != null,
-      );
-      return _buildViewForMode(context, mode: staticMode);
-    }
 
     return BlocSelector<
       CalendarOverviewCubit,

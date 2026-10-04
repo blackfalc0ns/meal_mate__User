@@ -1,43 +1,70 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_event.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_state.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantSelectionSheet extends StatelessWidget {
-  const CalendarRestaurantSelectionSheet({super.key});
+  const CalendarRestaurantSelectionSheet({
+    super.key,
+    this.date,
+    this.subscriptionId,
+  });
+
+  final DateTime? date;
+  final String? subscriptionId;
+
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    return BlocBuilder<CalendarViewModel, CalendarState>(
+    DateTime? effectiveDate = date;
+    String? effectiveSubId = subscriptionId;
+
+    try {
+      final overviewState = context.read<CalendarOverviewCubit>().state;
+      effectiveDate ??= overviewState.selectedDate ?? overviewState.selectedDay?.date;
+      effectiveSubId ??= overviewState.subscriptionId;
+    } catch (_) {}
+
+    final resolvedDate = effectiveDate ?? DateTime.now();
+    final resolvedSubId = effectiveSubId ?? '';
+
+    return BlocBuilder<RestaurantPickerCubit, RestaurantPickerState>(
       buildWhen: (previous, current) =>
           previous.restaurants != current.restaurants ||
-          previous.isRestaurantsLoading != current.isRestaurantsLoading ||
-          previous.restaurantsFailure != current.restaurantsFailure ||
-          previous.hasRestaurantPool != current.hasRestaurantPool,
+          previous.isLoading != current.isLoading ||
+          previous.failure != current.failure ||
+          previous.hasRestaurants != current.hasRestaurants,
       builder: (context, sheetState) {
-        final failure = sheetState.restaurantsFailure;
-        if (failure != null && !sheetState.hasRestaurantPool) {
+        final failure = sheetState.failure;
+        if (failure != null && !sheetState.hasRestaurants) {
           return ApiErrorWidget(
             exception: failure.exception,
-            onRetry: () => context.read<CalendarViewModel>().doIntent(
-              LoadCalendarRestaurantsEvent(localeName: locale.localeName),
+            onRetry: () => unawaited(
+              context.read<RestaurantPickerCubit>().load(
+                    date: resolvedDate,
+                    subscriptionId: resolvedSubId,
+                    localeName: locale.localeName,
+                  ),
             ),
           );
         }
 
         return CalendarRestaurantPickerSheet(
           restaurants: sheetState.restaurants,
-          isLoading: sheetState.isRestaurantsLoading,
+          isLoading: sheetState.isLoading,
           onSearchChanged: (query) {
-            context.read<CalendarViewModel>().doIntent(
-              LoadCalendarRestaurantsEvent(
-                localeName: locale.localeName,
-                query: query,
-              ),
+            unawaited(
+              context.read<RestaurantPickerCubit>().load(
+                    date: resolvedDate,
+                    subscriptionId: resolvedSubId,
+                    localeName: locale.localeName,
+                    query: query,
+                  ),
             );
           },
           onRestaurantSelected: (restaurant) {

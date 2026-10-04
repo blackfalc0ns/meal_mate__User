@@ -7,7 +7,6 @@ import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
-import 'package:meal_meat_user/features/calendar/presentation/manager/calendar_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_cubit.dart';
@@ -72,10 +71,6 @@ class CalendarNavigationCoordinator {
 
     final mealSelectionCubit = context.read<MealSelectionCubit>();
     final flowCubit = context.read<CalendarFlowCubit>();
-    CalendarViewModel? legacyViewModel;
-    try {
-      legacyViewModel = context.read<CalendarViewModel>();
-    } catch (_) {}
 
     final route = MaterialPageRoute<void>(
       builder: (_) {
@@ -83,8 +78,6 @@ class CalendarNavigationCoordinator {
           providers: [
             BlocProvider<MealSelectionCubit>.value(value: mealSelectionCubit),
             BlocProvider<CalendarFlowCubit>.value(value: flowCubit),
-            if (legacyViewModel != null)
-              BlocProvider<CalendarViewModel>.value(value: legacyViewModel),
           ],
           child: CalendarMealSelectionScreen(
             saveButtonController:
