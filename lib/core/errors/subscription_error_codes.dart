@@ -36,6 +36,9 @@ class SubscriptionErrorCodes {
   /// User must complete dietary preferences.
   static const String actionDietaryPreferences = 'DIETARY_PREFERENCES';
 
+  /// User must specify allergies.
+  static const String actionAllergies = 'ALLERGIES';
+
   // ── Calendar flow ──
   /// The selected day box requirements are not met.
   static const String calendarBoxIncomplete = 'calendar.box_incomplete';
