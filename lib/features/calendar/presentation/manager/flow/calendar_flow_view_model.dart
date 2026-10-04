@@ -107,6 +107,29 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     if (targetDate == null || targetSubId.isEmpty) return;
 
     final effectiveLocale = localeName ?? 'en';
+
+    unawaited(
+      mealSelectionViewModel.load(
+        subscriptionId: targetSubId,
+        date: targetDate,
+        restaurantId: restaurant.id,
+        localeName: effectiveLocale,
+        selectedRestaurant: restaurant,
+      ),
+    );
+
+    emit(
+      CalendarFlowState(
+        effect: OpenMealPickerEffect(
+          id: _nextEffectId++,
+          date: targetDate,
+          subscriptionId: targetSubId,
+          restaurantId: restaurant.id,
+          restaurant: restaurant,
+        ),
+      ),
+    );
+
     final result = await restaurantPickerViewModel.selectRestaurant(
       subscriptionId: targetSubId,
       date: targetDate,
@@ -119,26 +142,6 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     switch (result) {
       case ApiSuccessResult(:final data):
         overviewViewModel.replaceDay(data);
-        unawaited(
-          mealSelectionViewModel.load(
-            subscriptionId: targetSubId,
-            date: targetDate,
-            restaurantId: restaurant.id,
-            localeName: effectiveLocale,
-            selectedRestaurant: restaurant,
-          ),
-        );
-        emit(
-          CalendarFlowState(
-            effect: OpenMealPickerEffect(
-              id: _nextEffectId++,
-              date: targetDate,
-              subscriptionId: targetSubId,
-              restaurantId: restaurant.id,
-              restaurant: restaurant,
-            ),
-          ),
-        );
       case ApiErrorResult(:final failure):
         _handleFailure(failure, targetDate, targetSubId, effectiveLocale);
     }

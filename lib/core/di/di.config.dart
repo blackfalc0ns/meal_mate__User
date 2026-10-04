@@ -646,6 +646,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i148.DeviceIdService>(
       () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
     );
+    gh.factory<_i807.CalendarFlowViewModel>(
+      () => _i807.CalendarFlowViewModel(
+        overviewViewModel: gh<_i568.CalendarOverviewViewModel>(),
+        restaurantPickerViewModel: gh<_i154.RestaurantPickerViewModel>(),
+        mealSelectionViewModel: gh<_i1020.MealSelectionViewModel>(),
+        overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
+        restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
+        mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
+      ),
+    );
     gh.lazySingleton<_i43.BiometricService>(
       () => _i43.BiometricService(
         gh<_i152.LocalAuthentication>(),
@@ -1708,13 +1718,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i577.GetFamilyProgramsUseCase>(),
         gh<_i600.SaveFamilyMemberPlanUseCase>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
-      ),
-    );
-    gh.factory<_i807.CalendarFlowViewModel>(
-      () => _i807.CalendarFlowViewModel(
-        overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
-        restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
-        mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

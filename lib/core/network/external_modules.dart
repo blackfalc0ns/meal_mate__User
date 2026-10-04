@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
@@ -43,7 +44,17 @@ abstract class ExternalModules {
 
   @lazySingleton
   PrettyDioLogger providePrettyDioLogger() {
-    return PrettyDioLogger(requestHeader: false, requestBody: true);
+    return PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: false,
+      responseBody: true,
+      error: true,
+      compact: true,
+      maxWidth: 120,
+      enabled: kDebugMode,
+      logPrint: (object) => debugPrint(object.toString()),
+    );
   }
 
   @preResolve
