@@ -11,24 +11,24 @@ void main() {
       source,
       contains('onAddMeals: readOnly ? null : () => onSelectRestaurant()'),
     );
-    final screen = File(
-      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+    final body = File(
+      'lib/features/calendar/presentation/screens/calendar_screen_body.dart',
     ).readAsStringSync();
     expect(
-      screen,
-      contains('onSelectRestaurant: () => _openRestaurantPicker(context)'),
+      body,
+      contains('activeCoordinator.openRestaurantPicker(context)'),
     );
   });
 
   test(
     'restaurant picker selection waits for available meals before opening',
     () {
-      final source = File(
-        'lib/features/calendar/presentation/screens/calendar_screen.dart',
+      final coordinator = File(
+        'lib/features/calendar/presentation/screens/calendar_navigation_coordinator.dart',
       ).readAsStringSync();
 
       expect(
-        source,
+        coordinator,
         isNot(
           contains(
             'SelectCalendarRestaurantEvent(\n'
@@ -43,58 +43,49 @@ void main() {
     },
   );
 
-  test('change meal opens picker before loading available meals', () {
+  test('change meal opens picker and loads available meals', () {
     final source = File(
-      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+      'lib/features/calendar/presentation/screens/calendar_screen_body.dart',
     ).readAsStringSync();
 
-    final changeMealCallbackIndex = source.indexOf('onChangeMeal: () {');
+    final changeMealCallbackIndex = source.indexOf('onChangeMeal: onChangeMeal ??');
     final openMealPickerIndex = source.indexOf(
-      '_openMealPicker(context);',
+      'activeCoordinator.openMealPicker(context)',
       changeMealCallbackIndex,
     );
     final loadAvailableMealsIndex = source.indexOf(
-      'LoadCalendarAvailableMealsEvent(',
+      'context.read<MealSelectionCubit>().load(',
       changeMealCallbackIndex,
     );
 
     expect(changeMealCallbackIndex, isNonNegative);
     expect(openMealPickerIndex, isNonNegative);
     expect(loadAvailableMealsIndex, isNonNegative);
-    expect(openMealPickerIndex, lessThan(loadAvailableMealsIndex));
+    expect(loadAvailableMealsIndex, lessThan(openMealPickerIndex));
   });
 
-  test('meal picker closes only after save success count changes', () {
+  test('meal picker closes only on MealsSavedEffect', () {
     final source = File(
-      'lib/features/calendar/presentation/screens/calendar_screen.dart',
+      'lib/features/calendar/presentation/screens/calendar_screen_effects.dart',
     ).readAsStringSync();
 
-    final closeGuardIndex = source.indexOf('if (_mealSheetOpen &&');
+    final effectConditionIndex = source.indexOf('case MealsSavedEffect():');
     final snackbarIndex = source.indexOf(
-      'CustomSnackbar.showSuccess(',
-      closeGuardIndex,
+      'activeCoordinator.showSuccessSnackBar(',
+      effectConditionIndex,
     );
     final closeRouteIndex = source.indexOf(
-      '_closeMealPickerRoute();',
-      closeGuardIndex,
+      'activeCoordinator.closeMealPicker(',
+      effectConditionIndex,
     );
-    final closeGuard = source.substring(closeGuardIndex, closeRouteIndex);
 
-    expect(closeGuardIndex, isNonNegative);
+    expect(effectConditionIndex, isNonNegative);
     expect(snackbarIndex, isNonNegative);
     expect(closeRouteIndex, isNonNegative);
     expect(snackbarIndex, lessThan(closeRouteIndex));
-    expect(
-      closeGuard,
-      contains('state.saveSuccessCount != _handledSaveSuccessCount'),
-    );
   });
 
-  test('meal picker save button is selected separately from sheet rebuilds', () {
-    final source = File(
-      'lib/features/calendar/presentation/screens/calendar_screen.dart',
-    ).readAsStringSync();
-
+  test('meal picker save button is declarative and selected separately from sheet rebuilds', () {
     final openMealPickerSource =
         File(
           'lib/features/calendar/presentation/screens/calendar_meal_selection_screen.dart',
@@ -104,15 +95,9 @@ void main() {
         ).readAsStringSync();
 
     expect(openMealPickerSource, contains('BlocSelector<'));
-    expect(openMealPickerSource, contains('CalendarViewModel,'));
-    expect(openMealPickerSource, contains('CalendarState,'));
-    expect(openMealPickerSource, contains('canSave: state.canSaveMeals'));
-    expect(openMealPickerSource, contains('isSaving: state.isSaving'));
-    expect(openMealPickerSource, contains('onSave: null,'));
-    expect(openMealPickerSource, contains('RoundedLoadingButton('));
-    expect(source, contains('RoundedLoadingButtonController()'));
-    expect(openMealPickerSource, contains('controller: saveButtonController'));
-    expect(openMealPickerSource, contains('animateOnTap: false'));
-    expect(openMealPickerSource, isNot(contains('return AppButton(')));
+    expect(openMealPickerSource, contains('MealSelectionCubit,'));
+    expect(openMealPickerSource, contains('MealSelectionState,'));
+    expect(openMealPickerSource, contains('state.isSaving'));
+    expect(openMealPickerSource, isNot(contains('RoundedLoadingButtonController()')));
   });
 }
