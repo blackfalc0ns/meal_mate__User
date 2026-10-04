@@ -26,6 +26,24 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     required this.mealSelectionCubit,
   }) : super(const CalendarFlowState());
 
+  void doIntent(CalendarFlowEvent event) {
+    switch (event) {
+      case StartRestaurantPickerFlowEvent():
+        openRestaurantPicker(localeName: event.localeName);
+      case AcceptRestaurantFlowEvent():
+        unawaited(
+          selectRestaurant(
+            restaurant: event.restaurant,
+            localeName: event.localeName,
+          ),
+        );
+      case SaveMealsFlowEvent():
+        unawaited(saveMeals(localeName: event.localeName));
+      case ConfirmMealsFlowEvent():
+        unawaited(confirmMeals(localeName: event.localeName));
+    }
+  }
+
   void openRestaurantPicker({
     DateTime? date,
     String? subscriptionId,
@@ -291,24 +309,6 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         effect: CalendarFailureEffect(id: _nextEffectId++, failure: failure),
       ),
     );
-  }
-
-  void doIntent(CalendarFlowEvent event) {
-    switch (event) {
-      case StartRestaurantPickerFlowEvent():
-        openRestaurantPicker(localeName: event.localeName);
-      case AcceptRestaurantFlowEvent():
-        unawaited(
-          selectRestaurant(
-            restaurant: event.restaurant,
-            localeName: event.localeName,
-          ),
-        );
-      case SaveMealsFlowEvent():
-        unawaited(saveMeals(localeName: event.localeName));
-      case ConfirmMealsFlowEvent():
-        unawaited(confirmMeals(localeName: event.localeName));
-    }
   }
 
   @override

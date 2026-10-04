@@ -34,6 +34,33 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
   int _mealsRequestGeneration = 0;
   int _loadMoreRequestGeneration = 0;
 
+  void doIntent(MealSelectionEvent event) {
+    switch (event) {
+      case LoadMealsEvent():
+        unawaited(
+          load(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            restaurantId: event.restaurantId,
+            localeName: event.localeName,
+            initialSelectedMealIds: event.initialSelectedMealIds,
+          ),
+        );
+      case ToggleMealEvent():
+        toggleMeal(event.mealId);
+      case LoadMoreMealsEvent():
+        unawaited(loadMore(slot: event.slot, localeName: event.localeName));
+      case SaveMealsEvent():
+        unawaited(save(localeName: event.localeName));
+      case AutoSelectMealsEvent():
+        unawaited(autoSelect(localeName: event.localeName));
+      case ConfirmMealsEvent():
+        unawaited(confirm(localeName: event.localeName));
+      case ClearMealSelectionEvent():
+        clear();
+    }
+  }
+
   Future<void> load({
     required String subscriptionId,
     required DateTime date,
@@ -445,33 +472,6 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
         deliveryWindow: restaurant?.deliveryWindow ?? '',
       ),
     );
-  }
-
-  void doIntent(MealSelectionEvent event) {
-    switch (event) {
-      case LoadMealsEvent():
-        unawaited(
-          load(
-            subscriptionId: event.subscriptionId,
-            date: event.date,
-            restaurantId: event.restaurantId,
-            localeName: event.localeName,
-            initialSelectedMealIds: event.initialSelectedMealIds,
-          ),
-        );
-      case ToggleMealEvent():
-        toggleMeal(event.mealId);
-      case LoadMoreMealsEvent():
-        unawaited(loadMore(slot: event.slot, localeName: event.localeName));
-      case SaveMealsEvent():
-        unawaited(save(localeName: event.localeName));
-      case AutoSelectMealsEvent():
-        unawaited(autoSelect(localeName: event.localeName));
-      case ConfirmMealsEvent():
-        unawaited(confirm(localeName: event.localeName));
-      case ClearMealSelectionEvent():
-        clear();
-    }
   }
 }
 

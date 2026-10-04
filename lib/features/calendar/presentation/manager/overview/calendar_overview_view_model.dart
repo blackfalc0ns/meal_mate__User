@@ -33,6 +33,23 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
   int _calendarRequestGeneration = 0;
   int _dayRequestGeneration = 0;
 
+  void doIntent(CalendarOverviewEvent event) {
+    switch (event) {
+      case LoadCalendarEvent():
+        unawaited(
+          loadCalendar(
+            subscriptionId: event.subscriptionId,
+            localeName: event.localeName,
+            retryWithCurrentOnNotFound: event.retryWithCurrentOnNotFound,
+          ),
+        );
+      case SelectCalendarDayEvent():
+        selectDay(day: event.day, localeName: event.localeName);
+      case ReplaceCalendarDayEvent():
+        replaceDay(event.day);
+    }
+  }
+
   Future<void> loadCalendar({
     String? subscriptionId,
     required String localeName,
@@ -238,23 +255,6 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
         failure.code == SubscriptionErrorCodes.commonNotFound ||
         failure.exception.backendErrorCode ==
             SubscriptionErrorCodes.commonNotFound;
-  }
-
-  void doIntent(CalendarOverviewEvent event) {
-    switch (event) {
-      case LoadCalendarEvent():
-        unawaited(
-          loadCalendar(
-            subscriptionId: event.subscriptionId,
-            localeName: event.localeName,
-            retryWithCurrentOnNotFound: event.retryWithCurrentOnNotFound,
-          ),
-        );
-      case SelectCalendarDayEvent():
-        selectDay(day: event.day, localeName: event.localeName);
-      case ReplaceCalendarDayEvent():
-        replaceDay(event.day);
-    }
   }
 }
 

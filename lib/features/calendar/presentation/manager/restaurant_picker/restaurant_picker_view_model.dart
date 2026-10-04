@@ -24,6 +24,31 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
   int _restaurantRequestGeneration = 0;
   int _setRestaurantRequestGeneration = 0;
 
+  void doIntent(RestaurantPickerEvent event) {
+    switch (event) {
+      case LoadRestaurantsEvent():
+        unawaited(
+          load(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            localeName: event.localeName,
+            query: event.query,
+          ),
+        );
+      case SelectRestaurantEvent():
+        unawaited(
+          selectRestaurant(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            restaurant: event.restaurant,
+            localeName: event.localeName,
+          ),
+        );
+      case ClearRestaurantPickerEvent():
+        clear();
+    }
+  }
+
   Future<void> load({
     required String subscriptionId,
     required DateTime date,
@@ -129,31 +154,6 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     _restaurantRequestGeneration++;
     _setRestaurantRequestGeneration++;
     emit(const RestaurantPickerState());
-  }
-
-  void doIntent(RestaurantPickerEvent event) {
-    switch (event) {
-      case LoadRestaurantsEvent():
-        unawaited(
-          load(
-            subscriptionId: event.subscriptionId,
-            date: event.date,
-            localeName: event.localeName,
-            query: event.query,
-          ),
-        );
-      case SelectRestaurantEvent():
-        unawaited(
-          selectRestaurant(
-            subscriptionId: event.subscriptionId,
-            date: event.date,
-            restaurant: event.restaurant,
-            localeName: event.localeName,
-          ),
-        );
-      case ClearRestaurantPickerEvent():
-        clear();
-    }
   }
 }
 
