@@ -49,9 +49,19 @@ class _FakeNavigationCoordinator implements CalendarNavigationCoordinator {
     closeMealPickerCalls++;
   }
 
+  VoidCallback? lastOnBackToCalendar;
+  VoidCallback? lastOnViewMeals;
+
   @override
-  Future<void> showMealsConfirmationSheet(BuildContext context) async {
+  Future<void> showMealsConfirmationSheet(
+    BuildContext context, {
+    VoidCallback? onBackToCalendar,
+    VoidCallback? onViewMeals,
+    String? statusText,
+  }) async {
     showMealsConfirmationSheetCalls++;
+    lastOnBackToCalendar = onBackToCalendar;
+    lastOnViewMeals = onViewMeals;
   }
 
   @override
@@ -195,7 +205,7 @@ void main() {
   );
 
   testWidgets(
-    'handles MealsConfirmedEffect with snackbar, close, and confirmation sheet',
+    'handles MealsConfirmedEffect with snackbar, confirmation sheet, and navigation callbacks',
     (tester) async {
       final flowCubit = _TestFlowCubit();
       final coordinator = _FakeNavigationCoordinator();
@@ -213,9 +223,15 @@ void main() {
       flowCubit.emitEffect(const MealsConfirmedEffect(id: 5, day: day));
       await tester.pump();
 
-      expect(coordinator.closeMealPickerCalls, 1);
+      expect(coordinator.closeMealPickerCalls, 0);
       expect(coordinator.successSnackBars.length, 1);
       expect(coordinator.showMealsConfirmationSheetCalls, 1);
+
+      coordinator.lastOnViewMeals?.call();
+      expect(coordinator.closeMealPickerCalls, 0);
+
+      coordinator.lastOnBackToCalendar?.call();
+      expect(coordinator.closeMealPickerCalls, 1);
     },
   );
 

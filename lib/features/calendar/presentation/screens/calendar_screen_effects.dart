@@ -49,12 +49,21 @@ class CalendarScreenEffects extends StatelessWidget {
             );
             activeCoordinator.closeMealPicker(context);
           case MealsConfirmedEffect():
-            activeCoordinator.closeMealPicker(context);
             activeCoordinator.showSuccessSnackBar(
               context,
               context.localization.calendar_confirm_meals_success,
             );
-            unawaited(activeCoordinator.showMealsConfirmationSheet(context));
+            unawaited(
+              activeCoordinator.showMealsConfirmationSheet(
+                context,
+                onBackToCalendar: () {
+                  activeCoordinator.closeMealPicker(context);
+                },
+                onViewMeals: () {
+                  // User stays on meal selection screen
+                },
+              ),
+            );
           case CalendarFailureEffect():
             final message = CalendarFailureMessageMapper.map(
               failure: effect.failure,

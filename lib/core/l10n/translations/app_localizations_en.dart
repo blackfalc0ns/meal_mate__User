@@ -3435,6 +3435,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Awaiting Restaurant Confirmation';
 
   @override
+  String get calendar_status_confirmed => 'Confirmed';
+
+  @override
   String get calendar_confirmed_sheet_note =>
       'You can edit meals before the daily cutoff time.';
 

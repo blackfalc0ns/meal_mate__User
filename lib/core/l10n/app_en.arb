@@ -1216,6 +1216,7 @@
   "calendar_confirmed_sheet_subtitle": "Your selections have been saved successfully and meals will be prepared for the selected day.",
   "calendar_confirmed_sheet_status_label": "Status",
   "calendar_status_awaiting_restaurant": "Awaiting Restaurant Confirmation",
+  "calendar_status_confirmed": "Confirmed",
   "calendar_confirmed_sheet_note": "You can edit meals before the daily cutoff time.",
   "calendar_confirmed_sheet_back_to_calendar": "Back to Calendar",
   "calendar_confirmed_sheet_view_meals": "View Meals",

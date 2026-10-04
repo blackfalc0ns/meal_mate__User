@@ -245,7 +245,6 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
           canEdit: false,
         );
         overviewViewModel.replaceDay(confirmedDay);
-        mealSelectionViewModel.clear();
         emit(
           CalendarFlowState(
             effect: MealsConfirmedEffect(

@@ -141,10 +141,17 @@ class CalendarNavigationCoordinator {
     }
   }
 
-  Future<void> showMealsConfirmationSheet(BuildContext context) async {
+  Future<void> showMealsConfirmationSheet(
+    BuildContext context, {
+    VoidCallback? onBackToCalendar,
+    VoidCallback? onViewMeals,
+    String? statusText,
+  }) async {
     await CalendarMealsConfirmationSheet.show(
       context,
-      statusText: context.localization.calendar_status_awaiting_restaurant,
+      statusText: statusText ?? context.localization.calendar_status_confirmed,
+      onBackToCalendar: onBackToCalendar,
+      onViewMeals: onViewMeals,
     );
   }
 

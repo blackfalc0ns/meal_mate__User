@@ -6464,6 +6464,12 @@ abstract class AppLocalizations {
   /// **'Awaiting Restaurant Confirmation'**
   String get calendar_status_awaiting_restaurant;
 
+  /// No description provided for @calendar_status_confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get calendar_status_confirmed;
+
   /// No description provided for @calendar_confirmed_sheet_note.
   ///
   /// In en, this message translates to:

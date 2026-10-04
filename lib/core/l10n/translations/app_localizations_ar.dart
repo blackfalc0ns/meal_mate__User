@@ -3377,6 +3377,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_status_awaiting_restaurant => 'في انتظار تأكيد المطعم';
 
   @override
+  String get calendar_status_confirmed => 'مؤكد';
+
+  @override
   String get calendar_confirmed_sheet_note =>
       'يمكنك تعديل الوجبات قبل موعد الإغلاق اليومي';
 

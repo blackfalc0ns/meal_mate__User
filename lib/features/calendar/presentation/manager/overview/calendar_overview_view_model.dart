@@ -55,6 +55,14 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     required String localeName,
     bool retryWithCurrentOnNotFound = true,
   }) async {
+    emit(
+      state.copyWith(
+        isCalendarLoading: true,
+        hasNoSubscription: false,
+        clearCalendarFailure: true,
+      ),
+    );
+
     final resolvedSubscriptionId = subscriptionId?.trim().isNotEmpty == true
         ? subscriptionId!.trim()
         : await _resolveCurrentSubscriptionId();

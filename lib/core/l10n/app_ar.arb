@@ -1212,6 +1212,7 @@
   "calendar_confirmed_sheet_subtitle": "تم حفظ اختياراتك بنجاح وسيتم تجهيز وجباتك لليوم المحدد",
   "calendar_confirmed_sheet_status_label": "الحالة",
   "calendar_status_awaiting_restaurant": "في انتظار تأكيد المطعم",
+  "calendar_status_confirmed": "مؤكد",
   "calendar_confirmed_sheet_note": "يمكنك تعديل الوجبات قبل موعد الإغلاق اليومي",
   "calendar_confirmed_sheet_back_to_calendar": "العودة للتقويم",
   "calendar_confirmed_sheet_view_meals": "عرض الوجبات",

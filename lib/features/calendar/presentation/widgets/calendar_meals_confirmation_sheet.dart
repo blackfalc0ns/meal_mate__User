@@ -44,52 +44,52 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsetsDirectional.only(
-        top: Spacing.md,
-        start: Spacing.xl,
-        end: Spacing.xl,
-        bottom: Spacing.xxl,
+        top: Spacing.xs,
+        start: Spacing.base,
+        end: Spacing.base,
+        bottom: Spacing.base,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: Spacing.sm),
           Image.asset(
             Assets.calendarMealsConfirmedIllustration,
-            height: 140,
+            height: 85,
             fit: BoxFit.contain,
           ),
-          const SizedBox(height: Spacing.lg),
+          const SizedBox(height: Spacing.sm),
           Text(
             locale.calendar_confirmed_sheet_title,
             textAlign: TextAlign.center,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size20,
+              fontSize: FontSize.size16,
               color: color.onSurface,
             ),
           ),
-          const SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.xxs),
           Text(
             locale.calendar_confirmed_sheet_subtitle,
             textAlign: TextAlign.center,
             style: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
+              fontSize: FontSize.size12,
               color: color.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: Spacing.lg),
+          const SizedBox(height: Spacing.sm),
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.symmetric(
               horizontal: Spacing.base,
-              vertical: Spacing.md,
+              vertical: Spacing.sm,
             ),
             decoration: BoxDecoration(
-              color: color.secondaryContainer.withValues(alpha: 0.4),
-              borderRadius: BorderRadius.circular(Spacing.radiusMd),
-              border: Border.all(color: color.secondaryContainer, width: 1),
+              color: color.secondaryContainer.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(Spacing.radiusPill),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   locale.calendar_confirmed_sheet_status_label,
@@ -99,60 +99,66 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
                     color: color.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(width: Spacing.sm),
+                const SizedBox(width: Spacing.md),
                 Container(
                   width: 1,
                   height: 16,
-                  color: color.outlineVariant.withValues(alpha: 0.4),
+                  color: color.outlineVariant.withValues(alpha: 0.5),
                 ),
-                const SizedBox(width: Spacing.sm),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: color.primary,
-                  size: Spacing.iconSm + 2,
+                const SizedBox(width: Spacing.md),
+                Text(
+                  statusText ?? locale.calendar_status_confirmed,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size13,
+                    color: color.primary,
+                  ),
                 ),
                 const SizedBox(width: Spacing.xs),
-                Expanded(
-                  child: Text(
-                    statusText ?? locale.calendar_status_awaiting_restaurant,
-                    textAlign: TextAlign.start,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
-                      color: color.primary,
-                    ),
+                Container(
+                  width: Spacing.iconSm + 4,
+                  height: Spacing.iconSm + 4,
+                  decoration: BoxDecoration(
+                    color: color.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: color.onPrimary,
+                    size: Spacing.iconXs + 2,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.xxs),
           Text(
             locale.calendar_confirmed_sheet_note,
             textAlign: TextAlign.center,
             style: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
+              fontSize: FontSize.size11,
               color: color.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: Spacing.xl),
+          const SizedBox(height: Spacing.md),
           AppButton(
             text: locale.calendar_confirmed_sheet_back_to_calendar,
             onPressed: () {
               Navigator.of(context).pop();
               onBackToCalendar?.call();
             },
-            height: Spacing.buttonHeight,
+            height: Spacing.buttonSmallHeight,
             borderRadius: Spacing.buttonRadius,
             color: color.primary,
             textColor: color.onPrimary,
-            fontSize: FontSize.size16,
+            fontSize: FontSize.size14,
           ),
-          const SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.xs),
           SizedBox(
             width: double.infinity,
-            height: Spacing.buttonHeight,
+            height: Spacing.buttonSmallHeight,
             child: OutlinedButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -168,7 +174,7 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
                 locale.calendar_confirmed_sheet_view_meals,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size16,
+                  fontSize: FontSize.size14,
                   color: color.primary,
                 ),
               ),
