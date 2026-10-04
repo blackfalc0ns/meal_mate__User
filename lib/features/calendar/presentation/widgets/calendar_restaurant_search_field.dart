@@ -56,23 +56,19 @@ class _CalendarRestaurantSearchFieldState
     final locale = context.localization;
 
     return SizedBox(
-      height: 44,
+      height: 40,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: color.surfaceContainerLow,
+          color: color.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
-          border: Border.all(
-            color: color.outlineVariant,
-            width: 1,
-          ),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 14, end: 6),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
           child: Row(
             children: [
               Icon(
                 Icons.search_rounded,
-                color: color.onSurface.withValues(alpha: 0.5),
+                color: color.onSurface.withValues(alpha: 0.6),
                 size: 20,
               ),
               const SizedBox(width: Spacing.xs),
@@ -81,19 +77,27 @@ class _CalendarRestaurantSearchFieldState
                   controller: _controller,
                   onChanged: widget.onChanged,
                   textAlign: TextAlign.start,
+                  textAlignVertical: TextAlignVertical.center,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size13,
                     color: color.onSurface,
                   ),
                   decoration: InputDecoration(
-                    border: InputBorder.none,
+                    isDense: true,
                     isCollapsed: true,
+                    filled: false,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
                     hintText: locale.calendar_search_restaurant_hint,
                     hintStyle: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onSurface.withValues(alpha: 0.45),
+                      fontSize: FontSize.size13,
+                      color: color.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -104,12 +108,12 @@ class _CalendarRestaurantSearchFieldState
                   iconSize: 18,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints.tightFor(
-                    width: 28,
-                    height: 28,
+                    width: 22,
+                    height: 22,
                   ),
                   icon: Icon(
                     Icons.cancel_rounded,
-                    color: color.onSurface.withValues(alpha: 0.45),
+                    color: color.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
             ],

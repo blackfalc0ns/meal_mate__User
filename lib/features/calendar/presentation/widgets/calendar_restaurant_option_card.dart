@@ -36,11 +36,9 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                  8,
-                  8,
-                  8,
-                  8,
+                padding: const EdgeInsetsDirectional.symmetric(
+                  vertical: Spacing.sm,
+                  horizontal: Spacing.sm,
                 ),
                 child: Row(
                   children: [
@@ -70,4 +68,3 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -22,12 +23,14 @@ part 'calendar_restaurant_picker_empty.dart';
 class CalendarRestaurantPickerSheet extends StatefulWidget {
   const CalendarRestaurantPickerSheet({
     super.key,
+    this.date,
     required this.restaurants,
     required this.onRestaurantSelected,
     required this.onSearchChanged,
     this.isLoading = false,
   });
 
+  final DateTime? date;
   final List<CalendarRestaurantOptionEntity> restaurants;
   final ValueChanged<CalendarRestaurantOptionEntity> onRestaurantSelected;
   final ValueChanged<String> onSearchChanged;
@@ -122,28 +125,38 @@ class _CalendarRestaurantPickerSheetState
                     ).copyWith(height: 20 / 14, letterSpacing: 0),
                   ),
                   const SizedBox(height: Spacing.xs),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: 10,
-                        color: color.onSurface.withValues(alpha: 0.64),
-                      ).copyWith(height: 2, letterSpacing: 0),
-                      children: [
-                        TextSpan(
-                          text: locale.calendar_choose_restaurant_for_day,
-                        ),
-                        TextSpan(
-                          text: locale.calendar_restaurant_picker_date,
-                          style: getSemiBoldStyle(
+                  Builder(
+                    builder: (context) {
+                      final effectiveDate = widget.date ?? DateTime.now();
+                      final formattedDate = DateFormat(
+                        'EEEE d MMMM',
+                        locale.localeName,
+                      ).format(effectiveDate);
+
+                      return RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: getRegularStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: 10,
-                            color: color.tertiary,
+                            color: color.onSurface.withValues(alpha: 0.64),
                           ).copyWith(height: 2, letterSpacing: 0),
+                          children: [
+                            TextSpan(
+                              text: locale.calendar_choose_restaurant_for_day,
+                            ),
+                            TextSpan(
+                              text: formattedDate,
+                              style: getSemiBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: 10,
+                                color: color.tertiary,
+                              ).copyWith(height: 2, letterSpacing: 0),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ],
               ),

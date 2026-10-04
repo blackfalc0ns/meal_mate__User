@@ -19,7 +19,6 @@ class CalendarRating extends StatelessWidget {
       width: 38,
       child: showRating
           ? Row(
-              textDirection: TextDirection.ltr,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.star_rounded, color: color.primary, size: 13),

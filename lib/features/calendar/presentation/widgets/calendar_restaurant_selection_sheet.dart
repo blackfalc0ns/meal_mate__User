@@ -56,6 +56,7 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
         }
 
         return CalendarRestaurantPickerSheet(
+          date: resolvedDate,
           restaurants: sheetState.restaurants,
           isLoading: sheetState.isLoading,
           onSearchChanged: (query) {
