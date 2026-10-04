@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meals_confirmation_sheet.dart';
@@ -32,9 +33,31 @@ class CalendarNavigationCoordinator {
     if (_restaurantSheetOpen) return;
     _restaurantSheetOpen = true;
 
-    final restaurantPickerCubit = context.read<RestaurantPickerViewModel>();
-    final flowCubit = context.read<CalendarFlowViewModel>();
+    final restaurantPickerViewModel = context.read<RestaurantPickerViewModel>();
+    final flowViewModel = context.read<CalendarFlowViewModel>();
+    final overviewViewModel = context.read<CalendarOverviewViewModel>();
     final locale = context.localization;
+
+    final targetDate =
+        date ??
+        overviewViewModel.state.selectedDate ??
+        overviewViewModel.state.selectedDay?.date;
+    final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
+        ? subscriptionId
+        : overviewViewModel.state.subscriptionId;
+
+    if (targetDate != null &&
+        targetSubId.isNotEmpty &&
+        !restaurantPickerViewModel.state.isLoading &&
+        restaurantPickerViewModel.state.restaurants.isEmpty) {
+      unawaited(
+        restaurantPickerViewModel.load(
+          subscriptionId: targetSubId,
+          date: targetDate,
+          localeName: locale.localeName,
+        ),
+      );
+    }
 
     final selectedRestaurant =
         await showModalBottomSheet<CalendarRestaurantOptionEntity>(
@@ -43,8 +66,11 @@ class CalendarNavigationCoordinator {
           backgroundColor: context.colorScheme.surface,
           builder: (sheetContext) {
             return BlocProvider<RestaurantPickerViewModel>.value(
-              value: restaurantPickerCubit,
-              child: const CalendarRestaurantSelectionSheet(),
+              value: restaurantPickerViewModel,
+              child: CalendarRestaurantSelectionSheet(
+                date: targetDate,
+                subscriptionId: targetSubId,
+              ),
             );
           },
         );
@@ -53,11 +79,11 @@ class CalendarNavigationCoordinator {
 
     if (selectedRestaurant == null || !context.mounted) return;
 
-    await flowCubit.selectRestaurant(
+    await flowViewModel.selectRestaurant(
       restaurant: selectedRestaurant,
       localeName: locale.localeName,
-      date: date,
-      subscriptionId: subscriptionId,
+      date: targetDate,
+      subscriptionId: targetSubId,
     );
   }
 

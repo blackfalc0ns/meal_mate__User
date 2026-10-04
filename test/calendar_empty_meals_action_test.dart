@@ -15,6 +15,7 @@ void main() {
       'lib/features/calendar/presentation/screens/calendar_screen_body.dart',
     ).readAsStringSync();
     expect(body, contains('activeCoordinator.openRestaurantPicker(context)'));
+    expect(body, contains('context.read<RestaurantPickerViewModel>().load('));
   });
 
   test(

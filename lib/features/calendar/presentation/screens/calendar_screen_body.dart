@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_e
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
@@ -70,6 +71,23 @@ class CalendarScreenBody extends StatelessWidget {
                 onSelectRestaurant:
                     onSelectRestaurant ??
                     () {
+                      final overviewState = context
+                          .read<CalendarOverviewViewModel>()
+                          .state;
+                      final day = overviewState.selectedDay;
+                      final date = overviewState.selectedDate ?? day?.date;
+                      final subId = overviewState.subscriptionId;
+
+                      if (date != null && subId.isNotEmpty) {
+                        unawaited(
+                          context.read<RestaurantPickerViewModel>().load(
+                            subscriptionId: subId,
+                            date: date,
+                            localeName: locale.localeName,
+                          ),
+                        );
+                      }
+
                       unawaited(
                         activeCoordinator.openRestaurantPicker(context),
                       );
