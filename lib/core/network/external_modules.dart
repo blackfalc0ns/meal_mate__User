@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -53,7 +55,7 @@ abstract class ExternalModules {
       compact: true,
       maxWidth: 120,
       enabled: kDebugMode,
-      logPrint: (object) => debugPrint(object.toString()),
+      logPrint: (object) => developer.log(object.toString(), name: 'DIO'),
     );
   }
 

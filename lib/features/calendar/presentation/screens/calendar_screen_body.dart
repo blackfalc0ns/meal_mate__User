@@ -11,7 +11,6 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_content.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_header.dart';
-import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
 
 class CalendarScreenBody extends StatelessWidget {
   const CalendarScreenBody({
@@ -51,20 +50,7 @@ class CalendarScreenBody extends StatelessWidget {
         backgroundColor: color.surface,
         body: Column(
           children: [
-            CalendarHeader(
-              title: locale.calendar_title,
-              onBackPressed:
-                  onBackPressed ??
-                  () {
-                    if (Navigator.of(context).canPop()) {
-                      Navigator.of(context).pop();
-                    } else {
-                      try {
-                        context.read<HomeCubit>().selectTab(0);
-                      } catch (_) {}
-                    }
-                  },
-            ),
+            CalendarHeader(title: locale.calendar_title),
             Expanded(
               child: CalendarContent(
                 showBottomSpace: showBottomSpace,

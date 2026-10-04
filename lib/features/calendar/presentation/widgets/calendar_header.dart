@@ -8,12 +8,10 @@ class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
     super.key,
     required this.title,
-    this.onBackPressed,
     this.onNotificationPressed,
   });
 
   final String title;
-  final VoidCallback? onBackPressed;
   final VoidCallback? onNotificationPressed;
 
   @override
@@ -34,20 +32,6 @@ class CalendarHeader extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                if (onBackPressed != null)
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: IconButton(
-                      onPressed: onBackPressed,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: color.onPrimary,
-                        size: Spacing.iconMd,
-                      ),
-                    ),
-                  ),
                 Text(
                   title,
                   textAlign: TextAlign.center,
