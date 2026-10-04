@@ -63,16 +63,16 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
   }) {
     final targetDate =
         date ??
-        overviewCubit.state.selectedDate ??
-        overviewCubit.state.selectedDay?.date;
+        overviewViewModel.state.selectedDate ??
+        overviewViewModel.state.selectedDay?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
         ? subscriptionId
-        : overviewCubit.state.subscriptionId;
+        : overviewViewModel.state.subscriptionId;
 
     if (targetDate == null || targetSubId.isEmpty) return;
 
     unawaited(
-      restaurantPickerCubit.load(
+      restaurantPickerViewModel.load(
         subscriptionId: targetSubId,
         date: targetDate,
         localeName: localeName ?? 'en',
@@ -98,16 +98,16 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
   }) async {
     final targetDate =
         date ??
-        overviewCubit.state.selectedDate ??
-        overviewCubit.state.selectedDay?.date;
+        overviewViewModel.state.selectedDate ??
+        overviewViewModel.state.selectedDay?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
         ? subscriptionId
-        : overviewCubit.state.subscriptionId;
+        : overviewViewModel.state.subscriptionId;
 
     if (targetDate == null || targetSubId.isEmpty) return;
 
     final effectiveLocale = localeName ?? 'en';
-    final result = await restaurantPickerCubit.selectRestaurant(
+    final result = await restaurantPickerViewModel.selectRestaurant(
       subscriptionId: targetSubId,
       date: targetDate,
       restaurant: restaurant,
@@ -118,9 +118,9 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        overviewCubit.replaceDay(data);
+        overviewViewModel.replaceDay(data);
         unawaited(
-          mealSelectionCubit.load(
+          mealSelectionViewModel.load(
             subscriptionId: targetSubId,
             date: targetDate,
             restaurantId: restaurant.id,
@@ -151,11 +151,11 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     CalendarRestaurantOptionEntity? restaurant,
     String? localeName,
   }) {
-    final day = overviewCubit.state.selectedDay;
-    final targetDate = date ?? overviewCubit.state.selectedDate ?? day?.date;
+    final day = overviewViewModel.state.selectedDay;
+    final targetDate = date ?? overviewViewModel.state.selectedDate ?? day?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
         ? subscriptionId
-        : overviewCubit.state.subscriptionId;
+        : overviewViewModel.state.subscriptionId;
     final targetRestId = restaurantId ?? restaurant?.id ?? day?.restaurant?.id;
 
     if (targetDate == null ||
@@ -167,7 +167,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
     final effectiveLocale = localeName ?? 'en';
     unawaited(
-      mealSelectionCubit.load(
+      mealSelectionViewModel.load(
         subscriptionId: targetSubId,
         date: targetDate,
         restaurantId: targetRestId,
@@ -193,14 +193,14 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
   Future<void> saveMeals({String? localeName}) async {
     final effectiveLocale = localeName ?? 'en';
-    final result = await mealSelectionCubit.save(localeName: effectiveLocale);
+    final result = await mealSelectionViewModel.save(localeName: effectiveLocale);
 
     if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        overviewCubit.replaceDay(data);
-        mealSelectionCubit.clear();
+        overviewViewModel.replaceDay(data);
+        mealSelectionViewModel.clear();
         emit(
           CalendarFlowState(
             effect: MealsSavedEffect(id: _nextEffectId++, day: data),
@@ -208,25 +208,25 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         );
       case ApiErrorResult(:final failure):
         final date =
-            mealSelectionCubit.state.date ??
-            overviewCubit.state.selectedDate ??
+            mealSelectionViewModel.state.date ??
+            overviewViewModel.state.selectedDate ??
             DateTime.now();
-        final subId = mealSelectionCubit.state.subscriptionId.isNotEmpty
-            ? mealSelectionCubit.state.subscriptionId
-            : overviewCubit.state.subscriptionId;
+        final subId = mealSelectionViewModel.state.subscriptionId.isNotEmpty
+            ? mealSelectionViewModel.state.subscriptionId
+            : overviewViewModel.state.subscriptionId;
         _handleFailure(failure, date, subId, effectiveLocale);
     }
   }
 
   Future<void> confirmMeals({String? localeName}) async {
-    final day = overviewCubit.state.selectedDay;
-    final date = overviewCubit.state.selectedDate ?? day?.date;
-    final subscriptionId = overviewCubit.state.subscriptionId;
+    final day = overviewViewModel.state.selectedDay;
+    final date = overviewViewModel.state.selectedDate ?? day?.date;
+    final subscriptionId = overviewViewModel.state.subscriptionId;
     final effectiveLocale = localeName ?? 'en';
 
     if (date == null || subscriptionId.isEmpty) return;
 
-    final result = await mealSelectionCubit.confirm(
+    final result = await mealSelectionViewModel.confirm(
       localeName: effectiveLocale,
       date: date,
       subscriptionId: subscriptionId,
@@ -241,8 +241,8 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
           meals: data.meals.isNotEmpty ? data.meals : currentMeals,
           canEdit: false,
         );
-        overviewCubit.replaceDay(confirmedDay);
-        mealSelectionCubit.clear();
+        overviewViewModel.replaceDay(confirmedDay);
+        mealSelectionViewModel.clear();
         emit(
           CalendarFlowState(
             effect: MealsConfirmedEffect(
@@ -257,14 +257,14 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
   }
 
   Future<void> autoSelectMeals({String? localeName}) async {
-    final day = overviewCubit.state.selectedDay;
-    final date = overviewCubit.state.selectedDate ?? day?.date;
-    final subscriptionId = overviewCubit.state.subscriptionId;
+    final day = overviewViewModel.state.selectedDay;
+    final date = overviewViewModel.state.selectedDate ?? day?.date;
+    final subscriptionId = overviewViewModel.state.subscriptionId;
     final effectiveLocale = localeName ?? 'en';
 
     if (date == null || subscriptionId.isEmpty) return;
 
-    final result = await mealSelectionCubit.autoSelect(
+    final result = await mealSelectionViewModel.autoSelect(
       localeName: effectiveLocale,
       date: date,
       subscriptionId: subscriptionId,
@@ -274,7 +274,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        overviewCubit.replaceDay(data);
+        overviewViewModel.replaceDay(data);
         emit(
           CalendarFlowState(
             effect: MealsSavedEffect(id: _nextEffectId++, day: data),
@@ -286,7 +286,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
   }
 
   void closeMealPicker() {
-    mealSelectionCubit.clear();
+    mealSelectionViewModel.clear();
     emit(CalendarFlowState(effect: CloseMealPickerEffect(id: _nextEffectId++)));
   }
 
@@ -301,14 +301,14 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String localeName,
   ) {
     if (failure.code == SubscriptionErrorCodes.calendarSelectionLocked) {
-      final day = overviewCubit.state.selectedDay;
+      final day = overviewViewModel.state.selectedDay;
       if (day != null) {
-        overviewCubit.replaceDay(day.copyWith(canEdit: false, isLocked: true));
+        overviewViewModel.replaceDay(day.copyWith(canEdit: false, isLocked: true));
       }
     } else if (failure.code == SubscriptionErrorCodes.calendarDayUnavailable) {
       if (subscriptionId.isNotEmpty) {
         unawaited(
-          overviewCubit.loadCalendar(
+          overviewViewModel.loadCalendar(
             subscriptionId: subscriptionId,
             localeName: localeName,
           ),

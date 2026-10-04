@@ -16,6 +16,10 @@ class CalendarScreen extends StatefulWidget {
     super.key,
     this.showBottomSpace = false,
     this.subscriptionId,
+    this.overviewViewModel,
+    this.restaurantPickerViewModel,
+    this.mealSelectionViewModel,
+    this.flowViewModel,
     this.overviewCubit,
     this.restaurantPickerCubit,
     this.mealSelectionCubit,
@@ -26,6 +30,10 @@ class CalendarScreen extends StatefulWidget {
 
   final bool showBottomSpace;
   final String? subscriptionId;
+  final CalendarOverviewViewModel? overviewViewModel;
+  final RestaurantPickerViewModel? restaurantPickerViewModel;
+  final MealSelectionViewModel? mealSelectionViewModel;
+  final CalendarFlowViewModel? flowViewModel;
   final CalendarOverviewViewModel? overviewCubit;
   final RestaurantPickerViewModel? restaurantPickerCubit;
   final MealSelectionViewModel? mealSelectionCubit;
@@ -38,10 +46,10 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late final CalendarOverviewViewModel _overviewCubit;
-  late final RestaurantPickerViewModel _restaurantPickerCubit;
-  late final MealSelectionViewModel _mealSelectionCubit;
-  late final CalendarFlowViewModel _flowCubit;
+  late final CalendarOverviewViewModel _overviewViewModel;
+  late final RestaurantPickerViewModel _restaurantPickerViewModel;
+  late final MealSelectionViewModel _mealSelectionViewModel;
+  late final CalendarFlowViewModel _flowViewModel;
   late final CalendarNavigationCoordinator _coordinator;
 
   bool _didLoad = false;
@@ -49,17 +57,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _overviewCubit = widget.overviewCubit ?? getIt<CalendarOverviewViewModel>();
-    _restaurantPickerCubit =
-        widget.restaurantPickerCubit ?? getIt<RestaurantPickerViewModel>();
-    _mealSelectionCubit =
-        widget.mealSelectionCubit ?? getIt<MealSelectionViewModel>();
-    _flowCubit =
+    _overviewViewModel =
+        widget.overviewViewModel ??
+        widget.overviewCubit ??
+        getIt<CalendarOverviewViewModel>();
+    _restaurantPickerViewModel =
+        widget.restaurantPickerViewModel ??
+        widget.restaurantPickerCubit ??
+        getIt<RestaurantPickerViewModel>();
+    _mealSelectionViewModel =
+        widget.mealSelectionViewModel ??
+        widget.mealSelectionCubit ??
+        getIt<MealSelectionViewModel>();
+    _flowViewModel =
+        widget.flowViewModel ??
         widget.flowCubit ??
         CalendarFlowViewModel(
-          overviewCubit: _overviewCubit,
-          restaurantPickerCubit: _restaurantPickerCubit,
-          mealSelectionCubit: _mealSelectionCubit,
+          overviewViewModel: _overviewViewModel,
+          restaurantPickerViewModel: _restaurantPickerViewModel,
+          mealSelectionViewModel: _mealSelectionViewModel,
+          overviewCubit: _overviewViewModel,
+          restaurantPickerCubit: _restaurantPickerViewModel,
+          mealSelectionCubit: _mealSelectionViewModel,
         );
     _coordinator = widget.coordinator ?? CalendarNavigationCoordinator();
   }
@@ -70,7 +89,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (_didLoad) return;
     _didLoad = true;
     unawaited(
-      _overviewCubit.loadCalendar(
+      _overviewViewModel.loadCalendar(
         subscriptionId: widget.subscriptionId,
         localeName: context.localization.localeName,
       ),
@@ -79,10 +98,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void dispose() {
-    unawaited(_flowCubit.close());
-    unawaited(_mealSelectionCubit.close());
-    unawaited(_restaurantPickerCubit.close());
-    unawaited(_overviewCubit.close());
+    unawaited(_flowViewModel.close());
+    unawaited(_mealSelectionViewModel.close());
+    unawaited(_restaurantPickerViewModel.close());
+    unawaited(_overviewViewModel.close());
     super.dispose();
   }
 
@@ -90,12 +109,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CalendarOverviewViewModel>.value(value: _overviewCubit),
+        BlocProvider<CalendarOverviewViewModel>.value(value: _overviewViewModel),
         BlocProvider<RestaurantPickerViewModel>.value(
-          value: _restaurantPickerCubit,
+          value: _restaurantPickerViewModel,
         ),
-        BlocProvider<MealSelectionViewModel>.value(value: _mealSelectionCubit),
-        BlocProvider<CalendarFlowViewModel>.value(value: _flowCubit),
+        BlocProvider<MealSelectionViewModel>.value(
+          value: _mealSelectionViewModel,
+        ),
+        BlocProvider<CalendarFlowViewModel>.value(value: _flowViewModel),
       ],
       child: CalendarScreenEffects(
         coordinator: _coordinator,
