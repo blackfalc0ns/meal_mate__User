@@ -58,6 +58,12 @@ class MealSelectionState {
     return true;
   }
 
+  bool get canSaveMeals => canSave;
+  bool get isAvailableMealsLoading => isLoading;
+  bool get isLoadingMoreMeals => isLoadingMore;
+  Failure? get availableMealsFailure => failure;
+  List<String> get localSelectedMealIds => selectedMealIds;
+
   MealSelectionState copyWith({
     String? subscriptionId,
     DateTime? date,
