@@ -7,6 +7,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 part 'calendar_restaurant_search_field.dart';
 part 'calendar_restaurant_option_card.dart';
@@ -16,6 +17,7 @@ part 'calendar_restaurant_copy.dart';
 part 'calendar_restaurant_picker_logo.dart';
 part 'calendar_circle_text_logo.dart';
 part 'calendar_restaurant_picker_loading_skeleton.dart';
+part 'calendar_restaurant_picker_empty.dart';
 
 class CalendarRestaurantPickerSheet extends StatefulWidget {
   const CalendarRestaurantPickerSheet({
@@ -38,11 +40,13 @@ class CalendarRestaurantPickerSheet extends StatefulWidget {
 
 class _CalendarRestaurantPickerSheetState
     extends State<CalendarRestaurantPickerSheet> {
+  final TextEditingController _searchController = TextEditingController();
   Timer? _searchDebounce;
 
   @override
   void dispose() {
     _searchDebounce?.cancel();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -145,30 +149,42 @@ class _CalendarRestaurantPickerSheetState
               ),
             ),
             PositionedDirectional(
-              top: 87,
-              start: 42,
-              end: 42,
-              child: CalendarRestaurantSearchField(onChanged: _onSearchChanged),
+              top: 85,
+              start: 19,
+              end: 20,
+              child: CalendarRestaurantSearchField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+              ),
             ),
             PositionedDirectional(
-              top: 149,
+              top: 143,
               start: 19,
               end: 20,
               bottom: 24,
               child: widget.isLoading
                   ? const CalendarRestaurantPickerLoadingSkeleton()
-                  : ListView.separated(
-                      padding: EdgeInsets.zero,
-                      itemCount: widget.restaurants.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 9.2),
-                      itemBuilder: (context, index) {
-                        final restaurant = widget.restaurants[index];
-                        return CalendarRestaurantOptionCard(
-                          restaurant: restaurant,
-                          onTap: () => widget.onRestaurantSelected(restaurant),
-                        );
-                      },
-                    ),
+                  : widget.restaurants.isEmpty
+                      ? CalendarRestaurantPickerEmpty(
+                          onClear: () {
+                            _searchController.clear();
+                            widget.onSearchChanged('');
+                          },
+                        )
+                      : ListView.separated(
+                          padding: EdgeInsets.zero,
+                          itemCount: widget.restaurants.length,
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(height: 9.2),
+                          itemBuilder: (context, index) {
+                            final restaurant = widget.restaurants[index];
+                            return CalendarRestaurantOptionCard(
+                              restaurant: restaurant,
+                              onTap: () =>
+                                  widget.onRestaurantSelected(restaurant),
+                            );
+                          },
+                        ),
             ),
           ],
         ),

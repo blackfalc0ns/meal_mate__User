@@ -3380,6 +3380,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Search for a restaurant or cuisine...';
 
   @override
+  String calendar_restaurant_usage_limit(int used, int limit) {
+    return 'Used $used of $limit';
+  }
+
+  @override
+  String calendar_restaurant_quota_exhausted(int limit) {
+    return 'Quota limit reached ($limit/$limit)';
+  }
+
+  @override
   String get calendar_meal_suffix => ' meal';
 
   @override

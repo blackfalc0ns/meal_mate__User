@@ -13,29 +13,34 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final isDisabled = !restaurant.isEnabled;
+    final isDisabled = !restaurant.isEnabled || restaurant.isQuotaExhausted;
 
-    return SizedBox(
-      height: 74.22,
+    return Container(
+      constraints: const BoxConstraints(minHeight: 80),
       child: Material(
         color: color.surface,
-        borderRadius: BorderRadius.circular(15.46),
+        borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: isDisabled ? null : onTap,
-          borderRadius: BorderRadius.circular(15.46),
+          borderRadius: BorderRadius.circular(16),
           child: Opacity(
-            opacity: isDisabled ? 0.48 : 1,
+            opacity: isDisabled ? 0.5 : 1,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.46),
-                border: Border.all(color: color.outlineVariant, width: 1.55),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDisabled
+                      ? color.outline.withValues(alpha: 0.3)
+                      : color.outlineVariant,
+                  width: 1.2,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(
-                  7.4,
-                  4.6,
-                  7.4,
-                  4.8,
+                  8,
+                  8,
+                  8,
+                  8,
                 ),
                 child: Row(
                   children: [
@@ -44,16 +49,16 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                       logoUrl: restaurant.logoUrl,
                       semanticLabel: restaurant.name,
                     ),
-                    const SizedBox(width: 10.5),
+                    const SizedBox(width: Spacing.xs),
                     Expanded(
                       child: CalendarRestaurantCopy(restaurant: restaurant),
                     ),
-                    const SizedBox(width: 27.6),
+                    const SizedBox(width: Spacing.xs),
                     CalendarRating(
                       value: restaurant.rating,
                       ratingCount: restaurant.ratingCount,
                     ),
-                    const SizedBox(width: 27.6),
+                    const SizedBox(width: Spacing.xs),
                     const CalendarArrowBubble(),
                   ],
                 ),
@@ -65,3 +70,4 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
     );
   }
 }
+

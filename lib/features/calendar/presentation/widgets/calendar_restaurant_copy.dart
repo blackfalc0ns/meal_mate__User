@@ -11,6 +11,9 @@ class CalendarRestaurantCopy extends StatelessWidget {
     final locale = context.localization;
 
     final tierLogo = restaurant.tierLogoUrl;
+    final hasDescription = restaurant.description.trim().isNotEmpty;
+    final hasLimit =
+        restaurant.maxUsageCount != null && restaurant.maxUsageCount! > 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,21 +28,23 @@ class CalendarRestaurantCopy extends StatelessWidget {
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
             color: color.onSurface,
-          ).copyWith(letterSpacing: 0),
+          ),
         ),
-        const SizedBox(height: 1.8),
-        Text(
-          restaurant.description,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.start,
-          style: getMediumStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
-            color: color.onSurface.withValues(alpha: 0.62),
-          ).copyWith(letterSpacing: 0),
-        ),
-        const SizedBox(height: 1.8),
+        if (hasDescription) ...[
+          const SizedBox(height: Spacing.xxs),
+          Text(
+            restaurant.description,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
+            style: getMediumStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size10,
+              color: color.onSurface.withValues(alpha: 0.62),
+            ),
+          ),
+        ],
+        const SizedBox(height: Spacing.xxs),
         Row(
           children: [
             if (tierLogo != null && tierLogo.isNotEmpty) ...[
@@ -62,7 +67,7 @@ class CalendarRestaurantCopy extends StatelessWidget {
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
                     color: color.onSurface,
-                  ).copyWith(letterSpacing: 0),
+                  ),
                   children: [
                     if (restaurant.tierName.isNotEmpty)
                       TextSpan(text: '${restaurant.tierName} - '),
@@ -70,9 +75,9 @@ class CalendarRestaurantCopy extends StatelessWidget {
                       text: '${restaurant.mealCount}',
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: 10.96,
+                        fontSize: FontSize.size11,
                         color: color.onSurface,
-                      ).copyWith(letterSpacing: 0),
+                      ),
                     ),
                     TextSpan(text: locale.calendar_meal_suffix),
                   ],
@@ -81,7 +86,77 @@ class CalendarRestaurantCopy extends StatelessWidget {
             ),
           ],
         ),
+        if (hasLimit) ...[
+          const SizedBox(height: Spacing.xxs),
+          _CalendarRestaurantUsageBadge(
+            usedCount: restaurant.usedCount ?? 0,
+            limit: restaurant.maxUsageCount!,
+            isExhausted: restaurant.isQuotaExhausted ||
+                ((restaurant.usedCount ?? 0) >= restaurant.maxUsageCount!),
+          ),
+        ],
       ],
     );
   }
 }
+
+class _CalendarRestaurantUsageBadge extends StatelessWidget {
+  const _CalendarRestaurantUsageBadge({
+    required this.usedCount,
+    required this.limit,
+    required this.isExhausted,
+  });
+
+  final int usedCount;
+  final int limit;
+  final bool isExhausted;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    final badgeColor = isExhausted ? color.error : color.primary;
+    final badgeBg = isExhausted
+        ? color.error.withValues(alpha: 0.1)
+        : color.primary.withValues(alpha: 0.08);
+    final badgeBorder = isExhausted
+        ? color.error.withValues(alpha: 0.25)
+        : color.primary.withValues(alpha: 0.2);
+
+    final text = isExhausted
+        ? locale.calendar_restaurant_quota_exhausted(limit)
+        : locale.calendar_restaurant_usage_limit(usedCount, limit);
+
+    return Container(
+      padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+      decoration: BoxDecoration(
+        color: badgeBg,
+        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+        border: Border.all(color: badgeBorder, width: 0.8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isExhausted ? Icons.block_rounded : Icons.repeat_rounded,
+            size: 11,
+            color: badgeColor,
+          ),
+          const SizedBox(width: Spacing.xxs),
+          Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: getMediumStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size10,
+              color: badgeColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+

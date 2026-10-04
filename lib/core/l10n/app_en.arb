@@ -1199,6 +1199,25 @@
   "calendar_choose_restaurant_for_day": "Choose your preferred restaurant for ",
   "calendar_restaurant_picker_date": "Saturday, September 20",
   "calendar_search_restaurant_hint": "Search for a restaurant or cuisine...",
+  "calendar_restaurant_usage_limit": "Used {used} of {limit}",
+  "@calendar_restaurant_usage_limit": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_restaurant_quota_exhausted": "Quota limit reached ({limit}/{limit})",
+  "@calendar_restaurant_quota_exhausted": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "calendar_meal_suffix": " meal",
   "calendar_change_restaurant": "Change restaurant",
   "calendar_meals_changed": "Meal changed",

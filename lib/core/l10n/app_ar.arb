@@ -1195,6 +1195,25 @@
   "calendar_choose_restaurant_for_day": "اختر المطعم الذي تفضله ليوم ",
   "calendar_restaurant_picker_date": "السبت 20 سبتمبر",
   "calendar_search_restaurant_hint": "ابحث عن مطعم أو نوع مطبخ...",
+  "calendar_restaurant_usage_limit": "الاستخدام {used} من {limit}",
+  "@calendar_restaurant_usage_limit": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_restaurant_quota_exhausted": "تم استهلاك الحد ({limit}/{limit})",
+  "@calendar_restaurant_quota_exhausted": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "calendar_meal_suffix": " وجبة",
   "calendar_change_restaurant": "تغيير المطعم",
   "calendar_meals_changed": "تم تغيير الوجبة",

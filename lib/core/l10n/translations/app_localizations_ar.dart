@@ -3323,6 +3323,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_search_restaurant_hint => 'ابحث عن مطعم أو نوع مطبخ...';
 
   @override
+  String calendar_restaurant_usage_limit(int used, int limit) {
+    return 'الاستخدام $used من $limit';
+  }
+
+  @override
+  String calendar_restaurant_quota_exhausted(int limit) {
+    return 'تم استهلاك الحد ($limit/$limit)';
+  }
+
+  @override
   String get calendar_meal_suffix => ' وجبة';
 
   @override

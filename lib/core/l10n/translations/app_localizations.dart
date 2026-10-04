@@ -6362,6 +6362,18 @@ abstract class AppLocalizations {
   /// **'Search for a restaurant or cuisine...'**
   String get calendar_search_restaurant_hint;
 
+  /// No description provided for @calendar_restaurant_usage_limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Used {used} of {limit}'**
+  String calendar_restaurant_usage_limit(int used, int limit);
+
+  /// No description provided for @calendar_restaurant_quota_exhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Quota limit reached ({limit}/{limit})'**
+  String calendar_restaurant_quota_exhausted(int limit);
+
   /// No description provided for @calendar_meal_suffix.
   ///
   /// In en, this message translates to:
