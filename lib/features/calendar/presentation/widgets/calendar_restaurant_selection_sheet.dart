@@ -26,7 +26,8 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
 
     try {
       final overviewState = context.read<CalendarOverviewCubit>().state;
-      effectiveDate ??= overviewState.selectedDate ?? overviewState.selectedDay?.date;
+      effectiveDate ??=
+          overviewState.selectedDate ?? overviewState.selectedDay?.date;
       effectiveSubId ??= overviewState.subscriptionId;
     } catch (_) {}
 
@@ -46,10 +47,10 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
             exception: failure.exception,
             onRetry: () => unawaited(
               context.read<RestaurantPickerCubit>().load(
-                    date: resolvedDate,
-                    subscriptionId: resolvedSubId,
-                    localeName: locale.localeName,
-                  ),
+                date: resolvedDate,
+                subscriptionId: resolvedSubId,
+                localeName: locale.localeName,
+              ),
             ),
           );
         }
@@ -60,11 +61,11 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
           onSearchChanged: (query) {
             unawaited(
               context.read<RestaurantPickerCubit>().load(
-                    date: resolvedDate,
-                    subscriptionId: resolvedSubId,
-                    localeName: locale.localeName,
-                    query: query,
-                  ),
+                date: resolvedDate,
+                subscriptionId: resolvedSubId,
+                localeName: locale.localeName,
+                query: query,
+              ),
             );
           },
           onRestaurantSelected: (restaurant) {

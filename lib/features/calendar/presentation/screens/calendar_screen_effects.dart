@@ -24,8 +24,7 @@ class CalendarScreenEffects extends StatelessWidget {
 
     return BlocListener<CalendarFlowCubit, CalendarFlowState>(
       listenWhen: (previous, current) =>
-          current.effect != null &&
-          previous.effect?.id != current.effect?.id,
+          current.effect != null && previous.effect?.id != current.effect?.id,
       listener: (context, state) {
         final effect = state.effect;
         if (effect == null) return;

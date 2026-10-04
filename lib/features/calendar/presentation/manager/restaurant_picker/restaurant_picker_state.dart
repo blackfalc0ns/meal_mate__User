@@ -50,8 +50,9 @@ class RestaurantPickerState {
           ? null
           : selectingRestaurantId ?? this.selectingRestaurantId,
       failure: clearFailure ? null : failure ?? this.failure,
-      selectFailure:
-          clearSelectFailure ? null : selectFailure ?? this.selectFailure,
+      selectFailure: clearSelectFailure
+          ? null
+          : selectFailure ?? this.selectFailure,
     );
   }
 }

@@ -34,13 +34,7 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     if (subscriptionId.isEmpty || dateStr.isEmpty) return;
 
     final generation = ++_restaurantRequestGeneration;
-    emit(
-      state.copyWith(
-        isLoading: true,
-        query: query,
-        clearFailure: true,
-      ),
-    );
+    emit(state.copyWith(isLoading: true, query: query, clearFailure: true));
 
     final result = await _getRestaurantsUseCase(
       subscriptionId: subscriptionId,
@@ -60,12 +54,7 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
           ),
         );
       case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isLoading: false,
-            failure: result.failure,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, failure: result.failure));
     }
   }
 

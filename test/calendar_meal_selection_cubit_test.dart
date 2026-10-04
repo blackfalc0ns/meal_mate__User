@@ -23,12 +23,14 @@ class _ControllableCalendarRepo implements CalendarRepository {
   final List<String> availableMealsRestaurantIds = [];
   final List<int?> availableMealsPages = [];
 
-  final List<Completer<ApiResult<CalendarDayEntity>>> saveDayMealsCompleters = [];
+  final List<Completer<ApiResult<CalendarDayEntity>>> saveDayMealsCompleters =
+      [];
   final List<List<CalendarMealEntity>> saveDayMealsList = [];
 
   final List<Completer<ApiResult<CalendarDayEntity>>> autoSelectCompleters = [];
 
-  final List<Completer<ApiResult<CalendarDayEntity>>> confirmDayMealsCompleters = [];
+  final List<Completer<ApiResult<CalendarDayEntity>>>
+  confirmDayMealsCompleters = [];
 
   @override
   Future<ApiResult<CalendarAvailableMealsEntity>> getAvailableMeals({
@@ -176,7 +178,9 @@ void main() {
         ],
       );
 
-      repo.availableMealsCompleters[0].complete(ApiSuccessResult(data: available));
+      repo.availableMealsCompleters[0].complete(
+        ApiSuccessResult(data: available),
+      );
       await future;
 
       expect(cubit.state.isLoading, isFalse);
@@ -205,7 +209,9 @@ void main() {
       // Resolve B first
       final mB = _createMeal('mB', slot: 'Lunch');
       final availableB = _createAvailableMeals(restaurantId: 'rB', meals: [mB]);
-      repo.availableMealsCompleters[1].complete(ApiSuccessResult(data: availableB));
+      repo.availableMealsCompleters[1].complete(
+        ApiSuccessResult(data: availableB),
+      );
       await Future<void>.delayed(Duration.zero);
 
       expect(cubit.state.availableMeals?.restaurant?.id, 'rB');
@@ -213,64 +219,73 @@ void main() {
       // Resolve A late
       final mA = _createMeal('mA', slot: 'Lunch');
       final availableA = _createAvailableMeals(restaurantId: 'rA', meals: [mA]);
-      repo.availableMealsCompleters[0].complete(ApiSuccessResult(data: availableA));
+      repo.availableMealsCompleters[0].complete(
+        ApiSuccessResult(data: availableA),
+      );
       await Future<void>.delayed(Duration.zero);
 
       // Stays B
       expect(cubit.state.availableMeals?.restaurant?.id, 'rB');
     });
 
-    test('3. meal toggle, deselect, blocked meal, and per-slot replacement', () async {
-      final m1 = _createMeal('m1', slot: 'Lunch');
-      final m2 = _createMeal('m2', slot: 'Lunch');
-      final mBlocked = _createMeal('mB', slot: 'Lunch', blockReason: 'Unavailable');
+    test(
+      '3. meal toggle, deselect, blocked meal, and per-slot replacement',
+      () async {
+        final m1 = _createMeal('m1', slot: 'Lunch');
+        final m2 = _createMeal('m2', slot: 'Lunch');
+        final mBlocked = _createMeal(
+          'mB',
+          slot: 'Lunch',
+          blockReason: 'Unavailable',
+        );
 
-      final available = _createAvailableMeals(
-        restaurantId: 'r1',
-        meals: [m1, m2, mBlocked],
-        requirements: const [
-          CalendarSlotRequirementEntity(
-            slot: 'Lunch',
-            displayName: 'Lunch',
-            slotNameAr: 'غداء',
-            slotNameEn: 'Lunch',
-            count: 1,
-          ),
-        ],
-      );
-
-      // Seed state
-      cubit.emit(
-        MealSelectionState(
-          subscriptionId: 'sub-1',
-          date: testDate,
+        final available = _createAvailableMeals(
           restaurantId: 'r1',
-          availableMeals: available,
-        ),
-      );
+          meals: [m1, m2, mBlocked],
+          requirements: const [
+            CalendarSlotRequirementEntity(
+              slot: 'Lunch',
+              displayName: 'Lunch',
+              slotNameAr: 'غداء',
+              slotNameEn: 'Lunch',
+              count: 1,
+            ),
+          ],
+        );
 
-      // Toggle m1 -> selected
-      cubit.toggleMeal('m1');
-      expect(cubit.state.selectedMealIds, ['m1']);
-      expect(cubit.state.canSave, isTrue);
+        // Seed state
+        cubit.emit(
+          MealSelectionState(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurantId: 'r1',
+            availableMeals: available,
+          ),
+        );
 
-      // Toggle m1 again -> deselected
-      cubit.toggleMeal('m1');
-      expect(cubit.state.selectedMealIds, isEmpty);
-      expect(cubit.state.canSave, isFalse);
+        // Toggle m1 -> selected
+        cubit.toggleMeal('m1');
+        expect(cubit.state.selectedMealIds, ['m1']);
+        expect(cubit.state.canSave, isTrue);
 
-      // Select m1
-      cubit.toggleMeal('m1');
-      expect(cubit.state.selectedMealIds, ['m1']);
+        // Toggle m1 again -> deselected
+        cubit.toggleMeal('m1');
+        expect(cubit.state.selectedMealIds, isEmpty);
+        expect(cubit.state.canSave, isFalse);
 
-      // Slot limit is 1, selecting m2 replaces m1
-      cubit.toggleMeal('m2');
-      expect(cubit.state.selectedMealIds, ['m2']);
+        // Select m1
+        cubit.toggleMeal('m1');
+        expect(cubit.state.selectedMealIds, ['m1']);
 
-      // Blocked meal ignored
-      cubit.toggleMeal('mB');
-      expect(cubit.state.selectedMealIds, ['m2']);
-    });
+        // Slot limit is 1, selecting m2 replaces m1
+        cubit.toggleMeal('m2');
+        expect(cubit.state.selectedMealIds, ['m2']);
+
+        // Blocked meal ignored
+        cubit.toggleMeal('mB');
+        expect(cubit.state.selectedMealIds, ['m2']);
+      },
+    );
 
     test('4. loadMore meals merge and pagination deduplication', () async {
       final m1 = _createMeal('m1', slot: 'Lunch');
@@ -327,45 +342,58 @@ void main() {
       await loadMoreFuture;
 
       expect(cubit.state.isLoadingMore, isFalse);
-      expect(cubit.state.availableMeals?.meals.map((m) => m.id).toList(), ['m1', 'm2']);
+      expect(cubit.state.availableMeals?.meals.map((m) => m.id).toList(), [
+        'm1',
+        'm2',
+      ]);
     });
 
-    test('5. save returns ApiResult<CalendarDayEntity> on success and failure', () async {
-      final m1 = _createMeal('m1', slot: 'Lunch');
-      final available = _createAvailableMeals(
-        restaurantId: 'r1',
-        meals: [m1],
-        requirements: const [
-          CalendarSlotRequirementEntity(
-            slot: 'Lunch',
-            displayName: 'Lunch',
-            slotNameAr: 'غداء',
-            slotNameEn: 'Lunch',
-            count: 1,
-          ),
-        ],
-      );
-
-      cubit.emit(
-        MealSelectionState(
-          subscriptionId: 'sub-1',
-          date: testDate,
+    test(
+      '5. save returns ApiResult<CalendarDayEntity> on success and failure',
+      () async {
+        final m1 = _createMeal('m1', slot: 'Lunch');
+        final available = _createAvailableMeals(
           restaurantId: 'r1',
-          availableMeals: available,
-          selectedMealIds: ['m1'],
-        ),
-      );
+          meals: [m1],
+          requirements: const [
+            CalendarSlotRequirementEntity(
+              slot: 'Lunch',
+              displayName: 'Lunch',
+              slotNameAr: 'غداء',
+              slotNameEn: 'Lunch',
+              count: 1,
+            ),
+          ],
+        );
 
-      final saveFuture = cubit.save(localeName: 'en');
-      expect(cubit.state.isSaving, isTrue);
+        cubit.emit(
+          MealSelectionState(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurantId: 'r1',
+            availableMeals: available,
+            selectedMealIds: ['m1'],
+          ),
+        );
 
-      final savedDay = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate, meals: [m1]);
-      repo.saveDayMealsCompleters[0].complete(ApiSuccessResult(data: savedDay));
+        final saveFuture = cubit.save(localeName: 'en');
+        expect(cubit.state.isSaving, isTrue);
 
-      final result = await saveFuture;
-      expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
-      expect(cubit.state.isSaving, isFalse);
-    });
+        final savedDay = CalendarDayEntity(
+          dayNumber: 15,
+          weekday: 'Thu',
+          date: testDate,
+          meals: [m1],
+        );
+        repo.saveDayMealsCompleters[0].complete(
+          ApiSuccessResult(data: savedDay),
+        );
+
+        final result = await saveFuture;
+        expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
+        expect(cubit.state.isSaving, isFalse);
+      },
+    );
 
     test('6. duplicate save/confirm is rejected while in-flight', () async {
       final m1 = _createMeal('m1', slot: 'Lunch');
@@ -417,7 +445,11 @@ void main() {
       final future = cubit.autoSelect(localeName: 'en');
       expect(cubit.state.isSaving, isTrue);
 
-      final autoDay = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate);
+      final autoDay = CalendarDayEntity(
+        dayNumber: 15,
+        weekday: 'Thu',
+        date: testDate,
+      );
       repo.autoSelectCompleters[0].complete(ApiSuccessResult(data: autoDay));
 
       final result = await future;
@@ -455,70 +487,94 @@ void main() {
       expect(cubit.state.isConfirming, isTrue);
       expect(repo.saveDayMealsCompleters.length, 1);
 
-      final savedDay = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate, meals: [m1]);
+      final savedDay = CalendarDayEntity(
+        dayNumber: 15,
+        weekday: 'Thu',
+        date: testDate,
+        meals: [m1],
+      );
       repo.saveDayMealsCompleters[0].complete(ApiSuccessResult(data: savedDay));
       await Future<void>.delayed(Duration.zero);
 
       expect(repo.confirmDayMealsCompleters.length, 1);
       final confirmedDay = savedDay.copyWith(canEdit: false);
-      repo.confirmDayMealsCompleters[0].complete(ApiSuccessResult(data: confirmedDay));
+      repo.confirmDayMealsCompleters[0].complete(
+        ApiSuccessResult(data: confirmedDay),
+      );
 
       final result = await confirmFuture;
       expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
       expect(cubit.state.isConfirming, isFalse);
     });
 
-    test('9. confirm failure returns failure with code to caller without touching overview', () async {
-      final m1 = _createMeal('m1', slot: 'Lunch');
-      final available = _createAvailableMeals(
-        restaurantId: 'r1',
-        meals: [m1],
-        requirements: const [
-          CalendarSlotRequirementEntity(
-            slot: 'Lunch',
-            displayName: 'Lunch',
-            slotNameAr: 'غداء',
-            slotNameEn: 'Lunch',
-            count: 1,
-          ),
-        ],
-      );
-
-      cubit.emit(
-        MealSelectionState(
-          subscriptionId: 'sub-1',
-          date: testDate,
+    test(
+      '9. confirm failure returns failure with code to caller without touching overview',
+      () async {
+        final m1 = _createMeal('m1', slot: 'Lunch');
+        final available = _createAvailableMeals(
           restaurantId: 'r1',
-          availableMeals: available,
-          selectedMealIds: ['m1'],
-        ),
-      );
+          meals: [m1],
+          requirements: const [
+            CalendarSlotRequirementEntity(
+              slot: 'Lunch',
+              displayName: 'Lunch',
+              slotNameAr: 'غداء',
+              slotNameEn: 'Lunch',
+              count: 1,
+            ),
+          ],
+        );
 
-      final confirmFuture = cubit.confirm(localeName: 'en');
-      final savedDay = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate, meals: [m1]);
-      repo.saveDayMealsCompleters[0].complete(ApiSuccessResult(data: savedDay));
-      await Future<void>.delayed(Duration.zero);
+        cubit.emit(
+          MealSelectionState(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurantId: 'r1',
+            availableMeals: available,
+            selectedMealIds: ['m1'],
+          ),
+        );
 
-      repo.confirmDayMealsCompleters[0].complete(
-        ApiErrorResult(
-          failure: Failure(
-            errorMessage: 'Locked',
-            code: SubscriptionErrorCodes.calendarSelectionLocked,
-            exception: const ApiException(
-              errorType: ApiErrorType.badRequest,
-              message: 'Locked',
-              backendErrorCode: SubscriptionErrorCodes.calendarSelectionLocked,
+        final confirmFuture = cubit.confirm(localeName: 'en');
+        final savedDay = CalendarDayEntity(
+          dayNumber: 15,
+          weekday: 'Thu',
+          date: testDate,
+          meals: [m1],
+        );
+        repo.saveDayMealsCompleters[0].complete(
+          ApiSuccessResult(data: savedDay),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        repo.confirmDayMealsCompleters[0].complete(
+          ApiErrorResult(
+            failure: Failure(
+              errorMessage: 'Locked',
+              code: SubscriptionErrorCodes.calendarSelectionLocked,
+              exception: const ApiException(
+                errorType: ApiErrorType.badRequest,
+                message: 'Locked',
+                backendErrorCode:
+                    SubscriptionErrorCodes.calendarSelectionLocked,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      final result = await confirmFuture;
-      expect(result, isA<ApiErrorResult<CalendarDayEntity>>());
-      expect((result as ApiErrorResult<CalendarDayEntity>).failure.code, SubscriptionErrorCodes.calendarSelectionLocked);
-      expect(cubit.state.confirmFailure?.code, SubscriptionErrorCodes.calendarSelectionLocked);
-      expect(cubit.state.isConfirming, isFalse);
-    });
+        final result = await confirmFuture;
+        expect(result, isA<ApiErrorResult<CalendarDayEntity>>());
+        expect(
+          (result as ApiErrorResult<CalendarDayEntity>).failure.code,
+          SubscriptionErrorCodes.calendarSelectionLocked,
+        );
+        expect(
+          cubit.state.confirmFailure?.code,
+          SubscriptionErrorCodes.calendarSelectionLocked,
+        );
+        expect(cubit.state.isConfirming, isFalse);
+      },
+    );
 
     test('10. clear resets all state', () {
       cubit.emit(

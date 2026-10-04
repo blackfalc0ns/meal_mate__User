@@ -56,19 +56,20 @@ class CalendarSelectedDaySection extends StatelessWidget {
               onSelectRestaurant: onSelectRestaurant,
               onChangeMeal: onChangeMeal,
               onMealTap: onMealTap,
-              onConfirmSelections: onConfirmSelections ??
+              onConfirmSelections:
+                  onConfirmSelections ??
                   () {
                     try {
                       unawaited(
                         context.read<CalendarFlowCubit>().confirmMeals(
-                              localeName: locale.localeName,
-                            ),
+                          localeName: locale.localeName,
+                        ),
                       );
                     } catch (_) {
                       unawaited(
                         context.read<MealSelectionCubit>().confirm(
-                              localeName: locale.localeName,
-                            ),
+                          localeName: locale.localeName,
+                        ),
                       );
                     }
                   },

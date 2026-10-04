@@ -307,361 +307,417 @@ void main() {
       expect(flowCubit.state.effect, isNull);
     });
 
-    test('2. openRestaurantPicker triggers restaurant cubit and emits OpenRestaurantPickerEffect with monotonic id', () {
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-        ),
-      );
-
-      flowCubit.openRestaurantPicker();
-
-      expect(restaurantPickerCubit.state.isLoading, isTrue);
-      expect(flowCubit.state.effect, isA<OpenRestaurantPickerEffect>());
-      final effect = flowCubit.state.effect as OpenRestaurantPickerEffect;
-      expect(effect.id, 1);
-      expect(effect.date, testDate);
-      expect(effect.subscriptionId, 'sub-1');
-    });
-
-    test('3. selectRestaurant success replaces overview day, loads meals, and emits OpenMealPickerEffect', () async {
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [createDay(testDate)],
-        ),
-      );
-
-      final returnedDay = createDay(
-        testDate,
-        restaurant: const CalendarRestaurantEntity(
-          id: 'rest-1',
-          name: 'Burger House',
-          category: 'Fast Food',
-          rating: '4.8',
-          deliveryDuration: '30m',
-          deliveryWindow: '12-2',
-        ),
-      );
-      calendarRepo.setRestaurantResult = ApiSuccessResult(data: returnedDay);
-
-      await flowCubit.selectRestaurant(restaurant: testRestaurantOption);
-
-      expect(overviewCubit.state.selectedDay?.restaurant?.id, 'rest-1');
-      expect(mealSelectionCubit.state.subscriptionId, 'sub-1');
-      expect(mealSelectionCubit.state.restaurantId, 'rest-1');
-      expect(flowCubit.state.effect, isA<OpenMealPickerEffect>());
-      final effect = flowCubit.state.effect as OpenMealPickerEffect;
-      expect(effect.id, 1);
-      expect(effect.restaurantId, 'rest-1');
-      expect(effect.restaurant, testRestaurantOption);
-    });
-
-    test('4. selectRestaurant failure emits CalendarFailureEffect and handles errors', () async {
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [createDay(testDate)],
-        ),
-      );
-
-      calendarRepo.setRestaurantResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Locked',
-          code: SubscriptionErrorCodes.calendarSelectionLocked,
-        ),
-      );
-
-      await flowCubit.selectRestaurant(restaurant: testRestaurantOption);
-
-      expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
-      final effect = flowCubit.state.effect as CalendarFailureEffect;
-      expect(effect.failure.code, SubscriptionErrorCodes.calendarSelectionLocked);
-    });
-
-    test('5. openMealPicker loads meals into mealSelectionCubit and emits OpenMealPickerEffect', () {
-      final initialDay = createDay(
-        testDate,
-        restaurant: const CalendarRestaurantEntity(
-          id: 'rest-1',
-          name: 'Burger House',
-          category: 'Fast Food',
-          rating: '4.8',
-          deliveryDuration: '30m',
-          deliveryWindow: '12-2',
-        ),
-      );
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
-
-      flowCubit.openMealPicker(restaurant: testRestaurantOption);
-
-      expect(mealSelectionCubit.state.subscriptionId, 'sub-1');
-      expect(mealSelectionCubit.state.restaurantId, 'rest-1');
-      expect(flowCubit.state.effect, isA<OpenMealPickerEffect>());
-      final effect = flowCubit.state.effect as OpenMealPickerEffect;
-      expect(effect.id, 1);
-      expect(effect.restaurantId, 'rest-1');
-    });
-
-    test('6. saveMeals success replaces overview day, clears mealSelection, and emits MealsSavedEffect', () async {
-      final initialDay = createDay(testDate);
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
-
-      final meal1 = createMeal('m1');
-      mealSelectionCubit.emit(
-        mealSelectionCubit.state.copyWith(
-          subscriptionId: 'sub-1',
-          date: testDate,
-          restaurantId: 'rest-1',
-          selectedMealIds: ['m1'],
-          availableMeals: CalendarAvailableMealsEntity(
-            restaurant: const CalendarRestaurantEntity(
-              id: 'rest-1',
-              name: 'Burger House',
-              category: 'Fast Food',
-              rating: '4.8',
-              deliveryDuration: '30m',
-              deliveryWindow: '12-2',
-            ),
-            meals: [meal1],
-            slotRequirements: const [
-              CalendarSlotRequirementEntity(
-                slot: 'Lunch',
-                displayName: 'Lunch',
-                slotNameAr: 'الغداء',
-                slotNameEn: 'Lunch',
-                count: 1,
-              ),
-            ],
-            slots: const [
-              CalendarSlotMealsEntity(
-                slot: 'Lunch',
-                displayName: 'Lunch',
-                slotNameAr: 'الغداء',
-                slotNameEn: 'Lunch',
-                count: 1,
-              ),
-            ],
+    test(
+      '2. openRestaurantPicker triggers restaurant cubit and emits OpenRestaurantPickerEffect with monotonic id',
+      () {
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
           ),
-        ),
-      );
+        );
 
-      final savedDay = createDay(testDate, meals: [meal1]);
-      calendarRepo.saveMealsResult = ApiSuccessResult(data: savedDay);
+        flowCubit.openRestaurantPicker();
 
-      await flowCubit.saveMeals();
+        expect(restaurantPickerCubit.state.isLoading, isTrue);
+        expect(flowCubit.state.effect, isA<OpenRestaurantPickerEffect>());
+        final effect = flowCubit.state.effect as OpenRestaurantPickerEffect;
+        expect(effect.id, 1);
+        expect(effect.date, testDate);
+        expect(effect.subscriptionId, 'sub-1');
+      },
+    );
 
-      expect(overviewCubit.state.selectedDay?.meals.length, 1);
-      expect(mealSelectionCubit.state.subscriptionId, isEmpty);
-      expect(mealSelectionCubit.state.availableMeals, isNull);
-      expect(flowCubit.state.effect, isA<MealsSavedEffect>());
-      final effect = flowCubit.state.effect as MealsSavedEffect;
-      expect(effect.id, 1);
-      expect(effect.day.meals.first.id, 'm1');
-    });
-
-    test('7. saveMeals failure emits CalendarFailureEffect without mutating overview', () async {
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [createDay(testDate)],
-        ),
-      );
-
-      final meal1 = createMeal('m1');
-      mealSelectionCubit.emit(
-        mealSelectionCubit.state.copyWith(
-          subscriptionId: 'sub-1',
-          date: testDate,
-          restaurantId: 'rest-1',
-          selectedMealIds: ['m1'],
-          availableMeals: CalendarAvailableMealsEntity(
-            restaurant: const CalendarRestaurantEntity(
-              id: 'rest-1',
-              name: 'Burger House',
-              category: 'Fast Food',
-              rating: '4.8',
-              deliveryDuration: '30m',
-              deliveryWindow: '12-2',
-            ),
-            meals: [meal1],
-            slotRequirements: const [
-              CalendarSlotRequirementEntity(
-                slot: 'Lunch',
-                displayName: 'Lunch',
-                slotNameAr: 'الغداء',
-                slotNameEn: 'Lunch',
-                count: 1,
-              ),
-            ],
-            slots: const [
-              CalendarSlotMealsEntity(
-                slot: 'Lunch',
-                displayName: 'Lunch',
-                slotNameAr: 'الغداء',
-                slotNameEn: 'Lunch',
-                count: 1,
-              ),
-            ],
+    test(
+      '3. selectRestaurant success replaces overview day, loads meals, and emits OpenMealPickerEffect',
+      () async {
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [createDay(testDate)],
           ),
-        ),
-      );
+        );
 
-      calendarRepo.saveMealsResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Server Error',
-          code: 'server_error',
-        ),
-      );
+        final returnedDay = createDay(
+          testDate,
+          restaurant: const CalendarRestaurantEntity(
+            id: 'rest-1',
+            name: 'Burger House',
+            category: 'Fast Food',
+            rating: '4.8',
+            deliveryDuration: '30m',
+            deliveryWindow: '12-2',
+          ),
+        );
+        calendarRepo.setRestaurantResult = ApiSuccessResult(data: returnedDay);
 
-      await flowCubit.saveMeals();
+        await flowCubit.selectRestaurant(restaurant: testRestaurantOption);
 
-      expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
-      final effect = flowCubit.state.effect as CalendarFailureEffect;
-      expect(effect.failure.code, 'server_error');
-      expect(overviewCubit.state.selectedDay?.meals, isEmpty);
-    });
+        expect(overviewCubit.state.selectedDay?.restaurant?.id, 'rest-1');
+        expect(mealSelectionCubit.state.subscriptionId, 'sub-1');
+        expect(mealSelectionCubit.state.restaurantId, 'rest-1');
+        expect(flowCubit.state.effect, isA<OpenMealPickerEffect>());
+        final effect = flowCubit.state.effect as OpenMealPickerEffect;
+        expect(effect.id, 1);
+        expect(effect.restaurantId, 'rest-1');
+        expect(effect.restaurant, testRestaurantOption);
+      },
+    );
 
-    test('8. confirmMeals success forces non-editable status, preserves meals if response meals empty, and emits MealsConfirmedEffect', () async {
-      final existingMeal = createMeal('m1');
-      final initialDay = createDay(testDate, isEditable: true, meals: [existingMeal]);
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
+    test(
+      '4. selectRestaurant failure emits CalendarFailureEffect and handles errors',
+      () async {
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [createDay(testDate)],
+          ),
+        );
 
-      // Backend returns confirmed day with empty meals
-      final confirmedFromBackend = createDay(testDate, isEditable: true, meals: const []);
-      calendarRepo.confirmResult = ApiSuccessResult(data: confirmedFromBackend);
+        calendarRepo.setRestaurantResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Locked',
+            code: SubscriptionErrorCodes.calendarSelectionLocked,
+          ),
+        );
 
-      await flowCubit.confirmMeals();
+        await flowCubit.selectRestaurant(restaurant: testRestaurantOption);
 
-      final updatedDay = overviewCubit.state.selectedDay;
-      expect(updatedDay?.canEdit, isFalse);
-      expect(updatedDay?.meals.length, 1);
-      expect(updatedDay?.meals.first.id, 'm1');
-      expect(mealSelectionCubit.state.subscriptionId, isEmpty);
+        expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
+        final effect = flowCubit.state.effect as CalendarFailureEffect;
+        expect(
+          effect.failure.code,
+          SubscriptionErrorCodes.calendarSelectionLocked,
+        );
+      },
+    );
 
-      expect(flowCubit.state.effect, isA<MealsConfirmedEffect>());
-      final effect = flowCubit.state.effect as MealsConfirmedEffect;
-      expect(effect.id, 1);
-      expect(effect.day.canEdit, isFalse);
-      expect(effect.day.meals.length, 1);
-    });
+    test(
+      '5. openMealPicker loads meals into mealSelectionCubit and emits OpenMealPickerEffect',
+      () {
+        final initialDay = createDay(
+          testDate,
+          restaurant: const CalendarRestaurantEntity(
+            id: 'rest-1',
+            name: 'Burger House',
+            category: 'Fast Food',
+            rating: '4.8',
+            deliveryDuration: '30m',
+            deliveryWindow: '12-2',
+          ),
+        );
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
 
-    test('9. confirmMeals failure with calendarSelectionLocked marks day locked and non-editable', () async {
-      final initialDay = createDay(testDate, isEditable: true, isLocked: false);
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
+        flowCubit.openMealPicker(restaurant: testRestaurantOption);
 
-      calendarRepo.confirmResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Selection is locked',
-          code: SubscriptionErrorCodes.calendarSelectionLocked,
-        ),
-      );
+        expect(mealSelectionCubit.state.subscriptionId, 'sub-1');
+        expect(mealSelectionCubit.state.restaurantId, 'rest-1');
+        expect(flowCubit.state.effect, isA<OpenMealPickerEffect>());
+        final effect = flowCubit.state.effect as OpenMealPickerEffect;
+        expect(effect.id, 1);
+        expect(effect.restaurantId, 'rest-1');
+      },
+    );
 
-      await flowCubit.confirmMeals();
+    test(
+      '6. saveMeals success replaces overview day, clears mealSelection, and emits MealsSavedEffect',
+      () async {
+        final initialDay = createDay(testDate);
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
 
-      final updatedDay = overviewCubit.state.selectedDay;
-      expect(updatedDay?.canEdit, isFalse);
-      expect(updatedDay?.isLocked, isTrue);
+        final meal1 = createMeal('m1');
+        mealSelectionCubit.emit(
+          mealSelectionCubit.state.copyWith(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurantId: 'rest-1',
+            selectedMealIds: ['m1'],
+            availableMeals: CalendarAvailableMealsEntity(
+              restaurant: const CalendarRestaurantEntity(
+                id: 'rest-1',
+                name: 'Burger House',
+                category: 'Fast Food',
+                rating: '4.8',
+                deliveryDuration: '30m',
+                deliveryWindow: '12-2',
+              ),
+              meals: [meal1],
+              slotRequirements: const [
+                CalendarSlotRequirementEntity(
+                  slot: 'Lunch',
+                  displayName: 'Lunch',
+                  slotNameAr: 'الغداء',
+                  slotNameEn: 'Lunch',
+                  count: 1,
+                ),
+              ],
+              slots: const [
+                CalendarSlotMealsEntity(
+                  slot: 'Lunch',
+                  displayName: 'Lunch',
+                  slotNameAr: 'الغداء',
+                  slotNameEn: 'Lunch',
+                  count: 1,
+                ),
+              ],
+            ),
+          ),
+        );
 
-      expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
-      final effect = flowCubit.state.effect as CalendarFailureEffect;
-      expect(effect.failure.code, SubscriptionErrorCodes.calendarSelectionLocked);
-    });
+        final savedDay = createDay(testDate, meals: [meal1]);
+        calendarRepo.saveMealsResult = ApiSuccessResult(data: savedDay);
 
-    test('10. confirmMeals failure with calendarDayUnavailable reloads overview calendar', () async {
-      final initialDay = createDay(testDate, isEditable: true);
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
+        await flowCubit.saveMeals();
 
-      calendarRepo.confirmResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Day unavailable',
-          code: SubscriptionErrorCodes.calendarDayUnavailable,
-        ),
-      );
+        expect(overviewCubit.state.selectedDay?.meals.length, 1);
+        expect(mealSelectionCubit.state.subscriptionId, isEmpty);
+        expect(mealSelectionCubit.state.availableMeals, isNull);
+        expect(flowCubit.state.effect, isA<MealsSavedEffect>());
+        final effect = flowCubit.state.effect as MealsSavedEffect;
+        expect(effect.id, 1);
+        expect(effect.day.meals.first.id, 'm1');
+      },
+    );
 
-      final initialCallCount = calendarRepo.getCalendarCallCount;
-      await flowCubit.confirmMeals();
+    test(
+      '7. saveMeals failure emits CalendarFailureEffect without mutating overview',
+      () async {
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [createDay(testDate)],
+          ),
+        );
 
-      expect(calendarRepo.getCalendarCallCount, greaterThan(initialCallCount));
-      expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
-      final effect = flowCubit.state.effect as CalendarFailureEffect;
-      expect(effect.failure.code, SubscriptionErrorCodes.calendarDayUnavailable);
-    });
+        final meal1 = createMeal('m1');
+        mealSelectionCubit.emit(
+          mealSelectionCubit.state.copyWith(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurantId: 'rest-1',
+            selectedMealIds: ['m1'],
+            availableMeals: CalendarAvailableMealsEntity(
+              restaurant: const CalendarRestaurantEntity(
+                id: 'rest-1',
+                name: 'Burger House',
+                category: 'Fast Food',
+                rating: '4.8',
+                deliveryDuration: '30m',
+                deliveryWindow: '12-2',
+              ),
+              meals: [meal1],
+              slotRequirements: const [
+                CalendarSlotRequirementEntity(
+                  slot: 'Lunch',
+                  displayName: 'Lunch',
+                  slotNameAr: 'الغداء',
+                  slotNameEn: 'Lunch',
+                  count: 1,
+                ),
+              ],
+              slots: const [
+                CalendarSlotMealsEntity(
+                  slot: 'Lunch',
+                  displayName: 'Lunch',
+                  slotNameAr: 'الغداء',
+                  slotNameEn: 'Lunch',
+                  count: 1,
+                ),
+              ],
+            ),
+          ),
+        );
 
-    test('11. autoSelectMeals success replaces overview day and emits MealsSavedEffect', () async {
-      final initialDay = createDay(testDate);
-      overviewCubit.emit(
-        CalendarOverviewState(
-          subscriptionId: 'sub-1',
-          selectedDate: testDate,
-          days: [initialDay],
-        ),
-      );
+        calendarRepo.saveMealsResult = ApiErrorResult(
+          failure: Failure(errorMessage: 'Server Error', code: 'server_error'),
+        );
 
-      final autoSelectedDay = createDay(
-        testDate,
-        meals: [createMeal('auto-1')],
-      );
-      calendarRepo.autoSelectResult = ApiSuccessResult(data: autoSelectedDay);
+        await flowCubit.saveMeals();
 
-      await flowCubit.autoSelectMeals();
+        expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
+        final effect = flowCubit.state.effect as CalendarFailureEffect;
+        expect(effect.failure.code, 'server_error');
+        expect(overviewCubit.state.selectedDay?.meals, isEmpty);
+      },
+    );
 
-      expect(overviewCubit.state.selectedDay?.meals.first.id, 'auto-1');
-      expect(flowCubit.state.effect, isA<MealsSavedEffect>());
-      final effect = flowCubit.state.effect as MealsSavedEffect;
-      expect(effect.id, 1);
-      expect(effect.day.meals.first.id, 'auto-1');
-    });
+    test(
+      '8. confirmMeals success forces non-editable status, preserves meals if response meals empty, and emits MealsConfirmedEffect',
+      () async {
+        final existingMeal = createMeal('m1');
+        final initialDay = createDay(
+          testDate,
+          isEditable: true,
+          meals: [existingMeal],
+        );
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
 
-    test('12. closeMealPicker clears meal selection and emits CloseMealPickerEffect', () {
-      mealSelectionCubit.emit(
-        mealSelectionCubit.state.copyWith(
-          subscriptionId: 'sub-1',
-          restaurantId: 'rest-1',
-        ),
-      );
+        // Backend returns confirmed day with empty meals
+        final confirmedFromBackend = createDay(
+          testDate,
+          isEditable: true,
+          meals: const [],
+        );
+        calendarRepo.confirmResult = ApiSuccessResult(
+          data: confirmedFromBackend,
+        );
 
-      flowCubit.closeMealPicker();
+        await flowCubit.confirmMeals();
 
-      expect(mealSelectionCubit.state.subscriptionId, isEmpty);
-      expect(flowCubit.state.effect, isA<CloseMealPickerEffect>());
-      final effect = flowCubit.state.effect as CloseMealPickerEffect;
-      expect(effect.id, 1);
-    });
+        final updatedDay = overviewCubit.state.selectedDay;
+        expect(updatedDay?.canEdit, isFalse);
+        expect(updatedDay?.meals.length, 1);
+        expect(updatedDay?.meals.first.id, 'm1');
+        expect(mealSelectionCubit.state.subscriptionId, isEmpty);
+
+        expect(flowCubit.state.effect, isA<MealsConfirmedEffect>());
+        final effect = flowCubit.state.effect as MealsConfirmedEffect;
+        expect(effect.id, 1);
+        expect(effect.day.canEdit, isFalse);
+        expect(effect.day.meals.length, 1);
+      },
+    );
+
+    test(
+      '9. confirmMeals failure with calendarSelectionLocked marks day locked and non-editable',
+      () async {
+        final initialDay = createDay(
+          testDate,
+          isEditable: true,
+          isLocked: false,
+        );
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
+
+        calendarRepo.confirmResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Selection is locked',
+            code: SubscriptionErrorCodes.calendarSelectionLocked,
+          ),
+        );
+
+        await flowCubit.confirmMeals();
+
+        final updatedDay = overviewCubit.state.selectedDay;
+        expect(updatedDay?.canEdit, isFalse);
+        expect(updatedDay?.isLocked, isTrue);
+
+        expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
+        final effect = flowCubit.state.effect as CalendarFailureEffect;
+        expect(
+          effect.failure.code,
+          SubscriptionErrorCodes.calendarSelectionLocked,
+        );
+      },
+    );
+
+    test(
+      '10. confirmMeals failure with calendarDayUnavailable reloads overview calendar',
+      () async {
+        final initialDay = createDay(testDate, isEditable: true);
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
+
+        calendarRepo.confirmResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Day unavailable',
+            code: SubscriptionErrorCodes.calendarDayUnavailable,
+          ),
+        );
+
+        final initialCallCount = calendarRepo.getCalendarCallCount;
+        await flowCubit.confirmMeals();
+
+        expect(
+          calendarRepo.getCalendarCallCount,
+          greaterThan(initialCallCount),
+        );
+        expect(flowCubit.state.effect, isA<CalendarFailureEffect>());
+        final effect = flowCubit.state.effect as CalendarFailureEffect;
+        expect(
+          effect.failure.code,
+          SubscriptionErrorCodes.calendarDayUnavailable,
+        );
+      },
+    );
+
+    test(
+      '11. autoSelectMeals success replaces overview day and emits MealsSavedEffect',
+      () async {
+        final initialDay = createDay(testDate);
+        overviewCubit.emit(
+          CalendarOverviewState(
+            subscriptionId: 'sub-1',
+            selectedDate: testDate,
+            days: [initialDay],
+          ),
+        );
+
+        final autoSelectedDay = createDay(
+          testDate,
+          meals: [createMeal('auto-1')],
+        );
+        calendarRepo.autoSelectResult = ApiSuccessResult(data: autoSelectedDay);
+
+        await flowCubit.autoSelectMeals();
+
+        expect(overviewCubit.state.selectedDay?.meals.first.id, 'auto-1');
+        expect(flowCubit.state.effect, isA<MealsSavedEffect>());
+        final effect = flowCubit.state.effect as MealsSavedEffect;
+        expect(effect.id, 1);
+        expect(effect.day.meals.first.id, 'auto-1');
+      },
+    );
+
+    test(
+      '12. closeMealPicker clears meal selection and emits CloseMealPickerEffect',
+      () {
+        mealSelectionCubit.emit(
+          mealSelectionCubit.state.copyWith(
+            subscriptionId: 'sub-1',
+            restaurantId: 'rest-1',
+          ),
+        );
+
+        flowCubit.closeMealPicker();
+
+        expect(mealSelectionCubit.state.subscriptionId, isEmpty);
+        expect(flowCubit.state.effect, isA<CloseMealPickerEffect>());
+        final effect = flowCubit.state.effect as CloseMealPickerEffect;
+        expect(effect.id, 1);
+      },
+    );
 
     test('13. flowCubit.close does not close child cubits', () async {
       await flowCubit.close();

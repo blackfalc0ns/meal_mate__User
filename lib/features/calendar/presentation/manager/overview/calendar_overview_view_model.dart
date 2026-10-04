@@ -114,10 +114,7 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     }
   }
 
-  void selectDay({
-    required CalendarDayEntity day,
-    required String localeName,
-  }) {
+  void selectDay({required CalendarDayEntity day, required String localeName}) {
     if (day.date == null) return;
     _dayRequestGeneration++;
 
@@ -144,12 +141,7 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
           : day.meals;
       return updatedDay.copyWith(meals: resolvedMeals);
     }).toList();
-    emit(
-      state.copyWith(
-        days: updatedDays,
-        isSelectedDayLoading: false,
-      ),
-    );
+    emit(state.copyWith(days: updatedDays, isSelectedDayLoading: false));
   }
 
   DateTime? _initialSelectedDate(List<CalendarDayEntity> days) {

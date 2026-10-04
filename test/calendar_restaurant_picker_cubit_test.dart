@@ -133,11 +133,7 @@ void main() {
     });
 
     test('3. clear resets state and invalidates in-flight requests', () async {
-      cubit.load(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        localeName: 'en',
-      );
+      cubit.load(subscriptionId: 'sub-1', date: testDate, localeName: 'en');
       expect(cubit.state.isLoading, isTrue);
 
       cubit.clear();
@@ -153,109 +149,143 @@ void main() {
       expect(cubit.state.restaurants, isEmpty);
     });
 
-    test('4. selectRestaurant returns ApiSuccessResult without mutating overview', () async {
-      final option = _createOption('r-100', 'Power Eats');
-      final future = cubit.selectRestaurant(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        restaurant: option,
-        localeName: 'en',
-      );
+    test(
+      '4. selectRestaurant returns ApiSuccessResult without mutating overview',
+      () async {
+        final option = _createOption('r-100', 'Power Eats');
+        final future = cubit.selectRestaurant(
+          subscriptionId: 'sub-1',
+          date: testDate,
+          restaurant: option,
+          localeName: 'en',
+        );
 
-      expect(cubit.state.isSelecting, isTrue);
-      expect(cubit.state.selectingRestaurantId, 'r-100');
+        expect(cubit.state.isSelecting, isTrue);
+        expect(cubit.state.selectingRestaurantId, 'r-100');
 
-      final returnDay = CalendarDayEntity(
-        dayNumber: 15,
-        weekday: 'Thursday',
-        date: testDate,
-        restaurantId: 'r-100',
-      );
-      repo.setDayRestaurantCompleters[0].complete(ApiSuccessResult(data: returnDay));
+        final returnDay = CalendarDayEntity(
+          dayNumber: 15,
+          weekday: 'Thursday',
+          date: testDate,
+          restaurantId: 'r-100',
+        );
+        repo.setDayRestaurantCompleters[0].complete(
+          ApiSuccessResult(data: returnDay),
+        );
 
-      final result = await future;
-      expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
-      expect((result as ApiSuccessResult<CalendarDayEntity>).data.restaurantId, 'r-100');
-      expect(cubit.state.isSelecting, isFalse);
-      expect(cubit.state.selectingRestaurantId, isNull);
-    });
+        final result = await future;
+        expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
+        expect(
+          (result as ApiSuccessResult<CalendarDayEntity>).data.restaurantId,
+          'r-100',
+        );
+        expect(cubit.state.isSelecting, isFalse);
+        expect(cubit.state.selectingRestaurantId, isNull);
+      },
+    );
 
-    test('5. selectRestaurant failure emits selectFailure and returns error result', () async {
-      final option = _createOption('r-100', 'Power Eats');
-      final future = cubit.selectRestaurant(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        restaurant: option,
-        localeName: 'en',
-      );
+    test(
+      '5. selectRestaurant failure emits selectFailure and returns error result',
+      () async {
+        final option = _createOption('r-100', 'Power Eats');
+        final future = cubit.selectRestaurant(
+          subscriptionId: 'sub-1',
+          date: testDate,
+          restaurant: option,
+          localeName: 'en',
+        );
 
-      repo.setDayRestaurantCompleters[0].complete(
-        ApiErrorResult(
-          failure: Failure(errorMessage: 'Failed to select', code: 'sel_err'),
-        ),
-      );
+        repo.setDayRestaurantCompleters[0].complete(
+          ApiErrorResult(
+            failure: Failure(errorMessage: 'Failed to select', code: 'sel_err'),
+          ),
+        );
 
-      final result = await future;
-      expect(result, isA<ApiErrorResult<CalendarDayEntity>>());
-      expect(cubit.state.isSelecting, isFalse);
-      expect(cubit.state.selectFailure?.errorMessage, 'Failed to select');
-    });
+        final result = await future;
+        expect(result, isA<ApiErrorResult<CalendarDayEntity>>());
+        expect(cubit.state.isSelecting, isFalse);
+        expect(cubit.state.selectFailure?.errorMessage, 'Failed to select');
+      },
+    );
 
-    test('6. prevents duplicate selection of the same restaurant while in-flight', () async {
-      final option = _createOption('r-100', 'Power Eats');
-      cubit.selectRestaurant(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        restaurant: option,
-        localeName: 'en',
-      );
-      expect(repo.setDayRestaurantCompleters.length, 1);
-
-      // Trigger select again with same restaurant
-      cubit.selectRestaurant(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        restaurant: option,
-        localeName: 'en',
-      );
-      expect(repo.setDayRestaurantCompleters.length, 1);
-    });
-
-    test('7. newer restaurant selection invalidates older selection response', () async {
-      final optionA = _createOption('r-A', 'Rest A');
-      final optionB = _createOption('r-B', 'Rest B');
-
-      unawaited(
+    test(
+      '6. prevents duplicate selection of the same restaurant while in-flight',
+      () async {
+        final option = _createOption('r-100', 'Power Eats');
         cubit.selectRestaurant(
           subscriptionId: 'sub-1',
           date: testDate,
-          restaurant: optionA,
+          restaurant: option,
           localeName: 'en',
-        ),
-      );
+        );
+        expect(repo.setDayRestaurantCompleters.length, 1);
 
-      final futureB = cubit.selectRestaurant(
-        subscriptionId: 'sub-1',
-        date: testDate,
-        restaurant: optionB,
-        localeName: 'en',
-      );
+        // Trigger select again with same restaurant
+        cubit.selectRestaurant(
+          subscriptionId: 'sub-1',
+          date: testDate,
+          restaurant: option,
+          localeName: 'en',
+        );
+        expect(repo.setDayRestaurantCompleters.length, 1);
+      },
+    );
 
-      expect(repo.setDayRestaurantCompleters.length, 2);
+    test(
+      '7. newer restaurant selection invalidates older selection response',
+      () async {
+        final optionA = _createOption('r-A', 'Rest A');
+        final optionB = _createOption('r-B', 'Rest B');
 
-      final dayA = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate, restaurantId: 'r-A');
-      final dayB = CalendarDayEntity(dayNumber: 15, weekday: 'Thu', date: testDate, restaurantId: 'r-B');
+        unawaited(
+          cubit.selectRestaurant(
+            subscriptionId: 'sub-1',
+            date: testDate,
+            restaurant: optionA,
+            localeName: 'en',
+          ),
+        );
 
-      // Complete A late after B has been triggered
-      repo.setDayRestaurantCompleters[0].complete(ApiSuccessResult(data: dayA));
-      await Future<void>.delayed(Duration.zero);
+        final futureB = cubit.selectRestaurant(
+          subscriptionId: 'sub-1',
+          date: testDate,
+          restaurant: optionB,
+          localeName: 'en',
+        );
 
-      // A was invalidated by newer choice B
-      expect(cubit.state.selectingRestaurantId, 'r-B');
+        expect(repo.setDayRestaurantCompleters.length, 2);
 
-      repo.setDayRestaurantCompleters[1].complete(ApiSuccessResult(data: dayB));
-      final resultB = await futureB;
-      expect((resultB as ApiSuccessResult<CalendarDayEntity>).data.restaurantId, 'r-B');
-    });
+        final dayA = CalendarDayEntity(
+          dayNumber: 15,
+          weekday: 'Thu',
+          date: testDate,
+          restaurantId: 'r-A',
+        );
+        final dayB = CalendarDayEntity(
+          dayNumber: 15,
+          weekday: 'Thu',
+          date: testDate,
+          restaurantId: 'r-B',
+        );
+
+        // Complete A late after B has been triggered
+        repo.setDayRestaurantCompleters[0].complete(
+          ApiSuccessResult(data: dayA),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        // A was invalidated by newer choice B
+        expect(cubit.state.selectingRestaurantId, 'r-B');
+
+        repo.setDayRestaurantCompleters[1].complete(
+          ApiSuccessResult(data: dayB),
+        );
+        final resultB = await futureB;
+        expect(
+          (resultB as ApiSuccessResult<CalendarDayEntity>).data.restaurantId,
+          'r-B',
+        );
+      },
+    );
   });
 }

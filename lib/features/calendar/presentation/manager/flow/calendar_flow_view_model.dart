@@ -31,7 +31,8 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? subscriptionId,
     String? localeName,
   }) {
-    final targetDate = date ??
+    final targetDate =
+        date ??
         overviewCubit.state.selectedDate ??
         overviewCubit.state.selectedDay?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
@@ -65,7 +66,8 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? subscriptionId,
     String? localeName,
   }) async {
-    final targetDate = date ??
+    final targetDate =
+        date ??
         overviewCubit.state.selectedDate ??
         overviewCubit.state.selectedDay?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
@@ -120,14 +122,11 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? localeName,
   }) {
     final day = overviewCubit.state.selectedDay;
-    final targetDate = date ??
-        overviewCubit.state.selectedDate ??
-        day?.date;
+    final targetDate = date ?? overviewCubit.state.selectedDate ?? day?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
         ? subscriptionId
         : overviewCubit.state.subscriptionId;
-    final targetRestId =
-        restaurantId ?? restaurant?.id ?? day?.restaurant?.id;
+    final targetRestId = restaurantId ?? restaurant?.id ?? day?.restaurant?.id;
 
     if (targetDate == null ||
         targetSubId.isEmpty ||
@@ -174,14 +173,12 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         mealSelectionCubit.clear();
         emit(
           CalendarFlowState(
-            effect: MealsSavedEffect(
-              id: _nextEffectId++,
-              day: data,
-            ),
+            effect: MealsSavedEffect(id: _nextEffectId++, day: data),
           ),
         );
       case ApiErrorResult(:final failure):
-        final date = mealSelectionCubit.state.date ??
+        final date =
+            mealSelectionCubit.state.date ??
             overviewCubit.state.selectedDate ??
             DateTime.now();
         final subId = mealSelectionCubit.state.subscriptionId.isNotEmpty
@@ -250,10 +247,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         overviewCubit.replaceDay(data);
         emit(
           CalendarFlowState(
-            effect: MealsSavedEffect(
-              id: _nextEffectId++,
-              day: data,
-            ),
+            effect: MealsSavedEffect(id: _nextEffectId++, day: data),
           ),
         );
       case ApiErrorResult(:final failure):
@@ -263,11 +257,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
   void closeMealPicker() {
     mealSelectionCubit.clear();
-    emit(
-      CalendarFlowState(
-        effect: CloseMealPickerEffect(id: _nextEffectId++),
-      ),
-    );
+    emit(CalendarFlowState(effect: CloseMealPickerEffect(id: _nextEffectId++)));
   }
 
   void clearEffect() {
@@ -298,10 +288,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
     emit(
       CalendarFlowState(
-        effect: CalendarFailureEffect(
-          id: _nextEffectId++,
-          failure: failure,
-        ),
+        effect: CalendarFailureEffect(id: _nextEffectId++, failure: failure),
       ),
     );
   }

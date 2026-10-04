@@ -57,7 +57,6 @@ class CalendarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocSelector<
       CalendarOverviewCubit,
       CalendarOverviewState,
@@ -75,7 +74,10 @@ class CalendarContent extends StatelessWidget {
     );
   }
 
-  Widget _buildViewForMode(BuildContext context, {required CalendarViewMode mode}) {
+  Widget _buildViewForMode(
+    BuildContext context, {
+    required CalendarViewMode mode,
+  }) {
     switch (mode) {
       case CalendarViewMode.loading:
         return CalendarLoadingSkeleton(showBottomSpace: showBottomSpace);
@@ -134,19 +136,24 @@ class CalendarContent extends StatelessWidget {
 
   Widget _buildErrorView(BuildContext context) {
     final locale = context.localization;
-    final failure = context.watch<CalendarOverviewCubit>().state.calendarFailure;
+    final failure = context
+        .watch<CalendarOverviewCubit>()
+        .state
+        .calendarFailure;
     if (failure == null) return const SizedBox.shrink();
 
     return ApiErrorWidget(
       exception: failure.exception,
       onRetry: () {
-        final subId =
-            context.read<CalendarOverviewCubit>().state.subscriptionId;
+        final subId = context
+            .read<CalendarOverviewCubit>()
+            .state
+            .subscriptionId;
         unawaited(
           context.read<CalendarOverviewCubit>().loadCalendar(
-                subscriptionId: subId,
-                localeName: locale.localeName,
-              ),
+            subscriptionId: subId,
+            localeName: locale.localeName,
+          ),
         );
       },
     );

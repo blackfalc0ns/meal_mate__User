@@ -27,7 +27,11 @@ class CalendarScreenBody extends StatelessWidget {
   final CalendarNavigationCoordinator? coordinator;
   final VoidCallback? onBackPressed;
   final VoidCallback? onSelectRestaurant;
-  final void Function(CalendarMealEntity meal, CalendarRestaurantEntity? restaurant)? onMealTap;
+  final void Function(
+    CalendarMealEntity meal,
+    CalendarRestaurantEntity? restaurant,
+  )?
+  onMealTap;
   final VoidCallback? onChangeMeal;
 
   @override
@@ -48,7 +52,8 @@ class CalendarScreenBody extends StatelessWidget {
           children: [
             CalendarHeader(
               title: locale.calendar_title,
-              onBackPressed: onBackPressed ??
+              onBackPressed:
+                  onBackPressed ??
                   () {
                     if (Navigator.of(context).canPop()) {
                       Navigator.of(context).pop();
@@ -62,13 +67,15 @@ class CalendarScreenBody extends StatelessWidget {
             Expanded(
               child: CalendarContent(
                 showBottomSpace: showBottomSpace,
-                onSelectRestaurant: onSelectRestaurant ??
+                onSelectRestaurant:
+                    onSelectRestaurant ??
                     () {
                       unawaited(
                         activeCoordinator.openRestaurantPicker(context),
                       );
                     },
-                onMealTap: onMealTap ??
+                onMealTap:
+                    onMealTap ??
                     (meal, restaurant) {
                       activeCoordinator.openMealDetails(
                         context,
@@ -76,11 +83,15 @@ class CalendarScreenBody extends StatelessWidget {
                         restaurant,
                       );
                     },
-                onChangeMeal: onChangeMeal ??
+                onChangeMeal:
+                    onChangeMeal ??
                     () {
-                      final day =
-                          context.read<CalendarOverviewCubit>().state.selectedDay;
-                      final date = context
+                      final day = context
+                          .read<CalendarOverviewCubit>()
+                          .state
+                          .selectedDay;
+                      final date =
+                          context
                               .read<CalendarOverviewCubit>()
                               .state
                               .selectedDate ??
@@ -96,14 +107,14 @@ class CalendarScreenBody extends StatelessWidget {
                           restaurant != null) {
                         unawaited(
                           context.read<MealSelectionCubit>().load(
-                                subscriptionId: subId,
-                                date: date,
-                                restaurantId: restaurant.id,
-                                localeName: locale.localeName,
-                                initialSelectedMealIds: (day?.meals ?? const [])
-                                    .map((m) => m.id)
-                                    .toList(),
-                              ),
+                            subscriptionId: subId,
+                            date: date,
+                            restaurantId: restaurant.id,
+                            localeName: locale.localeName,
+                            initialSelectedMealIds: (day?.meals ?? const [])
+                                .map((m) => m.id)
+                                .toList(),
+                          ),
                         );
                       }
 

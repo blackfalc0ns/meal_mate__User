@@ -63,9 +63,9 @@ class CalendarMealSelectionScreen extends StatelessWidget {
               onLoadMore: (slot) {
                 unawaited(
                   context.read<MealSelectionCubit>().loadMore(
-                        slot: slot,
-                        localeName: locale.localeName,
-                      ),
+                    slot: slot,
+                    localeName: locale.localeName,
+                  ),
                 );
               },
               isLoadingMore: state.isLoadingMoreMeals,
@@ -82,9 +82,7 @@ class CalendarMealSelectionScreen extends StatelessWidget {
           start: Spacing.lg,
           end: Spacing.lg,
           bottom: Spacing.xl,
-          child: CalendarMealSaveButton(
-            controller: saveButtonController,
-          ),
+          child: CalendarMealSaveButton(controller: saveButtonController),
         ),
       ],
     );

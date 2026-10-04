@@ -54,7 +54,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         widget.restaurantPickerCubit ?? getIt<RestaurantPickerCubit>();
     _mealSelectionCubit =
         widget.mealSelectionCubit ?? getIt<MealSelectionCubit>();
-    _flowCubit = widget.flowCubit ??
+    _flowCubit =
+        widget.flowCubit ??
         CalendarFlowCubit(
           overviewCubit: _overviewCubit,
           restaurantPickerCubit: _restaurantPickerCubit,

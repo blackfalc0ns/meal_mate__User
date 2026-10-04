@@ -60,7 +60,8 @@ class _ControllableProfileRepo implements ProfileRepository {
   Completer<ApiResult<ProfileBillingCurrentEntity>>? currentSubCompleter;
 
   @override
-  Future<ApiResult<ProfileBillingCurrentEntity>> getCurrentCustomerSubscription() {
+  Future<ApiResult<ProfileBillingCurrentEntity>>
+  getCurrentCustomerSubscription() {
     currentSubCompleter = Completer<ApiResult<ProfileBillingCurrentEntity>>();
     return currentSubCompleter!.future;
   }
@@ -197,50 +198,46 @@ void main() {
   });
 
   group('CalendarOverviewCubit', () {
-    test('1. subscription resolution: resolves from profile repo and saves to prefs when subscriptionId is null', () async {
-      cubit.loadCalendar(
-        subscriptionId: null,
-        localeName: 'en',
-      );
+    test(
+      '1. subscription resolution: resolves from profile repo and saves to prefs when subscriptionId is null',
+      () async {
+        cubit.loadCalendar(subscriptionId: null, localeName: 'en');
 
-      expect(profileRepo.currentSubCompleter, isNotNull);
-      profileRepo.currentSubCompleter!.complete(
-        ApiSuccessResult(
-          data: _createBillingCurrent('resolved-sub-99'),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        expect(profileRepo.currentSubCompleter, isNotNull);
+        profileRepo.currentSubCompleter!.complete(
+          ApiSuccessResult(data: _createBillingCurrent('resolved-sub-99')),
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      expect(calendarRepo.getCalendarSubscriptionIds, ['resolved-sub-99']);
-      expect(cubit.state.subscriptionId, 'resolved-sub-99');
-      expect(cubit.state.isCalendarLoading, isTrue);
+        expect(calendarRepo.getCalendarSubscriptionIds, ['resolved-sub-99']);
+        expect(cubit.state.subscriptionId, 'resolved-sub-99');
+        expect(cubit.state.isCalendarLoading, isTrue);
 
-      final day1 = _createDay(1);
-      calendarRepo.getCalendarCompleters[0].complete(
-        ApiSuccessResult(
-          data: CalendarSubscriptionEntity(
-            subscriptionId: 'resolved-sub-99',
-            days: [day1],
+        final day1 = _createDay(1);
+        calendarRepo.getCalendarCompleters[0].complete(
+          ApiSuccessResult(
+            data: CalendarSubscriptionEntity(
+              subscriptionId: 'resolved-sub-99',
+              days: [day1],
+            ),
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      expect(cubit.state.isCalendarLoading, isFalse);
-      expect(cubit.state.days.length, 1);
-      expect(prefHelper.getData(key: StorageKeys.currentSubscriptionId), 'resolved-sub-99');
-    });
+        expect(cubit.state.isCalendarLoading, isFalse);
+        expect(cubit.state.days.length, 1);
+        expect(
+          prefHelper.getData(key: StorageKeys.currentSubscriptionId),
+          'resolved-sub-99',
+        );
+      },
+    );
 
     test('2. empty subscription marks hasNoSubscription: true', () async {
-      cubit.loadCalendar(
-        subscriptionId: null,
-        localeName: 'en',
-      );
+      cubit.loadCalendar(subscriptionId: null, localeName: 'en');
 
       profileRepo.currentSubCompleter!.complete(
-        ApiSuccessResult(
-          data: _createBillingCurrent(null),
-        ),
+        ApiSuccessResult(data: _createBillingCurrent(null)),
       );
       await Future<void>.delayed(Duration.zero);
 
@@ -248,52 +245,54 @@ void main() {
       expect(cubit.state.isCalendarLoading, isFalse);
     });
 
-    test('3. not-found retry: clears cached subscription and re-resolves when not found occurs', () async {
-      await prefHelper.saveData(
-        key: StorageKeys.currentSubscriptionId,
-        val: 'stale-sub',
-      );
+    test(
+      '3. not-found retry: clears cached subscription and re-resolves when not found occurs',
+      () async {
+        await prefHelper.saveData(
+          key: StorageKeys.currentSubscriptionId,
+          val: 'stale-sub',
+        );
 
-      cubit.loadCalendar(subscriptionId: null, localeName: 'en');
-      await Future<void>.delayed(Duration.zero);
+        cubit.loadCalendar(subscriptionId: null, localeName: 'en');
+        await Future<void>.delayed(Duration.zero);
 
-      expect(profileRepo.currentSubCompleter, isNotNull);
-      profileRepo.currentSubCompleter!.complete(
-        ApiSuccessResult(
-          data: _createBillingCurrent('stale-sub'),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        expect(profileRepo.currentSubCompleter, isNotNull);
+        profileRepo.currentSubCompleter!.complete(
+          ApiSuccessResult(data: _createBillingCurrent('stale-sub')),
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      expect(calendarRepo.getCalendarSubscriptionIds, ['stale-sub']);
+        expect(calendarRepo.getCalendarSubscriptionIds, ['stale-sub']);
 
-      // Return not found failure
-      calendarRepo.getCalendarCompleters[0].complete(
-        ApiErrorResult(
-          failure: Failure(
-            errorMessage: 'Not found',
-            code: SubscriptionErrorCodes.commonNotFound,
-            exception: const ApiException(
-              errorType: ApiErrorType.notFound,
-              message: 'Not found',
-              backendErrorCode: SubscriptionErrorCodes.commonNotFound,
+        // Return not found failure
+        calendarRepo.getCalendarCompleters[0].complete(
+          ApiErrorResult(
+            failure: Failure(
+              errorMessage: 'Not found',
+              code: SubscriptionErrorCodes.commonNotFound,
+              exception: const ApiException(
+                errorType: ApiErrorType.notFound,
+                message: 'Not found',
+                backendErrorCode: SubscriptionErrorCodes.commonNotFound,
+              ),
             ),
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      // Should have cleared stale-sub and invoked profile repo to resolve new subscription
-      expect(profileRepo.currentSubCompleter, isNotNull);
-      profileRepo.currentSubCompleter!.complete(
-        ApiSuccessResult(
-          data: _createBillingCurrent('new-sub'),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        // Should have cleared stale-sub and invoked profile repo to resolve new subscription
+        expect(profileRepo.currentSubCompleter, isNotNull);
+        profileRepo.currentSubCompleter!.complete(
+          ApiSuccessResult(data: _createBillingCurrent('new-sub')),
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      expect(calendarRepo.getCalendarSubscriptionIds, ['stale-sub', 'new-sub']);
-    });
+        expect(calendarRepo.getCalendarSubscriptionIds, [
+          'stale-sub',
+          'new-sub',
+        ]);
+      },
+    );
 
     test('4. rapid day switching: stale day request ignored', () async {
       final day1 = _createDay(1);
@@ -334,7 +333,9 @@ void main() {
           ),
         ],
       );
-      calendarRepo.getDayCompleters[1].complete(ApiSuccessResult(data: detailedDay1));
+      calendarRepo.getDayCompleters[1].complete(
+        ApiSuccessResult(data: detailedDay1),
+      );
       await Future<void>.delayed(Duration.zero);
 
       expect(cubit.state.selectedDate, day2.date);
@@ -358,67 +359,81 @@ void main() {
           ),
         ],
       );
-      calendarRepo.getDayCompleters[2].complete(ApiSuccessResult(data: detailedDay2));
+      calendarRepo.getDayCompleters[2].complete(
+        ApiSuccessResult(data: detailedDay2),
+      );
       await Future<void>.delayed(Duration.zero);
 
       expect(cubit.state.selectedDay?.meals.single.id, 'm-new');
     });
 
-    test('5. selected-day failure sets calendarFailure and turns off isSelectedDayLoading', () async {
-      final day1 = _createDay(1);
-      final day2 = _createDay(2);
-      cubit.loadCalendar(subscriptionId: 'sub-1', localeName: 'en');
-      calendarRepo.getCalendarCompleters[0].complete(
-        ApiSuccessResult(
-          data: CalendarSubscriptionEntity(
-            subscriptionId: 'sub-1',
-            days: [day1, day2],
+    test(
+      '5. selected-day failure sets calendarFailure and turns off isSelectedDayLoading',
+      () async {
+        final day1 = _createDay(1);
+        final day2 = _createDay(2);
+        cubit.loadCalendar(subscriptionId: 'sub-1', localeName: 'en');
+        calendarRepo.getCalendarCompleters[0].complete(
+          ApiSuccessResult(
+            data: CalendarSubscriptionEntity(
+              subscriptionId: 'sub-1',
+              days: [day1, day2],
+            ),
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      cubit.selectDay(day: day2, localeName: 'en');
-      expect(cubit.state.isSelectedDayLoading, isTrue);
+        cubit.selectDay(day: day2, localeName: 'en');
+        expect(cubit.state.isSelectedDayLoading, isTrue);
 
-      calendarRepo.getDayCompleters[1].complete(
-        ApiErrorResult(
-          failure: Failure(
-            errorMessage: 'Failed to load day',
-            code: 'day_failed',
+        calendarRepo.getDayCompleters[1].complete(
+          ApiErrorResult(
+            failure: Failure(
+              errorMessage: 'Failed to load day',
+              code: 'day_failed',
+            ),
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      expect(cubit.state.isSelectedDayLoading, isFalse);
-      expect(cubit.state.calendarFailure?.errorMessage, 'Failed to load day');
-    });
+        expect(cubit.state.isSelectedDayLoading, isFalse);
+        expect(cubit.state.calendarFailure?.errorMessage, 'Failed to load day');
+      },
+    );
 
-    test('6. replaceDay preserves existing meals when the incoming entity omits them', () {
-      const meal = CalendarMealEntity(
-        id: 'm-keep',
-        title: 'Keep Meal',
-        description: '',
-        mealType: 'Lunch',
-        time: '',
-        calories: '500',
-        protein: '30g',
-        carbs: '30g',
-        fat: '10g',
-        ingredients: [],
-        imageAsset: '',
-        actionLabel: '',
-      );
-      final day1 = _createDay(1, meals: [meal]);
+    test(
+      '6. replaceDay preserves existing meals when the incoming entity omits them',
+      () {
+        const meal = CalendarMealEntity(
+          id: 'm-keep',
+          title: 'Keep Meal',
+          description: '',
+          mealType: 'Lunch',
+          time: '',
+          calories: '500',
+          protein: '30g',
+          carbs: '30g',
+          fat: '10g',
+          ingredients: [],
+          imageAsset: '',
+          actionLabel: '',
+        );
+        final day1 = _createDay(1, meals: [meal]);
 
-      cubit.seed(CalendarOverviewState(days: [day1], selectedDate: day1.date));
+        cubit.seed(
+          CalendarOverviewState(days: [day1], selectedDate: day1.date),
+        );
 
-      final updatedDayWithoutMeals = _createDay(1, restaurantId: 'new-rest', meals: const []);
-      cubit.replaceDay(updatedDayWithoutMeals);
+        final updatedDayWithoutMeals = _createDay(
+          1,
+          restaurantId: 'new-rest',
+          meals: const [],
+        );
+        cubit.replaceDay(updatedDayWithoutMeals);
 
-      expect(cubit.state.selectedDay?.restaurantId, 'new-rest');
-      expect(cubit.state.selectedDay?.meals, [meal]);
-    });
+        expect(cubit.state.selectedDay?.restaurantId, 'new-rest');
+        expect(cubit.state.selectedDay?.meals, [meal]);
+      },
+    );
   });
 }

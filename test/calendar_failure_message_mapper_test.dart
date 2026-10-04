@@ -56,29 +56,32 @@ void main() {
       expect(message, locale.calendar_error_fulfillment_not_ready);
     });
 
-    test('maps unknown failure with safe errorMessage to that errorMessage', () {
-      final failure = Failure(
-        code: 'unknown_code',
-        errorMessage: 'Custom backend error',
-      );
-      final message = CalendarFailureMessageMapper.map(
-        failure: failure,
-        locale: locale,
-      );
-      expect(message, 'Custom backend error');
-    });
+    test(
+      'maps unknown failure with safe errorMessage to that errorMessage',
+      () {
+        final failure = Failure(
+          code: 'unknown_code',
+          errorMessage: 'Custom backend error',
+        );
+        final message = CalendarFailureMessageMapper.map(
+          failure: failure,
+          locale: locale,
+        );
+        expect(message, 'Custom backend error');
+      },
+    );
 
-    test('maps unknown failure with empty errorMessage to locale.error_unknown_desc', () {
-      final failure = Failure(
-        code: 'unknown_code',
-        errorMessage: '',
-      );
-      final message = CalendarFailureMessageMapper.map(
-        failure: failure,
-        locale: locale,
-      );
-      expect(message, locale.error_unknown_desc);
-    });
+    test(
+      'maps unknown failure with empty errorMessage to locale.error_unknown_desc',
+      () {
+        final failure = Failure(code: 'unknown_code', errorMessage: '');
+        final message = CalendarFailureMessageMapper.map(
+          failure: failure,
+          locale: locale,
+        );
+        expect(message, locale.error_unknown_desc);
+      },
+    );
 
     test('returns empty string when failure is null', () {
       final message = CalendarFailureMessageMapper.map(

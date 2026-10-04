@@ -25,10 +25,7 @@ class ToggleMealEvent extends MealSelectionEvent {
 }
 
 class LoadMoreMealsEvent extends MealSelectionEvent {
-  const LoadMoreMealsEvent({
-    required this.slot,
-    required this.localeName,
-  });
+  const LoadMoreMealsEvent({required this.slot, required this.localeName});
 
   final String slot;
   final String localeName;

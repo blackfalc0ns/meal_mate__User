@@ -76,12 +76,18 @@ void main() {
 
     for (final entry in expectedSubManagers.entries) {
       final subDir = 'lib/features/calendar/presentation/manager/${entry.key}';
-      expect(Directory(subDir).existsSync(), isTrue,
-          reason: 'Sub-manager directory $subDir must exist');
+      expect(
+        Directory(subDir).existsSync(),
+        isTrue,
+        reason: 'Sub-manager directory $subDir must exist',
+      );
       for (final fileName in entry.value) {
         final filePath = '$subDir/$fileName';
-        expect(File(filePath).existsSync(), isTrue,
-            reason: '$filePath must exist in $subDir');
+        expect(
+          File(filePath).existsSync(),
+          isTrue,
+          reason: '$filePath must exist in $subDir',
+        );
       }
     }
   });

@@ -14,10 +14,7 @@ void main() {
     final body = File(
       'lib/features/calendar/presentation/screens/calendar_screen_body.dart',
     ).readAsStringSync();
-    expect(
-      body,
-      contains('activeCoordinator.openRestaurantPicker(context)'),
-    );
+    expect(body, contains('activeCoordinator.openRestaurantPicker(context)'));
   });
 
   test(
@@ -48,7 +45,10 @@ void main() {
       'lib/features/calendar/presentation/screens/calendar_screen_body.dart',
     ).readAsStringSync();
 
-    final changeMealCallbackIndex = source.indexOf('onChangeMeal: onChangeMeal ??');
+    final changeMealMatch = RegExp(
+      r'onChangeMeal:\s*onChangeMeal\s*\?\?',
+    ).firstMatch(source);
+    final changeMealCallbackIndex = changeMealMatch?.start ?? -1;
     final openMealPickerIndex = source.indexOf(
       'activeCoordinator.openMealPicker(context)',
       changeMealCallbackIndex,
@@ -85,19 +85,25 @@ void main() {
     expect(snackbarIndex, lessThan(closeRouteIndex));
   });
 
-  test('meal picker save button is declarative and selected separately from sheet rebuilds', () {
-    final openMealPickerSource =
-        File(
-          'lib/features/calendar/presentation/screens/calendar_meal_selection_screen.dart',
-        ).readAsStringSync() +
-        File(
-          'lib/features/calendar/presentation/widgets/calendar_meal_save_button.dart',
-        ).readAsStringSync();
+  test(
+    'meal picker save button is declarative and selected separately from sheet rebuilds',
+    () {
+      final openMealPickerSource =
+          File(
+            'lib/features/calendar/presentation/screens/calendar_meal_selection_screen.dart',
+          ).readAsStringSync() +
+          File(
+            'lib/features/calendar/presentation/widgets/calendar_meal_save_button.dart',
+          ).readAsStringSync();
 
-    expect(openMealPickerSource, contains('BlocSelector<'));
-    expect(openMealPickerSource, contains('MealSelectionCubit,'));
-    expect(openMealPickerSource, contains('MealSelectionState,'));
-    expect(openMealPickerSource, contains('state.isSaving'));
-    expect(openMealPickerSource, isNot(contains('RoundedLoadingButtonController()')));
-  });
+      expect(openMealPickerSource, contains('BlocSelector<'));
+      expect(openMealPickerSource, contains('MealSelectionCubit,'));
+      expect(openMealPickerSource, contains('MealSelectionState,'));
+      expect(openMealPickerSource, contains('state.isSaving'));
+      expect(
+        openMealPickerSource,
+        isNot(contains('RoundedLoadingButtonController()')),
+      );
+    },
+  );
 }

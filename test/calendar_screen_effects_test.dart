@@ -65,7 +65,11 @@ class _FakeNavigationCoordinator implements CalendarNavigationCoordinator {
   }
 
   @override
-  void openMealDetails(BuildContext context, dynamic meal, dynamic restaurant) {}
+  void openMealDetails(
+    BuildContext context,
+    dynamic meal,
+    dynamic restaurant,
+  ) {}
 }
 
 class _TestFlowCubit extends Cubit<CalendarFlowState>
@@ -99,7 +103,9 @@ void main() {
     );
   }
 
-  testWidgets('handles OpenRestaurantPickerEffect exactly once', (tester) async {
+  testWidgets('handles OpenRestaurantPickerEffect exactly once', (
+    tester,
+  ) async {
     final flowCubit = _TestFlowCubit();
     final coordinator = _FakeNavigationCoordinator();
 
@@ -164,54 +170,58 @@ void main() {
     expect(coordinator.closeMealPickerCalls, 1);
   });
 
-  testWidgets('handles MealsSavedEffect with success snackbar and closing picker',
-      (tester) async {
-    final flowCubit = _TestFlowCubit();
-    final coordinator = _FakeNavigationCoordinator();
+  testWidgets(
+    'handles MealsSavedEffect with success snackbar and closing picker',
+    (tester) async {
+      final flowCubit = _TestFlowCubit();
+      final coordinator = _FakeNavigationCoordinator();
 
-    await tester.pumpWidget(
-      buildTestWidget(flowCubit: flowCubit, coordinator: coordinator),
-    );
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        buildTestWidget(flowCubit: flowCubit, coordinator: coordinator),
+      );
+      await tester.pumpAndSettle();
 
-    const day = CalendarDayEntity(
-      dayNumber: 5,
-      weekday: 'Mon',
-      canEdit: true,
-    );
-    flowCubit.emitEffect(const MealsSavedEffect(id: 4, day: day));
-    await tester.pump();
+      const day = CalendarDayEntity(
+        dayNumber: 5,
+        weekday: 'Mon',
+        canEdit: true,
+      );
+      flowCubit.emitEffect(const MealsSavedEffect(id: 4, day: day));
+      await tester.pump();
 
-    expect(coordinator.closeMealPickerCalls, 1);
-    expect(coordinator.successSnackBars.length, 1);
-  });
+      expect(coordinator.closeMealPickerCalls, 1);
+      expect(coordinator.successSnackBars.length, 1);
+    },
+  );
 
   testWidgets(
-      'handles MealsConfirmedEffect with snackbar, close, and confirmation sheet',
-      (tester) async {
-    final flowCubit = _TestFlowCubit();
-    final coordinator = _FakeNavigationCoordinator();
+    'handles MealsConfirmedEffect with snackbar, close, and confirmation sheet',
+    (tester) async {
+      final flowCubit = _TestFlowCubit();
+      final coordinator = _FakeNavigationCoordinator();
 
-    await tester.pumpWidget(
-      buildTestWidget(flowCubit: flowCubit, coordinator: coordinator),
-    );
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        buildTestWidget(flowCubit: flowCubit, coordinator: coordinator),
+      );
+      await tester.pumpAndSettle();
 
-    const day = CalendarDayEntity(
-      dayNumber: 5,
-      weekday: 'Mon',
-      canEdit: false,
-    );
-    flowCubit.emitEffect(const MealsConfirmedEffect(id: 5, day: day));
-    await tester.pump();
+      const day = CalendarDayEntity(
+        dayNumber: 5,
+        weekday: 'Mon',
+        canEdit: false,
+      );
+      flowCubit.emitEffect(const MealsConfirmedEffect(id: 5, day: day));
+      await tester.pump();
 
-    expect(coordinator.closeMealPickerCalls, 1);
-    expect(coordinator.successSnackBars.length, 1);
-    expect(coordinator.showMealsConfirmationSheetCalls, 1);
-  });
+      expect(coordinator.closeMealPickerCalls, 1);
+      expect(coordinator.successSnackBars.length, 1);
+      expect(coordinator.showMealsConfirmationSheetCalls, 1);
+    },
+  );
 
-  testWidgets('handles CalendarFailureEffect with localized message',
-      (tester) async {
+  testWidgets('handles CalendarFailureEffect with localized message', (
+    tester,
+  ) async {
     final flowCubit = _TestFlowCubit();
     final coordinator = _FakeNavigationCoordinator();
 

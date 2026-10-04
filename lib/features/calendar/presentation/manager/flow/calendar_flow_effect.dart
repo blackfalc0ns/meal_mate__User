@@ -41,26 +41,17 @@ class CloseMealPickerEffect extends CalendarFlowEffect {
 class MealsSavedEffect extends CalendarFlowEffect {
   final CalendarDayEntity day;
 
-  const MealsSavedEffect({
-    required super.id,
-    required this.day,
-  });
+  const MealsSavedEffect({required super.id, required this.day});
 }
 
 class MealsConfirmedEffect extends CalendarFlowEffect {
   final CalendarDayEntity day;
 
-  const MealsConfirmedEffect({
-    required super.id,
-    required this.day,
-  });
+  const MealsConfirmedEffect({required super.id, required this.day});
 }
 
 class CalendarFailureEffect extends CalendarFlowEffect {
   final Failure failure;
 
-  const CalendarFailureEffect({
-    required super.id,
-    required this.failure,
-  });
+  const CalendarFailureEffect({required super.id, required this.failure});
 }

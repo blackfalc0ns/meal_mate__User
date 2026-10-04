@@ -121,17 +121,11 @@ class CalendarNavigationCoordinator {
   }
 
   void showSuccessSnackBar(BuildContext context, String message) {
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: message,
-    );
+    CustomSnackbar.showSuccess(context: context, message: message);
   }
 
   void showErrorSnackBar(BuildContext context, String message) {
-    CustomSnackbar.showError(
-      context: context,
-      message: message,
-    );
+    CustomSnackbar.showError(context: context, message: message);
   }
 
   void openMealDetails(

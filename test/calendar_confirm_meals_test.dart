@@ -23,7 +23,11 @@ class FakeCalendarRepository implements CalendarRepository {
     if (failure != null) {
       return ApiErrorResult(failure: failure!);
     }
-    return ApiSuccessResult(data: returnedDay ?? const CalendarDayEntity(dayNumber: 25, weekday: 'الأحد'));
+    return ApiSuccessResult(
+      data:
+          returnedDay ??
+          const CalendarDayEntity(dayNumber: 25, weekday: 'الأحد'),
+    );
   }
 
   @override
@@ -40,30 +44,33 @@ void main() {
       useCase = ConfirmCalendarDayMealsUseCase(repo);
     });
 
-    test('successfully calls repository confirmDayMeals and returns confirmed entity', () async {
-      repo.returnedDay = const CalendarDayEntity(
-        id: 'day-1',
-        status: 'SentToRestaurant',
-        uiStatus: 'awaiting_restaurant',
-        canEdit: false,
-        dayNumber: 25,
-        weekday: 'الأحد',
-      );
+    test(
+      'successfully calls repository confirmDayMeals and returns confirmed entity',
+      () async {
+        repo.returnedDay = const CalendarDayEntity(
+          id: 'day-1',
+          status: 'SentToRestaurant',
+          uiStatus: 'awaiting_restaurant',
+          canEdit: false,
+          dayNumber: 25,
+          weekday: 'الأحد',
+        );
 
-      final result = await useCase(
-        subscriptionId: 'sub-123',
-        date: '2026-09-25',
-        localeName: 'ar',
-      );
+        final result = await useCase(
+          subscriptionId: 'sub-123',
+          date: '2026-09-25',
+          localeName: 'ar',
+        );
 
-      expect(repo.confirmCalls, 1);
-      expect(repo.lastConfirmedDate, '2026-09-25');
-      expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
-      final entity = (result as ApiSuccessResult<CalendarDayEntity>).data;
-      expect(entity.status, 'SentToRestaurant');
-      expect(entity.isAwaitingRestaurantConfirmation, isTrue);
-      expect(entity.isEditable, isFalse);
-    });
+        expect(repo.confirmCalls, 1);
+        expect(repo.lastConfirmedDate, '2026-09-25');
+        expect(result, isA<ApiSuccessResult<CalendarDayEntity>>());
+        final entity = (result as ApiSuccessResult<CalendarDayEntity>).data;
+        expect(entity.status, 'SentToRestaurant');
+        expect(entity.isAwaitingRestaurantConfirmation, isTrue);
+        expect(entity.isEditable, isFalse);
+      },
+    );
 
     test('returns failure when repository fails', () async {
       repo.failure = Failure(
@@ -85,19 +92,22 @@ void main() {
   });
 
   group('CalendarDayEntity status checks', () {
-    test('isEditable is false when status is SentToRestaurant or canEdit is false', () {
-      final day = CalendarDayEntity(
-        status: 'SentToRestaurant',
-        uiStatus: 'awaiting_restaurant',
-        canEdit: false,
-        date: DateTime(2026, 9, 25),
-        dayNumber: 25,
-        weekday: 'الأحد',
-      );
+    test(
+      'isEditable is false when status is SentToRestaurant or canEdit is false',
+      () {
+        final day = CalendarDayEntity(
+          status: 'SentToRestaurant',
+          uiStatus: 'awaiting_restaurant',
+          canEdit: false,
+          date: DateTime(2026, 9, 25),
+          dayNumber: 25,
+          weekday: 'الأحد',
+        );
 
-      expect(day.isEditable, isFalse);
-      expect(day.isRestaurantClosed, isTrue);
-      expect(day.isAwaitingRestaurantConfirmation, isTrue);
-    });
+        expect(day.isEditable, isFalse);
+        expect(day.isRestaurantClosed, isTrue);
+        expect(day.isAwaitingRestaurantConfirmation, isTrue);
+      },
+    );
   });
 }

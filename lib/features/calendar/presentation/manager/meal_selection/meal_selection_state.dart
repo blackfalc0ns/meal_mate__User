@@ -102,8 +102,9 @@ class MealSelectionState {
           ? null
           : loadMoreFailure ?? this.loadMoreFailure,
       saveFailure: clearSaveFailure ? null : saveFailure ?? this.saveFailure,
-      confirmFailure:
-          clearConfirmFailure ? null : confirmFailure ?? this.confirmFailure,
+      confirmFailure: clearConfirmFailure
+          ? null
+          : confirmFailure ?? this.confirmFailure,
     );
   }
 }

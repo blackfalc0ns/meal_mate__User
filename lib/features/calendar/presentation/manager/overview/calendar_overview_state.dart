@@ -63,13 +63,15 @@ class CalendarOverviewState {
       subscriptionId: subscriptionId ?? this.subscriptionId,
       calendar: clearCalendar ? null : calendar ?? this.calendar,
       days: days ?? this.days,
-      selectedDate: clearSelectedDate ? null : selectedDate ?? this.selectedDate,
+      selectedDate: clearSelectedDate
+          ? null
+          : selectedDate ?? this.selectedDate,
       isCalendarLoading: isCalendarLoading ?? this.isCalendarLoading,
-      isSelectedDayLoading:
-          isSelectedDayLoading ?? this.isSelectedDayLoading,
+      isSelectedDayLoading: isSelectedDayLoading ?? this.isSelectedDayLoading,
       hasNoSubscription: hasNoSubscription ?? this.hasNoSubscription,
-      calendarFailure:
-          clearCalendarFailure ? null : calendarFailure ?? this.calendarFailure,
+      calendarFailure: clearCalendarFailure
+          ? null
+          : calendarFailure ?? this.calendarFailure,
     );
   }
 

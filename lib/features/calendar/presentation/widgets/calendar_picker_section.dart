@@ -64,7 +64,8 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
         dayNumber: date.day,
         weekday: DateFormat.EEEE(localeName).format(date),
         date: date,
-        isSelected: date.year == _emptySelectedDate.year &&
+        isSelected:
+            date.year == _emptySelectedDate.year &&
             date.month == _emptySelectedDate.month &&
             date.day == _emptySelectedDate.day,
         canEdit: false,
@@ -119,10 +120,7 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
       CalendarOverviewState,
       ({List<CalendarDayEntity> days, DateTime? selectedDate})
     >(
-      selector: (state) => (
-        days: state.days,
-        selectedDate: state.selectedDate,
-      ),
+      selector: (state) => (days: state.days, selectedDate: state.selectedDate),
       builder: (context, data) {
         final selectedDate = data.selectedDate;
         if (selectedDate != null &&
@@ -143,18 +141,18 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
               );
 
         return CalendarPickerPanel(
-          monthTitle:
-              DateFormat.yMMMM(locale.localeName).format(_focusedMonth),
+          monthTitle: DateFormat.yMMMM(locale.localeName).format(_focusedMonth),
           days: displayDays,
           isExpanded: _isExpanded,
           onToggleExpanded: () => setState(() => _isExpanded = !_isExpanded),
           onMonthChanged: _changeMonth,
-          onDaySelected: widget.onDaySelected ??
+          onDaySelected:
+              widget.onDaySelected ??
               (day) {
                 context.read<CalendarOverviewCubit>().selectDay(
-                      day: day,
-                      localeName: locale.localeName,
-                    );
+                  day: day,
+                  localeName: locale.localeName,
+                );
               },
         );
       },

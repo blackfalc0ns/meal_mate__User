@@ -102,11 +102,7 @@ class _TrackingRestaurantPickerCubit extends RestaurantPickerCubit {
   final List<String> closeLog;
   int closeCount = 0;
 
-  _TrackingRestaurantPickerCubit(
-    super.a,
-    super.b, {
-    required this.closeLog,
-  });
+  _TrackingRestaurantPickerCubit(super.a, super.b, {required this.closeLog});
 
   @override
   Future<void> close() {
@@ -155,116 +151,115 @@ class _TrackingFlowCubit extends CalendarFlowCubit {
   }
 }
 
-
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('CalendarScreen provides exact Cubits and closes each once with Flow closed first', (
-    tester,
-  ) async {
-    SharedPreferences.setMockInitialValues({
-      StorageKeys.currentSubscriptionId: 'sub-test',
-    });
-    final prefs = await SharedPreferences.getInstance();
-    final prefHelper = SharedPrefHelper(prefs);
+  testWidgets(
+    'CalendarScreen provides exact Cubits and closes each once with Flow closed first',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        StorageKeys.currentSubscriptionId: 'sub-test',
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final prefHelper = SharedPrefHelper(prefs);
 
-    final calendarRepo = _FakeCalendarRepo();
-    final profileRepo = _FakeProfileRepo();
+      final calendarRepo = _FakeCalendarRepo();
+      final profileRepo = _FakeProfileRepo();
 
-    final closeLog = <String>[];
+      final closeLog = <String>[];
 
-    final overviewCubit = _TrackingOverviewCubit(
-      GetCalendarUseCase(calendarRepo),
-      GetCalendarDayUseCase(calendarRepo),
-      GetCurrentCustomerSubscriptionUseCase(profileRepo),
-      prefHelper,
-      closeLog: closeLog,
-    );
+      final overviewCubit = _TrackingOverviewCubit(
+        GetCalendarUseCase(calendarRepo),
+        GetCalendarDayUseCase(calendarRepo),
+        GetCurrentCustomerSubscriptionUseCase(profileRepo),
+        prefHelper,
+        closeLog: closeLog,
+      );
 
-    final restaurantPickerCubit = _TrackingRestaurantPickerCubit(
-      GetCalendarRestaurantsUseCase(calendarRepo),
-      SetCalendarDayRestaurantUseCase(calendarRepo),
-      closeLog: closeLog,
-    );
+      final restaurantPickerCubit = _TrackingRestaurantPickerCubit(
+        GetCalendarRestaurantsUseCase(calendarRepo),
+        SetCalendarDayRestaurantUseCase(calendarRepo),
+        closeLog: closeLog,
+      );
 
-    final mealSelectionCubit = _TrackingMealSelectionCubit(
-      GetCalendarAvailableMealsUseCase(calendarRepo),
-      SaveCalendarDayMealsUseCase(calendarRepo),
-      AutoSelectCalendarDayUseCase(calendarRepo),
-      ConfirmCalendarDayMealsUseCase(calendarRepo),
-      closeLog: closeLog,
-    );
+      final mealSelectionCubit = _TrackingMealSelectionCubit(
+        GetCalendarAvailableMealsUseCase(calendarRepo),
+        SaveCalendarDayMealsUseCase(calendarRepo),
+        AutoSelectCalendarDayUseCase(calendarRepo),
+        ConfirmCalendarDayMealsUseCase(calendarRepo),
+        closeLog: closeLog,
+      );
 
-    final flowCubit = _TrackingFlowCubit(
-      overviewCubit: overviewCubit,
-      restaurantPickerCubit: restaurantPickerCubit,
-      mealSelectionCubit: mealSelectionCubit,
-      closeLog: closeLog,
-    );
+      final flowCubit = _TrackingFlowCubit(
+        overviewCubit: overviewCubit,
+        restaurantPickerCubit: restaurantPickerCubit,
+        mealSelectionCubit: mealSelectionCubit,
+        closeLog: closeLog,
+      );
 
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        locale: const Locale('en'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(
-          body: Builder(
-            builder: (rootContext) => TextButton(
-              onPressed: () async {
-                await Navigator.of(rootContext).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => CalendarScreen(
-                      subscriptionId: 'sub-test',
-                      overviewCubit: overviewCubit,
-                      restaurantPickerCubit: restaurantPickerCubit,
-                      mealSelectionCubit: mealSelectionCubit,
-                      flowCubit: flowCubit,
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (rootContext) => TextButton(
+                onPressed: () async {
+                  await Navigator.of(rootContext).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => CalendarScreen(
+                        subscriptionId: 'sub-test',
+                        overviewCubit: overviewCubit,
+                        restaurantPickerCubit: restaurantPickerCubit,
+                        mealSelectionCubit: mealSelectionCubit,
+                        flowCubit: flowCubit,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Text('Open Calendar'),
+                  );
+                },
+                child: const Text('Open Calendar'),
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 
-    // Open CalendarScreen
-    await tester.tap(find.text('Open Calendar'));
-    await tester.pumpAndSettle();
+      // Open CalendarScreen
+      await tester.tap(find.text('Open Calendar'));
+      await tester.pumpAndSettle();
 
-    // Verify exactly the passed instances were provided via MultiBlocProvider
-    final descendantElement = tester.element(find.byType(CalendarHeader));
-    final providedOverview = descendantElement.read<CalendarOverviewCubit>();
-    final providedPicker = descendantElement.read<RestaurantPickerCubit>();
-    final providedMeals = descendantElement.read<MealSelectionCubit>();
-    final providedFlow = descendantElement.read<CalendarFlowCubit>();
-    expect(providedOverview, same(overviewCubit));
-    expect(providedPicker, same(restaurantPickerCubit));
-    expect(providedMeals, same(mealSelectionCubit));
-    expect(providedFlow, same(flowCubit));
+      // Verify exactly the passed instances were provided via MultiBlocProvider
+      final descendantElement = tester.element(find.byType(CalendarHeader));
+      final providedOverview = descendantElement.read<CalendarOverviewCubit>();
+      final providedPicker = descendantElement.read<RestaurantPickerCubit>();
+      final providedMeals = descendantElement.read<MealSelectionCubit>();
+      final providedFlow = descendantElement.read<CalendarFlowCubit>();
+      expect(providedOverview, same(overviewCubit));
+      expect(providedPicker, same(restaurantPickerCubit));
+      expect(providedMeals, same(mealSelectionCubit));
+      expect(providedFlow, same(flowCubit));
 
-    // Verify none are closed yet while screen is active
-    expect(overviewCubit.closeCount, 0);
-    expect(restaurantPickerCubit.closeCount, 0);
-    expect(mealSelectionCubit.closeCount, 0);
-    expect(flowCubit.closeCount, 0);
+      // Verify none are closed yet while screen is active
+      expect(overviewCubit.closeCount, 0);
+      expect(restaurantPickerCubit.closeCount, 0);
+      expect(mealSelectionCubit.closeCount, 0);
+      expect(flowCubit.closeCount, 0);
 
-    // Pop the CalendarScreen route
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
-    navigator.pop();
-    await tester.pumpAndSettle();
+      // Pop the CalendarScreen route
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator.pop();
+      await tester.pumpAndSettle();
 
-    // Verify each cubit instance was closed exactly once
-    expect(flowCubit.closeCount, 1);
-    expect(overviewCubit.closeCount, 1);
-    expect(restaurantPickerCubit.closeCount, 1);
-    expect(mealSelectionCubit.closeCount, 1);
+      // Verify each cubit instance was closed exactly once
+      expect(flowCubit.closeCount, 1);
+      expect(overviewCubit.closeCount, 1);
+      expect(restaurantPickerCubit.closeCount, 1);
+      expect(mealSelectionCubit.closeCount, 1);
 
-    // Verify close order: flow was closed first!
-    expect(closeLog.first, 'flow');
-  });
+      // Verify close order: flow was closed first!
+      expect(closeLog.first, 'flow');
+    },
+  );
 }

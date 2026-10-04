@@ -92,12 +92,7 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
           ),
         );
       case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isLoading: false,
-            failure: result.failure,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, failure: result.failure));
     }
   }
 
@@ -179,12 +174,7 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
     final capturedSlot = currentSlotEntity.slot;
     final capturedRestaurantId = restaurantId;
 
-    emit(
-      state.copyWith(
-        isLoadingMore: true,
-        clearLoadMoreFailure: true,
-      ),
-    );
+    emit(state.copyWith(isLoadingMore: true, clearLoadMoreFailure: true));
 
     final dateStr = DateFormat('yyyy-MM-dd').format(date);
     final nextPage = currentSlotEntity.page + 1;
@@ -223,15 +213,14 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isLoadingMore: false,
-            loadMoreFailure: result.failure,
-          ),
+          state.copyWith(isLoadingMore: false, loadMoreFailure: result.failure),
         );
     }
   }
 
-  Future<ApiResult<CalendarDayEntity>> save({required String localeName}) async {
+  Future<ApiResult<CalendarDayEntity>> save({
+    required String localeName,
+  }) async {
     final date = state.date;
     final available = state.availableMeals;
     if (date == null ||
@@ -406,19 +395,11 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
 
     switch (result) {
       case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            isConfirming: false,
-            clearConfirmFailure: true,
-          ),
-        );
+        emit(state.copyWith(isConfirming: false, clearConfirmFailure: true));
         return result;
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isConfirming: false,
-            confirmFailure: result.failure,
-          ),
+          state.copyWith(isConfirming: false, confirmFailure: result.failure),
         );
         return result;
     }
@@ -450,8 +431,7 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
             ? restaurant!.logoUrl
             : selectedRestaurant.logoUrl,
         tierLogoUrl: restaurant?.tierLogoUrl,
-        ratingCount:
-            restaurant?.ratingCount ?? selectedRestaurant.ratingCount,
+        ratingCount: restaurant?.ratingCount ?? selectedRestaurant.ratingCount,
         maxUsageCount:
             restaurant?.maxUsageCount ?? selectedRestaurant.maxUsageCount,
         name: restaurant?.name.isNotEmpty == true
@@ -482,12 +462,7 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
       case ToggleMealEvent():
         toggleMeal(event.mealId);
       case LoadMoreMealsEvent():
-        unawaited(
-          loadMore(
-            slot: event.slot,
-            localeName: event.localeName,
-          ),
-        );
+        unawaited(loadMore(slot: event.slot, localeName: event.localeName));
       case SaveMealsEvent():
         unawaited(save(localeName: event.localeName));
       case AutoSelectMealsEvent():

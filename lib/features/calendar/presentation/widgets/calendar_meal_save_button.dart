@@ -49,20 +49,21 @@ class CalendarMealSaveButton extends StatelessWidget {
           context,
           isLoading: buttonState.loading,
           enabled: buttonState.enabled,
-          onPressed: onPressed ??
+          onPressed:
+              onPressed ??
               () {
                 final locale = context.localization;
                 try {
                   unawaited(
                     context.read<CalendarFlowCubit>().confirmMeals(
-                          localeName: locale.localeName,
-                        ),
+                      localeName: locale.localeName,
+                    ),
                   );
                 } catch (_) {
                   unawaited(
                     context.read<MealSelectionCubit>().confirm(
-                          localeName: locale.localeName,
-                        ),
+                      localeName: locale.localeName,
+                    ),
                   );
                 }
               },
@@ -101,8 +102,9 @@ class CalendarMealSaveButton extends StatelessWidget {
                     width: 24,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(color.onPrimary),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        color.onPrimary,
+                      ),
                     ),
                   )
                 : Text(

@@ -33,87 +33,89 @@ class _FakeMealSelectionCubit extends Cubit<MealSelectionState>
 
 void main() {
   testWidgets(
-      'CalendarContent is a StatelessWidget with zero setState and fine-grained rebuild boundaries',
-      (tester) async {
-    final days = [
-      CalendarDayEntity(
-        dayNumber: 5,
-        weekday: 'Mon',
-        date: DateTime(2026, 10, 5),
-        canEdit: true,
-      ),
-      CalendarDayEntity(
-        dayNumber: 6,
-        weekday: 'Tue',
-        date: DateTime(2026, 10, 6),
-        canEdit: true,
-      ),
-    ];
+    'CalendarContent is a StatelessWidget with zero setState and fine-grained rebuild boundaries',
+    (tester) async {
+      final days = [
+        CalendarDayEntity(
+          dayNumber: 5,
+          weekday: 'Mon',
+          date: DateTime(2026, 10, 5),
+          canEdit: true,
+        ),
+        CalendarDayEntity(
+          dayNumber: 6,
+          weekday: 'Tue',
+          date: DateTime(2026, 10, 6),
+          canEdit: true,
+        ),
+      ];
 
-    final overviewCubit = _FakeOverviewCubit(
-      CalendarOverviewState(
-        days: days,
-        selectedDate: DateTime(2026, 10, 5),
-      ),
-    );
+      final overviewCubit = _FakeOverviewCubit(
+        CalendarOverviewState(days: days, selectedDate: DateTime(2026, 10, 5)),
+      );
 
-    final mealCubit = _FakeMealSelectionCubit(
-      const MealSelectionState(),
-    );
+      final mealCubit = _FakeMealSelectionCubit(const MealSelectionState());
 
-    int contentBuildCount = 0;
+      int contentBuildCount = 0;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('en'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(
-          body: MultiBlocProvider(
-            providers: [
-              BlocProvider<CalendarOverviewCubit>.value(value: overviewCubit),
-              BlocProvider<MealSelectionCubit>.value(value: mealCubit),
-            ],
-            child: Builder(
-              builder: (context) {
-                contentBuildCount++;
-                return CalendarContent(
-                  showBottomSpace: false,
-                  onSelectRestaurant: () {},
-                  onChangeMeal: () {},
-                  onMealTap: (_, _) {},
-                );
-              },
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<CalendarOverviewCubit>.value(value: overviewCubit),
+                BlocProvider<MealSelectionCubit>.value(value: mealCubit),
+              ],
+              child: Builder(
+                builder: (context) {
+                  contentBuildCount++;
+                  return CalendarContent(
+                    showBottomSpace: false,
+                    onSelectRestaurant: () {},
+                    onChangeMeal: () {},
+                    onMealTap: (_, _) {},
+                  );
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.byType(CalendarContent), findsOneWidget);
-    expect(find.byType(CalendarPickerSection), findsOneWidget);
-    expect(find.byType(CalendarSelectedDaySection), findsOneWidget);
-    expect(contentBuildCount, 1);
-
-    // Verify CalendarContent is indeed a StatelessWidget
-    final contentWidget = tester.widget(find.byType(CalendarContent));
-    expect(contentWidget, isA<StatelessWidget>());
-
-    // 1. Changing meal state (e.g. isConfirming) should NOT rebuild CalendarPickerSection or parent
-    mealCubit.emitState(const MealSelectionState(isConfirming: true));
-    await tester.pump();
-
-    expect(contentBuildCount, 1,
-        reason: 'Parent builder must not rebuild when meal state changes');
-
-    // 2. Expand/collapse toggle in picker panel triggers only internal picker section state
-    final arrowButton = find.byTooltip('Expand');
-    if (arrowButton.evaluate().isNotEmpty) {
-      await tester.tap(arrowButton);
+      );
       await tester.pumpAndSettle();
-      expect(contentBuildCount, 1,
-          reason: 'CalendarContent must not rebuild on picker expansion');
-    }
-  });
+
+      expect(find.byType(CalendarContent), findsOneWidget);
+      expect(find.byType(CalendarPickerSection), findsOneWidget);
+      expect(find.byType(CalendarSelectedDaySection), findsOneWidget);
+      expect(contentBuildCount, 1);
+
+      // Verify CalendarContent is indeed a StatelessWidget
+      final contentWidget = tester.widget(find.byType(CalendarContent));
+      expect(contentWidget, isA<StatelessWidget>());
+
+      // 1. Changing meal state (e.g. isConfirming) should NOT rebuild CalendarPickerSection or parent
+      mealCubit.emitState(const MealSelectionState(isConfirming: true));
+      await tester.pump();
+
+      expect(
+        contentBuildCount,
+        1,
+        reason: 'Parent builder must not rebuild when meal state changes',
+      );
+
+      // 2. Expand/collapse toggle in picker panel triggers only internal picker section state
+      final arrowButton = find.byTooltip('Expand');
+      if (arrowButton.evaluate().isNotEmpty) {
+        await tester.tap(arrowButton);
+        await tester.pumpAndSettle();
+        expect(
+          contentBuildCount,
+          1,
+          reason: 'CalendarContent must not rebuild on picker expansion',
+        );
+      }
+    },
+  );
 }
