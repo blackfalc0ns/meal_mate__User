@@ -1,7 +1,9 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarArrowBubble extends StatelessWidget {
-  const CalendarArrowBubble({super.key});
+  const CalendarArrowBubble({super.key, this.isLocked = false});
+
+  final bool isLocked;
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +18,11 @@ class CalendarArrowBubble extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: Icon(
-          Icons.arrow_forward_ios_rounded,
-          color: color.onSurface,
-          size: 15,
+          isLocked
+              ? Icons.lock_outline_rounded
+              : Icons.arrow_back_ios_new_rounded,
+          color: isLocked ? color.error : color.onSurface,
+          size: isLocked ? 13 : 13,
         ),
       ),
     );
