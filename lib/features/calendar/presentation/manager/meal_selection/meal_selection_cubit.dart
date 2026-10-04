@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_meals_merger.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 
 @injectable
@@ -464,5 +465,37 @@ class MealSelectionCubit extends Cubit<MealSelectionState> {
         deliveryWindow: restaurant?.deliveryWindow ?? '',
       ),
     );
+  }
+
+  void doIntent(MealSelectionEvent event) {
+    switch (event) {
+      case LoadMealsEvent():
+        unawaited(
+          load(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            restaurantId: event.restaurantId,
+            localeName: event.localeName,
+            initialSelectedMealIds: event.initialSelectedMealIds,
+          ),
+        );
+      case ToggleMealEvent():
+        toggleMeal(event.mealId);
+      case LoadMoreMealsEvent():
+        unawaited(
+          loadMore(
+            slot: event.slot,
+            localeName: event.localeName,
+          ),
+        );
+      case SaveMealsEvent():
+        unawaited(save(localeName: event.localeName));
+      case AutoSelectMealsEvent():
+        unawaited(autoSelect(localeName: event.localeName));
+      case ConfirmMealsEvent():
+        unawaited(confirm(localeName: event.localeName));
+      case ClearMealSelectionEvent():
+        clear();
+    }
   }
 }

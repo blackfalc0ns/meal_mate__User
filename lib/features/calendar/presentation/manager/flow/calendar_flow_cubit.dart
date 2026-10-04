@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_effect.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_cubit.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_cubit.dart';
@@ -303,6 +304,24 @@ class CalendarFlowCubit extends Cubit<CalendarFlowState> {
         ),
       ),
     );
+  }
+
+  void doIntent(CalendarFlowEvent event) {
+    switch (event) {
+      case StartRestaurantPickerFlowEvent():
+        openRestaurantPicker(localeName: event.localeName);
+      case AcceptRestaurantFlowEvent():
+        unawaited(
+          selectRestaurant(
+            restaurant: event.restaurant,
+            localeName: event.localeName,
+          ),
+        );
+      case SaveMealsFlowEvent():
+        unawaited(saveMeals(localeName: event.localeName));
+      case ConfirmMealsFlowEvent():
+        unawaited(confirmMeals(localeName: event.localeName));
+    }
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_state.dart';
 
 @injectable
@@ -139,5 +140,30 @@ class RestaurantPickerCubit extends Cubit<RestaurantPickerState> {
     _restaurantRequestGeneration++;
     _setRestaurantRequestGeneration++;
     emit(const RestaurantPickerState());
+  }
+
+  void doIntent(RestaurantPickerEvent event) {
+    switch (event) {
+      case LoadRestaurantsEvent():
+        unawaited(
+          load(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            localeName: event.localeName,
+            query: event.query,
+          ),
+        );
+      case SelectRestaurantEvent():
+        unawaited(
+          selectRestaurant(
+            subscriptionId: event.subscriptionId,
+            date: event.date,
+            restaurant: event.restaurant,
+            localeName: event.localeName,
+          ),
+        );
+      case ClearRestaurantPickerEvent():
+        clear();
+    }
   }
 }

@@ -11,6 +11,7 @@ import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
 
@@ -245,5 +246,22 @@ class CalendarOverviewCubit extends Cubit<CalendarOverviewState> {
         failure.code == SubscriptionErrorCodes.commonNotFound ||
         failure.exception.backendErrorCode ==
             SubscriptionErrorCodes.commonNotFound;
+  }
+
+  void doIntent(CalendarOverviewEvent event) {
+    switch (event) {
+      case LoadCalendarEvent():
+        unawaited(
+          loadCalendar(
+            subscriptionId: event.subscriptionId,
+            localeName: event.localeName,
+            retryWithCurrentOnNotFound: event.retryWithCurrentOnNotFound,
+          ),
+        );
+      case SelectCalendarDayEvent():
+        selectDay(day: event.day, localeName: event.localeName);
+      case ReplaceCalendarDayEvent():
+        replaceDay(event.day);
+    }
   }
 }
