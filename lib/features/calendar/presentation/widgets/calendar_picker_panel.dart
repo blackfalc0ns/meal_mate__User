@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -91,7 +92,9 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
           alignment: Alignment.topCenter,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: Spacing.lg),
+              padding: EdgeInsets.only(
+                bottom: widget.isExpanded ? Spacing.sm : Spacing.md,
+              ),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: widget.backgroundColor ?? color.surface,
@@ -180,10 +183,13 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                               ),
                       ),
                     ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 520),
-                      curve: Curves.easeInOutCubic,
-                      height: widget.isExpanded ? 22 : 24,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 260),
+                        curve: Curves.fastOutSlowIn,
+                        height: widget.isExpanded ? Spacing.sm : Spacing.md,
+                      ),
                     ),
                   ],
                 ),

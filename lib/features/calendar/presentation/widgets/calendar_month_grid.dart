@@ -23,33 +23,53 @@ class CalendarMonthGrid extends StatelessWidget {
       locale.calendar_weekday_fri_short,
     ];
 
-    return SizedBox(
+    return Column(
       key: const ValueKey('month-grid'),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: weekdays.length + days.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: Spacing.xs),
+          child: SizedBox(
+            height: 22,
+            child: Row(
+              children: List.generate(weekdays.length, (index) {
+                return Expanded(
+                  child: CalendarMonthWeekdayLabel(label: weekdays[index]),
+                );
+              }),
+            ),
+          ),
         ),
-        itemBuilder: (context, index) {
-          if (index < weekdays.length) {
-            return CalendarMonthWeekdayLabel(label: weekdays[index]);
-          }
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: days.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            mainAxisSpacing: Spacing.xss,
+            crossAxisSpacing: Spacing.sm,
+            childAspectRatio: 1.25,
+          ),
+          itemBuilder: (context, index) {
+            final day = days[index];
 
-          final dayIndex = index - weekdays.length;
-          final day = days[dayIndex];
-
-          return CalendarDayTile(
-            day: day,
-            compact: true,
-            onPressed: () => onDaySelected(day),
-          );
-        },
-      ),
-    );
+            return CalendarDayTile(
+              day: day,
+              compact: true,
+              onPressed: () => onDaySelected(day),
+            );
+          },
+        ),
+      ],
+    )
+        .animate()
+        .fadeIn(duration: 220.ms, curve: Curves.easeOut)
+        .slideY(
+          begin: 0.04,
+          end: 0,
+          duration: 220.ms,
+          curve: Curves.easeOut,
+        );
   }
 }

@@ -43,6 +43,8 @@ class CalendarDayContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final slideBegin = isRtl ? 0.06 : -0.06;
     final restaurant = selectedDay?.restaurant;
     final meals = selectedDay?.meals ?? const [];
     final readOnly = selectedDay?.isEditable != true;
@@ -93,7 +95,15 @@ class CalendarDayContent extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 200.ms)
+                        .slideX(
+                          begin: slideBegin,
+                          end: 0,
+                          duration: 220.ms,
+                          curve: Curves.easeOutCubic,
+                        ),
                     const SizedBox(height: Spacing.md),
                     if (restaurant != null) ...[
                       CalendarRestaurantSummaryCard(
@@ -106,11 +116,11 @@ class CalendarDayContent extends StatelessWidget {
                           )
                           .animate()
                           .fadeIn(duration: 200.ms)
-                          .slideY(
-                            begin: 0.03,
+                          .slideX(
+                            begin: slideBegin,
                             end: 0,
-                            duration: 200.ms,
-                            curve: Curves.easeOut,
+                            duration: 220.ms,
+                            curve: Curves.easeOutCubic,
                           ),
                       const SizedBox(height: Spacing.sm),
                       CalendarDailyMacrosCard(
@@ -120,11 +130,11 @@ class CalendarDayContent extends StatelessWidget {
                           )
                           .animate()
                           .fadeIn(duration: 200.ms)
-                          .slideY(
-                            begin: 0.03,
+                          .slideX(
+                            begin: slideBegin,
                             end: 0,
-                            duration: 200.ms,
-                            curve: Curves.easeOut,
+                            duration: 220.ms,
+                            curve: Curves.easeOutCubic,
                           ),
                       const SizedBox(height: Spacing.sm),
                     ],
@@ -137,11 +147,11 @@ class CalendarDayContent extends StatelessWidget {
                           )
                           .animate()
                           .fadeIn(duration: 200.ms)
-                          .slideY(
-                            begin: 0.03,
+                          .slideX(
+                            begin: slideBegin,
                             end: 0,
-                            duration: 200.ms,
-                            curve: Curves.easeOut,
+                            duration: 220.ms,
+                            curve: Curves.easeOutCubic,
                           ),
                       const SizedBox(height: Spacing.md),
                     ],

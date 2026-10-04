@@ -11,12 +11,13 @@ class CalendarMonthWeekdayLabel extends StatelessWidget {
 
     return Center(
       child: FittedBox(
+        fit: BoxFit.scaleDown,
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: getLightStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: 16,
+            fontSize: FontSize.size13,
             color: color.onSurface.withValues(alpha: 0.4),
           ).copyWith(height: 1),
         ),

@@ -57,33 +57,43 @@ class CalendarDayTile extends StatelessWidget {
           child: InkWell(
             borderRadius: borderRadius,
             onTap: day.isMuted ? null : onPressed,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${day.dayNumber}',
-                    style:
-                        getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: compact ? 16 : (selected ? 17 : 14),
-                          color: textColor,
-                        ).copyWith(
-                          height: 1,
-                          fontWeight: compact && selected
-                              ? FontWeight.w600
-                              : FontWeight.w700,
+            child: compact
+                ? Center(
+                    child: Text(
+                      '${day.dayNumber}',
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: selected ? FontSize.size15 : FontSize.size14,
+                        color: textColor,
+                      ).copyWith(
+                        height: 1,
+                        fontWeight:
+                            selected ? FontWeight.w600 : FontWeight.w700,
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${day.dayNumber}',
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: selected ? 17 : 14,
+                            color: textColor,
+                          ).copyWith(
+                            height: 1,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                  ),
-                  if (!compact) ...[
-                    const SizedBox(height: 3),
-                    Text(
-                      day.weekday,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          (selected && !isFrozen
+                        const SizedBox(height: 3),
+                        Text(
+                          day.weekday,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: (selected && !isFrozen
                                   ? getMediumStyle(
                                       fontFamily: FontConstant.alexandria,
                                       fontSize: FontSize.size10,
@@ -95,24 +105,22 @@ class CalendarDayTile extends StatelessWidget {
                                       color: textColor,
                                     ))
                               .copyWith(height: 1),
+                        ),
+                        SizedBox(height: selected ? 4 : 3),
+                        isFrozen
+                            ? SvgPicture.asset(
+                                Assets.calendarSnowflake,
+                                width: 11,
+                                height: 11,
+                              )
+                            : CalendarDayMealIndicator(
+                                selected: selected,
+                                muted: day.isMuted,
+                                compact: compact,
+                              ),
+                      ],
                     ),
-                  ],
-                  SizedBox(height: compact ? 4 : (selected ? 4 : 3)),
-                  if (!compact)
-                    isFrozen
-                        ? SvgPicture.asset(
-                            Assets.calendarSnowflake,
-                            width: 11,
-                            height: 11,
-                          )
-                        : CalendarDayMealIndicator(
-                            selected: selected,
-                            muted: day.isMuted,
-                            compact: compact,
-                          ),
-                ],
-              ),
-            ),
+                  ),
           ),
         ),
       ),
