@@ -64,21 +64,26 @@ class RestaurantMenuSourceSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Spacing.xs),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              for (var index = 0; index < origins.length; index++) ...[
-                if (index > 0) const SizedBox(width: Spacing.base),
-                RestaurantMenuSourceCard(
-                  icon: origins[index].icon,
-                  iconUrl: origins[index].iconUrl,
-                  title: origins[index].title,
-                  subtitle: origins[index].subtitle,
-                  country: origins[index].country,
+        SizedBox(
+          height: Spacing.restaurantDetailsSourceCardHeight,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: origins.length,
+            itemBuilder: (context, index) {
+              final origin = origins[index];
+              return Padding(
+                padding: EdgeInsetsDirectional.only(
+                  start: index > 0 ? Spacing.base : 0,
                 ),
-              ],
-            ],
+                child: RestaurantMenuSourceCard(
+                  icon: origin.icon,
+                  iconUrl: origin.iconUrl,
+                  title: origin.title,
+                  subtitle: origin.subtitle,
+                  country: origin.country,
+                ),
+              );
+            },
           ),
         ),
       ],
