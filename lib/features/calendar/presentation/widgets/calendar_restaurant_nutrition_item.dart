@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
 class CalendarRestaurantNutritionItem extends StatelessWidget {
   const CalendarRestaurantNutritionItem({
@@ -34,19 +31,17 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
+    final themeColor = context.colorScheme;
     final locale = context.localization;
-    final resolvedColor = _resolveColor(color);
-    final resolvedUnit = unit ?? _resolveUnit(locale);
-    final resolvedTarget = target ?? _resolveTarget();
-    final effectiveValue = value > 0 ? value : _fallbackValue();
+    final resolvedColor = color ?? iconColor ?? themeColor.primary;
+    final resolvedUnit = unit ?? locale.search_filter_grams_unit;
     final resolvedPercentage =
         percentage ??
-        (resolvedTarget > 0
-            ? ((effectiveValue / resolvedTarget) * 100).round()
-            : _fallbackPercentage());
-    final progress = resolvedTarget > 0
-        ? (effectiveValue / resolvedTarget).clamp(0.0, 1.0)
+        ((target != null && target! > 0)
+            ? ((value / target!) * 100).round()
+            : 0);
+    final progress = (target != null && target! > 0)
+        ? (value / target!).clamp(0.0, 1.0)
         : (resolvedPercentage / 100).clamp(0.0, 1.0);
 
     return Expanded(
@@ -57,15 +52,15 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
           vertical: Spacing.sm,
         ),
         decoration: BoxDecoration(
-          color: color.surface,
+          color: themeColor.surface,
           borderRadius: BorderRadius.circular(Spacing.radiusMd),
           border: Border.all(
-            color: color.outlineVariant.withValues(alpha: 0.35),
+            color: themeColor.outlineVariant.withValues(alpha: 0.35),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: color.shadow.withValues(alpha: 0.04),
+              color: themeColor.shadow.withValues(alpha: 0.04),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -88,7 +83,7 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
-                        color: color.onSurface,
+                        color: themeColor.onSurface,
                       ),
                     ),
                   ),
@@ -117,16 +112,16 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
               alignment: AlignmentDirectional.centerStart,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(
-                    _formatValue(effectiveValue),
+                    _formatValue(value),
                     maxLines: 1,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size18,
-                      color: color.onSurface,
+                      color: themeColor.onSurface,
                     ).copyWith(height: 1),
                   ),
                   if (resolvedUnit.isNotEmpty) ...[
@@ -137,7 +132,7 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
-                        color: color.onSurface,
+                        color: themeColor.onSurface,
                       ).copyWith(height: 1),
                     ),
                   ],
@@ -152,7 +147,9 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                     child: LinearProgressIndicator(
                       minHeight: 5,
                       value: progress,
-                      backgroundColor: color.outline.withValues(alpha: 0.12),
+                      backgroundColor: themeColor.outline.withValues(
+                        alpha: 0.12,
+                      ),
                       valueColor: AlwaysStoppedAnimation<Color>(resolvedColor),
                     ),
                   ),
@@ -182,61 +179,5 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
       return '$thousands,$rest';
     }
     return val.toString();
-  }
-
-  int _fallbackValue() {
-    if (animationAsset == Assets.fireAnimation) return 1550;
-    if (animationAsset == Assets.dropletAnimation) return 18;
-    if (animationAsset == Assets.wheatAnimation) return 55;
-    if (animationAsset == Assets.muscleAnimation) return 35;
-    return 100;
-  }
-
-  int _fallbackPercentage() {
-    if (animationAsset == Assets.fireAnimation) return 65;
-    if (animationAsset == Assets.dropletAnimation) return 45;
-    if (animationAsset == Assets.wheatAnimation) return 50;
-    if (animationAsset == Assets.muscleAnimation) return 70;
-    return 50;
-  }
-
-  Color _resolveColor(ColorScheme colorScheme) {
-    if (color != null) return color!;
-    if (animationAsset == Assets.fireAnimation) {
-      return colorScheme.calendarNutritionCalories;
-    }
-    if (animationAsset == Assets.dropletAnimation) {
-      return colorScheme.calendarNutritionFat;
-    }
-    if (animationAsset == Assets.wheatAnimation) {
-      return colorScheme.calendarNutritionCarbs;
-    }
-    if (animationAsset == Assets.muscleAnimation) {
-      return colorScheme.calendarNutritionProtein;
-    }
-    return iconColor ?? colorScheme.primary;
-  }
-
-  String _resolveUnit(AppLocalizations locale) {
-    if (animationAsset == Assets.fireAnimation) {
-      return locale.search_filter_calories_unit;
-    }
-    return locale.search_filter_grams_unit;
-  }
-
-  int _resolveTarget() {
-    if (animationAsset == Assets.fireAnimation) {
-      return 2400;
-    }
-    if (animationAsset == Assets.dropletAnimation) {
-      return 40;
-    }
-    if (animationAsset == Assets.wheatAnimation) {
-      return 110;
-    }
-    if (animationAsset == Assets.muscleAnimation) {
-      return 50;
-    }
-    return 100;
   }
 }

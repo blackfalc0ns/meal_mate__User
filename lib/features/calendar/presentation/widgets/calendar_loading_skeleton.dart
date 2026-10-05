@@ -17,57 +17,131 @@ class CalendarLoadingSkeleton extends StatelessWidget {
       key: const ValueKey('calendar-loading-skeleton'),
       children: [
         // Picker panel skeleton
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: color.surfaceContainerHighest,
-            border: Border(bottom: BorderSide(color: color.outlineVariant)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        SizedBox(
+          width: double.infinity,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topCenter,
             children: [
-              // Month title row
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: Spacing.sm,
-                  horizontal: Spacing.screenH,
-                ),
-                child: SizedBox(
-                  height: 42,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.only(bottom: Spacing.md),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: color.surface,
+                    border: Border(
+                      bottom: BorderSide(color: color.outlineVariant),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ShimmerPlaceholder.circle(size: 32),
-                      ShimmerPlaceholder.rect(
-                        width: 130,
-                        height: 22,
-                        borderRadius: Spacing.radiusXs,
+                      // Month title row
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: Spacing.sm,
+                          horizontal: Spacing.screenH,
+                        ),
+                        child: SizedBox(
+                          height: 42,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ShimmerPlaceholder.circle(size: 32),
+                              ShimmerPlaceholder.rect(
+                                width: 130,
+                                height: 22,
+                                borderRadius: Spacing.radiusXs,
+                              ),
+                              ShimmerPlaceholder.circle(size: 32),
+                            ],
+                          ),
+                        ),
                       ),
-                      ShimmerPlaceholder.circle(size: 32),
+                      const SizedBox(height: Spacing.xs),
+
+                      // Days week strip skeleton
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: SizedBox(
+                          height: 67,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(7, (index) {
+                              final isSelected = index == 3;
+                              return Container(
+                                width: 44,
+                                height: 59,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Spacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? color.primary.withValues(alpha: 0.12)
+                                      : color.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.radiusSm,
+                                  ),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? color.primary.withValues(alpha: 0.4)
+                                        : color.outlineVariant.withValues(
+                                            alpha: 0.5,
+                                          ),
+                                  ),
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ShimmerPlaceholder.rect(
+                                      width: 18,
+                                      height: 13,
+                                      borderRadius: 2,
+                                    ),
+                                    ShimmerPlaceholder.rect(
+                                      width: 26,
+                                      height: 8,
+                                      borderRadius: 2,
+                                    ),
+                                    ShimmerPlaceholder.circle(size: 6),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.md),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: Spacing.xs),
 
-              // Days week strip skeleton
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+              // Grip chevron handle at bottom center
+              Positioned(
+                bottom: 0,
                 child: SizedBox(
-                  height: 67,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(
-                      7,
-                      (_) => const ShimmerPlaceholder.rect(
-                        width: 44,
-                        height: 59,
-                        borderRadius: Spacing.radiusSm,
+                  width: 52,
+                  height: 36,
+                  child: Center(
+                    child: SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: color.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: color.onPrimary,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: Spacing.md),
             ],
           ),
         ),

@@ -74,6 +74,9 @@ class CalendarDayContent extends StatelessWidget {
                     const CalendarFrozenDayState()
                   else if (!hasMeals)
                     CalendarEmptyMealsState(
+                      key: ValueKey(
+                        'empty_meals_${selectedDay?.date?.toIso8601String()}',
+                      ),
                       // ignore: unnecessary_lambdas
                       onAddMeals: readOnly ? null : () => onSelectRestaurant(),
                     )
