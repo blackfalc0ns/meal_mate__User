@@ -242,6 +242,7 @@ void main() {
       );
 
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 500));
     },
   );
 

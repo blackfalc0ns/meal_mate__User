@@ -6,11 +6,14 @@ class RestaurantMenuOptionCard extends StatelessWidget {
     required this.option,
     this.onTap,
     this.onDetailsTap,
+    this.selectionControlBuilder,
   });
 
   final RestaurantMenuOption option;
   final VoidCallback? onTap;
   final VoidCallback? onDetailsTap;
+  final Widget Function(BuildContext context, RestaurantMenuOption option)?
+  selectionControlBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class RestaurantMenuOptionCard extends StatelessWidget {
     final locale = context.localization;
     final blockReason = option.blockReason;
     final isBlocked = blockReason != null && blockReason.isNotEmpty;
-    final showsSelectButton = onTap != null;
+    final showsSelectButton = onTap != null || selectionControlBuilder != null;
     const cardHeight = Spacing.restaurantDetailsMealCardHeight + Spacing.md;
 
     return SizedBox(
@@ -120,10 +123,12 @@ class RestaurantMenuOptionCard extends StatelessWidget {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: isBlocked ? null : onTap,
-                    child: RestaurantMenuSelectButton(
-                      selected: option.selected,
-                      enabled: !isBlocked,
-                    ),
+                    child: selectionControlBuilder != null
+                        ? selectionControlBuilder!(context, option)
+                        : RestaurantMenuSelectButton(
+                            selected: option.selected,
+                            enabled: !isBlocked,
+                          ),
                   ),
                 ),
               ),

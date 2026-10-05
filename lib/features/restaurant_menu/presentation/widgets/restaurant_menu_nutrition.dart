@@ -3,14 +3,12 @@ part of 'restaurant_menu_view.dart';
 class RestaurantMenuNutrition extends StatelessWidget {
   const RestaurantMenuNutrition({
     super.key,
-    this.icon,
-    this.animationAsset,
+    required this.animationAsset,
     required this.value,
     required this.label,
   });
 
-  final IconData? icon;
-  final String? animationAsset;
+  final String animationAsset;
   final String value;
   final String label;
 
@@ -29,7 +27,7 @@ class RestaurantMenuNutrition extends StatelessWidget {
             Lottie.asset(
               width: 30,
               height: 30,
-              animationAsset!,
+              animationAsset,
               fit: BoxFit.contain,
               repeat: true,
             ),

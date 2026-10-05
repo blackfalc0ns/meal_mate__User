@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 
 class RestaurantMenuIngredient {
-  const RestaurantMenuIngredient({
-    required this.label,
-    this.iconUrl,
-  });
+  const RestaurantMenuIngredient({required this.label, this.iconUrl});
 
   final String label;
   final String? iconUrl;
@@ -39,6 +36,8 @@ class RestaurantMenuOption {
   final List<RestaurantMenuIngredient> ingredients;
   final bool selected;
   final String? blockReason;
+
+  bool get isBlocked => blockReason != null && blockReason!.isNotEmpty;
 
   RestaurantMenuOption copyWith({
     String? id,

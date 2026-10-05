@@ -24,7 +24,7 @@ class RestaurantMenuIngredientChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(7.13),
-        border: Border.all(color: color.primary, width: 0.42),
+        border: Border.all(color: color.primary, width: 0.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

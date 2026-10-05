@@ -3,76 +3,75 @@ part of 'restaurant_menu_view.dart';
 class RestaurantMenuOptionsSection extends StatelessWidget {
   const RestaurantMenuOptionsSection({
     super.key,
-    required this.mealType,
-    required this.tabIndex,
+    required this.selectedSlotKey,
     required this.options,
-    this.onOptionSelected,
-    this.onOptionDetailsSelected,
-    this.isLoadingMore = false,
+    required this.isOptionAnimated,
+    required this.onOptionAnimated,
+    this.onMealToggled,
+    this.onOptionDetails,
+    this.selectionControlBuilder,
   });
 
-  final String mealType;
-  final int tabIndex;
+  final String selectedSlotKey;
   final List<RestaurantMenuOption> options;
-  final ValueChanged<int>? onOptionSelected;
-  final ValueChanged<int>? onOptionDetailsSelected;
-  final bool isLoadingMore;
+  final bool Function(String mealId) isOptionAnimated;
+  final ValueChanged<String> onOptionAnimated;
+  final ValueChanged<String>? onMealToggled;
+  final ValueChanged<RestaurantMenuOption>? onOptionDetails;
+  final Widget Function(BuildContext context, RestaurantMenuOption option)?
+  selectionControlBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 420),
-      reverseDuration: const Duration(milliseconds: 260),
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) {
-        final curvedAnimation = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutCubic,
-          reverseCurve: Curves.easeInCubic,
-        );
-        final offset = Tween<Offset>(
-          begin: const Offset(0.22, 0),
-          end: Offset.zero,
-        ).animate(curvedAnimation);
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            if (index.isOdd) return const RestaurantMenuDividerLine();
+            final optionIndex = index ~/ 2;
+            final option = options[optionIndex];
+            final isAnimated = isOptionAnimated(option.id);
+            final delay = optionIndex < 6
+                ? Duration(milliseconds: optionIndex * 35)
+                : Duration.zero;
 
-        return FadeTransition(
-          opacity: curvedAnimation,
-          child: SizeTransition(
-            sizeFactor: curvedAnimation,
-            alignment: Alignment.topCenter,
-            child: SlideTransition(position: offset, child: child),
-          ),
-        );
-      },
-      child: Column(
-        key: ValueKey(tabIndex),
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          RestaurantMenuSectionTitle(mealType: mealType),
-          const SizedBox(height: Spacing.base),
-          for (var index = 0; index < options.length; index++) ...[
-            RestaurantMenuOptionCard(
-              option: options[index],
-              onTap: onOptionSelected == null
-                  ? null
-                  : () => onOptionSelected!(index),
-              onDetailsTap: onOptionDetailsSelected == null
-                  ? null
-                  : () => onOptionDetailsSelected!(index),
-            ),
-            if (index != options.length - 1) const RestaurantMenuDividerLine(),
-          ],
-          if (isLoadingMore) ...[
-            const SizedBox(height: Spacing.md),
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: Spacing.md),
-                child: CircularProgressIndicator.adaptive(),
+            return RestaurantMenuAnimatedOption(
+              key: ValueKey((selectedSlotKey, option.id)),
+              animateEntry: !isAnimated,
+              delay: delay,
+              onAnimated: () => onOptionAnimated(option.id),
+              child: RestaurantMenuOptionCard(
+                option: option,
+                onTap: onMealToggled == null
+                    ? null
+                    : () => onMealToggled!(option.id),
+                onDetailsTap: onOptionDetails == null
+                    ? null
+                    : () => onOptionDetails!(option),
+                selectionControlBuilder: selectionControlBuilder,
               ),
-            ),
-          ],
-        ],
+            );
+          },
+          childCount: options.isEmpty ? 0 : options.length * 2 - 1,
+          findChildIndexCallback: (Key key) {
+            if (key is ValueKey) {
+              final val = key.value;
+              String? mealId;
+              if (val is (String, String)) {
+                if (val.$1 != selectedSlotKey) return null;
+                mealId = val.$2;
+              } else if (val is String) {
+                mealId = val;
+              }
+              if (mealId != null) {
+                final idx = options.indexWhere((opt) => opt.id == mealId);
+                if (idx != -1) return idx * 2;
+              }
+            }
+            return null;
+          },
+        ),
       ),
     );
   }

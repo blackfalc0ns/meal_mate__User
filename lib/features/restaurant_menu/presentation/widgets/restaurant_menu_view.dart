@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -21,8 +22,9 @@ import 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant
 export 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant_menu_models.dart';
 
 part 'restaurant_menu_content.dart';
+part 'restaurant_menu_meals_body.dart';
+part 'restaurant_menu_animated_option.dart';
 part 'restaurant_menu_frame.dart';
-part 'restaurant_menu_mapping.dart';
 part 'restaurant_menu_navigation.dart';
 part 'restaurant_menu_sheet_handle.dart';
 part 'restaurant_menu_header.dart';
@@ -45,7 +47,7 @@ part 'restaurant_menu_protein_logo.dart';
 
 enum RestaurantMenuMode { preview, selection }
 
-class RestaurantMenuView extends StatefulWidget {
+class RestaurantMenuView extends StatelessWidget {
   const RestaurantMenuView({
     super.key,
     required this.mode,
@@ -62,6 +64,8 @@ class RestaurantMenuView extends StatefulWidget {
     this.onBackPressed,
     this.isFullPage = false,
     this.bottomContentPadding = Spacing.zero,
+    this.selectionControlBuilder,
+    this.isMealSelected,
   });
 
   final RestaurantMenuMode mode;
@@ -78,73 +82,51 @@ class RestaurantMenuView extends StatefulWidget {
   final VoidCallback? onBackPressed;
   final bool isFullPage;
   final double bottomContentPadding;
-
-  @override
-  State<RestaurantMenuView> createState() => RestaurantMenuViewState();
-}
-
-class RestaurantMenuViewState extends State<RestaurantMenuView> {
-  int _selectedTab = 0;
+  final Widget Function(BuildContext context, RestaurantMenuOption option)?
+  selectionControlBuilder;
+  final bool Function(String mealId)? isMealSelected;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final menuData = widget.menuData;
     final restaurantName =
         menuData.restaurantName ?? locale.calendar_restaurant_name;
-    final tabs = menuData.tabs;
-    final mealTabs = tabs.isEmpty
-        ? [
-            locale.calendar_breakfast,
-            locale.calendar_lunch,
-            locale.calendar_dinner,
-          ]
-        : tabs.map((t) => t.label).toList();
-    final selectedTab = mealTabs.isEmpty
-        ? 0
-        : _selectedTab.clamp(0, mealTabs.length - 1);
-    final selectedSlot = tabs.isNotEmpty
-        ? tabs[selectedTab.clamp(0, tabs.length - 1)].key
-        : mealTabs[selectedTab];
-    final options = tabs.isNotEmpty && selectedTab < tabs.length
-        ? tabs[selectedTab].options
-        : const <RestaurantMenuOption>[];
+
+    final headerSliver = RestaurantMenuContent.buildHeaderSliver(
+      isFullPage: isFullPage,
+      restaurantName: restaurantName,
+      restaurantLogoAsset: menuData.restaurantLogoAsset,
+      restaurantLogoUrl: menuData.restaurantLogoUrl,
+      restaurantInitials: menuData.restaurantInitials,
+      origins: menuData.origins,
+      isLoading: isLoading,
+    );
 
     return RestaurantMenuFrame(
       restaurantName: restaurantName,
       coverImageUrl: menuData.coverImageUrl,
-      onBackPressed: widget.onBackPressed,
-      child: RestaurantMenuContent(
-        isFullPage: widget.isFullPage,
-        isLoading: widget.isLoading,
-        isLoadingMore: widget.isLoadingMore,
-        isSaving: widget.isSaving,
-        canSave: widget.canSave,
-        failure: widget.failure,
-        mode: widget.mode,
-        resolvedRestaurantName: restaurantName,
-        restaurantLogoAsset: menuData.restaurantLogoAsset,
-        restaurantLogoUrl: menuData.restaurantLogoUrl,
+      onBackPressed: onBackPressed,
+      child: RestaurantMenuMealsBody(
+        mode: mode,
+        menuData: menuData,
+        tabs: menuData.tabs,
+        headerSliver: headerSliver,
+        onMealToggled: onMealToggled,
+        onOptionDetails: onOptionDetails,
+        onLoadMore: onLoadMore,
+        onSave: onSave,
+        canSave: canSave,
+        isLoading: isLoading,
+        isLoadingMore: isLoadingMore,
+        isSaving: isSaving,
+        failure: failure,
+        bottomContentPadding: bottomContentPadding,
+        selectionControlBuilder: selectionControlBuilder,
+        isMealSelected: isMealSelected,
+        restaurantName: restaurantName,
         restaurantInitials: menuData.restaurantInitials,
-        origins: menuData.origins,
-        mealTabs: mealTabs,
-        selectedTab: selectedTab,
-        selectedSlot: selectedSlot,
-        options: options,
-        onTabChanged: (index) {
-          if (_selectedTab == index) return;
-          setState(() => _selectedTab = index);
-        },
-        onOptionSelected: widget.mode == RestaurantMenuMode.selection &&
-                widget.onMealToggled != null
-            ? (index) => widget.onMealToggled!(options[index].id)
-            : null,
-        onOptionDetailsSelected: options.isEmpty
-            ? null
-            : (index) => _openOptionDetails(options[index]),
-        onLoadMore: widget.onLoadMore,
-        onSave: widget.onSave,
-        bottomContentPadding: widget.bottomContentPadding,
+        restaurantLogoUrl: menuData.restaurantLogoUrl,
+        restaurantRating: menuData.restaurantRating,
       ),
     );
   }

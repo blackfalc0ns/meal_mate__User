@@ -5,7 +5,7 @@ import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/res
 
 export 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant_menu_models.dart';
 export 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart'
-    show RestaurantMenuMode;
+    show RestaurantMenuMode, RestaurantMenuSelectButton;
 
 class RestaurantMenuScreen extends StatelessWidget {
   const RestaurantMenuScreen({
@@ -23,6 +23,8 @@ class RestaurantMenuScreen extends StatelessWidget {
     this.failure,
     this.onBackPressed,
     this.bottomContentPadding = Spacing.zero,
+    this.selectionControlBuilder,
+    this.isMealSelected,
   });
 
   final RestaurantMenuMode mode;
@@ -38,6 +40,9 @@ class RestaurantMenuScreen extends StatelessWidget {
   final Failure? failure;
   final VoidCallback? onBackPressed;
   final double bottomContentPadding;
+  final Widget Function(BuildContext context, RestaurantMenuOption option)?
+  selectionControlBuilder;
+  final bool Function(String mealId)? isMealSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +62,8 @@ class RestaurantMenuScreen extends StatelessWidget {
         failure: failure,
         onBackPressed: onBackPressed,
         bottomContentPadding: bottomContentPadding,
+        selectionControlBuilder: selectionControlBuilder,
+        isMealSelected: isMealSelected,
       ),
     );
   }

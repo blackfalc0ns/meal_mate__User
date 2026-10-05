@@ -73,6 +73,7 @@ void main() {
     );
 
     expect(_selectButtons, findsNothing);
+    await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets('selection restaurant menu shows meal selection controls', (
@@ -95,6 +96,7 @@ void main() {
 
     expect(find.byIcon(Icons.check_rounded), findsOneWidget);
     expect(_selectButtons, findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets('selected meal details hide selection controls', (tester) async {
@@ -132,6 +134,63 @@ void main() {
 
     expect(find.text('Optional notes'), findsNothing);
     expect(find.text('Select this meal'), findsNothing);
+  });
+
+  testWidgets('blocked meal details hide selection button and prevent toggle', (
+    tester,
+  ) async {
+    var toggled = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        onGenerateRoute: (settings) {
+          if (settings.name == AppRoutes.mealDetails) {
+            return MaterialPageRoute<void>(
+              builder: (_) => Scaffold(
+                body: MealDetailsScreen(
+                  meal: settings.arguments! as MealDetailsEntity,
+                ),
+              ),
+            );
+          }
+          return null;
+        },
+        home: Scaffold(
+          body: RestaurantMenuView(
+            mode: RestaurantMenuMode.selection,
+            menuData: const RestaurantMenuData(
+              tabs: [
+                RestaurantMenuTab(
+                  key: 'lunch',
+                  label: 'Lunch',
+                  options: [
+                    RestaurantMenuOption(
+                      id: 'meal-blocked',
+                      slot: 'lunch',
+                      title: 'Blocked Meal',
+                      blockReason: 'Contains allergen',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            onMealToggled: (_) => toggled = true,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Contains allergen'), findsOneWidget);
+
+    await tester.tap(find.text('Blocked Meal'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('Select this meal'), findsNothing);
+    expect(toggled, isFalse);
   });
 }
 
