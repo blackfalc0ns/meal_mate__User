@@ -60,55 +60,26 @@ class CalendarDayEntity {
   }
 
   bool get isAwaitingRestaurantConfirmation {
-    final normalizedStatus = status.toLowerCase();
-    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
-    return normalizedStatus == 'senttorestaurant' ||
-        normalizedStatus == 'sent_to_restaurant' ||
-        normalizedStatus == 'awaitingrestaurantconfirmation' ||
-        normalizedUiStatus == 'awaiting_restaurant' ||
-        normalizedUiStatus == 'awaitingrestaurantconfirmation';
+    final s = '${status}_$uiStatus'.toLowerCase();
+    return s.contains('restaurant');
   }
 
   bool get isRestaurantClosed {
-    if (isFrozen) return true;
-    final normalizedStatus = status.toLowerCase();
-    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
-    return isLocked ||
-        normalizedStatus == 'senttorestaurant' ||
-        normalizedStatus == 'sent_to_restaurant' ||
-        normalizedStatus == 'locked' ||
-        normalizedStatus == 'completed' ||
-        normalizedStatus == 'cancelled' ||
-        normalizedUiStatus == 'awaiting_restaurant' ||
-        normalizedUiStatus == 'awaitingrestaurantconfirmation';
+    if (isFrozen || isLocked) return true;
+    final s = '${status}_$uiStatus'.toLowerCase();
+    return s.contains('restaurant') ||
+        s.contains('lock') ||
+        s.contains('completed') ||
+        s.contains('cancelled');
   }
 
   bool get isEditable {
-    if (date == null || isLocked || isFrozen || canEdit == false) return false;
-    final normalizedStatus = status.toLowerCase();
-    final normalizedUiStatus = (uiStatus ?? '').toLowerCase();
-    if (normalizedStatus == 'senttorestaurant' ||
-        normalizedStatus == 'sent_to_restaurant' ||
-        normalizedStatus == 'locked' ||
-        normalizedStatus == 'completed' ||
-        normalizedStatus == 'cancelled' ||
-        normalizedStatus == 'frozen' ||
-        normalizedStatus == '12' ||
-        normalizedUiStatus == 'awaiting_restaurant' ||
-        normalizedUiStatus == 'awaitingrestaurantconfirmation') {
+    if (isFrozen) return false;
+    if (uiStatus?.toLowerCase() == 'locked' ||
+        status.toLowerCase() == 'locked') {
       return false;
     }
-
-    final deadline =
-        editDeadlineUtc ?? date!.subtract(const Duration(hours: 72));
-    if (DateTime.now().toUtc().isAfter(deadline.toUtc())) {
-      return false;
-    }
-
-    return normalizedStatus.isEmpty ||
-        normalizedStatus == 'open' ||
-        normalizedStatus == 'customerselected' ||
-        normalizedStatus == 'customer_selected';
+    return canEdit ?? false;
   }
 
   CalendarDayEntity copyWith({

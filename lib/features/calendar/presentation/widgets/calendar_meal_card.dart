@@ -31,7 +31,7 @@ class CalendarMealCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.md),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
@@ -76,7 +76,7 @@ class CalendarMealCard extends StatelessWidget {
               onTap: onChangeMeal,
               borderRadius: BorderRadius.circular(Spacing.radiusPill),
               child: Container(
-                height: 36,
+                height: 30,
                 width: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -86,8 +86,6 @@ class CalendarMealCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.edit_rounded, size: 14, color: color.primary),
-                    const SizedBox(width: Spacing.xs),
                     Text(
                       locale.calendar_change_meal,
                       style: getBoldStyle(
@@ -96,6 +94,9 @@ class CalendarMealCard extends StatelessWidget {
                         color: color.primary,
                       ),
                     ),
+                    const SizedBox(width: Spacing.xs),
+
+                    Icon(Icons.edit_rounded, size: 14, color: color.primary),
                   ],
                 ),
               ),
