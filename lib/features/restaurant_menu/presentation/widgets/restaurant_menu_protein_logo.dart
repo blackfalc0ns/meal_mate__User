@@ -18,20 +18,38 @@ class RestaurantMenuProteinLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
+    final hasUrl = logoUrl != null && logoUrl!.isNotEmpty;
+    final hasAsset = logoAsset != null && logoAsset!.isNotEmpty;
+
     return Container(
       width: size,
       height: size,
-      padding: const EdgeInsets.all(Spacing.xs),
+      //  padding: const EdgeInsets.all(Spacing.xs),
       decoration: BoxDecoration(
         color: color.inverseSurface,
         shape: BoxShape.circle,
       ),
-      child: AppCachedNetworkImage(
-        imageUrl: logoUrl,
-        fit: BoxFit.contain,
-        shape: BoxShape.circle,
-        semanticLabel: label,
-      ),
+      alignment: Alignment.center,
+      child: hasUrl
+          ? AppCachedNetworkImage(
+              imageUrl: logoUrl,
+              fit: BoxFit.contain,
+              shape: BoxShape.circle,
+              semanticLabel: label,
+            )
+          : hasAsset
+          ? Image.asset(logoAsset!, fit: BoxFit.contain)
+          : Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onInverseSurface,
+              ).copyWith(height: 1.1),
+            ),
     );
   }
 }
