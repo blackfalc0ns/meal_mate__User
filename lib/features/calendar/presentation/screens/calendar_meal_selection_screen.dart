@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
@@ -83,6 +84,23 @@ class CalendarMealSelectionScreen extends StatelessWidget {
           end: Spacing.lg,
           bottom: Spacing.xl,
           child: CalendarMealSaveButton(controller: saveButtonController),
+        ),
+        BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(
+          selector: (state) => state.isSaving || state.isConfirming,
+          builder: (context, isSaving) {
+            if (!isSaving) return const SizedBox.shrink();
+            final color = context.colorScheme;
+            return Positioned.fill(
+              child: AbsorbPointer(
+                child: ColoredBox(
+                  color: color.scrim.withValues(alpha: 0.35),
+                  child: const Center(
+                    child: CustomProgressIndicator(),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -191,11 +192,26 @@ class _CalendarRestaurantPickerSheetState
                               const SizedBox(height: 9.2),
                           itemBuilder: (context, index) {
                             final restaurant = widget.restaurants[index];
+                            final delayMs = (index * 60).clamp(0, 480);
                             return CalendarRestaurantOptionCard(
+                              key: ValueKey(restaurant.id),
                               restaurant: restaurant,
                               onTap: () =>
                                   widget.onRestaurantSelected(restaurant),
-                            );
+                            )
+                                .animate()
+                                .fadeIn(
+                                  duration: 300.ms,
+                                  delay: delayMs.ms,
+                                  curve: Curves.easeOut,
+                                )
+                                .slideY(
+                                  begin: 0.12,
+                                  end: 0,
+                                  duration: 300.ms,
+                                  delay: delayMs.ms,
+                                  curve: Curves.easeOutCubic,
+                                );
                           },
                         ),
             ),

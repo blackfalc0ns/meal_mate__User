@@ -15,14 +15,20 @@ class CalendarMealSaveButton extends StatelessWidget {
     super.key,
     this.isLoading,
     this.enabled,
+    this.selectedCount,
+    this.requiredCount,
     this.onPressed,
     this.controller,
+    this.height,
   });
 
   final bool? isLoading;
   final bool? enabled;
+  final int? selectedCount;
+  final int? requiredCount;
   final VoidCallback? onPressed;
   final RoundedLoadingButtonController? controller;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,8 @@ class CalendarMealSaveButton extends StatelessWidget {
         context,
         isLoading: isLoading!,
         enabled: enabled!,
+        selectedCount: selectedCount ?? 0,
+        requiredCount: requiredCount ?? 0,
         onPressed: onPressed,
       );
     }
@@ -38,17 +46,21 @@ class CalendarMealSaveButton extends StatelessWidget {
     return BlocSelector<
       MealSelectionViewModel,
       MealSelectionState,
-      ({bool loading, bool enabled})
+      ({bool loading, bool enabled, int selectedCount, int requiredCount})
     >(
       selector: (state) => (
         loading: state.isSaving || state.isConfirming,
         enabled: state.canSaveMeals && !state.isSaving && !state.isConfirming,
+        selectedCount: state.selectedMealIds.length,
+        requiredCount: state.requiredMealsCount,
       ),
       builder: (context, buttonState) {
         return _buildButton(
           context,
           isLoading: buttonState.loading,
           enabled: buttonState.enabled,
+          selectedCount: buttonState.selectedCount,
+          requiredCount: buttonState.requiredCount,
           onPressed:
               onPressed ??
               () {
@@ -76,49 +88,126 @@ class CalendarMealSaveButton extends StatelessWidget {
     BuildContext context, {
     required bool isLoading,
     required bool enabled,
+    required int selectedCount,
+    required int requiredCount,
     VoidCallback? onPressed,
   }) {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final countText = requiredCount > 0
+        ? ' \u200E($selectedCount/$requiredCount)\u200E'
+        : '';
+    final buttonText = '${locale.calendar_confirm_meals}$countText';
+
+    final progress =
+        (requiredCount > 0
+                ? (selectedCount / requiredCount)
+                : (enabled ? 1.0 : 0.0))
+            .clamp(0.0, 1.0);
+
+    final effectiveHeight = height ?? Spacing.buttonSmallHeight;
+    final fontSize = effectiveHeight <= Spacing.buttonSmallHeight
+        ? FontSize.size14
+        : FontSize.size16;
+
     return LayoutBuilder(
       builder: (context, constraints) {
+        final width = constraints.maxWidth;
+
         return SizedBox(
-          height: Spacing.buttonHeight,
-          width: constraints.maxWidth,
-          child: ElevatedButton(
-            onPressed: enabled && !isLoading ? onPressed : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color.primary,
-              disabledBackgroundColor: color.outlineVariant,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.buttonRadius),
-              ),
-            ),
-            child: isLoading
-                ? SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        color.onPrimary,
+          height: effectiveHeight,
+          width: width,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: progress),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+            builder: (context, animatedProgress, _) {
+              return Material(
+                type: MaterialType.transparency,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Spacing.buttonRadius),
+                  child: Stack(
+                    children: [
+                      // Base inactive background
+                      Positioned.fill(
+                        child: Container(
+                          color: color.outlineVariant,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.md,
+                          ),
+                          child: Text(
+                            buttonText,
+                            locale: Locale(locale.localeName),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: fontSize,
+                              color: color.onSurfaceVariant,
+                            ).copyWith(decoration: TextDecoration.none),
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                : Text(
-                    locale.calendar_confirm_meals,
-                    locale: Locale(locale.localeName),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size16,
-                      color: color.onPrimary,
-                    ),
+
+                      // Active progress fill overlay
+                      if (animatedProgress > 0)
+                        PositionedDirectional(
+                          start: 0,
+                          top: 0,
+                          bottom: 0,
+                          width: (width * animatedProgress).clamp(0.0, width),
+                          child: ClipRect(
+                            child: OverflowBox(
+                              alignment: AlignmentDirectional.centerStart,
+                              minWidth: width,
+                              maxWidth: width,
+                              minHeight: effectiveHeight,
+                              maxHeight: effectiveHeight,
+                              child: Container(
+                                color: color.primary,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Spacing.md,
+                                ),
+                                child: Text(
+                                  buttonText,
+                                  locale: Locale(locale.localeName),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: fontSize,
+                                    color: color.onPrimary,
+                                  ).copyWith(
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      // Material ink ripple & tap handler
+                      Positioned.fill(
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            onTap: enabled && !isLoading ? onPressed : null,
+                            borderRadius: BorderRadius.circular(
+                              Spacing.buttonRadius,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              );
+            },
           ),
         );
       },

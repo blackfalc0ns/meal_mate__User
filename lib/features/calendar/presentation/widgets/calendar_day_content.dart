@@ -49,6 +49,7 @@ class CalendarDayContent extends StatelessWidget {
     final meals = selectedDay?.meals ?? const [];
     final readOnly = selectedDay?.isEditable != true;
     final hasMeals = meals.isNotEmpty;
+    final isAwaiting = selectedDay?.isAwaitingRestaurantConfirmation == true;
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsetsDirectional.only(
@@ -90,14 +91,33 @@ class CalendarDayContent extends StatelessWidget {
                   else ...[
                     Row(
                       children: [
-                        Icon(
-                          Icons.check_circle_rounded,
-                          color: color.primary,
-                          size: Spacing.iconMd,
-                        ),
+                        if (isAwaiting)
+                          Icon(
+                            Icons.hourglass_top_rounded,
+                            color: color.primary,
+                            size: Spacing.iconMd,
+                          )
+                              .animate(
+                                onPlay: (controller) =>
+                                    controller.repeat(reverse: true),
+                              )
+                              .scale(
+                                begin: const Offset(1.0, 1.0),
+                                end: const Offset(1.12, 1.12),
+                                duration: 1500.ms,
+                                curve: Curves.easeInOut,
+                              )
+                        else
+                          Icon(
+                            Icons.check_circle_rounded,
+                            color: color.primary,
+                            size: Spacing.iconMd,
+                          ),
                         const SizedBox(width: Spacing.xs),
                         Text(
-                          locale.calendar_confirm_selection_header,
+                          isAwaiting
+                              ? locale.calendar_status_awaiting_restaurant
+                              : locale.calendar_confirm_selection_header,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size16,
@@ -106,12 +126,16 @@ class CalendarDayContent extends StatelessWidget {
                         ),
                       ],
                     )
-                        .animate()
-                        .fadeIn(duration: 200.ms)
+                        .animate(
+                          key: ValueKey(
+                            'header_${selectedDay?.date?.toIso8601String()}_$isAwaiting',
+                          ),
+                        )
+                        .fadeIn(duration: 250.ms)
                         .slideX(
                           begin: slideBegin,
                           end: 0,
-                          duration: 220.ms,
+                          duration: 250.ms,
                           curve: Curves.easeOutCubic,
                         ),
                     const SizedBox(height: Spacing.md),
@@ -176,42 +200,6 @@ class CalendarDayContent extends StatelessWidget {
                         color: color.primary,
                         textColor: color.onPrimary,
                         fontSize: FontSize.size16,
-                      ),
-                    ] else if (selectedDay?.isAwaitingRestaurantConfirmation ==
-                        true) ...[
-                      const SizedBox(height: Spacing.lg),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.base,
-                          vertical: Spacing.md,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color.secondaryContainer.withValues(
-                            alpha: 0.4,
-                          ),
-                          borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                          border: Border.all(color: color.secondaryContainer),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.hourglass_top_rounded,
-                              color: color.primary,
-                              size: Spacing.iconSm + 2,
-                            ),
-                            const SizedBox(width: Spacing.xs),
-                            Text(
-                              locale.calendar_status_awaiting_restaurant,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size13,
-                                color: color.primary,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ],

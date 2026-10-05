@@ -47,11 +47,11 @@ class CalendarMealsConfirmationSheet extends StatelessWidget {
         top: Spacing.xs,
         start: Spacing.base,
         end: Spacing.base,
-        bottom: Spacing.base,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: Spacing.sm),
           Image.asset(
             Assets.calendarMealsConfirmedIllustration,
             height: 85,
