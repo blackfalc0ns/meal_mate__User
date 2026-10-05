@@ -90,18 +90,12 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xss),
                 if (animationAsset != null)
-                  ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      resolvedColor,
-                      BlendMode.srcIn,
-                    ),
-                    child: Lottie.asset(
-                      animationAsset!,
-                      width: 20,
-                      height: 20,
-                      fit: BoxFit.contain,
-                      repeat: true,
-                    ),
+                  Lottie.asset(
+                    animationAsset!,
+                    width: 20,
+                    height: 20,
+                    fit: BoxFit.contain,
+                    repeat: true,
                   )
                 else if (icon != null)
                   Icon(icon, size: 18, color: resolvedColor),
