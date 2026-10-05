@@ -5,8 +5,6 @@ class RestaurantMenuOptionsSection extends StatelessWidget {
     super.key,
     required this.selectedSlotKey,
     required this.options,
-    this.isOptionAnimated,
-    this.onOptionAnimated,
     this.onMealToggled,
     this.onOptionDetails,
     this.selectionControlBuilder,
@@ -14,8 +12,6 @@ class RestaurantMenuOptionsSection extends StatelessWidget {
 
   final String selectedSlotKey;
   final List<RestaurantMenuOption> options;
-  final bool Function(String mealId)? isOptionAnimated;
-  final ValueChanged<String>? onOptionAnimated;
   final ValueChanged<String>? onMealToggled;
   final ValueChanged<RestaurantMenuOption>? onOptionDetails;
   final Widget Function(BuildContext context, RestaurantMenuOption option)?

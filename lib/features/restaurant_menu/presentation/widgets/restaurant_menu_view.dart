@@ -8,6 +8,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
@@ -23,7 +24,6 @@ export 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant
 
 part 'restaurant_menu_content.dart';
 part 'restaurant_menu_meals_body.dart';
-part 'restaurant_menu_animated_option.dart';
 part 'restaurant_menu_frame.dart';
 part 'restaurant_menu_navigation.dart';
 part 'restaurant_menu_sheet_handle.dart';
@@ -123,10 +123,6 @@ class RestaurantMenuView extends StatelessWidget {
         bottomContentPadding: bottomContentPadding,
         selectionControlBuilder: selectionControlBuilder,
         isMealSelected: isMealSelected,
-        restaurantName: restaurantName,
-        restaurantInitials: menuData.restaurantInitials,
-        restaurantLogoUrl: menuData.restaurantLogoUrl,
-        restaurantRating: menuData.restaurantRating,
       ),
     );
   }

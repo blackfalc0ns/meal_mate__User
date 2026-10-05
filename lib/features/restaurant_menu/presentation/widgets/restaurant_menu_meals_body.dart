@@ -19,10 +19,6 @@ class RestaurantMenuMealsBody extends StatefulWidget {
     this.bottomContentPadding = Spacing.zero,
     this.selectionControlBuilder,
     this.isMealSelected,
-    this.restaurantName,
-    this.restaurantInitials,
-    this.restaurantLogoUrl,
-    this.restaurantRating,
   });
 
   final RestaurantMenuMode mode;
@@ -42,10 +38,6 @@ class RestaurantMenuMealsBody extends StatefulWidget {
   final Widget Function(BuildContext context, RestaurantMenuOption option)?
   selectionControlBuilder;
   final bool Function(String mealId)? isMealSelected;
-  final String? restaurantName;
-  final String? restaurantInitials;
-  final String? restaurantLogoUrl;
-  final String? restaurantRating;
 
   @override
   State<RestaurantMenuMealsBody> createState() =>
@@ -54,7 +46,6 @@ class RestaurantMenuMealsBody extends StatefulWidget {
 
 class RestaurantMenuMealsBodyState extends State<RestaurantMenuMealsBody> {
   late final ScrollController _scrollController;
-  final Set<String> _animatedOptionIds = <String>{};
   String? _selectedSlotKey;
   int _selectedFallbackIndex = 0;
 
@@ -68,11 +59,6 @@ class RestaurantMenuMealsBodyState extends State<RestaurantMenuMealsBody> {
   @override
   void didUpdateWidget(covariant RestaurantMenuMealsBody oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.menuData.restaurantName != widget.menuData.restaurantName ||
-        oldWidget.menuData.restaurantInitials !=
-            widget.menuData.restaurantInitials) {
-      _animatedOptionIds.clear();
-    }
     _reconcileSelectedSlotKey();
   }
 
@@ -100,7 +86,6 @@ class RestaurantMenuMealsBodyState extends State<RestaurantMenuMealsBody> {
         if (_selectedSlotKey != newKey) {
           setState(() {
             _selectedSlotKey = newKey;
-            _animatedOptionIds.clear();
           });
           _resetScrollPosition();
         }
@@ -109,17 +94,10 @@ class RestaurantMenuMealsBodyState extends State<RestaurantMenuMealsBody> {
       if (_selectedFallbackIndex != index) {
         setState(() {
           _selectedFallbackIndex = index;
-          _animatedOptionIds.clear();
         });
         _resetScrollPosition();
       }
     }
-  }
-
-  bool _isOptionAnimated(String mealId) => _animatedOptionIds.contains(mealId);
-
-  void _onOptionAnimated(String mealId) {
-    _animatedOptionIds.add(mealId);
   }
 
   void _resetScrollPosition() {
@@ -210,8 +188,6 @@ class RestaurantMenuMealsBodyState extends State<RestaurantMenuMealsBody> {
           : null,
       onOptionDetails: _handleOptionDetails,
       onSave: widget.onSave,
-      isOptionAnimated: _isOptionAnimated,
-      onOptionAnimated: _onOptionAnimated,
       selectionControlBuilder: widget.selectionControlBuilder,
     );
   }

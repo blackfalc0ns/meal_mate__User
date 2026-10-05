@@ -11431,6 +11431,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notification_button_tooltip;
+
+  /// No description provided for @meal_details_per_meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Per meal'**
+  String get meal_details_per_meal;
+
+  /// No description provided for @meal_details_per_100g.
+  ///
+  /// In en, this message translates to:
+  /// **'Per 100g'**
+  String get meal_details_per_100g;
+
+  /// No description provided for @meal_tag_high_protein.
+  ///
+  /// In en, this message translates to:
+  /// **'High Protein'**
+  String get meal_tag_high_protein;
+
+  /// No description provided for @meal_tag_diet_friendly.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet Friendly'**
+  String get meal_tag_diet_friendly;
+
+  /// No description provided for @meal_tag_natural_ingredients.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural Ingredients'**
+  String get meal_tag_natural_ingredients;
 }
 
 class _AppLocalizationsDelegate

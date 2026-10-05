@@ -272,23 +272,6 @@ void main() {
   );
 
   testWidgets(
-    'RestaurantMenuAnimatedOption renders child without animation when disabled or animateEntry is false',
-    (tester) async {
-      await tester.pumpWidget(
-        buildTestableWidget(
-          const RestaurantMenuAnimatedOption(
-            animateEntry: false,
-            child: Text('Static Option'),
-          ),
-        ),
-      );
-      await tester.pump(const Duration(milliseconds: 500));
-
-      expect(find.text('Static Option'), findsOneWidget);
-    },
-  );
-
-  testWidgets(
     'toggling first meal only rebuilds its selection button without rebuilding other meals or card contents',
     (tester) async {
       int button1Builds = 0;

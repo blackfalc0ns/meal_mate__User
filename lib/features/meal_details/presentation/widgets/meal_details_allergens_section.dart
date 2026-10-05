@@ -14,6 +14,24 @@ class MealDetailsAllergensSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
+    final isAr = context.localization.localeName == 'ar';
+    final allergens = meal.allergens.isNotEmpty
+        ? meal.allergens
+        : [
+            MealDetailsAllergenEntity(
+              label: isAr ? 'جلوتين' : 'Gluten',
+              type: MealDetailsAllergenType.gluten,
+            ),
+            MealDetailsAllergenEntity(
+              label: isAr ? 'لاكتوز' : 'Lactose',
+              type: MealDetailsAllergenType.lactose,
+            ),
+            MealDetailsAllergenEntity(
+              label: isAr ? 'مكسرات' : 'Nuts',
+              type: MealDetailsAllergenType.nuts,
+            ),
+          ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,9 +42,9 @@ class MealDetailsAllergensSection extends StatelessWidget {
           runSpacing: Spacing.sm,
           alignment: WrapAlignment.start,
           children: [
-            for (final allergen in meal.allergens)
+            for (final allergen in allergens)
               IconTheme(
-                data: IconThemeData(color: color.onSurface),
+                data: IconThemeData(color: color.secondary),
                 child: MealDetailsAllergenChip(allergen: allergen),
               ),
           ],

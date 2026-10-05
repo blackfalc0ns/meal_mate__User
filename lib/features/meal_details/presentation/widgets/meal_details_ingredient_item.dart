@@ -14,48 +14,60 @@ class MealDetailsIngredientItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
-    return SizedBox(
-      width: Spacing.iconXl,
-      child: Column(
-        children: [
-          Container(
-            width: Spacing.iconXl,
-            height: Spacing.iconXl,
-            padding: const EdgeInsets.all(Spacing.xs),
-            decoration: BoxDecoration(
-              color: color.surface,
-              border: Border.all(color: color.outline),
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Spacing.radiusXs),
-              child: ingredient.iconUrl == null || ingredient.iconUrl!.isEmpty
-                  ? Image.asset(ingredient.asset, fit: BoxFit.cover)
-                  : AppCachedNetworkImage(
-                      imageUrl: ingredient.iconUrl!,
-                      fit: BoxFit.cover,
-                      semanticLabel: ingredient.label,
-                    ),
-            ),
+    final weight = ingredient.weight;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 52.0,
+          height: 52.0,
+          padding: const EdgeInsets.all(Spacing.xs),
+          decoration: BoxDecoration(
+            color: color.surface,
+            border: Border.all(color: color.outlineVariant),
+            borderRadius: BorderRadius.circular(Spacing.radiusSm),
           ),
-          const SizedBox(height: Spacing.xs),
-          FittedBox(
-            child: Text(
-              ingredient.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
-                color: color.onSurfaceVariant,
-              ).copyWith(height: locale.localeName == 'ar' ? 1.45 : 1.2),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Spacing.radiusXs),
+            child: ingredient.iconUrl == null || ingredient.iconUrl!.isEmpty
+                ? Image.asset(ingredient.asset, fit: BoxFit.contain)
+                : AppCachedNetworkImage(
+                    imageUrl: ingredient.iconUrl!,
+                    fit: BoxFit.contain,
+                    semanticLabel: ingredient.label,
+                  ),
+          ),
+        ),
+        const SizedBox(height: Spacing.xs),
+        Text(
+          ingredient.label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: getMediumStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size10,
+            color: color.onSurface,
+          ),
+        ),
+        if (weight != null && weight.isNotEmpty) ...[
+          const SizedBox(height: 2.0),
+          Text(
+            weight,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size9,
+              color: color.onSurfaceVariant,
             ),
           ),
         ],
-      ),
+      ],
     );
   }
 }

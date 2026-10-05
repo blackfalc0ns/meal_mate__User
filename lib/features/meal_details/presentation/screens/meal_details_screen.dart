@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -30,15 +32,20 @@ class MealDetailsScreen extends StatelessWidget {
 
     if (detailsArgs != null) {
       return BlocProvider(
-        create: (_) => getIt<MealDetailsViewModel>()
-          ..doIntent(
-            GetMealDetailsEvent(
-              programId: detailsArgs.programId,
-              bundleId: detailsArgs.bundleId,
-              restaurantId: detailsArgs.restaurantId,
-              mealId: detailsArgs.mealId,
+        create: (_) {
+          final vm = getIt<MealDetailsViewModel>();
+          unawaited(
+            vm.doIntent(
+              GetMealDetailsEvent(
+                programId: detailsArgs.programId,
+                bundleId: detailsArgs.bundleId,
+                restaurantId: detailsArgs.restaurantId,
+                mealId: detailsArgs.mealId,
+              ),
             ),
-          ),
+          );
+          return vm;
+        },
         child: BlocBuilder<MealDetailsViewModel, MealDetailsState>(
           builder: (context, state) {
             return _buildApiState(context, state, detailsArgs);
@@ -76,12 +83,14 @@ class MealDetailsScreen extends StatelessWidget {
         body: ApiErrorWidget(
           exception: state.failure!.exception,
           onRetry: () {
-            context.read<MealDetailsViewModel>().doIntent(
-              GetMealDetailsEvent(
-                programId: detailsArgs.programId,
-                bundleId: detailsArgs.bundleId,
-                restaurantId: detailsArgs.restaurantId,
-                mealId: detailsArgs.mealId,
+            unawaited(
+              context.read<MealDetailsViewModel>().doIntent(
+                GetMealDetailsEvent(
+                  programId: detailsArgs.programId,
+                  bundleId: detailsArgs.bundleId,
+                  restaurantId: detailsArgs.restaurantId,
+                  mealId: detailsArgs.mealId,
+                ),
               ),
             );
           },
@@ -122,6 +131,7 @@ class MealDetailsScreen extends StatelessWidget {
       body: Stack(
         children: [
           SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Stack(
               children: [
                 Positioned(

@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class MealDetailsEntity {
   const MealDetailsEntity({
     required this.title,
@@ -21,6 +23,9 @@ class MealDetailsEntity {
     this.headerImageUrl,
     this.restaurantLogoUrl,
     this.onSelectMeal,
+    this.tags = const [],
+    this.nutritionItemsPer100g = const [],
+    this.macroItemsPer100g = const [],
   });
 
   final String title;
@@ -44,17 +49,29 @@ class MealDetailsEntity {
   final String allergensTitle;
   final List<MealDetailsAllergenEntity> allergens;
   final void Function()? onSelectMeal;
+  final List<MealDetailsTagEntity> tags;
+  final List<MealDetailsNutritionEntity> nutritionItemsPer100g;
+  final List<MealDetailsMacroEntity> macroItemsPer100g;
+}
+
+class MealDetailsTagEntity {
+  const MealDetailsTagEntity({required this.label, required this.icon});
+
+  final String label;
+  final IconData icon;
 }
 
 class MealDetailsIngredientEntity {
   const MealDetailsIngredientEntity({
     required this.label,
     required this.asset,
+    this.weight,
     this.iconUrl,
   });
 
   final String label;
   final String asset;
+  final String? weight;
   final String? iconUrl;
 }
 
@@ -94,3 +111,5 @@ class MealDetailsAllergenEntity {
 enum MealDetailsNutritionType { fiber, protein, carbs, fat, calories }
 
 enum MealDetailsAllergenType { nuts, lactose, gluten }
+
+enum MealDetailsNutritionMode { perMeal, per100g }

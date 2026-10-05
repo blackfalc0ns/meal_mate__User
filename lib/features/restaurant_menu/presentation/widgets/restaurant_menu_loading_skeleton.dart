@@ -44,11 +44,17 @@ class RestaurantMenuLoadingSkeleton extends StatelessWidget {
                         SizedBox(height: Spacing.md),
                         Row(
                           children: [
-                            Expanded(child: ShimmerPlaceholder.rect(height: 14)),
+                            Expanded(
+                              child: ShimmerPlaceholder.rect(height: 14),
+                            ),
                             SizedBox(width: Spacing.sm),
-                            Expanded(child: ShimmerPlaceholder.rect(height: 14)),
+                            Expanded(
+                              child: ShimmerPlaceholder.rect(height: 14),
+                            ),
                             SizedBox(width: Spacing.sm),
-                            Expanded(child: ShimmerPlaceholder.rect(height: 14)),
+                            Expanded(
+                              child: ShimmerPlaceholder.rect(height: 14),
+                            ),
                           ],
                         ),
                         SizedBox(height: Spacing.md),

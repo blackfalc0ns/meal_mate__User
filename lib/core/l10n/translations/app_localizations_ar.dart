@@ -6062,4 +6062,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notification_button_tooltip => 'الإشعارات';
+
+  @override
+  String get meal_details_per_meal => 'لكل وجبة';
+
+  @override
+  String get meal_details_per_100g => 'لكل 100 جم';
+
+  @override
+  String get meal_tag_high_protein => 'عالي البروتين';
+
+  @override
+  String get meal_tag_diet_friendly => 'مناسب للدايت';
+
+  @override
+  String get meal_tag_natural_ingredients => 'مكونات طبيعية';
 }

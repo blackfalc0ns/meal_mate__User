@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
@@ -37,17 +38,40 @@ abstract final class CalendarMealDetailsMapper {
       programValue: meal.mealType,
       deliveryLabel: locale.meal_details_delivery_time,
       deliveryValue: deliveryWindow,
+      tags: [
+        MealDetailsTagEntity(
+          label: locale.meal_tag_natural_ingredients,
+          icon: Icons.spa_rounded,
+        ),
+        MealDetailsTagEntity(
+          label: locale.meal_tag_diet_friendly,
+          icon: Icons.restaurant_rounded,
+        ),
+        MealDetailsTagEntity(
+          label: locale.meal_tag_high_protein,
+          icon: Icons.fitness_center_rounded,
+        ),
+      ],
       ingredientsTitle: locale.calendar_ingredients,
-      ingredients: meal.ingredients
-          .map(
-            (ingredient) => MealDetailsIngredientEntity(
-              label: ingredient.label,
-              asset: ingredient.asset,
-              iconUrl: ingredient.iconUrl,
-            ),
-          )
-          .where((ingredient) => ingredient.label.isNotEmpty)
-          .toList(),
+      ingredients: meal.ingredients.isNotEmpty
+          ? meal.ingredients
+                .map(
+                  (ingredient) => MealDetailsIngredientEntity(
+                    label: ingredient.label,
+                    asset: _resolveIngredientAsset(
+                      ingredient.label,
+                      ingredient.asset,
+                    ),
+                    iconUrl: ingredient.iconUrl,
+                    weight: _ingredientWeight(
+                      ingredient.label,
+                      locale.localeName,
+                    ),
+                  ),
+                )
+                .where((ingredient) => ingredient.label.isNotEmpty)
+                .toList()
+          : _fallbackIngredients(locale.localeName),
       nutritionTitle: locale.meal_details_nutrition_facts,
       nutritionItems: [
         MealDetailsNutritionEntity(
@@ -96,7 +120,7 @@ abstract final class CalendarMealDetailsMapper {
   static List<MealDetailsAllergenEntity> _mealDetailsAllergens(
     List<CalendarMealAllergenEntity> allergens,
   ) {
-    return allergens
+    final mapped = allergens
         .map(
           (allergen) => MealDetailsAllergenEntity(
             label: allergen.label,
@@ -105,6 +129,23 @@ abstract final class CalendarMealDetailsMapper {
         )
         .where((allergen) => allergen.label.isNotEmpty)
         .toList();
+
+    if (mapped.isNotEmpty) return mapped;
+
+    return const [
+      MealDetailsAllergenEntity(
+        label: 'جلوتين',
+        type: MealDetailsAllergenType.gluten,
+      ),
+      MealDetailsAllergenEntity(
+        label: 'لاكتوز',
+        type: MealDetailsAllergenType.lactose,
+      ),
+      MealDetailsAllergenEntity(
+        label: 'مكسرات',
+        type: MealDetailsAllergenType.nuts,
+      ),
+    ];
   }
 
   static MealDetailsAllergenType _allergenType(String code) {
@@ -178,6 +219,94 @@ abstract final class CalendarMealDetailsMapper {
   static int? _parseNullableInt(String value) {
     if (value.isEmpty) return null;
     return int.tryParse(value.replaceAll(RegExp(r'[^0-9]'), ''));
+  }
+
+  static List<MealDetailsIngredientEntity> _fallbackIngredients(
+    String localeName,
+  ) {
+    final isAr = localeName == 'ar';
+    return [
+      MealDetailsIngredientEntity(
+        label: isAr ? 'دجاج مشوي' : 'Grilled Chicken',
+        asset: AssetsFake.ingredientChicken,
+        weight: isAr ? '120 جم' : '120g',
+      ),
+      MealDetailsIngredientEntity(
+        label: isAr ? 'أرز بني' : 'Brown Rice',
+        asset: AssetsFake.ingredientRice,
+        weight: isAr ? '80 جم' : '80g',
+      ),
+      MealDetailsIngredientEntity(
+        label: isAr ? 'جزر' : 'Carrot',
+        asset: AssetsFake.ingredientCarrot,
+        weight: isAr ? '50 جم' : '50g',
+      ),
+      MealDetailsIngredientEntity(
+        label: isAr ? 'بروكلي' : 'Broccoli',
+        asset: AssetsFake.ingredientBroccoli,
+        weight: isAr ? '60 جم' : '60g',
+      ),
+      MealDetailsIngredientEntity(
+        label: isAr ? 'خس' : 'Lettuce',
+        asset: AssetsFake.ingredientLettuce,
+        weight: isAr ? '30 جم' : '30g',
+      ),
+      MealDetailsIngredientEntity(
+        label: isAr ? 'ليمون' : 'Lemon',
+        asset: AssetsFake.ingredientLemon,
+        weight: isAr ? '10 جم' : '10g',
+      ),
+    ];
+  }
+
+  static String _resolveIngredientAsset(String name, String fallbackAsset) {
+    final lower = name.toLowerCase();
+    if (name.contains('دجاج') || lower.contains('chicken')) {
+      return AssetsFake.ingredientChicken;
+    }
+    if (name.contains('أرز') ||
+        name.contains('ارز') ||
+        lower.contains('rice')) {
+      return AssetsFake.ingredientRice;
+    }
+    if (name.contains('جزر') || lower.contains('carrot')) {
+      return AssetsFake.ingredientCarrot;
+    }
+    if (name.contains('بروكلي') || lower.contains('broccoli')) {
+      return AssetsFake.ingredientBroccoli;
+    }
+    if (name.contains('خس') || lower.contains('lettuce')) {
+      return AssetsFake.ingredientLettuce;
+    }
+    if (name.contains('ليمون') || lower.contains('lemon')) {
+      return AssetsFake.ingredientLemon;
+    }
+    return fallbackAsset;
+  }
+
+  static String _ingredientWeight(String name, String localeName) {
+    final isAr = localeName == 'ar';
+    if (name.contains('دجاج') || name.toLowerCase().contains('chicken')) {
+      return isAr ? '120 جم' : '120g';
+    }
+    if (name.contains('أرز') ||
+        name.contains('ارز') ||
+        name.toLowerCase().contains('rice')) {
+      return isAr ? '80 جم' : '80g';
+    }
+    if (name.contains('بروكلي') || name.toLowerCase().contains('broccoli')) {
+      return isAr ? '60 جم' : '60g';
+    }
+    if (name.contains('جزر') || name.toLowerCase().contains('carrot')) {
+      return isAr ? '50 جم' : '50g';
+    }
+    if (name.contains('خس') || name.toLowerCase().contains('lettuce')) {
+      return isAr ? '30 جم' : '30g';
+    }
+    if (name.contains('ليمون') || name.toLowerCase().contains('lemon')) {
+      return isAr ? '10 جم' : '10g';
+    }
+    return isAr ? '50 جم' : '50g';
   }
 
   static String _initials(String value) {

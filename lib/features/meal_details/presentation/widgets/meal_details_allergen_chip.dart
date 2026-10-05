@@ -15,10 +15,12 @@ class MealDetailsAllergenChip extends StatelessWidget {
     final color = context.colorScheme;
 
     return Container(
-      height: Spacing.iconMd,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.md,
+        vertical: Spacing.xss,
+      ),
       decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
+        color: color.surfaceContainerHighest.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
       child: Row(
@@ -27,14 +29,14 @@ class MealDetailsAllergenChip extends StatelessWidget {
           Icon(
             _icon,
             size: Spacing.iconSm,
-            color: IconTheme.of(context).color ?? color.onSurface,
+            color: IconTheme.of(context).color ?? color.secondary,
           ),
           const SizedBox(width: Spacing.xs),
           Text(
             allergen.label,
             style: getMediumStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size11,
               color: color.onSurface,
             ),
           ),
@@ -45,9 +47,9 @@ class MealDetailsAllergenChip extends StatelessWidget {
 
   IconData get _icon {
     return switch (allergen.type) {
-      MealDetailsAllergenType.nuts => Icons.grain_rounded,
+      MealDetailsAllergenType.nuts => Icons.cookie_rounded,
       MealDetailsAllergenType.lactose => Icons.local_drink_rounded,
-      MealDetailsAllergenType.gluten => Icons.bakery_dining_rounded,
+      MealDetailsAllergenType.gluten => Icons.grass_rounded,
     };
   }
 }

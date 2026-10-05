@@ -6173,4 +6173,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notification_button_tooltip => 'Notifications';
+
+  @override
+  String get meal_details_per_meal => 'Per meal';
+
+  @override
+  String get meal_details_per_100g => 'Per 100g';
+
+  @override
+  String get meal_tag_high_protein => 'High Protein';
+
+  @override
+  String get meal_tag_diet_friendly => 'Diet Friendly';
+
+  @override
+  String get meal_tag_natural_ingredients => 'Natural Ingredients';
 }

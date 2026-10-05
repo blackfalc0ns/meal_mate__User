@@ -1,90 +1,131 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_ingredient_item.dart';
-import 'package:meal_meat_user/features/meal_details/presentation/widgets/meal_details_section_title.dart';
 
-class MealDetailsIngredientsSection extends StatelessWidget {
+class MealDetailsIngredientsSection extends StatefulWidget {
   const MealDetailsIngredientsSection({super.key, required this.meal});
 
   final MealDetailsEntity meal;
+
+  @override
+  State<MealDetailsIngredientsSection> createState() =>
+      _MealDetailsIngredientsSectionState();
+}
+
+class _MealDetailsIngredientsSectionState
+    extends State<MealDetailsIngredientsSection> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollForward() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final target = (_scrollController.offset + 80.0).clamp(0.0, maxScroll);
+    unawaited(
+      _scrollController.animateTo(
+        target,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        MealDetailsSectionTitle(title: meal.ingredientsTitle),
-        const SizedBox(height: Spacing.xs),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.symmetric(
-              horizontal: BorderSide(color: color.outlineVariant),
+    final ingredients = widget.meal.ingredients;
+
+    return Container(
+      padding: const EdgeInsets.all(Spacing.md),
+      decoration: BoxDecoration(
+        color: color.surface,
+        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            widget.meal.ingredientsTitle,
+            style: getBoldStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size13,
+              color: color.onSurface,
             ),
           ),
-          child: SizedBox(
-            height: Spacing.avatarLg + Spacing.md,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final itemsWidth =
-                    meal.ingredients.length * Spacing.iconXl +
-                    (meal.ingredients.length - 1) * Spacing.md +
-                    Spacing.xl +
-                    Spacing.xl;
-                final needsScroll = itemsWidth > constraints.maxWidth;
-
-                return Stack(
-                  //  alignment: Alignment.centerRight,
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsetsDirectional.only(
-                     
-                        top: Spacing.xss,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          for (final ingredient in meal.ingredients) ...[
-                            MealDetailsIngredientItem(ingredient: ingredient),
-                            if (ingredient != meal.ingredients.last)
-                              const SizedBox(width: Spacing.md),
-                          ],
-                        ],
-                      ),
-                    ),
-                    if (needsScroll)
-                      Positioned(
-                        left: 0,
-                        child: IgnorePointer(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: color.surface.withValues(alpha: 0.92),
-                              shape: BoxShape.circle,
-                              border: Border.all(color: color.outlineVariant),
+          const SizedBox(height: Spacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    children: [
+                      for (int i = 0; i < ingredients.length; i++) ...[
+                        MealDetailsIngredientItem(ingredient: ingredients[i]),
+                        if (i < ingredients.length - 1)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.sm,
                             ),
-                            child: Icon(
-                              Icons.chevron_left_rounded,
-                              semanticLabel: locale.calendar_ingredients,
-                              size: Spacing.iconMd,
-                              color: color.onSurface,
+                            child: SizedBox(
+                              height: 32.0,
+                              child: VerticalDivider(
+                                color: color.outlineVariant,
+                                thickness: 1.0,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              GestureDetector(
+                onTap: _scrollForward,
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  width: 28.0,
+                  height: 28.0,
+                  decoration: BoxDecoration(
+                    color: color.surfaceContainerHighest,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: color.outlineVariant),
+                  ),
+                  child: Icon(
+                    Icons.chevron_left_rounded,
+                    size: Spacing.iconSm,
+                    color: color.onSurface,
+                    semanticLabel: locale.calendar_ingredients,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: locale.localeName == 'ar' ? 0 : Spacing.xs),
-      ],
+        ],
+      ),
     );
   }
 }

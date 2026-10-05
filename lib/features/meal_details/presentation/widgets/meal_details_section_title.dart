@@ -14,11 +14,10 @@ class MealDetailsSectionTitle extends StatelessWidget {
 
     return Text(
       title,
-
-      style: getSemiBoldStyle(
+      style: getBoldStyle(
         fontFamily: FontConstant.alexandria,
-        fontSize: FontSize.size12,
-        color: color.primary,
+        fontSize: FontSize.size13,
+        color: color.onSurface,
       ),
     );
   }
