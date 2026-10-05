@@ -282,6 +282,7 @@ extension CalendarNutritionResponseDtoMapper on CalendarNutritionResponseDto {
       proteinPercentage: (proteinPercentage ?? proteinPercent)?.toDouble(),
       carbsPercentage: (carbsPercentage ?? carbsPercent)?.toDouble(),
       fatPercentage: (fatPercentage ?? fatPercent)?.toDouble(),
+      caloriesPercentage: caloriesPercentage?.toDouble(),
     );
   }
 }

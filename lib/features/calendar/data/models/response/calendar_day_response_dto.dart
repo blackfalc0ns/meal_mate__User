@@ -48,6 +48,7 @@ class CalendarDayResponseDto {
     this.proteinPercentage,
     this.carbsPercentage,
     this.fatPercentage,
+    this.caloriesPercentage,
   });
 
   final String? id;
@@ -96,6 +97,7 @@ class CalendarDayResponseDto {
   final num? proteinPercentage;
   final num? carbsPercentage;
   final num? fatPercentage;
+  final num? caloriesPercentage;
 
   factory CalendarDayResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarDayResponseDtoFromJson(json);
@@ -361,6 +363,7 @@ class CalendarNutritionResponseDto {
     this.proteinPercentage,
     this.carbsPercentage,
     this.fatPercentage,
+    this.caloriesPercentage,
   });
 
   final num? calories;
@@ -374,6 +377,7 @@ class CalendarNutritionResponseDto {
   final num? proteinPercentage;
   final num? carbsPercentage;
   final num? fatPercentage;
+  final num? caloriesPercentage;
 
   factory CalendarNutritionResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarNutritionResponseDtoFromJson(json);

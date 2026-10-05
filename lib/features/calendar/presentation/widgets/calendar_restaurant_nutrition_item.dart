@@ -34,7 +34,7 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
     final themeColor = context.colorScheme;
     final locale = context.localization;
     final resolvedColor = color ?? iconColor ?? themeColor.primary;
-    final resolvedUnit = unit ?? locale.search_filter_grams_unit;
+    final resolvedUnit = unit ?? locale.nutrition_details_gram_suffix.trim();
     final resolvedPercentage =
         percentage ??
         ((target != null && target! > 0)
@@ -110,33 +110,31 @@ class CalendarRestaurantNutritionItem extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: AlignmentDirectional.centerStart,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    _formatValue(value),
-                    maxLines: 1,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size18,
-                      color: themeColor.onSurface,
-                    ).copyWith(height: 1),
-                  ),
-                  if (resolvedUnit.isNotEmpty) ...[
-                    const SizedBox(width: 3),
-                    Text(
-                      resolvedUnit,
-                      maxLines: 1,
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: _formatValue(value),
                       style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size18,
                         color: themeColor.onSurface,
-                      ).copyWith(height: 1),
+                      ),
                     ),
+                    if (resolvedUnit.isNotEmpty) ...[
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: resolvedUnit,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: themeColor.onSurface,
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
+                maxLines: 1,
               ),
             ),
             Row(

@@ -72,15 +72,21 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                     children: [
                       if (hasLimit) ...[
                         Container(
-                          padding: const EdgeInsetsDirectional.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: Spacing.sm,
-                            vertical: Spacing.xxs,
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
                             color: isExhausted
                                 ? color.error.withValues(alpha: 0.1)
-                                : color.surfaceContainerHighest,
+                                : color.surfaceContainerHighest.withValues(alpha: 0.7),
                             borderRadius: BorderRadius.circular(Spacing.sm),
+                            border: Border.all(
+                              color: isExhausted
+                                  ? color.error.withValues(alpha: 0.3)
+                                  : color.outlineVariant.withValues(alpha: 0.45),
+                              width: 0.8,
+                            ),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -88,64 +94,55 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                               if (isExhausted) ...[
                                 Icon(
                                   Icons.lock_outline_rounded,
-                                  size: 11,
+                                  size: 12,
                                   color: color.error,
                                 ),
                                 const SizedBox(width: Spacing.xxs),
-                              ],
-                              RichText(
-                                text: TextSpan(
+                                Text(
+                                  locale
+                                      .calendar_restaurant_quota_exhausted_badge(
+                                        restaurant.maxUsageCount!,
+                                      ),
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size11,
+                                    color: color.error,
+                                  ),
+                                ),
+                              ] else ...[
+                                Text(
+                                  '${locale.calendar_restaurant_repetition_prefix} ',
                                   style: getMediumStyle(
                                     fontFamily: FontConstant.alexandria,
                                     fontSize: FontSize.size11,
-                                    color: isExhausted
-                                        ? color.error
-                                        : color.onSurfaceVariant,
+                                    color: color.onSurfaceVariant,
                                   ),
-                                  children: [
-                                    if (isExhausted)
-                                      TextSpan(
-                                        text: locale
-                                            .calendar_restaurant_quota_exhausted_badge(
-                                              restaurant.maxUsageCount!,
-                                            ),
-                                        style: getBoldStyle(
-                                          fontFamily: FontConstant.alexandria,
-                                          fontSize: FontSize.size11,
-                                          color: color.error,
-                                        ),
-                                      )
-                                    else ...[
-                                      TextSpan(
-                                        text:
-                                            '${locale.calendar_restaurant_repetition_prefix} ',
-                                        style: getRegularStyle(
-                                          fontFamily: FontConstant.alexandria,
-                                          fontSize: FontSize.size11,
-                                          color: color.onSurfaceVariant,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            '\u200E${restaurant.usedCount ?? 0}',
-                                        style: getBoldStyle(
-                                          fontFamily: FontConstant.alexandria,
-                                          fontSize: FontSize.size11,
-                                          color: color.primary,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '/${restaurant.maxUsageCount}',
-                                        style: getRegularStyle(
-                                          fontFamily: FontConstant.alexandria,
-                                          fontSize: FontSize.size11,
-                                          color: color.onSurfaceVariant,
-                                        ),
-                                      ),
-                                    ],
-                                  ],
                                 ),
-                              ),
+                                Text(
+                                  '${restaurant.usedCount ?? 0}',
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size12,
+                                    color: color.primary,
+                                  ),
+                                ),
+                                Text(
+                                  ' / ',
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size12,
+                                    color: color.onSurfaceVariant,
+                                  ),
+                                ),
+                                Text(
+                                  '${restaurant.maxUsageCount}',
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size12,
+                                    color: color.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         ),

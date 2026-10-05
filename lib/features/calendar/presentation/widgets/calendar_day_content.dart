@@ -63,6 +63,13 @@ class CalendarDayContent extends StatelessWidget {
         duration: const Duration(milliseconds: 250),
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeIn,
+        layoutBuilder: (currentChild, previousChildren) => Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            ...previousChildren,
+            ?currentChild,
+          ],
+        ),
         child: isLoading
             ? const CalendarDayMealsLoadingSkeleton()
             : Column(

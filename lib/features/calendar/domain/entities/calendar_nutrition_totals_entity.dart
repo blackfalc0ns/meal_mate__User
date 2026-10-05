@@ -7,6 +7,7 @@ class CalendarNutritionTotalsEntity {
     this.proteinPercentage,
     this.carbsPercentage,
     this.fatPercentage,
+    this.caloriesPercentage,
   });
 
   final int calories;
@@ -16,4 +17,5 @@ class CalendarNutritionTotalsEntity {
   final double? proteinPercentage;
   final double? carbsPercentage;
   final double? fatPercentage;
+  final double? caloriesPercentage;
 }

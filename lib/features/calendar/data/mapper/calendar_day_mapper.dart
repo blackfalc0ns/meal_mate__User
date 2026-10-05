@@ -190,6 +190,8 @@ extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
             ?.toDouble(),
         fatPercentage: (fatPercentage ?? totalsEntity.fatPercentage)
             ?.toDouble(),
+        caloriesPercentage:
+            (caloriesPercentage ?? totalsEntity.caloriesPercentage)?.toDouble(),
       );
     }
 
@@ -241,6 +243,7 @@ extension _CalendarDayNutritionTotalsMapper on CalendarDayResponseDto {
       fatPercentage:
           (fatPercentage ?? (totalCal > 0 ? (fatCal / totalCal) * 100 : null))
               ?.toDouble(),
+      caloriesPercentage: caloriesPercentage?.toDouble(),
     );
   }
 
