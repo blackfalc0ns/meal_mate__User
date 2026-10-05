@@ -215,4 +215,6 @@ class Assets {
   static const String notificationBold = '$_svg/notification_bold.svg';
   static const String notificationBell = '$_svg/notification_bell.svg';
   static const String loadingLogo = 'assets/animations/logo-loading.json';
+  static const String hourglassAnimation =
+      'assets/animations/hourglass_animation.json';
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
@@ -66,10 +68,7 @@ class CalendarDayContent extends StatelessWidget {
         switchOutCurve: Curves.easeIn,
         layoutBuilder: (currentChild, previousChildren) => Stack(
           alignment: Alignment.topCenter,
-          children: <Widget>[
-            ...previousChildren,
-            ?currentChild,
-          ],
+          children: <Widget>[...previousChildren, ?currentChild],
         ),
         child: isLoading
             ? const CalendarDayMealsLoadingSkeleton()
@@ -90,42 +89,39 @@ class CalendarDayContent extends StatelessWidget {
                     )
                   else ...[
                     Row(
-                      children: [
-                        if (isAwaiting)
-                          Icon(
-                            Icons.hourglass_top_rounded,
-                            color: color.primary,
-                            size: Spacing.iconMd,
-                          )
-                              .animate(
-                                onPlay: (controller) =>
-                                    controller.repeat(reverse: true),
+                          children: [
+                            if (isAwaiting)
+                              SizedBox(
+                                width: Spacing.iconMd,
+                                // height: Spacing.iconMd,
+                                child: Transform.scale(
+                                  scale: 2.3,
+                                  child: Lottie.asset(
+                                    repeat: true,
+                                    Assets.hourglassAnimation,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
                               )
-                              .scale(
-                                begin: const Offset(1.0, 1.0),
-                                end: const Offset(1.12, 1.12),
-                                duration: 1500.ms,
-                                curve: Curves.easeInOut,
-                              )
-                        else
-                          Icon(
-                            Icons.check_circle_rounded,
-                            color: color.primary,
-                            size: Spacing.iconMd,
-                          ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          isAwaiting
-                              ? locale.calendar_status_awaiting_restaurant
-                              : locale.calendar_confirm_selection_header,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size16,
-                            color: color.onSurface,
-                          ),
-                        ),
-                      ],
-                    )
+                            else
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: color.primary,
+                                size: Spacing.iconMd,
+                              ),
+                            const SizedBox(width: Spacing.xs),
+                            Text(
+                              isAwaiting
+                                  ? locale.calendar_status_awaiting_restaurant
+                                  : locale.calendar_confirm_selection_header,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size13,
+                                color: color.onSurface,
+                              ),
+                            ),
+                          ],
+                        )
                         .animate(
                           key: ValueKey(
                             'header_${selectedDay?.date?.toIso8601String()}_$isAwaiting',
