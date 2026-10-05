@@ -5,8 +5,8 @@ class RestaurantMenuOptionsSection extends StatelessWidget {
     super.key,
     required this.selectedSlotKey,
     required this.options,
-    required this.isOptionAnimated,
-    required this.onOptionAnimated,
+    this.isOptionAnimated,
+    this.onOptionAnimated,
     this.onMealToggled,
     this.onOptionDetails,
     this.selectionControlBuilder,
@@ -14,8 +14,8 @@ class RestaurantMenuOptionsSection extends StatelessWidget {
 
   final String selectedSlotKey;
   final List<RestaurantMenuOption> options;
-  final bool Function(String mealId) isOptionAnimated;
-  final ValueChanged<String> onOptionAnimated;
+  final bool Function(String mealId)? isOptionAnimated;
+  final ValueChanged<String>? onOptionAnimated;
   final ValueChanged<String>? onMealToggled;
   final ValueChanged<RestaurantMenuOption>? onOptionDetails;
   final Widget Function(BuildContext context, RestaurantMenuOption option)?
@@ -31,26 +31,17 @@ class RestaurantMenuOptionsSection extends StatelessWidget {
             if (index.isOdd) return const RestaurantMenuDividerLine();
             final optionIndex = index ~/ 2;
             final option = options[optionIndex];
-            final isAnimated = isOptionAnimated(option.id);
-            final delay = optionIndex < 6
-                ? Duration(milliseconds: optionIndex * 35)
-                : Duration.zero;
 
-            return RestaurantMenuAnimatedOption(
+            return RestaurantMenuOptionCard(
               key: ValueKey((selectedSlotKey, option.id)),
-              animateEntry: !isAnimated,
-              delay: delay,
-              onAnimated: () => onOptionAnimated(option.id),
-              child: RestaurantMenuOptionCard(
-                option: option,
-                onTap: onMealToggled == null
-                    ? null
-                    : () => onMealToggled!(option.id),
-                onDetailsTap: onOptionDetails == null
-                    ? null
-                    : () => onOptionDetails!(option),
-                selectionControlBuilder: selectionControlBuilder,
-              ),
+              option: option,
+              onTap: onMealToggled == null
+                  ? null
+                  : () => onMealToggled!(option.id),
+              onDetailsTap: onOptionDetails == null
+                  ? null
+                  : () => onOptionDetails!(option),
+              selectionControlBuilder: selectionControlBuilder,
             );
           },
           childCount: options.isEmpty ? 0 : options.length * 2 - 1,

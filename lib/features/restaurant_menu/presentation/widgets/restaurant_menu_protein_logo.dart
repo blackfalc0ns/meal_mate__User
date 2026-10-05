@@ -24,10 +24,9 @@ class RestaurantMenuProteinLogo extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      //  padding: const EdgeInsets.all(Spacing.xs),
       decoration: BoxDecoration(
-        color: color.inverseSurface,
         shape: BoxShape.circle,
+        border: Border.all(color: color.primary, width: .5),
       ),
       alignment: Alignment.center,
       child: hasUrl

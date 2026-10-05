@@ -76,6 +76,7 @@ class RestaurantMenuContent extends StatelessWidget {
               restaurantLogoUrl: restaurantLogoUrl,
               restaurantInitials: restaurantInitials,
               description: const RestaurantMenuDescription(),
+              isLoading: isLoading,
             ),
             const SizedBox(height: Spacing.sm),
             const RestaurantMenuDividerLine(),

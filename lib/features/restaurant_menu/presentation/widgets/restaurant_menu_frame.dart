@@ -16,6 +16,22 @@ class RestaurantMenuFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final height = MediaQuery.sizeOf(context).height;
+    final disableAnimations = MediaQuery.disableAnimationsOf(context);
+    final animatedChild = disableAnimations
+        ? child
+        : child
+              .animate()
+              .fadeIn(
+                duration: const Duration(milliseconds: 320),
+                curve: Curves.easeOutCubic,
+              )
+              .slideY(
+                begin: 0.08,
+                end: 0,
+                duration: const Duration(milliseconds: 320),
+                curve: Curves.easeOutCubic,
+              );
+
     return Material(
       color: color.surface,
       child: Container(
@@ -51,7 +67,7 @@ class RestaurantMenuFrame extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(Spacing.restaurantDetailsSheetRadius),
                 ),
-                child: ColoredBox(color: color.surface, child: child),
+                child: ColoredBox(color: color.surface, child: animatedChild),
               ),
             ),
           ],
