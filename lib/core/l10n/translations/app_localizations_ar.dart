@@ -6059,4 +6059,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sandbox_checkout_subtitle => 'بيئة تجريبية بدون خصم فعلي';
+
+  @override
+  String get notification_button_tooltip => 'الإشعارات';
 }

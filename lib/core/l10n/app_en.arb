@@ -2569,5 +2569,6 @@
   "subscription_success_view_subscription_button": "View Subscription",
   "sandbox_badge": "Sandbox",
   "sandbox_checkout_title": "Complete without payment — Sandbox",
-  "sandbox_checkout_subtitle": "Test environment without actual charge"
+  "sandbox_checkout_subtitle": "Test environment without actual charge",
+  "notification_button_tooltip": "Notifications"
 }

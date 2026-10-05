@@ -2481,5 +2481,6 @@
   "subscription_success_view_subscription_button": "عرض الاشتراك",
   "sandbox_badge": "تجربة",
   "sandbox_checkout_title": "إكمال بدون دفع — تجربة",
-  "sandbox_checkout_subtitle": "بيئة تجريبية بدون خصم فعلي"
+  "sandbox_checkout_subtitle": "بيئة تجريبية بدون خصم فعلي",
+  "notification_button_tooltip": "الإشعارات"
 }

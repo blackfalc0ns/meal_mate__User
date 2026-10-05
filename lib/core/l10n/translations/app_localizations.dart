@@ -11425,6 +11425,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Test environment without actual charge'**
   String get sandbox_checkout_subtitle;
+
+  /// No description provided for @notification_button_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notification_button_tooltip;
 }
 
 class _AppLocalizationsDelegate

@@ -6170,4 +6170,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sandbox_checkout_subtitle =>
       'Test environment without actual charge';
+
+  @override
+  String get notification_button_tooltip => 'Notifications';
 }

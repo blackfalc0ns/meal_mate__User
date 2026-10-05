@@ -3,16 +3,19 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/notification_button.dart';
 
 class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
     super.key,
     required this.title,
     this.onNotificationPressed,
+    this.hasNotification = false,
   });
 
   final String title;
   final VoidCallback? onNotificationPressed;
+  final bool hasNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -43,36 +46,11 @@ class CalendarHeader extends StatelessWidget {
                 ),
                 Align(
                   alignment: AlignmentDirectional.centerEnd,
-                  child: IconButton(
-                    onPressed: onNotificationPressed,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    icon: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Icon(
-                          Icons.notifications_none_rounded,
-                          color: color.onPrimary,
-                          size: Spacing.iconLg,
-                        ),
-                        PositionedDirectional(
-                          top: 1,
-                          end: 1,
-                          child: Container(
-                            width: Spacing.sm,
-                            height: Spacing.sm,
-                            decoration: BoxDecoration(
-                              color: color.error,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: color.primary,
-                                width: 1.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: NotificationButton(
+                    onTap: onNotificationPressed,
+                    hasNotification: hasNotification,
+                    iconColor: color.onPrimary,
+                    badgeBorderColor: color.primary,
                   ),
                 ),
               ],
