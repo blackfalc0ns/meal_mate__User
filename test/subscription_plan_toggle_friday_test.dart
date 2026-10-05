@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_meat_user/core/entities/paged_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_restaurant_browse_entity.dart';
@@ -52,6 +53,19 @@ class FakeSubscriptionPlanRepository implements SubscriptionPlanRepository {
   }
 
   @override
+  Future<ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>>
+  getTierRestaurantsPage({
+    required String programId,
+    required String bundleId,
+    required String tier,
+    required int page,
+    required int pageSize,
+    String? addressId,
+  }) async {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<ApiResult<SubscriptionRestaurantDetailsEntity>> getRestaurantDetails({
     required String programId,
     required String bundleId,
@@ -59,6 +73,7 @@ class FakeSubscriptionPlanRepository implements SubscriptionPlanRepository {
   }) async {
     throw UnimplementedError();
   }
+
 }
 
 class FakeSubscriptionTierRepository implements SubscriptionTierRepository {

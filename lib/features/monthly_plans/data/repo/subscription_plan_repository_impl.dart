@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/entities/paged_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/data_source/subscription_plan_remote_data_source.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/mapper/subscription_duration_mapper.dart';
@@ -65,6 +66,29 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
         tier: tier,
       );
       return response.map((restaurant) => restaurant.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>>
+  getTierRestaurantsPage({
+    required String programId,
+    required String bundleId,
+    required String tier,
+    required int page,
+    required int pageSize,
+    String? addressId,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getTierRestaurantsPage(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier,
+        page: page,
+        pageSize: pageSize,
+        addressId: addressId,
+      );
+      return response.toEntity();
     });
   }
 

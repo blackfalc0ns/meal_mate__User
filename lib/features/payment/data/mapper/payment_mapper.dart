@@ -56,6 +56,7 @@ extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
       includeFriday: includeFriday,
       paymentMethodId: paymentMethodId,
       correlationId: correlationId,
+      promoCode: promoCode,
     );
   }
 }

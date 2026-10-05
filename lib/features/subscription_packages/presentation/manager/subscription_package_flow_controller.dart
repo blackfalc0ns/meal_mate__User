@@ -25,10 +25,39 @@ class SubscriptionPackageFlowController {
 
   final ValueNotifier<int?> selectedPackageNotifier = ValueNotifier<int?>(null);
   bool _continueAfterProfileUpdate = false;
+  String? _selectedBundleId;
+  List<SubscriptionBundleEntity> _currentBundles = const [];
+
+  String? get selectedBundleId => _selectedBundleId;
 
   void selectPackage(int index) {
-    if (selectedPackageNotifier.value == index) return;
+    if (selectedPackageNotifier.value == index && _selectedBundleId != null) {
+      return;
+    }
     selectedPackageNotifier.value = index;
+    if (index >= 0 && index < _currentBundles.length) {
+      _selectedBundleId = _currentBundles[index].bundleId;
+    }
+  }
+
+  void syncBundles(List<SubscriptionBundleEntity> bundles) {
+    _currentBundles = bundles;
+    if (_selectedBundleId != null) {
+      final newIndex = bundles.indexWhere((b) => b.bundleId == _selectedBundleId);
+      if (newIndex != -1) {
+        selectedPackageNotifier.value = newIndex;
+      } else {
+        selectedPackageNotifier.value = null;
+        _selectedBundleId = null;
+      }
+    } else if (selectedPackageNotifier.value != null) {
+      final oldIndex = selectedPackageNotifier.value!;
+      if (oldIndex < bundles.length) {
+        _selectedBundleId = bundles[oldIndex].bundleId;
+      } else {
+        selectedPackageNotifier.value = null;
+      }
+    }
   }
 
   bool shouldListenToProfileUpdate(
@@ -73,15 +102,23 @@ class SubscriptionPackageFlowController {
     BuildContext context,
     List<SubscriptionBundleEntity> bundles,
   ) async {
+    syncBundles(bundles);
     final selectedIndex = selectedPackageNotifier.value;
     if (selectedIndex == null || selectedProgram == null) return;
     if (selectedIndex >= bundles.length) return;
+
+    final targetBundle = _selectedBundleId != null
+        ? bundles.firstWhere(
+            (b) => b.bundleId == _selectedBundleId,
+            orElse: () => bundles[selectedIndex],
+          )
+        : bundles[selectedIndex];
 
     await context.pushNamed(
       AppRoutes.subscriptionPlanDetails,
       arguments: SubscriptionPlanDetailsArgs(
         program: selectedProgram!,
-        bundle: bundles[selectedIndex],
+        bundle: targetBundle,
       ),
     );
   }

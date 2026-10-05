@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
@@ -111,13 +112,41 @@ class MonthlyPlanRestaurantsView extends StatelessWidget {
                         locale.subscription_restaurant_categories_subtitle,
                     icon: Icons.restaurant_rounded,
                   )
-                : MonthlyPlanRestaurantsSection(
-                    mode: SubscriptionPlanViewMode.grid,
-                    restaurants: plan.restaurants,
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      MonthlyPlanRestaurantsSection(
+                        mode: SubscriptionPlanViewMode.grid,
+                        restaurants: plan.restaurants,
+                      ),
+                      if (state.isBrowseRestaurantsLoadingMore)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: Spacing.md),
+                          child: Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                        ),
+                      if (state.browseRestaurantsLoadMoreFailure != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: Spacing.md,
+                          ),
+                          child: InlineApiErrorWidget(
+                            failure: state.browseRestaurantsLoadMoreFailure!,
+                            onRetry: onRetry,
+                          ),
+                        ),
+                    ],
                   ),
           ),
         ],
       ),
     );
+
   }
 }

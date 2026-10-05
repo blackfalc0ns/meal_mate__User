@@ -641,10 +641,16 @@ class _ApiServices implements ApiServices {
 
   @override
   Future<AddressCoveragePreviewResponseDto> previewExistingAddressCoverage(
-    String addressId,
-  ) async {
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<AddressCoveragePreviewResponseDto>(
@@ -1089,9 +1095,16 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms() async {
+  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms({
+    int? page,
+    int? pageSize,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<SubscriptionProgramResponseDto>>(
@@ -1123,10 +1136,16 @@ class _ApiServices implements ApiServices {
 
   @override
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
-    String programId,
-  ) async {
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<SubscriptionProgramBundlesResponseDto>(
@@ -1369,8 +1388,11 @@ class _ApiServices implements ApiServices {
     String tier,
     String bundleId,
     String programId,
-    String startDate,
-  ) async {
+    String startDate, {
+    int? restaurantsPage,
+    int? restaurantsPageSize,
+    String? promoCode,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'includeFriday': includeFriday,
@@ -1379,7 +1401,11 @@ class _ApiServices implements ApiServices {
       r'bundleId': bundleId,
       r'programId': programId,
       r'startDate': startDate,
+      r'restaurantsPage': restaurantsPage,
+      r'restaurantsPageSize': restaurantsPageSize,
+      r'promoCode': promoCode,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<SubscriptionSummaryResponseDto>(
@@ -3050,10 +3076,16 @@ class _ApiServices implements ApiServices {
   @override
   Future<AddressCoveragePreviewResponseDto> previewExistingFamilyMemberAddress(
     String memberId,
-    String addressId,
-  ) async {
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<AddressCoveragePreviewResponseDto>(

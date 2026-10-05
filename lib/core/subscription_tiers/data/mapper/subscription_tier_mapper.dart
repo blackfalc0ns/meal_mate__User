@@ -1,5 +1,7 @@
 import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_response_dto.dart';
+import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_theme_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_theme_entity.dart';
 
 extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
   SubscriptionTierEntity toEntity() {
@@ -24,9 +26,21 @@ extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
       includeFriday: includeFriday ?? false,
       fridayDays: fridayDays,
       totalServiceDays: totalServiceDays,
+      theme: theme?.toEntity(),
     );
   }
 }
+
+extension SubscriptionTierThemeResponseDtoMapper
+    on SubscriptionTierThemeResponseDto {
+  SubscriptionTierThemeEntity toEntity() {
+    return SubscriptionTierThemeEntity(
+      designId: designId,
+      designName: designName,
+    );
+  }
+}
+
 
 extension SubscriptionTierRestaurantResponseDtoMapper
     on SubscriptionTierRestaurantResponseDto {

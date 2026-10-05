@@ -8,6 +8,11 @@ class ErrorMessagePresenter {
   const ErrorMessagePresenter._();
 
   static String fromFailure(BuildContext context, Failure failure) {
+    final couponMessage = _tryExtractCouponMessage(context, failure.exception);
+    if (couponMessage != null) {
+      return couponMessage;
+    }
+
     for (final candidate in [
       failure.code,
       failure.exception.backendErrorCode,
@@ -35,6 +40,11 @@ class ErrorMessagePresenter {
     BuildContext context,
     ApiException exception,
   ) {
+    final couponMessage = _tryExtractCouponMessage(context, exception);
+    if (couponMessage != null) {
+      return couponMessage;
+    }
+
     final backendCodeMessage = localizedBackendCodeMessage(context, exception);
     if (backendCodeMessage != null) {
       return backendCodeMessage;
@@ -46,6 +56,41 @@ class ErrorMessagePresenter {
     }
 
     return mapFailureMessage(context, exception.errorType.translationKey);
+  }
+
+  static String? _tryExtractCouponMessage(
+    BuildContext context,
+    ApiException exception,
+  ) {
+    final res = exception.response;
+    if (res is! Map) return null;
+
+    final coupon = res['coupon'];
+    if (coupon is! Map) return null;
+
+    final locale = Localizations.localeOf(context).languageCode;
+    final isArabic = locale == 'ar';
+
+    final preferredKey = isArabic ? 'messageAr' : 'messageEn';
+    final fallbackKey = isArabic ? 'messageEn' : 'messageAr';
+
+    final message = coupon[preferredKey] ??
+        coupon[isArabic ? 'message_ar' : 'message_en'] ??
+        coupon[fallbackKey] ??
+        coupon[isArabic ? 'message_en' : 'message_ar'];
+
+    if (message is String && message.trim().isNotEmpty) {
+      final sanitized = sanitizeBackendMessage(message);
+      if (sanitized != null) return sanitized;
+    }
+
+    final status = coupon['status'];
+    if (status is String && status.trim().isNotEmpty) {
+      final mapped = mapFailureMessage(context, status.trim());
+      if (mapped != status.trim()) return mapped;
+    }
+
+    return null;
   }
 
   static String? localizedBackendCodeMessage(

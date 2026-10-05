@@ -9,7 +9,15 @@ class GetSubscriptionProgramBundlesUseCase {
 
   final SubscriptionProgramsRepository _repository;
 
-  Future<ApiResult<SubscriptionProgramBundlesEntity>> call(String programId) {
-    return _repository.getSubscriptionProgramBundles(programId);
+  Future<ApiResult<SubscriptionProgramBundlesEntity>> call(
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _repository.getSubscriptionProgramBundles(
+      programId,
+      page: page,
+      pageSize: pageSize,
+    );
   }
 }

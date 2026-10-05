@@ -22,9 +22,11 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
         ? address!.label.trim()
         : locale.subscription_address_title;
 
-    final detailLine = address?.addressLine.trim().isNotEmpty == true
-        ? address!.addressLine.trim()
-        : (address?.formattedAddress ?? '');
+    final namesLine = address?.localizedNamesLine(locale.localeName).trim() ?? '';
+    final userAddressLine = address?.addressLine.trim() ?? '';
+    final detailLine = userAddressLine.isNotEmpty
+        ? userAddressLine
+        : (address?.formattedAddress.trim() ?? '');
 
     return Container(
       padding: const EdgeInsets.all(Spacing.base),
@@ -65,7 +67,22 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
                     color: color.onSurface,
                   ),
                 ),
-                if (detailLine.isNotEmpty) ...[
+                if (namesLine.isNotEmpty && namesLine != title) ...[
+                  const SizedBox(height: Spacing.xxs),
+                  Text(
+                    namesLine,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onSurface,
+                    ),
+                  ),
+                ],
+                if (detailLine.isNotEmpty &&
+                    detailLine != namesLine &&
+                    detailLine != title) ...[
                   const SizedBox(height: Spacing.xxs),
                   Text(
                     detailLine,

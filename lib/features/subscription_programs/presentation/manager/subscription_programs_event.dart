@@ -3,7 +3,17 @@ sealed class SubscriptionProgramsEvent {
 }
 
 class GetSubscriptionProgramsEvent extends SubscriptionProgramsEvent {
-  const GetSubscriptionProgramsEvent();
+  const GetSubscriptionProgramsEvent({this.isRefresh = false});
+
+  final bool isRefresh;
+}
+
+class LoadMoreSubscriptionProgramsEvent extends SubscriptionProgramsEvent {
+  const LoadMoreSubscriptionProgramsEvent();
+}
+
+class RetrySubscriptionProgramsEvent extends SubscriptionProgramsEvent {
+  const RetrySubscriptionProgramsEvent();
 }
 
 class GetSubscriptionProgramBundlesEvent extends SubscriptionProgramsEvent {

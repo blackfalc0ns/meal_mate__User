@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/core/network/mapper/pagination_mapper.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_coupon_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
@@ -48,9 +50,16 @@ extension SubscriptionReadinessAddressResponseDtoMapper
       area: area,
       block: block,
       regionId: regionId,
+      governorateNameAr: governorateNameAr,
+      governorateNameEn: governorateNameEn,
+      areaNameAr: areaNameAr,
+      areaNameEn: areaNameEn,
+      blockNameAr: blockNameAr,
+      blockNameEn: blockNameEn,
     );
   }
 }
+
 
 extension SubscriptionReadinessItemResponseDtoMapper
     on SubscriptionReadinessItemResponseDto {
@@ -132,6 +141,8 @@ extension SubscriptionSummaryResponseDtoMapper
             titleEn: '',
             items: [],
           ),
+      coupon: coupon?.toEntity(),
+      restaurantsPagination: restaurantsPagination?.toEntity(),
     );
   }
 }
@@ -158,9 +169,16 @@ extension SubscriptionSummaryAddressResponseDtoMapper
       area: area,
       block: block,
       regionId: regionId,
+      governorateNameAr: governorateNameAr,
+      governorateNameEn: governorateNameEn,
+      areaNameAr: areaNameAr,
+      areaNameEn: areaNameEn,
+      blockNameAr: blockNameAr,
+      blockNameEn: blockNameEn,
     );
   }
 }
+
 
 extension SubscriptionSummaryRestaurantResponseDtoMapper
     on SubscriptionSummaryRestaurantResponseDto {

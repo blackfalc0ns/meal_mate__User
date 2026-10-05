@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
@@ -41,6 +42,19 @@ class PaymentState {
   bool get isLoading => isMethodsLoading;
 
   bool get hasContent => methods.isNotEmpty;
+
+  bool get isCouponCheckoutFailure =>
+      checkoutFailure != null &&
+      (checkoutFailure!.code == SubscriptionErrorCodes.couponRejected ||
+          checkoutFailure!.code == SubscriptionErrorCodes.couponNoLongerValid ||
+          checkoutFailure!.code ==
+              SubscriptionErrorCodes.couponFullDiscountUnsupported ||
+          checkoutFailure!.exception.backendErrorCode ==
+              SubscriptionErrorCodes.couponRejected ||
+          checkoutFailure!.exception.backendErrorCode ==
+              SubscriptionErrorCodes.couponNoLongerValid ||
+          checkoutFailure!.exception.backendErrorCode ==
+              SubscriptionErrorCodes.couponFullDiscountUnsupported);
 
   PaymentState copyWith({
     bool? isMethodsLoading,

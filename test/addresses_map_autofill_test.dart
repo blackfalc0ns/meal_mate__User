@@ -21,50 +21,62 @@ void main() {
       expect(AddressesViewModel.isWithinKuwaitBounds(29.0, null), isFalse);
     });
 
-    test('MapAddressAutofillResponseDto deserialization and mapping to entity', () {
-      final json = {
-        'formattedAddress': '83XW+67P، 2 شارع 1 جادة 2، السالمية، الكويت',
-        'latitude': 29.3480994,
-        'longitude': 48.095364,
-        'governorate': 'حولي',
-        'area': 'السالمية',
-        'block': 'قطعة 1',
-        'street': 'شارع 1',
-        'avenue': 'جادة 2',
-        'building': null,
-        'suggestedRegionId': 'd4a9acc2-afb8-49d8-b440-f93b8622239c',
-        'suggestedRegionNameAr': 'السالمية',
-        'suggestedGovernorateId': 'ec19c873-a752-4797-a6e3-068ddd3ccc2a',
-        'suggestedGovernorateNameAr': 'حولي',
-        'suggestedBlockId': '2e8b83eb-f4a7-43ea-b6fb-dc83ee1c44e6',
-        'suggestedBlockNameAr': 'قطعة 1',
-        'suggestedRegionName': 'السالمية',
-        'suggestedGovernorateName': 'حولي',
-        'suggestedBlockName': 'قطعة 1',
-      };
+    test(
+      'MapAddressAutofillResponseDto deserialization and mapping to entity',
+      () {
+        final json = {
+          'formattedAddress': '83XW+67P، 2 شارع 1 جادة 2، السالمية، الكويت',
+          'latitude': 29.3480994,
+          'longitude': 48.095364,
+          'governorate': 'حولي',
+          'area': 'السالمية',
+          'block': 'قطعة 1',
+          'street': 'شارع 1',
+          'avenue': 'جادة 2',
+          'building': null,
+          'suggestedRegionId': 'd4a9acc2-afb8-49d8-b440-f93b8622239c',
+          'suggestedRegionNameAr': 'السالمية',
+          'suggestedGovernorateId': 'ec19c873-a752-4797-a6e3-068ddd3ccc2a',
+          'suggestedGovernorateNameAr': 'حولي',
+          'suggestedBlockId': '2e8b83eb-f4a7-43ea-b6fb-dc83ee1c44e6',
+          'suggestedBlockNameAr': 'قطعة 1',
+          'suggestedRegionName': 'السالمية',
+          'suggestedGovernorateName': 'حولي',
+          'suggestedBlockName': 'قطعة 1',
+        };
 
-      final dto = MapAddressAutofillResponseDto.fromJson(json);
-      final entity = dto.toEntity();
+        final dto = MapAddressAutofillResponseDto.fromJson(json);
+        final entity = dto.toEntity();
 
-      expect(entity.formattedAddress, '83XW+67P، 2 شارع 1 جادة 2، السالمية، الكويت');
-      expect(entity.latitude, 29.3480994);
-      expect(entity.longitude, 48.095364);
-      expect(entity.governorate, 'حولي');
-      expect(entity.area, 'السالمية');
-      expect(entity.block, 'قطعة 1');
-      expect(entity.street, 'شارع 1');
-      expect(entity.avenue, 'جادة 2');
-      expect(entity.building, isNull);
-      expect(entity.suggestedRegionId, 'd4a9acc2-afb8-49d8-b440-f93b8622239c');
-      expect(entity.suggestedRegionNameAr, 'السالمية');
-      expect(entity.suggestedGovernorateId, 'ec19c873-a752-4797-a6e3-068ddd3ccc2a');
-      expect(entity.suggestedGovernorateNameAr, 'حولي');
-      expect(entity.suggestedBlockId, '2e8b83eb-f4a7-43ea-b6fb-dc83ee1c44e6');
-      expect(entity.suggestedBlockNameAr, 'قطعة 1');
-      expect(entity.suggestedRegionName, 'السالمية');
-      expect(entity.suggestedGovernorateName, 'حولي');
-      expect(entity.suggestedBlockName, 'قطعة 1');
-    });
+        expect(
+          entity.formattedAddress,
+          '83XW+67P، 2 شارع 1 جادة 2، السالمية، الكويت',
+        );
+        expect(entity.latitude, 29.3480994);
+        expect(entity.longitude, 48.095364);
+        expect(entity.governorate, 'حولي');
+        expect(entity.area, 'السالمية');
+        expect(entity.block, 'قطعة 1');
+        expect(entity.street, 'شارع 1');
+        expect(entity.avenue, 'جادة 2');
+        expect(entity.building, isNull);
+        expect(
+          entity.suggestedRegionId,
+          'd4a9acc2-afb8-49d8-b440-f93b8622239c',
+        );
+        expect(entity.suggestedRegionNameAr, 'السالمية');
+        expect(
+          entity.suggestedGovernorateId,
+          'ec19c873-a752-4797-a6e3-068ddd3ccc2a',
+        );
+        expect(entity.suggestedGovernorateNameAr, 'حولي');
+        expect(entity.suggestedBlockId, '2e8b83eb-f4a7-43ea-b6fb-dc83ee1c44e6');
+        expect(entity.suggestedBlockNameAr, 'قطعة 1');
+        expect(entity.suggestedRegionName, 'السالمية');
+        expect(entity.suggestedGovernorateName, 'حولي');
+        expect(entity.suggestedBlockName, 'قطعة 1');
+      },
+    );
 
     test('MapAutofillState handles loading and success state transitions', () {
       const initial = MapAutofillState();

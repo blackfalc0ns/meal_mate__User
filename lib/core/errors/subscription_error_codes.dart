@@ -29,6 +29,16 @@ class SubscriptionErrorCodes {
   /// Error code when an existing active subscription is present.
   static const String existingSubscription = 'checkout.existing_subscription';
 
+  /// Error code when checkout coupon is rejected.
+  static const String couponRejected = 'checkout.coupon_rejected';
+
+  /// Error code when checkout coupon is no longer valid.
+  static const String couponNoLongerValid = 'checkout.coupon_no_longer_valid';
+
+  /// Error code when coupon results in zero amount (full discount unsupported).
+  static const String couponFullDiscountUnsupported =
+      'checkout.coupon_full_discount_unsupported';
+
   // ── Readiness action screens ──
   /// User must select or add an address.
   static const String actionAddress = 'ADDRESS';

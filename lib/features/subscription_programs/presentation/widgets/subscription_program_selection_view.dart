@@ -8,6 +8,9 @@ import 'package:meal_meat_user/features/subscription_programs/presentation/widge
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_header.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_hero.dart';
 
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
+
 class SubscriptionProgramSelectionView extends StatelessWidget {
   const SubscriptionProgramSelectionView({
     super.key,
@@ -15,12 +18,20 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
     required this.programs,
     required this.selectedProgramNotifier,
     required this.onProgramSelected,
+    this.isLoadingMore = false,
+    this.loadMoreFailure,
+    this.onLoadMore,
+    this.onRetryLoadMore,
   });
 
   final bool showBottomSpace;
   final List<SubscriptionProgramEntity> programs;
   final ValueListenable<int?> selectedProgramNotifier;
   final ValueChanged<int> onProgramSelected;
+  final bool isLoadingMore;
+  final Failure? loadMoreFailure;
+  final VoidCallback? onLoadMore;
+  final VoidCallback? onRetryLoadMore;
 
   @override
   Widget build(BuildContext context) {
@@ -69,66 +80,99 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                           ),
                     ),
                     Expanded(
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverPadding(
-                            padding: EdgeInsetsDirectional.only(
-                              top: Spacing.base,
-                              start:
-                                  Spacing.subscriptionProgramsHorizontalPadding,
-                              end:
-                                  Spacing.subscriptionProgramsHorizontalPadding,
-                              bottom: showBottomSpace
-                                  ? Spacing.subscriptionProgramsBottomSpace
-                                  : Spacing.xl,
-                            ),
-                            sliver: SliverList.separated(
-                              itemCount: programs.length,
-                              separatorBuilder: (_, _) =>
-                                  const SizedBox(height: Spacing.sm),
-                              itemBuilder: (context, index) {
-                                final program = programs[index];
-                                final keywords = program.keywords(
-                                  locale.localeName,
-                                );
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (scrollInfo) {
+                          if (scrollInfo.metrics.pixels >=
+                                  scrollInfo.metrics.maxScrollExtent - 200 &&
+                              !isLoadingMore) {
+                            onLoadMore?.call();
+                          }
+                          return false;
+                        },
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverPadding(
+                              padding: EdgeInsetsDirectional.only(
+                                top: Spacing.base,
+                                start:
+                                    Spacing.subscriptionProgramsHorizontalPadding,
+                                end:
+                                    Spacing.subscriptionProgramsHorizontalPadding,
+                                bottom: showBottomSpace
+                                    ? Spacing.subscriptionProgramsBottomSpace
+                                    : Spacing.xl,
+                              ),
+                              sliver: SliverList.separated(
+                                itemCount: programs.length,
+                                separatorBuilder: (_, _) =>
+                                    const SizedBox(height: Spacing.sm),
+                                itemBuilder: (context, index) {
+                                  final program = programs[index];
+                                  final keywords = program.keywords(
+                                    locale.localeName,
+                                  );
 
-                                return ValueListenableBuilder<int?>(
-                                  valueListenable: selectedProgramNotifier,
-                                  builder: (context, selectedProgramIndex, _) {
-                                    final isSelected =
-                                        index == selectedProgramIndex;
+                                  return ValueListenableBuilder<int?>(
+                                    valueListenable: selectedProgramNotifier,
+                                    builder: (context, selectedProgramIndex, _) {
+                                      final isSelected =
+                                          index == selectedProgramIndex;
 
-                                    return SubscriptionProgramGoalCard(
-                                      key: ValueKey(program.programId),
-                                      title: program.name(locale.localeName),
-                                      description: program.description(
-                                        locale.localeName,
-                                      ),
-                                      imageUrl: program.imageUrl,
-                                      primaryFeature: _featureAt(keywords, 0),
-                                      secondaryFeature: _featureAt(keywords, 1),
-                                      isSelected: isSelected,
-                                      onTap: () => onProgramSelected(index),
-                                    );
-                                  },
-                                )
-                                    .animate()
-                                    .fadeIn(
-                                      duration: 350.ms,
-                                      delay: (index * 70).ms,
-                                      curve: Curves.easeOut,
-                                    )
-                                    .slideY(
-                                      begin: 0.1,
-                                      end: 0,
-                                      duration: 350.ms,
-                                      delay: (index * 70).ms,
-                                      curve: Curves.easeOutCubic,
-                                    );
-                              },
+                                      return SubscriptionProgramGoalCard(
+                                        key: ValueKey(program.programId),
+                                        title: program.name(locale.localeName),
+                                        description: program.description(
+                                          locale.localeName,
+                                        ),
+                                        imageUrl: program.imageUrl,
+                                        primaryFeature: _featureAt(keywords, 0),
+                                        secondaryFeature: _featureAt(keywords, 1),
+                                        isSelected: isSelected,
+                                        onTap: () => onProgramSelected(index),
+                                      );
+                                    },
+                                  )
+                                      .animate()
+                                      .fadeIn(
+                                        duration: 350.ms,
+                                        delay: (index * 70).ms,
+                                        curve: Curves.easeOut,
+                                      )
+                                      .slideY(
+                                        begin: 0.1,
+                                        end: 0,
+                                        duration: 350.ms,
+                                        delay: (index * 70).ms,
+                                        curve: Curves.easeOutCubic,
+                                      );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                            if (isLoadingMore)
+                              const SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.all(Spacing.md),
+                                  child: Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  ),
+                                ),
+                              ),
+                            if (loadMoreFailure != null)
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Spacing
+                                        .subscriptionProgramsHorizontalPadding,
+                                    vertical: Spacing.sm,
+                                  ),
+                                  child: InlineApiErrorWidget(
+                                    failure: loadMoreFailure!,
+                                    onRetry: onRetryLoadMore,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

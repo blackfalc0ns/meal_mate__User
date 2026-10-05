@@ -11461,6 +11461,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Natural Ingredients'**
   String get meal_tag_natural_ingredients;
+
+  /// No description provided for @coupon_status_valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon applied successfully'**
+  String get coupon_status_valid;
+
+  /// No description provided for @coupon_status_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code does not exist'**
+  String get coupon_status_not_found;
+
+  /// No description provided for @coupon_status_inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code is not active'**
+  String get coupon_status_inactive;
+
+  /// No description provided for @coupon_status_not_started.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code is not valid yet'**
+  String get coupon_status_not_started;
+
+  /// No description provided for @coupon_status_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code has expired'**
+  String get coupon_status_expired;
+
+  /// No description provided for @coupon_status_usage_exhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code has reached its usage limit'**
+  String get coupon_status_usage_exhausted;
+
+  /// No description provided for @coupon_status_stacking_conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code cannot be combined with the current offer'**
+  String get coupon_status_stacking_conflict;
+
+  /// No description provided for @coupon_status_ineligible.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code is not eligible for this subscription'**
+  String get coupon_status_ineligible;
+
+  /// No description provided for @coupon_status_unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code is invalid'**
+  String get coupon_status_unknown;
+
+  /// No description provided for @coupon_error_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon code was rejected'**
+  String get coupon_error_rejected;
+
+  /// No description provided for @coupon_error_no_longer_valid.
+  ///
+  /// In en, this message translates to:
+  /// **'This coupon code has expired'**
+  String get coupon_error_no_longer_valid;
+
+  /// No description provided for @coupon_error_full_discount_unsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero-amount checkout is currently unsupported. Remove this code or use another code.'**
+  String get coupon_error_full_discount_unsupported;
+
+  /// No description provided for @coupon_apply_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get coupon_apply_button;
+
+  /// No description provided for @coupon_remove_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get coupon_remove_button;
+
+  /// No description provided for @coupon_input_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter coupon code'**
+  String get coupon_input_hint;
+
+  /// No description provided for @coupon_card_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Promo Code'**
+  String get coupon_card_title;
+
+  /// No description provided for @coupon_applied_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount applied'**
+  String get coupon_applied_label;
 }
 
 class _AppLocalizationsDelegate

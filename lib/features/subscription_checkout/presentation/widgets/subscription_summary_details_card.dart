@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coverage_error_banner.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coupon_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_dates_row.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_delivery_address_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_participating_restaurants_card.dart';
@@ -130,6 +131,20 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                   curve: Curves.easeOutCubic,
                 ),
           ],
+          const SizedBox(height: Spacing.md),
+          SubscriptionCouponCard(
+            coupon: summary.coupon,
+            currencyCode: summary.currencyCode,
+          )
+              .animate()
+              .fadeIn(delay: 210.ms, duration: 350.ms, curve: Curves.easeOut)
+              .slideX(
+                begin: slideBegin,
+                end: 0,
+                delay: 210.ms,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
           const SizedBox(height: Spacing.md),
           SubscriptionTotalPriceCard(
             price: summary.finalPrice.formattedPrice,

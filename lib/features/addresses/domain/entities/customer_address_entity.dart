@@ -78,16 +78,16 @@ class CustomerAddressEntity {
 
   @override
   int get hashCode => Object.hash(
-        addressId,
-        label,
-        addressLine,
-        regionId,
-        governorate,
-        area,
-        block,
-        isDefault,
-        isDeliveryActive,
-      );
+    addressId,
+    label,
+    addressLine,
+    regionId,
+    governorate,
+    area,
+    block,
+    isDefault,
+    isDeliveryActive,
+  );
 }
 
 class CustomerAddressCoverageNoticeEntity {
@@ -107,6 +107,17 @@ class CustomerAddressCoverageNoticeEntity {
     }
     return en.isNotEmpty ? en : ar;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerAddressCoverageNoticeEntity &&
+          runtimeType == other.runtimeType &&
+          ar == other.ar &&
+          en == other.en;
+
+  @override
+  int get hashCode => Object.hash(ar, en);
 }
 
 class ServingRestaurantEntity {
@@ -130,4 +141,18 @@ class ServingRestaurantEntity {
     }
     return nameEn.isNotEmpty ? nameEn : nameAr;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ServingRestaurantEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          nameAr == other.nameAr &&
+          nameEn == other.nameEn &&
+          logoUrl == other.logoUrl &&
+          rating == other.rating;
+
+  @override
+  int get hashCode => Object.hash(id, nameAr, nameEn, logoUrl, rating);
 }

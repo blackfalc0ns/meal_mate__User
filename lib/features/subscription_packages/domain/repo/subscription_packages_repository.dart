@@ -3,6 +3,8 @@ import 'package:meal_meat_user/features/subscription_packages/domain/entities/su
 
 abstract interface class SubscriptionPackagesRepository {
   Future<ApiResult<SubscriptionProgramBundlesEntity>> getSubscriptionPackages(
-    String programId,
-  );
+    String programId, {
+    int? page,
+    int? pageSize,
+  });
 }

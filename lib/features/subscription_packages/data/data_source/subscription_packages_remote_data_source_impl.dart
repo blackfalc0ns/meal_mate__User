@@ -12,8 +12,14 @@ class SubscriptionPackagesRemoteDataSourceImpl
 
   @override
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionPackages(
-    String programId,
-  ) {
-    return _apiServices.getSubscriptionProgramBundles(programId);
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _apiServices.getSubscriptionProgramBundles(
+      programId,
+      page: page,
+      pageSize: pageSize,
+    );
   }
 }

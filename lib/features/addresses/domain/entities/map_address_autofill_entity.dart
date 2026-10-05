@@ -58,15 +58,15 @@ class MapAddressAutofillEntity {
 
   @override
   int get hashCode => Object.hash(
-        formattedAddress,
-        latitude,
-        longitude,
-        governorate,
-        area,
-        block,
-        street,
-        building,
-        suggestedRegionId,
-        suggestedBlockId,
-      );
+    formattedAddress,
+    latitude,
+    longitude,
+    governorate,
+    area,
+    block,
+    street,
+    building,
+    suggestedRegionId,
+    suggestedBlockId,
+  );
 }

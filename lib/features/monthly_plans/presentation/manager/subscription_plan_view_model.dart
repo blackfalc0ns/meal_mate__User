@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/durations.dart';
@@ -8,6 +8,7 @@ import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_page_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
@@ -21,16 +22,32 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     this._getSubscriptionDurationsUseCase,
     this._getSubscriptionTiersUseCase,
     this._getSubscriptionTierRestaurantsUseCase,
-    this._getSubscriptionReadinessUseCase,
-  ) : super(const SubscriptionPlanState());
+    this._getSubscriptionReadinessUseCase, [
+    this._getSubscriptionTierRestaurantsPageUseCase,
+  ]) : super(const SubscriptionPlanState());
+
+  @visibleForTesting
+  SubscriptionPlanViewModel.withState(
+    this._getSubscriptionDurationsUseCase,
+    this._getSubscriptionTiersUseCase,
+    this._getSubscriptionTierRestaurantsUseCase,
+    this._getSubscriptionReadinessUseCase, {
+    this._getSubscriptionTierRestaurantsPageUseCase,
+    SubscriptionPlanState? initialState,
+  })  : super(initialState ?? const SubscriptionPlanState());
+
+
 
   final GetSubscriptionDurationsUseCase _getSubscriptionDurationsUseCase;
   final GetSubscriptionTiersUseCase _getSubscriptionTiersUseCase;
   final GetSubscriptionTierRestaurantsUseCase
   _getSubscriptionTierRestaurantsUseCase;
   final GetSubscriptionReadinessUseCase _getSubscriptionReadinessUseCase;
+  final GetSubscriptionTierRestaurantsPageUseCase?
+  _getSubscriptionTierRestaurantsPageUseCase;
 
   Timer? _customDurationDebounceTimer;
+  int _browseGeneration = 0;
 
   void doIntent(SubscriptionPlanEvent event) {
     switch (event) {
@@ -79,6 +96,10 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         );
       case CloseSubscriptionTierRestaurantsEvent():
         _closeTierRestaurants();
+      case LoadMoreSubscriptionTierRestaurantsEvent():
+        unawaited(_loadMoreTierRestaurants());
+      case RetrySubscriptionTierRestaurantsEvent():
+        _retryTierRestaurants();
       case CheckSubscriptionReadinessEvent():
         unawaited(
           _checkReadiness(
@@ -260,51 +281,183 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     if (tierIndex < 0 || tierIndex >= state.tiers.length) return;
 
     final tier = state.tiers[tierIndex];
+    final generation = ++_browseGeneration;
+
     emit(
       state.copyWith(
         isBrowseRestaurantsLoading: true,
+        isBrowseRestaurantsLoadingMore: false,
         browsedTierIndex: tierIndex,
+        browsingProgramId: programId,
+        browsingBundleId: bundleId,
+        browsingTier: tier.tier,
         clearBrowseRestaurants: true,
         clearBrowseRestaurantsFailure: true,
+        clearBrowseRestaurantsLoadMoreFailure: true,
+        clearBrowseRestaurantsPagination: true,
       ),
     );
 
-    final result = await _getSubscriptionTierRestaurantsUseCase(
-      programId: programId,
-      bundleId: bundleId,
-      tier: tier.tier,
+    if (_getSubscriptionTierRestaurantsPageUseCase != null) {
+      final result = await _getSubscriptionTierRestaurantsPageUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier.tier,
+        page: 1,
+        pageSize: 10,
+      );
+
+      if (isClosed || generation != _browseGeneration) return;
+
+      switch (result) {
+        case ApiSuccessResult():
+          final validItems = result.data.items
+              .where((r) => r.restaurantId.trim().isNotEmpty)
+              .toList();
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurants: validItems,
+              browseRestaurantsPagination: result.data.pagination,
+            ),
+          );
+        case ApiErrorResult():
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurantsFailure: result.failure,
+            ),
+          );
+      }
+    } else {
+      final result = await _getSubscriptionTierRestaurantsUseCase(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier.tier,
+      );
+
+      if (isClosed || generation != _browseGeneration) return;
+
+      switch (result) {
+        case ApiSuccessResult():
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurants: result.data,
+            ),
+          );
+        case ApiErrorResult():
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurantsFailure: result.failure,
+            ),
+          );
+      }
+    }
+  }
+
+  Future<void> _loadMoreTierRestaurants() async {
+    if (state.isBrowseRestaurantsLoading ||
+        state.isBrowseRestaurantsLoadingMore) {
+      return;
+    }
+
+    final pagination = state.browseRestaurantsPagination;
+    if (pagination != null && !pagination.hasNextPage) {
+      return;
+    }
+
+    final programId = state.browsingProgramId;
+    final bundleId = state.browsingBundleId;
+    final tier = state.browsingTier;
+    if (programId == null || bundleId == null || tier == null) {
+      return;
+    }
+
+    if (_getSubscriptionTierRestaurantsPageUseCase == null) {
+      return;
+    }
+
+    final nextPage = (pagination?.page ?? 1) + 1;
+    final generation = _browseGeneration;
+
+    emit(
+      state.copyWith(
+        isBrowseRestaurantsLoadingMore: true,
+        clearBrowseRestaurantsLoadMoreFailure: true,
+      ),
     );
 
-    if (isClosed) return;
+    final result = await _getSubscriptionTierRestaurantsPageUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      tier: tier,
+      page: nextPage,
+      pageSize: pagination?.pageSize ?? 10,
+    );
+
+    if (isClosed || generation != _browseGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
+        final existingIds = state.browseRestaurants.map((r) => r.restaurantId).toSet();
+        final newItems = result.data.items
+            .where((r) => r.restaurantId.trim().isNotEmpty && !existingIds.contains(r.restaurantId))
+            .toList();
         emit(
           state.copyWith(
-            isBrowseRestaurantsLoading: false,
-            browseRestaurants: result.data,
+            isBrowseRestaurantsLoadingMore: false,
+            browseRestaurants: [...state.browseRestaurants, ...newItems],
+            browseRestaurantsPagination: result.data.pagination,
+            clearBrowseRestaurantsLoadMoreFailure: true,
           ),
         );
       case ApiErrorResult():
         emit(
           state.copyWith(
-            isBrowseRestaurantsLoading: false,
-            browseRestaurantsFailure: result.failure,
+            isBrowseRestaurantsLoadingMore: false,
+            browseRestaurantsLoadMoreFailure: result.failure,
           ),
         );
     }
   }
 
+  void _retryTierRestaurants() {
+    if (state.browseRestaurantsLoadMoreFailure != null) {
+      unawaited(_loadMoreTierRestaurants());
+    } else if (state.browseRestaurantsFailure != null) {
+      final browsedIndex = state.browsedTierIndex;
+      final programId = state.browsingProgramId;
+      final bundleId = state.browsingBundleId;
+      if (browsedIndex != null && programId != null && bundleId != null) {
+        unawaited(
+          _browseTierRestaurants(
+            programId: programId,
+            bundleId: bundleId,
+            tierIndex: browsedIndex,
+          ),
+        );
+      }
+    }
+  }
+
   void _closeTierRestaurants() {
+    _browseGeneration++;
     emit(
       state.copyWith(
         clearBrowsedTier: true,
         clearBrowseRestaurants: true,
         clearBrowseRestaurantsFailure: true,
+        clearBrowseRestaurantsLoadMoreFailure: true,
+        clearBrowseRestaurantsPagination: true,
+        clearBrowsingContext: true,
         isBrowseRestaurantsLoading: false,
+        isBrowseRestaurantsLoadingMore: false,
       ),
     );
   }
+
 
   Future<void> _checkReadiness(SubscriptionSummaryRequestEntity request) async {
     emit(

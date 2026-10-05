@@ -20,17 +20,14 @@ void main() {
         chooseLocationSource,
         contains('Navigator.of(sheetContext).pop();'),
       );
-      expect(
-        addressesSource,
-        contains('await Navigator.of(context)'),
-      );
+      expect(addressesSource, contains('await Navigator.of(context)'));
       expect(addressesSource, contains('const GetCustomerAddressesEvent()'));
       expect(chooseLocationSource, contains('CustomSnackbar.showSuccess('));
       final confirmIndex = viewModelSource.indexOf(
         'Future<void> _confirmPendingAddressAction()',
       );
       final consumePreviewIndex = viewModelSource.indexOf(
-        'coveragePreview: const AddressCoveragePreviewState()',
+        'coveragePreview: AddressCoveragePreviewState(',
         confirmIndex,
       );
       final actionSwitchIndex = viewModelSource.indexOf(

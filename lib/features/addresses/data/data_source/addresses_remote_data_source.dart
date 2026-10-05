@@ -31,8 +31,10 @@ abstract interface class AddressesRemoteDataSource {
   );
 
   Future<AddressCoveragePreviewResponseDto> previewExistingAddressCoverage(
-    String addressId,
-  );
+    String addressId, {
+    int? page,
+    int? pageSize,
+  });
 
   Future<CustomerAddressResponseDto> confirmSetDefaultAddress(String addressId);
 

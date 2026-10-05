@@ -181,8 +181,6 @@ void main() {
     expect(find.byType(AddressChooseLocationOptionsRow), findsOneWidget);
   });
 
-
-
   testWidgets('address details open in a scrollable Wolt sheet', (
     tester,
   ) async {

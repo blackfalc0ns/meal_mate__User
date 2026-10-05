@@ -104,7 +104,6 @@ void main() {
       home: Scaffold(
         body: SingleChildScrollView(
           child: SubscriptionSummaryDetailsCard(
-            plan: dummyPlan,
             summary: dummySummary,
             selectedStartDate: '2026-09-23',
             onEditStartDate: () {},
@@ -129,7 +128,7 @@ void main() {
       expect(find.text('ملخص الاشتراك'), findsOneWidget);
       expect(find.text('المطاعم المشاركة'), findsOneWidget);
       expect(find.text('تكرار المطعم'), findsOneWidget);
-      expect(find.text('العنوان'), findsOneWidget);
+      expect(find.text('المنزل'), findsOneWidget);
       expect(find.text('السعر الإجمالي'), findsOneWidget);
       expect(find.text('930'), findsOneWidget);
 

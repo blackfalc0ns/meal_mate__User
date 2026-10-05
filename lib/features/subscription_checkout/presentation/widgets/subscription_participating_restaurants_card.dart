@@ -81,6 +81,7 @@ class SubscriptionParticipatingRestaurantsCard extends StatelessWidget {
                         SubscriptionSummaryRestaurantsSheet.show(
                           context: context,
                           restaurants: restaurants,
+                          totalCount: effectiveTotal,
                         ),
                       );
                     },

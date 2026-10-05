@@ -29,8 +29,10 @@ class PreviewFamilyMemberAddressUseCase {
   final FamilyAddressesRepository _repo;
   Future<ApiResult<AddressCoveragePreviewEntity>> call(
     String memberId,
-    CustomerAddressRequestEntity request,
-  ) => _repo.previewAddress(memberId, request);
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  }) => _repo.previewAddress(memberId, request, page: page, pageSize: pageSize);
 }
 
 @injectable
@@ -39,8 +41,15 @@ class PreviewExistingFamilyMemberAddressUseCase {
   final FamilyAddressesRepository _repo;
   Future<ApiResult<AddressCoveragePreviewEntity>> call(
     String memberId,
-    String addressId,
-  ) => _repo.previewExistingAddress(memberId, addressId);
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) => _repo.previewExistingAddress(
+    memberId,
+    addressId,
+    page: page,
+    pageSize: pageSize,
+  );
 }
 
 @injectable

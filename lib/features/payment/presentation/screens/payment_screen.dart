@@ -120,6 +120,10 @@ class PaymentScreen extends StatelessWidget {
         context,
         checkoutFailure,
       );
+      if (state.isCouponCheckoutFailure) {
+        Navigator.of(context).pop(message);
+        return;
+      }
       CustomSnackbar.showError(context: context, message: message);
     }
   }
@@ -130,6 +134,12 @@ class PaymentScreen extends StatelessWidget {
     PaymentState state,
   ) {
     if (state.isCheckoutLoading) return;
+    if (args.summary.finalPrice <= 0) {
+      final message =
+          context.localization.coupon_error_full_discount_unsupported;
+      CustomSnackbar.showError(context: context, message: message);
+      return;
+    }
     context.read<PaymentViewModel>().doIntent(CheckoutPaymentEvent(args));
   }
 

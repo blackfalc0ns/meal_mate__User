@@ -6,6 +6,7 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
@@ -32,7 +33,9 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
       child: BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
         buildWhen: (previous, current) =>
             previous.isLoading != current.isLoading ||
+            previous.isApplyingCoupon != current.isApplyingCoupon ||
             previous.summary != current.summary ||
+            previous.activeRequest != current.activeRequest ||
             previous.selectedStartDate != current.selectedStartDate,
         builder: (context, state) {
           final summary = state.summary;
@@ -43,28 +46,44 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
                   ? state.selectedStartDate.trim()
                   : initialStartDate);
 
-          final activeRequest = summaryArgs.request.copyWith(
-            startDate: currentStartDate,
-          );
+          final activeRequest = state.activeRequest ??
+              summaryArgs.request.copyWith(
+                startDate: currentStartDate,
+              );
 
           if (state.isLoading && !hasSummary) {
             return const SubscriptionSummaryButtonLoadingSkeleton();
           }
 
+          final canProceed = hasSummary &&
+              summary.canCheckout &&
+              !state.isLoading &&
+              !state.isApplyingCoupon;
+
           return AppSubscriptionButton(
             price: hasSummary ? summary.finalPrice.formattedPrice : '',
             currency: hasSummary ? summary.currencyCode : '',
-            onPressed: hasSummary && summary.canCheckout
-                ? () => context.pushNamed(
-                    AppRoutes.payment,
-                    arguments: PaymentArgs(
-                      summary: summary,
-                      summaryRequest: activeRequest,
-                      restaurantId:
-                          summary.firstRestaurantId ??
-                          summaryArgs.restaurantId,
-                    ),
-                  )
+            onPressed: canProceed
+                ? () async {
+                    final result = await context.pushNamed(
+                      AppRoutes.payment,
+                      arguments: PaymentArgs(
+                        summary: summary,
+                        summaryRequest: activeRequest,
+                        restaurantId:
+                            summary.firstRestaurantId ??
+                            summaryArgs.restaurantId,
+                      ),
+                    );
+                    if (result is String &&
+                        result.isNotEmpty &&
+                        context.mounted) {
+                      CustomSnackbar.showError(
+                        context: context,
+                        message: result,
+                      );
+                    }
+                  }
                 : null,
           )
               .animate()

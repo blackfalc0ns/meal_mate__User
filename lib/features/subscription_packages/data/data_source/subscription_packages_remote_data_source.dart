@@ -2,6 +2,8 @@ import 'package:meal_meat_user/features/subscription_packages/data/models/respon
 
 abstract interface class SubscriptionPackagesRemoteDataSource {
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionPackages(
-    String programId,
-  );
+    String programId, {
+    int? page,
+    int? pageSize,
+  });
 }

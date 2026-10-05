@@ -2366,5 +2366,22 @@
   "meal_details_per_100g": "لكل 100 جم",
   "meal_tag_high_protein": "عالي البروتين",
   "meal_tag_diet_friendly": "مناسب للدايت",
-  "meal_tag_natural_ingredients": "مكونات طبيعية"
+  "meal_tag_natural_ingredients": "مكونات طبيعية",
+  "coupon_status_valid": "تم تطبيق الكوبون بنجاح",
+  "coupon_status_not_found": "كود الخصم غير موجود",
+  "coupon_status_inactive": "كود الخصم غير مُفعّل حاليًا",
+  "coupon_status_not_started": "لم يبدأ تاريخ صلاحية كود الخصم بعد",
+  "coupon_status_expired": "انتهت صلاحية كود الخصم",
+  "coupon_status_usage_exhausted": "تم استنفاد عدد مرات استخدام كود الخصم",
+  "coupon_status_stacking_conflict": "لا يمكن الجمع بين كود الخصم والعرض الحالي",
+  "coupon_status_ineligible": "كود الخصم غير مؤهل لهذا الاشتراك",
+  "coupon_status_unknown": "كود الخصم غير صالح",
+  "coupon_error_rejected": "تم رفض كود الخصم",
+  "coupon_error_no_longer_valid": "انتهت صلاحية كود الخصم",
+  "coupon_error_full_discount_unsupported": "الدفع بمبلغ صفري غير مدعوم حاليًا. أزل الكود أو استخدم كودًا آخر.",
+  "coupon_apply_button": "تطبيق",
+  "coupon_remove_button": "إزالة",
+  "coupon_input_hint": "أدخل كود الخصم",
+  "coupon_card_title": "كود الخصم",
+  "coupon_applied_label": "تم تطبيق الخصم"
 }

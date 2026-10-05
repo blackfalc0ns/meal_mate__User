@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/monthly_plans/data/models/response/subsc
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurants_page_response_dto.dart';
 
 @Injectable(as: SubscriptionPlanRemoteDataSource)
 class SubscriptionPlanRemoteDataSourceImpl
@@ -53,6 +54,35 @@ class SubscriptionPlanRemoteDataSourceImpl
       bundleId,
       tier,
       null,
+    );
+  }
+
+  @override
+  Future<SubscriptionTierRestaurantsPageResponseDto> getTierRestaurantsPage({
+    required String programId,
+    required String bundleId,
+    required String tier,
+    required int page,
+    required int pageSize,
+    String? addressId,
+  }) async {
+    final items = await _apiServices.getSubscriptionTierRestaurants(
+      programId,
+      bundleId,
+      tier,
+      null,
+      page: page,
+      pageSize: pageSize,
+    );
+    final hasNext = items.length >= pageSize;
+    return SubscriptionTierRestaurantsPageResponseDto(
+      items: items,
+      totalCount: items.length,
+      page: page,
+      pageSize: pageSize,
+      totalPages: hasNext ? page + 1 : page,
+      hasNextPage: hasNext,
+      hasPreviousPage: page > 1,
     );
   }
 

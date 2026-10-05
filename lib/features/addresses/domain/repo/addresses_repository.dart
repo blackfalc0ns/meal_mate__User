@@ -25,11 +25,13 @@ abstract interface class AddressesRepository {
   Future<ApiResult<void>> deleteCustomerAddress(String addressId);
 
   Future<ApiResult<AddressCoveragePreviewEntity>> previewNewAddressCoverage(
-    CustomerAddressRequestEntity request,
-  );
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  });
 
   Future<ApiResult<AddressCoveragePreviewEntity>>
-  previewExistingAddressCoverage(String addressId);
+  previewExistingAddressCoverage(String addressId, {int? page, int? pageSize});
 
   Future<ApiResult<CustomerAddressEntity>> confirmSetDefaultAddress(
     String addressId,

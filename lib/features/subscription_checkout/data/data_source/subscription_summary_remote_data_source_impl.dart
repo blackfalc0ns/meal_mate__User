@@ -23,6 +23,9 @@ class SubscriptionSummaryRemoteDataSourceImpl
       request.bundleId,
       request.programId,
       request.startDate,
+      restaurantsPage: request.restaurantsPage,
+      restaurantsPageSize: request.restaurantsPageSize,
+      promoCode: request.promoCode,
     );
   }
 

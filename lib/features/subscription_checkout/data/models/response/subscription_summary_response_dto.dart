@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/core/network/models/response/pagination_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_coupon_response_dto.dart';
 
 part 'subscription_summary_response_dto.g.dart';
 
@@ -44,6 +46,8 @@ class SubscriptionSummaryResponseDto {
     this.fridayDays,
     this.totalServiceDays,
     this.includes,
+    this.coupon,
+    this.restaurantsPagination,
   });
 
   final String? programId;
@@ -86,6 +90,8 @@ class SubscriptionSummaryResponseDto {
   final int? fridayDays;
   final int? totalServiceDays;
   final SubscriptionSummaryIncludesResponseDto? includes;
+  final SubscriptionCouponResponseDto? coupon;
+  final PaginationResponseDto? restaurantsPagination;
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);
@@ -118,6 +124,12 @@ class SubscriptionSummaryAddressResponseDto {
     this.area,
     this.block,
     this.regionId,
+    this.governorateNameAr,
+    this.governorateNameEn,
+    this.areaNameAr,
+    this.areaNameEn,
+    this.blockNameAr,
+    this.blockNameEn,
   });
 
   final String? id;
@@ -127,10 +139,17 @@ class SubscriptionSummaryAddressResponseDto {
   final String? area;
   final String? block;
   final String? regionId;
+  final String? governorateNameAr;
+  final String? governorateNameEn;
+  final String? areaNameAr;
+  final String? areaNameEn;
+  final String? blockNameAr;
+  final String? blockNameEn;
 
   factory SubscriptionSummaryAddressResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionSummaryAddressResponseDtoFromJson(json);
+
 }
 
 @JsonSerializable(createToJson: false)

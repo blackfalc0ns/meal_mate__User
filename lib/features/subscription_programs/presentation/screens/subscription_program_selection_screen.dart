@@ -60,8 +60,11 @@ class _SubscriptionProgramSelectionScreenState
               >(
                 buildWhen: (previous, current) =>
                     previous.isLoading != current.isLoading ||
+                    previous.isRefreshing != current.isRefreshing ||
+                    previous.isLoadingMore != current.isLoadingMore ||
                     previous.isSuccess != current.isSuccess ||
                     previous.failure != current.failure ||
+                    previous.loadMoreFailure != current.loadMoreFailure ||
                     previous.programs != current.programs,
                 builder: _buildBody,
               ),
@@ -146,6 +149,14 @@ class _SubscriptionProgramSelectionScreenState
       programs: state.programs,
       selectedProgramNotifier: _selectedProgramNotifier,
       onProgramSelected: _selectProgram,
+      isLoadingMore: state.isLoadingMore,
+      loadMoreFailure: state.loadMoreFailure,
+      onLoadMore: () => context.read<SubscriptionProgramsViewModel>().doIntent(
+        const LoadMoreSubscriptionProgramsEvent(),
+      ),
+      onRetryLoadMore: () => context.read<SubscriptionProgramsViewModel>().doIntent(
+        const RetrySubscriptionProgramsEvent(),
+      ),
     );
   }
 

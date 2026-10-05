@@ -62,15 +62,15 @@ class CustomerAddressRequestEntity {
 
   @override
   int get hashCode => Object.hash(
-        label,
-        addressLine,
-        regionId,
-        governorate,
-        area,
-        block,
-        street,
-        building,
-        latitude,
-        longitude,
-      );
+    label,
+    addressLine,
+    regionId,
+    governorate,
+    area,
+    block,
+    street,
+    building,
+    latitude,
+    longitude,
+  );
 }

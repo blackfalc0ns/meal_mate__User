@@ -17,7 +17,7 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
             key: ValueKey('family-addresses-map-skeleton'),
           ),
         ),
-        Center(
+        const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -26,8 +26,8 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                 height: Spacing.xxl,
                 borderRadius: Spacing.radiusSm,
               ),
-              const SizedBox(height: Spacing.xs),
-              const ShimmerPlaceholder.circle(size: Spacing.iconXl),
+              SizedBox(height: Spacing.xs),
+              ShimmerPlaceholder.circle(size: Spacing.iconXl),
             ],
           ),
         ),
@@ -47,7 +47,7 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                 top: Radius.circular(Spacing.bottomSheetRadius),
               ),
             ),
-            child: SafeArea(
+            child: const SafeArea(
               top: false,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -55,12 +55,12 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const ShimmerPlaceholder.circle(size: Spacing.iconXl),
-                      const SizedBox(width: Spacing.md),
+                      ShimmerPlaceholder.circle(size: Spacing.iconXl),
+                      SizedBox(width: Spacing.md),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             ShimmerPlaceholder.rect(
                               height: Spacing.base,
                               borderRadius: Spacing.radiusSm,
@@ -75,13 +75,13 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: Spacing.md),
-                  const ShimmerPlaceholder.rect(
+                  SizedBox(height: Spacing.md),
+                  ShimmerPlaceholder.rect(
                     height: Spacing.inputHeight,
                     borderRadius: Spacing.radiusMd,
                   ),
-                  const SizedBox(height: Spacing.md),
-                  const Row(
+                  SizedBox(height: Spacing.md),
+                  Row(
                     children: [
                       Expanded(
                         child: ShimmerPlaceholder.rect(
@@ -98,8 +98,8 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: Spacing.lg),
-                  const ShimmerPlaceholder.rect(
+                  SizedBox(height: Spacing.lg),
+                  ShimmerPlaceholder.rect(
                     height: Spacing.buttonHeight,
                     borderRadius: Spacing.radiusPill,
                   ),

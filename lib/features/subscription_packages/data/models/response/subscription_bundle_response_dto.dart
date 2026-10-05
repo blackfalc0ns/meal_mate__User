@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/core/network/models/response/pagination_response_dto.dart';
 
 part 'subscription_bundle_response_dto.g.dart';
 
@@ -66,6 +67,7 @@ class SubscriptionProgramBundlesResponseDto {
     this.hasDietaryPreferences,
     this.isProfileComplete,
     this.bundles,
+    this.pagination,
   });
 
   final bool? hasDeliveryAddress;
@@ -73,6 +75,7 @@ class SubscriptionProgramBundlesResponseDto {
   final bool? hasDietaryPreferences;
   final bool? isProfileComplete;
   final List<SubscriptionBundleResponseDto>? bundles;
+  final PaginationResponseDto? pagination;
 
   factory SubscriptionProgramBundlesResponseDto.fromJson(
     Map<String, dynamic> json,

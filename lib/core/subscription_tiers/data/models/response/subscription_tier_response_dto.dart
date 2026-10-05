@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_theme_response_dto.dart';
 part 'subscription_tier_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -23,6 +24,7 @@ class SubscriptionTierResponseDto {
     this.fridayDays,
     this.totalServiceDays,
     this.fridayAvailability,
+    this.theme,
   });
 
   final String? tier;
@@ -44,6 +46,8 @@ class SubscriptionTierResponseDto {
   final int? fridayDays;
   final int? totalServiceDays;
   final SubscriptionFridayAvailabilityResponseDto? fridayAvailability;
+  final SubscriptionTierThemeResponseDto? theme;
+
 
   factory SubscriptionTierResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionTierResponseDtoFromJson(json);

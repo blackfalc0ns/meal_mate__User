@@ -20,8 +20,10 @@ abstract interface class FamilyAddressesRemoteDataSource {
   );
   Future<AddressCoveragePreviewResponseDto> previewExistingAddress(
     String memberId,
-    String addressId,
-  );
+    String addressId, {
+    int? page,
+    int? pageSize,
+  });
   Future<CustomerAddressResponseDto> setDefaultAddress(
     String memberId,
     String addressId,

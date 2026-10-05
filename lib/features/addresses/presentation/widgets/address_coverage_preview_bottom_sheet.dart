@@ -3,11 +3,11 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_restaurants_list.dart';
 
 class AddressCoveragePreviewBottomSheet extends StatelessWidget {
   const AddressCoveragePreviewBottomSheet({
@@ -19,6 +19,10 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
     required this.onChooseAnother,
     this.popOnConfirm = true,
     this.requireFamilyCoverage = false,
+    this.isLoadingMore = false,
+    this.hasMoreRestaurants = false,
+    this.loadMoreFailure,
+    this.onLoadMoreRestaurants,
   });
 
   final AddressCoveragePreviewEntity preview;
@@ -28,6 +32,10 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
   final VoidCallback onChooseAnother;
   final bool popOnConfirm;
   final bool requireFamilyCoverage;
+  final bool isLoadingMore;
+  final bool hasMoreRestaurants;
+  final Failure? loadMoreFailure;
+  final VoidCallback? onLoadMoreRestaurants;
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +107,12 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Spacing.sm),
-                  _buildServingRestaurantsList(
-                    context,
-                    preview.servingRestaurants,
+                  AddressCoverageRestaurantsList(
+                    restaurants: preview.servingRestaurants,
+                    isLoadingMore: isLoadingMore,
+                    hasMoreRestaurants: hasMoreRestaurants,
+                    loadMoreFailure: loadMoreFailure,
+                    onLoadMoreRestaurants: onLoadMoreRestaurants,
                   ),
                 ] else if (isCovered) ...[
                   _buildNoRestaurantsNotice(context),
@@ -264,83 +275,6 @@ class AddressCoveragePreviewBottomSheet extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildServingRestaurantsList(
-    BuildContext context,
-    List<ServingRestaurantEntity> restaurants,
-  ) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-
-    return SizedBox(
-      height: 115,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: restaurants.length,
-        separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
-        itemBuilder: (context, index) {
-          final restaurant = restaurants[index];
-          final name = restaurant.name(locale.localeName);
-          final logoUrl = restaurant.logoUrl;
-          final rating = restaurant.rating;
-
-          return Container(
-            width: 104,
-            padding: const EdgeInsets.all(Spacing.sm),
-            decoration: BoxDecoration(
-              color: color.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-              border: Border.all(
-                color: color.outlineVariant,
-                width: Spacing.hairline,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppCachedNetworkImage(
-                  imageUrl: logoUrl,
-                  width: 38,
-                  height: 38,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(height: Spacing.xs),
-                Text(
-                  name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
-                    color: color.onSurface,
-                  ),
-                ),
-                if (rating != null && rating > 0) ...[
-                  const SizedBox(height: 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star_rounded, color: color.primary, size: 14),
-                      const SizedBox(width: 2),
-                      Text(
-                        rating.toStringAsFixed(1),
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          );
-        },
       ),
     );
   }

@@ -45,9 +45,9 @@ class FamilyAddressesScreen extends StatelessWidget {
           if (state.failure != null && state.members.isEmpty) {
             final errorWidget = ApiErrorWidget(
               exception: state.failure!.exception,
-              onRetry: () => context
-                  .read<FamilyAddressesViewModel>()
-                  .load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
+              onRetry: () => context.read<FamilyAddressesViewModel>().load(
+                memberId: FamilyFlowScope.targetMemberIdOf(context),
+              ),
             );
             if (isInFamilyFlow) return errorWidget;
 

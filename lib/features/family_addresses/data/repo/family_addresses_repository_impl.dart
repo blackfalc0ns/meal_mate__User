@@ -50,20 +50,28 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewAddress(
     String memberId,
-    CustomerAddressRequestEntity request,
-  ) => safeApiCall(
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  }) => safeApiCall(
     () async => (await _remote.previewAddress(
       memberId,
-      request.toPreviewDto(),
+      request.toPreviewDto(page: page, pageSize: pageSize),
     )).toEntity(),
   );
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewExistingAddress(
     String memberId,
-    String addressId,
-  ) => safeApiCall(
-    () async =>
-        (await _remote.previewExistingAddress(memberId, addressId)).toEntity(),
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) => safeApiCall(
+    () async => (await _remote.previewExistingAddress(
+      memberId,
+      addressId,
+      page: page,
+      pageSize: pageSize,
+    )).toEntity(),
   );
   @override
   Future<ApiResult<CustomerAddressEntity>> setDefaultAddress(

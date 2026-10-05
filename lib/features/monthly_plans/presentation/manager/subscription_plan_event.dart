@@ -87,3 +87,11 @@ class CheckSubscriptionReadinessEvent extends SubscriptionPlanEvent {
 class CloseSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
   const CloseSubscriptionTierRestaurantsEvent();
 }
+
+class LoadMoreSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
+  const LoadMoreSubscriptionTierRestaurantsEvent();
+}
+
+class RetrySubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
+  const RetrySubscriptionTierRestaurantsEvent();
+}

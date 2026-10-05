@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/core/entities/pagination_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_coupon_entity.dart';
+
 class SubscriptionSummaryEntity {
 
   const SubscriptionSummaryEntity({
@@ -40,6 +43,8 @@ class SubscriptionSummaryEntity {
     required this.fridayDays,
     required this.totalServiceDays,
     required this.includes,
+    this.coupon,
+    this.restaurantsPagination,
   });
 
   final String programId;
@@ -81,6 +86,8 @@ class SubscriptionSummaryEntity {
   final int fridayDays;
   final int totalServiceDays;
   final SubscriptionSummaryIncludesEntity includes;
+  final SubscriptionCouponEntity? coupon;
+  final PaginationEntity? restaurantsPagination;
 
   String programName(String localeName) =>
       localeName == 'ar' ? programNameAr : programNameEn;
@@ -104,6 +111,56 @@ class SubscriptionSummaryEntity {
       if (restaurant.restaurantId.isNotEmpty) return restaurant.restaurantId;
     }
     return null;
+  }
+
+  SubscriptionSummaryEntity copyWithRestaurants({
+    required List<SubscriptionSummaryRestaurantEntity> restaurants,
+    PaginationEntity? restaurantsPagination,
+  }) {
+    return SubscriptionSummaryEntity(
+      programId: programId,
+      programNameAr: programNameAr,
+      programNameEn: programNameEn,
+      programImageUrl: programImageUrl,
+      bundleId: bundleId,
+      bundleNameAr: bundleNameAr,
+      bundleNameEn: bundleNameEn,
+      imageUrl: imageUrl,
+      restaurantId: restaurantId,
+      restaurantNameAr: restaurantNameAr,
+      restaurantNameEn: restaurantNameEn,
+      restaurantCount: restaurantCount,
+      tier: tier,
+      tierNameAr: tierNameAr,
+      tierNameEn: tierNameEn,
+      durationDays: durationDays,
+      chosenStartDate: chosenStartDate,
+      startDate: startDate,
+      endDate: endDate,
+      serviceDates: serviceDates,
+      restaurantRepetition: restaurantRepetition,
+      slotRequirements: slotRequirements,
+      basePrice: basePrice,
+      campaignDiscount: campaignDiscount,
+      promoDiscount: promoDiscount,
+      walletCredit: walletCredit,
+      gatewayFee: gatewayFee,
+      finalPrice: finalPrice,
+      currencyCode: currencyCode,
+      canCheckout: canCheckout,
+      checkoutBlockReason: checkoutBlockReason,
+      address: address,
+      restaurants: restaurants,
+      termsAcceptanceRequired: termsAcceptanceRequired,
+      checkoutEndpoint: checkoutEndpoint,
+      includeFriday: includeFriday,
+      fridayDays: fridayDays,
+      totalServiceDays: totalServiceDays,
+      includes: includes,
+      coupon: coupon,
+      restaurantsPagination:
+          restaurantsPagination ?? this.restaurantsPagination,
+    );
   }
 }
 
@@ -129,6 +186,12 @@ class SubscriptionSummaryAddressEntity {
     this.area,
     this.block,
     this.regionId,
+    this.governorateNameAr,
+    this.governorateNameEn,
+    this.areaNameAr,
+    this.areaNameEn,
+    this.blockNameAr,
+    this.blockNameEn,
   });
 
   final String id;
@@ -138,6 +201,42 @@ class SubscriptionSummaryAddressEntity {
   final String? area;
   final String? block;
   final String? regionId;
+  final String? governorateNameAr;
+  final String? governorateNameEn;
+  final String? areaNameAr;
+  final String? areaNameEn;
+  final String? blockNameAr;
+  final String? blockNameEn;
+
+  String localizedNamesLine(String localeName) {
+    final isAr = localeName == 'ar';
+
+    final gov = isAr
+        ? (governorateNameAr?.trim().isNotEmpty == true
+            ? governorateNameAr!.trim()
+            : (governorate?.trim() ?? ''))
+        : (governorateNameEn?.trim().isNotEmpty == true
+            ? governorateNameEn!.trim()
+            : (governorate?.trim() ?? ''));
+
+    final ar = isAr
+        ? (areaNameAr?.trim().isNotEmpty == true
+            ? areaNameAr!.trim()
+            : (area?.trim() ?? ''))
+        : (areaNameEn?.trim().isNotEmpty == true
+            ? areaNameEn!.trim()
+            : (area?.trim() ?? ''));
+
+    final blk = isAr
+        ? (blockNameAr?.trim().isNotEmpty == true
+            ? blockNameAr!.trim()
+            : (block?.trim() ?? ''))
+        : (blockNameEn?.trim().isNotEmpty == true
+            ? blockNameEn!.trim()
+            : (block?.trim() ?? ''));
+
+    return [gov, ar, blk].where((part) => part.isNotEmpty).join(' - ');
+  }
 
   String get formattedAddress {
     if (addressLine.trim().isNotEmpty) {
@@ -150,6 +249,7 @@ class SubscriptionSummaryAddressEntity {
     ].whereType<String>().where((value) => value.trim().isNotEmpty).join(' - ');
   }
 }
+
 
 
 class SubscriptionSummaryRestaurantEntity {

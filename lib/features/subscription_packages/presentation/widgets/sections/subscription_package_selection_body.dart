@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/manager/subscription_packages_state.dart';
 import 'package:meal_meat_user/features/subscription_packages/presentation/widgets/sections/subscription_package_list_section.dart';
@@ -17,6 +19,8 @@ class SubscriptionPackageSelectionBody extends StatelessWidget {
     required this.selectedPackageNotifier,
     required this.onPackageSelected,
     required this.onRetry,
+    this.onLoadMore,
+    this.onRetryLoadMore,
   });
 
   final SubscriptionPackagesState state;
@@ -24,6 +28,8 @@ class SubscriptionPackageSelectionBody extends StatelessWidget {
   final ValueListenable<int?> selectedPackageNotifier;
   final ValueChanged<int> onPackageSelected;
   final VoidCallback onRetry;
+  final VoidCallback? onLoadMore;
+  final VoidCallback? onRetryLoadMore;
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +62,50 @@ class SubscriptionPackageSelectionBody extends StatelessWidget {
       );
     }
 
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SubscriptionPackageProgramHeaderSection(program: selectedProgram!),
-        SubscriptionPackageListSection(
-          bundles: state.bundles,
-          selectedProgram: selectedProgram!,
-          selectedPackageNotifier: selectedPackageNotifier,
-          onPackageSelected: onPackageSelected,
-        ),
-      ],
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollInfo) {
+        if (scrollInfo.metrics.pixels >=
+                scrollInfo.metrics.maxScrollExtent - 200 &&
+            state.pagination?.hasNextPage == true &&
+            !state.isLoadingMore) {
+          onLoadMore?.call();
+        }
+        return false;
+      },
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SubscriptionPackageProgramHeaderSection(program: selectedProgram!),
+          SubscriptionPackageListSection(
+            bundles: state.bundles,
+            selectedProgram: selectedProgram!,
+            selectedPackageNotifier: selectedPackageNotifier,
+            onPackageSelected: onPackageSelected,
+          ),
+          if (state.isLoadingMore)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(Spacing.md),
+                child: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+            ),
+          if (state.loadMoreFailure != null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.lg,
+                  vertical: Spacing.sm,
+                ),
+                child: InlineApiErrorWidget(
+                  failure: state.loadMoreFailure!,
+                  onRetry: onRetryLoadMore,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

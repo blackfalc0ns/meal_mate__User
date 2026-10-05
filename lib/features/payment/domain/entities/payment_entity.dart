@@ -58,6 +58,7 @@ class PaymentCheckoutRequestEntity {
     required this.includeFriday,
     required this.paymentMethodId,
     required this.correlationId,
+    this.promoCode,
   });
 
   final String programId;
@@ -70,6 +71,7 @@ class PaymentCheckoutRequestEntity {
   final bool includeFriday;
   final int paymentMethodId;
   final String correlationId;
+  final String? promoCode;
 
   bool get isComplete =>
       programId.isNotEmpty &&

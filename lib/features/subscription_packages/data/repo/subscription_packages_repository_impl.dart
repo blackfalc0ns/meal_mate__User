@@ -14,11 +14,15 @@ class SubscriptionPackagesRepositoryImpl
 
   @override
   Future<ApiResult<SubscriptionProgramBundlesEntity>> getSubscriptionPackages(
-    String programId,
-  ) {
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getSubscriptionPackages(
         programId,
+        page: page,
+        pageSize: pageSize,
       );
       return response.toProgramBundlesEntity();
     });

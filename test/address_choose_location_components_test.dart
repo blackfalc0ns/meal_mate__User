@@ -28,9 +28,7 @@ void main() {
   group('Address Choose Location Figma 2403-6578 Components', () {
     testWidgets('Header renders title and subtitle in Arabic', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: const AddressChooseLocationHeader(),
-        ),
+        buildTestWidget(child: const AddressChooseLocationHeader()),
       );
 
       expect(find.text('اختيار موقع البيت'), findsOneWidget);
@@ -46,7 +44,10 @@ void main() {
       );
 
       expect(find.text('Choose home location'), findsOneWidget);
-      expect(find.text('Choose the main delivery location for home'), findsOneWidget);
+      expect(
+        find.text('Choose the main delivery location for home'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('SearchBar displays hint and accepts input', (tester) async {
@@ -71,7 +72,9 @@ void main() {
       expect(submittedText, 'السالمية');
     });
 
-    testWidgets('OptionsRow renders both modes and switches selection', (tester) async {
+    testWidgets('OptionsRow renders both modes and switches selection', (
+      tester,
+    ) async {
       AddressLocationMode currentMode = AddressLocationMode.fromMap;
       bool currentLocationCalled = false;
 
@@ -106,7 +109,9 @@ void main() {
       expect(currentLocationCalled, isTrue);
     });
 
-    testWidgets('Sheet renders all components and handles confirm tap', (tester) async {
+    testWidgets('Sheet renders all components and handles confirm tap', (
+      tester,
+    ) async {
       bool confirmTapped = false;
 
       await tester.pumpWidget(

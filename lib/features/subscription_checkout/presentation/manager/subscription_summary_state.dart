@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 
 class SubscriptionSummaryState {
   const SubscriptionSummaryState({
@@ -8,6 +9,11 @@ class SubscriptionSummaryState {
     this.failure,
     this.selectedStartDate = '',
     this.earliestStartDate = '',
+    this.activeRequest,
+    this.couponDraft = '',
+    this.isApplyingCoupon = false,
+    this.isLoadingMoreRestaurants = false,
+    this.restaurantsAppendFailure,
   });
 
   final bool isLoading;
@@ -15,6 +21,11 @@ class SubscriptionSummaryState {
   final Failure? failure;
   final String selectedStartDate;
   final String earliestStartDate;
+  final SubscriptionSummaryRequestEntity? activeRequest;
+  final String couponDraft;
+  final bool isApplyingCoupon;
+  final bool isLoadingMoreRestaurants;
+  final Failure? restaurantsAppendFailure;
 
   SubscriptionSummaryState copyWith({
     bool? isLoading,
@@ -22,15 +33,31 @@ class SubscriptionSummaryState {
     Failure? failure,
     String? selectedStartDate,
     String? earliestStartDate,
+    SubscriptionSummaryRequestEntity? activeRequest,
+    String? couponDraft,
+    bool? isApplyingCoupon,
+    bool? isLoadingMoreRestaurants,
+    Failure? restaurantsAppendFailure,
     bool clearSummary = false,
     bool clearFailure = false,
+    bool clearAppendFailure = false,
+    bool clearCouponDraft = false,
+    bool clearActiveRequest = false,
   }) {
     return SubscriptionSummaryState(
       isLoading: isLoading ?? this.isLoading,
-      summary: clearSummary ? null : summary ?? this.summary,
-      failure: clearFailure ? null : failure ?? this.failure,
+      summary: clearSummary ? null : (summary ?? this.summary),
+      failure: clearFailure ? null : (failure ?? this.failure),
       selectedStartDate: selectedStartDate ?? this.selectedStartDate,
       earliestStartDate: earliestStartDate ?? this.earliestStartDate,
+      activeRequest: clearActiveRequest ? null : (activeRequest ?? this.activeRequest),
+      couponDraft: clearCouponDraft ? '' : (couponDraft ?? this.couponDraft),
+      isApplyingCoupon: isApplyingCoupon ?? this.isApplyingCoupon,
+      isLoadingMoreRestaurants:
+          isLoadingMoreRestaurants ?? this.isLoadingMoreRestaurants,
+      restaurantsAppendFailure: clearAppendFailure
+          ? null
+          : (restaurantsAppendFailure ?? this.restaurantsAppendFailure),
     );
   }
 }

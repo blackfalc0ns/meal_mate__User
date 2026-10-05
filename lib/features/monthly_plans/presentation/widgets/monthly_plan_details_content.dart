@@ -27,16 +27,15 @@ class MonthlyPlanDetailsContent extends StatelessWidget {
   final String bundleId;
 
   void _onBrowseRestaurants(BuildContext context, int tierIndex) {
-    context.read<SubscriptionPlanViewModel>()
-      ..doIntent(SelectSubscriptionTierEvent(tierIndex))
-      ..doIntent(
-        BrowseSubscriptionTierRestaurantsEvent(
-          programId: programId,
-          bundleId: bundleId,
-          tierIndex: tierIndex,
-        ),
-      );
+    context.read<SubscriptionPlanViewModel>().doIntent(
+      BrowseSubscriptionTierRestaurantsEvent(
+        programId: programId,
+        bundleId: bundleId,
+        tierIndex: tierIndex,
+      ),
+    );
   }
+
 
   void _onCloseRestaurants(BuildContext context) {
     context.read<SubscriptionPlanViewModel>().doIntent(

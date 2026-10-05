@@ -103,11 +103,13 @@ class AddressesRepositoryImpl implements AddressesRepository {
 
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewNewAddressCoverage(
-    CustomerAddressRequestEntity request,
-  ) {
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.previewNewAddressCoverage(
-        request.toPreviewDto(),
+        request.toPreviewDto(page: page, pageSize: pageSize),
       );
       return response.toEntity();
     });
@@ -115,10 +117,12 @@ class AddressesRepositoryImpl implements AddressesRepository {
 
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>>
-  previewExistingAddressCoverage(String addressId) {
+  previewExistingAddressCoverage(String addressId, {int? page, int? pageSize}) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.previewExistingAddressCoverage(
         addressId,
+        page: page,
+        pageSize: pageSize,
       );
       return response.toEntity();
     });

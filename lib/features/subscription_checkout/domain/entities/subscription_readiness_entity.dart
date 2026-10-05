@@ -74,6 +74,12 @@ class SubscriptionReadinessAddressEntity {
     this.area,
     this.block,
     this.regionId,
+    this.governorateNameAr,
+    this.governorateNameEn,
+    this.areaNameAr,
+    this.areaNameEn,
+    this.blockNameAr,
+    this.blockNameEn,
   });
 
   final String id;
@@ -83,7 +89,44 @@ class SubscriptionReadinessAddressEntity {
   final String? area;
   final String? block;
   final String? regionId;
+  final String? governorateNameAr;
+  final String? governorateNameEn;
+  final String? areaNameAr;
+  final String? areaNameEn;
+  final String? blockNameAr;
+  final String? blockNameEn;
+
+  String localizedNamesLine(String localeName) {
+    final isAr = localeName == 'ar';
+
+    final gov = isAr
+        ? (governorateNameAr?.trim().isNotEmpty == true
+            ? governorateNameAr!.trim()
+            : (governorate?.trim() ?? ''))
+        : (governorateNameEn?.trim().isNotEmpty == true
+            ? governorateNameEn!.trim()
+            : (governorate?.trim() ?? ''));
+
+    final ar = isAr
+        ? (areaNameAr?.trim().isNotEmpty == true
+            ? areaNameAr!.trim()
+            : (area?.trim() ?? ''))
+        : (areaNameEn?.trim().isNotEmpty == true
+            ? areaNameEn!.trim()
+            : (area?.trim() ?? ''));
+
+    final blk = isAr
+        ? (blockNameAr?.trim().isNotEmpty == true
+            ? blockNameAr!.trim()
+            : (block?.trim() ?? ''))
+        : (blockNameEn?.trim().isNotEmpty == true
+            ? blockNameEn!.trim()
+            : (block?.trim() ?? ''));
+
+    return [gov, ar, blk].where((part) => part.isNotEmpty).join(' - ');
+  }
 }
+
 
 class SubscriptionReadinessItemEntity {
   const SubscriptionReadinessItemEntity({

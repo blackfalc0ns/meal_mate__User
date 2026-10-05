@@ -6077,4 +6077,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get meal_tag_natural_ingredients => 'مكونات طبيعية';
+
+  @override
+  String get coupon_status_valid => 'تم تطبيق الكوبون بنجاح';
+
+  @override
+  String get coupon_status_not_found => 'كود الخصم غير موجود';
+
+  @override
+  String get coupon_status_inactive => 'كود الخصم غير مُفعّل حاليًا';
+
+  @override
+  String get coupon_status_not_started => 'لم يبدأ تاريخ صلاحية كود الخصم بعد';
+
+  @override
+  String get coupon_status_expired => 'انتهت صلاحية كود الخصم';
+
+  @override
+  String get coupon_status_usage_exhausted =>
+      'تم استنفاد عدد مرات استخدام كود الخصم';
+
+  @override
+  String get coupon_status_stacking_conflict =>
+      'لا يمكن الجمع بين كود الخصم والعرض الحالي';
+
+  @override
+  String get coupon_status_ineligible => 'كود الخصم غير مؤهل لهذا الاشتراك';
+
+  @override
+  String get coupon_status_unknown => 'كود الخصم غير صالح';
+
+  @override
+  String get coupon_error_rejected => 'تم رفض كود الخصم';
+
+  @override
+  String get coupon_error_no_longer_valid => 'انتهت صلاحية كود الخصم';
+
+  @override
+  String get coupon_error_full_discount_unsupported =>
+      'الدفع بمبلغ صفري غير مدعوم حاليًا. أزل الكود أو استخدم كودًا آخر.';
+
+  @override
+  String get coupon_apply_button => 'تطبيق';
+
+  @override
+  String get coupon_remove_button => 'إزالة';
+
+  @override
+  String get coupon_input_hint => 'أدخل كود الخصم';
+
+  @override
+  String get coupon_card_title => 'كود الخصم';
+
+  @override
+  String get coupon_applied_label => 'تم تطبيق الخصم';
 }

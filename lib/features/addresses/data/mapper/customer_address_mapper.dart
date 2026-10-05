@@ -1,9 +1,11 @@
 import 'package:meal_meat_user/features/addresses/data/models/request/address_coverage_preview_request_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_pagination_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_preview_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_pagination_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
@@ -208,6 +210,20 @@ extension LocationBlockResponseDtoMapper on LocationBlockResponseDto {
   }
 }
 
+extension AddressCoveragePaginationResponseDtoMapper
+    on AddressCoveragePaginationResponseDto {
+  AddressCoveragePaginationEntity toEntity() {
+    return AddressCoveragePaginationEntity(
+      totalCount: totalCount,
+      page: page,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      hasNextPage: hasNextPage,
+      hasPreviousPage: hasPreviousPage,
+    );
+  }
+}
+
 extension AddressCoveragePreviewResponseDtoMapper
     on AddressCoveragePreviewResponseDto {
   AddressCoveragePreviewEntity toEntity() {
@@ -231,13 +247,14 @@ extension AddressCoveragePreviewResponseDtoMapper
       servingRestaurants: servingRestaurants
           .map((item) => item.toEntity())
           .toList(),
+      pagination: pagination?.toEntity(),
     );
   }
 }
 
 extension AddressCoveragePreviewRequestEntityMapper
     on CustomerAddressRequestEntity {
-  AddressCoveragePreviewRequestDto toPreviewDto() {
+  AddressCoveragePreviewRequestDto toPreviewDto({int? page, int? pageSize}) {
     return AddressCoveragePreviewRequestDto(
       regionId: regionId,
       blockRegionId: blockRegionId,
@@ -247,6 +264,8 @@ extension AddressCoveragePreviewRequestEntityMapper
       area: area,
       block: block,
       isDefault: isDefault,
+      page: page,
+      pageSize: pageSize,
     );
   }
 }

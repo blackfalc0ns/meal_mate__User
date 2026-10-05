@@ -223,8 +223,10 @@ abstract class ApiServices {
 
   @GET(EndPoints.customerExistingAddressPreviewCoverage)
   Future<AddressCoveragePreviewResponseDto> previewExistingAddressCoverage(
-    @Path('addressId') String addressId,
-  );
+    @Path('addressId') String addressId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @POST(EndPoints.customerAddressSetDefault)
   Future<CustomerAddressResponseDto> confirmSetDefaultAddress(
@@ -301,12 +303,17 @@ abstract class ApiServices {
   Future<void> abandonFamilyDraft();
 
   @GET(EndPoints.subscriptionPrograms)
-  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms();
+  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @GET(EndPoints.subscriptionProgramBundles)
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
-    @Path('programId') String programId,
-  );
+    @Path('programId') String programId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @GET(EndPoints.subscriptionDurations)
   Future<List<SubscriptionDurationResponseDto>> getSubscriptionDurations(
@@ -361,8 +368,11 @@ abstract class ApiServices {
     @Query('tier') String tier,
     @Query('bundleId') String bundleId,
     @Query('programId') String programId,
-    @Query('startDate') String startDate,
-  );
+    @Query('startDate') String startDate, {
+    @Query('restaurantsPage') int? restaurantsPage,
+    @Query('restaurantsPageSize') int? restaurantsPageSize,
+    @Query('promoCode') String? promoCode,
+  });
 
   @GET(EndPoints.subscriptionReadiness)
   Future<SubscriptionReadinessResponseDto> getSubscriptionReadiness(
@@ -667,8 +677,10 @@ abstract class ApiServices {
   @GET(EndPoints.familyMemberExistingAddressPreview)
   Future<AddressCoveragePreviewResponseDto> previewExistingFamilyMemberAddress(
     @Path('memberId') String memberId,
-    @Path('addressId') String addressId,
-  );
+    @Path('addressId') String addressId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @POST(EndPoints.familyMemberAddressSetDefault)
   Future<CustomerAddressResponseDto> setDefaultFamilyMemberAddress(
@@ -815,9 +827,7 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.customerOfferDetails)
-  Future<OfferResponseDto> getCustomerOfferDetails(
-    @Path('id') String id,
-  );
+  Future<OfferResponseDto> getCustomerOfferDetails(@Path('id') String id);
 
   @POST(EndPoints.customerOffersEvaluate)
   Future<EvaluateOfferDiscountResponseDto> evaluateOfferDiscount(

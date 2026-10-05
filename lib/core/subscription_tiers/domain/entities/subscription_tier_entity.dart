@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_theme_entity.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 
@@ -22,6 +23,7 @@ class SubscriptionTierEntity {
     required this.includeFriday,
     this.fridayDays,
     this.totalServiceDays,
+    this.theme,
   });
 
   final String tier;
@@ -42,6 +44,8 @@ class SubscriptionTierEntity {
   final bool includeFriday;
   final int? fridayDays;
   final int? totalServiceDays;
+  final SubscriptionTierThemeEntity? theme;
+
 
   String name(String localeName) {
     final lower = tier.toLowerCase();

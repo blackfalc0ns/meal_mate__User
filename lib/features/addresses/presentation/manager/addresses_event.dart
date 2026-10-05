@@ -114,3 +114,11 @@ class ConfirmPendingAddressActionEvent extends AddressesEvent {
 class ClearCoveragePreviewEvent extends AddressesEvent {
   const ClearCoveragePreviewEvent();
 }
+
+class LoadMoreAddressCoverageRestaurantsEvent extends AddressesEvent {
+  const LoadMoreAddressCoverageRestaurantsEvent();
+}
+
+class RetryAddressCoveragePreviewEvent extends AddressesEvent {
+  const RetryAddressCoveragePreviewEvent();
+}

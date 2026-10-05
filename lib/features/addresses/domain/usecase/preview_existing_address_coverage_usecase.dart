@@ -9,7 +9,15 @@ class PreviewExistingAddressCoverageUseCase {
 
   final AddressesRepository _repository;
 
-  Future<ApiResult<AddressCoveragePreviewEntity>> call(String addressId) {
-    return _repository.previewExistingAddressCoverage(addressId);
+  Future<ApiResult<AddressCoveragePreviewEntity>> call(
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _repository.previewExistingAddressCoverage(
+      addressId,
+      page: page,
+      pageSize: pageSize,
+    );
   }
 }

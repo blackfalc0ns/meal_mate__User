@@ -6188,4 +6188,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meal_tag_natural_ingredients => 'Natural Ingredients';
+
+  @override
+  String get coupon_status_valid => 'Coupon applied successfully';
+
+  @override
+  String get coupon_status_not_found => 'This coupon code does not exist';
+
+  @override
+  String get coupon_status_inactive => 'This coupon code is not active';
+
+  @override
+  String get coupon_status_not_started => 'This coupon code is not valid yet';
+
+  @override
+  String get coupon_status_expired => 'This coupon code has expired';
+
+  @override
+  String get coupon_status_usage_exhausted =>
+      'This coupon code has reached its usage limit';
+
+  @override
+  String get coupon_status_stacking_conflict =>
+      'This coupon code cannot be combined with the current offer';
+
+  @override
+  String get coupon_status_ineligible =>
+      'This coupon code is not eligible for this subscription';
+
+  @override
+  String get coupon_status_unknown => 'This coupon code is invalid';
+
+  @override
+  String get coupon_error_rejected => 'Coupon code was rejected';
+
+  @override
+  String get coupon_error_no_longer_valid => 'This coupon code has expired';
+
+  @override
+  String get coupon_error_full_discount_unsupported =>
+      'Zero-amount checkout is currently unsupported. Remove this code or use another code.';
+
+  @override
+  String get coupon_apply_button => 'Apply';
+
+  @override
+  String get coupon_remove_button => 'Remove';
+
+  @override
+  String get coupon_input_hint => 'Enter coupon code';
+
+  @override
+  String get coupon_card_title => 'Promo Code';
+
+  @override
+  String get coupon_applied_label => 'Discount applied';
 }

@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/core/entities/pagination_entity.dart';
+
 class SubscriptionBundleEntity {
   const SubscriptionBundleEntity({
     required this.bundleId,
@@ -67,6 +69,7 @@ class SubscriptionProgramBundlesEntity {
     required this.hasDietaryPreferences,
     required this.isProfileComplete,
     required this.bundles,
+    this.pagination,
   });
 
   final bool hasDeliveryAddress;
@@ -74,6 +77,7 @@ class SubscriptionProgramBundlesEntity {
   final bool hasDietaryPreferences;
   final bool isProfileComplete;
   final List<SubscriptionBundleEntity> bundles;
+  final PaginationEntity? pagination;
 }
 
 class SubscriptionBundleSlotEntity {

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_pagination_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
 
 part 'address_coverage_preview_response_dto.g.dart';
@@ -22,6 +23,7 @@ class AddressCoveragePreviewResponseDto {
     this.hasActiveSubscription = false,
     this.restaurantCoverageNotice,
     this.servingRestaurants = const [],
+    this.pagination,
   });
 
   final bool canSetAsDefault;
@@ -42,6 +44,7 @@ class AddressCoveragePreviewResponseDto {
   final CustomerAddressCoverageNoticeDto? restaurantCoverageNotice;
   @JsonKey(fromJson: _parseServingRestaurants)
   final List<ServingRestaurantDto> servingRestaurants;
+  final AddressCoveragePaginationResponseDto? pagination;
 
   static CustomerAddressCoverageNoticeDto? _parseCoverageNotice(dynamic value) {
     if (value == null) return null;

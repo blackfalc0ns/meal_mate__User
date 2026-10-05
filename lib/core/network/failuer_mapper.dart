@@ -94,6 +94,28 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.checkout_dietary_preferences_required;
     case 'checkout.existing_subscription':
       return locale.checkout_existing_subscription;
+    case 'checkout.coupon_rejected':
+      return locale.coupon_error_rejected;
+    case 'checkout.coupon_no_longer_valid':
+      return locale.coupon_error_no_longer_valid;
+    case 'checkout.coupon_full_discount_unsupported':
+      return locale.coupon_error_full_discount_unsupported;
+    case 'valid':
+      return locale.coupon_status_valid;
+    case 'not_found':
+      return locale.coupon_status_not_found;
+    case 'inactive':
+      return locale.coupon_status_inactive;
+    case 'not_started':
+      return locale.coupon_status_not_started;
+    case 'expired':
+      return locale.coupon_status_expired;
+    case 'usage_exhausted':
+      return locale.coupon_status_usage_exhausted;
+    case 'stacking_conflict':
+      return locale.coupon_status_stacking_conflict;
+    case 'ineligible':
+      return locale.coupon_status_ineligible;
     case 'restaurant.not_eligible':
     case 'subscription_flow.no_restaurants_for_address':
     case 'checkout.no_restaurants_for_address':

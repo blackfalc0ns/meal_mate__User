@@ -11,8 +11,14 @@ class PreviewNewAddressCoverageUseCase {
   final AddressesRepository _repository;
 
   Future<ApiResult<AddressCoveragePreviewEntity>> call(
-    CustomerAddressRequestEntity request,
-  ) {
-    return _repository.previewNewAddressCoverage(request);
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _repository.previewNewAddressCoverage(
+      request,
+      page: page,
+      pageSize: pageSize,
+    );
   }
 }

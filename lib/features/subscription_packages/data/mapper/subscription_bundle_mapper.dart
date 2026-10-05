@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/network/mapper/pagination_mapper.dart';
 import 'package:meal_meat_user/features/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 
@@ -45,6 +46,7 @@ extension SubscriptionProgramBundlesResponseDtoMapper
           .whereType<SubscriptionBundleResponseDto>()
           .map((item) => item.toEntity())
           .toList(),
+      pagination: pagination?.toEntity(),
     );
   }
 }

@@ -19,3 +19,27 @@ class ChangeSubscriptionStartDateEvent extends SubscriptionSummaryEvent {
   final String startDate;
   final SubscriptionSummaryRequestEntity baseRequest;
 }
+
+class ApplySubscriptionPromoCodeEvent extends SubscriptionSummaryEvent {
+  const ApplySubscriptionPromoCodeEvent(this.promoCode);
+
+  final String promoCode;
+}
+
+class RemoveSubscriptionPromoCodeEvent extends SubscriptionSummaryEvent {
+  const RemoveSubscriptionPromoCodeEvent();
+}
+
+class UpdateSubscriptionCouponDraftEvent extends SubscriptionSummaryEvent {
+  const UpdateSubscriptionCouponDraftEvent(this.draft);
+
+  final String draft;
+}
+
+class LoadMoreSubscriptionSummaryRestaurantsEvent extends SubscriptionSummaryEvent {
+  const LoadMoreSubscriptionSummaryRestaurantsEvent();
+}
+
+class RetrySubscriptionSummaryRestaurantsEvent extends SubscriptionSummaryEvent {
+  const RetrySubscriptionSummaryRestaurantsEvent();
+}

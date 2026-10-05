@@ -25,10 +25,7 @@ class AddressCatalogMatcher {
     for (final governorate in locations.governorates) {
       for (final area in governorate.areas) {
         if (matchesArea(area, address, autofill: autofill)) {
-          return InitialLocationSelection(
-            governorate: governorate,
-            area: area,
-          );
+          return InitialLocationSelection(governorate: governorate, area: area);
         }
       }
     }

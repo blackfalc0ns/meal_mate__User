@@ -16,12 +16,16 @@ abstract interface class FamilyAddressesRepository {
   );
   Future<ApiResult<AddressCoveragePreviewEntity>> previewAddress(
     String memberId,
-    CustomerAddressRequestEntity request,
-  );
+    CustomerAddressRequestEntity request, {
+    int? page,
+    int? pageSize,
+  });
   Future<ApiResult<AddressCoveragePreviewEntity>> previewExistingAddress(
     String memberId,
-    String addressId,
-  );
+    String addressId, {
+    int? page,
+    int? pageSize,
+  });
   Future<ApiResult<CustomerAddressEntity>> setDefaultAddress(
     String memberId,
     String addressId,

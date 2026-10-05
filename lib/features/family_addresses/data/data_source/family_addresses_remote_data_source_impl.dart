@@ -33,8 +33,15 @@ class FamilyAddressesRemoteDataSourceImpl
   @override
   Future<AddressCoveragePreviewResponseDto> previewExistingAddress(
     String memberId,
-    String addressId,
-  ) => _api.previewExistingFamilyMemberAddress(memberId, addressId);
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) => _api.previewExistingFamilyMemberAddress(
+    memberId,
+    addressId,
+    page: page,
+    pageSize: pageSize,
+  );
   @override
   Future<CustomerAddressResponseDto> setDefaultAddress(
     String memberId,

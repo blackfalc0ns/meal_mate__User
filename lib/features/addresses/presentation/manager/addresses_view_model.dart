@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/constants/app_constants.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
@@ -56,6 +58,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
   MapAddressAutofillEntity? _lastReverseGeocodeResult;
   final Map<String, LocationAreaEntity> _areaBlocksCache = {};
   int _geocodeRequestId = 0;
+  int _coverageSessionId = 0;
 
   void configureFamilyMember(
     String memberId, {
@@ -65,6 +68,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     final memberChanged =
         _familyMemberId != null && _familyMemberId != memberId;
     if (memberChanged) {
+      _coverageSessionId++;
       _familyMemberGeneration++;
       _clearReverseGeocodeCache();
       emit(
@@ -77,7 +81,9 @@ class AddressesViewModel extends Cubit<AddressesState> {
           ),
           action: const AddressesActionState(),
           mapAutofill: const MapAutofillState(),
-          coveragePreview: const AddressCoveragePreviewState(),
+          coveragePreview: AddressCoveragePreviewState(
+            sessionId: _coverageSessionId,
+          ),
         ),
       );
     }
@@ -88,6 +94,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
   void invalidateFamilyMemberOperations() {
     _familyMemberGeneration++;
+    _coverageSessionId++;
     _clearReverseGeocodeCache();
   }
 
@@ -102,7 +109,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     return lat >= 28.5 && lat <= 30.2 && lng >= 46.5 && lng <= 48.5;
   }
 
-  void doIntent(AddressesEvent event) {
+  Future<void> doIntent(AddressesEvent event) async {
     switch (event) {
       case GetCustomerAddressesEvent():
         _getCustomerAddresses();
@@ -119,7 +126,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       case UpdateCustomerAddressEvent():
         _updateCustomerAddress(event.addressId, event.request);
       case DeleteCustomerAddressEvent():
-        _deleteCustomerAddress(event.addressId);
+        await _deleteCustomerAddress(event.addressId);
       case ReverseGeocodeEvent():
         _reverseGeocode(event.latitude, event.longitude, force: event.force);
       case GeocodeAddressEvent():
@@ -136,6 +143,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
         _confirmPendingAddressAction();
       case ClearCoveragePreviewEvent():
         _clearCoveragePreview();
+      case LoadMoreAddressCoverageRestaurantsEvent():
+        _loadMoreAddressCoverageRestaurants();
+      case RetryAddressCoveragePreviewEvent():
+        _retryAddressCoveragePreview();
     }
   }
 
@@ -196,12 +207,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
       final selectedAreaWithBlocks = initialArea == null
           ? null
           : (initialArea.blocks.isNotEmpty
-              ? initialArea
-              : await _loadAreaBlocks(countryCode, initialArea.id));
+                ? initialArea
+                : await _loadAreaBlocks(countryCode, initialArea.id));
       final selectedArea = selectedAreaWithBlocks ?? initialArea;
       final selectedBlock = selectedArea == null
           ? null
-          : AddressCatalogMatcher.findInitialBlock(selectedArea, initialAddress);
+          : AddressCatalogMatcher.findInitialBlock(
+              selectedArea,
+              initialAddress,
+            );
 
       emit(
         state.copyWith(
@@ -243,7 +257,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
         final selectedArea = selectedAreaWithBlocks ?? initialArea;
         final selectedBlock = selectedArea == null
             ? null
-            : AddressCatalogMatcher.findInitialBlock(selectedArea, initialAddress);
+            : AddressCatalogMatcher.findInitialBlock(
+                selectedArea,
+                initialAddress,
+              );
 
         emit(
           state.copyWith(
@@ -319,8 +336,12 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final selectedAreaWithBlocks = AddressCatalogMatcher.findAreaById(result.data, area.id);
-        if (selectedAreaWithBlocks != null && selectedAreaWithBlocks.blocks.isNotEmpty) {
+        final selectedAreaWithBlocks = AddressCatalogMatcher.findAreaById(
+          result.data,
+          area.id,
+        );
+        if (selectedAreaWithBlocks != null &&
+            selectedAreaWithBlocks.blocks.isNotEmpty) {
           _areaBlocksCache[area.id] = selectedAreaWithBlocks;
         }
         emit(
@@ -717,10 +738,14 @@ class AddressesViewModel extends Cubit<AddressesState> {
     CustomerAddressRequestEntity request,
   ) async {
     final memberGeneration = _familyMemberGeneration;
+    _coverageSessionId++;
+    final sessionId = _coverageSessionId;
+
     if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
       emit(
         state.copyWith(
           coveragePreview: state.coveragePreview.copyWith(
+            sessionId: sessionId,
             isLoading: false,
             isSuccess: false,
             failure: AddressOutOfBoundsFailure(),
@@ -732,11 +757,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     emit(
       state.copyWith(
-        coveragePreview: state.coveragePreview.copyWith(
+        coveragePreview: AddressCoveragePreviewState(
+          sessionId: sessionId,
           isLoading: true,
           isSuccess: false,
-          clearPreview: true,
-          clearFailure: true,
           pendingAction: AddressPendingActionType.add,
           pendingRequest: request,
         ),
@@ -745,9 +769,22 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     final familyMemberId = _familyMemberId;
     final result = familyMemberId == null
-        ? await _previewNewAddressCoverageUseCase(request)
-        : await _previewFamilyMemberAddressUseCase!(familyMemberId, request);
-    if (isClosed || memberGeneration != _familyMemberGeneration) return;
+        ? await _previewNewAddressCoverageUseCase(
+            request,
+            page: AppConstants.firstPage,
+            pageSize: AppConstants.defaultPageSize,
+          )
+        : await _previewFamilyMemberAddressUseCase!(
+            familyMemberId,
+            request,
+            page: AppConstants.firstPage,
+            pageSize: AppConstants.defaultPageSize,
+          );
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        sessionId != _coverageSessionId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -757,8 +794,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
               isLoading: false,
               isSuccess: true,
               preview: result.data,
-              pendingAction: AddressPendingActionType.add,
-              pendingRequest: request,
+              reachedEnd: _hasReachedEnd(result.data),
             ),
           ),
         );
@@ -779,10 +815,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
     String addressId,
     CustomerAddressRequestEntity request,
   ) async {
+    final memberGeneration = _familyMemberGeneration;
+    _coverageSessionId++;
+    final sessionId = _coverageSessionId;
+
     if (!isWithinKuwaitBounds(request.latitude, request.longitude)) {
       emit(
         state.copyWith(
           coveragePreview: state.coveragePreview.copyWith(
+            sessionId: sessionId,
             isLoading: false,
             isSuccess: false,
             failure: AddressOutOfBoundsFailure(),
@@ -794,11 +835,10 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     emit(
       state.copyWith(
-        coveragePreview: state.coveragePreview.copyWith(
+        coveragePreview: AddressCoveragePreviewState(
+          sessionId: sessionId,
           isLoading: true,
           isSuccess: false,
-          clearPreview: true,
-          clearFailure: true,
           pendingAction: AddressPendingActionType.update,
           targetAddressId: addressId,
           pendingRequest: request,
@@ -806,8 +846,16 @@ class AddressesViewModel extends Cubit<AddressesState> {
       ),
     );
 
-    final result = await _previewNewAddressCoverageUseCase(request);
-    if (isClosed) return;
+    final result = await _previewNewAddressCoverageUseCase(
+      request,
+      page: AppConstants.firstPage,
+      pageSize: AppConstants.defaultPageSize,
+    );
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        sessionId != _coverageSessionId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -817,9 +865,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
               isLoading: false,
               isSuccess: true,
               preview: result.data,
-              pendingAction: AddressPendingActionType.update,
-              targetAddressId: addressId,
-              pendingRequest: request,
+              reachedEnd: _hasReachedEnd(result.data),
             ),
           ),
         );
@@ -837,21 +883,32 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _previewExistingAddressCoverage(String addressId) async {
+    final memberGeneration = _familyMemberGeneration;
+    _coverageSessionId++;
+    final sessionId = _coverageSessionId;
+
     emit(
       state.copyWith(
-        coveragePreview: state.coveragePreview.copyWith(
+        coveragePreview: AddressCoveragePreviewState(
+          sessionId: sessionId,
           isLoading: true,
           isSuccess: false,
-          clearPreview: true,
-          clearFailure: true,
           pendingAction: AddressPendingActionType.setDefault,
           targetAddressId: addressId,
         ),
       ),
     );
 
-    final result = await _previewExistingAddressCoverageUseCase(addressId);
-    if (isClosed) return;
+    final result = await _previewExistingAddressCoverageUseCase(
+      addressId,
+      page: AppConstants.firstPage,
+      pageSize: AppConstants.defaultPageSize,
+    );
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        sessionId != _coverageSessionId) {
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -861,8 +918,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
               isLoading: false,
               isSuccess: true,
               preview: result.data,
-              pendingAction: AddressPendingActionType.setDefault,
-              targetAddressId: addressId,
+              reachedEnd: _hasReachedEnd(result.data),
             ),
           ),
         );
@@ -876,6 +932,167 @@ class AddressesViewModel extends Cubit<AddressesState> {
             ),
           ),
         );
+    }
+  }
+
+  bool _hasReachedEnd(
+    AddressCoveragePreviewEntity entity, [
+    int? currentServerPage,
+  ]) {
+    final meta = entity.pagination;
+    if (meta == null) return true;
+    if (meta.hasNextPage == false) return true;
+    if (entity.servingRestaurants.isEmpty) return true;
+    if (currentServerPage != null &&
+        meta.page != null &&
+        meta.page! <= currentServerPage) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> _loadMoreAddressCoverageRestaurants() async {
+    final current = state.coveragePreview;
+    final preview = current.preview;
+    final meta = preview?.pagination;
+    if (isClosed ||
+        current.isLoading ||
+        current.isLoadingMore ||
+        state.action.isLoading ||
+        !current.canLoadMore ||
+        preview == null ||
+        meta == null) {
+      return;
+    }
+    final page = meta.page;
+    final pageSize = meta.pageSize;
+    if (page == null || page < 1 || pageSize == null || pageSize < 1) return;
+    final nextPage = page + 1;
+    final sessionId = current.sessionId;
+    final memberGeneration = _familyMemberGeneration;
+
+    emit(
+      state.copyWith(
+        coveragePreview: current.copyWith(
+          isLoadingMore: true,
+          clearLoadMoreFailure: true,
+        ),
+      ),
+    );
+
+    final result = await _requestCoveragePage(
+      current,
+      page: nextPage,
+      pageSize: pageSize,
+    );
+
+    if (isClosed ||
+        memberGeneration != _familyMemberGeneration ||
+        sessionId != _coverageSessionId) {
+      return;
+    }
+
+    switch (result) {
+      case ApiSuccessResult():
+        final incoming = result.data;
+        final seen = <String>{
+          for (final item in preview.servingRestaurants)
+            if (item.id.isNotEmpty) item.id,
+        };
+        final merged = <ServingRestaurantEntity>[...preview.servingRestaurants];
+        for (final item in incoming.servingRestaurants) {
+          if (item.id.isEmpty || seen.add(item.id)) merged.add(item);
+        }
+        final updated = preview.copyWith(
+          servingRestaurants: List.unmodifiable(merged),
+          pagination: incoming.pagination,
+          clearPagination: incoming.pagination == null,
+        );
+        final reachedEnd = _hasReachedEnd(incoming, page);
+
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoadingMore: false,
+              clearLoadMoreFailure: true,
+              preview: updated,
+              reachedEnd: reachedEnd,
+            ),
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            coveragePreview: state.coveragePreview.copyWith(
+              isLoadingMore: false,
+              loadMoreFailure: result.failure,
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<ApiResult<AddressCoveragePreviewEntity>> _requestCoveragePage(
+    AddressCoveragePreviewState context, {
+    required int page,
+    required int pageSize,
+  }) {
+    final pendingAction = context.pendingAction;
+    final pendingRequest = context.pendingRequest;
+    final targetId = context.targetAddressId;
+
+    if (pendingAction == AddressPendingActionType.setDefault &&
+        targetId != null) {
+      return _previewExistingAddressCoverageUseCase(
+        targetId,
+        page: page,
+        pageSize: pageSize,
+      );
+    } else if (pendingRequest != null) {
+      final familyMemberId = _familyMemberId;
+      if (familyMemberId != null &&
+          _previewFamilyMemberAddressUseCase != null) {
+        return _previewFamilyMemberAddressUseCase!(
+          familyMemberId,
+          pendingRequest,
+          page: page,
+          pageSize: pageSize,
+        );
+      }
+      return _previewNewAddressCoverageUseCase(
+        pendingRequest,
+        page: page,
+        pageSize: pageSize,
+      );
+    }
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(
+          errorMessage: 'No pending address request for coverage paging',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _retryAddressCoveragePreview() async {
+    final current = state.coveragePreview;
+    if (current.loadMoreFailure != null) {
+      _loadMoreAddressCoverageRestaurants();
+    } else if (current.failure != null) {
+      final pendingAction = current.pendingAction;
+      final pendingRequest = current.pendingRequest;
+      final targetId = current.targetAddressId;
+
+      if (pendingAction == AddressPendingActionType.setDefault &&
+          targetId != null) {
+        await _previewExistingAddressCoverage(targetId);
+      } else if (pendingAction == AddressPendingActionType.update &&
+          targetId != null &&
+          pendingRequest != null) {
+        _previewUpdateAddressCoverage(targetId, pendingRequest);
+      } else if (pendingRequest != null) {
+        _previewNewAddressCoverage(pendingRequest);
+      }
     }
   }
 
@@ -893,7 +1110,14 @@ class AddressesViewModel extends Cubit<AddressesState> {
 
     if (pendingAction == null) return;
 
-    emit(state.copyWith(coveragePreview: const AddressCoveragePreviewState()));
+    _coverageSessionId++;
+    emit(
+      state.copyWith(
+        coveragePreview: AddressCoveragePreviewState(
+          sessionId: _coverageSessionId,
+        ),
+      ),
+    );
 
     switch (pendingAction) {
       case AddressPendingActionType.add:
@@ -912,6 +1136,13 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   void _clearCoveragePreview() {
-    emit(state.copyWith(coveragePreview: const AddressCoveragePreviewState()));
+    _coverageSessionId++;
+    emit(
+      state.copyWith(
+        coveragePreview: AddressCoveragePreviewState(
+          sessionId: _coverageSessionId,
+        ),
+      ),
+    );
   }
 }

@@ -84,8 +84,11 @@ class _SubscriptionPackageSelectionScreenState
               >(
                 buildWhen: (previous, current) =>
                     previous.isLoading != current.isLoading ||
+                    previous.isRefreshing != current.isRefreshing ||
+                    previous.isLoadingMore != current.isLoadingMore ||
                     previous.isSuccess != current.isSuccess ||
                     previous.failure != current.failure ||
+                    previous.loadMoreFailure != current.loadMoreFailure ||
                     previous.bundles != current.bundles,
                 builder: (context, state) {
                   return SubscriptionPackageSelectionBody(
@@ -102,6 +105,16 @@ class _SubscriptionPackageSelectionScreenState
                           ),
                         );
                       }
+                    },
+                    onLoadMore: () {
+                      _viewModel.doIntent(
+                        const LoadMoreSubscriptionPackagesEvent(),
+                      );
+                    },
+                    onRetryLoadMore: () {
+                      _viewModel.doIntent(
+                        const RetrySubscriptionPackagesEvent(),
+                      );
                     },
                   );
                 },

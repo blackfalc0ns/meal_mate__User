@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -13,13 +15,22 @@ import 'package:meal_meat_user/features/addresses/presentation/manager/addresses
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
+import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/addresses_content_section.dart';
 
-class AddressesScreen extends StatelessWidget {
+class AddressesScreen extends StatefulWidget {
   const AddressesScreen({super.key});
+
+  @override
+  State<AddressesScreen> createState() => _AddressesScreenState();
+}
+
+class _AddressesScreenState extends State<AddressesScreen> {
+  bool _isCoverageSheetOpen = false;
+  int? _activeCoverageSessionId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +38,11 @@ class AddressesScreen extends StatelessWidget {
     final locale = context.localization;
 
     return BlocProvider<AddressesViewModel>(
-      create: (_) =>
-          getIt<AddressesViewModel>()
-            ..doIntent(const GetCustomerAddressesEvent()),
+      create: (_) {
+        final viewModel = getIt<AddressesViewModel>();
+        unawaited(viewModel.doIntent(const GetCustomerAddressesEvent()));
+        return viewModel;
+      },
       child: Scaffold(
         appBar: CustomAppBar(
           title: locale.profile_addresses,
@@ -88,8 +101,7 @@ class AddressesScreen extends StatelessWidget {
               ),
             ),
             BlocSelector<AddressesViewModel, AddressesState, bool>(
-              selector: (state) =>
-                  state.action.isLoading || state.coveragePreview.isLoading,
+              selector: (state) => state.action.isLoading,
               builder: (context, isLoading) {
                 if (!isLoading) return const SizedBox.shrink();
                 return const AddressLoadingOverlay();
@@ -108,48 +120,13 @@ class AddressesScreen extends StatelessWidget {
       CustomSnackbar.showError(context: context, message: errorMessage);
     }
 
-    final previewError = state.coveragePreview.displayErrorMessage;
-    if (previewError != null && previewError.isNotEmpty) {
-      CustomSnackbar.showError(context: context, message: previewError);
-    }
+    final isNewSessionLoading =
+        state.coveragePreview.isLoading &&
+        state.coveragePreview.sessionId != 0 &&
+        state.coveragePreview.sessionId != _activeCoverageSessionId;
 
-    final isNewPreviewSuccess =
-        state.coveragePreview.isSuccess &&
-        state.coveragePreview.preview != null;
-
-    if (isNewPreviewSuccess) {
-      final preview = state.coveragePreview.preview!;
-      await AppWoltModalSheet.show<void>(
-        context: context,
-        hasTopBarLayer: false,
-        showDragHandle: false,
-        child: BlocProvider.value(
-          value: context.read<AddressesViewModel>(),
-          child: BlocBuilder<AddressesViewModel, AddressesState>(
-            builder: (innerContext, innerState) {
-              return AddressCoveragePreviewBottomSheet(
-                preview: preview,
-                isSubmitting: innerState.action.isLoading,
-                confirmButtonText: locale.address_coverage_confirm_set_default,
-                onConfirm: () {
-                  innerContext.read<AddressesViewModel>().doIntent(
-                    const ConfirmPendingAddressActionEvent(),
-                  );
-                },
-                onChooseAnother: () {
-                  Navigator.of(innerContext).pop();
-                },
-              );
-            },
-          ),
-        ),
-      );
-
-      if (context.mounted) {
-        context.read<AddressesViewModel>().doIntent(
-          const ClearCoveragePreviewEvent(),
-        );
-      }
+    if (isNewSessionLoading) {
+      _openCoverageModal(context, state.coveragePreview.sessionId);
     }
 
     if (!context.mounted) return;
@@ -159,6 +136,98 @@ class AddressesScreen extends StatelessWidget {
         context: context,
         message: locale.addresses_save_success,
       );
+    }
+  }
+
+  Future<void> _openCoverageModal(BuildContext context, int sessionId) async {
+    if (_isCoverageSheetOpen) {
+      _activeCoverageSessionId = sessionId;
+      return;
+    }
+    _isCoverageSheetOpen = true;
+    _activeCoverageSessionId = sessionId;
+
+    try {
+      await AppWoltModalSheet.show<void>(
+        context: context,
+        hasTopBarLayer: false,
+        showDragHandle: false,
+        child: BlocProvider.value(
+          value: context.read<AddressesViewModel>(),
+          child: BlocBuilder<AddressesViewModel, AddressesState>(
+            builder: (sheetContext, innerState) {
+              final coverage = innerState.coveragePreview;
+
+              if (coverage.sessionId != _activeCoverageSessionId &&
+                  coverage.sessionId == 0) {
+                return const SizedBox.shrink();
+              }
+
+              if (coverage.isLoading && coverage.preview == null) {
+                return const AddressCoverageLoadingSkeleton();
+              }
+
+              if (coverage.failure != null && coverage.preview == null) {
+                return Padding(
+                  padding: const EdgeInsets.all(Spacing.xl),
+                  child: ApiErrorWidget(
+                    exception: coverage.failure!.exception,
+                    onRetry: () => sheetContext
+                        .read<AddressesViewModel>()
+                        .doIntent(const RetryAddressCoveragePreviewEvent()),
+                  ),
+                );
+              }
+
+              final preview = coverage.preview;
+              if (preview == null) {
+                return const SizedBox.shrink();
+              }
+
+              return AddressCoveragePreviewBottomSheet(
+                key: ValueKey(coverage.sessionId),
+                preview: preview,
+                isSubmitting: innerState.action.isLoading,
+                confirmButtonText: sheetContext
+                    .localization
+                    .address_coverage_confirm_set_default,
+                isLoadingMore: coverage.isLoadingMore,
+                hasMoreRestaurants: coverage.canLoadMore,
+                loadMoreFailure: coverage.loadMoreFailure,
+                onLoadMoreRestaurants: () => unawaited(
+                  sheetContext.read<AddressesViewModel>().doIntent(
+                    const LoadMoreAddressCoverageRestaurantsEvent(),
+                  ),
+                ),
+                onConfirm: () {
+                  unawaited(
+                    sheetContext.read<AddressesViewModel>().doIntent(
+                      const ConfirmPendingAddressActionEvent(),
+                    ),
+                  );
+                },
+                onChooseAnother: () {
+                  Navigator.of(sheetContext).pop();
+                },
+              );
+            },
+          ),
+        ),
+      );
+    } finally {
+      _isCoverageSheetOpen = false;
+      if (context.mounted) {
+        final currentSession = context
+            .read<AddressesViewModel>()
+            .state
+            .coveragePreview
+            .sessionId;
+        if (currentSession == _activeCoverageSessionId) {
+          context.read<AddressesViewModel>().doIntent(
+            const ClearCoveragePreviewEvent(),
+          );
+        }
+      }
     }
   }
 

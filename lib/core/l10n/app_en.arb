@@ -2381,5 +2381,22 @@
   "meal_details_per_100g": "Per 100g",
   "meal_tag_high_protein": "High Protein",
   "meal_tag_diet_friendly": "Diet Friendly",
-  "meal_tag_natural_ingredients": "Natural Ingredients"
+  "meal_tag_natural_ingredients": "Natural Ingredients",
+  "coupon_status_valid": "Coupon applied successfully",
+  "coupon_status_not_found": "This coupon code does not exist",
+  "coupon_status_inactive": "This coupon code is not active",
+  "coupon_status_not_started": "This coupon code is not valid yet",
+  "coupon_status_expired": "This coupon code has expired",
+  "coupon_status_usage_exhausted": "This coupon code has reached its usage limit",
+  "coupon_status_stacking_conflict": "This coupon code cannot be combined with the current offer",
+  "coupon_status_ineligible": "This coupon code is not eligible for this subscription",
+  "coupon_status_unknown": "This coupon code is invalid",
+  "coupon_error_rejected": "Coupon code was rejected",
+  "coupon_error_no_longer_valid": "This coupon code has expired",
+  "coupon_error_full_discount_unsupported": "Zero-amount checkout is currently unsupported. Remove this code or use another code.",
+  "coupon_apply_button": "Apply",
+  "coupon_remove_button": "Remove",
+  "coupon_input_hint": "Enter coupon code",
+  "coupon_card_title": "Promo Code",
+  "coupon_applied_label": "Discount applied"
 }

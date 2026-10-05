@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
+import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
@@ -38,6 +39,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
+  int _methodsLoadGeneration = 0;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -65,6 +67,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
   }
 
   Future<void> _load(PaymentArgs args) async {
+    final currentGen = ++_methodsLoadGeneration;
     emit(
       state.copyWith(
         isMethodsLoading: true,
@@ -82,7 +85,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       amount: args.summary.finalPrice,
     );
 
-    if (isClosed) return;
+    if (isClosed || currentGen != _methodsLoadGeneration) return;
 
     switch (methodsResult) {
       case ApiSuccessResult():
@@ -94,7 +97,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                   method.type != PaymentMethodType.wallet,
             )
             .toList();
-        if (isClosed) return;
+        if (isClosed || currentGen != _methodsLoadGeneration) return;
         emit(
           state.copyWith(
             isMethodsLoading: false,
@@ -104,7 +107,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           ),
         );
       case ApiErrorResult():
-        if (isClosed) return;
+        if (isClosed || currentGen != _methodsLoadGeneration) return;
         emit(
           state.copyWith(
             isMethodsLoading: false,
@@ -119,6 +122,28 @@ class PaymentViewModel extends Cubit<PaymentState> {
     final selectedMethod = state.selectedMethod;
     if (selectedMethod == null) return;
 
+    if (args.summary.finalPrice <= 0) {
+      emit(
+        state.copyWith(
+          isCheckoutLoading: false,
+          checkoutFailure: ServerFailure(
+            code: SubscriptionErrorCodes.couponFullDiscountUnsupported,
+            errorMessage:
+                'Zero-amount checkout is currently unsupported. Remove this code or use another code.',
+            exception: const ApiException(
+              message:
+                  'Zero-amount checkout is currently unsupported. Remove this code or use another code.',
+              statusCode: 400,
+              errorType: ApiErrorType.badRequest,
+              backendErrorCode:
+                  SubscriptionErrorCodes.couponFullDiscountUnsupported,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     final request = PaymentCheckoutRequestEntity(
       programId: args.summaryRequest.programId,
       bundleId: args.summaryRequest.bundleId,
@@ -130,6 +155,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
       includeFriday: args.summaryRequest.includeFriday,
       paymentMethodId: selectedMethod.id,
       correlationId: _generateCorrelationId(),
+      promoCode: args.summaryRequest.promoCode,
     );
 
     emit(

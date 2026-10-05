@@ -64,6 +64,12 @@ class SubscriptionReadinessAddressResponseDto {
     this.area,
     this.block,
     this.regionId,
+    this.governorateNameAr,
+    this.governorateNameEn,
+    this.areaNameAr,
+    this.areaNameEn,
+    this.blockNameAr,
+    this.blockNameEn,
   });
 
   final String? id;
@@ -73,10 +79,17 @@ class SubscriptionReadinessAddressResponseDto {
   final String? area;
   final String? block;
   final String? regionId;
+  final String? governorateNameAr;
+  final String? governorateNameEn;
+  final String? areaNameAr;
+  final String? areaNameEn;
+  final String? blockNameAr;
+  final String? blockNameEn;
 
   factory SubscriptionReadinessAddressResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionReadinessAddressResponseDtoFromJson(json);
+
 }
 
 @JsonSerializable(createToJson: false)

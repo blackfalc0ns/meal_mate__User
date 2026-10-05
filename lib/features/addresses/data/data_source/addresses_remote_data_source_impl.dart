@@ -58,9 +58,15 @@ class AddressesRemoteDataSourceImpl implements AddressesRemoteDataSource {
 
   @override
   Future<AddressCoveragePreviewResponseDto> previewExistingAddressCoverage(
-    String addressId,
-  ) {
-    return _apiServices.previewExistingAddressCoverage(addressId);
+    String addressId, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _apiServices.previewExistingAddressCoverage(
+      addressId,
+      page: page,
+      pageSize: pageSize,
+    );
   }
 
   @override

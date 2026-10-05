@@ -1,4 +1,7 @@
+import 'package:meal_meat_user/core/entities/paged_entity.dart';
+import 'package:meal_meat_user/core/network/mapper/pagination_mapper.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurants_page_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 
 extension SubscriptionTierRestaurantBrowseResponseDtoMapper
@@ -31,6 +34,20 @@ extension SubscriptionTierRestaurantClassificationResponseDtoMapper
     return SubscriptionTierRestaurantClassificationEntity(
       logoUrl: logoUrl,
       tier: tier ?? '',
+    );
+  }
+}
+
+extension SubscriptionTierRestaurantsPageResponseDtoMapper
+    on SubscriptionTierRestaurantsPageResponseDto {
+  PagedEntity<SubscriptionTierRestaurantBrowseEntity> toEntity() {
+    final mappedItems = (items ?? const [])
+        .where((dto) => (dto.restaurantId ?? '').trim().isNotEmpty)
+        .map((dto) => dto.toEntity())
+        .toList();
+    return PagedEntity<SubscriptionTierRestaurantBrowseEntity>(
+      items: mappedItems,
+      pagination: effectivePagination.toEntity(),
     );
   }
 }

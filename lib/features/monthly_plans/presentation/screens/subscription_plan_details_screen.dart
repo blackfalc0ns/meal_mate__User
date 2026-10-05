@@ -157,20 +157,36 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                     backgroundColor: color.surface,
                     body: Stack(
                       children: [
-                        CustomScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          slivers: [
-                            MonthlyPlanHeroSliverSection(
-                              detailsArgs: detailsArgs,
-                            ),
-                            MonthlyPlanContentSliverSection(
-                              detailsArgs: detailsArgs,
-                            ),
-                            const SliverToBoxAdapter(
-                              child: SizedBox(height: Spacing.xxxl * 2),
-                            ),
-                          ],
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (notification) {
+                            if (notification.metrics.pixels >=
+                                notification.metrics.maxScrollExtent - 240) {
+                              final vm =
+                                  context.read<SubscriptionPlanViewModel>();
+                              if (vm.state.isBrowsingRestaurants) {
+                                vm.doIntent(
+                                  const LoadMoreSubscriptionTierRestaurantsEvent(),
+                                );
+                              }
+                            }
+                            return false;
+                          },
+                          child: CustomScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            slivers: [
+                              MonthlyPlanHeroSliverSection(
+                                detailsArgs: detailsArgs,
+                              ),
+                              MonthlyPlanContentSliverSection(
+                                detailsArgs: detailsArgs,
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(height: Spacing.xxxl * 2),
+                              ),
+                            ],
+                          ),
                         ),
+
                         MonthlyPlanBottomBarSection(detailsArgs: detailsArgs),
                       ],
                     ),

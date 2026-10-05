@@ -49,13 +49,8 @@ class AddressesState {
           coveragePreview == other.coveragePreview;
 
   @override
-  int get hashCode => Object.hash(
-        addresses,
-        locations,
-        action,
-        mapAutofill,
-        coveragePreview,
-      );
+  int get hashCode =>
+      Object.hash(addresses, locations, action, mapAutofill, coveragePreview);
 }
 
 class CustomerAddressesState {
@@ -119,12 +114,8 @@ class CustomerAddressesState {
           listEquals(items, other.items);
 
   @override
-  int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        failure,
-        Object.hashAll(items),
-      );
+  int get hashCode =>
+      Object.hash(isLoading, isSuccess, failure, Object.hashAll(items));
 }
 
 class LocationsCatalogState {
@@ -203,14 +194,14 @@ class LocationsCatalogState {
 
   @override
   int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        data,
-        selectedGovernorate,
-        selectedArea,
-        selectedBlock,
-        failure,
-      );
+    isLoading,
+    isSuccess,
+    data,
+    selectedGovernorate,
+    selectedArea,
+    selectedBlock,
+    failure,
+  );
 }
 
 class AddressesActionState {
@@ -274,13 +265,13 @@ class AddressesActionState {
 
   @override
   int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        errorMessage,
-        failure,
-        address,
-        deliveryChangeNotice,
-      );
+    isLoading,
+    isSuccess,
+    errorMessage,
+    failure,
+    address,
+    deliveryChangeNotice,
+  );
 }
 
 class MapAutofillState {
@@ -331,34 +322,49 @@ class MapAutofillState {
           failure == other.failure;
 
   @override
-  int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        autofill,
-        failure,
-      );
+  int get hashCode => Object.hash(isLoading, isSuccess, autofill, failure);
 }
 
 enum AddressPendingActionType { add, update, setDefault }
 
 class AddressCoveragePreviewState {
   const AddressCoveragePreviewState({
+    this.sessionId = 0,
     this.isLoading = false,
     this.isSuccess = false,
+    this.isLoadingMore = false,
+    this.reachedEnd = false,
     this.preview,
     this.pendingAction,
     this.targetAddressId,
     this.pendingRequest,
     this.failure,
+    this.loadMoreFailure,
   });
 
+  final int sessionId;
   final bool isLoading;
   final bool isSuccess;
+  final bool isLoadingMore;
+  final bool reachedEnd;
   final AddressCoveragePreviewEntity? preview;
   final AddressPendingActionType? pendingAction;
   final String? targetAddressId;
   final CustomerAddressRequestEntity? pendingRequest;
   final Failure? failure;
+  final Failure? loadMoreFailure;
+
+  bool get canLoadMore {
+    final meta = preview?.pagination;
+    return isSuccess &&
+        !isLoading &&
+        !isLoadingMore &&
+        !reachedEnd &&
+        meta != null &&
+        meta.hasNextPage == true &&
+        (meta.page ?? 0) >= 1 &&
+        (meta.pageSize ?? 0) >= 1;
+  }
 
   String? get displayErrorMessage {
     final code = failure?.code.trim();
@@ -368,21 +374,37 @@ class AddressCoveragePreviewState {
     return failure?.errorMessage;
   }
 
+  String? get displayLoadMoreErrorMessage {
+    final code = loadMoreFailure?.code.trim();
+    if (code != null && code.isNotEmpty && code != 'unknown') {
+      return code;
+    }
+    return loadMoreFailure?.errorMessage;
+  }
+
   AddressCoveragePreviewState copyWith({
+    int? sessionId,
     bool? isLoading,
     bool? isSuccess,
+    bool? isLoadingMore,
+    bool? reachedEnd,
     AddressCoveragePreviewEntity? preview,
     AddressPendingActionType? pendingAction,
     String? targetAddressId,
     CustomerAddressRequestEntity? pendingRequest,
     Failure? failure,
+    Failure? loadMoreFailure,
     bool clearPreview = false,
     bool clearFailure = false,
     bool clearPending = false,
+    bool clearLoadMoreFailure = false,
   }) {
     return AddressCoveragePreviewState(
+      sessionId: sessionId ?? this.sessionId,
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      reachedEnd: reachedEnd ?? this.reachedEnd,
       preview: clearPreview ? null : preview ?? this.preview,
       pendingAction: clearPending ? null : pendingAction ?? this.pendingAction,
       targetAddressId: clearPending
@@ -392,6 +414,9 @@ class AddressCoveragePreviewState {
           ? null
           : pendingRequest ?? this.pendingRequest,
       failure: clearFailure ? null : failure ?? this.failure,
+      loadMoreFailure: clearLoadMoreFailure
+          ? null
+          : loadMoreFailure ?? this.loadMoreFailure,
     );
   }
 
@@ -400,22 +425,30 @@ class AddressCoveragePreviewState {
       identical(this, other) ||
       other is AddressCoveragePreviewState &&
           runtimeType == other.runtimeType &&
+          sessionId == other.sessionId &&
           isLoading == other.isLoading &&
           isSuccess == other.isSuccess &&
+          isLoadingMore == other.isLoadingMore &&
+          reachedEnd == other.reachedEnd &&
           preview == other.preview &&
           pendingAction == other.pendingAction &&
           targetAddressId == other.targetAddressId &&
           pendingRequest == other.pendingRequest &&
-          failure == other.failure;
+          failure == other.failure &&
+          loadMoreFailure == other.loadMoreFailure;
 
   @override
   int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        preview,
-        pendingAction,
-        targetAddressId,
-        pendingRequest,
-        failure,
-      );
+    sessionId,
+    isLoading,
+    isSuccess,
+    isLoadingMore,
+    reachedEnd,
+    preview,
+    pendingAction,
+    targetAddressId,
+    pendingRequest,
+    failure,
+    loadMoreFailure,
+  );
 }

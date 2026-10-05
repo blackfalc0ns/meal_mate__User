@@ -15,6 +15,7 @@ class PaymentCheckoutRequestDto {
     required this.includeFriday,
     required this.paymentMethodId,
     required this.correlationId,
+    this.promoCode,
   });
 
   final String programId;
@@ -27,6 +28,8 @@ class PaymentCheckoutRequestDto {
   final bool includeFriday;
   final int paymentMethodId;
   final String correlationId;
+  @JsonKey(includeIfNull: false)
+  final String? promoCode;
 
   Map<String, dynamic> toJson() => _$PaymentCheckoutRequestDtoToJson(this);
 }
