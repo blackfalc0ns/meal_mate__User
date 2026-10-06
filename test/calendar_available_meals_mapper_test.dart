@@ -185,7 +185,7 @@ void main() {
       entity.restaurant?.tierLogoUrl,
       'https://ik.imagekit.io/f7h9cj23x/uploads/admin/tiers/Group_19497_apsDC4VCMe.png',
     );
-    expect(entity.restaurant?.rating, '4.5');
+    expect(entity.restaurant?.rating, isNull);
     expect(entity.restaurant?.logoUrl, 'https://example.com/logo.png');
     expect(entity.restaurant?.deliveryWindow, '8:00 ص - 4:00 م');
     expect(entity.isEditable, isFalse);

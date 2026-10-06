@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_state.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
@@ -50,7 +53,11 @@ class CalendarScreenBody extends StatelessWidget {
         backgroundColor: color.surface,
         body: Column(
           children: [
-            CalendarHeader(title: locale.calendar_title),
+            _buildCalendarHeader(
+              context,
+              locale.calendar_title,
+              activeCoordinator,
+            ),
             Expanded(
               child: CalendarContent(
                 showBottomSpace: showBottomSpace,
@@ -129,6 +136,42 @@ class CalendarScreenBody extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCalendarHeader(
+    BuildContext context,
+    String title,
+    CalendarNavigationCoordinator activeCoordinator,
+  ) {
+    NotificationBadgeViewModel? badgeVm;
+    try {
+      badgeVm = context.read<NotificationBadgeViewModel>();
+    } catch (_) {
+      if (getIt.isRegistered<NotificationBadgeViewModel>()) {
+        badgeVm = getIt<NotificationBadgeViewModel>();
+      }
+    }
+
+    if (badgeVm == null) {
+      return CalendarHeader(
+        title: title,
+        hasNotification: false,
+        onNotificationPressed: () => activeCoordinator.openNotifications(context),
+      );
+    }
+
+    return BlocSelector<NotificationBadgeViewModel, NotificationBadgeState, bool>(
+      bloc: badgeVm,
+      selector: (state) => state.hasUnread,
+      builder: (context, hasNotification) {
+        return CalendarHeader(
+          title: title,
+          hasNotification: hasNotification,
+          onNotificationPressed: () =>
+              activeCoordinator.openNotifications(context),
+        );
+      },
     );
   }
 }

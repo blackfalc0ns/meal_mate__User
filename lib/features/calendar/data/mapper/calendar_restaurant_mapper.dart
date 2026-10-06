@@ -16,7 +16,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         en: categoryEn,
         fallback: category,
       ),
-      rating: rating?.toString() ?? '4.5',
+      rating: rating?.toString(),
       deliveryDuration: _localized(
         localeName,
         ar: tierNameAr,
@@ -56,7 +56,7 @@ extension CalendarRestaurantResponseDtoMapper on CalendarRestaurantResponseDto {
         fallback: description,
       ),
       mealCount: safeMealCount ?? mealCount ?? 0,
-      rating: rating?.toString() ?? '4.5',
+      rating: rating?.toString(),
       ratingCount: ratingCount ?? 0,
       deliveryWindow: _deliveryWindowText(
         deliveryTimeText: deliveryTimeText ?? deliveryWindow,

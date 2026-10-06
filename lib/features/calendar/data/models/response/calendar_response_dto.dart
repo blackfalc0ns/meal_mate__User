@@ -13,6 +13,8 @@ class CalendarResponseDto {
     this.slotRequirements,
     this.isFulfillmentReady,
     this.days,
+    this.hasUnreadNotifications,
+    this.unreadNotificationsCount,
   });
 
   final String? subscriptionId;
@@ -22,6 +24,8 @@ class CalendarResponseDto {
   final List<CalendarSlotRequirementResponseDto>? slotRequirements;
   final bool? isFulfillmentReady;
   final List<CalendarDayResponseDto>? days;
+  final bool? hasUnreadNotifications;
+  final int? unreadNotificationsCount;
 
   factory CalendarResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarResponseDtoFromJson(json);

@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @lazySingleton
@@ -129,6 +130,9 @@ class TokenInterceptor extends QueuedInterceptor {
   Future<void> _expireSession() async {
     if (_sessionExpired) return;
     _sessionExpired = true;
+    if (getIt.isRegistered<NotificationBadgeViewModel>()) {
+      getIt<NotificationBadgeViewModel>().resetForAccountChange();
+    }
     await _tokenService.clearTokens();
     await _navigatorService.replaceAllWithNamedWhenReady(AppRoutes.login);
   }

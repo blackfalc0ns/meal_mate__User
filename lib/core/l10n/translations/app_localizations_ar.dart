@@ -3209,6 +3209,9 @@ class AppLocalizationsAr extends AppLocalizations {
       'نقدم وجبات صحية عالية الجودة باستخدام مكونات طازجة\nوطبيعية لمساعدتك على تحقيق أهدافك الغذائية والرياضية.';
 
   @override
+  String get calendar_restaurant_no_reviews => 'لا توجد تقييمات';
+
+  @override
   String get calendar_ingredient_origin_title => 'بلد المنشأ للمكونات الأساسية';
 
   @override

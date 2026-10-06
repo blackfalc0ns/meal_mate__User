@@ -52,6 +52,7 @@ class CalendarDayContent extends StatelessWidget {
     final readOnly = selectedDay?.isEditable != true;
     final hasMeals = meals.isNotEmpty;
     final isAwaiting = selectedDay?.isAwaitingRestaurantConfirmation == true;
+    final isConfirmed = selectedDay?.isConfirmed == true;
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsetsDirectional.only(
@@ -97,6 +98,7 @@ class CalendarDayContent extends StatelessWidget {
                                 child: Transform.scale(
                                   scale: 2.3,
                                   child: Lottie.asset(
+                                    key: const ValueKey('awaiting_hourglass_lottie'),
                                     repeat: true,
                                     Assets.hourglassAnimation,
                                     fit: BoxFit.contain,
@@ -124,7 +126,7 @@ class CalendarDayContent extends StatelessWidget {
                         )
                         .animate(
                           key: ValueKey(
-                            'header_${selectedDay?.date?.toIso8601String()}_$isAwaiting',
+                            'header_${selectedDay?.date?.toIso8601String()}_${isAwaiting}_$isConfirmed',
                           ),
                         )
                         .fadeIn(duration: 250.ms)

@@ -112,12 +112,30 @@ class CalendarRestaurantsResponseDto {
     this.eligibilityCheckedAtUtc,
     this.restaurantCount,
     this.restaurants,
+    this.serviceDate,
+    this.limit,
+    this.adminCeiling,
+    this.page,
+    this.pageSize,
+    this.totalCount,
+    this.totalPages,
+    this.hasNextPage,
+    this.hasPreviousPage,
   });
 
   final String? restaurantPoolSnapshotId;
   final String? eligibilityCheckedAtUtc;
   final int? restaurantCount;
   final List<CalendarRestaurantResponseDto>? restaurants;
+  final String? serviceDate;
+  final int? limit;
+  final int? adminCeiling;
+  final int? page;
+  final int? pageSize;
+  final int? totalCount;
+  final int? totalPages;
+  final bool? hasNextPage;
+  final bool? hasPreviousPage;
 
   factory CalendarRestaurantsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$CalendarRestaurantsResponseDtoFromJson(json);

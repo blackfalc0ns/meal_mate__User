@@ -8,7 +8,7 @@ class CalendarRestaurantEntity {
     this.maxUsageCount,
     required this.name,
     required this.category,
-    required this.rating,
+    this.rating,
     required this.deliveryDuration,
     required this.deliveryWindow,
   });
@@ -21,7 +21,7 @@ class CalendarRestaurantEntity {
   final int? maxUsageCount;
   final String name;
   final String category;
-  final String rating;
+  final String? rating;
   final String deliveryDuration;
   final String deliveryWindow;
 }

@@ -335,9 +335,13 @@ class RouteGenerator {
           ),
         );
       case AppRoutes.calendar:
-        final subscriptionId = settings.arguments is String
-            ? settings.arguments! as String
-            : null;
+        String? subscriptionId;
+        if (settings.arguments is String) {
+          subscriptionId = settings.arguments as String;
+        } else if (settings.arguments is Map) {
+          final map = settings.arguments as Map;
+          subscriptionId = map['subscriptionId']?.toString();
+        }
         return _buildRoute(
           settings: settings,
           page: CalendarScreen(subscriptionId: subscriptionId),

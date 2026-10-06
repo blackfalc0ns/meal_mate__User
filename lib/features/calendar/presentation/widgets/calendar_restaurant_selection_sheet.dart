@@ -38,6 +38,9 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.restaurants != current.restaurants ||
           previous.isLoading != current.isLoading ||
+          previous.isLoadingMore != current.isLoadingMore ||
+          previous.loadMoreFailure != current.loadMoreFailure ||
+          previous.hasNextPage != current.hasNextPage ||
           previous.failure != current.failure ||
           previous.hasRestaurants != current.hasRestaurants,
       builder: (context, sheetState) {
@@ -59,6 +62,15 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
           date: resolvedDate,
           restaurants: sheetState.restaurants,
           isLoading: sheetState.isLoading,
+          isLoadingMore: sheetState.isLoadingMore,
+          loadMoreFailure: sheetState.loadMoreFailure,
+          hasNextPage: sheetState.hasNextPage,
+          onLoadMore: () => unawaited(
+            context.read<RestaurantPickerViewModel>().loadMore(),
+          ),
+          onRetryLoadMore: () => unawaited(
+            context.read<RestaurantPickerViewModel>().retryLoadMore(),
+          ),
           onSearchChanged: (query) {
             unawaited(
               context.read<RestaurantPickerViewModel>().load(

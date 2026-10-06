@@ -78,7 +78,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
         en: programNameEn,
         fallback: programName,
       ),
-      rating: restaurantRating?.toString() ?? '4.5',
+      rating: restaurantRating?.toString(),
       deliveryDuration: _localized(
         localeName,
         ar: tierNameAr,
@@ -279,6 +279,8 @@ extension CalendarResponseMapper on CalendarResponseDto {
     return CalendarSubscriptionEntity(
       subscriptionId: this.subscriptionId ?? subscriptionId,
       days: mappedDays,
+      hasUnreadNotifications: hasUnreadNotifications,
+      unreadNotificationsCount: unreadNotificationsCount,
     );
   }
 

@@ -465,7 +465,7 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
             ? restaurant!.name
             : selectedRestaurant.name,
         category: restaurant?.category ?? '',
-        rating: restaurant?.rating.isNotEmpty == true
+        rating: restaurant?.rating?.isNotEmpty == true
             ? restaurant!.rating
             : selectedRestaurant.rating,
         deliveryDuration: restaurant?.deliveryDuration ?? '',

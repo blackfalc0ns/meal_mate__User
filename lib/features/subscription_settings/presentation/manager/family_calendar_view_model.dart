@@ -399,8 +399,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       case ApiSuccessResult():
         emit(
           state.copyWith(
-            restaurants: result.data,
-            filteredRestaurants: result.data,
+            restaurants: result.data.restaurants,
+            filteredRestaurants: result.data.restaurants,
             isLoadingRestaurants: false,
           ),
         );

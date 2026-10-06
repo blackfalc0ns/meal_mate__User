@@ -2,10 +2,11 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/data/data_source/calendar_remote_data_source.dart';
 import 'package:meal_meat_user/features/calendar/data/mapper/calendar_mapper.dart';
+import 'package:meal_meat_user/features/calendar/data/mapper/calendar_restaurants_page_mapper.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 
@@ -45,22 +46,23 @@ class CalendarRepositoryImpl implements CalendarRepository {
   }
 
   @override
-  Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
+  Future<ApiResult<CalendarRestaurantsPageEntity>> getRestaurants({
     required String subscriptionId,
     required String date,
     required String localeName,
     String? query,
+    int? page,
+    int? pageSize,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getRestaurants(
         subscriptionId: subscriptionId,
         date: date,
         query: query,
+        page: page,
+        pageSize: pageSize,
       );
-      return response
-          .map((restaurant) => restaurant.toOptionEntity(localeName))
-          .where((restaurant) => restaurant.id.isNotEmpty)
-          .toList();
+      return response.toEntity(localeName: localeName);
     });
   }
 

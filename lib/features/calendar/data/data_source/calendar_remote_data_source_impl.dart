@@ -27,17 +27,20 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
   }
 
   @override
-  Future<List<CalendarRestaurantResponseDto>> getRestaurants({
+  Future<CalendarRestaurantsResponseDto> getRestaurants({
     required String subscriptionId,
     required String date,
     String? query,
-  }) async {
-    final response = await _apiServices.getSubscriptionCalendarDayRestaurants(
+    int? page,
+    int? pageSize,
+  }) {
+    return _apiServices.getSubscriptionCalendarDayRestaurants(
       subscriptionId,
       date,
       query,
+      page: page,
+      pageSize: pageSize,
     );
-    return response.restaurants ?? const [];
   }
 
   @override

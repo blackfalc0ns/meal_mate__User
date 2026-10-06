@@ -13,12 +13,12 @@ void main() {
       ..httpClientAdapter = adapter;
     final dataSource = CalendarRemoteDataSourceImpl(ApiServices(dio));
 
-    final restaurants = await dataSource.getRestaurants(
+    final response = await dataSource.getRestaurants(
       subscriptionId: 'subscription-1',
       date: '2026-09-15',
     );
 
-    expect(restaurants.single.restaurantId, 'restaurant-1');
+    expect(response.restaurants?.single.restaurantId, 'restaurant-1');
     expect(adapter.requestedUris, hasLength(1));
     expect(
       adapter.requestedUris.single.path,

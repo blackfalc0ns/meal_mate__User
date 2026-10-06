@@ -10,6 +10,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen_body.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen_effects.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({
@@ -45,7 +46,8 @@ class CalendarScreen extends StatefulWidget {
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _CalendarScreenState extends State<CalendarScreen>
+    with WidgetsBindingObserver {
   late final CalendarOverviewViewModel _overviewViewModel;
   late final RestaurantPickerViewModel _restaurantPickerViewModel;
   late final MealSelectionViewModel _mealSelectionViewModel;
@@ -57,6 +59,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _overviewViewModel =
         widget.overviewViewModel ??
         widget.overviewCubit ??
@@ -97,7 +100,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      final subId = _overviewViewModel.state.subscriptionId;
+      if (subId.isNotEmpty &&
+          getIt.isRegistered<NotificationBadgeViewModel>()) {
+        unawaited(
+          getIt<NotificationBadgeViewModel>().refreshCount(
+            subscriptionId: subId,
+            localeName: context.localization.localeName,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     unawaited(_flowViewModel.close());
     unawaited(_mealSelectionViewModel.close());
     unawaited(_restaurantPickerViewModel.close());
@@ -117,6 +137,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           value: _mealSelectionViewModel,
         ),
         BlocProvider<CalendarFlowViewModel>.value(value: _flowViewModel),
+        if (getIt.isRegistered<NotificationBadgeViewModel>())
+          BlocProvider<NotificationBadgeViewModel>.value(
+            value: getIt<NotificationBadgeViewModel>(),
+          ),
       ],
       child: CalendarScreenEffects(
         coordinator: _coordinator,

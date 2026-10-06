@@ -185,4 +185,8 @@ class CalendarNavigationCoordinator {
       ),
     );
   }
+
+  void openNotifications(BuildContext context) {
+    unawaited(Navigator.of(context).pushNamed(AppRoutes.notifications));
+  }
 }

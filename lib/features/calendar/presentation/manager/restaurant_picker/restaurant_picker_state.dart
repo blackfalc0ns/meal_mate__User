@@ -10,6 +10,14 @@ class RestaurantPickerState {
     this.selectingRestaurantId,
     this.failure,
     this.selectFailure,
+    this.page = 0,
+    this.pageSize = 20,
+    this.totalCount = 0,
+    this.totalPages = 0,
+    this.hasNextPage = false,
+    this.hasPreviousPage = false,
+    this.isLoadingMore = false,
+    this.loadMoreFailure,
   });
 
   final List<CalendarRestaurantOptionEntity> restaurants;
@@ -19,6 +27,14 @@ class RestaurantPickerState {
   final String? selectingRestaurantId;
   final Failure? failure;
   final Failure? selectFailure;
+  final int page;
+  final int pageSize;
+  final int totalCount;
+  final int totalPages;
+  final bool hasNextPage;
+  final bool hasPreviousPage;
+  final bool isLoadingMore;
+  final Failure? loadMoreFailure;
 
   bool get hasRestaurants => restaurants.isNotEmpty;
 
@@ -33,11 +49,20 @@ class RestaurantPickerState {
     String? selectingRestaurantId,
     Failure? failure,
     Failure? selectFailure,
+    int? page,
+    int? pageSize,
+    int? totalCount,
+    int? totalPages,
+    bool? hasNextPage,
+    bool? hasPreviousPage,
+    bool? isLoadingMore,
+    Failure? loadMoreFailure,
     bool clearRestaurants = false,
     bool clearQuery = false,
     bool clearFailure = false,
     bool clearSelectFailure = false,
     bool clearSelectingRestaurantId = false,
+    bool clearLoadMoreFailure = false,
   }) {
     return RestaurantPickerState(
       restaurants: clearRestaurants
@@ -53,6 +78,16 @@ class RestaurantPickerState {
       selectFailure: clearSelectFailure
           ? null
           : selectFailure ?? this.selectFailure,
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+      totalCount: totalCount ?? this.totalCount,
+      totalPages: totalPages ?? this.totalPages,
+      hasNextPage: hasNextPage ?? this.hasNextPage,
+      hasPreviousPage: hasPreviousPage ?? this.hasPreviousPage,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      loadMoreFailure: clearLoadMoreFailure
+          ? null
+          : loadMoreFailure ?? this.loadMoreFailure,
     );
   }
 }

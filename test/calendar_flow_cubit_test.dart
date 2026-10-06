@@ -22,6 +22,7 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_effect.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
@@ -33,7 +34,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class _FakeCalendarRepo implements CalendarRepository {
   ApiResult<CalendarSubscriptionEntity>? getCalendarResult;
   ApiResult<CalendarDayEntity>? getDayResult;
-  ApiResult<List<CalendarRestaurantOptionEntity>>? restaurantsResult;
+  ApiResult<CalendarRestaurantsPageEntity>? restaurantsResult;
   ApiResult<CalendarDayEntity>? setRestaurantResult;
   ApiResult<CalendarAvailableMealsEntity>? availableMealsResult;
   ApiResult<CalendarDayEntity>? saveMealsResult;
@@ -76,13 +77,26 @@ class _FakeCalendarRepo implements CalendarRepository {
   }
 
   @override
-  Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
+  Future<ApiResult<CalendarRestaurantsPageEntity>> getRestaurants({
     required String subscriptionId,
     required String date,
     required String localeName,
     String? query,
+    int? page,
+    int? pageSize,
   }) async {
-    return restaurantsResult ?? ApiSuccessResult(data: const []);
+    return restaurantsResult ??
+        ApiSuccessResult(
+          data: const CalendarRestaurantsPageEntity(
+            restaurants: [],
+            page: 1,
+            pageSize: 20,
+            totalCount: 0,
+            totalPages: 0,
+            hasNextPage: false,
+            hasPreviousPage: false,
+          ),
+        );
   }
 
   @override

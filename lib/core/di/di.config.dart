@@ -368,10 +368,18 @@ import '../../features/notifications/data/repo/notifications_repository_impl.dar
     as _i166;
 import '../../features/notifications/domain/repo/notifications_repository.dart'
     as _i341;
+import '../../features/notifications/domain/usecase/get_notifications_usecase.dart'
+    as _i588;
+import '../../features/notifications/domain/usecase/mark_all_notifications_read_usecase.dart'
+    as _i152;
+import '../../features/notifications/domain/usecase/mark_notification_read_usecase.dart'
+    as _i739;
 import '../../features/notifications/domain/usecase/register_device_token_usecase.dart'
     as _i350;
 import '../../features/notifications/domain/usecase/unregister_device_token_usecase.dart'
     as _i546;
+import '../../features/notifications/presentation/manager/notification_badge_view_model.dart'
+    as _i540;
 import '../../features/offer_details/presentation/manager/offer_details_view_model.dart'
     as _i736;
 import '../../features/offers/data/data_source/offers_remote_data_source.dart'
@@ -1353,6 +1361,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i27.GetSubscriptionProgramsPageUseCase>(),
       ),
     );
+    gh.factory<_i588.GetNotificationsUseCase>(
+      () => _i588.GetNotificationsUseCase(gh<_i341.NotificationsRepository>()),
+    );
+    gh.factory<_i152.MarkAllNotificationsReadUseCase>(
+      () => _i152.MarkAllNotificationsReadUseCase(
+        gh<_i341.NotificationsRepository>(),
+      ),
+    );
+    gh.factory<_i739.MarkNotificationReadUseCase>(
+      () => _i739.MarkNotificationReadUseCase(
+        gh<_i341.NotificationsRepository>(),
+      ),
+    );
     gh.factory<_i350.RegisterDeviceTokenUseCase>(
       () =>
           _i350.RegisterDeviceTokenUseCase(gh<_i341.NotificationsRepository>()),
@@ -1581,14 +1602,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
       ),
     );
-    gh.factory<_i568.CalendarOverviewViewModel>(
-      () => _i568.CalendarOverviewViewModel(
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
-      ),
-    );
     gh.factory<_i665.FamilyCheckoutViewModel>(
       () => _i665.FamilyCheckoutViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1647,6 +1660,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
       ),
     );
+    gh.factory<_i568.CalendarOverviewViewModel>(
+      () => _i568.CalendarOverviewViewModel(
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i750.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i540.NotificationBadgeViewModel>(),
+      ),
+    );
     gh.factory<_i693.FamilySubscriptionSetupViewModel>(
       () => _i693.FamilySubscriptionSetupViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1694,6 +1716,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i293.MealDetailsViewModel(
         gh<_i832.GetSubscriptionMealDetailsUseCase>(),
       ),
+    );
+    gh.lazySingleton<_i540.NotificationBadgeViewModel>(
+      () => _i540.NotificationBadgeViewModel(gh<_i200.GetCalendarUseCase>()),
     );
     gh.factory<_i154.RestaurantPickerViewModel>(
       () => _i154.RestaurantPickerViewModel(

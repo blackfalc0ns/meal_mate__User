@@ -16,6 +16,10 @@ class MealDetailsRatingBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (value.trim().isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     final color = context.colorScheme;
     final locale = context.localization;
 

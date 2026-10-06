@@ -107,6 +107,26 @@ void main() {
         expect(day.isEditable, isFalse);
         expect(day.isRestaurantClosed, isTrue);
         expect(day.isAwaitingRestaurantConfirmation, isTrue);
+        expect(day.isConfirmed, isFalse);
+      },
+    );
+
+    test(
+      'isConfirmed is true and isAwaitingRestaurantConfirmation is false when status is ConfirmedByRestaurant',
+      () {
+        final day = CalendarDayEntity(
+          status: 'ConfirmedByRestaurant',
+          uiStatus: 'locked',
+          canEdit: false,
+          date: DateTime(2026, 10, 6),
+          dayNumber: 6,
+          weekday: 'الثلاثاء',
+        );
+
+        expect(day.isConfirmed, isTrue);
+        expect(day.isAwaitingRestaurantConfirmation, isFalse);
+        expect(day.isEditable, isFalse);
+        expect(day.isRestaurantClosed, isTrue);
       },
     );
   });

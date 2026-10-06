@@ -13,6 +13,7 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
@@ -21,14 +22,16 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     this._getCalendarUseCase,
     this._getCalendarDayUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
-    this._sharedPrefHelper,
-  ) : super(const CalendarOverviewState());
+    this._sharedPrefHelper, [
+    this._notificationBadgeViewModel,
+  ]) : super(const CalendarOverviewState());
 
   final GetCalendarUseCase _getCalendarUseCase;
   final GetCalendarDayUseCase _getCalendarDayUseCase;
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
+  final NotificationBadgeViewModel? _notificationBadgeViewModel;
 
   int _calendarRequestGeneration = 0;
   int _dayRequestGeneration = 0;
@@ -80,6 +83,8 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
 
     final generation = ++_calendarRequestGeneration;
     _dayRequestGeneration++;
+    final badgeVersion =
+        _notificationBadgeViewModel?.beginCalendarCountRequest();
 
     emit(
       state.copyWith(
@@ -100,6 +105,20 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
       case ApiSuccessResult():
         final days = result.data.days;
         final selectedDate = _initialSelectedDate(days);
+        if (_notificationBadgeViewModel != null && badgeVersion != null) {
+          final serverCount = result.data.unreadNotificationsCount;
+          if (serverCount != null) {
+            _notificationBadgeViewModel.acceptCalendarCount(
+              serverCount,
+              requestVersion: badgeVersion,
+            );
+          } else if (result.data.hasUnreadNotifications != null) {
+            _notificationBadgeViewModel.acceptCalendarCount(
+              result.data.hasUnreadNotifications! ? 1 : 0,
+              requestVersion: badgeVersion,
+            );
+          }
+        }
         if (subscriptionId == null || subscriptionId.trim().isEmpty) {
           await _sharedPrefHelper.saveData(
             key: StorageKeys.currentSubscriptionId,

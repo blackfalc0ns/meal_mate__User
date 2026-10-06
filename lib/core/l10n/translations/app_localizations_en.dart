@@ -3263,6 +3263,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.';
 
   @override
+  String get calendar_restaurant_no_reviews => 'No reviews yet';
+
+  @override
   String get calendar_ingredient_origin_title =>
       'Origin country for main ingredients';
 

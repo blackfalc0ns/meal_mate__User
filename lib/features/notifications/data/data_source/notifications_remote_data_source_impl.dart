@@ -3,6 +3,7 @@ import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/notifications/data/data_source/notifications_remote_data_source.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
+import 'package:meal_meat_user/features/notifications/data/models/response/notifications_page_response_dto.dart';
 
 @Injectable(as: NotificationsRemoteDataSource)
 class NotificationsRemoteDataSourceImpl
@@ -10,6 +11,24 @@ class NotificationsRemoteDataSourceImpl
   NotificationsRemoteDataSourceImpl(this._apiServices);
 
   final ApiServices _apiServices;
+
+  @override
+  Future<NotificationsPageResponseDto> getCustomerNotifications({
+    required int page,
+    required int pageSize,
+  }) {
+    return _apiServices.getCustomerNotifications(page, pageSize);
+  }
+
+  @override
+  Future<void> markCustomerNotificationRead(String id) {
+    return _apiServices.markCustomerNotificationRead(id);
+  }
+
+  @override
+  Future<void> markAllCustomerNotificationsRead() {
+    return _apiServices.markAllCustomerNotificationsRead();
+  }
 
   @override
   Future<void> registerDeviceToken(DeviceTokenRegisterRequestDto request) {

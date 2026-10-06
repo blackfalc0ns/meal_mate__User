@@ -89,6 +89,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
+import 'package:meal_meat_user/features/notifications/data/models/response/notifications_page_response_dto.dart';
 import 'package:meal_meat_user/features/influencer/analytics/data/models/influencer_analytics_dto.dart';
 import 'package:meal_meat_user/features/influencer/bank_account/data/models/influencer_bank_account_dto.dart';
 import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_dashboard_dto.dart';
@@ -419,8 +420,10 @@ abstract class ApiServices {
   Future<CalendarRestaurantsResponseDto> getSubscriptionCalendarDayRestaurants(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
-    @Query('query') String? query,
-  );
+    @Query('query') String? query, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
 
   @POST(EndPoints.subscriptionCalendarDayRestaurant)
   Future<CalendarDayResponseDto> setSubscriptionCalendarDayRestaurant(
@@ -770,6 +773,20 @@ abstract class ApiServices {
   Future<void> unregisterDeviceToken(
     @Body() DeviceTokenUnregisterRequestDto request,
   );
+
+  @GET(EndPoints.customerNotifications)
+  Future<NotificationsPageResponseDto> getCustomerNotifications(
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+  );
+
+  @PUT(EndPoints.customerNotificationRead)
+  Future<void> markCustomerNotificationRead(
+    @Path('id') String id,
+  );
+
+  @PUT(EndPoints.customerNotificationsReadAll)
+  Future<void> markAllCustomerNotificationsRead();
 
   @GET(EndPoints.influencerBanks)
   Future<List<InfluencerBankDto>> getInfluencerBanks();

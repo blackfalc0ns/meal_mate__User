@@ -14,7 +14,7 @@ class CalendarRestaurantOptionEntity {
     required this.name,
     required this.description,
     required this.mealCount,
-    required this.rating,
+    this.rating,
     this.ratingCount = 0,
     this.deliveryWindow = '',
     this.tierName = '',
@@ -35,7 +35,7 @@ class CalendarRestaurantOptionEntity {
   final String name;
   final String description;
   final int mealCount;
-  final String rating;
+  final String? rating;
   final int ratingCount;
   final String deliveryWindow;
   final String tierName;

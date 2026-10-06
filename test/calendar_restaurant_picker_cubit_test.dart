@@ -4,13 +4,14 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
 
 class _ControllableCalendarRepo implements CalendarRepository {
-  final List<Completer<ApiResult<List<CalendarRestaurantOptionEntity>>>>
+  final List<Completer<ApiResult<CalendarRestaurantsPageEntity>>>
   restaurantCompleters = [];
   final List<String?> restaurantQueries = [];
 
@@ -19,15 +20,17 @@ class _ControllableCalendarRepo implements CalendarRepository {
   final List<String> setDayRestaurantIds = [];
 
   @override
-  Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
+  Future<ApiResult<CalendarRestaurantsPageEntity>> getRestaurants({
     required String subscriptionId,
     required String date,
     required String localeName,
     String? query,
+    int? page,
+    int? pageSize,
   }) {
     restaurantQueries.add(query);
     final completer =
-        Completer<ApiResult<List<CalendarRestaurantOptionEntity>>>();
+        Completer<ApiResult<CalendarRestaurantsPageEntity>>();
     restaurantCompleters.add(completer);
     return completer.future;
   }
@@ -57,6 +60,18 @@ CalendarRestaurantOptionEntity _createOption(String id, String name) {
     mealCount: 5,
     rating: '4.5',
     logoType: CalendarRestaurantLogoType.healthyBowl,
+  );
+}
+
+CalendarRestaurantsPageEntity _createPage(List<CalendarRestaurantOptionEntity> options) {
+  return CalendarRestaurantsPageEntity(
+    restaurants: options,
+    page: 1,
+    pageSize: 20,
+    totalCount: options.length,
+    totalPages: options.isEmpty ? 0 : 1,
+    hasNextPage: false,
+    hasPreviousPage: false,
   );
 }
 
@@ -90,7 +105,7 @@ void main() {
       expect(cubit.state.isLoading, isTrue);
 
       final options = [_createOption('r1', 'Green Bowl')];
-      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: options));
+      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: _createPage(options)));
       await future;
 
       expect(cubit.state.isLoading, isFalse);
@@ -118,14 +133,14 @@ void main() {
 
       // Resolve query 2 first
       final optionsSal = [_createOption('r2', 'Salad Co')];
-      repo.restaurantCompleters[1].complete(ApiSuccessResult(data: optionsSal));
+      repo.restaurantCompleters[1].complete(ApiSuccessResult(data: _createPage(optionsSal)));
       await Future<void>.delayed(Duration.zero);
 
       expect(cubit.state.restaurants, optionsSal);
 
       // Resolve query 1 late
       final optionsSa = [_createOption('r1', 'Sandwich Bar')];
-      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: optionsSa));
+      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: _createPage(optionsSa)));
       await Future<void>.delayed(Duration.zero);
 
       // Must remain optionsSal
@@ -142,7 +157,7 @@ void main() {
 
       // Resolving late after clear should be ignored
       repo.restaurantCompleters[0].complete(
-        ApiSuccessResult(data: [_createOption('r1', 'Late')]),
+        ApiSuccessResult(data: _createPage([_createOption('r1', 'Late')])),
       );
       await Future<void>.delayed(Duration.zero);
 

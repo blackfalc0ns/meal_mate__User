@@ -53,3 +53,48 @@ class CalendarRestaurantPickerLoadingSkeleton extends StatelessWidget {
     );
   }
 }
+
+class CalendarRestaurantPickerLoadMoreSkeleton extends StatelessWidget {
+  const CalendarRestaurantPickerLoadMoreSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShimmerWidget(
+      child: SizedBox(
+        height: 74,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Spacing.radiusLg),
+          border: Border.all(
+            color: context.colorScheme.outlineVariant,
+            width: Spacing.border,
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: Spacing.sm,
+            vertical: Spacing.sm,
+          ),
+          child: Row(
+            children: [
+              ShimmerPlaceholder.circle(size: 46),
+              SizedBox(width: Spacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShimmerPlaceholder.rect(width: 132, height: 13),
+                    SizedBox(height: Spacing.xs),
+                    ShimmerPlaceholder.rect(width: 188, height: 10),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+}

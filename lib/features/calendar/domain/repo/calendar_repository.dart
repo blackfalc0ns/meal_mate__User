@@ -2,7 +2,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
-import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 
 abstract interface class CalendarRepository {
@@ -17,11 +17,13 @@ abstract interface class CalendarRepository {
     required String localeName,
   });
 
-  Future<ApiResult<List<CalendarRestaurantOptionEntity>>> getRestaurants({
+  Future<ApiResult<CalendarRestaurantsPageEntity>> getRestaurants({
     required String subscriptionId,
     required String date,
     required String localeName,
     String? query,
+    int? page,
+    int? pageSize,
   });
 
   Future<ApiResult<CalendarDayEntity>> setDayRestaurant({

@@ -24,6 +24,11 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
   int _restaurantRequestGeneration = 0;
   int _setRestaurantRequestGeneration = 0;
 
+  String? _activeSubscriptionId;
+  DateTime? _activeDate;
+  String? _activeLocaleName;
+  String? _activeQuery;
+
   void doIntent(RestaurantPickerEvent event) {
     switch (event) {
       case LoadRestaurantsEvent():
@@ -46,6 +51,10 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
         );
       case ClearRestaurantPickerEvent():
         clear();
+      case LoadMoreRestaurantsEvent():
+        unawaited(loadMore());
+      case RetryRestaurantsPageEvent():
+        unawaited(retryLoadMore());
     }
   }
 
@@ -58,28 +67,124 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     final dateStr = DateFormat('yyyy-MM-dd').format(date);
     if (subscriptionId.isEmpty || dateStr.isEmpty) return;
 
+    final normalizedQuery = (query != null && query.trim().isNotEmpty) ? query.trim() : null;
+    _activeSubscriptionId = subscriptionId;
+    _activeDate = date;
+    _activeLocaleName = localeName;
+    _activeQuery = normalizedQuery;
+
     final generation = ++_restaurantRequestGeneration;
-    emit(state.copyWith(isLoading: true, query: query, clearFailure: true));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isLoadingMore: false,
+        clearRestaurants: true,
+        query: normalizedQuery,
+        clearQuery: normalizedQuery == null,
+        clearFailure: true,
+        clearLoadMoreFailure: true,
+        page: 0,
+        totalCount: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      ),
+    );
 
     final result = await _getRestaurantsUseCase(
       subscriptionId: subscriptionId,
       date: dateStr,
       localeName: localeName,
-      query: query,
+      query: normalizedQuery,
+      page: 1,
+      pageSize: 20,
     );
     if (isClosed || generation != _restaurantRequestGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
+        final hasNext = result.data.restaurants.isNotEmpty && result.data.hasNextPage;
         emit(
           state.copyWith(
             isLoading: false,
-            restaurants: result.data,
+            restaurants: result.data.restaurants,
+            page: result.data.page,
+            pageSize: result.data.pageSize,
+            totalCount: result.data.totalCount,
+            totalPages: result.data.totalPages,
+            hasNextPage: hasNext,
+            hasPreviousPage: result.data.hasPreviousPage,
             clearFailure: true,
+            clearLoadMoreFailure: true,
           ),
         );
       case ApiErrorResult():
         emit(state.copyWith(isLoading: false, failure: result.failure));
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (state.isLoading ||
+        state.isLoadingMore ||
+        !state.hasNextPage ||
+        _activeSubscriptionId == null ||
+        _activeDate == null ||
+        _activeLocaleName == null) {
+      return;
+    }
+
+    final generation = _restaurantRequestGeneration;
+    emit(state.copyWith(isLoadingMore: true, clearLoadMoreFailure: true));
+
+    final nextPage = state.page + 1;
+    final dateStr = DateFormat('yyyy-MM-dd').format(_activeDate!);
+
+    final result = await _getRestaurantsUseCase(
+      subscriptionId: _activeSubscriptionId!,
+      date: dateStr,
+      localeName: _activeLocaleName!,
+      query: _activeQuery,
+      page: nextPage,
+      pageSize: 20,
+    );
+
+    if (isClosed || generation != _restaurantRequestGeneration) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        final existingIds = state.restaurants.map((e) => e.id).toSet();
+        final newItems = result.data.restaurants
+            .where((e) => !existingIds.contains(e.id))
+            .toList();
+        final merged = [...state.restaurants, ...newItems];
+        final hasNext = result.data.restaurants.isNotEmpty && result.data.hasNextPage;
+
+        emit(
+          state.copyWith(
+            isLoadingMore: false,
+            restaurants: merged,
+            page: result.data.page,
+            pageSize: result.data.pageSize,
+            totalCount: result.data.totalCount,
+            totalPages: result.data.totalPages,
+            hasNextPage: hasNext,
+            hasPreviousPage: result.data.hasPreviousPage,
+            clearLoadMoreFailure: true,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isLoadingMore: false,
+            loadMoreFailure: result.failure,
+          ),
+        );
+    }
+  }
+
+  Future<void> retryLoadMore() async {
+    if (state.loadMoreFailure != null) {
+      await loadMore();
     }
   }
 
@@ -153,6 +258,10 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
   void clear() {
     _restaurantRequestGeneration++;
     _setRestaurantRequestGeneration++;
+    _activeSubscriptionId = null;
+    _activeDate = null;
+    _activeLocaleName = null;
+    _activeQuery = null;
     emit(const RestaurantPickerState());
   }
 }

@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_request_entity.dart';
@@ -504,6 +505,9 @@ class AuthViewModel extends Cubit<AuthState> {
 
     switch (result) {
       case ApiSuccessResult():
+        if (getIt.isRegistered<NotificationBadgeViewModel>()) {
+          getIt<NotificationBadgeViewModel>().resetForAccountChange();
+        }
         emit(
           state.copyWith(
             logout: state.logout.copyWith(

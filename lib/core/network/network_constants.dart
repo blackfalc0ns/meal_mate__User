@@ -196,6 +196,12 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests/{upgradeId}';
   static const String customerDeviceTokens =
       '/api/v1/customers/me/device-tokens';
+  static const String customerNotifications =
+      '/api/v1/customers/me/notifications';
+  static const String customerNotificationRead =
+      '/api/v1/customers/me/notifications/{id}/read';
+  static const String customerNotificationsReadAll =
+      '/api/v1/customers/me/notifications/read-all';
   static const String influencerBanks = '/api/v1/influencer-partner/banks';
   static const String influencerProfile = '/api/v1/influencer-partner/me';
   static const String influencerSocialLinks =

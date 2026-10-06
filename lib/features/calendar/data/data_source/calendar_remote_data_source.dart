@@ -12,10 +12,12 @@ abstract interface class CalendarRemoteDataSource {
     required String date,
   });
 
-  Future<List<CalendarRestaurantResponseDto>> getRestaurants({
+  Future<CalendarRestaurantsResponseDto> getRestaurants({
     required String subscriptionId,
     required String date,
     String? query,
+    int? page,
+    int? pageSize,
   });
 
   Future<CalendarDayResponseDto> setDayRestaurant({

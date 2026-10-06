@@ -245,7 +245,7 @@ extension CalendarAvailableMealsResponseDtoMapper
         fallback: name ?? nameEn ?? nameAr,
       ),
       category: category,
-      rating: rating?.toString() ?? restaurant?.rating?.toString() ?? '4.5',
+      rating: rating?.toString() ?? restaurant?.rating?.toString(),
       deliveryDuration: deliveryDuration,
       deliveryWindow: deliveryWindow,
     );

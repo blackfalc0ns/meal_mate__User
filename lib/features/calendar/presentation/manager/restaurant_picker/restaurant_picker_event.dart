@@ -35,3 +35,11 @@ class SelectRestaurantEvent extends RestaurantPickerEvent {
 class ClearRestaurantPickerEvent extends RestaurantPickerEvent {
   const ClearRestaurantPickerEvent();
 }
+
+class LoadMoreRestaurantsEvent extends RestaurantPickerEvent {
+  const LoadMoreRestaurantsEvent();
+}
+
+class RetryRestaurantsPageEvent extends RestaurantPickerEvent {
+  const RetryRestaurantsPageEvent();
+}

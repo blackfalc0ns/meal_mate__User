@@ -6134,6 +6134,12 @@ abstract class AppLocalizations {
   /// **'We serve high-quality healthy meals using fresh, natural ingredients\nto help you achieve your nutrition and fitness goals.'**
   String get calendar_restaurant_description;
 
+  /// No description provided for @calendar_restaurant_no_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get calendar_restaurant_no_reviews;
+
   /// No description provided for @calendar_ingredient_origin_title.
   ///
   /// In en, this message translates to:

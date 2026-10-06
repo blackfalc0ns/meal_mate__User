@@ -59,9 +59,18 @@ class CalendarDayEntity {
     return selectedMealIds.isNotEmpty || meals.any((meal) => meal.selected);
   }
 
+  bool get isConfirmed {
+    final s = status.toLowerCase();
+    final ui = (uiStatus ?? '').toLowerCase();
+    return s.contains('confirmed') || ui.contains('confirmed');
+  }
+
   bool get isAwaitingRestaurantConfirmation {
+    if (isConfirmed) return false;
     final s = '${status}_$uiStatus'.toLowerCase();
-    return s.contains('restaurant');
+    return s.contains('senttorestaurant') ||
+        s.contains('awaiting') ||
+        s.contains('pending');
   }
 
   bool get isRestaurantClosed {
@@ -74,7 +83,9 @@ class CalendarDayEntity {
   }
 
   bool get isEditable {
-    if (isFrozen) return false;
+    if (isFrozen || isConfirmed || isAwaitingRestaurantConfirmation) {
+      return false;
+    }
     if (uiStatus?.toLowerCase() == 'locked' ||
         status.toLowerCase() == 'locked') {
       return false;

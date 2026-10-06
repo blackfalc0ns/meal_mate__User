@@ -111,7 +111,7 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
             subtitle: restaurant.description,
             imageUrl: _resolveRestaurantMealImage(restaurant),
             logoUrl: restaurant.logoUrl,
-            rating: restaurant.rating,
+            rating: restaurant.rating ?? '',
             tags: _resolveRestaurantTags(restaurant, state, locale, color),
             buttonLabel: locale.family_restaurants_browse_meals,
           ),
