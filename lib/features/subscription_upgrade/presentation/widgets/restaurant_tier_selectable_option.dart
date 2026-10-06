@@ -39,10 +39,13 @@ class RestaurantTierSelectableOption extends StatelessWidget {
         ? locale.restaurant_tier_your_current_tier
         : locale.restaurant_tier_upgrade_to_tier(title);
 
-    final currency = option.currencyCode.isNotEmpty
+    final rawCurrency = option.currencyCode.isNotEmpty
         ? option.currencyCode
         : 'KWD';
-    final currencyText = currency == 'KWD' ? 'د.ك' : currency;
+    final currencyText =
+        (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
+            ? locale.currency
+            : rawCurrency;
 
     final priceText = option.isCurrent
         ? '0.00 $currencyText'

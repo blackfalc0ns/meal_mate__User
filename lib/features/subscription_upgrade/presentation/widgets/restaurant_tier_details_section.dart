@@ -22,10 +22,13 @@ class RestaurantTierDetailsSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final currency = selectedOption.currencyCode.isNotEmpty
+    final rawCurrency = selectedOption.currencyCode.isNotEmpty
         ? selectedOption.currencyCode
         : 'KWD';
-    final currencyText = currency == 'KWD' ? 'د.ك' : currency;
+    final currencyText =
+        (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
+            ? locale.currency
+            : rawCurrency;
 
     final currentCredit = summary?.currentRemainingCredit ??
         selectedOption.currentRemainingCredit;
@@ -52,17 +55,17 @@ class RestaurantTierDetailsSection extends StatelessWidget {
               children: [
                 RestaurantTierDetailRow(
                   label: locale.restaurant_tier_detail_current_credit,
-                  value: '${currentCredit.toStringAsFixed(2)} $currency',
+                  value: '${currentCredit.toStringAsFixed(2)} $currencyText',
                 ),
                 RestaurantTierDetailRow(
                   label: locale.restaurant_tier_detail_target_price,
-                  value: '${targetPrice.toStringAsFixed(2)} $currency',
+                  value: '${targetPrice.toStringAsFixed(2)} $currencyText',
                 ),
                 if (selectedOption.gatewayRecovery > 0)
                   RestaurantTierDetailRow(
                     label: locale.restaurant_tier_detail_gateway_recovery,
                     value:
-                        '${selectedOption.gatewayRecovery.toStringAsFixed(2)} $currency',
+                        '${selectedOption.gatewayRecovery.toStringAsFixed(2)} $currencyText',
                   ),
                 Divider(color: color.outlineVariant),
                 RestaurantTierDetailRow(

@@ -66,7 +66,7 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      _subtitle(),
+                      _subtitle(locale),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
@@ -93,10 +93,14 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
     );
   }
 
-  String _subtitle() {
-    final currency = paymentMethod.currencyCode;
+  String _subtitle(dynamic locale) {
+    final rawCurrency = paymentMethod.currencyCode;
+    final currencyText =
+        (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
+            ? locale.currency
+            : rawCurrency;
     if (paymentMethod.serviceCharge > 0) {
-      return '${paymentMethod.serviceCharge.toStringAsFixed(2)} $currency';
+      return '${paymentMethod.serviceCharge.toStringAsFixed(2)} $currencyText';
     }
     return paymentMethod.integrationType;
   }
