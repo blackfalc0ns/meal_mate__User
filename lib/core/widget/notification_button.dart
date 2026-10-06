@@ -70,11 +70,11 @@ class NotificationButton extends StatelessWidget {
                     ),
                     if (hasNotification)
                       PositionedDirectional(
-                        top: 0,
-                        end: Spacing.xxs,
+                        top: -3,
+                        start: Spacing.xxs,
                         child: Container(
-                          width: Spacing.sm,
-                          height: Spacing.sm,
+                          width: Spacing.md,
+                          height: Spacing.md,
                           decoration: BoxDecoration(
                             color: effectiveBadgeColor,
                             shape: BoxShape.circle,
