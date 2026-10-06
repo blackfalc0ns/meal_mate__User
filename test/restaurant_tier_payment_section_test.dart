@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_payment_section.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_payment_section.dart';
 
 void main() {
   testWidgets('lets customers choose an upgrade payment method', (

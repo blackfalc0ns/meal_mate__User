@@ -75,11 +75,11 @@ import 'package:meal_meat_user/features/family_packages/data/models/response/fam
 import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_conversion_options_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_upgrade_request_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_options_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_request_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_status_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_upgrade_summary_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/data/models/request/subscription_upgrade_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/data/models/response/subscription_upgrade_options_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/data/models/response/subscription_upgrade_request_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/data/models/response/subscription_upgrade_status_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/data/models/response/subscription_upgrade_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_access_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_permissions_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_home_response_dto.dart';

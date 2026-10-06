@@ -79,10 +79,10 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/fa
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_restaurants_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_meal_selection_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_web_view_screen.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_screen.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_web_view_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_transactions_screen.dart';

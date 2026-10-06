@@ -148,6 +148,16 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.subscription_upgrade_not_available;
     case 'subscription.upgrade_request_already_pending':
       return locale.subscription_upgrade_request_already_pending;
+    case 'upgrade_not_available_for_status':
+      return locale.restaurant_tier_unavailable_status;
+    case 'already_elite':
+      return locale.restaurant_tier_unavailable_already_elite;
+    case 'upgrade_request_pending':
+      return locale.restaurant_tier_unavailable_pending;
+    case 'upgrade_no_remaining_days':
+      return locale.restaurant_tier_unavailable_no_days;
+    case 'pricing.unavailable':
+      return locale.restaurant_tier_unavailable_pricing;
     case 'subscription.not_found':
       return locale.subscription_not_found;
     case 'family.cannot_remove_manager':

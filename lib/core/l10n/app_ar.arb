@@ -2384,5 +2384,82 @@
   "coupon_remove_button": "إزالة",
   "coupon_input_hint": "أدخل كود الخصم",
   "coupon_card_title": "كود الخصم",
-  "coupon_applied_label": "تم تطبيق الخصم"
+  "coupon_applied_label": "تم تطبيق الخصم",
+  "restaurant_tier_upgrade_title": "ترقية تصنيف المطاعم",
+  "restaurant_tier_package_prefix": "باقة",
+  "restaurant_tier_remaining_prefix": "متبقي",
+  "restaurant_tier_remaining_days_suffix": "يوم",
+  "restaurant_tier_active_label": "نشط",
+  "restaurant_tier_current_label": "التصنيف الحالي:",
+  "restaurant_tier_note": "يمكنك ترقية التصنيف حتى نهاية مدة الاشتراك الحالية.",
+  "restaurant_tier_choose_title": "اختر التصنيف الذي تريد الترقية إليه",
+  "restaurant_tier_choose_subtitle": "كلما ارتفع التصنيف، كلما شملت خيارات مطاعم أكثر وأفضل.",
+  "restaurant_tier_price_period": "حتى نهاية الاشتراك",
+  "restaurant_tier_current_tier_caption": "كل تصنيف يضم مجموعة مختارة من المطاعم المميزة.",
+  "restaurant_tier_includes_all_format": "يشمل كل مطاعم {tier} + مطاعم إضافية",
+  "@restaurant_tier_includes_all_format": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "restaurant_tier_extra_restaurants_count": "+{count} مطعم إضافي",
+  "@restaurant_tier_extra_restaurants_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restaurant_tier_restaurants_count_only": "+{count} مطعم",
+  "@restaurant_tier_restaurants_count_only": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restaurant_tier_feature_distinctive": "مطاعم مميزة أكثر",
+  "restaurant_tier_feature_wider_options": "خيارات أوسع",
+  "restaurant_tier_quick_comparison_title": "مقارنة سريعة",
+  "restaurant_tier_current_package_label": "الباقة الحالية:",
+  "restaurant_tier_new_package_label": "الباقة الجديدة:",
+  "restaurant_tier_about_prefix": "حوالي",
+  "restaurant_tier_restaurants_suffix": "مطعم",
+  "restaurant_tier_details_title": "تفاصيل الترقية",
+  "restaurant_tier_detail_current_credit": "رصيد الباقة الحالية للأيام المتبقية",
+  "restaurant_tier_detail_target_price": "سعر الباقة الجديدة للأيام المتبقية",
+  "restaurant_tier_detail_gateway_recovery": "رسوم/استرداد بوابة الدفع",
+  "restaurant_tier_detail_price_diff": "فرق الترقية",
+  "restaurant_tier_total_amount_due": "المبلغ المستحق الآن",
+  "restaurant_tier_instant_apply_note": "يتم تطبيق الترقية فوراً وتلقائياً بعد الدفع الناجح",
+  "restaurant_tier_payment_method_title": "طريقة الدفع",
+  "restaurant_tier_confirm_and_pay": "تأكيد الترقية والدفع",
+  "restaurant_tier_back_action": "الرجوع",
+  "restaurant_tier_your_current_tier": "تصنيفك الحالي",
+  "restaurant_tier_upgrade_to_tier": "ترقية إلى {tier}",
+  "@restaurant_tier_upgrade_to_tier": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "restaurant_tier_continue_to_tier": "متابعة الترقية إلى {tier}",
+  "@restaurant_tier_continue_to_tier": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "restaurant_tier_processing": "جاري المعالجة...",
+  "restaurant_tier_unavailable_status": "الترقية متاحة فقط للاشتراكات النشطة (Active).",
+  "restaurant_tier_unavailable_already_elite": "أنت مشترك بالفعل في أعلى تصنيف مطاعم متاح.",
+  "restaurant_tier_unavailable_pending": "يوجد طلب ترقية معلق قيد المتابعة حالياً.",
+  "restaurant_tier_unavailable_no_days": "لا توجد أيام خدمة متبقية في الاشتراك الحالي لإجراء الترقية.",
+  "restaurant_tier_unavailable_pricing": "خدمة التسعير غير متوفرة حالياً، يرجى المحاولة لاحقاً.",
+  "restaurant_tier_unavailable_generic": "الترقية غير متوفرة حالياً لهذا الاشتراك.",
+  "restaurant_tier_continue_button": "متابعة الترقية"
 }

@@ -6134,4 +6134,154 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get coupon_applied_label => 'تم تطبيق الخصم';
+
+  @override
+  String get restaurant_tier_upgrade_title => 'ترقية تصنيف المطاعم';
+
+  @override
+  String get restaurant_tier_package_prefix => 'باقة';
+
+  @override
+  String get restaurant_tier_remaining_prefix => 'متبقي';
+
+  @override
+  String get restaurant_tier_remaining_days_suffix => 'يوم';
+
+  @override
+  String get restaurant_tier_active_label => 'نشط';
+
+  @override
+  String get restaurant_tier_current_label => 'التصنيف الحالي:';
+
+  @override
+  String get restaurant_tier_note =>
+      'يمكنك ترقية التصنيف حتى نهاية مدة الاشتراك الحالية.';
+
+  @override
+  String get restaurant_tier_choose_title =>
+      'اختر التصنيف الذي تريد الترقية إليه';
+
+  @override
+  String get restaurant_tier_choose_subtitle =>
+      'كلما ارتفع التصنيف، كلما شملت خيارات مطاعم أكثر وأفضل.';
+
+  @override
+  String get restaurant_tier_price_period => 'حتى نهاية الاشتراك';
+
+  @override
+  String get restaurant_tier_current_tier_caption =>
+      'كل تصنيف يضم مجموعة مختارة من المطاعم المميزة.';
+
+  @override
+  String restaurant_tier_includes_all_format(String tier) {
+    return 'يشمل كل مطاعم $tier + مطاعم إضافية';
+  }
+
+  @override
+  String restaurant_tier_extra_restaurants_count(int count) {
+    return '+$count مطعم إضافي';
+  }
+
+  @override
+  String restaurant_tier_restaurants_count_only(int count) {
+    return '+$count مطعم';
+  }
+
+  @override
+  String get restaurant_tier_feature_distinctive => 'مطاعم مميزة أكثر';
+
+  @override
+  String get restaurant_tier_feature_wider_options => 'خيارات أوسع';
+
+  @override
+  String get restaurant_tier_quick_comparison_title => 'مقارنة سريعة';
+
+  @override
+  String get restaurant_tier_current_package_label => 'الباقة الحالية:';
+
+  @override
+  String get restaurant_tier_new_package_label => 'الباقة الجديدة:';
+
+  @override
+  String get restaurant_tier_about_prefix => 'حوالي';
+
+  @override
+  String get restaurant_tier_restaurants_suffix => 'مطعم';
+
+  @override
+  String get restaurant_tier_details_title => 'تفاصيل الترقية';
+
+  @override
+  String get restaurant_tier_detail_current_credit =>
+      'رصيد الباقة الحالية للأيام المتبقية';
+
+  @override
+  String get restaurant_tier_detail_target_price =>
+      'سعر الباقة الجديدة للأيام المتبقية';
+
+  @override
+  String get restaurant_tier_detail_gateway_recovery =>
+      'رسوم/استرداد بوابة الدفع';
+
+  @override
+  String get restaurant_tier_detail_price_diff => 'فرق الترقية';
+
+  @override
+  String get restaurant_tier_total_amount_due => 'المبلغ المستحق الآن';
+
+  @override
+  String get restaurant_tier_instant_apply_note =>
+      'يتم تطبيق الترقية فوراً وتلقائياً بعد الدفع الناجح';
+
+  @override
+  String get restaurant_tier_payment_method_title => 'طريقة الدفع';
+
+  @override
+  String get restaurant_tier_confirm_and_pay => 'تأكيد الترقية والدفع';
+
+  @override
+  String get restaurant_tier_back_action => 'الرجوع';
+
+  @override
+  String get restaurant_tier_your_current_tier => 'تصنيفك الحالي';
+
+  @override
+  String restaurant_tier_upgrade_to_tier(String tier) {
+    return 'ترقية إلى $tier';
+  }
+
+  @override
+  String restaurant_tier_continue_to_tier(String tier) {
+    return 'متابعة الترقية إلى $tier';
+  }
+
+  @override
+  String get restaurant_tier_processing => 'جاري المعالجة...';
+
+  @override
+  String get restaurant_tier_unavailable_status =>
+      'الترقية متاحة فقط للاشتراكات النشطة (Active).';
+
+  @override
+  String get restaurant_tier_unavailable_already_elite =>
+      'أنت مشترك بالفعل في أعلى تصنيف مطاعم متاح.';
+
+  @override
+  String get restaurant_tier_unavailable_pending =>
+      'يوجد طلب ترقية معلق قيد المتابعة حالياً.';
+
+  @override
+  String get restaurant_tier_unavailable_no_days =>
+      'لا توجد أيام خدمة متبقية في الاشتراك الحالي لإجراء الترقية.';
+
+  @override
+  String get restaurant_tier_unavailable_pricing =>
+      'خدمة التسعير غير متوفرة حالياً، يرجى المحاولة لاحقاً.';
+
+  @override
+  String get restaurant_tier_unavailable_generic =>
+      'الترقية غير متوفرة حالياً لهذا الاشتراك.';
+
+  @override
+  String get restaurant_tier_continue_button => 'متابعة الترقية';
 }

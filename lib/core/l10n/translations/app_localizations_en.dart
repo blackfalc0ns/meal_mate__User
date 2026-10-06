@@ -6246,4 +6246,155 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coupon_applied_label => 'Discount applied';
+
+  @override
+  String get restaurant_tier_upgrade_title => 'Restaurant Tier Upgrade';
+
+  @override
+  String get restaurant_tier_package_prefix => 'Package';
+
+  @override
+  String get restaurant_tier_remaining_prefix => 'Remaining';
+
+  @override
+  String get restaurant_tier_remaining_days_suffix => 'days';
+
+  @override
+  String get restaurant_tier_active_label => 'Active';
+
+  @override
+  String get restaurant_tier_current_label => 'Current Tier:';
+
+  @override
+  String get restaurant_tier_note =>
+      'You can upgrade the tier until the end of the current subscription period.';
+
+  @override
+  String get restaurant_tier_choose_title =>
+      'Choose the tier you want to upgrade to';
+
+  @override
+  String get restaurant_tier_choose_subtitle =>
+      'The higher the tier, the more and better restaurant options you have.';
+
+  @override
+  String get restaurant_tier_price_period => 'Until end of subscription';
+
+  @override
+  String get restaurant_tier_current_tier_caption =>
+      'Each tier includes a selected collection of distinctive restaurants.';
+
+  @override
+  String restaurant_tier_includes_all_format(String tier) {
+    return 'Includes all $tier restaurants + additional restaurants';
+  }
+
+  @override
+  String restaurant_tier_extra_restaurants_count(int count) {
+    return '+$count additional restaurants';
+  }
+
+  @override
+  String restaurant_tier_restaurants_count_only(int count) {
+    return '+$count restaurants';
+  }
+
+  @override
+  String get restaurant_tier_feature_distinctive =>
+      'More distinctive restaurants';
+
+  @override
+  String get restaurant_tier_feature_wider_options => 'Wider options';
+
+  @override
+  String get restaurant_tier_quick_comparison_title => 'Quick Comparison';
+
+  @override
+  String get restaurant_tier_current_package_label => 'Current Package:';
+
+  @override
+  String get restaurant_tier_new_package_label => 'New Package:';
+
+  @override
+  String get restaurant_tier_about_prefix => 'About';
+
+  @override
+  String get restaurant_tier_restaurants_suffix => 'restaurants';
+
+  @override
+  String get restaurant_tier_details_title => 'Upgrade Details';
+
+  @override
+  String get restaurant_tier_detail_current_credit =>
+      'Current package credit for remaining days';
+
+  @override
+  String get restaurant_tier_detail_target_price =>
+      'New package price for remaining days';
+
+  @override
+  String get restaurant_tier_detail_gateway_recovery =>
+      'Payment gateway fee/recovery';
+
+  @override
+  String get restaurant_tier_detail_price_diff => 'Upgrade difference';
+
+  @override
+  String get restaurant_tier_total_amount_due => 'Total Amount Due Now';
+
+  @override
+  String get restaurant_tier_instant_apply_note =>
+      'Upgrade is applied immediately and automatically upon successful payment';
+
+  @override
+  String get restaurant_tier_payment_method_title => 'Payment Method';
+
+  @override
+  String get restaurant_tier_confirm_and_pay => 'Confirm Upgrade and Pay';
+
+  @override
+  String get restaurant_tier_back_action => 'Back';
+
+  @override
+  String get restaurant_tier_your_current_tier => 'Your Current Tier';
+
+  @override
+  String restaurant_tier_upgrade_to_tier(String tier) {
+    return 'Upgrade to $tier';
+  }
+
+  @override
+  String restaurant_tier_continue_to_tier(String tier) {
+    return 'Continue upgrade to $tier';
+  }
+
+  @override
+  String get restaurant_tier_processing => 'Processing...';
+
+  @override
+  String get restaurant_tier_unavailable_status =>
+      'Upgrade is only available for active subscriptions.';
+
+  @override
+  String get restaurant_tier_unavailable_already_elite =>
+      'You are already subscribed to the highest available restaurant tier.';
+
+  @override
+  String get restaurant_tier_unavailable_pending =>
+      'An upgrade request is currently pending.';
+
+  @override
+  String get restaurant_tier_unavailable_no_days =>
+      'There are no remaining service days in the current subscription to perform the upgrade.';
+
+  @override
+  String get restaurant_tier_unavailable_pricing =>
+      'Pricing service is currently unavailable, please try again later.';
+
+  @override
+  String get restaurant_tier_unavailable_generic =>
+      'Upgrade is currently not available for this subscription.';
+
+  @override
+  String get restaurant_tier_continue_button => 'Continue Upgrade';
 }

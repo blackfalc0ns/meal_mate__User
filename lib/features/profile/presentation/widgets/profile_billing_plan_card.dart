@@ -12,7 +12,7 @@ import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_action.dart';
 
 class ProfileBillingPlanCard extends StatelessWidget {

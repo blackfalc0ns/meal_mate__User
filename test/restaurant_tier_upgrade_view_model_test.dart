@@ -1,20 +1,22 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_image_request_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_event.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/repo/restaurant_tier_upgrade_repository.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/create_subscription_upgrade_request_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_options_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_status_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_event.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_view_model.dart';
 
 void main() {
   test('submits the selected upgrade payment method id', () async {
@@ -99,6 +101,378 @@ void main() {
     expect(upgradeRepository.summaryTargetTier, 'Platinum');
     expect(viewModel.state.upgradeSummary?.priceDifference, 16.0);
   });
+
+  test(
+    'duplicate submit dispatches only one create request while in-flight',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final completer =
+          Completer<ApiResult<SubscriptionUpgradeRequestResultEntity>>();
+      upgradeRepository.customCreateRequest = () => completer.future;
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        InitUpgradeConfirmationEvent(
+          RestaurantTierUpgradeConfirmationArgs(
+            subscriptionId: 'sub-1',
+            selectedOption: _platinumOption,
+            optionsEntity: _upgradeOptions,
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      viewModel.doIntent(const SubmitUpgradeRequestEvent());
+      viewModel.doIntent(const SubmitUpgradeRequestEvent());
+      await Future<void>.delayed(Duration.zero);
+
+      expect(upgradeRepository.createRequestCallCount, 1);
+
+      completer.complete(
+        ApiSuccessResult(
+          data: const SubscriptionUpgradeRequestResultEntity(
+            upgradeId: 'upgrade-1',
+            subscriptionId: 'sub-1',
+            fromTier: 'Basic',
+            toTier: 'Platinum',
+            amount: 15.25,
+            currencyCode: 'KWD',
+            isPaid: true,
+            status: 'Paid',
+            remainingServiceDays: 12,
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(viewModel.state.isUpgradeSuccess, isTrue);
+    },
+  );
+
+  test(
+    'close during request prevents emits after close and cleans up safely',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final completer =
+          Completer<ApiResult<SubscriptionUpgradeOptionsEntity>>();
+      upgradeRepository.customGetOptions = () => completer.future;
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+
+      viewModel.doIntent(
+        const LoadUpgradeOptionsEvent(subscriptionId: 'sub-1'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      await viewModel.close();
+
+      completer.complete(ApiSuccessResult(data: _upgradeOptions));
+      await Future<void>.delayed(Duration.zero);
+    },
+  );
+
+  test(
+    'duplicate verify status while in-flight starts only one polling sequence',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final completer =
+          Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
+      upgradeRepository.customGetStatus = () => completer.future;
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-1',
+          upgradeId: 'upgrade-1',
+        ),
+      );
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-1',
+          upgradeId: 'upgrade-1',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(upgradeRepository.statusCallCount, 1);
+
+      completer.complete(
+        ApiSuccessResult(
+          data: const SubscriptionUpgradeStatusEntity(
+            upgradeId: 'upgrade-1',
+            subscriptionId: 'sub-1',
+            fromTier: 'Basic',
+            toTier: 'Platinum',
+            amount: 15.25,
+            currencyCode: 'KWD',
+            status: 'Paid',
+            isPaid: true,
+            isFailed: false,
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(viewModel.state.isUpgradeSuccess, isTrue);
+    },
+  );
+
+  test(
+    'terminal failure during poll prevents late success result from overriding failure',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final completer =
+          Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
+      upgradeRepository.customGetStatus = () => completer.future;
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-1',
+          upgradeId: 'upgrade-1',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      viewModel.doIntent(
+        const MarkUpgradeFailedEvent('Payment cancelled'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.isUpgradeFailed, isTrue);
+
+      completer.complete(
+        ApiSuccessResult(
+          data: const SubscriptionUpgradeStatusEntity(
+            upgradeId: 'upgrade-1',
+            subscriptionId: 'sub-1',
+            fromTier: 'Basic',
+            toTier: 'Platinum',
+            amount: 15.25,
+            currencyCode: 'KWD',
+            status: 'Paid',
+            isPaid: true,
+            isFailed: false,
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.isUpgradeFailed, isTrue);
+      expect(viewModel.state.isUpgradeSuccess, isFalse);
+    },
+  );
+
+  test(
+    'retry after API error succeeds and in-flight guard is properly released',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      int attempts = 0;
+      upgradeRepository.customGetStatus = () async {
+        attempts++;
+        if (attempts == 1) {
+          return ApiErrorResult(failure: MockFailure('network error'));
+        }
+        return ApiSuccessResult(
+          data: const SubscriptionUpgradeStatusEntity(
+            upgradeId: 'upgrade-1',
+            subscriptionId: 'sub-1',
+            fromTier: 'Basic',
+            toTier: 'Platinum',
+            amount: 15.25,
+            currencyCode: 'KWD',
+            status: 'Paid',
+            isPaid: true,
+            isFailed: false,
+          ),
+        );
+      };
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-1',
+          upgradeId: 'upgrade-1',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.statusFailure, isNotNull);
+      expect(viewModel.state.isPollingStatus, isFalse);
+
+      viewModel.doIntent(
+        const VerifyUpgradeStatusEvent(
+          subscriptionId: 'sub-1',
+          upgradeId: 'upgrade-1',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.isUpgradeSuccess, isTrue);
+      expect(viewModel.state.statusFailure, isNull);
+    },
+  );
+
+  test(
+    'selecting the same tier or payment method is a no-op without extra emissions',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const LoadUpgradeOptionsEvent(subscriptionId: 'sub-1'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.selectedOption, isNull);
+
+      viewModel.doIntent(const SelectTierOptionEvent(_platinumOption));
+      await Future<void>.delayed(Duration.zero);
+      expect(viewModel.state.selectedOption?.targetTier, _platinumOption.targetTier);
+
+      int emissions = 0;
+      final subscription = viewModel.stream.listen((_) => emissions++);
+
+      viewModel.doIntent(const SelectTierOptionEvent(_platinumOption));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(emissions, 0);
+
+      viewModel.doIntent(
+        InitUpgradeConfirmationEvent(
+          RestaurantTierUpgradeConfirmationArgs(
+            subscriptionId: 'sub-1',
+            selectedOption: _platinumOption,
+            optionsEntity: _upgradeOptions,
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      final selectedMethod = viewModel.state.selectedPaymentMethod;
+      expect(selectedMethod, isNotNull);
+
+      emissions = 0;
+      viewModel.doIntent(SelectUpgradePaymentMethodEvent(selectedMethod!));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(emissions, 0);
+      await subscription.cancel();
+    },
+  );
+
+  test(
+    'stale options request completion does not overwrite newer request state',
+    () async {
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final completerA =
+          Completer<ApiResult<SubscriptionUpgradeOptionsEntity>>();
+      final completerB =
+          Completer<ApiResult<SubscriptionUpgradeOptionsEntity>>();
+      int callCount = 0;
+      upgradeRepository.customGetOptions = () {
+        callCount++;
+        return callCount == 1 ? completerA.future : completerB.future;
+      };
+
+      final viewModel = RestaurantTierUpgradeViewModel(
+        GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
+        GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
+        CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
+        GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
+        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      );
+      addTearDown(viewModel.close);
+
+      viewModel.doIntent(
+        const LoadUpgradeOptionsEvent(subscriptionId: 'sub-old'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      viewModel.doIntent(
+        const LoadUpgradeOptionsEvent(subscriptionId: 'sub-new'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      const optionsNew = SubscriptionUpgradeOptionsEntity(
+        canUpgrade: true,
+        currentTier: 'Basic',
+        remainingServiceDays: 20,
+        totalServiceDays: 20,
+        upgradeEndpoint: '/sub-new',
+        options: [_platinumOption],
+      );
+
+      completerB.complete(const ApiSuccessResult(data: optionsNew));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.subscriptionId, 'sub-new');
+      expect(viewModel.state.optionsEntity?.upgradeEndpoint, '/sub-new');
+
+      const optionsOld = SubscriptionUpgradeOptionsEntity(
+        canUpgrade: true,
+        currentTier: 'Basic',
+        remainingServiceDays: 5,
+        totalServiceDays: 5,
+        upgradeEndpoint: '/sub-old',
+        options: [_platinumOption],
+      );
+
+      completerA.complete(const ApiSuccessResult(data: optionsOld));
+      await Future<void>.delayed(Duration.zero);
+
+      // Still sub-new!
+      expect(viewModel.state.subscriptionId, 'sub-new');
+      expect(viewModel.state.optionsEntity?.upgradeEndpoint, '/sub-new');
+    },
+  );
+}
+
+class MockFailure extends Failure {
+  MockFailure(String message) : super(errorMessage: message);
 }
 
 const _platinumOption = SubscriptionUpgradeOptionEntity(
@@ -156,6 +530,17 @@ class _RestaurantTierUpgradeRepositoryFake
   String? summarySubscriptionId;
   String? summaryTargetTier;
 
+  int createRequestCallCount = 0;
+  int statusCallCount = 0;
+  int optionsCallCount = 0;
+
+  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>> Function()?
+  customCreateRequest;
+  Future<ApiResult<SubscriptionUpgradeStatusEntity>> Function()?
+  customGetStatus;
+  Future<ApiResult<SubscriptionUpgradeOptionsEntity>> Function()?
+  customGetOptions;
+
   @override
   Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
     String subscriptionId,
@@ -163,14 +548,18 @@ class _RestaurantTierUpgradeRepositoryFake
   ) async {
     summarySubscriptionId = subscriptionId;
     summaryTargetTier = targetTier;
-    return ApiSuccessResult(data: _upgradeSummary);
+    return const ApiSuccessResult(data: _upgradeSummary);
   }
 
   @override
   Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
     String subscriptionId,
   ) async {
-    return ApiSuccessResult(data: _upgradeOptions);
+    optionsCallCount++;
+    if (customGetOptions != null) {
+      return customGetOptions!();
+    }
+    return const ApiSuccessResult(data: _upgradeOptions);
   }
 
   @override
@@ -179,9 +568,13 @@ class _RestaurantTierUpgradeRepositoryFake
     String subscriptionId,
     SubscriptionUpgradeRequestEntity request,
   ) async {
+    createRequestCallCount++;
     submittedRequest = request;
-    return ApiSuccessResult(
-      data: const SubscriptionUpgradeRequestResultEntity(
+    if (customCreateRequest != null) {
+      return customCreateRequest!();
+    }
+    return const ApiSuccessResult(
+      data: SubscriptionUpgradeRequestResultEntity(
         upgradeId: 'upgrade-1',
         subscriptionId: 'sub-1',
         fromTier: 'Basic',
@@ -201,10 +594,14 @@ class _RestaurantTierUpgradeRepositoryFake
     String subscriptionId,
     String upgradeId,
   ) async {
+    statusCallCount++;
     statusSubscriptionId = subscriptionId;
     statusUpgradeId = upgradeId;
-    return ApiSuccessResult(
-      data: const SubscriptionUpgradeStatusEntity(
+    if (customGetStatus != null) {
+      return customGetStatus!();
+    }
+    return const ApiSuccessResult(
+      data: SubscriptionUpgradeStatusEntity(
         upgradeId: 'upgrade-1',
         subscriptionId: 'sub-1',
         fromTier: 'Basic',
@@ -257,7 +654,7 @@ const _upgradeSummary = SubscriptionUpgradeSummaryEntity(
 class _ProfileRepositoryFake implements ProfileRepository {
   @override
   Future<ApiResult<void>> deleteCustomerProfileImage() async {
-    return ApiSuccessResult(data: null);
+    return const ApiSuccessResult(data: null);
   }
 
   @override
@@ -268,8 +665,8 @@ class _ProfileRepositoryFake implements ProfileRepository {
   @override
   Future<ApiResult<ProfileBillingCurrentEntity>>
   getCurrentCustomerSubscription() async {
-    return ApiSuccessResult(
-      data: const ProfileBillingCurrentEntity(emptyStateCode: ''),
+    return const ApiSuccessResult(
+      data: ProfileBillingCurrentEntity(emptyStateCode: ''),
     );
   }
 
@@ -325,13 +722,13 @@ class _ProfileRepositoryFake implements ProfileRepository {
   Future<ApiResult<void>> updateCustomerProfile(
     UpdateCustomerProfileRequestEntity request,
   ) async {
-    return ApiSuccessResult(data: null);
+    return const ApiSuccessResult(data: null);
   }
 
   @override
   Future<ApiResult<void>> updateCustomerProfileImage(
     ProfileImageRequestEntity request,
   ) async {
-    return ApiSuccessResult(data: null);
+    return const ApiSuccessResult(data: null);
   }
 }

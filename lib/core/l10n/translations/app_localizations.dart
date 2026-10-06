@@ -11569,6 +11569,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discount applied'**
   String get coupon_applied_label;
+
+  /// No description provided for @restaurant_tier_upgrade_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant Tier Upgrade'**
+  String get restaurant_tier_upgrade_title;
+
+  /// No description provided for @restaurant_tier_package_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get restaurant_tier_package_prefix;
+
+  /// No description provided for @restaurant_tier_remaining_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get restaurant_tier_remaining_prefix;
+
+  /// No description provided for @restaurant_tier_remaining_days_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get restaurant_tier_remaining_days_suffix;
+
+  /// No description provided for @restaurant_tier_active_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get restaurant_tier_active_label;
+
+  /// No description provided for @restaurant_tier_current_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Tier:'**
+  String get restaurant_tier_current_label;
+
+  /// No description provided for @restaurant_tier_note.
+  ///
+  /// In en, this message translates to:
+  /// **'You can upgrade the tier until the end of the current subscription period.'**
+  String get restaurant_tier_note;
+
+  /// No description provided for @restaurant_tier_choose_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the tier you want to upgrade to'**
+  String get restaurant_tier_choose_title;
+
+  /// No description provided for @restaurant_tier_choose_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The higher the tier, the more and better restaurant options you have.'**
+  String get restaurant_tier_choose_subtitle;
+
+  /// No description provided for @restaurant_tier_price_period.
+  ///
+  /// In en, this message translates to:
+  /// **'Until end of subscription'**
+  String get restaurant_tier_price_period;
+
+  /// No description provided for @restaurant_tier_current_tier_caption.
+  ///
+  /// In en, this message translates to:
+  /// **'Each tier includes a selected collection of distinctive restaurants.'**
+  String get restaurant_tier_current_tier_caption;
+
+  /// No description provided for @restaurant_tier_includes_all_format.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes all {tier} restaurants + additional restaurants'**
+  String restaurant_tier_includes_all_format(String tier);
+
+  /// No description provided for @restaurant_tier_extra_restaurants_count.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} additional restaurants'**
+  String restaurant_tier_extra_restaurants_count(int count);
+
+  /// No description provided for @restaurant_tier_restaurants_count_only.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} restaurants'**
+  String restaurant_tier_restaurants_count_only(int count);
+
+  /// No description provided for @restaurant_tier_feature_distinctive.
+  ///
+  /// In en, this message translates to:
+  /// **'More distinctive restaurants'**
+  String get restaurant_tier_feature_distinctive;
+
+  /// No description provided for @restaurant_tier_feature_wider_options.
+  ///
+  /// In en, this message translates to:
+  /// **'Wider options'**
+  String get restaurant_tier_feature_wider_options;
+
+  /// No description provided for @restaurant_tier_quick_comparison_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Comparison'**
+  String get restaurant_tier_quick_comparison_title;
+
+  /// No description provided for @restaurant_tier_current_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Package:'**
+  String get restaurant_tier_current_package_label;
+
+  /// No description provided for @restaurant_tier_new_package_label.
+  ///
+  /// In en, this message translates to:
+  /// **'New Package:'**
+  String get restaurant_tier_new_package_label;
+
+  /// No description provided for @restaurant_tier_about_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get restaurant_tier_about_prefix;
+
+  /// No description provided for @restaurant_tier_restaurants_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'restaurants'**
+  String get restaurant_tier_restaurants_suffix;
+
+  /// No description provided for @restaurant_tier_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Details'**
+  String get restaurant_tier_details_title;
+
+  /// No description provided for @restaurant_tier_detail_current_credit.
+  ///
+  /// In en, this message translates to:
+  /// **'Current package credit for remaining days'**
+  String get restaurant_tier_detail_current_credit;
+
+  /// No description provided for @restaurant_tier_detail_target_price.
+  ///
+  /// In en, this message translates to:
+  /// **'New package price for remaining days'**
+  String get restaurant_tier_detail_target_price;
+
+  /// No description provided for @restaurant_tier_detail_gateway_recovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment gateway fee/recovery'**
+  String get restaurant_tier_detail_gateway_recovery;
+
+  /// No description provided for @restaurant_tier_detail_price_diff.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade difference'**
+  String get restaurant_tier_detail_price_diff;
+
+  /// No description provided for @restaurant_tier_total_amount_due.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount Due Now'**
+  String get restaurant_tier_total_amount_due;
+
+  /// No description provided for @restaurant_tier_instant_apply_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade is applied immediately and automatically upon successful payment'**
+  String get restaurant_tier_instant_apply_note;
+
+  /// No description provided for @restaurant_tier_payment_method_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get restaurant_tier_payment_method_title;
+
+  /// No description provided for @restaurant_tier_confirm_and_pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Upgrade and Pay'**
+  String get restaurant_tier_confirm_and_pay;
+
+  /// No description provided for @restaurant_tier_back_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get restaurant_tier_back_action;
+
+  /// No description provided for @restaurant_tier_your_current_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Current Tier'**
+  String get restaurant_tier_your_current_tier;
+
+  /// No description provided for @restaurant_tier_upgrade_to_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to {tier}'**
+  String restaurant_tier_upgrade_to_tier(String tier);
+
+  /// No description provided for @restaurant_tier_continue_to_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue upgrade to {tier}'**
+  String restaurant_tier_continue_to_tier(String tier);
+
+  /// No description provided for @restaurant_tier_processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get restaurant_tier_processing;
+
+  /// No description provided for @restaurant_tier_unavailable_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade is only available for active subscriptions.'**
+  String get restaurant_tier_unavailable_status;
+
+  /// No description provided for @restaurant_tier_unavailable_already_elite.
+  ///
+  /// In en, this message translates to:
+  /// **'You are already subscribed to the highest available restaurant tier.'**
+  String get restaurant_tier_unavailable_already_elite;
+
+  /// No description provided for @restaurant_tier_unavailable_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'An upgrade request is currently pending.'**
+  String get restaurant_tier_unavailable_pending;
+
+  /// No description provided for @restaurant_tier_unavailable_no_days.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no remaining service days in the current subscription to perform the upgrade.'**
+  String get restaurant_tier_unavailable_no_days;
+
+  /// No description provided for @restaurant_tier_unavailable_pricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing service is currently unavailable, please try again later.'**
+  String get restaurant_tier_unavailable_pricing;
+
+  /// No description provided for @restaurant_tier_unavailable_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade is currently not available for this subscription.'**
+  String get restaurant_tier_unavailable_generic;
+
+  /// No description provided for @restaurant_tier_continue_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Upgrade'**
+  String get restaurant_tier_continue_button;
 }
 
 class _AppLocalizationsDelegate

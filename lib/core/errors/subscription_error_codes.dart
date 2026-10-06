@@ -65,4 +65,39 @@ class SubscriptionErrorCodes {
 
   /// Generic not found error code from common backend errors.
   static const String commonNotFound = 'errors.common.not_found';
+
+  // ── Subscription upgrade flow ──
+  /// Upgrade not available for current subscription status.
+  static const String upgradeNotAvailableForStatus =
+      'upgrade_not_available_for_status';
+
+  /// Customer is already on the highest tier.
+  static const String upgradeAlreadyHighestTier = 'already_elite';
+
+  /// An upgrade request is already pending.
+  static const String upgradeRequestPending = 'upgrade_request_pending';
+
+  /// Subscription has no remaining days to upgrade.
+  static const String upgradeNoRemainingDays = 'upgrade_no_remaining_days';
+
+  /// Pricing is unavailable for the target upgrade.
+  static const String upgradePricingUnavailable = 'pricing.unavailable';
+
+  /// Selected upgrade target tier is invalid.
+  static const String upgradeTargetInvalid =
+      'subscription.upgrade_target_invalid';
+
+  /// Redirect URLs are required for upgrade payment.
+  static const String upgradeRedirectUrlsRequired =
+      'upgrade.redirect_urls_required';
+
+  /// Customer not found for upgrade.
+  static const String upgradeCustomerNotFound = 'upgrade.customer_not_found';
+
+  /// Subscription upgrade is not available.
+  static const String upgradeNotAvailable = 'subscription.upgrade_not_available';
+
+  /// Upgrade request already pending.
+  static const String upgradeRequestAlreadyPending =
+      'subscription.upgrade_request_already_pending';
 }

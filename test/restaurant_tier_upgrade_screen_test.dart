@@ -11,18 +11,19 @@ import 'package:meal_meat_user/features/profile/domain/entities/profile_image_re
 import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/restaurant_tier_upgrade_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_upgrade_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/restaurant_tier_upgrade_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/create_subscription_upgrade_request_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_options_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_upgrade_status_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/restaurant_tier_upgrade_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/restaurant_tier_upgrade_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_option_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_payment_section.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/restaurant_tier_upgrade_actions.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/repo/restaurant_tier_upgrade_repository.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/create_subscription_upgrade_request_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_options_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_summary_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/usecase/get_subscription_upgrade_status_usecase.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_view_model.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_screen.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_continue_button.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_option_card.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_payment_section.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_upgrade_actions.dart';
 
 void main() {
   setUp(() async {
@@ -70,6 +71,9 @@ void main() {
 
       await tester.ensureVisible(find.byType(RestaurantTierOptionCard).last);
       await tester.tap(find.byType(RestaurantTierOptionCard).last);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(RestaurantTierContinueButton));
       await tester.pumpAndSettle();
 
       expect(find.byType(RestaurantTierUpgradeActions), findsOneWidget);
