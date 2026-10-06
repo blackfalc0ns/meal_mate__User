@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
@@ -92,18 +93,30 @@ class RestaurantTierSelectableOption extends StatelessWidget {
       color: type == RestaurantTierOptionType.current
           ? color.surface
           : type == RestaurantTierOptionType.plus
-          ? color.primary
-          : color.inverseSurface,
+          ? color.restaurantTierPlusGreen
+          : color.restaurantTierMaxDark,
       gradient: type == RestaurantTierOptionType.plus
           ? LinearGradient(
               begin: AlignmentDirectional.topEnd,
               end: AlignmentDirectional.bottomStart,
-              colors: [color.primary, color.primaryFixedDim],
+              colors: [
+                color.restaurantTierPlusGreen,
+                color.restaurantTierPlusGreenDark,
+              ],
+            )
+          : type == RestaurantTierOptionType.max
+          ? LinearGradient(
+              begin: AlignmentDirectional.topEnd,
+              end: AlignmentDirectional.bottomStart,
+              colors: [
+                color.restaurantTierMaxDark,
+                color.restaurantTierMaxDarker,
+              ],
             )
           : null,
       border: Border.all(
         color: type == RestaurantTierOptionType.max
-            ? color.secondary
+            ? color.restaurantTierMaxBorder
             : color.outlineVariant,
       ),
       borderRadius: BorderRadius.circular(Spacing.restaurantTierCardRadius),
@@ -121,7 +134,7 @@ class RestaurantTierSelectableOption extends StatelessWidget {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.secondary
+        ? color.restaurantTierMaxGold
         : type == RestaurantTierOptionType.current
         ? color.primary
         : color.onPrimary;
@@ -138,25 +151,27 @@ class RestaurantTierSelectableOption extends StatelessWidget {
   Color _countColor(BuildContext context, RestaurantTierOptionType type) {
     final color = context.colorScheme;
 
-    return type == RestaurantTierOptionType.max
-        ? color.secondary
-        : color.primary;
+    return type == RestaurantTierOptionType.current
+        ? color.primary
+        : color.onSurface;
   }
 
   Color _countBorderColor(BuildContext context, RestaurantTierOptionType type) {
     final color = context.colorScheme;
 
-    return type == RestaurantTierOptionType.max
-        ? color.secondary
-        : color.primary;
+    return type == RestaurantTierOptionType.current
+        ? color.primary
+        : color.outlineVariant;
   }
 
   Color _actionPanelColor(BuildContext context, RestaurantTierOptionType type) {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.inverseSurface
-        : color.primaryFixedDim;
+        ? color.restaurantTierMaxPanel
+        : type == RestaurantTierOptionType.plus
+        ? color.restaurantTierPlusPanel
+        : color.surfaceContainerHighest;
   }
 
   Color _actionPanelBorderColor(
@@ -166,15 +181,17 @@ class RestaurantTierSelectableOption extends StatelessWidget {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.secondary
-        : color.primaryContainer;
+        ? color.restaurantTierMaxGold
+        : type == RestaurantTierOptionType.plus
+        ? color.restaurantTierPlusPanelBorder
+        : color.outline;
   }
 
   Color _actionButtonColor(BuildContext context, RestaurantTierOptionType type) {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.secondary
+        ? color.restaurantTierMaxGold
         : color.surface;
   }
 
@@ -185,15 +202,20 @@ class RestaurantTierSelectableOption extends StatelessWidget {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.onSecondary
-        : color.primary;
+        ? color.surface
+        : type == RestaurantTierOptionType.plus
+        ? color.restaurantTierPlusGreen
+        : color.onSurfaceVariant;
   }
 
   Color _priceColor(BuildContext context, RestaurantTierOptionType type) {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
-        ? color.secondary
-        : color.onPrimary;
+        ? color.restaurantTierMaxGold
+        : type == RestaurantTierOptionType.plus
+        ? color.onPrimary
+        : color.onSurfaceVariant;
   }
 }
+

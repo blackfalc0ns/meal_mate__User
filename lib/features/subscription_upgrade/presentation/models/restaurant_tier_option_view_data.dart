@@ -21,6 +21,7 @@ class RestaurantTierOptionViewData {
     final optionType = RestaurantTierHelpers.optionType(
       isCurrent: option.isCurrent,
       index: index,
+      tierCode: option.targetTier,
     );
     return RestaurantTierOptionViewData(
       option: option,

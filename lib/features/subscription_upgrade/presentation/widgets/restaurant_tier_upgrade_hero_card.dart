@@ -39,18 +39,19 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
     final currentTierName = currentOption?.tierNameAr.isNotEmpty == true
         ? currentOption!.tierNameAr
         : (currentOption?.tierNameEn.isNotEmpty == true
-            ? currentOption!.tierNameEn
-            : currentTierCode);
+              ? currentOption!.tierNameEn
+              : currentTierCode);
     final currentBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(0);
 
     final newTierName = selectedOption.tierNameAr.isNotEmpty
         ? selectedOption.tierNameAr
         : (selectedOption.tierNameEn.isNotEmpty
-            ? selectedOption.tierNameEn
-            : selectedOption.targetTier);
+              ? selectedOption.tierNameEn
+              : selectedOption.targetTier);
     final newBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(1);
 
-    final diffRestaurants = selectedOption.accessibleRestaurantCount -
+    final diffRestaurants =
+        selectedOption.accessibleRestaurantCount -
         (currentOption?.accessibleRestaurantCount ?? 0);
 
     final extraRestaurantsLabel = diffRestaurants > 0
@@ -81,6 +82,7 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.xs),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: RestaurantTierPreview(

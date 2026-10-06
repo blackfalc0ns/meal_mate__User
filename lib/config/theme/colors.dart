@@ -224,6 +224,18 @@ class AppColors {
   static const Color addressesInputIconBackground = Color(0xFFEDF7F2);
   static const Color addressesBuildingBackground = Color(0xFFF7F7F7);
   static const Color addressesOptionalText = Color(0xFF8C919C);
+
+  // Restaurant Tier Upgrade tokens from Figma (node 1836-21080 & 1836-20964).
+  static const Color restaurantTierMaxGold = Color(0xFFCCA054);
+  static const Color restaurantTierMaxDark = Color(0xFF26282B);
+  static const Color restaurantTierMaxDarker = Color(0xFF1B1C1E);
+  static const Color restaurantTierMaxBorder = Color(0xFF33353A);
+  static const Color restaurantTierMaxPanel = Color(0xFF191A1C);
+
+  static const Color restaurantTierPlusGreen = Color(0xFF0D986A);
+  static const Color restaurantTierPlusGreenDark = Color(0xFF087A4D);
+  static const Color restaurantTierPlusPanel = Color(0xFF0A5E32);
+  static const Color restaurantTierPlusPanelBorder = Color(0xFF0D986A);
 }
 
 extension CalendarColorScheme on ColorScheme {
@@ -246,3 +258,18 @@ extension MonthlyPlansColorScheme on ColorScheme {
           ? AppColors.dividerDark
           : AppColors.subscriptionRestaurantsSheetBorder;
 }
+
+extension RestaurantTierColorScheme on ColorScheme {
+  Color get restaurantTierMaxGold => AppColors.restaurantTierMaxGold;
+  Color get restaurantTierMaxDark => AppColors.restaurantTierMaxDark;
+  Color get restaurantTierMaxDarker => AppColors.restaurantTierMaxDarker;
+  Color get restaurantTierMaxBorder => AppColors.restaurantTierMaxBorder;
+  Color get restaurantTierMaxPanel => AppColors.restaurantTierMaxPanel;
+
+  Color get restaurantTierPlusGreen => AppColors.restaurantTierPlusGreen;
+  Color get restaurantTierPlusGreenDark => AppColors.restaurantTierPlusGreenDark;
+  Color get restaurantTierPlusPanel => AppColors.restaurantTierPlusPanel;
+  Color get restaurantTierPlusPanelBorder =>
+      AppColors.restaurantTierPlusPanelBorder;
+}
+

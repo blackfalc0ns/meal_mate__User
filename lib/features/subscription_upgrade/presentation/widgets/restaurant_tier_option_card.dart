@@ -140,7 +140,7 @@ class RestaurantTierOptionCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            // const SizedBox(height: Spacing.sm),
+                            const Spacer(),
                             Text(
                               description,
                               textAlign: TextAlign.center,
@@ -152,7 +152,8 @@ class RestaurantTierOptionCard extends StatelessWidget {
                                 color: descriptionColor,
                               ),
                             ),
-                            const Spacer(),
+                            const SizedBox(height: Spacing.sm),
+
                             RestaurantTierActionPanel(
                               isCurrent: isCurrent,
                               text: actionText,

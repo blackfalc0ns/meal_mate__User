@@ -14,14 +14,28 @@ abstract class RestaurantTierHelpers {
     return availableBadges[index % availableBadges.length];
   }
 
-  /// Determines card styling dynamically based on whether it is current and its index.
+  /// Determines card styling dynamically based on whether it is current and its index or tier code.
   static RestaurantTierOptionType optionType({
     required bool isCurrent,
     int index = 0,
+    String? tierCode,
   }) {
     if (isCurrent) return RestaurantTierOptionType.current;
-    return (index % 2 == 1)
-        ? RestaurantTierOptionType.max
-        : RestaurantTierOptionType.plus;
+
+    final lower = tierCode?.toLowerCase() ?? '';
+    if (lower.contains('max') ||
+        lower.contains('elite') ||
+        lower.contains('diamond')) {
+      return RestaurantTierOptionType.max;
+    }
+    if (lower.contains('plus') ||
+        lower.contains('platinum') ||
+        lower.contains('crown')) {
+      return RestaurantTierOptionType.plus;
+    }
+
+    return (index == 1)
+        ? RestaurantTierOptionType.plus
+        : RestaurantTierOptionType.max;
   }
 }
