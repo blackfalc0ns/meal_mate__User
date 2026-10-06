@@ -118,7 +118,10 @@ class RestaurantTierOptionCard extends StatelessWidget {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                RestaurantTierBadge(imageUrl: imageUrl),
+                                RestaurantTierBadge(
+                                  imageUrl: imageUrl,
+                                  badgeAsset: badgeAsset,
+                                ),
                                 const SizedBox(width: Spacing.sm),
                                 Text(
                                   title,

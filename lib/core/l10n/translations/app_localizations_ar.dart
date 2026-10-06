@@ -5035,6 +5035,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا توجد مطاعم إضافية في هذا التصنيف';
 
   @override
+  String get upgrade_summary_view_more_restaurants => 'عرض المزيد';
+
+  @override
+  String get upgrade_summary_all_new_restaurants_title =>
+      'المطاعم الجديدة المضافة';
+
+  @override
   String get upgrade_summary_load_error =>
       'تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.';
 

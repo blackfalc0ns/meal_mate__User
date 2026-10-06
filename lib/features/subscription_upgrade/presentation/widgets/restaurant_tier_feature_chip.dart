@@ -37,6 +37,7 @@ class RestaurantTierFeatureChip extends StatelessWidget {
             size: Spacing.iconSm,
             semanticLabel: locale.subscription_summary_restaurant_tier_label,
           ),
+          const SizedBox(width: Spacing.xxs),
           Flexible(
             child: Text(
               label,

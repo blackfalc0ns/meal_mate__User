@@ -25,18 +25,24 @@ class RestaurantTierPreview extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        RestaurantTierBadge(imageUrl: imageUrl),
+        RestaurantTierBadge(
+          imageUrl: imageUrl,
+          badgeAsset: badgeAsset,
+          size: Spacing.restaurantTierSmallBadgeSize,
+        ),
         const SizedBox(width: Spacing.xs),
-        Semantics(
-          label: locale.subscription_summary_restaurant_tier_label,
-          child: Text(
-            name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size16,
-              color: color.primary,
+        Flexible(
+          child: Semantics(
+            label: locale.subscription_summary_restaurant_tier_label,
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size16,
+                color: color.primary,
+              ),
             ),
           ),
         ),

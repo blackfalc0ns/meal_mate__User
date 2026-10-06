@@ -41,14 +41,22 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
         : (currentOption?.tierNameEn.isNotEmpty == true
               ? currentOption!.tierNameEn
               : currentTierCode);
-    final currentBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(0);
+    final currentBadgeAsset = RestaurantTierHelpers.badgeAssetForOption(
+      isCurrent: true,
+      tierCode: currentTierCode,
+      index: 0,
+    );
 
     final newTierName = selectedOption.tierNameAr.isNotEmpty
         ? selectedOption.tierNameAr
         : (selectedOption.tierNameEn.isNotEmpty
               ? selectedOption.tierNameEn
               : selectedOption.targetTier);
-    final newBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(1);
+    final newBadgeAsset = RestaurantTierHelpers.badgeAssetForOption(
+      isCurrent: false,
+      tierCode: selectedOption.targetTier,
+      index: 1,
+    );
 
     final diffRestaurants =
         selectedOption.accessibleRestaurantCount -
@@ -59,6 +67,10 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
         : locale.restaurant_tier_restaurants_count_only(
             selectedOption.accessibleRestaurantCount,
           );
+
+    final formattedExtraLabel = extraRestaurantsLabel.startsWith('+')
+        ? extraRestaurantsLabel.substring(1).trim()
+        : extraRestaurantsLabel;
 
     return Container(
       padding: const EdgeInsets.all(Spacing.md),
@@ -82,27 +94,36 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.xs),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: RestaurantTierPreview(
-                  name: currentTierName,
-                  badgeAsset: currentBadgeAsset,
-                  imageUrl: currentOption?.logoUrl,
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: RestaurantTierPreview(
+                    name: currentTierName,
+                    badgeAsset: currentBadgeAsset,
+                    imageUrl: currentOption?.logoUrl,
+                  ),
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: color.primary,
-                size: Spacing.iconMd,
-                semanticLabel:
-                    locale.subscription_summary_restaurant_tier_label,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: color.primary,
+                  size: Spacing.iconMd,
+                  semanticLabel:
+                      locale.subscription_summary_restaurant_tier_label,
+                ),
               ),
+
               Expanded(
-                child: RestaurantTierPreview(
-                  name: newTierName,
-                  badgeAsset: newBadgeAsset,
-                  imageUrl: selectedOption.logoUrl,
+                child: Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: RestaurantTierPreview(
+                    name: newTierName,
+                    badgeAsset: newBadgeAsset,
+                    imageUrl: selectedOption.logoUrl,
+                  ),
                 ),
               ),
             ],
@@ -115,7 +136,7 @@ class RestaurantTierUpgradeHeroCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
                   child: RestaurantTierFeatureChip(
                     icon: Icons.add_rounded,
-                    label: extraRestaurantsLabel,
+                    label: formattedExtraLabel,
                   ),
                 ),
               ),

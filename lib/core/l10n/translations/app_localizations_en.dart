@@ -5124,6 +5124,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'No additional restaurants in this tier';
 
   @override
+  String get upgrade_summary_view_more_restaurants => 'View more';
+
+  @override
+  String get upgrade_summary_all_new_restaurants_title =>
+      'Newly added restaurants';
+
+  @override
   String get upgrade_summary_load_error =>
       'Unable to load the upgrade summary. Please try again.';
 

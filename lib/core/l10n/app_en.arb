@@ -1881,6 +1881,8 @@
   },
   "upgrade_summary_new_restaurants": "New restaurants joining your package",
   "upgrade_summary_no_new_restaurants": "No additional restaurants in this tier",
+  "upgrade_summary_view_more_restaurants": "View more",
+  "upgrade_summary_all_new_restaurants_title": "Newly added restaurants",
   "upgrade_summary_load_error": "Unable to load the upgrade summary. Please try again.",
   "billing_uncompleted_title": "Incomplete subscriptions",
   "billing_uncompleted_hold_active": "Your reservation is held temporarily",

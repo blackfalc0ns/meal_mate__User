@@ -9590,6 +9590,18 @@ abstract class AppLocalizations {
   /// **'No additional restaurants in this tier'**
   String get upgrade_summary_no_new_restaurants;
 
+  /// No description provided for @upgrade_summary_view_more_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'View more'**
+  String get upgrade_summary_view_more_restaurants;
+
+  /// No description provided for @upgrade_summary_all_new_restaurants_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Newly added restaurants'**
+  String get upgrade_summary_all_new_restaurants_title;
+
   /// No description provided for @upgrade_summary_load_error.
   ///
   /// In en, this message translates to:

@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/presentation/helpers/restaurant_tier_helpers.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_badge.dart';
 
 class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
@@ -137,7 +138,13 @@ class RestaurantTierCurrentSubscriptionCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              RestaurantTierBadge(imageUrl: currentOption?.logoUrl),
+              RestaurantTierBadge(
+                imageUrl: currentOption?.logoUrl,
+                badgeAsset: RestaurantTierHelpers.badgeAssetForOption(
+                  isCurrent: true,
+                  tierCode: tierCode,
+                ),
+              ),
               const SizedBox(width: Spacing.sm),
               Text.rich(
                 TextSpan(

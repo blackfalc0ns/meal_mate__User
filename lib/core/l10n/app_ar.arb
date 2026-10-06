@@ -1861,6 +1861,8 @@
   },
   "upgrade_summary_new_restaurants": "مطاعم جديدة تنضم لباقتك",
   "upgrade_summary_no_new_restaurants": "لا توجد مطاعم إضافية في هذا التصنيف",
+  "upgrade_summary_view_more_restaurants": "عرض المزيد",
+  "upgrade_summary_all_new_restaurants_title": "المطاعم الجديدة المضافة",
   "upgrade_summary_load_error": "تعذر تحميل ملخص الترقية. يرجى المحاولة مرة أخرى.",
   "billing_uncompleted_title": "اشتراكات غير مكتملة",
   "billing_uncompleted_hold_active": "حجزك محفوظ مؤقتًا",
