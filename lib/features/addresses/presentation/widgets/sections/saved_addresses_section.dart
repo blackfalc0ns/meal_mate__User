@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -31,7 +32,16 @@ class SavedAddressesSection extends StatelessWidget {
         title: locale.addresses_saved_section,
         description: locale.addresses_add_new,
         icon: Icons.location_off_rounded,
-      );
+      )
+          .animate()
+          .fadeIn(delay: 120.ms, duration: 350.ms, curve: Curves.easeOut)
+          .scale(
+            begin: const Offset(0.95, 0.95),
+            end: const Offset(1, 1),
+            delay: 120.ms,
+            duration: 350.ms,
+            curve: Curves.easeOutBack,
+          );
     }
 
     return Column(
@@ -44,7 +54,16 @@ class SavedAddressesSection extends StatelessWidget {
             fontSize: FontSize.size13,
             color: color.onSurface,
           ),
-        ),
+        )
+            .animate()
+            .fadeIn(delay: 100.ms, duration: 350.ms, curve: Curves.easeOut)
+            .slideY(
+              begin: 0.1,
+              end: 0,
+              delay: 100.ms,
+              duration: 350.ms,
+              curve: Curves.easeOutCubic,
+            ),
         const SizedBox(height: Spacing.sm),
         ListView.separated(
           shrinkWrap: true,
@@ -67,7 +86,20 @@ class SavedAddressesSection extends StatelessWidget {
               onDelete: address.addressId.isEmpty
                   ? null
                   : () => onDelete(address),
-            );
+            )
+                .animate()
+                .fadeIn(
+                  delay: (150 + index.clamp(0, 6) * 60).ms,
+                  duration: 350.ms,
+                  curve: Curves.easeOut,
+                )
+                .slideY(
+                  begin: 0.08,
+                  end: 0,
+                  delay: (150 + index.clamp(0, 6) * 60).ms,
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                );
           },
         ),
       ],

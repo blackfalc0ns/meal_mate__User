@@ -47,7 +47,7 @@ class CurrentAddressCard extends StatelessWidget {
               padding: const EdgeInsetsDirectional.only(
                 top: Spacing.xss,
                 bottom: Spacing.xss,
-                end: Spacing.addressesCardContentPadding,
+                end: Spacing.sm,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.addressesMapRadius),
@@ -68,48 +68,63 @@ class CurrentAddressCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.xs,
-                            vertical: Spacing.xs,
-                          ),
-                          decoration: BoxDecoration(
-                            color: color.secondaryContainer,
-                            borderRadius: BorderRadius.circular(
-                              Spacing.radiusXs,
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.xs,
+                              vertical: Spacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: color.secondaryContainer,
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusXs,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  color: color.primary,
+                                  size: Spacing.xs,
+                                ),
+                                const SizedBox(width: Spacing.xs),
+                                Flexible(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      badgeLabel,
+                                      maxLines: 1,
+                                      style: getMediumStyle(
+                                        fontFamily: FontConstant.alexandria,
+                                        fontSize: FontSize.size8,
+                                        color: color.primary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                color: color.primary,
-                                size: Spacing.xs,
-                              ),
-                              const SizedBox(width: Spacing.xs),
-                              Text(
-                                badgeLabel,
-                                style: getMediumStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size8,
-                                  color: color.primary,
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-                        const SizedBox(width: Spacing.sm),
-                        Text(
-                          address?.label.isNotEmpty == true
-                              ? address!.label
-                              : locale.addresses_current_home,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size13,
-                            color: color.onSurface,
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Text(
+                              address?.label.isNotEmpty == true
+                                  ? address!.label
+                                  : locale.addresses_current_home,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size13,
+                                color: color.onSurface,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -119,7 +134,8 @@ class CurrentAddressCard extends StatelessWidget {
                       address?.addressLine.isNotEmpty == true
                           ? address!.addressLine
                           : locale.addresses_current_home_details,
-
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: getLightStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size11,
@@ -139,12 +155,18 @@ class CurrentAddressCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            locale.addresses_access_instructions,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size9,
-                              color: color.primary,
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                locale.addresses_access_instructions,
+                                maxLines: 1,
+                                style: getMediumStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: color.primary,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(width: Spacing.xs),
@@ -161,8 +183,11 @@ class CurrentAddressCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(
-                Spacing.addressesCardContentPadding,
+              padding: const EdgeInsetsDirectional.only(
+                top: Spacing.md,
+                bottom: Spacing.md,
+                start: Spacing.xs,
+                end: Spacing.md,
               ),
               child: Container(
                 width: Spacing.profileSettingsIconContainer,
