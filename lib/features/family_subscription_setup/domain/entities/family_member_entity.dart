@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 
 class FamilyMemberEntity {

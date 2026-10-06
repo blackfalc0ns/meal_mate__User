@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_map_view.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_map_view.dart';
 
 class AddressChooseLocationMapSection extends StatelessWidget {
   const AddressChooseLocationMapSection({

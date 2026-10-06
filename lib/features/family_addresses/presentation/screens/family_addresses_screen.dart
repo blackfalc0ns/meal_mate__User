@@ -34,14 +34,18 @@ class FamilyAddressesScreen extends StatelessWidget {
             ..load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
       child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
         listenWhen: (previous, current) =>
-            current.completed &&
-            previous.addressSaveRevision != current.addressSaveRevision,
-        listener: (context, state) =>
-            context.pushNamed(AppRoutes.familyAllergies),
-        builder: (context, state) {
-          if (isInFamilyFlow) {
+            (previous.familyName != current.familyName && current.familyName != null) ||
+            (current.completed &&
+                previous.addressSaveRevision != current.addressSaveRevision),
+        listener: (context, state) {
+          if (isInFamilyFlow && state.familyName != null) {
             FamilyFlowScope.updateFamilyName(context, state.familyName);
           }
+          if (state.completed) {
+            context.pushNamed(AppRoutes.familyAllergies);
+          }
+        },
+        builder: (context, state) {
           if (state.failure != null && state.members.isEmpty) {
             final errorWidget = ApiErrorWidget(
               exception: state.failure!.exception,
@@ -119,7 +123,7 @@ class FamilyAddressesScreen extends StatelessWidget {
                 child: FamilyAddressLocationStage(
                   memberId: member.memberId,
                   initialAddress: member.deliveryAddress,
-                  onSaved: context
+                  onAddressSaved: context
                       .read<FamilyAddressesViewModel>()
                       .addressSaved,
                 ),

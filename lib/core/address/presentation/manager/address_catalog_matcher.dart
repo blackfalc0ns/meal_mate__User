@@ -1,6 +1,6 @@
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/map_address_autofill_entity.dart';
 
 class InitialLocationSelection {
   const InitialLocationSelection({this.governorate, this.area});

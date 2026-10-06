@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
@@ -9,10 +10,13 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
   FamilyAddressesViewModel(this._getFlow) : super(const FamilyAddressesState());
 
   final GetFamilyFlowCurrentUseCase _getFlow;
+  int _activeLoadId = 0;
 
   Future<void> load({String? memberId}) async {
+    final requestId = ++_activeLoadId;
     emit(state.copyWith(isLoading: true, clearError: true, clearFailure: true));
     final result = await _getFlow();
+    if (isClosed || requestId != _activeLoadId) return;
     switch (result) {
       case ApiSuccessResult():
         final members = memberId == null
@@ -58,21 +62,35 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     emit(state.copyWith(currentIndex: index, clearError: true));
   }
 
-  void addressSaved() {
+  void addressSaved({String? memberId, CustomerAddressEntity? savedAddress}) {
     if (state.members.isEmpty) return;
+    final targetMemberId = memberId ?? state.currentMember?.memberId;
+    if (targetMemberId == null) return;
+
+    final updatedMembers = state.members.map((m) {
+      if (m.memberId == targetMemberId) {
+        return m.copyWith(
+          deliveryAddressId: savedAddress?.addressId ?? m.deliveryAddressId,
+          deliveryAddress: savedAddress ?? m.deliveryAddress,
+        );
+      }
+      return m;
+    }).toList();
+
     final completedMemberIds = {
       ...state.completedMemberIds,
-      state.currentMember!.memberId,
+      targetMemberId,
     };
-    final isComplete = completedMemberIds.length == state.members.length;
+    final isComplete = completedMemberIds.length == updatedMembers.length;
     final nextIndex = isComplete
         ? state.currentIndex
-        : state.members.indexWhere(
+        : updatedMembers.indexWhere(
             (member) => !completedMemberIds.contains(member.memberId),
           );
     emit(
       state.copyWith(
-        currentIndex: nextIndex,
+        members: updatedMembers,
+        currentIndex: nextIndex < 0 ? state.currentIndex : nextIndex,
         completedMemberIds: completedMemberIds,
         completed: isComplete,
         addressSaveRevision: state.addressSaveRevision + 1,

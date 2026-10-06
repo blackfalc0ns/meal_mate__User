@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/addresses/data/mapper/map_address_autofill_mapper.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/map_address_autofill_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/mapper/map_address_autofill_mapper.dart';
+import 'package:meal_meat_user/core/address/data/models/response/map_address_autofill_response_dto.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 

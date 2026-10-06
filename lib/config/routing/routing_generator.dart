@@ -33,11 +33,15 @@ import 'package:meal_meat_user/features/payment/presentation/screens/payment_suc
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_web_view_screen.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/personal_information_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/customer_address_editor_operations.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/addresses_screen.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_address_editor_operations.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/dietary_preferences_screen.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/add_allergy_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/health_goals_screen.dart';
@@ -506,9 +510,18 @@ class RouteGenerator {
           ),
           _ => null,
         };
+        final operations = args?.familyMemberId != null
+            ? FamilyAddressEditorOperations(
+                memberId: args!.familyMemberId!,
+                previewFamilyMemberAddressUseCase:
+                    getIt<PreviewFamilyMemberAddressUseCase>(),
+                addFamilyMemberAddressUseCase:
+                    getIt<AddFamilyMemberAddressUseCase>(),
+              )
+            : getIt<CustomerAddressEditorOperations>();
         return _buildRoute(
           settings: settings,
-          page: AddressChooseLocationScreen(args: args),
+          page: AddressChooseLocationScreen(args: args, operations: operations),
         );
       case AppRoutes.dietaryPreferences:
         final args = settings.arguments is SubscriptionFlowArgs

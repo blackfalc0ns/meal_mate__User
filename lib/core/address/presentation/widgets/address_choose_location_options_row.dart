@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_mode_card.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_mode_card.dart';
 
 enum AddressLocationMode { fromMap, currentLocation }
 

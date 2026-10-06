@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 
 void main() {

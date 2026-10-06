@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/address_entry_flow_controller.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_entry_flow_controller.dart';
 
 void main() {
   test('saved address returns to location selection for later editing', () {

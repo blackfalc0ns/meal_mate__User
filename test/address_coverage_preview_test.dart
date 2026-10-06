@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_mapper.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_preview_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_pagination_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/core/address/data/mapper/customer_address_mapper.dart';
+import 'package:meal_meat_user/core/address/data/models/response/address_coverage_preview_response_dto.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_pagination_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 
 void main() {

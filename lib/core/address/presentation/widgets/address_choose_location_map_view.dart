@@ -11,18 +11,18 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/location_service.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/address_catalog_matcher.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/address_entry_flow_controller.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_map_marker.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_catalog_matcher.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_entry_flow_controller.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_event.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_view_model.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_options_row.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_details_wolt_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_map_marker.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/home_address_form_card.dart';
 
 class AddressChooseLocationMapView extends StatefulWidget {
   const AddressChooseLocationMapView({
@@ -135,7 +135,7 @@ class _AddressChooseLocationMapViewState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return BlocListener<AddressesViewModel, AddressesState>(
+    return BlocListener<AddressEditorViewModel, AddressEditorState>(
       listenWhen: (previous, current) =>
           previous.mapAutofill != current.mapAutofill,
       listener: (context, state) {
@@ -372,7 +372,7 @@ class _AddressChooseLocationMapViewState
   void _executeSearch(String query) {
     _animateCameraToAutofill = true;
     if (mounted) _setLocationResolving(true);
-    context.read<AddressesViewModel>().doIntent(
+    context.read<AddressEditorViewModel>().doIntent(
       GeocodeAddressEvent(address: query),
     );
   }
@@ -388,7 +388,7 @@ class _AddressChooseLocationMapViewState
     _lastGeocodedLat = _currentLatitude;
     _lastGeocodedLng = _currentLongitude;
 
-    context.read<AddressesViewModel>().doIntent(
+    context.read<AddressEditorViewModel>().doIntent(
       ReverseGeocodeEvent(
         latitude: _currentLatitude,
         longitude: _currentLongitude,
@@ -399,7 +399,7 @@ class _AddressChooseLocationMapViewState
   }
 
   void _prepareAndShowDetails(BuildContext context) {
-    final state = context.read<AddressesViewModel>().state;
+    final state = context.read<AddressEditorViewModel>().state;
     if (state.mapAutofill.isLoading) return;
     if (state.mapAutofill.isSuccess &&
         state.mapAutofill.autofill != null &&
@@ -417,7 +417,7 @@ class _AddressChooseLocationMapViewState
   }
 
   Future<void> _showDetailsSheet(BuildContext context) async {
-    final viewModel = context.read<AddressesViewModel>();
+    final viewModel = context.read<AddressEditorViewModel>();
     _flowController.showAddressDetails();
     await AddressDetailsWoltSheet.show(
       context: context,
@@ -425,9 +425,9 @@ class _AddressChooseLocationMapViewState
       onConfirm: () {
         if (_submitAddress(context)) Navigator.of(context).pop();
       },
-      content: BlocProvider<AddressesViewModel>.value(
+      content: BlocProvider<AddressEditorViewModel>.value(
         value: viewModel,
-        child: BlocBuilder<AddressesViewModel, AddressesState>(
+        child: BlocBuilder<AddressEditorViewModel, AddressEditorState>(
           buildWhen: (previous, current) =>
               previous.locations != current.locations,
           builder: (context, state) => HomeAddressFormCard(
@@ -444,13 +444,13 @@ class _AddressChooseLocationMapViewState
             buildingNumberErrorListenable: _buildingNumberHasError,
             apartmentController: _apartmentController,
             onGovernorateSelected: (governorate) => context
-                .read<AddressesViewModel>()
+                .read<AddressEditorViewModel>()
                 .doIntent(SelectAddressGovernorateEvent(governorate)),
             onAreaSelected: (area) => context
-                .read<AddressesViewModel>()
+                .read<AddressEditorViewModel>()
                 .doIntent(SelectAddressAreaEvent(area)),
             onBlockSelected: (block) => context
-                .read<AddressesViewModel>()
+                .read<AddressEditorViewModel>()
                 .doIntent(SelectAddressBlockEvent(block)),
           ),
         ),
@@ -466,7 +466,7 @@ class _AddressChooseLocationMapViewState
 
     final locale = context.localization;
     final languageCode = Localizations.localeOf(context).languageCode;
-    final viewModelState = context.read<AddressesViewModel>().state;
+    final viewModelState = context.read<AddressEditorViewModel>().state;
     final autofill = viewModelState.mapAutofill.autofill;
     final locationsState = viewModelState.locations;
 
@@ -549,7 +549,7 @@ class _AddressChooseLocationMapViewState
     );
 
     if (initialAddress != null && initialAddress.addressId.isNotEmpty) {
-      context.read<AddressesViewModel>().doIntent(
+      context.read<AddressEditorViewModel>().doIntent(
         PreviewUpdateAddressCoverageEvent(
           addressId: initialAddress.addressId,
           request: request,
@@ -558,7 +558,7 @@ class _AddressChooseLocationMapViewState
       return true;
     }
 
-    context.read<AddressesViewModel>().doIntent(
+    context.read<AddressEditorViewModel>().doIntent(
       PreviewNewAddressCoverageEvent(request),
     );
     return true;

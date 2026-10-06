@@ -5,8 +5,8 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_form_field.dart';
+import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_form_field.dart';
 
 class HomeAddressFormCard extends StatefulWidget {
   const HomeAddressFormCard({

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 
 part 'family_member_response_dto.g.dart';

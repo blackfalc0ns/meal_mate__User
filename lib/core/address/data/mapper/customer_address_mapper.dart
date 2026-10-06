@@ -1,15 +1,15 @@
-import 'package:meal_meat_user/features/addresses/data/models/request/address_coverage_preview_request_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/request/customer_address_request_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_pagination_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/address_coverage_preview_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/customer_address_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/locations_catalog_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/data/models/response/region_catalog_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_pagination_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/core/address/data/models/request/address_coverage_preview_request_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/request/customer_address_request_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/address_coverage_pagination_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/address_coverage_preview_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/locations_catalog_response_dto.dart';
+import 'package:meal_meat_user/core/address/data/models/response/region_catalog_response_dto.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_pagination_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
 
 extension CustomerAddressResponseDtoMapper on CustomerAddressResponseDto {
   CustomerAddressEntity toEntity() {

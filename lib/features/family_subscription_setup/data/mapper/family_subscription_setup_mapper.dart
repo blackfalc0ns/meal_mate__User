@@ -4,7 +4,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
-import 'package:meal_meat_user/features/addresses/data/mapper/customer_address_mapper.dart';
+import 'package:meal_meat_user/core/address/data/mapper/customer_address_mapper.dart';
 import 'package:meal_meat_user/features/food_preferences/data/mapper/food_preferences_mapper.dart';
 
 extension FamilyRelationshipResponseDtoMapper on FamilyRelationshipResponseDto {

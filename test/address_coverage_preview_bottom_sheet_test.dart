@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
 
 void main() {
   testWidgets('confirming coverage closes the preview before submitting', (

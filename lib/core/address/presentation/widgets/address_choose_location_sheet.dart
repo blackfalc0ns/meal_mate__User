@@ -3,9 +3,9 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_header.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_search_bar.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_header.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_options_row.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_search_bar.dart';
 
 class AddressChooseLocationSheet extends StatelessWidget {
   const AddressChooseLocationSheet({

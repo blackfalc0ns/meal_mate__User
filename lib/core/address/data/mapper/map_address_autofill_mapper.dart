@@ -1,5 +1,5 @@
-import 'package:meal_meat_user/features/addresses/data/models/response/map_address_autofill_response_dto.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
+import 'package:meal_meat_user/core/address/data/models/response/map_address_autofill_response_dto.dart';
+import 'package:meal_meat_user/core/address/domain/entities/map_address_autofill_entity.dart';
 
 extension MapAddressAutofillResponseDtoMapper on MapAddressAutofillResponseDto {
   MapAddressAutofillEntity toEntity() {

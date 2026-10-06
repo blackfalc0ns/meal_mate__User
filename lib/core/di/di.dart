@@ -7,6 +7,12 @@ import '../../features/notifications/domain/usecase/get_notifications_usecase.da
 import '../../features/notifications/domain/usecase/mark_all_notifications_read_usecase.dart';
 import '../../features/notifications/domain/usecase/mark_notification_read_usecase.dart';
 import '../../features/notifications/presentation/manager/notification_badge_view_model.dart';
+import '../../features/addresses/domain/usecase/add_customer_address_usecase.dart';
+import '../../features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
+import '../../features/addresses/domain/usecase/customer_address_editor_operations.dart';
+import '../../features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
+import '../../features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
+import '../../features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import '../../features/notifications/presentation/manager/notifications_view_model.dart';
 import 'di.config.dart';
 
@@ -34,6 +40,20 @@ Future<void> configureDependencies() async {
         getIt.isRegistered<NotificationBadgeViewModel>()
             ? getIt<NotificationBadgeViewModel>()
             : null,
+      ),
+    );
+  }
+  if (!getIt.isRegistered<CustomerAddressEditorOperations>()) {
+    getIt.registerFactory<CustomerAddressEditorOperations>(
+      () => CustomerAddressEditorOperations(
+        previewNewAddressCoverageUseCase:
+            getIt<PreviewNewAddressCoverageUseCase>(),
+        previewExistingAddressCoverageUseCase:
+            getIt<PreviewExistingAddressCoverageUseCase>(),
+        addCustomerAddressUseCase: getIt<AddCustomerAddressUseCase>(),
+        updateCustomerAddressUseCase: getIt<UpdateCustomerAddressUseCase>(),
+        confirmSetDefaultAddressUseCase:
+            getIt<ConfirmSetDefaultAddressUseCase>(),
       ),
     );
   }

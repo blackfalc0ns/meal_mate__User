@@ -3,28 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/geocode_address_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/reverse_geocode_location_usecase.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_event.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_view_model.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_loading_skeleton.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_loading_skeleton.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_loading_overlay.dart';
+import 'package:meal_meat_user/core/address/domain/contracts/address_editor_operations.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/customer_address_editor_operations.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/address_choose_location_map_section.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/address_choose_location_stepper_section.dart';
-import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_flow_args.dart';
 
 class AddressChooseLocationScreen extends StatefulWidget {
-  const AddressChooseLocationScreen({super.key, this.args});
+  const AddressChooseLocationScreen({
+    super.key,
+    this.args,
+    this.operations,
+  });
 
   final AddressChooseLocationArgs? args;
+  final AddressEditorOperations? operations;
 
   @override
   State<AddressChooseLocationScreen> createState() =>
@@ -42,7 +51,7 @@ class _AddressChooseLocationScreenState
     final color = context.colorScheme;
     final initialAddress = widget.args?.initialAddress;
 
-    return BlocProvider<AddressesViewModel>(
+    return BlocProvider<AddressEditorViewModel>(
       create: (_) => _createViewModel(initialAddress),
       child: Scaffold(
         backgroundColor: color.surfaceContainerHighest,
@@ -50,7 +59,7 @@ class _AddressChooseLocationScreenState
         body: Stack(
           fit: StackFit.expand,
           children: [
-            BlocConsumer<AddressesViewModel, AddressesState>(
+            BlocConsumer<AddressEditorViewModel, AddressEditorState>(
               listenWhen: (previous, current) =>
                   previous.action != current.action ||
                   previous.coveragePreview != current.coveragePreview,
@@ -73,7 +82,7 @@ class _AddressChooseLocationScreenState
               end: Spacing.sm,
               onPressed: () => Navigator.maybePop(context),
             ),
-            BlocSelector<AddressesViewModel, AddressesState, bool>(
+            BlocSelector<AddressEditorViewModel, AddressEditorState, bool>(
               selector: (state) => state.action.isLoading,
               builder: (context, isLoading) {
                 if (!isLoading) return const SizedBox.shrink();
@@ -86,16 +95,17 @@ class _AddressChooseLocationScreenState
     );
   }
 
-  AddressesViewModel _createViewModel(CustomerAddressEntity? initialAddress) {
-    final viewModel = getIt<AddressesViewModel>();
-    final familyMemberId = widget.args?.familyMemberId;
-    if (familyMemberId != null) {
-      viewModel.configureFamilyMember(
-        familyMemberId,
-        previewAddress: getIt<PreviewFamilyMemberAddressUseCase>(),
-        addAddress: getIt<AddFamilyMemberAddressUseCase>(),
-      );
-    }
+  AddressEditorViewModel _createViewModel(
+      CustomerAddressEntity? initialAddress) {
+    final operations =
+        widget.operations ?? getIt<CustomerAddressEditorOperations>();
+
+    final viewModel = AddressEditorViewModel(
+      operations: operations,
+      getLocationsCatalogUseCase: getIt<GetLocationsCatalogUseCase>(),
+      geocodeAddressUseCase: getIt<GeocodeAddressUseCase>(),
+      reverseGeocodeLocationUseCase: getIt<ReverseGeocodeLocationUseCase>(),
+    );
     unawaited(
       viewModel.doIntent(
         GetLocationsCatalogEvent(initialAddress: initialAddress),
@@ -104,7 +114,8 @@ class _AddressChooseLocationScreenState
     return viewModel;
   }
 
-  Future<void> _handleState(BuildContext context, AddressesState state) async {
+  Future<void> _handleState(
+      BuildContext context, AddressEditorState state) async {
     final locale = context.localization;
 
     if (_completed) return;
@@ -137,8 +148,7 @@ class _AddressChooseLocationScreenState
       CustomSnackbar.showError(context: context, message: actionError);
     }
 
-    final isNewSessionLoading =
-        !_isCoverageSheetOpen &&
+    final isNewSessionLoading = !_isCoverageSheetOpen &&
         (state.coveragePreview.isLoading ||
             (state.coveragePreview.isSuccess &&
                 state.coveragePreview.preview != null)) &&
@@ -164,8 +174,8 @@ class _AddressChooseLocationScreenState
         hasTopBarLayer: false,
         showDragHandle: false,
         child: BlocProvider.value(
-          value: context.read<AddressesViewModel>(),
-          child: BlocBuilder<AddressesViewModel, AddressesState>(
+          value: context.read<AddressEditorViewModel>(),
+          child: BlocBuilder<AddressEditorViewModel, AddressEditorState>(
             builder: (sheetContext, innerState) {
               final coverage = innerState.coveragePreview;
 
@@ -184,7 +194,7 @@ class _AddressChooseLocationScreenState
                   child: ApiErrorWidget(
                     exception: coverage.failure!.exception,
                     onRetry: () => sheetContext
-                        .read<AddressesViewModel>()
+                        .read<AddressEditorViewModel>()
                         .doIntent(const RetryAddressCoveragePreviewEvent()),
                   ),
                 );
@@ -205,12 +215,13 @@ class _AddressChooseLocationScreenState
                 hasMoreRestaurants: coverage.canLoadMore,
                 loadMoreFailure: coverage.loadMoreFailure,
                 onLoadMoreRestaurants: () => unawaited(
-                  sheetContext.read<AddressesViewModel>().doIntent(
-                    const LoadMoreAddressCoverageRestaurantsEvent(),
-                  ),
+                  sheetContext.read<AddressEditorViewModel>().doIntent(
+                        const LoadMoreAddressCoverageRestaurantsEvent(),
+                      ),
                 ),
                 onConfirm: () {
-                  final viewModel = sheetContext.read<AddressesViewModel>();
+                  final viewModel =
+                      sheetContext.read<AddressEditorViewModel>();
                   unawaited(
                     viewModel.doIntent(
                       const ConfirmPendingAddressActionEvent(),
@@ -229,14 +240,14 @@ class _AddressChooseLocationScreenState
       _isCoverageSheetOpen = false;
       if (context.mounted) {
         final currentSession = context
-            .read<AddressesViewModel>()
+            .read<AddressEditorViewModel>()
             .state
             .coveragePreview
             .sessionId;
         if (currentSession == _activeCoverageSessionId) {
-          context.read<AddressesViewModel>().doIntent(
-            const ClearCoveragePreviewEvent(),
-          );
+          context.read<AddressEditorViewModel>().doIntent(
+                const ClearCoveragePreviewEvent(),
+              );
         }
       }
     }

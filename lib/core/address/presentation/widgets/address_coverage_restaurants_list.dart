@@ -6,8 +6,8 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_loading_skeleton.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_loading_skeleton.dart';
 
 /// Horizontal list of serving restaurants with pagination scroll listener,
 /// trailing shimmer loading placeholder, and inline error presentation.

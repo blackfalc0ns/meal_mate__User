@@ -34,18 +34,12 @@ import '../../features/addresses/domain/usecase/confirm_set_default_address_usec
     as _i267;
 import '../../features/addresses/domain/usecase/delete_customer_address_usecase.dart'
     as _i624;
-import '../../features/addresses/domain/usecase/geocode_address_usecase.dart'
-    as _i563;
 import '../../features/addresses/domain/usecase/get_customer_addresses_usecase.dart'
     as _i945;
-import '../../features/addresses/domain/usecase/get_locations_catalog_usecase.dart'
-    as _i2;
 import '../../features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart'
     as _i577;
 import '../../features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart'
     as _i1022;
-import '../../features/addresses/domain/usecase/reverse_geocode_location_usecase.dart'
-    as _i1019;
 import '../../features/addresses/domain/usecase/update_customer_address_usecase.dart'
     as _i241;
 import '../../features/addresses/presentation/manager/addresses_view_model.dart'
@@ -380,6 +374,8 @@ import '../../features/notifications/domain/usecase/unregister_device_token_usec
     as _i546;
 import '../../features/notifications/presentation/manager/notification_badge_view_model.dart'
     as _i540;
+import '../../features/notifications/presentation/manager/notifications_view_model.dart'
+    as _i422;
 import '../../features/offer_details/presentation/manager/offer_details_view_model.dart'
     as _i736;
 import '../../features/offers/data/data_source/offers_remote_data_source.dart'
@@ -555,6 +551,17 @@ import '../../features/subscription_types/domain/usecase/get_subscription_types_
     as _i999;
 import '../../features/subscription_types/presentation/manager/subscription_types_view_model.dart'
     as _i62;
+import '../address/data/data_source/address_location_cache.dart' as _i177;
+import '../address/data/data_source/address_location_remote_data_source.dart'
+    as _i74;
+import '../address/data/data_source/address_location_remote_data_source_impl.dart'
+    as _i235;
+import '../address/data/repo/address_location_repository_impl.dart' as _i833;
+import '../address/domain/repo/address_location_repository.dart' as _i556;
+import '../address/domain/usecase/geocode_address_usecase.dart' as _i1073;
+import '../address/domain/usecase/get_locations_catalog_usecase.dart' as _i163;
+import '../address/domain/usecase/reverse_geocode_location_usecase.dart'
+    as _i1058;
 import '../biometric/biometric_service.dart' as _i43;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
@@ -639,6 +646,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i177.AddressLocationCache>(
+      () => _i177.AddressLocationCache(
+        languageService: gh<_i819.LanguageService>(),
+      ),
+    );
     gh.factory<_i227.TokenService>(
       () => _i227.TokenService(
         prefs: gh<_i558.FlutterSecureStorage>(),
@@ -696,6 +708,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i54.InfluencerSocialLinksRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
       ),
+    );
+    gh.factory<_i74.AddressLocationRemoteDataSource>(
+      () => _i235.AddressLocationRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i155.SubscriptionSummaryRemoteDataSource>(
       () => _i846.SubscriptionSummaryRemoteDataSourceImpl(
@@ -820,6 +835,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i735.SubscriptionTypesRemoteDataSource>(
       () =>
           _i200.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i556.AddressLocationRepository>(
+      () => _i833.AddressLocationRepositoryImpl(
+        gh<_i74.AddressLocationRemoteDataSource>(),
+        gh<_i177.AddressLocationCache>(),
+      ),
     );
     gh.factory<_i557.MealDetailsRemoteDataSource>(
       () => _i90.MealDetailsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -1167,6 +1188,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i333.CalendarRepository>(
       () => _i787.CalendarRepositoryImpl(gh<_i583.CalendarRemoteDataSource>()),
     );
+    gh.factory<_i1073.GeocodeAddressUseCase>(
+      () => _i1073.GeocodeAddressUseCase(gh<_i556.AddressLocationRepository>()),
+    );
+    gh.factory<_i163.GetLocationsCatalogUseCase>(
+      () => _i163.GetLocationsCatalogUseCase(
+        gh<_i556.AddressLocationRepository>(),
+      ),
+    );
+    gh.factory<_i1058.ReverseGeocodeLocationUseCase>(
+      () => _i1058.ReverseGeocodeLocationUseCase(
+        gh<_i556.AddressLocationRepository>(),
+      ),
+    );
     gh.factory<_i986.SubscriptionPlanRepository>(
       () => _i738.SubscriptionPlanRepositoryImpl(
         gh<_i755.SubscriptionPlanRemoteDataSource>(),
@@ -1451,14 +1485,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i624.DeleteCustomerAddressUseCase>(
       () => _i624.DeleteCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
-    gh.factory<_i563.GeocodeAddressUseCase>(
-      () => _i563.GeocodeAddressUseCase(gh<_i556.AddressesRepository>()),
-    );
     gh.factory<_i945.GetCustomerAddressesUseCase>(
       () => _i945.GetCustomerAddressesUseCase(gh<_i556.AddressesRepository>()),
-    );
-    gh.factory<_i2.GetLocationsCatalogUseCase>(
-      () => _i2.GetLocationsCatalogUseCase(gh<_i556.AddressesRepository>()),
     );
     gh.factory<_i577.PreviewExistingAddressCoverageUseCase>(
       () => _i577.PreviewExistingAddressCoverageUseCase(
@@ -1469,10 +1497,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1022.PreviewNewAddressCoverageUseCase(
         gh<_i556.AddressesRepository>(),
       ),
-    );
-    gh.factory<_i1019.ReverseGeocodeLocationUseCase>(
-      () =>
-          _i1019.ReverseGeocodeLocationUseCase(gh<_i556.AddressesRepository>()),
     );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
@@ -1669,6 +1693,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i540.NotificationBadgeViewModel>(),
       ),
     );
+    gh.factory<_i422.NotificationsViewModel>(
+      () => _i422.NotificationsViewModel(
+        gh<_i588.GetNotificationsUseCase>(),
+        gh<_i739.MarkNotificationReadUseCase>(),
+        gh<_i152.MarkAllNotificationsReadUseCase>(),
+        gh<_i540.NotificationBadgeViewModel>(),
+      ),
+    );
     gh.factory<_i693.FamilySubscriptionSetupViewModel>(
       () => _i693.FamilySubscriptionSetupViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1720,24 +1752,24 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i540.NotificationBadgeViewModel>(
       () => _i540.NotificationBadgeViewModel(gh<_i200.GetCalendarUseCase>()),
     );
+    gh.factory<_i524.AddressesViewModel>(
+      () => _i524.AddressesViewModel(
+        gh<_i945.GetCustomerAddressesUseCase>(),
+        gh<_i163.GetLocationsCatalogUseCase>(),
+        gh<_i898.AddCustomerAddressUseCase>(),
+        gh<_i241.UpdateCustomerAddressUseCase>(),
+        gh<_i624.DeleteCustomerAddressUseCase>(),
+        gh<_i1073.GeocodeAddressUseCase>(),
+        gh<_i1058.ReverseGeocodeLocationUseCase>(),
+        gh<_i1022.PreviewNewAddressCoverageUseCase>(),
+        gh<_i577.PreviewExistingAddressCoverageUseCase>(),
+        gh<_i267.ConfirmSetDefaultAddressUseCase>(),
+      ),
+    );
     gh.factory<_i154.RestaurantPickerViewModel>(
       () => _i154.RestaurantPickerViewModel(
         gh<_i389.GetCalendarRestaurantsUseCase>(),
         gh<_i133.SetCalendarDayRestaurantUseCase>(),
-      ),
-    );
-    gh.factory<_i524.AddressesViewModel>(
-      () => _i524.AddressesViewModel(
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i2.GetLocationsCatalogUseCase>(),
-        gh<_i898.AddCustomerAddressUseCase>(),
-        gh<_i241.UpdateCustomerAddressUseCase>(),
-        gh<_i624.DeleteCustomerAddressUseCase>(),
-        gh<_i563.GeocodeAddressUseCase>(),
-        gh<_i1019.ReverseGeocodeLocationUseCase>(),
-        gh<_i1022.PreviewNewAddressCoverageUseCase>(),
-        gh<_i577.PreviewExistingAddressCoverageUseCase>(),
-        gh<_i267.ConfirmSetDefaultAddressUseCase>(),
       ),
     );
     gh.factory<_i1020.MealSelectionViewModel>(

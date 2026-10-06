@@ -3,25 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/repo/address_location_repository.dart';
 import 'package:meal_meat_user/features/addresses/domain/repo/addresses_repository.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/geocode_address_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/get_locations_catalog_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_search_bar.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_form_field.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_map_view.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_search_bar.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_details_wolt_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_form_field.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/home_address_form_card.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_editor_view_model.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_map_view.dart';
+import 'package:meal_meat_user/features/addresses/domain/usecase/customer_address_editor_operations.dart';
 
 void main() {
   testWidgets('saved family address is shown in the location search field', (
@@ -37,17 +40,20 @@ void main() {
       notifyOnDelivery: true,
     );
     final repository = _AddressesRepository();
-    final viewModel = AddressesViewModel(
-      GetCustomerAddressesUseCase(repository),
-      GetLocationsCatalogUseCase(repository),
-      AddCustomerAddressUseCase(repository),
-      UpdateCustomerAddressUseCase(repository),
-      DeleteCustomerAddressUseCase(repository),
-      GeocodeAddressUseCase(repository),
-      ReverseGeocodeLocationUseCase(repository),
-      PreviewNewAddressCoverageUseCase(repository),
-      PreviewExistingAddressCoverageUseCase(repository),
-      ConfirmSetDefaultAddressUseCase(repository),
+    final viewModel = AddressEditorViewModel(
+      operations: CustomerAddressEditorOperations(
+        addCustomerAddressUseCase: AddCustomerAddressUseCase(repository),
+        updateCustomerAddressUseCase: UpdateCustomerAddressUseCase(repository),
+        previewNewAddressCoverageUseCase:
+            PreviewNewAddressCoverageUseCase(repository),
+        previewExistingAddressCoverageUseCase:
+            PreviewExistingAddressCoverageUseCase(repository),
+        confirmSetDefaultAddressUseCase:
+            ConfirmSetDefaultAddressUseCase(repository),
+      ),
+      getLocationsCatalogUseCase: GetLocationsCatalogUseCase(repository),
+      geocodeAddressUseCase: GeocodeAddressUseCase(repository),
+      reverseGeocodeLocationUseCase: ReverseGeocodeLocationUseCase(repository),
     );
     addTearDown(viewModel.close);
 
@@ -79,17 +85,20 @@ void main() {
 
   testWidgets('empty house number keeps address details open', (tester) async {
     final repository = _AddressesRepository();
-    final viewModel = AddressesViewModel(
-      GetCustomerAddressesUseCase(repository),
-      GetLocationsCatalogUseCase(repository),
-      AddCustomerAddressUseCase(repository),
-      UpdateCustomerAddressUseCase(repository),
-      DeleteCustomerAddressUseCase(repository),
-      GeocodeAddressUseCase(repository),
-      ReverseGeocodeLocationUseCase(repository),
-      PreviewNewAddressCoverageUseCase(repository),
-      PreviewExistingAddressCoverageUseCase(repository),
-      ConfirmSetDefaultAddressUseCase(repository),
+    final viewModel = AddressEditorViewModel(
+      operations: CustomerAddressEditorOperations(
+        addCustomerAddressUseCase: AddCustomerAddressUseCase(repository),
+        updateCustomerAddressUseCase: UpdateCustomerAddressUseCase(repository),
+        previewNewAddressCoverageUseCase:
+            PreviewNewAddressCoverageUseCase(repository),
+        previewExistingAddressCoverageUseCase:
+            PreviewExistingAddressCoverageUseCase(repository),
+        confirmSetDefaultAddressUseCase:
+            ConfirmSetDefaultAddressUseCase(repository),
+      ),
+      getLocationsCatalogUseCase: GetLocationsCatalogUseCase(repository),
+      geocodeAddressUseCase: GeocodeAddressUseCase(repository),
+      reverseGeocodeLocationUseCase: ReverseGeocodeLocationUseCase(repository),
     );
     addTearDown(viewModel.close);
 
@@ -145,7 +154,8 @@ void main() {
   });
 }
 
-class _AddressesRepository implements AddressesRepository {
+class _AddressesRepository
+    implements AddressesRepository, AddressLocationRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

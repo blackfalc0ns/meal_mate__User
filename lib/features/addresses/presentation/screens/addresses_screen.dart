@@ -10,14 +10,14 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
 import 'package:meal_meat_user/features/addresses/presentation/screens/address_choose_location_screen.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_loading_skeleton.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_loading_overlay.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_loading_skeleton.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/addresses_content_section.dart';
 

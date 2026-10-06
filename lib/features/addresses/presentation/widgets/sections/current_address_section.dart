@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/current_address_card.dart';
 
 class CurrentAddressSection extends StatelessWidget {

@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_details_wolt_sheet.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_search_bar.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/home_address_form_card.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_details_wolt_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_options_row.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_search_bar.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/home_address_form_card.dart';
 
 void main() {
   testWidgets('address form scales without overflow in a scrollable sheet', (

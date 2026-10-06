@@ -3,25 +3,24 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/constants/app_constants.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/customer_address_request_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/map_address_autofill_entity.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/geocode_address_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/get_locations_catalog_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
-import 'package:meal_meat_user/features/addresses/presentation/manager/address_catalog_matcher.dart';
+import 'package:meal_meat_user/core/address/presentation/manager/address_catalog_matcher.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_state.dart';
-import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 
 @injectable
 class AddressesViewModel extends Cubit<AddressesState> {
@@ -49,54 +48,16 @@ class AddressesViewModel extends Cubit<AddressesState> {
   final PreviewExistingAddressCoverageUseCase
   _previewExistingAddressCoverageUseCase;
   final ConfirmSetDefaultAddressUseCase _confirmSetDefaultAddressUseCase;
-  PreviewFamilyMemberAddressUseCase? _previewFamilyMemberAddressUseCase;
-  AddFamilyMemberAddressUseCase? _addFamilyMemberAddressUseCase;
-  String? _familyMemberId;
-  int _familyMemberGeneration = 0;
+
+  GetLocationsCatalogUseCase get locationsCatalogUseCase => _getLocationsCatalogUseCase;
+  GeocodeAddressUseCase get geocodeAddressUseCase => _geocodeAddressUseCase;
+  ReverseGeocodeLocationUseCase get reverseGeocodeLocationUseCase => _reverseGeocodeLocationUseCase;
   double? _lastReverseGeocodeLatitude;
   double? _lastReverseGeocodeLongitude;
   MapAddressAutofillEntity? _lastReverseGeocodeResult;
   final Map<String, LocationAreaEntity> _areaBlocksCache = {};
   int _geocodeRequestId = 0;
   int _coverageSessionId = 0;
-
-  void configureFamilyMember(
-    String memberId, {
-    required PreviewFamilyMemberAddressUseCase previewAddress,
-    required AddFamilyMemberAddressUseCase addAddress,
-  }) {
-    final memberChanged =
-        _familyMemberId != null && _familyMemberId != memberId;
-    if (memberChanged) {
-      _coverageSessionId++;
-      _familyMemberGeneration++;
-      _clearReverseGeocodeCache();
-      emit(
-        state.copyWith(
-          locations: state.locations.copyWith(
-            clearSelectedGovernorate: true,
-            clearSelectedArea: true,
-            clearSelectedBlock: true,
-            clearFailure: true,
-          ),
-          action: const AddressesActionState(),
-          mapAutofill: const MapAutofillState(),
-          coveragePreview: AddressCoveragePreviewState(
-            sessionId: _coverageSessionId,
-          ),
-        ),
-      );
-    }
-    _familyMemberId = memberId;
-    _previewFamilyMemberAddressUseCase = previewAddress;
-    _addFamilyMemberAddressUseCase = addAddress;
-  }
-
-  void invalidateFamilyMemberOperations() {
-    _familyMemberGeneration++;
-    _coverageSessionId++;
-    _clearReverseGeocodeCache();
-  }
 
   void _clearReverseGeocodeCache() {
     _lastReverseGeocodeLatitude = null;
@@ -300,7 +261,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _selectArea(LocationAreaEntity area) async {
-    final memberGeneration = _familyMemberGeneration;
     emit(
       state.copyWith(
         locations: state.locations.copyWith(
@@ -332,7 +292,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       countryCode,
       areaId: area.id,
     );
-    if (isClosed || memberGeneration != _familyMemberGeneration) return;
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -422,7 +382,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
     }
     _lastReverseGeocodeLatitude = latitude;
     _lastReverseGeocodeLongitude = longitude;
-    final memberGeneration = _familyMemberGeneration;
     _geocodeRequestId++;
     final currentRequestId = _geocodeRequestId;
     if (isClosed) return;
@@ -438,9 +397,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await _reverseGeocodeLocationUseCase(latitude, longitude);
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        currentRequestId != _geocodeRequestId) {
+    if (isClosed || currentRequestId != _geocodeRequestId) {
       return;
     }
 
@@ -448,13 +405,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
       case ApiSuccessResult():
         final autofill = result.data;
         _lastReverseGeocodeResult = autofill;
-        final updatedLocations = await _resolveAutofillCatalogState(
-          autofill,
-          memberGeneration: memberGeneration,
-        );
-        if (!isClosed &&
-            memberGeneration == _familyMemberGeneration &&
-            currentRequestId == _geocodeRequestId) {
+        final updatedLocations = await _resolveAutofillCatalogState(autofill);
+        if (!isClosed && currentRequestId == _geocodeRequestId) {
           emit(
             state.copyWith(
               locations: updatedLocations ?? state.locations,
@@ -482,7 +434,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _geocodeAddress(String address, String countryCode) async {
-    final memberGeneration = _familyMemberGeneration;
     _geocodeRequestId++;
     final currentRequestId = _geocodeRequestId;
     if (isClosed) return;
@@ -501,22 +452,15 @@ class AddressesViewModel extends Cubit<AddressesState> {
       address,
       countryCode: countryCode,
     );
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        currentRequestId != _geocodeRequestId) {
+    if (isClosed || currentRequestId != _geocodeRequestId) {
       return;
     }
 
     switch (result) {
       case ApiSuccessResult():
         final autofill = result.data;
-        final updatedLocations = await _resolveAutofillCatalogState(
-          autofill,
-          memberGeneration: memberGeneration,
-        );
-        if (!isClosed &&
-            memberGeneration == _familyMemberGeneration &&
-            currentRequestId == _geocodeRequestId) {
+        final updatedLocations = await _resolveAutofillCatalogState(autofill);
+        if (!isClosed && currentRequestId == _geocodeRequestId) {
           emit(
             state.copyWith(
               locations: updatedLocations ?? state.locations,
@@ -542,10 +486,8 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<LocationsCatalogState?> _resolveAutofillCatalogState(
-    MapAddressAutofillEntity autofill, {
-    required int memberGeneration,
-  }) async {
-    if (memberGeneration != _familyMemberGeneration) return null;
+    MapAddressAutofillEntity autofill,
+  ) async {
     final catalog = state.locations.data;
     if (catalog == null) return null;
 
@@ -618,12 +560,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       return;
     }
 
-    final familyMemberId = _familyMemberId;
-    await _runAddressAction(
-      () => familyMemberId == null
-          ? _addCustomerAddressUseCase(request)
-          : _addFamilyMemberAddressUseCase!(familyMemberId, request),
-    );
+    await _runAddressAction(() => _addCustomerAddressUseCase(request));
   }
 
   Future<void> _updateCustomerAddress(
@@ -658,7 +595,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
   Future<void> _runAddressAction(
     Future<ApiResult<CustomerAddressEntity>> Function() action,
   ) async {
-    final memberGeneration = _familyMemberGeneration;
     emit(
       state.copyWith(
         action: state.action.copyWith(
@@ -671,7 +607,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
     );
 
     final result = await action();
-    if (isClosed || memberGeneration != _familyMemberGeneration) return;
+    if (isClosed) return;
 
     switch (result) {
       case ApiSuccessResult():
@@ -737,7 +673,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
   Future<void> _previewNewAddressCoverage(
     CustomerAddressRequestEntity request,
   ) async {
-    final memberGeneration = _familyMemberGeneration;
     _coverageSessionId++;
     final sessionId = _coverageSessionId;
 
@@ -767,22 +702,12 @@ class AddressesViewModel extends Cubit<AddressesState> {
       ),
     );
 
-    final familyMemberId = _familyMemberId;
-    final result = familyMemberId == null
-        ? await _previewNewAddressCoverageUseCase(
-            request,
-            page: AppConstants.firstPage,
-            pageSize: AppConstants.defaultPageSize,
-          )
-        : await _previewFamilyMemberAddressUseCase!(
-            familyMemberId,
-            request,
-            page: AppConstants.firstPage,
-            pageSize: AppConstants.defaultPageSize,
-          );
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        sessionId != _coverageSessionId) {
+    final result = await _previewNewAddressCoverageUseCase(
+      request,
+      page: AppConstants.firstPage,
+      pageSize: AppConstants.defaultPageSize,
+    );
+    if (isClosed || sessionId != _coverageSessionId) {
       return;
     }
 
@@ -815,7 +740,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
     String addressId,
     CustomerAddressRequestEntity request,
   ) async {
-    final memberGeneration = _familyMemberGeneration;
     _coverageSessionId++;
     final sessionId = _coverageSessionId;
 
@@ -851,9 +775,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       page: AppConstants.firstPage,
       pageSize: AppConstants.defaultPageSize,
     );
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        sessionId != _coverageSessionId) {
+    if (isClosed || sessionId != _coverageSessionId) {
       return;
     }
 
@@ -883,7 +805,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
   }
 
   Future<void> _previewExistingAddressCoverage(String addressId) async {
-    final memberGeneration = _familyMemberGeneration;
     _coverageSessionId++;
     final sessionId = _coverageSessionId;
 
@@ -904,9 +825,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       page: AppConstants.firstPage,
       pageSize: AppConstants.defaultPageSize,
     );
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        sessionId != _coverageSessionId) {
+    if (isClosed || sessionId != _coverageSessionId) {
       return;
     }
 
@@ -969,7 +888,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
     if (page == null || page < 1 || pageSize == null || pageSize < 1) return;
     final nextPage = page + 1;
     final sessionId = current.sessionId;
-    final memberGeneration = _familyMemberGeneration;
 
     emit(
       state.copyWith(
@@ -986,9 +904,7 @@ class AddressesViewModel extends Cubit<AddressesState> {
       pageSize: pageSize,
     );
 
-    if (isClosed ||
-        memberGeneration != _familyMemberGeneration ||
-        sessionId != _coverageSessionId) {
+    if (isClosed || sessionId != _coverageSessionId) {
       return;
     }
 
@@ -1049,16 +965,6 @@ class AddressesViewModel extends Cubit<AddressesState> {
         pageSize: pageSize,
       );
     } else if (pendingRequest != null) {
-      final familyMemberId = _familyMemberId;
-      if (familyMemberId != null &&
-          _previewFamilyMemberAddressUseCase != null) {
-        return _previewFamilyMemberAddressUseCase!(
-          familyMemberId,
-          pendingRequest,
-          page: page,
-          pageSize: pageSize,
-        );
-      }
       return _previewNewAddressCoverageUseCase(
         pendingRequest,
         page: page,

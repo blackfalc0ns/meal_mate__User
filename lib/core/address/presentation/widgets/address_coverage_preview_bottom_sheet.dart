@@ -6,8 +6,8 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/address_coverage_preview_entity.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_coverage_restaurants_list.dart';
+import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_restaurants_list.dart';
 
 class AddressCoveragePreviewBottomSheet extends StatelessWidget {
   const AddressCoveragePreviewBottomSheet({

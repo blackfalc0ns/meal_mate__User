@@ -1,17 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/locations_catalog_entity.dart';
-import 'package:meal_meat_user/features/addresses/domain/entities/map_address_autofill_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/map_address_autofill_entity.dart';
+import 'package:meal_meat_user/core/address/domain/repo/address_location_repository.dart';
 import 'package:meal_meat_user/features/addresses/domain/repo/addresses_repository.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/delete_customer_address_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/geocode_address_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/get_locations_catalog_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/get_locations_catalog_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/reverse_geocode_location_usecase.dart';
+import 'package:meal_meat_user/core/address/domain/usecase/reverse_geocode_location_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_event.dart';
 import 'package:meal_meat_user/features/addresses/presentation/manager/addresses_view_model.dart';
@@ -73,7 +74,8 @@ void main() {
   });
 }
 
-class _CountingAddressesRepository implements AddressesRepository {
+class _CountingAddressesRepository
+    implements AddressesRepository, AddressLocationRepository {
   int locationsRequests = 0;
   int reverseGeocodeRequests = 0;
 

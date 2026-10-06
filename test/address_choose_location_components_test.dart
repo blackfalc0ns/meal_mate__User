@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_header.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_options_row.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_search_bar.dart';
-import 'package:meal_meat_user/features/addresses/presentation/widgets/address_choose_location_sheet.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_header.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_options_row.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_search_bar.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_sheet.dart';
 
 void main() {
   Widget buildTestWidget({
