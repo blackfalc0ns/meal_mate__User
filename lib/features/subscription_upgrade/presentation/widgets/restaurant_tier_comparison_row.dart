@@ -45,11 +45,7 @@ class RestaurantTierComparisonRow extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                RestaurantTierBadge(
-                  imageAsset: badgeAsset,
-                  imageUrl: imageUrl,
-                  size: Spacing.iconMd,
-                ),
+                RestaurantTierBadge(imageUrl: imageUrl),
                 const SizedBox(width: Spacing.xs),
                 Flexible(
                   child: Text.rich(
