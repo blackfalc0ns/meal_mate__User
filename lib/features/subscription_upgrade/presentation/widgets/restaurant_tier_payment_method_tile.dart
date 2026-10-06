@@ -96,7 +96,7 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
   String _subtitle() {
     final currency = paymentMethod.currencyCode;
     if (paymentMethod.serviceCharge > 0) {
-      return '${paymentMethod.serviceCharge.toStringAsFixed(3)} $currency';
+      return '${paymentMethod.serviceCharge.toStringAsFixed(2)} $currency';
     }
     return paymentMethod.integrationType;
   }
