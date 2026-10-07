@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/data_source/subscription_billing_remote_data_source.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
 
@@ -55,7 +56,7 @@ class SubscriptionBillingRepositoryImpl
         _remoteDataSource.getUncompletedCustomerSubscriptions(),
         _remoteDataSource.getCustomerInvoices(),
         _remoteDataSource.getDefaultCustomerPaymentMethod(),
-        _remoteDataSource.getCustomerSubscriptionFreezePolicy(),
+        _getFreezePolicySafely(),
       ).wait;
 
       return SubscriptionBillingEntity(
@@ -65,9 +66,19 @@ class SubscriptionBillingRepositoryImpl
             .toList(),
         invoices: invoices.map((invoice) => invoice.toEntity()).toList(),
         paymentMethod: paymentMethod.toEntity(),
-        freezePolicy: freezePolicy.toEntity(),
+        freezePolicy: freezePolicy?.toEntity() ??
+            SubscriptionBillingFreezePolicyEntity.empty,
       );
     });
+  }
+
+  Future<SubscriptionBillingFreezePolicyResponseDto?>
+  _getFreezePolicySafely() async {
+    try {
+      return await _remoteDataSource.getCustomerSubscriptionFreezePolicy();
+    } catch (_) {
+      return null;
+    }
   }
 
   @override

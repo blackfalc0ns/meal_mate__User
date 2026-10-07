@@ -133,8 +133,6 @@ class TokenService {
     } else {
       await _sharedPreferences.remove(AppConstants.refreshExpiresAtUtcKey);
     }
-
-    _sessionGeneration++;
   }
 
   DateTime? getAccessExpiresAtUtc() {

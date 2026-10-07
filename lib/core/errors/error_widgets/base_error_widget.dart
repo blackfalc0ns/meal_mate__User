@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
@@ -7,15 +12,18 @@ class BaseErrorWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.icon,
+    this.icon,
+    this.imageAsset,
     this.onRetry,
     this.onSecondaryAction,
     this.secondaryActionText,
     this.primaryColor,
   });
+
   final String title;
   final String description;
-  final IconData icon;
+  final IconData? icon;
+  final String? imageAsset;
   final VoidCallback? onRetry;
   final VoidCallback? onSecondaryAction;
   final String? secondaryActionText;
@@ -23,50 +31,62 @@ class BaseErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final color = context.colorScheme;
+    final textTheme = context.textTheme;
 
     return Center(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(Spacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: (primaryColor ?? colorScheme.error).withValues(
-                    alpha: 0.1,
+              if (imageAsset != null)
+                Image.asset(
+                  imageAsset!,
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                )
+              else if (icon != null)
+                Container(
+                  padding: const EdgeInsets.all(Spacing.xl),
+                  decoration: BoxDecoration(
+                    color: (primaryColor ?? color.error).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
                   ),
-                  shape: BoxShape.circle,
+                  child: Icon(
+                    icon,
+                    size: 64,
+                    color: primaryColor ?? color.error,
+                  ),
+                )
+              else
+                Image.asset(
+                  Assets.errorIllustration,
+                  width: 180,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
-                child: Icon(
-                  icon,
-                  size: 64,
-                  color: primaryColor ?? colorScheme.error,
-                ),
-              ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Spacing.xl),
               Text(
                 title,
-                style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size20,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: Spacing.md),
               Text(
                 description,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: colorScheme.onSurface.withValues(alpha: 0.7),
+                  color: color.onSurface.withValues(alpha: 0.7),
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: Spacing.base),
               if (onRetry != null) ...[
                 SizedBox(
                   width: double.infinity,
@@ -77,7 +97,7 @@ class BaseErrorWidget extends StatelessWidget {
                 ),
                 if (onSecondaryAction != null &&
                     secondaryActionText != null) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: Spacing.md),
                   SizedBox(
                     width: double.infinity,
                     child: AppButton(

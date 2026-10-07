@@ -5,6 +5,9 @@ class Assets {
   static const String _images = 'assets/images';
   static const String _svg = 'assets/images/svg';
 
+  static const String errorIllustration = '$_images/error_illustration.png';
+  static const String noInternetIllustration =
+      '$_images/no_internet_illustration.png';
   static const String bgRegister = '$_images/bg_register.png';
   static const String onboardingOne = '$_images/on_boarding1.png';
   static const String onboardingTwo = '$_images/on_boarding2.png';

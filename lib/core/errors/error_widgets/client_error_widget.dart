@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
@@ -17,7 +18,7 @@ class ClientErrorWidget extends BaseErrorWidget {
   }) : super(
          title: '',
          description: '',
-         icon: Icons.warning,
+         imageAsset: Assets.errorIllustration,
          onSecondaryAction: onGoBack,
          secondaryActionText: '',
          primaryColor: Colors.orange,
@@ -152,6 +153,7 @@ class ClientErrorWidget extends BaseErrorWidget {
     return BaseErrorWidget(
       title: title, // لا تعرض status code للمستخدم
       description: finalDescription,
+      imageAsset: Assets.errorIllustration,
       icon: iconData,
       onRetry: showRetry ? onRetry : null,
       onSecondaryAction: onSecondaryAction,

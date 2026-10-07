@@ -23,13 +23,15 @@ Future<ApiResult<T>> safeApiCall<T>(Future<T> Function() apiCall) async {
   try {
     final result = await apiCall();
     return ApiSuccessResult<T>(data: result);
-  } on DioException catch (dioError) {
-    return ApiErrorResult<T>(
-      failure: ServerFailure.fromDioError(dioException: dioError),
-    );
   } catch (error) {
+    final unwrapped = ApiExceptionMapper.unwrapError(error);
+    if (unwrapped is DioException) {
+      return ApiErrorResult<T>(
+        failure: ServerFailure.fromDioError(dioException: unwrapped),
+      );
+    }
     return ApiErrorResult<T>(
-      failure: Failure.fromException(ApiExceptionMapper.fromError(error)),
+      failure: Failure.fromException(ApiExceptionMapper.fromError(unwrapped)),
     );
   }
 }
@@ -39,8 +41,9 @@ Future<ApiResult<T>> safeLocalCall<T>(Future<T> Function() localCall) async {
     final result = await localCall();
     return ApiSuccessResult<T>(data: result);
   } catch (error) {
+    final unwrapped = ApiExceptionMapper.unwrapError(error);
     return ApiErrorResult<T>(
-      failure: Failure.fromException(ApiExceptionMapper.fromError(error)),
+      failure: Failure.fromException(ApiExceptionMapper.fromError(unwrapped)),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
@@ -16,7 +17,7 @@ class GenericErrorWidget extends BaseErrorWidget {
   }) : super(
          title: '',
          description: '',
-         icon: Icons.error,
+         imageAsset: Assets.errorIllustration,
          onSecondaryAction: onGoBack,
          secondaryActionText: '',
        );
@@ -31,6 +32,11 @@ class GenericErrorWidget extends BaseErrorWidget {
     String description;
     IconData iconData = Icons.error;
     Color color = Colors.red;
+
+    final bool isLocationError =
+        errorType == ApiErrorType.locationServiceDisabled ||
+        errorType == ApiErrorType.locationPermissionDenied ||
+        errorType == ApiErrorType.locationPermissionDeniedForever;
 
     switch (errorType) {
       case ApiErrorType.locationServiceDisabled:
@@ -81,7 +87,8 @@ class GenericErrorWidget extends BaseErrorWidget {
     return BaseErrorWidget(
       title: title,
       description: finalDescription,
-      icon: iconData,
+      icon: isLocationError ? iconData : null,
+      imageAsset: isLocationError ? null : Assets.errorIllustration,
       onRetry: onRetry,
       onSecondaryAction: onSecondaryAction,
       secondaryActionText: onSecondaryAction == null

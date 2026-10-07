@@ -472,6 +472,15 @@ class SubscriptionBillingFreezePolicyEntity {
     this.notice = '',
   });
 
+  static const empty = SubscriptionBillingFreezePolicyEntity(
+    defaultDurationDays: 0,
+    startDelayDays: 0,
+    extendSubscriptionEnd: false,
+    earliestAllowedStartDate: '',
+    messageAr: '',
+    messageEn: '',
+  );
+
   final int defaultDurationDays;
   final int startDelayDays;
   final bool extendSubscriptionEnd;

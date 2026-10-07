@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 
@@ -12,7 +13,7 @@ class TimeoutErrorWidget extends BaseErrorWidget {
   }) : super(
          title: '',
          description: '',
-         icon: Icons.access_time,
+         imageAsset: Assets.errorIllustration,
          primaryColor: Colors.amber,
        );
   final ApiErrorType timeoutType;
@@ -49,7 +50,7 @@ class TimeoutErrorWidget extends BaseErrorWidget {
     return BaseErrorWidget(
       title: title,
       description: description,
-      icon: Icons.access_time,
+      imageAsset: Assets.errorIllustration,
       onRetry: onRetry,
       primaryColor: Colors.amber,
     );

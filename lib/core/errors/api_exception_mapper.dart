@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
@@ -8,6 +9,46 @@ class ApiExceptionMapper {
   const ApiExceptionMapper._();
 
   static ApiException fromFailure(Failure failure) => failure.exception;
+
+  static Object unwrapError(Object error) {
+    if (error is ParallelWaitError) {
+      final errs = error.errors;
+      if (errs is Iterable) {
+        for (final e in errs) {
+          if (e != null) {
+            final real = e is AsyncError ? e.error : e;
+            return unwrapError(real);
+          }
+        }
+      } else if (errs is Record) {
+        final dyn = errs as dynamic;
+        final getters = <Object? Function()>[
+          () => dyn.$1,
+          () => dyn.$2,
+          () => dyn.$3,
+          () => dyn.$4,
+          () => dyn.$5,
+          () => dyn.$6,
+          () => dyn.$7,
+          () => dyn.$8,
+          () => dyn.$9,
+          () => dyn.$10,
+        ];
+        for (final getter in getters) {
+          try {
+            final val = getter();
+            if (val != null) {
+              final real = val is AsyncError ? val.error : val;
+              return unwrapError(real);
+            }
+          } on NoSuchMethodError {
+            break;
+          } catch (_) {}
+        }
+      }
+    }
+    return error;
+  }
 
   static ApiException fromDioException(DioException dioException) {
     switch (dioException.type) {
@@ -58,12 +99,18 @@ class ApiExceptionMapper {
   }
 
   static ApiException fromError(Object error) {
-    if (error is ApiException) {
-      return error;
+    final unwrapped = unwrapError(error);
+
+    if (unwrapped is ApiException) {
+      return unwrapped;
     }
 
-    if (error is LocationServiceException) {
-      return switch (error.type) {
+    if (unwrapped is DioException) {
+      return fromDioException(unwrapped);
+    }
+
+    if (unwrapped is LocationServiceException) {
+      return switch (unwrapped.type) {
         LocationErrorType.serviceDisabled => _translationKeyException(
           ApiErrorType.locationServiceDisabled,
         ),
@@ -76,7 +123,7 @@ class ApiExceptionMapper {
       };
     }
 
-    return unknown(error);
+    return unknown(unwrapped);
   }
 
   static ApiException _translationKeyException(ApiErrorType errorType) {

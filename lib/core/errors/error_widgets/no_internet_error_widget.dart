@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'base_error_widget.dart';
 
@@ -10,6 +11,7 @@ class NoInternetErrorWidget extends BaseErrorWidget {
   }) : super(
          title: '',
          description: '',
+         imageAsset: Assets.noInternetIllustration,
          icon: Icons.wifi_off,
          onSecondaryAction: onCheckConnection,
          secondaryActionText: '',
@@ -23,6 +25,7 @@ class NoInternetErrorWidget extends BaseErrorWidget {
     return BaseErrorWidget(
       title: l10n?.error_no_internet_connection ?? '',
       description: l10n?.error_no_internet_connection_desc ?? '',
+      imageAsset: Assets.noInternetIllustration,
       icon: Icons.wifi_off,
       onRetry: onRetry,
       onSecondaryAction: onSecondaryAction,
