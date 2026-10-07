@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -102,10 +103,24 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
                 );
               }
 
-              return SafeArea(
+              final content = SafeArea(
                 top: false,
                 child: DietaryPreferencesContent(catalog: catalog),
               );
+
+              if (MediaQuery.disableAnimationsOf(context)) {
+                return content;
+              }
+
+              return content
+                  .animate()
+                  .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                  .slideY(
+                    begin: 0.04,
+                    end: 0,
+                    duration: 350.ms,
+                    curve: Curves.easeOutCubic,
+                  );
             },
           ),
           bottomNavigationBar: BlocSelector<
@@ -119,9 +134,23 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
             ),
             builder: (context, data) {
               if (!data.isReady) return const SizedBox.shrink();
-              return DietaryPreferencesSaveSection(
+              final saveSection = DietaryPreferencesSaveSection(
                 isLoading: data.isLoading,
               );
+
+              if (MediaQuery.disableAnimationsOf(context)) {
+                return saveSection;
+              }
+
+              return saveSection
+                  .animate()
+                  .fadeIn(duration: 300.ms, curve: Curves.easeOut)
+                  .slideY(
+                    begin: 0.08,
+                    end: 0,
+                    duration: 300.ms,
+                    curve: Curves.easeOutCubic,
+                  );
             },
           ),
         ),
