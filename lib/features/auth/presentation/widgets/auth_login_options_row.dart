@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-class AuthLoginOptionsRow extends StatefulWidget {
-  const AuthLoginOptionsRow({super.key, required this.onForgotPassword});
+class AuthLoginOptionsRow extends StatelessWidget {
+  const AuthLoginOptionsRow({
+    super.key,
+    required this.rememberMe,
+    required this.onRememberMeChanged,
+    required this.onForgotPassword,
+  });
 
+  final bool rememberMe;
+  final ValueChanged<bool> onRememberMeChanged;
   final VoidCallback onForgotPassword;
 
   @override
-  State<AuthLoginOptionsRow> createState() => _AuthLoginOptionsRowState();
-}
-
-class _AuthLoginOptionsRowState extends State<AuthLoginOptionsRow> {
-  bool _rememberMe = false;
-
-  @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: widget.onForgotPassword,
+          onTap: onForgotPassword,
           child: Text(
-            l10n.forgot_password,
+            locale.forgot_password,
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
-              color: AppColors.primaryDark,
+              color: color.primary,
             ),
           ),
         ),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Checkbox(
-              value: _rememberMe,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value ?? false;
-                });
-              },
-              activeColor: AppColors.primary,
+              value: rememberMe,
+              onChanged: (value) => onRememberMeChanged(value ?? false),
+              activeColor: color.primary,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(Spacing.radiusXs),
               ),
             ),
             const SizedBox(width: Spacing.xs),
-            Text(
-              l10n.remember_me,
-              style: getMediumStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
-                color: AppColors.textPrimary,
+            GestureDetector(
+              onTap: () => onRememberMeChanged(!rememberMe),
+              child: Text(
+                locale.remember_me,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
+                ),
               ),
             ),
           ],

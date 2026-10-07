@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:meal_meat_user/features/subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
@@ -16,42 +17,98 @@ void main() {
     apiServices = ApiServices(dio);
   });
 
+  test(
+    'programs data source parses paged response and preserves server pagination',
+    () async {
+      adapter.mockResponse = {
+        'items': [
+          {
+            'programId': 'p1',
+            'nameAr': 'Program',
+            'imageUrl': null,
+            'supportedSlots': [],
+          },
+        ],
+        'totalCount': 6,
+        'page': 1,
+        'pageSize': 20,
+        'totalPages': 1,
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+      };
+      final source = SubscriptionProgramsRemoteDataSourceImpl(apiServices);
+      final response = await source.getSubscriptionProgramsPage(
+        page: 1,
+        pageSize: 20,
+      );
+      expect(response.items?.single.programId, 'p1');
+      expect(response.totalCount, 6);
+      expect(response.totalPages, 1);
+      expect(response.hasNextPage, isFalse);
+    },
+  );
+
   group('Pagination Contract & Typed API Tests', () {
-    test('getSubscriptionPrograms sends page and pageSize queries when provided and parses list', () async {
-      adapter.mockResponse = [
-        {
-          'programId': 'p1',
-          'nameAr': 'برنامج صحي',
-          'nameEn': 'Healthy Program',
-        }
-      ];
+    test(
+      'getSubscriptionPrograms sends page and pageSize queries when provided and parses paged response',
+      () async {
+        adapter.mockResponse = {
+          'items': [
+            {
+              'programId': 'p1',
+              'nameAr': 'برنامج صحي',
+              'nameEn': 'Healthy Program',
+            },
+          ],
+        };
 
-      final response = await apiServices.getSubscriptionPrograms(page: 1, pageSize: 20);
+        final response = await apiServices.getSubscriptionPrograms(
+          page: 1,
+          pageSize: 20,
+        );
 
-      expect(adapter.requestedUri.path, '/api/v1/customer/subscription-flow/programs');
-      expect(adapter.requestedUri.queryParameters['page'], '1');
-      expect(adapter.requestedUri.queryParameters['pageSize'], '20');
-      expect(response.length, 1);
-      expect(response.first.programId, 'p1');
-    });
+        expect(
+          adapter.requestedUri.path,
+          '/api/v1/customer/subscription-flow/programs',
+        );
+        expect(adapter.requestedUri.queryParameters['page'], '1');
+        expect(adapter.requestedUri.queryParameters['pageSize'], '20');
+        expect(response.items?.length, 1);
+        expect(response.items?.first.programId, 'p1');
+      },
+    );
 
-    test('legacy getSubscriptionPrograms does not send pagination query', () async {
-      adapter.mockResponse = [
-        {
-          'programId': 'p1',
-          'nameAr': 'برنامج قديم',
-          'nameEn': 'Legacy Program',
-        }
-      ];
+    test(
+      'legacy getSubscriptionPrograms does not send pagination query',
+      () async {
+        adapter.mockResponse = {
+          'items': [
+            {
+              'programId': 'p1',
+              'nameAr': 'برنامج قديم',
+              'nameEn': 'Legacy Program',
+            },
+          ],
+        };
 
-      final response = await apiServices.getSubscriptionPrograms();
+        final response = await apiServices.getSubscriptionPrograms();
 
-      expect(adapter.requestedUri.path, '/api/v1/customer/subscription-flow/programs');
-      expect(adapter.requestedUri.queryParameters.containsKey('page'), isFalse);
-      expect(adapter.requestedUri.queryParameters.containsKey('pageSize'), isFalse);
-      expect(response.length, 1);
-      expect(response.first.programId, 'p1');
-    });
+        expect(
+          adapter.requestedUri.path,
+          '/api/v1/customer/subscription-flow/programs',
+        );
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('page'),
+          isFalse,
+        );
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('pageSize'),
+          isFalse,
+        );
+        expect(response.items?.length, 1);
+        expect(response.items?.first.programId, 'p1');
+      },
+    );
 
     test('getSubscriptionProgramBundles with pagination sends page & pageSize and parses wrapper', () async {
       adapter.mockResponse = {

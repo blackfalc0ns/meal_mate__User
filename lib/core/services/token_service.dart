@@ -4,12 +4,26 @@ import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../biometric/biometric_credentials.dart';
 import '../utils/constants.dart';
+import 'session_persistence.dart';
 
-@injectable
+@lazySingleton
 class TokenService {
-  TokenService({required this._prefs, required this._sharedPreferences});
+  TokenService({
+    required FlutterSecureStorage prefs,
+    required SharedPreferences sharedPreferences,
+  })  : _prefs = prefs,
+        _sharedPreferences = sharedPreferences;
+
   final FlutterSecureStorage _prefs;
   final SharedPreferences _sharedPreferences;
+  int _sessionGeneration = 0;
+
+  int get sessionGeneration => _sessionGeneration;
+
+  void bumpSessionGeneration() {
+    _sessionGeneration++;
+  }
+
   // ---------------- ACCESS TOKEN ----------------
 
   bool get isAccessTokenSaved =>
@@ -22,7 +36,11 @@ class TokenService {
 
   Future<String?> getToken() async {
     if (!isAccessTokenSaved) return null;
-    return _prefs.read(key: AppConstants.accessToken);
+    final token = await _prefs.read(key: AppConstants.accessToken);
+    if (token == null || token.trim().isEmpty) {
+      return null;
+    }
+    return token;
   }
 
   Future<void> deleteToken() async {
@@ -43,7 +61,11 @@ class TokenService {
 
   Future<String?> getRefreshToken() async {
     if (!isRefreshTokenSaved) return null;
-    return _prefs.read(key: AppConstants.refreshToken);
+    final token = await _prefs.read(key: AppConstants.refreshToken);
+    if (token == null || token.trim().isEmpty) {
+      return null;
+    }
+    return token;
   }
 
   Future<void> deleteRefreshToken() async {
@@ -68,11 +90,108 @@ class TokenService {
     await _sharedPreferences.remove(AppConstants.customerIdKey);
   }
 
+  // ---------------- SESSION PERSISTENCE ----------------
+
+  Future<void> saveSession({
+    required String userId,
+    required String accessToken,
+    required String refreshToken,
+    required DateTime? accessExpiresAtUtc,
+    required DateTime? refreshExpiresAtUtc,
+    required SessionPersistence persistence,
+  }) async {
+    if (userId.trim().isEmpty ||
+        accessToken.trim().isEmpty ||
+        refreshToken.trim().isEmpty) {
+      throw ArgumentError('Session tokens and userId must not be empty.');
+    }
+
+    await _prefs.write(key: AppConstants.accessToken, value: accessToken);
+    await _prefs.write(key: AppConstants.refreshToken, value: refreshToken);
+
+    await _sharedPreferences.setBool(AppConstants.isAccessTokenSaved, true);
+    await _sharedPreferences.setBool(AppConstants.isRefreshTokenSaved, true);
+    await _sharedPreferences.setString(AppConstants.customerIdKey, userId);
+
+    final isRemembered = persistence == SessionPersistence.remembered;
+    await _sharedPreferences.setBool(AppConstants.isRemember, isRemembered);
+
+    if (accessExpiresAtUtc != null) {
+      await _sharedPreferences.setString(
+        AppConstants.accessExpiresAtUtcKey,
+        accessExpiresAtUtc.toUtc().toIso8601String(),
+      );
+    } else {
+      await _sharedPreferences.remove(AppConstants.accessExpiresAtUtcKey);
+    }
+
+    if (refreshExpiresAtUtc != null) {
+      await _sharedPreferences.setString(
+        AppConstants.refreshExpiresAtUtcKey,
+        refreshExpiresAtUtc.toUtc().toIso8601String(),
+      );
+    } else {
+      await _sharedPreferences.remove(AppConstants.refreshExpiresAtUtcKey);
+    }
+
+    _sessionGeneration++;
+  }
+
+  DateTime? getAccessExpiresAtUtc() {
+    final raw =
+        _sharedPreferences.getString(AppConstants.accessExpiresAtUtcKey);
+    if (raw == null || raw.trim().isEmpty) return null;
+    return DateTime.tryParse(raw)?.toUtc();
+  }
+
+  DateTime? getRefreshExpiresAtUtc() {
+    final raw =
+        _sharedPreferences.getString(AppConstants.refreshExpiresAtUtcKey);
+    if (raw == null || raw.trim().isEmpty) return null;
+    return DateTime.tryParse(raw)?.toUtc();
+  }
+
+  bool isAccessTokenExpired({DateTime? now}) {
+    final expiry = getAccessExpiresAtUtc();
+    if (expiry == null) return false;
+    final current = (now ?? DateTime.now()).toUtc();
+    return current.isAfter(expiry);
+  }
+
+  bool isRefreshTokenExpired({DateTime? now}) {
+    final expiry = getRefreshExpiresAtUtc();
+    if (expiry == null) return false;
+    final current = (now ?? DateTime.now()).toUtc();
+    return current.isAfter(expiry);
+  }
+
+  Future<bool> hasValidSessionTokens() async {
+    final access = await getToken();
+    final refresh = await getRefreshToken();
+    final userId = await getCurrentUserId();
+    return access != null && refresh != null && userId != null;
+  }
+
+  Future<bool> isRememberedSession() async {
+    final isRemember =
+        _sharedPreferences.getBool(AppConstants.isRemember) ?? false;
+    if (!isRemember) return false;
+    return hasValidSessionTokens();
+  }
+
   Future<void> clearTokens() async {
     await deleteToken();
     await deleteRefreshToken();
     await deleteCurrentUserId();
     await _sharedPreferences.remove(StorageKeys.currentSubscriptionId);
+  }
+
+  Future<void> clearSession() async {
+    await clearTokens();
+    await _sharedPreferences.setBool(AppConstants.isRemember, false);
+    await _sharedPreferences.remove(AppConstants.accessExpiresAtUtcKey);
+    await _sharedPreferences.remove(AppConstants.refreshExpiresAtUtcKey);
+    _sessionGeneration++;
   }
 
   // ---------------- BIOMETRIC CREDENTIALS ----------------

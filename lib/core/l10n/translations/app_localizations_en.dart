@@ -4631,6 +4631,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get biometric_quick_login => 'Biometric Sign-In';
 
   @override
+  String get biometric_setup_title => 'Biometric Sign-In';
+
+  @override
+  String get biometric_setup_subtitle =>
+      'Sign in faster and more securely using your device biometrics';
+
+  @override
+  String get biometric_benefit_security_title => 'Enhanced Security';
+
+  @override
+  String get biometric_benefit_security_subtitle =>
+      'Your biometric data remains protected on your device';
+
+  @override
+  String get biometric_benefit_speed_title => 'Instant Access';
+
+  @override
+  String get biometric_benefit_speed_subtitle =>
+      'Sign in with a single glance or touch without passwords';
+
+  @override
+  String get biometric_benefit_operations_title => 'Confirm Operations';
+
+  @override
+  String get biometric_benefit_operations_subtitle =>
+      'Fast authentication for sensitive account actions';
+
+  @override
+  String get biometric_privacy_notice =>
+      'Biometric verification is handled by your device system. We never store or transmit your biometric records.';
+
+  @override
+  String get biometric_settings_footer_note =>
+      'You can change or disable this choice anytime from settings';
+
+  @override
   String get family_packages_selection_title => 'Choose Family Package';
 
   @override

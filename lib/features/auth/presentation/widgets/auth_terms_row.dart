@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AuthTermsRow extends StatelessWidget {
   const AuthTermsRow({
@@ -18,16 +18,20 @@ class AuthTermsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Checkbox(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.primary,
+          activeColor: color.primary,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Spacing.radiusXs),
+          ),
         ),
         const SizedBox(width: Spacing.xs),
         Flexible(
@@ -36,7 +40,7 @@ class AuthTermsRow extends StatelessWidget {
             style: getMediumStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,
-              color: AppColors.textPrimary,
+              color: color.onSurface,
             ),
           ),
         ),
@@ -44,3 +48,4 @@ class AuthTermsRow extends StatelessWidget {
     );
   }
 }
+

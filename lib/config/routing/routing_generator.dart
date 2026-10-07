@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/screens/loading_preview_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
+import 'package:meal_meat_user/features/auth/presentation/screens/biometric_setup_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
@@ -489,6 +490,11 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const AuthFlowScreen(initialPage: AuthPageType.newPassword),
+        );
+      case AppRoutes.biometricSetup:
+        return _buildRoute(
+          settings: settings,
+          page: const BiometricSetupScreen(),
         );
       case AppRoutes.securityPrivacy:
         return _buildRoute(

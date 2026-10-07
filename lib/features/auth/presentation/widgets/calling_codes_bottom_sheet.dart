@@ -6,9 +6,9 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
 
 class CallingCodesBottomSheet extends StatelessWidget {
   const CallingCodesBottomSheet({super.key});
@@ -37,14 +37,9 @@ class CallingCodesBottomSheet extends StatelessWidget {
               ),
               const SizedBox(height: Spacing.md),
               Flexible(
-                child: BlocBuilder<AuthViewModel, AuthState>(
-                  buildWhen: (previous, current) =>
-                      previous.callingCodes != current.callingCodes,
+                child: BlocBuilder<CallingCodesViewModel, CallingCodesState>(
                   builder: (context, state) {
-                    final callingCodesState = state.callingCodes;
-
-                    if (callingCodesState.items.isEmpty &&
-                        callingCodesState.isLoading) {
+                    if (state.items.isEmpty && state.isLoading) {
                       return Center(
                         child: CircularProgressIndicator(color: color.primary),
                       );
@@ -52,18 +47,20 @@ class CallingCodesBottomSheet extends StatelessWidget {
 
                     return ListView.separated(
                       shrinkWrap: true,
-                      itemCount: callingCodesState.items.length,
+                      itemCount: state.items.length,
                       separatorBuilder: (context, index) => Divider(
                         height: Spacing.border,
                         color: color.outlineVariant,
                       ),
                       itemBuilder: (context, index) {
-                        final callingCode = callingCodesState.items[index];
+                        final callingCode = state.items[index];
                         final isSelected =
                             callingCode.countryCode ==
-                            callingCodesState.selected?.countryCode;
-                        final countryName =
-                            Localizations.localeOf(context).languageCode == 'ar'
+                            state.selected?.countryCode;
+                        final isArabic = Localizations.localeOf(context)
+                            .languageCode
+                            .startsWith('ar');
+                        final countryName = isArabic
                             ? callingCode.nameAr
                             : callingCode.nameEn;
 
@@ -71,7 +68,7 @@ class CallingCodesBottomSheet extends StatelessWidget {
                           contentPadding: EdgeInsets.zero,
                           leading: CountryFlag.fromCountryCode(
                             callingCode.countryCode,
-                            theme: ImageTheme(
+                            theme: const ImageTheme(
                               width: Spacing.iconLg,
                               height: Spacing.iconMd,
                               shape: RoundedRectangle(Spacing.radiusXs),
@@ -116,7 +113,9 @@ class CallingCodesBottomSheet extends StatelessWidget {
   }
 
   void _selectCallingCode(BuildContext context, CallingCodeEntity callingCode) {
-    context.read<AuthViewModel>().doIntent(SelectCallingCodeEvent(callingCode));
+    context.read<CallingCodesViewModel>().doIntent(
+      SelectCallingCodeEvent(callingCode),
+    );
     Navigator.pop(context);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AuthBackground extends StatelessWidget {
   const AuthBackground({super.key, required this.child});
@@ -9,6 +9,8 @@ class AuthBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -26,9 +28,9 @@ class AuthBackground extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.white.withValues(alpha: 0.10),
-                  Colors.white.withValues(alpha: 0.02),
-                  AppColors.white.withValues(alpha: 0.18),
+                  color.surface.withValues(alpha: 0.10),
+                  color.surface.withValues(alpha: 0.02),
+                  color.surface.withValues(alpha: 0.18),
                 ],
               ),
             ),
@@ -39,3 +41,4 @@ class AuthBackground extends StatelessWidget {
     );
   }
 }
+

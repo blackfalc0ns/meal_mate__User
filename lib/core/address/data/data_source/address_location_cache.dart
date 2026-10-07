@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
 
 @lazySingleton
 class AddressLocationCache {
-  AddressLocationCache({LanguageService? languageService})
-      : _languageService = languageService ??
-            (getIt.isRegistered<LanguageService>()
-                ? getIt<LanguageService>()
-                : null);
+  AddressLocationCache({required LanguageService this._languageService});
+
+  AddressLocationCache.test({this._languageService});
 
   final LanguageService? _languageService;
 

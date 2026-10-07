@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 
-@injectable
+@lazySingleton
 class LanguageService {
   LanguageService(this._sharedPreferences);
   final SharedPreferences _sharedPreferences;

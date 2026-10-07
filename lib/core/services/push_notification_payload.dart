@@ -38,8 +38,7 @@ class PushNotificationPayload {
 
     String? targetRoute;
     final parsedArgs = Map<String, dynamic>.from(data)
-      ..remove(routeKey)
-      ..remove(deepLinkKey);
+      ..remove(routeKey);
 
     if (deepLinkValue != null && deepLinkValue.isNotEmpty) {
       final resolved = _resolveDeepLink(deepLinkValue);

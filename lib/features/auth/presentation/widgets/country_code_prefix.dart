@@ -15,8 +15,7 @@ class CountryCodePrefix extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final countryCode = callingCode?.countryCode ?? 'KW';
-    final dialCode = callingCode?.dialCode ?? '+965';
+    final code = callingCode;
 
     return InkWell(
       onTap: onTap,
@@ -31,23 +30,34 @@ class CountryCodePrefix extends StatelessWidget {
               size: Spacing.iconSm + Spacing.xs / 2,
               color: color.onSurface,
             ),
-            Text(
-              dialCode,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size14,
-                color: color.onSurface,
+            if (code != null) ...[
+              Text(
+                code.dialCode,
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
+                ),
               ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            CountryFlag.fromCountryCode(
-              countryCode,
-              theme: ImageTheme(
-                width: Spacing.iconMd,
-                height: Spacing.base,
-                shape: RoundedRectangle(Spacing.radiusXs),
+              const SizedBox(width: Spacing.xs),
+              CountryFlag.fromCountryCode(
+                code.countryCode,
+                theme: const ImageTheme(
+                  width: Spacing.iconMd,
+                  height: Spacing.base,
+                  shape: RoundedRectangle(Spacing.radiusXs),
+                ),
               ),
-            ),
+            ] else ...[
+              Text(
+                '--',
+                style: getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
           ],
         ),
       ),

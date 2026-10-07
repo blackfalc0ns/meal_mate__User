@@ -35,6 +35,8 @@ abstract class ExternalModules {
       ),
     );
 
+    tokenInterceptor.attachDio(dio);
+
     dio.interceptors.add(languageInterceptor);
 
     dio.interceptors.add(tokenInterceptor);
@@ -47,7 +49,7 @@ abstract class ExternalModules {
   @lazySingleton
   PrettyDioLogger providePrettyDioLogger() {
     return PrettyDioLogger(
-      requestHeader: true,
+      requestHeader: false,
       requestBody: true,
       responseHeader: false,
       responseBody: true,
@@ -55,7 +57,43 @@ abstract class ExternalModules {
       compact: true,
       maxWidth: 120,
       enabled: kDebugMode,
-      logPrint: (object) => developer.log(object.toString(), name: 'DIO'),
+      logPrint: (object) {
+        final text = object.toString();
+        final sanitized = text
+            .replaceAll(
+              RegExp(r'"password"\s*:\s*"[^"]*"'),
+              '"password": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"newPassword"\s*:\s*"[^"]*"'),
+              '"newPassword": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"currentPassword"\s*:\s*"[^"]*"'),
+              '"currentPassword": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"otp"\s*:\s*"[^"]*"'),
+              '"otp": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"code"\s*:\s*"[^"]*"'),
+              '"code": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"accessToken"\s*:\s*"[^"]*"'),
+              '"accessToken": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"refreshToken"\s*:\s*"[^"]*"'),
+              '"refreshToken": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'Bearer\s+[A-Za-z0-9\-_.=]+'),
+              'Bearer [REDACTED]',
+            );
+        developer.log(sanitized, name: 'DIO');
+      },
     );
   }
 

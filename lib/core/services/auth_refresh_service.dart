@@ -1,123 +1,89 @@
-// import 'dart:async';
+import 'dart:async';
 
-// import 'package:dio/dio.dart';
-// import 'package:meal_meat_user/core/di/di.dart';
-// import 'package:meal_meat_user/core/network/network_constants.dart';
-// import 'package:meal_meat_user/core/services/language_service.dart';
-// import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
+import 'package:meal_meat_user/core/errors/api_exception.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/refresh_token_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/refresh_token_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/usecase/refresh_token_usecase.dart';
 
-// class AuthRefreshService {
-//   AuthRefreshService({
-//     Dio? dio,
-//     TokenService? tokenService,
-//     LanguageService? languageService,
+typedef RefreshTokenUseCaseProvider = RefreshTokenUseCase Function();
 
-//   }) : _dio = dio ?? Dio(),
-//        _tokenService = tokenService ?? getIt<TokenService>(),
-//        _languageService = languageService ?? getIt<LanguageService>()
+class AuthRefreshService {
+  AuthRefreshService({
+    required TokenService tokenService,
+    required RefreshTokenUseCaseProvider refreshTokenUseCaseProvider,
+  })  : _tokenService = tokenService,
+        _refreshTokenUseCaseProvider = refreshTokenUseCaseProvider;
 
-//   final Dio _dio;
-//   final TokenService _tokenService;
-//   final LanguageService _languageService;
+  final TokenService _tokenService;
+  final RefreshTokenUseCaseProvider _refreshTokenUseCaseProvider;
 
-//   /// Mutex: ensures only one refresh call is in-flight at a time.
-//   /// Concurrent callers await the same future instead of issuing
-//   /// duplicate refresh requests (which would trigger reuse detection).
-//   Future<String?>? _inFlightRefresh;
+  Future<ApiResult<RefreshTokenEntity>>? _inFlightRefresh;
 
-//   static const List<String> _refreshEndpoints = <String>[
-//     '/customers/auth/refresh-token',
-//     '/customers/auth/refresh',
-//   ];
+  Future<ApiResult<RefreshTokenEntity>> refreshSession() {
+    if (_inFlightRefresh != null) {
+      return _inFlightRefresh!;
+    }
 
-//   Future<String?> refreshAccessToken() async {
-//     // If a refresh is already in progress, await it instead of starting
-//     // a new one. This prevents refresh token reuse detection on the backend.
-//     if (_inFlightRefresh != null) {
-//       return _inFlightRefresh!;
-//     }
+    final future = _doRefreshSession();
+    _inFlightRefresh = future;
+    return future.whenComplete(() {
+      _inFlightRefresh = null;
+    });
+  }
 
-//     _inFlightRefresh = _doRefresh();
-//     try {
-//       return await _inFlightRefresh!;
-//     } finally {
-//       _inFlightRefresh = null;
-//     }
-//   }
+  Future<ApiResult<RefreshTokenEntity>> _doRefreshSession() async {
+    final refreshToken = await _tokenService.getRefreshToken();
+    if (refreshToken == null || refreshToken.trim().isEmpty) {
+      final failure = Failure.fromException(
+        const ApiException(
+          errorType: ApiErrorType.unauthorized,
+          message: 'No refresh token available in storage',
+          statusCode: 401,
+        ),
+      );
+      await _tokenService.clearSession();
+      return ApiErrorResult(failure: failure);
+    }
 
-//   Future<String?> _doRefresh() async {
-//     final refreshToken = await _tokenService.getRefreshToken();
-//     if (refreshToken == null || refreshToken.isEmpty) {
-//       return null;
-//     }
+    final startGeneration = _tokenService.sessionGeneration;
+    final useCase = _refreshTokenUseCaseProvider();
+    final result = await useCase(
+      RefreshTokenRequestEntity(refreshToken: refreshToken),
+    );
 
-//     final headers = <String, dynamic>{
-//       'Content-Type': 'application/json',
-//       'Accept': 'application/json',
-//       'Accept-Language': _languageService.getLanguageCode(),
+    // If session was invalidated or replaced while refresh was in flight, discard the result.
+    if (_tokenService.sessionGeneration != startGeneration) {
+      final failure = Failure.fromException(
+        const ApiException(
+          errorType: ApiErrorType.unauthorized,
+          message:
+              'Session generation mismatch; session invalidated during refresh',
+          statusCode: 401,
+        ),
+      );
+      return ApiErrorResult(failure: failure);
+    }
 
-//     };
+    if (result is ApiErrorResult<RefreshTokenEntity>) {
+      final failure = result.failure;
+      if (_isPermanentRejection(failure)) {
+        await _tokenService.clearSession();
+      }
+    }
 
-//     DioException? lastError;
-//     for (final endpoint in _refreshEndpoints) {
-//       try {
-//         final response = await _dio.post<Map<String, dynamic>>(
-//           '${NetworkConstants.baseUrl}$endpoint',
-//           data: {'refreshToken': refreshToken},
-//           options: Options(headers: headers),
-//         );
+    return result;
+  }
 
-//         final tokens = _parseTokens(
-//           response.data,
-//           fallbackRefreshToken: refreshToken,
-//         );
-//         final accessToken = tokens.$1;
-//         final nextRefreshToken = tokens.$2;
-
-//         if (accessToken == null || accessToken.isEmpty) {
-//           continue;
-//         }
-
-//         await _tokenService.saveAccessToken(accessToken);
-//         if (nextRefreshToken != null && nextRefreshToken.isNotEmpty) {
-//           await _tokenService.saveRefreshToken(nextRefreshToken);
-//         }
-//         return accessToken;
-//       } on DioException catch (error) {
-//         lastError = error;
-//         final statusCode = error.response?.statusCode;
-//         if (statusCode != 404 && statusCode != 405) {
-//           break;
-//         }
-//       }
-//     }
-
-//     if (lastError != null) {
-//       throw lastError;
-//     }
-
-//     return null;
-//   }
-
-//   (String?, String?) _parseTokens(
-//     Map<String, dynamic>? data, {
-//     required String fallbackRefreshToken,
-//   }) {
-//     if (data == null) {
-//       return (null, fallbackRefreshToken);
-//     }
-
-//     final dynamic nestedTokens = data['tokens'];
-//     if (nestedTokens is Map<String, dynamic>) {
-//       return (
-//         nestedTokens['accessToken'] as String?,
-//         nestedTokens['refreshToken'] as String? ?? fallbackRefreshToken,
-//       );
-//     }
-
-//     return (
-//       data['accessToken'] as String?,
-//       data['refreshToken'] as String? ?? fallbackRefreshToken,
-//     );
-//   }
-// }
+  bool _isPermanentRejection(Failure failure) {
+    final type = failure.exception.errorType;
+    final status = failure.exception.statusCode;
+    return type == ApiErrorType.unauthorized ||
+        type == ApiErrorType.forbidden ||
+        status == 401 ||
+        status == 403;
+  }
+}

@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
-import 'package:meal_meat_user/core/services/language_service.dart';
 import 'package:meal_meat_user/core/services/token_interceptor.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +19,6 @@ void main() {
       final navigatorService = _RecordingNavigatorService();
       final interceptor = TokenInterceptor(
         tokenService: tokenService,
-        languageService: LanguageService(preferences),
         navigatorService: navigatorService,
       );
       final request = RequestOptions(path: '/protected');

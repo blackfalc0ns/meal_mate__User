@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/helpers/regex.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AuthOtpCodeField extends StatefulWidget {
   const AuthOtpCodeField({super.key, required this.onChanged});
@@ -97,6 +97,8 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Row(
       textDirection: TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,25 +116,25 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size24,
-              color: AppColors.textPrimary,
+              color: color.onSurface,
             ),
             decoration: InputDecoration(
               counterText: '',
               filled: true,
-              fillColor: AppColors.inputBackground,
+              fillColor: color.surfaceContainerHighest,
               contentPadding: EdgeInsets.zero,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.border),
+                borderRadius: BorderRadius.circular(Spacing.inputRadius),
+                borderSide: BorderSide(color: color.outline),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.border),
+                borderRadius: BorderRadius.circular(Spacing.inputRadius),
+                borderSide: BorderSide(color: color.outline),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+                borderRadius: BorderRadius.circular(Spacing.inputRadius),
+                borderSide: BorderSide(
+                  color: color.primary,
                   width: 1.5,
                 ),
               ),
@@ -150,4 +152,3 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
   }
 }
 
-bool isValidOtpCode(String value) => AppRegExp.isOTPValid(value);

@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/session_persistence.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
@@ -20,7 +21,10 @@ import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_entity
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';
 
 abstract interface class AuthRepository {
-  Future<ApiResult<LoginEntity>> login(LoginRequestEntity request);
+  Future<ApiResult<LoginEntity>> login(
+    LoginRequestEntity request, {
+    SessionPersistence persistence = SessionPersistence.currentRun,
+  });
 
   Future<ApiResult<RegisterEntity>> register(RegisterRequestEntity request);
 

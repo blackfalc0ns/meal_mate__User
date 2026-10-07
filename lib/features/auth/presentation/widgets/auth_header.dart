@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
 class AuthHeader extends StatelessWidget {
@@ -13,6 +13,8 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,7 +25,7 @@ class AuthHeader extends StatelessWidget {
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size28,
-            color: AppColors.textPrimary,
+            color: color.onSurface,
           ),
         ),
         const SizedBox(height: Spacing.xs),
@@ -32,10 +34,11 @@ class AuthHeader extends StatelessWidget {
           style: getRegularStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size14,
-            color: AppColors.textSecondary,
+            color: color.onSurfaceVariant,
           ),
         ),
       ],
     );
   }
 }
+

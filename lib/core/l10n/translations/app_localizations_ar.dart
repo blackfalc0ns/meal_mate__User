@@ -4558,6 +4558,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get biometric_quick_login => 'تسجيل الدخول بالبصمة';
 
   @override
+  String get biometric_setup_title => 'تسجيل الدخول بالبصمة';
+
+  @override
+  String get biometric_setup_subtitle =>
+      'سجّل الدخول بشكل أسرع وأكثر أماناً باستخدام القياسات الحيوية لجهازك';
+
+  @override
+  String get biometric_benefit_security_title => 'حماية متقدمة';
+
+  @override
+  String get biometric_benefit_security_subtitle =>
+      'بياناتك الحيوية محمية ومخزنة بأمان داخل جهازك';
+
+  @override
+  String get biometric_benefit_speed_title => 'وصول فوري';
+
+  @override
+  String get biometric_benefit_speed_subtitle =>
+      'سجّل الدخول بنظرة أو لمسة واحدة دون كتابة كلمات المرور';
+
+  @override
+  String get biometric_benefit_operations_title => 'تأكيد العمليات';
+
+  @override
+  String get biometric_benefit_operations_subtitle =>
+      'تأكيد فوري وآمن للعمليات المهمة في حسابك';
+
+  @override
+  String get biometric_privacy_notice =>
+      'تتم المصادقة البيومترية بواسطة نظام تشغيل جهازك ولا نقوم بحفظ أو نقل بيانات بصمتك مطلقاً.';
+
+  @override
+  String get biometric_settings_footer_note =>
+      'يمكنك تغيير أو إيقاف هذا الخيار في أي وقت من الإعدادات';
+
+  @override
   String get family_packages_selection_title => 'اختر باقة العائلة';
 
   @override

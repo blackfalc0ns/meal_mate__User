@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AuthHeroSection extends StatelessWidget {
   const AuthHeroSection({
@@ -15,6 +15,8 @@ class AuthHeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -22,22 +24,22 @@ class AuthHeroSection extends StatelessWidget {
           final isInlineSubtitle = title.isEmpty;
 
           return Align(
-            alignment: Alignment.centerRight,
+            alignment: AlignmentDirectional.centerEnd,
             child: SizedBox(
               width: contentWidth,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: isInlineSubtitle
-                    ? [_buildInlineMealMateText(subtitle)]
+                    ? [_buildInlineMealMateText(context, subtitle)]
                     : [
                         Text(
                           title,
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.start,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size20,
-                            color: AppColors.textPrimary,
+                            color: color.onSurface,
                           ),
                         ),
                         Text.rich(
@@ -48,7 +50,7 @@ class AuthHeroSection extends StatelessWidget {
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size36,
-                                  color: AppColors.logoMeal,
+                                  color: color.onTertiaryContainer,
                                 ),
                               ),
                               TextSpan(
@@ -56,20 +58,20 @@ class AuthHeroSection extends StatelessWidget {
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size36,
-                                  color: AppColors.logoMate,
+                                  color: color.primary,
                                 ),
                               ),
                             ],
                           ),
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.start,
                         ),
                         Text(
                           subtitle,
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.start,
                           style: getRegularStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size14,
-                            color: AppColors.textPrimary,
+                            color: color.onSurface,
                           ),
                         ),
                       ],
@@ -81,17 +83,18 @@ class AuthHeroSection extends StatelessWidget {
     );
   }
 
-  Widget _buildInlineMealMateText(String text) {
+  Widget _buildInlineMealMateText(BuildContext context, String text) {
+    final color = context.colorScheme;
     const appName = 'MealMate';
     final appNameStart = text.indexOf(appName);
     final style = getBoldStyle(
       fontFamily: FontConstant.alexandria,
       fontSize: FontSize.size20,
-      color: AppColors.textPrimary,
+      color: color.onSurface,
     );
 
     if (appNameStart == -1) {
-      return Text(text, textAlign: TextAlign.right, style: style);
+      return Text(text, textAlign: TextAlign.start, style: style);
     }
 
     return Text.rich(
@@ -101,16 +104,17 @@ class AuthHeroSection extends StatelessWidget {
           TextSpan(text: text.substring(0, appNameStart)),
           TextSpan(
             text: 'Meal',
-            style: style.copyWith(color: AppColors.logoMeal),
+            style: style.copyWith(color: color.onTertiaryContainer),
           ),
           TextSpan(
             text: 'Mate',
-            style: style.copyWith(color: AppColors.logoMate),
+            style: style.copyWith(color: color.primary),
           ),
           TextSpan(text: text.substring(appNameStart + appName.length)),
         ],
       ),
-      textAlign: TextAlign.right,
+      textAlign: TextAlign.start,
     );
   }
 }
+

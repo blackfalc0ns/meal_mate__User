@@ -7,9 +7,9 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/calling_codes_bottom_sheet.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/country_code_prefix.dart';
 
@@ -61,9 +61,9 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return BlocBuilder<AuthViewModel, AuthState>(
+    return BlocBuilder<CallingCodesViewModel, CallingCodesState>(
       buildWhen: (previous, current) =>
-          previous.callingCodes != current.callingCodes,
+          previous.items != current.items || previous.selected != current.selected,
       builder: (context, state) {
         final callingCode = _resolveCallingCode(state);
         return AppTextField(
@@ -121,7 +121,7 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
   void _handleFocusChange() {
     if (_focusNode.hasFocus || !widget.enabled) return;
     final callingCode = _resolveCallingCode(
-      context.read<AuthViewModel>().state,
+      context.read<CallingCodesViewModel>().state,
     );
     _lookup(callingCode);
   }
@@ -138,13 +138,13 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
   }
 
   Future<void> _openCallingCodesSheet(BuildContext context) async {
-    final viewModel = context.read<AuthViewModel>();
-    if (viewModel.state.callingCodes.items.isEmpty &&
-        !viewModel.state.callingCodes.isLoading) {
-      viewModel.doIntent(const GetCallingCodesEvent());
+    final viewModel = context.read<CallingCodesViewModel>();
+    if (viewModel.state.items.isEmpty &&
+        !viewModel.state.isLoading) {
+      viewModel.doIntent(const LoadCallingCodesEvent());
     }
     final currentCallingCode = _resolveCallingCode(viewModel.state);
-    if (viewModel.state.callingCodes.selected?.countryCode !=
+    if (viewModel.state.selected?.countryCode !=
         currentCallingCode.countryCode) {
       viewModel.doIntent(SelectCallingCodeEvent(currentCallingCode));
     }
@@ -164,19 +164,19 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
       ),
     );
     if (!mounted) return;
-    final selected = viewModel.state.callingCodes.selected;
+    final selected = viewModel.state.selected;
     if (selected != null) {
       setState(() => _selectedCallingCode = selected);
       _handleChanged(selected, widget.controller.text);
     }
   }
 
-  CallingCodeEntity _resolveCallingCode(AuthState state) {
-    final selected = _selectedCallingCode;
+  CallingCodeEntity _resolveCallingCode(CallingCodesState state) {
+    final selected = _selectedCallingCode ?? state.selected;
     if (selected != null) return selected;
-    return state.callingCodes.items
+    return state.items
             .where((code) => code.countryCode == 'KW')
             .firstOrNull ??
-        CallingCodeEntity.kuwaitFallback;
+        (state.items.isNotEmpty ? state.items.first : CallingCodeEntity.kuwaitFallback);
   }
 }

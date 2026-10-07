@@ -3,6 +3,7 @@ import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/push_notification_service.dart';
+import 'package:meal_meat_user/core/services/session_persistence.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/calling_code_mapper.dart';
@@ -54,18 +55,31 @@ class AuthRepositoryImpl implements AuthRepository {
   final FamilyFlowSnapshotStore _familyFlowSnapshotStore;
 
   @override
-  Future<ApiResult<LoginEntity>> login(LoginRequestEntity request) {
+  Future<ApiResult<LoginEntity>> login(
+    LoginRequestEntity request, {
+    SessionPersistence persistence = SessionPersistence.currentRun,
+  }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.login(request.toDto());
       final entity = response.toEntity();
 
-      await _clearSubscriptionCache();
-      await _saveAuthSession(
-        accessToken: entity.accessToken,
-        refreshToken: entity.refreshToken,
-        userId: entity.userId,
-      );
-      await _pushNotificationService.registerCurrentToken();
+      if (entity.isAuthenticated &&
+          entity.accessToken.isNotEmpty &&
+          entity.refreshToken.isNotEmpty &&
+          entity.userId.isNotEmpty) {
+        await _clearSubscriptionCache();
+        await _tokenService.saveSession(
+          userId: entity.userId,
+          accessToken: entity.accessToken,
+          refreshToken: entity.refreshToken,
+          accessExpiresAtUtc:
+              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
+          refreshExpiresAtUtc:
+              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          persistence: persistence,
+        );
+        await _pushNotificationService.registerCurrentToken();
+      }
 
       return entity;
     });
@@ -87,13 +101,22 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.verifyPhone(request.toDto());
       final entity = response.toEntity();
 
-      await _clearSubscriptionCache();
-      await _saveAuthSession(
-        accessToken: entity.accessToken,
-        refreshToken: entity.refreshToken,
-        userId: entity.userId,
-      );
-      await _pushNotificationService.registerCurrentToken();
+      if (entity.accessToken.isNotEmpty &&
+          entity.refreshToken.isNotEmpty &&
+          entity.userId.isNotEmpty) {
+        await _clearSubscriptionCache();
+        await _tokenService.saveSession(
+          userId: entity.userId,
+          accessToken: entity.accessToken,
+          refreshToken: entity.refreshToken,
+          accessExpiresAtUtc:
+              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
+          refreshExpiresAtUtc:
+              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          persistence: SessionPersistence.currentRun,
+        );
+        await _pushNotificationService.registerCurrentToken();
+      }
 
       return entity;
     });
@@ -149,12 +172,24 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.refreshToken(request.toDto());
       final entity = response.toEntity();
 
-      await _saveAuthSession(
-        accessToken: entity.accessToken,
-        refreshToken: entity.refreshToken,
-        userId: entity.userId,
-      );
-      await _pushNotificationService.registerCurrentToken();
+      if (entity.accessToken.isNotEmpty &&
+          entity.refreshToken.isNotEmpty &&
+          entity.userId.isNotEmpty) {
+        final isRemembered = await _tokenService.isRememberedSession();
+        await _tokenService.saveSession(
+          userId: entity.userId,
+          accessToken: entity.accessToken,
+          refreshToken: entity.refreshToken,
+          accessExpiresAtUtc:
+              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
+          refreshExpiresAtUtc:
+              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          persistence: isRemembered
+              ? SessionPersistence.remembered
+              : SessionPersistence.currentRun,
+        );
+        await _pushNotificationService.registerCurrentToken();
+      }
 
       return entity;
     });
@@ -167,7 +202,7 @@ class AuthRepositoryImpl implements AuthRepository {
         await _pushNotificationService.unregisterCurrentToken();
         await _remoteDataSource.logout(request.toDto());
       } finally {
-        await _tokenService.clearTokens();
+        await _tokenService.clearSession();
         await _clearSubscriptionCache();
       }
 
@@ -181,18 +216,6 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.getCallingCodes();
       return response.map((item) => item.toEntity()).toList();
     });
-  }
-
-  Future<void> _saveAuthSession({
-    required String accessToken,
-    required String refreshToken,
-    required String userId,
-  }) async {
-    if (accessToken.isNotEmpty) {
-      await _tokenService.saveAccessToken(accessToken);
-    }
-    await _tokenService.saveRefreshToken(refreshToken);
-    await _tokenService.saveCurrentUserId(userId);
   }
 
   Future<void> _clearSubscriptionCache() async {

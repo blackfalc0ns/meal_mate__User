@@ -10,6 +10,5 @@ class BiometricCredentials {
   final String countryCode;
 
   @override
-  String toString() =>
-      'BiometricCredentials(phone: $phone, countryCode: $countryCode)';
+  String toString() => 'BiometricCredentials(countryCode: $countryCode)';
 }

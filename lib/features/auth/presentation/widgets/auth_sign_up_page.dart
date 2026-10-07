@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
-import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_request_entity.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/register_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/register_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/register_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_footer_action.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_shell.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
@@ -43,7 +42,6 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
   bool _acceptedTerms = false;
 
   @override
@@ -51,120 +49,117 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
     _nameController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
-    return BlocConsumer<AuthViewModel, AuthState>(
+    return BlocListener<RegisterViewModel, RegisterState>(
       listenWhen: (previous, current) =>
-          previous.register.isSuccess != current.register.isSuccess ||
-          previous.register.errorMessage != current.register.errorMessage,
+          previous.outcome != current.outcome ||
+          previous.failure != current.failure,
       listener: (context, state) {
-        if (state.register.isSuccess) {
+        if (state.outcome == RegisterOutcome.registrationSuccess) {
           CustomSnackbar.showSuccess(
             context: context,
-            message: l10n.auth_register_success,
+            message: locale.auth_register_success,
           );
           widget.onOtpSent();
           return;
         }
 
-        final failure = state.register.failure;
-        final rawMessage = state.register.errorMessage;
-        final message = failure != null
-            ? ErrorMessagePresenter.fromFailure(context, failure)
-            : (rawMessage != null && rawMessage.isNotEmpty
-                ? mapFailureMessage(context, rawMessage)
-                : null);
-        if (message != null && message.isNotEmpty) {
-          CustomSnackbar.showError(context: context, message: message);
+        if (state.outcome == RegisterOutcome.failure &&
+            state.failure != null) {
+          CustomSnackbar.showError(
+            context: context,
+            message: ErrorMessagePresenter.fromFailure(
+              context,
+              state.failure!,
+            ),
+          );
         }
       },
-      builder: (context, state) {
-        return AuthPageShell(
-          title: '',
-          subtitle: l10n.auth_create_account_subtitle,
-          footer: AuthFooterAction(
-            prompt: l10n.auth_have_account_prompt,
-            actionText: l10n.auth_sign_in_link,
-            onTap: () => widget.onNavigate(AuthPageType.signIn),
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Text(
-                    l10n.auth_create_account_title,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size24,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: Spacing.sm),
-                Text(
-                  l10n.auth_name_label,
+      child: AuthPageShell(
+        title: '',
+        subtitle: locale.auth_create_account_subtitle,
+        footer: AuthFooterAction(
+          prompt: locale.auth_have_account_prompt,
+          actionText: locale.auth_sign_in_link,
+          onTap: () => widget.onNavigate(AuthPageType.signIn),
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Text(
+                  locale.auth_create_account_title,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
-                    color: AppColors.textPrimary,
+                    fontSize: FontSize.size24,
+                    color: color.onSurface,
                   ),
                 ),
-                const SizedBox(height: Spacing.sm),
-                AppTextField(
-                  isGlass: true,
-                  controller: _nameController,
-                  hint: l10n.auth_name_hint,
-                  prefixIcon: const Icon(
-                    Icons.person_outline,
-                    color: AppColors.primary,
-                    size: 23,
-                  ),
-                  validator: (value) =>
-                      Validations.validateName(context, value),
+              ),
+              const SizedBox(height: Spacing.sm),
+              Text(
+                locale.auth_name_label,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
                 ),
-                const SizedBox(height: Spacing.base),
-                AuthPhoneField(controller: _phoneController),
-                const SizedBox(height: Spacing.base),
-                AuthPasswordField(
-                  controller: _passwordController,
-                  hintText: l10n.password_hint,
+              ),
+              const SizedBox(height: Spacing.sm),
+              AppTextField(
+                isGlass: true,
+                controller: _nameController,
+                hint: locale.auth_name_hint,
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  color: color.primary,
+                  size: Spacing.iconSm,
                 ),
-
-                AuthTermsSection(
-                  label: l10n.auth_terms_label,
-                  initialValue: _acceptedTerms,
-                  onChanged: (value) {
-                    _acceptedTerms = value;
-                  },
+                validator: (value) =>
+                    Validations.validateName(context, value),
+              ),
+              const SizedBox(height: Spacing.base),
+              AuthPhoneField(controller: _phoneController),
+              const SizedBox(height: Spacing.base),
+              AuthPasswordField(
+                controller: _passwordController,
+                hintText: locale.password_hint,
+              ),
+              AuthTermsSection(
+                label: locale.auth_terms_label,
+                initialValue: _acceptedTerms,
+                onChanged: (value) {
+                  _acceptedTerms = value;
+                },
+              ),
+              const SizedBox(height: Spacing.xl),
+              AppButton(
+                variant: AppButtonVariant.filled,
+                text: locale.auth_create_account_button,
+                iconWidget: SvgPicture.asset(
+                  Assets.loginIcon,
+                  width: Spacing.iconSm,
+                  height: Spacing.iconSm,
                 ),
-                const SizedBox(height: Spacing.xl),
-                AppButton(
-                  variant: AppButtonVariant.filled,
-                  text: l10n.auth_create_account_button,
-                  iconWidget: SvgPicture.asset(
-                    Assets.loginIcon,
-                    width: 18,
-                    height: 18,
-                  ),
-                  onPressed: _handleSubmit,
-                  color: AppColors.primary,
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1D8134), Color(0xFF51C063)],
-                  ),
+                onPressed: _handleSubmit,
+                color: color.primary,
+                gradient: LinearGradient(
+                  colors: [color.primary, color.secondary],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -176,20 +171,22 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
       return;
     }
     final selectedCallingCode = context
-        .read<AuthViewModel>()
+        .read<CallingCodesViewModel>()
         .state
-        .callingCodes
         .selected;
+    if (selectedCallingCode == null) {
+      return;
+    }
 
-    context.read<AuthViewModel>().doIntent(
-      RegisterCustomerEvent(
-        RegisterRequestEntity(
-          fullName: _nameController.text.trim(),
-          phone: _phoneController.text.trim(),
-          password: _passwordController.text,
-          countryCode: selectedCallingCode?.countryCode ?? 'KW',
-        ),
-      ),
-    );
+    context.read<RegisterViewModel>().doIntent(
+          SubmitRegisterEvent(
+            RegisterRequestEntity(
+              fullName: _nameController.text.trim(),
+              phone: _phoneController.text.trim(),
+              password: _passwordController.text,
+              countryCode: selectedCallingCode.countryCode,
+            ),
+          ),
+        );
   }
 }

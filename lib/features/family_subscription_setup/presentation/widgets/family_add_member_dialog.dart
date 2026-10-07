@@ -12,8 +12,8 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_relationship_entity.dart';
@@ -79,9 +79,9 @@ class FamilyAddMemberDialog extends StatefulWidget {
           BlocProvider<FamilySubscriptionSetupViewModel>.value(
             value: viewModel,
           ),
-          BlocProvider<AuthViewModel>(
+          BlocProvider<CallingCodesViewModel>(
             create: (_) =>
-                getIt<AuthViewModel>()..doIntent(const GetCallingCodesEvent()),
+                getIt<CallingCodesViewModel>()..doIntent(const LoadCallingCodesEvent()),
           ),
         ],
         child: FamilyAddMemberDialog(

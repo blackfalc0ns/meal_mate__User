@@ -1,6 +1,7 @@
 enum BiometricAuthStatus {
   success,
   canceled,
+  busy,
   notAvailable,
   notEnrolled,
   passcodeNotSet,
@@ -23,6 +24,10 @@ class BiometricAuthResult {
     : status = BiometricAuthStatus.canceled,
       errorMessage = null;
 
+  const BiometricAuthResult.busy()
+    : status = BiometricAuthStatus.busy,
+      errorMessage = null;
+
   const BiometricAuthResult.failure(this.status, [this.errorMessage]);
 
   final BiometricAuthStatus status;
@@ -30,4 +35,5 @@ class BiometricAuthResult {
 
   bool get isSuccess => status == BiometricAuthStatus.success;
   bool get isCanceled => status == BiometricAuthStatus.canceled;
+  bool get isBusy => status == BiometricAuthStatus.busy;
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
-import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
 
 class AuthPasswordField extends StatefulWidget {
@@ -30,29 +29,30 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          widget.labelText ?? l10n.password,
+          widget.labelText ?? locale.password,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size14,
-            color: AppColors.textPrimary,
+            color: color.onSurface,
           ),
         ),
         const SizedBox(height: Spacing.sm),
         AppTextField(
           isGlass: true,
           controller: widget.controller,
-          hint: widget.hintText ?? l10n.password_hint,
+          hint: widget.hintText ?? locale.password_hint,
           obscureText: _obscureText,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.lock_outline,
-            color: AppColors.primary,
-            size: 23,
+            color: color.primary,
+            size: Spacing.iconMd,
           ),
           suffixIcon: IconButton(
             onPressed: () {
@@ -64,8 +64,8 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
               _obscureText
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined,
-              color: AppColors.greyLight,
-              size: 22,
+              color: color.onSurfaceVariant,
+              size: Spacing.iconMd,
             ),
           ),
           validator:
@@ -76,3 +76,4 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
     );
   }
 }
+

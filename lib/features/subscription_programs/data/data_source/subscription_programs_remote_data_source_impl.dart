@@ -13,8 +13,9 @@ class SubscriptionProgramsRemoteDataSourceImpl
   final ApiServices _apiServices;
 
   @override
-  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms() {
-    return _apiServices.getSubscriptionPrograms();
+  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms() async {
+    final response = await _apiServices.getSubscriptionPrograms();
+    return response.items ?? const [];
   }
 
   @override
@@ -22,20 +23,7 @@ class SubscriptionProgramsRemoteDataSourceImpl
     required int page,
     required int pageSize,
   }) async {
-    final items = await _apiServices.getSubscriptionPrograms(
-      page: page,
-      pageSize: pageSize,
-    );
-    final hasNext = items.length >= pageSize;
-    return SubscriptionProgramsPageResponseDto(
-      items: items,
-      totalCount: items.length,
-      page: page,
-      pageSize: pageSize,
-      totalPages: hasNext ? page + 1 : page,
-      hasNextPage: hasNext,
-      hasPreviousPage: page > 1,
-    );
+    return _apiServices.getSubscriptionPrograms(page: page, pageSize: pageSize);
   }
 
   @override

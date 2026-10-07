@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AuthFooterAction extends StatelessWidget {
   const AuthFooterAction({
@@ -9,30 +10,34 @@ class AuthFooterAction extends StatelessWidget {
     required this.prompt,
     required this.actionText,
     required this.onTap,
-    this.promptColor = AppColors.textPrimary,
-    this.actionColor = AppColors.primary,
+    this.promptColor,
+    this.actionColor,
   });
 
   final String prompt;
   final String actionText;
   final VoidCallback onTap;
-  final Color promptColor;
-  final Color actionColor;
+  final Color? promptColor;
+  final Color? actionColor;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final resolvedPromptColor = promptColor ?? color.onSurface;
+    final resolvedActionColor = actionColor ?? color.primary;
+
     return Center(
       child: Wrap(
         alignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 4,
+        spacing: Spacing.xs,
         children: [
           Text(
             prompt,
             style: getMediumStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size14,
-              color: promptColor,
+              color: resolvedPromptColor,
             ),
           ),
           GestureDetector(
@@ -42,7 +47,7 @@ class AuthFooterAction extends StatelessWidget {
               style: getBoldStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size14,
-                color: actionColor,
+                color: resolvedActionColor,
               ),
             ),
           ),
@@ -51,3 +56,4 @@ class AuthFooterAction extends StatelessWidget {
     );
   }
 }
+

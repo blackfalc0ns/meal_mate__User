@@ -65,8 +65,16 @@ import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart'
 import '../../features/auth/domain/usecase/reset_password_usecase.dart'
     as _i1029;
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
-import '../../features/auth/presentation/manager/auth_view_model.dart' as _i892;
-import '../../features/auth/presentation/manager/biometric_cubit.dart' as _i280;
+import '../../features/auth/presentation/manager/biometric_view_model.dart'
+    as _i162;
+import '../../features/auth/presentation/manager/calling_codes_view_model.dart'
+    as _i416;
+import '../../features/auth/presentation/manager/logout_view_model.dart'
+    as _i331;
+import '../../features/auth/presentation/manager/password_recovery_view_model.dart'
+    as _i487;
+import '../../features/auth/presentation/manager/register_view_model.dart'
+    as _i781;
 import '../../features/calendar/data/data_source/calendar_remote_data_source.dart'
     as _i583;
 import '../../features/calendar/data/data_source/calendar_remote_data_source_impl.dart'
@@ -108,6 +116,8 @@ import '../../features/change_password/domain/repo/change_password_repository.da
     as _i229;
 import '../../features/change_password/domain/usecase/change_customer_password_usecase.dart'
     as _i845;
+import '../../features/change_password/presentation/manager/change_password_view_model.dart'
+    as _i480;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source.dart'
     as _i1040;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source_impl.dart'
@@ -656,29 +666,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
     );
-    gh.lazySingleton<_i177.AddressLocationCache>(
-      () => _i177.AddressLocationCache(
-        languageService: gh<_i819.LanguageService>(),
-      ),
-    );
-    gh.factory<_i227.TokenService>(
+    gh.lazySingleton<_i227.TokenService>(
       () => _i227.TokenService(
         prefs: gh<_i558.FlutterSecureStorage>(),
         sharedPreferences: gh<_i460.SharedPreferences>(),
       ),
     );
-    gh.lazySingleton<_i1056.TokenInterceptor>(
-      () => _i1056.TokenInterceptor(
-        tokenService: gh<_i227.TokenService>(),
-        languageService: gh<_i819.LanguageService>(),
-        navigatorService: gh<_i179.AppNavigatorService>(),
-      ),
-    );
-    gh.factory<_i819.LanguageService>(
-      () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
-    );
     gh.lazySingleton<_i148.DeviceIdService>(
       () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i819.LanguageService>(
+      () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
     );
     gh.factory<_i807.CalendarFlowViewModel>(
       () => _i807.CalendarFlowViewModel(
@@ -697,11 +695,22 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i227.TokenService>(),
       ),
     );
-    gh.factory<_i280.BiometricCubit>(
-      () => _i280.BiometricCubit(gh<_i43.BiometricService>()),
+    gh.factory<_i162.BiometricViewModel>(
+      () => _i162.BiometricViewModel(gh<_i43.BiometricService>()),
+    );
+    gh.lazySingleton<_i1056.TokenInterceptor>(
+      () => _i1056.TokenInterceptor(
+        tokenService: gh<_i227.TokenService>(),
+        navigatorService: gh<_i179.AppNavigatorService>(),
+      ),
     );
     gh.factory<_i32.LanguageInterceptor>(
       () => _i32.LanguageInterceptor(gh<_i819.LanguageService>()),
+    );
+    gh.lazySingleton<_i177.AddressLocationCache>(
+      () => _i177.AddressLocationCache(
+        languageService: gh<_i819.LanguageService>(),
+      ),
     );
     gh.lazySingleton<_i361.Dio>(
       () => externalModules.provideDio(
@@ -1034,6 +1043,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i977.ManageFamilyMemberAccessUseCase>(),
         gh<_i671.ManageFamilyMemberPermissionsUseCase>(),
         gh<_i141.RenewFamilyMemberSubscriptionUseCase>(),
+      ),
+    );
+    gh.factory<_i480.ChangePasswordViewModel>(
+      () => _i480.ChangePasswordViewModel(
+        gh<_i845.ChangeCustomerPasswordUseCase>(),
+        gh<_i227.TokenService>(),
       ),
     );
     gh.factory<_i293.SubscriptionUncompletedSubscriptionRepository>(
@@ -1757,8 +1772,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i832.GetSubscriptionMealDetailsUseCase>(),
       ),
     );
+    gh.factory<_i416.CallingCodesViewModel>(
+      () => _i416.CallingCodesViewModel(gh<_i171.GetCallingCodesUseCase>()),
+    );
     gh.lazySingleton<_i540.NotificationBadgeViewModel>(
       () => _i540.NotificationBadgeViewModel(gh<_i200.GetCalendarUseCase>()),
+    );
+    gh.factory<_i781.RegisterViewModel>(
+      () => _i781.RegisterViewModel(
+        gh<_i769.RegisterUseCase>(),
+        gh<_i918.VerifyPhoneUseCase>(),
+        gh<_i621.ResendPhoneOtpUseCase>(),
+      ),
     );
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
@@ -1778,6 +1803,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i154.RestaurantPickerViewModel(
         gh<_i389.GetCalendarRestaurantsUseCase>(),
         gh<_i133.SetCalendarDayRestaurantUseCase>(),
+      ),
+    );
+    gh.factory<_i487.PasswordRecoveryViewModel>(
+      () => _i487.PasswordRecoveryViewModel(
+        gh<_i749.ForgotPasswordUseCase>(),
+        gh<_i610.ResendPasswordOtpUseCase>(),
+        gh<_i1029.ResetPasswordUseCase>(),
+        gh<_i227.TokenService>(),
       ),
     );
     gh.factory<_i1020.MealSelectionViewModel>(
@@ -1810,20 +1843,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
-    gh.factory<_i892.AuthViewModel>(
-      () => _i892.AuthViewModel(
-        gh<_i911.LoginUseCase>(),
-        gh<_i769.RegisterUseCase>(),
-        gh<_i171.GetCallingCodesUseCase>(),
-        gh<_i918.VerifyPhoneUseCase>(),
-        gh<_i621.ResendPhoneOtpUseCase>(),
-        gh<_i749.ForgotPasswordUseCase>(),
-        gh<_i1029.ResetPasswordUseCase>(),
-        gh<_i610.ResendPasswordOtpUseCase>(),
-        gh<_i501.RefreshTokenUseCase>(),
+    gh.factory<_i331.LogoutViewModel>(
+      () => _i331.LogoutViewModel(
         gh<_i757.LogoutUseCase>(),
-        gh<_i34.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
+        gh<_i227.TokenService>(),
         gh<_i43.BiometricService>(),
       ),
     );

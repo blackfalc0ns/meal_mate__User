@@ -8,7 +8,7 @@ void main() {
     late AddressLocationCache cache;
 
     setUp(() {
-      cache = AddressLocationCache();
+      cache = AddressLocationCache.test();
     });
 
     test('same country and area returns cached result on second call', () async {

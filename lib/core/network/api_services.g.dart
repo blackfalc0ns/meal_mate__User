@@ -1095,7 +1095,7 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms({
+  Future<SubscriptionProgramsPageResponseDto> getSubscriptionPrograms({
     int? page,
     int? pageSize,
   }) async {
@@ -1107,7 +1107,7 @@ class _ApiServices implements ApiServices {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<SubscriptionProgramResponseDto>>(
+    final _options = _setStreamType<SubscriptionProgramsPageResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1117,16 +1117,10 @@ class _ApiServices implements ApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<SubscriptionProgramResponseDto> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionProgramsPageResponseDto _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) => SubscriptionProgramResponseDto.fromJson(
-              i as Map<String, dynamic>,
-            ),
-          )
-          .toList();
+      _value = SubscriptionProgramsPageResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

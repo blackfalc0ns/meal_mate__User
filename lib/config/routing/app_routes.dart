@@ -58,6 +58,8 @@ abstract class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String otp = '/otp';
   static const String newPassword = '/new-password';
+  static const String biometricSetup = '/biometric-setup';
+  static const String changePassword = '/change-password';
   static const String personalInformation = '/personal-information';
   static const String profileSettings = '/profile-settings';
   static const String profileHelpCenter = '/profile-help-center';

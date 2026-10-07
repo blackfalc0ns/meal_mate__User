@@ -60,7 +60,7 @@ import 'package:meal_meat_user/features/payment/data/models/response/payment_sta
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_program_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_programs_page_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
@@ -304,7 +304,7 @@ abstract class ApiServices {
   Future<void> abandonFamilyDraft();
 
   @GET(EndPoints.subscriptionPrograms)
-  Future<List<SubscriptionProgramResponseDto>> getSubscriptionPrograms({
+  Future<SubscriptionProgramsPageResponseDto> getSubscriptionPrograms({
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
   });
@@ -470,7 +470,8 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.customerSubscriptionCurrent)
-  Future<SubscriptionBillingCurrentResponseDto> getCurrentCustomerSubscription();
+  Future<SubscriptionBillingCurrentResponseDto>
+  getCurrentCustomerSubscription();
 
   @GET(EndPoints.customerUncompletedSubscriptions)
   Future<List<SubscriptionBillingUncompletedSubscriptionResponseDto>>
@@ -781,9 +782,7 @@ abstract class ApiServices {
   );
 
   @PUT(EndPoints.customerNotificationRead)
-  Future<void> markCustomerNotificationRead(
-    @Path('id') String id,
-  );
+  Future<void> markCustomerNotificationRead(@Path('id') String id);
 
   @PUT(EndPoints.customerNotificationsReadAll)
   Future<void> markAllCustomerNotificationsRead();

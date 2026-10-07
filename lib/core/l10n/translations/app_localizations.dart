@@ -8672,6 +8672,66 @@ abstract class AppLocalizations {
   /// **'Biometric Sign-In'**
   String get biometric_quick_login;
 
+  /// No description provided for @biometric_setup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Sign-In'**
+  String get biometric_setup_title;
+
+  /// No description provided for @biometric_setup_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in faster and more securely using your device biometrics'**
+  String get biometric_setup_subtitle;
+
+  /// No description provided for @biometric_benefit_security_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enhanced Security'**
+  String get biometric_benefit_security_title;
+
+  /// No description provided for @biometric_benefit_security_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your biometric data remains protected on your device'**
+  String get biometric_benefit_security_subtitle;
+
+  /// No description provided for @biometric_benefit_speed_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Access'**
+  String get biometric_benefit_speed_title;
+
+  /// No description provided for @biometric_benefit_speed_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with a single glance or touch without passwords'**
+  String get biometric_benefit_speed_subtitle;
+
+  /// No description provided for @biometric_benefit_operations_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Operations'**
+  String get biometric_benefit_operations_title;
+
+  /// No description provided for @biometric_benefit_operations_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast authentication for sensitive account actions'**
+  String get biometric_benefit_operations_subtitle;
+
+  /// No description provided for @biometric_privacy_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric verification is handled by your device system. We never store or transmit your biometric records.'**
+  String get biometric_privacy_notice;
+
+  /// No description provided for @biometric_settings_footer_note.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change or disable this choice anytime from settings'**
+  String get biometric_settings_footer_note;
+
   /// No description provided for @family_packages_selection_title.
   ///
   /// In en, this message translates to:

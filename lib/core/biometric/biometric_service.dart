@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/token_service.dart';
 import '../utils/constants.dart';
 import 'biometric_auth_result.dart';
+import 'biometric_capabilities.dart';
 import 'biometric_credentials.dart';
 
 @lazySingleton
@@ -21,19 +22,59 @@ class BiometricService {
   final TokenService _tokenService;
   bool _isAuthenticating = false;
 
+  /// Retrieves the detailed biometric hardware and enrollment capabilities of the device.
+  Future<BiometricCapabilities> getCapabilities() async {
+    try {
+      final canCheck = await _localAuth.canCheckBiometrics;
+      final biometrics = await getAvailableBiometrics();
+      final supportsBiometrics = canCheck || biometrics.isNotEmpty;
+      final hasEnrollment = biometrics.isNotEmpty;
+
+      final presentationType = _determinePresentationType(
+        biometrics: biometrics,
+        supportsBiometrics: supportsBiometrics,
+      );
+
+      return BiometricCapabilities(
+        supportsBiometrics: supportsBiometrics,
+        hasEnrollment: hasEnrollment,
+        presentationType: presentationType,
+      );
+    } catch (_) {
+      return BiometricCapabilities.unsupported;
+    }
+  }
+
+  BiometricTypeEnum _determinePresentationType({
+    required List<BiometricType> biometrics,
+    required bool supportsBiometrics,
+  }) {
+    if (!supportsBiometrics) {
+      return BiometricTypeEnum.none;
+    }
+    if (biometrics.contains(BiometricType.face)) {
+      return BiometricTypeEnum.face;
+    }
+    if (biometrics.contains(BiometricType.fingerprint)) {
+      return BiometricTypeEnum.fingerprint;
+    }
+    if (biometrics.contains(BiometricType.iris)) {
+      return BiometricTypeEnum.iris;
+    }
+    if (biometrics.contains(BiometricType.strong) ||
+        biometrics.contains(BiometricType.weak)) {
+      return BiometricTypeEnum.generic;
+    }
+    if (biometrics.isNotEmpty) {
+      return BiometricTypeEnum.generic;
+    }
+    return BiometricTypeEnum.none;
+  }
+
   /// Checks if the device hardware supports biometrics and can check biometrics.
   Future<bool> isDeviceSupported() async {
-    try {
-      final isSupported = await _localAuth.isDeviceSupported();
-      final canCheck = await _localAuth.canCheckBiometrics;
-      if (isSupported || canCheck) return true;
-      final available = await _localAuth.getAvailableBiometrics();
-      return available.isNotEmpty;
-    } on PlatformException {
-      return false;
-    } catch (_) {
-      return false;
-    }
+    final caps = await getCapabilities();
+    return caps.supportsBiometrics;
   }
 
   /// Returns the list of available/enrolled biometrics on the device.
@@ -49,30 +90,19 @@ class BiometricService {
 
   /// Determines the primary biometric type for localized UI presentation.
   Future<BiometricTypeEnum> getPrimaryBiometricType() async {
-    try {
-      final isSupported = await isDeviceSupported();
-      if (!isSupported) {
-        return BiometricTypeEnum.none;
-      }
+    final caps = await getCapabilities();
+    return caps.presentationType;
+  }
 
-      final biometrics = await getAvailableBiometrics();
-      if (biometrics.contains(BiometricType.face)) {
-        return BiometricTypeEnum.face;
-      }
-      if (biometrics.contains(BiometricType.fingerprint) ||
-          biometrics.contains(BiometricType.strong) ||
-          biometrics.contains(BiometricType.weak)) {
-        return BiometricTypeEnum.fingerprint;
-      }
-      if (biometrics.contains(BiometricType.iris)) {
-        return BiometricTypeEnum.iris;
-      }
-      if (biometrics.isNotEmpty) {
-        return BiometricTypeEnum.generic;
-      }
-      return BiometricTypeEnum.fingerprint;
+  /// Cancels any active system biometric prompt and resets the authenticating guard.
+  Future<bool> cancelAuthentication() async {
+    try {
+      final stopped = await _localAuth.stopAuthentication();
+      _isAuthenticating = false;
+      return stopped;
     } catch (_) {
-      return BiometricTypeEnum.fingerprint;
+      _isAuthenticating = false;
+      return false;
     }
   }
 
@@ -82,15 +112,21 @@ class BiometricService {
     bool biometricOnly = false,
   }) async {
     if (_isAuthenticating) {
-      return const BiometricAuthResult.canceled();
+      return const BiometricAuthResult.busy();
     }
     _isAuthenticating = true;
     try {
-      final supported = await isDeviceSupported();
-      if (!supported) {
+      final caps = await getCapabilities();
+      if (!caps.supportsBiometrics) {
         return const BiometricAuthResult.failure(
           BiometricAuthStatus.notAvailable,
           'Biometric authentication is not supported on this device.',
+        );
+      }
+      if (!caps.hasEnrollment) {
+        return const BiometricAuthResult.failure(
+          BiometricAuthStatus.notEnrolled,
+          'No biometrics enrolled on this device.',
         );
       }
 
@@ -148,11 +184,12 @@ class BiometricService {
           BiometricAuthStatus.permanentlyLockedOut,
           'Biometric authentication is permanently locked out. Unlock with passcode.',
         );
+      case 'auth_in_progress':
+        return const BiometricAuthResult.busy();
       case 'UserCanceled':
       case 'user_canceled':
       case 'Canceled':
       case 'canceled':
-      case 'auth_in_progress':
         return const BiometricAuthResult.canceled();
       default:
         return BiometricAuthResult.failure(
@@ -172,6 +209,16 @@ class BiometricService {
     await _sharedPreferences.setBool(AppConstants.biometricEnabled, enabled);
   }
 
+  /// Whether user has deferred biometric setup.
+  bool isBiometricDeferred() {
+    return _sharedPreferences.getBool(AppConstants.biometricDeferred) ?? false;
+  }
+
+  /// Saves user deferral preference flag.
+  Future<void> setBiometricDeferred(bool deferred) async {
+    await _sharedPreferences.setBool(AppConstants.biometricDeferred, deferred);
+  }
+
   /// Checks if user has a stored session and has enabled biometric login.
   bool canRestoreSession() {
     return isBiometricEnabled() &&
@@ -181,10 +228,12 @@ class BiometricService {
   /// Checks if biometric login can be offered to the user on the login screen.
   Future<bool> canOfferBiometricLogin() async {
     try {
-      final supported = await isDeviceSupported();
-      if (!supported) return false;
+      final caps = await getCapabilities();
+      if (!caps.supportsBiometrics || !caps.hasEnrollment) {
+        return false;
+      }
       final hasCreds = await _tokenService.hasBiometricCredentials();
-      return isBiometricEnabled() || hasCreds;
+      return isBiometricEnabled() && hasCreds;
     } catch (_) {
       return false;
     }

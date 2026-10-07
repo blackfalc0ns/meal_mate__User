@@ -12,8 +12,8 @@ class AuthFormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-    final borderRadius = BorderRadius.circular(36);
+    final borderRadius =
+        BorderRadius.circular(Spacing.xxl + Spacing.xs);
 
     return ClipRRect(
       borderRadius: borderRadius,
@@ -41,12 +41,7 @@ class AuthFormCard extends StatelessWidget {
               horizontal: Spacing.xl,
               vertical: Spacing.xxl,
             ),
-            child: Directionality(
-              textDirection: locale.localeName == 'ar'
-                  ? TextDirection.rtl
-                  : TextDirection.ltr,
-              child: child,
-            ),
+            child: child,
           ),
         ),
       ),

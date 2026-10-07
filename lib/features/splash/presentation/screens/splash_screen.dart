@@ -6,10 +6,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/auth_refresh_service.dart';
+import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/shared/constants/app_ui_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,6 +26,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
+  bool _isRefreshing = false;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -30,26 +37,69 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _handleStartupRouting() async {
     if (!mounted) return;
+    setState(() {
+      _errorMessage = null;
+    });
 
-    final biometricService = getIt<BiometricService>();
-    if (biometricService.canRestoreSession()) {
-      final l10n = AppLocalizations.of(context);
-      final reason = l10n?.biometric_auth_reason ??
-          'Please authenticate to sign in to your account';
-      final result = await biometricService.authenticate(
-        localizedReason: reason,
-      );
+    final tokenService = getIt<TokenService>();
+    final isRemembered = await tokenService.isRememberedSession();
 
+    if (!isRemembered) {
       if (!mounted) return;
-
-      if (result.isSuccess) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
-        return;
-      }
+      Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
+      return;
     }
 
+    final isExpired = tokenService.isAccessTokenExpired();
+    if (!isExpired) {
+      if (!mounted) return;
+      Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      return;
+    }
+
+    // Access token expired -> single refresh
+    final refreshToken = await tokenService.getRefreshToken();
+    if (refreshToken == null || refreshToken.trim().isEmpty) {
+      await tokenService.clearSession();
+      if (!mounted) return;
+      Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
+      return;
+    }
+
+    setState(() {
+      _isRefreshing = true;
+    });
+
+    final refreshService = getIt<AuthRefreshService>();
+    final result = await refreshService.refreshSession();
+
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
+    setState(() {
+      _isRefreshing = false;
+    });
+
+    switch (result) {
+      case ApiSuccessResult():
+        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+        return;
+      case ApiErrorResult(:final failure):
+        final isPermanent =
+            failure.exception.errorType == ApiErrorType.unauthorized ||
+            failure.exception.errorType == ApiErrorType.forbidden ||
+            failure.exception.statusCode == 401 ||
+            failure.exception.statusCode == 403;
+
+        if (isPermanent) {
+          await tokenService.clearSession();
+          if (!mounted) return;
+          Navigator.of(context).pushReplacementNamed(AppRoutes.signIn);
+        } else {
+          final message = ErrorMessagePresenter.fromFailure(context, failure);
+          setState(() {
+            _errorMessage = message;
+          });
+        }
+    }
   }
 
   @override
@@ -60,8 +110,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: AppColors.primary400,
@@ -72,9 +122,37 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            CustomPaint(painter: _SplashArcPainter()),
-            _SplashLogo(),
-            _HomeIndicator(),
+            const CustomPaint(painter: _SplashArcPainter()),
+            const _SplashLogo(),
+            if (_isRefreshing)
+              const Center(child: CustomProgressIndicator()),
+            if (_errorMessage != null)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _errorMessage!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppColors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _handleStartupRouting,
+                        child: Text(
+                          AppLocalizations.of(context)?.retry ?? 'Retry',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            const _HomeIndicator(),
           ],
         ),
       ),

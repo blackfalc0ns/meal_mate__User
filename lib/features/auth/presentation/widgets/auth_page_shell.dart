@@ -36,11 +36,11 @@ class AuthPageShell extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                Spacing.base,
-                Spacing.base,
-                Spacing.base,
-                Spacing.base + bottomInset,
+              padding: EdgeInsets.only(
+                left: Spacing.base,
+                right: Spacing.base,
+                top: Spacing.base,
+                bottom: Spacing.base + bottomInset,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -48,7 +48,7 @@ class AuthPageShell extends StatelessWidget {
                 children: [
                   SizedBox(height: topSpacer + topOffset),
                   AuthHeroSection(title: title, subtitle: subtitle),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: Spacing.xl + Spacing.xs),
                   AuthFormCard(child: child),
                   if (footer != null) ...[
                     const SizedBox(height: Spacing.lg),

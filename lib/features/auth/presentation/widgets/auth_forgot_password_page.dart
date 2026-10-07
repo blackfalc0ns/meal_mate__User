@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
-import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
-import 'package:meal_meat_user/features/auth/presentation/manager/auth_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_footer_action.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_shell.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
@@ -30,7 +30,8 @@ class AuthForgotPasswordPage extends StatefulWidget {
   final VoidCallback onOtpSent;
 
   @override
-  State<AuthForgotPasswordPage> createState() => _AuthForgotPasswordPageState();
+  State<AuthForgotPasswordPage> createState() =>
+      _AuthForgotPasswordPageState();
 }
 
 class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
@@ -45,87 +46,93 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final color = context.colorScheme;
+    final locale = context.localization;
 
-    return BlocConsumer<AuthViewModel, AuthState>(
+    return BlocListener<PasswordRecoveryViewModel, PasswordRecoveryState>(
       listenWhen: (previous, current) =>
-          previous.forgotPassword.isSuccess !=
-              current.forgotPassword.isSuccess ||
-          previous.forgotPassword.errorMessage !=
-              current.forgotPassword.errorMessage,
+          previous.outcome != current.outcome ||
+          previous.failure != current.failure,
       listener: (context, state) {
-        if (state.forgotPassword.isSuccess) {
+        if (state.outcome == PasswordRecoveryOutcome.otpSentSuccess) {
           CustomSnackbar.showSuccess(
             context: context,
-            message: l10n.auth_otp_sent_success,
+            message: locale.auth_otp_sent_success,
           );
           widget.onOtpSent();
           return;
         }
 
-        final message = state.forgotPassword.errorMessage;
-        if (message != null && message.isNotEmpty) {
-          CustomSnackbar.showError(context: context, message: message);
+        if (state.outcome == PasswordRecoveryOutcome.failure &&
+            state.failure != null) {
+          CustomSnackbar.showError(
+            context: context,
+            message: ErrorMessagePresenter.fromFailure(
+              context,
+              state.failure!,
+            ),
+          );
         }
       },
-      builder: (context, state) {
-        return AuthPageShell(
-          title: l10n.auth_reset_password_title,
-          subtitle: l10n.auth_reset_password_subtitle,
-          topOffset: Spacing.xxl,
-          footer: AuthFooterAction(
-            prompt: l10n.auth_have_account_prompt,
-            actionText: l10n.auth_sign_in_link,
-            onTap: () => widget.onNavigate(AuthPageType.signIn),
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Text(
-                    l10n.auth_reset_password_title,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size24,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: Spacing.sm),
-                Text(
-                  l10n.auth_reset_password_hint,
-                  textAlign: TextAlign.center,
-                  style: getRegularStyle(
+      child: AuthPageShell(
+        title: locale.auth_reset_password_title,
+        subtitle: locale.auth_reset_password_subtitle,
+        topOffset: Spacing.xxl,
+        footer: AuthFooterAction(
+          prompt: locale.auth_have_account_prompt,
+          actionText: locale.auth_sign_in_link,
+          onTap: () => widget.onNavigate(AuthPageType.signIn),
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Text(
+                  locale.auth_reset_password_title,
+                  style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
-                    color: AppColors.textSecondary,
-                  ).copyWith(height: 1.45),
-                ),
-                const SizedBox(height: Spacing.xl),
-                AuthPhoneField(
-                  controller: _phoneController,
-                  validator: (value) =>
-                      Validations.validatePhoneNumber(context, value),
-                ),
-                const SizedBox(height: Spacing.xl),
-                AppButton.filled(
-                  text: l10n.auth_send_otp_button,
-                  iconWidget: SvgPicture.asset(
-                    Assets.loginIcon,
-                    width: Spacing.lg,
-                    height: Spacing.lg,
+                    fontSize: FontSize.size24,
+                    color: color.onSurface,
                   ),
-                  onPressed: _handleSubmit,
-                  color: AppColors.primary,
-                  gradient: AppColors.primaryGradient,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: Spacing.sm),
+              Text(
+                locale.auth_reset_password_hint,
+                textAlign: TextAlign.center,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurfaceVariant,
+                ).copyWith(height: 1.45),
+              ),
+              const SizedBox(height: Spacing.xl),
+              AuthPhoneField(
+                controller: _phoneController,
+                validator: (value) =>
+                    Validations.validatePhoneNumber(context, value),
+              ),
+              const SizedBox(height: Spacing.xl),
+              AppButton(
+                variant: AppButtonVariant.filled,
+                text: locale.auth_send_otp_button,
+                iconWidget: SvgPicture.asset(
+                  Assets.loginIcon,
+                  width: Spacing.iconSm,
+                  height: Spacing.iconSm,
+                ),
+                onPressed: _handleSubmit,
+                color: color.primary,
+                gradient: LinearGradient(
+                  colors: [color.primary, color.secondary],
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -134,18 +141,18 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
       return;
     }
     final selectedCallingCode = context
-        .read<AuthViewModel>()
+        .read<CallingCodesViewModel>()
         .state
-        .callingCodes
         .selected;
+    if (selectedCallingCode == null) {
+      return;
+    }
 
-    context.read<AuthViewModel>().doIntent(
-      ForgotPasswordEvent(
-        ForgotPasswordRequestEntity(
-          phone: _phoneController.text.trim(),
-          countryCode: selectedCallingCode?.countryCode ?? 'KW',
-        ),
-      ),
-    );
+    context.read<PasswordRecoveryViewModel>().doIntent(
+          RequestRecoveryOtpEvent(
+            phone: _phoneController.text.trim(),
+            countryCode: selectedCallingCode.countryCode,
+          ),
+        );
   }
 }
