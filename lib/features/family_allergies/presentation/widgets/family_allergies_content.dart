@@ -56,15 +56,15 @@ class FamilyAllergiesContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (!isInFamilyFlow) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(
+          const Padding(
+            padding: EdgeInsets.symmetric(
               horizontal: Spacing.familySetupHorizontalPadding,
             ),
             child: Column(
               children: [
-                const FamilySetupHeaderBadge(),
-                const SizedBox(height: Spacing.md),
-                const FamilyProgramStepper(
+                FamilySetupHeaderBadge(),
+                SizedBox(height: Spacing.md),
+                FamilyProgramStepper(
                   currentStep: 3,
                   includeFamilyCreationStep: true,
                 ),
@@ -142,7 +142,8 @@ class FamilyAllergiesContent extends StatelessWidget {
                 FamilyAllergiesInformationNote(
                   text: locale.family_allergies_information_note,
                 ),
-                if (state.saveFailure != null || state.errorMessage != null) ...[
+                if (state.saveFailure != null ||
+                    state.errorMessage != null) ...[
                   const SizedBox(height: Spacing.sm),
                   Text(
                     state.saveFailure != null

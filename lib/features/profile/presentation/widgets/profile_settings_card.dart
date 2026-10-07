@@ -16,49 +16,69 @@ class ProfileSettingsCard extends StatelessWidget {
     final locale = context.localization;
     final items = [
       (
-        Icons.person_outline_rounded,
-        locale.profile_personal_info,
-        locale.profile_personal_info_subtitle,
+        icon: Icons.person_outline_rounded,
+        title: locale.profile_personal_info,
+        subtitle: locale.profile_personal_info_subtitle,
+        onTap: () async {
+          final profile =
+              context.read<ProfileViewModel>().state.profile.data;
+          if (profile == null) return;
+
+          final navigator = Navigator.of(context);
+          final viewModel = context.read<ProfileViewModel>();
+          final updated = await navigator.pushNamed(
+            AppRoutes.personalInformation,
+            arguments: profile,
+          );
+          if (updated == true) {
+            viewModel.doIntent(const GetCustomerProfileEvent());
+          }
+        },
       ),
       (
-        Icons.track_changes_rounded,
-        locale.profile_goals,
-        locale.profile_goals_subtitle,
+        icon: Icons.restaurant_menu_rounded,
+        title: locale.profile_dietary_preferences,
+        subtitle: locale.profile_dietary_preferences_subtitle,
+        onTap: () =>
+            Navigator.of(context).pushNamed(AppRoutes.dietaryPreferences),
       ),
       (
-        Icons.restaurant_menu_rounded,
-        locale.profile_dietary_preferences,
-        locale.profile_dietary_preferences_subtitle,
+        icon: Icons.credit_card_rounded,
+        title: locale.profile_billing,
+        subtitle: locale.profile_billing_subtitle,
+        onTap: () =>
+            Navigator.of(context).pushNamed(AppRoutes.profileBilling),
       ),
       (
-        Icons.credit_card_rounded,
-        locale.profile_billing,
-        locale.profile_billing_subtitle,
+        icon: Icons.campaign_rounded,
+        title: locale.profile_influencer_partner,
+        subtitle: locale.profile_influencer_partner_subtitle,
+        onTap: () =>
+            Navigator.of(context).pushNamed(AppRoutes.influencerDashboard),
       ),
       (
-        Icons.campaign_rounded,
-        locale.profile_influencer_partner,
-        locale.profile_influencer_partner_subtitle,
+        icon: Icons.account_balance_wallet_rounded,
+        title: locale.payment_method_wallet,
+        subtitle: locale.payment_method_wallet_balance,
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.wallet),
       ),
       (
-        Icons.account_balance_wallet_rounded,
-        locale.payment_method_wallet,
-        locale.payment_method_wallet_balance,
+        icon: Icons.location_on_outlined,
+        title: locale.profile_addresses,
+        subtitle: locale.profile_addresses_subtitle,
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.addresses),
       ),
       (
-        Icons.location_on_outlined,
-        locale.profile_addresses,
-        locale.profile_addresses_subtitle,
-      ),
-      (
-        Icons.shield_outlined,
-        locale.profile_security,
-        locale.profile_security_subtitle,
+        icon: Icons.shield_outlined,
+        title: locale.profile_security,
+        subtitle: locale.profile_security_subtitle,
+        onTap: () =>
+            Navigator.of(context).pushNamed(AppRoutes.securityPrivacy),
       ),
     ];
 
     return Container(
-      height: Spacing.profileSettingsInfluencerHeight,
+      height: Spacing.profileSettingsHeight,
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.profileCardRadius),
@@ -75,50 +95,11 @@ class ProfileSettingsCard extends StatelessWidget {
         children: List.generate(items.length, (index) {
           final item = items[index];
           return AppSettingsTile(
-            icon: item.$1,
-            title: item.$2,
-            subtitle: item.$3,
+            icon: item.icon,
+            title: item.title,
+            subtitle: item.subtitle,
             showDivider: index != items.length - 1,
-            onTap: index == 0
-                ? () async {
-                    final profile = context
-                        .read<ProfileViewModel>()
-                        .state
-                        .profile
-                        .data;
-                    if (profile == null) return;
-
-                    final navigator = Navigator.of(context);
-                    final viewModel = context.read<ProfileViewModel>();
-                    final updated = await navigator.pushNamed(
-                      AppRoutes.personalInformation,
-                      arguments: profile,
-                    );
-                    if (updated == true) {
-                      viewModel.doIntent(const GetCustomerProfileEvent());
-                    }
-                  }
-                : index == 3
-                ? () =>
-                      Navigator.of(context).pushNamed(AppRoutes.profileBilling)
-                : index == 4
-                ? () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.influencerDashboard)
-                : index == 5
-                ? () => Navigator.of(context).pushNamed(AppRoutes.wallet)
-                : index == items.length - 1
-                ? () =>
-                      Navigator.of(context).pushNamed(AppRoutes.securityPrivacy)
-                : index == 6
-                ? () => Navigator.of(context).pushNamed(AppRoutes.addresses)
-                : index == 2
-                ? () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.dietaryPreferences)
-                : index == 1
-                ? () => Navigator.of(context).pushNamed(AppRoutes.healthGoals)
-                : null,
+            onTap: item.onTap,
           );
         }),
       ),

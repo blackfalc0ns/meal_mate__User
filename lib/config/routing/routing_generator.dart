@@ -51,7 +51,6 @@ import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_a
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/dietary_preferences_screen.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/add_allergy_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/health_goals_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/subscription_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
@@ -581,8 +580,6 @@ class RouteGenerator {
           settings: settings,
           page: AddAllergyScreen(args: args),
         );
-      case AppRoutes.healthGoals:
-        return _buildRoute(settings: settings, page: const HealthGoalsScreen());
       case AppRoutes.profileBilling:
         return _buildRoute(
           settings: settings,

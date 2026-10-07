@@ -483,25 +483,6 @@ class Spacing {
   static const double addAllergyButtonHeight = 31.51;
   static const double addAllergyButtonRadius = 17.75;
 
-  // Health goals Figma measurements.
-  static const double healthGoalsScreenHorizontalPadding = 22.0;
-  static const double healthGoalsHeaderTopGap = 12.0;
-  static const double healthGoalsHeaderHeight = 32.0;
-  static const double healthGoalsContentTopGap = 20.0;
-  static const double healthGoalsSectionGap = 12.0;
-  static const double healthGoalsGoalCardHeight = 150.63;
-  static const double healthGoalsBodyCardHeight = 111.58;
-  static const double healthGoalsActivityCardHeight = 99.0;
-  static const double healthGoalsActivityCardAdjustedHeight = 107.0;
-  static const double healthGoalsWeeklyCardHeight = 120;
-  static const double healthGoalsCardRadius = 14.125;
-  static const double healthGoalsGoalCardRadius = 11.1576;
-  static const double healthGoalsSaveButtonHeight = 31.51;
-  static const double healthGoalsSaveButtonRadius = 17.7531;
-  static const double healthGoalsActivityOptionHeight = 50.0;
-  static const double healthGoalsSelectedActivityOptionWidth = 81.0;
-  static const double healthGoalsActivityOptionWidth = 67.0;
-  static const double healthGoalsWeeklyMetricIconContainerSize = 30;
 
   // Monthly plan Figma measurements.
   static const double monthlyPlanDesignWidth = 390.0;

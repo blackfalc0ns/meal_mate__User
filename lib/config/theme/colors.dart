@@ -159,7 +159,6 @@ class AppColors {
   static const Color appSurfaceSoft = Color(0xFFF6F7F6);
   static const Color appSurfaceMuted = Color(0xFFF2F4EF);
   static const Color profileIconBackground = Color(0xFFECF4ED);
-  static const Color healthGoalsWeeklySummaryBackground = Color(0xFFF7FAF4);
   static const Color appBorder = Color(0xFFECEEED);
   static const Color appDivider = Color(0xFFEAEBEB);
   static const Color brandDeepGreen = Color(0xFF0C6C3F);

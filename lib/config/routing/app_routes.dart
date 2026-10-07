@@ -73,7 +73,6 @@ abstract class AppRoutes {
   static const String addressChooseLocation = '/address-choose-location';
   static const String dietaryPreferences = '/dietary-preferences';
   static const String addAllergy = '/add-allergy';
-  static const String healthGoals = '/health-goals';
   static const String profileBilling = '/profile-billing';
   static const String wallet = '/wallet';
   static const String walletRefund = '/wallet-refund';
