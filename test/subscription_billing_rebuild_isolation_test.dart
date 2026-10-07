@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_cancellation_quote_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_resume_preview_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/resume_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/screens/subscription_billing_screen.dart';
@@ -32,45 +33,50 @@ class _FakeBillingRepo implements SubscriptionBillingRepository {
   }
 
   @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> getCurrentCustomerSubscription() async =>
+  Future<ApiResult<SubscriptionBillingCurrentEntity>>
+  getCurrentCustomerSubscription() async => throw UnimplementedError();
+  @override
+  Future<ApiResult<SubscriptionBillingFreezeDetailsEntity>>
+  getCurrentCustomerSubscriptionFreezeDetails() async =>
       throw UnimplementedError();
   @override
-  Future<ApiResult<SubscriptionBillingFreezeDetailsEntity>> getCurrentCustomerSubscriptionFreezeDetails() async =>
+  Future<ApiResult<SubscriptionBillingFreezeDetailsEntity>>
+  getCustomerSubscriptionFreezeDetails(String id) async =>
       throw UnimplementedError();
   @override
-  Future<ApiResult<SubscriptionBillingFreezeDetailsEntity>> getCustomerSubscriptionFreezeDetails(String id) async =>
-      throw UnimplementedError();
-  @override
-  Future<ApiResult<SubscriptionBillingFreezeResponseEntity>> createCustomerSubscriptionFreezeRequest({
+  Future<ApiResult<SubscriptionBillingFreezeResponseEntity>>
+  createCustomerSubscriptionFreezeRequest({
     required String subscriptionId,
     required SubscriptionBillingFreezeRequestEntity request,
-  }) async =>
+  }) async => throw UnimplementedError();
+  @override
+  Future<ApiResult<SubscriptionBillingCancellationQuoteEntity>>
+  getCustomerSubscriptionCancellationQuote(String id) async =>
       throw UnimplementedError();
   @override
-  Future<ApiResult<SubscriptionBillingCancellationQuoteEntity>> getCustomerSubscriptionCancellationQuote(String id) async =>
-      throw UnimplementedError();
-  @override
-  Future<ApiResult<SubscriptionBillingCancellationResultEntity>> createCustomerSubscriptionCancellationRequest({
+  Future<ApiResult<SubscriptionBillingCancellationResultEntity>>
+  createCustomerSubscriptionCancellationRequest({
     required String subscriptionId,
     required SubscriptionBillingCancellationRequestEntity request,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
   @override
-  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(String id) async =>
-      throw UnimplementedError();
+  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
+    String id,
+  ) async => throw UnimplementedError();
 }
 
-class _FakeUncompletedRepo implements SubscriptionUncompletedSubscriptionRepository {
+class _FakeUncompletedRepo
+    implements SubscriptionUncompletedSubscriptionRepository {
   @override
-  Future<ApiResult<SubscriptionBillingResumePreviewEntity>> getResumePreview(String id) async =>
-      throw UnimplementedError();
+  Future<ApiResult<SubscriptionBillingResumePreviewEntity>> getResumePreview(
+    String id,
+  ) async => throw UnimplementedError();
   @override
   Future<ApiResult<SubscriptionBillingResumeEntity>> resumeSubscription({
     required String subscriptionId,
     String? startDate,
     int? paymentMethodId,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
   @override
   Future<ApiResult<void>> deleteUncompletedSubscription(String id) async =>
       throw UnimplementedError();
@@ -204,44 +210,51 @@ void main() {
     }
   });
 
-  testWidgets('rebuild isolation: action loading does not rebuild payment or invoice sections', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        locale: const Locale('en'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: const SubscriptionBillingScreen(),
-      ),
-    );
-
-    await tester.pumpAndSettle();
-
-    // Confirm initial aggregate fetch was called exactly once
-    expect(fakeBillingRepo.fetchCallCount, 1);
-
-    expect(find.byType(SubscriptionBillingPaymentCard), findsOneWidget);
-    expect(find.byType(SubscriptionBillingInvoiceHistoryCard), findsOneWidget);
-
-    // Now emit an action state update (e.g. renewal loading in progress)
-    viewModel.emit(
-      viewModel.state.copyWith(
-        billingAction: const SubscriptionBillingActionState(
-          type: 'renew',
-          isLoading: true,
+  testWidgets(
+    'rebuild isolation: action loading does not rebuild payment or invoice sections',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const SubscriptionBillingScreen(),
         ),
-      ),
-    );
+      );
 
-    await tester.pump();
+      await tester.pumpAndSettle();
 
-    // Verify aggregate fetch was NOT re-triggered
-    expect(fakeBillingRepo.fetchCallCount, 1);
+      // Confirm initial aggregate fetch was called exactly once
+      expect(fakeBillingRepo.fetchCallCount, 1);
 
-    // The payment card and invoice card elements remain mounted and stable
-    expect(find.byType(SubscriptionBillingPaymentCard), findsOneWidget);
-    expect(find.byType(SubscriptionBillingInvoiceHistoryCard), findsOneWidget);
-  });
+      expect(find.byType(SubscriptionBillingPaymentCard), findsOneWidget);
+      expect(
+        find.byType(SubscriptionBillingInvoiceHistoryCard),
+        findsOneWidget,
+      );
+
+      // Now emit an action state update (e.g. renewal loading in progress)
+      viewModel.emit(
+        viewModel.state.copyWith(
+          billingAction: const SubscriptionBillingActionState(
+            type: SubscriptionBillingActionType.renew,
+            isLoading: true,
+          ),
+        ),
+      );
+
+      await tester.pump();
+
+      // Verify aggregate fetch was NOT re-triggered
+      expect(fakeBillingRepo.fetchCallCount, 1);
+
+      // The payment card and invoice card elements remain mounted and stable
+      expect(find.byType(SubscriptionBillingPaymentCard), findsOneWidget);
+      expect(
+        find.byType(SubscriptionBillingInvoiceHistoryCard),
+        findsOneWidget,
+      );
+    },
+  );
 }

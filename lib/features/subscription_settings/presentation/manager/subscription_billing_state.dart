@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
 
 class SubscriptionBillingState {
   const SubscriptionBillingState({
@@ -67,7 +68,7 @@ class SubscriptionBillingActionState {
     this.subscriptionId,
   });
 
-  final String? type;
+  final SubscriptionBillingActionType? type;
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
@@ -82,7 +83,7 @@ class SubscriptionBillingActionState {
   final String? subscriptionId;
 
   SubscriptionBillingActionState copyWith({
-    String? type,
+    SubscriptionBillingActionType? type,
     bool? isLoading,
     bool? isSuccess,
     String? errorMessage,

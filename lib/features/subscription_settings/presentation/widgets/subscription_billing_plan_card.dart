@@ -8,8 +8,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/network_constants.dart';
-import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_action.dart';
@@ -50,7 +48,6 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
     final tierName = isArabic
         ? subscription.tierNameAr
         : subscription.tierNameEn;
-    final restaurantLogoUrl = _absoluteUrl(subscription.restaurant.logoUrl);
 
     return Container(
       decoration: BoxDecoration(
@@ -165,11 +162,18 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                           ),
                           const SizedBox(width: Spacing.xss),
                           Text(
-                            subscription.statusNameAr.isEmpty
-                                ? locale.billing_active
-                                : (isArabic
+                            isArabic
+                                ? (subscription.statusNameAr.isNotEmpty
                                       ? subscription.statusNameAr
-                                      : subscription.status),
+                                      : (subscription.status.toLowerCase() ==
+                                                'active'
+                                            ? locale.billing_active
+                                            : subscription.status))
+                                : (subscription.status.toLowerCase() == 'active'
+                                      ? locale.billing_active
+                                      : (subscription.status.isNotEmpty
+                                            ? subscription.status
+                                            : locale.billing_active)),
                             style: getMediumStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
@@ -308,8 +312,6 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                   iconAsset: Assets.profileBillingUpgradeTier,
                   label: locale.billing_upgrade_tier,
                   actionColor: const Color(0xFF2563EB),
-                  backgroundColor: const Color(0xFFEFF6FF),
-                  borderColor: const Color(0xFF2563EB),
                   onTap: () async {
                     if (isActionLoading) {
                       return;
@@ -419,15 +421,5 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _absoluteUrl(String url) {
-    if (url.isEmpty) {
-      return '';
-    }
-    if (url.startsWith('http')) {
-      return url;
-    }
-    return '${NetworkConstants.baseUrl}$url';
   }
 }

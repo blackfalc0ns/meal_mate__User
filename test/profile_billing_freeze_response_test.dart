@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 
 void main() {
@@ -76,7 +77,7 @@ void main() {
         expect(state.freezeResult, isNull);
 
         state = state.copyWith(
-          type: 'freeze',
+          type: SubscriptionBillingActionType.freeze,
           isSuccess: true,
           freezeResult: entity,
         );

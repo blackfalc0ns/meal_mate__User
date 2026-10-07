@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_entrance_registry.dart';
 
-class SubscriptionBillingEntranceRegistry extends InheritedWidget {
-  SubscriptionBillingEntranceRegistry({
-    required super.child,
-    super.key,
-  }) : playedKeys = <String>{};
-
-  final Set<String> playedKeys;
-
-  static SubscriptionBillingEntranceRegistry? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<
-        SubscriptionBillingEntranceRegistry>();
-  }
-
-  @override
-  bool updateShouldNotify(SubscriptionBillingEntranceRegistry oldWidget) =>
-      false;
-}
-
-class SubscriptionBillingEntrance extends StatelessWidget {
+class SubscriptionBillingEntrance extends StatefulWidget {
   const SubscriptionBillingEntrance({
     required this.sectionKey,
     required this.child,
@@ -32,31 +15,47 @@ class SubscriptionBillingEntrance extends StatelessWidget {
   final Duration delay;
 
   @override
+  State<SubscriptionBillingEntrance> createState() =>
+      _SubscriptionBillingEntranceState();
+}
+
+class _SubscriptionBillingEntranceState
+    extends State<SubscriptionBillingEntrance> {
+  bool? _shouldAnimate;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_shouldAnimate == null) {
+      if (MediaQuery.disableAnimationsOf(context)) {
+        _shouldAnimate = false;
+      } else {
+        final registry = SubscriptionBillingEntranceRegistry.of(context);
+        final alreadyPlayed =
+            registry?.playedKeys.contains(widget.sectionKey) ?? false;
+        if (alreadyPlayed) {
+          _shouldAnimate = false;
+        } else {
+          registry?.playedKeys.add(widget.sectionKey);
+          _shouldAnimate = true;
+        }
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (MediaQuery.disableAnimationsOf(context)) {
-      return child;
+    if (_shouldAnimate != true) {
+      return widget.child;
     }
 
-    final registry = SubscriptionBillingEntranceRegistry.of(context);
-    final alreadyPlayed = registry?.playedKeys.contains(sectionKey) ?? false;
-
-    if (alreadyPlayed) {
-      return child;
-    }
-
-    registry?.playedKeys.add(sectionKey);
-
-    return child
+    return widget.child
         .animate()
-        .fadeIn(
-          delay: delay,
-          duration: 280.ms,
-          curve: Curves.easeOut,
-        )
+        .fadeIn(delay: widget.delay, duration: 280.ms, curve: Curves.easeOut)
         .slideY(
           begin: 0.025,
           end: 0,
-          delay: delay,
+          delay: widget.delay,
           duration: 280.ms,
           curve: Curves.easeOut,
         );

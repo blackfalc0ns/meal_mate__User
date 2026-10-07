@@ -30,6 +30,8 @@ class GetCancellationQuoteEvent extends SubscriptionBillingEvent {
   final String subscriptionId;
 }
 
+typedef GetSubscriptionCancellationQuoteEvent = GetCancellationQuoteEvent;
+
 class CancelSubscriptionEvent extends SubscriptionBillingEvent {
   const CancelSubscriptionEvent({
     required this.subscriptionId,

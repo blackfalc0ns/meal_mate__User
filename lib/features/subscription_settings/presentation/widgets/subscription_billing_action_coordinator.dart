@@ -1,11 +1,19 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_active_freeze_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_freeze_rules_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_pending_freeze_card.dart';
@@ -28,12 +36,14 @@ class SubscriptionBillingActionCoordinator {
   final void Function(
     String subscriptionId,
     SubscriptionBillingFreezeRequestEntity request,
-  ) onFreeze;
+  )
+  onFreeze;
   final void Function(String subscriptionId) onCancelQuote;
   final void Function(
     String subscriptionId,
     SubscriptionBillingCancellationRequestEntity request,
-  ) onCancel;
+  )
+  onCancel;
   final VoidCallback onResetAction;
   final void Function(String subscriptionId) onDeleteUncompleted;
   final void Function(String subscriptionId) onResumePreview;
@@ -100,22 +110,22 @@ class SubscriptionBillingActionCoordinator {
       String? resolvedNotice;
       final serverNotice = isArabic
           ? (subscription.actions.freezeNoticeAr?.trim().isNotEmpty == true
-              ? subscription.actions.freezeNoticeAr!.trim()
-              : subscription.actions.freezeNotice?.trim())
+                ? subscription.actions.freezeNoticeAr!.trim()
+                : subscription.actions.freezeNotice?.trim())
           : (subscription.actions.freezeNotice?.trim().isNotEmpty == true
-              ? subscription.actions.freezeNotice!.trim()
-              : subscription.actions.freezeNoticeAr?.trim());
+                ? subscription.actions.freezeNotice!.trim()
+                : subscription.actions.freezeNoticeAr?.trim());
 
       if (serverNotice != null && serverNotice.isNotEmpty) {
         resolvedNotice = serverNotice;
       } else {
         final policyNotice = isArabic
             ? (freezePolicy?.noticeAr.trim().isNotEmpty == true
-                ? freezePolicy!.noticeAr.trim()
-                : freezePolicy?.messageAr.trim())
+                  ? freezePolicy!.noticeAr.trim()
+                  : freezePolicy?.messageAr.trim())
             : (freezePolicy?.notice.trim().isNotEmpty == true
-                ? freezePolicy!.notice.trim()
-                : freezePolicy?.messageEn.trim());
+                  ? freezePolicy!.notice.trim()
+                  : freezePolicy?.messageEn.trim());
         if (policyNotice != null && policyNotice.isNotEmpty) {
           resolvedNotice = policyNotice;
         }
@@ -129,8 +139,6 @@ class SubscriptionBillingActionCoordinator {
       if (!context.mounted || !accepted) {
         return;
       }
-
-      if (!context.mounted) return;
 
       final firstDate = SubscriptionBillingFreezeDatePolicy.minimumStartDate(
         now: DateTime.now(),
@@ -246,11 +254,11 @@ class SubscriptionBillingActionCoordinator {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     final notice = isRtl
         ? (freezePolicy?.noticeAr.isNotEmpty == true
-            ? freezePolicy!.noticeAr
-            : freezePolicy?.notice ?? '')
+              ? freezePolicy!.noticeAr
+              : freezePolicy?.notice ?? '')
         : (freezePolicy?.notice.isNotEmpty == true
-            ? freezePolicy!.notice
-            : freezePolicy?.noticeAr ?? '');
+              ? freezePolicy!.notice
+              : freezePolicy?.noticeAr ?? '');
 
     await context.showAppCustomDialog<void>(
       title: locale.billing_pending_freeze_title,
@@ -385,7 +393,8 @@ class SubscriptionBillingActionCoordinator {
   }) async {
     final locale = context.localization;
     final color = context.colorScheme;
-    final message = (backendDetail != null &&
+    final message =
+        (backendDetail != null &&
             backendDetail.trim().isNotEmpty &&
             backendDetail != 'freeze.confirm_overwrite_selections')
         ? backendDetail.trim()
@@ -428,5 +437,119 @@ class SubscriptionBillingActionCoordinator {
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '$year-$month-$day';
+  }
+
+  void handleActionState(
+    BuildContext context,
+    SubscriptionBillingActionState actionState,
+  ) {
+    if (!context.mounted) {
+      return;
+    }
+
+    final locale = context.localization;
+
+    if (actionState.failure != null) {
+      if (actionState.type == SubscriptionBillingActionType.freeze &&
+          actionState.failure?.code == 'freeze.confirm_overwrite_selections') {
+        final pendingRequest = actionState.pendingFreezeRequest;
+        final pendingSubId = actionState.pendingFreezeSubscriptionId;
+        if (pendingSubId != null && pendingRequest != null) {
+          unawaited(
+            handleConfirmOverwriteSelections(
+              context: context,
+              pendingRequest: pendingRequest,
+              pendingSubscriptionId: pendingSubId,
+              backendDetail: actionState.failure?.errorMessage,
+            ),
+          );
+        }
+        return;
+      }
+
+      final failure = actionState.failure;
+      if (failure != null) {
+        CustomSnackbar.showError(
+          context: context,
+          message: ErrorMessagePresenter.fromFailure(context, failure),
+        );
+        onResetAction();
+        return;
+      }
+    }
+
+    if (!actionState.isSuccess) {
+      return;
+    }
+
+    switch (actionState.type) {
+      case SubscriptionBillingActionType.quote:
+        final quote = actionState.cancellationQuote;
+        if (quote != null) {
+          unawaited(confirmCancel(context, quote));
+        }
+        break;
+      case SubscriptionBillingActionType.renew:
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_renew_success,
+        );
+        onResetAction();
+        break;
+      case SubscriptionBillingActionType.freeze:
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_freeze_success,
+        );
+        onResetAction();
+        break;
+      case SubscriptionBillingActionType.cancel:
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_cancel_success,
+        );
+        onResetAction();
+        break;
+      case SubscriptionBillingActionType.deleteUncompleted:
+        CustomSnackbar.showSuccess(
+          context: context,
+          message: locale.billing_uncompleted_delete_success,
+        );
+        onResetAction();
+        break;
+      case SubscriptionBillingActionType.resumePreview:
+        final preview = actionState.resumePreview;
+        if (preview != null) {
+          unawaited(handleResumePreview(context, preview));
+        }
+        break;
+      case SubscriptionBillingActionType.resume:
+        final result = actionState.resumeResult;
+        onResetAction();
+        if (result != null && result.paymentUrl.isNotEmpty) {
+          unawaited(
+            context.pushNamed(
+              AppRoutes.paymentWebView,
+              arguments: PaymentWebViewArgs(
+                checkout: PaymentCheckoutEntity(
+                  subscriptionId: result.subscriptionId,
+                  paymentUrl: result.paymentUrl,
+                  holdExpiresAtUtc:
+                      result.holdExpiresAtUtc?.toIso8601String() ?? '',
+                  chosenStartDate: '',
+                  startDate: '',
+                  finalPrice: result.finalPrice,
+                  priceSnapshotId: '',
+                  restaurantPoolSnapshotId: '',
+                  paymentStatus: result.paymentStatus,
+                ),
+              ),
+            ),
+          );
+        }
+        break;
+      case null:
+        break;
+    }
   }
 }

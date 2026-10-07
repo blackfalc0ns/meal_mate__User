@@ -17,6 +17,8 @@ import 'package:meal_meat_user/features/subscription_types/presentation/screens/
 class AppShellScreen extends StatelessWidget {
   const AppShellScreen({super.key, this.initialTabIndex = 0});
 
+  static const int subscriptionsTabIndex = 3;
+
   final int initialTabIndex;
 
   @override

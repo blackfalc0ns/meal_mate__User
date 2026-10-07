@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_cancellation_quote_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_resume_preview_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/resume_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 
@@ -66,9 +67,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         );
       case ResetBillingActionEvent():
         emit(
-          state.copyWith(
-            billingAction: const SubscriptionBillingActionState(),
-          ),
+          state.copyWith(billingAction: const SubscriptionBillingActionState()),
         );
       case DeleteUncompletedSubscriptionEvent():
         unawaited(_deleteUncompletedSubscription(event.subscriptionId));
@@ -126,7 +125,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
 
   Future<void> _renewSubscription(String subscriptionId) async {
     await _runBillingAction(
-      type: 'renew',
+      type: SubscriptionBillingActionType.renew,
       action: () => _createSubscriptionRenewalRequestUseCase(subscriptionId),
     );
     if (!isClosed && state.billingAction.isSuccess) {
@@ -141,7 +140,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(
-          type: 'freeze',
+          type: SubscriptionBillingActionType.freeze,
           isLoading: true,
           isSuccess: false,
           clearError: true,
@@ -164,7 +163,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'freeze',
+              type: SubscriptionBillingActionType.freeze,
               isLoading: false,
               isSuccess: true,
               freezeResult: result.data,
@@ -177,7 +176,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'freeze',
+              type: SubscriptionBillingActionType.freeze,
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
@@ -192,7 +191,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(
-          type: 'quote',
+          type: SubscriptionBillingActionType.quote,
           isLoading: true,
           isSuccess: false,
           clearError: true,
@@ -213,7 +212,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'quote',
+              type: SubscriptionBillingActionType.quote,
               isLoading: false,
               isSuccess: true,
               cancellationQuote: result.data,
@@ -224,7 +223,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'quote',
+              type: SubscriptionBillingActionType.quote,
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
@@ -242,7 +241,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(
-          type: 'cancel',
+          type: SubscriptionBillingActionType.cancel,
           isLoading: true,
           isSuccess: false,
           clearError: true,
@@ -263,7 +262,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'cancel',
+              type: SubscriptionBillingActionType.cancel,
               isLoading: false,
               isSuccess: true,
               cancellationResult: result.data,
@@ -275,7 +274,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'cancel',
+              type: SubscriptionBillingActionType.cancel,
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
@@ -287,7 +286,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
   }
 
   Future<void> _runBillingAction({
-    required String type,
+    required SubscriptionBillingActionType type,
     required Future<ApiResult<void>> Function() action,
   }) async {
     emit(
@@ -335,7 +334,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
 
   Future<void> _deleteUncompletedSubscription(String subscriptionId) async {
     await _runBillingAction(
-      type: 'deleteUncompleted',
+      type: SubscriptionBillingActionType.deleteUncompleted,
       action: () => _deleteUncompletedSubscriptionUseCase(subscriptionId),
     );
     if (!isClosed && state.billingAction.isSuccess) {
@@ -347,7 +346,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(
-          type: 'resumePreview',
+          type: SubscriptionBillingActionType.resumePreview,
           subscriptionId: subscriptionId,
           isLoading: true,
           isSuccess: false,
@@ -364,7 +363,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'resumePreview',
+              type: SubscriptionBillingActionType.resumePreview,
               isLoading: false,
               isSuccess: true,
               resumePreview: result.data,
@@ -375,7 +374,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'resumePreview',
+              type: SubscriptionBillingActionType.resumePreview,
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
@@ -394,7 +393,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(
-          type: 'resume',
+          type: SubscriptionBillingActionType.resume,
           subscriptionId: subscriptionId,
           isLoading: true,
           isSuccess: false,
@@ -414,7 +413,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'resume',
+              type: SubscriptionBillingActionType.resume,
               isLoading: false,
               isSuccess: true,
               resumeResult: result.data,
@@ -425,7 +424,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
         emit(
           state.copyWith(
             billingAction: state.billingAction.copyWith(
-              type: 'resume',
+              type: SubscriptionBillingActionType.resume,
               isLoading: false,
               isSuccess: false,
               errorMessage: result.failure.errorMessage,
