@@ -48,8 +48,8 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<LoginViewModel>().doIntent(
-              const CheckBiometricReadinessEvent(),
-            );
+          const CheckBiometricReadinessEvent(),
+        );
       }
     });
   }
@@ -82,7 +82,8 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
           final passwordText = _passwordController.text;
 
           final biometricService = getIt<BiometricService>();
-          final shouldOfferSetup = !biometricService.isBiometricEnabled() &&
+          final shouldOfferSetup =
+              !biometricService.isBiometricEnabled() &&
               !biometricService.isBiometricDeferred();
 
           if (shouldOfferSetup) {
@@ -109,20 +110,18 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                   );
                 } else {
                   unawaited(
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      AppRoutes.home,
-                      (route) => false,
-                    ),
+                    Navigator.of(
+                      context,
+                    ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
                   );
                 }
               }),
             );
           } else {
             unawaited(
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                AppRoutes.home,
-                (route) => false,
-              ),
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
             );
           }
           return;
@@ -184,8 +183,8 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                   rememberMe: rememberMe,
                   onRememberMeChanged: (val) {
                     context.read<LoginViewModel>().doIntent(
-                          RememberMeChangedEvent(val),
-                        );
+                      RememberMeChangedEvent(val),
+                    );
                   },
                   onForgotPassword: () =>
                       widget.onNavigate(AuthPageType.forgotPassword),
@@ -193,6 +192,7 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
               ),
               const SizedBox(height: Spacing.xl),
               AppButton(
+                borderRadius: 50,
                 variant: AppButtonVariant.filled,
                 text: locale.auth_sign_in_button,
                 iconWidget: SvgPicture.asset(
@@ -202,9 +202,6 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
                 ),
                 onPressed: _handleSubmit,
                 color: color.primary,
-                gradient: LinearGradient(
-                  colors: [color.primary, color.secondary],
-                ),
               ),
               const AuthBiometricLoginButton(),
             ],
@@ -218,8 +215,10 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-    final selectedCallingCode =
-        context.read<CallingCodesViewModel>().state.selected;
+    final selectedCallingCode = context
+        .read<CallingCodesViewModel>()
+        .state
+        .selected;
     if (selectedCallingCode == null) {
       return;
     }
@@ -230,15 +229,15 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
     final rememberMe = context.read<LoginViewModel>().state.rememberMe;
 
     context.read<LoginViewModel>().doIntent(
-          SubmitLoginEvent(
-            LoginRequestEntity(
-              phone: phone,
-              password: _passwordController.text,
-              countryCode: selectedCallingCode.countryCode,
-            ),
-            rememberMe: rememberMe,
-          ),
-        );
+      SubmitLoginEvent(
+        LoginRequestEntity(
+          phone: phone,
+          password: _passwordController.text,
+          countryCode: selectedCallingCode.countryCode,
+        ),
+        rememberMe: rememberMe,
+      ),
+    );
   }
 }
 

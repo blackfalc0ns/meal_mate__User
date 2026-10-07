@@ -30,8 +30,7 @@ class AuthForgotPasswordPage extends StatefulWidget {
   final VoidCallback onOtpSent;
 
   @override
-  State<AuthForgotPasswordPage> createState() =>
-      _AuthForgotPasswordPageState();
+  State<AuthForgotPasswordPage> createState() => _AuthForgotPasswordPageState();
 }
 
 class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
@@ -67,10 +66,7 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
             state.failure != null) {
           CustomSnackbar.showError(
             context: context,
-            message: ErrorMessagePresenter.fromFailure(
-              context,
-              state.failure!,
-            ),
+            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
           );
         }
       },
@@ -116,6 +112,7 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
               ),
               const SizedBox(height: Spacing.xl),
               AppButton(
+                borderRadius: 50,
                 variant: AppButtonVariant.filled,
                 text: locale.auth_send_otp_button,
                 iconWidget: SvgPicture.asset(
@@ -125,9 +122,6 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
                 ),
                 onPressed: _handleSubmit,
                 color: color.primary,
-                gradient: LinearGradient(
-                  colors: [color.primary, color.secondary],
-                ),
               ),
             ],
           ),
@@ -149,10 +143,10 @@ class _AuthForgotPasswordPageState extends State<AuthForgotPasswordPage> {
     }
 
     context.read<PasswordRecoveryViewModel>().doIntent(
-          RequestRecoveryOtpEvent(
-            phone: _phoneController.text.trim(),
-            countryCode: selectedCallingCode.countryCode,
-          ),
-        );
+      RequestRecoveryOtpEvent(
+        phone: _phoneController.text.trim(),
+        countryCode: selectedCallingCode.countryCode,
+      ),
+    );
   }
 }

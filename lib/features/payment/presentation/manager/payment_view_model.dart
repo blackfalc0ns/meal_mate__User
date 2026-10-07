@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
@@ -40,6 +41,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
   int _methodsLoadGeneration = 0;
+  int _fulfillmentGeneration = 0;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -61,6 +63,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
             isCalendarSuccess: false,
           ),
         );
+      case HandlePaymentReturnEvent():
+        unawaited(_handlePaymentReturn(event.paymentReturn));
       case PollSubscriptionCalendarEvent():
         unawaited(_pollCalendar(event.subscriptionId));
     }
@@ -118,7 +122,11 @@ class PaymentViewModel extends Cubit<PaymentState> {
   }
 
   Future<void> _checkout(PaymentArgs args) async {
-    if (state.isCheckoutLoading) return;
+    if (state.isCheckoutLoading ||
+        state.isFulfillmentLoading ||
+        state.isReviewRequired) {
+      return;
+    }
     final selectedMethod = state.selectedMethod;
     if (selectedMethod == null) return;
 
@@ -150,8 +158,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
       tier: args.summaryRequest.tier,
       durationDays: args.summaryRequest.durationDays,
       startDate: args.summaryRequest.startDate,
-      callbackUrl: 'mealmate://payment/success',
-      errorUrl: 'mealmate://payment/error',
+      callbackUrl: 'mealmate://checkout/success',
+      errorUrl: 'mealmate://checkout/error',
       includeFriday: args.summaryRequest.includeFriday,
       paymentMethodId: selectedMethod.id,
       correlationId: _generateCorrelationId(),
@@ -211,8 +219,55 @@ class PaymentViewModel extends Cubit<PaymentState> {
     }
   }
 
+  Future<void> _handlePaymentReturn(PaymentReturn paymentReturn) async {
+    if (state.isReviewRequired) {
+      return;
+    }
+
+    emit(state.copyWith(attemptHandle: paymentReturn.paymentId));
+
+    switch (paymentReturn.destination) {
+      case PaymentReturnDestination.review:
+        emit(
+          state.copyWith(
+            isReviewRequired: true,
+            isFulfillmentLoading: false,
+            isPaymentFailed: false,
+            attemptHandle: paymentReturn.paymentId,
+          ),
+        );
+        final subId =
+            state.checkout?.subscriptionId ?? state.pendingSubscriptionId;
+        if (subId != null && subId.isNotEmpty) {
+          await _verifyFulfillment(subId);
+        }
+      case PaymentReturnDestination.error:
+        if (state.isFulfillmentSuccess || state.isReviewRequired) {
+          return;
+        }
+        emit(
+          state.copyWith(
+            isPaymentFailed: true,
+            isFulfillmentLoading: false,
+            isCalendarLoading: false,
+            isFulfillmentSuccess: false,
+            isCalendarSuccess: false,
+            attemptHandle: paymentReturn.paymentId,
+          ),
+        );
+      case PaymentReturnDestination.success:
+      case PaymentReturnDestination.pending:
+        final subId =
+            state.checkout?.subscriptionId ?? state.pendingSubscriptionId;
+        if (subId != null && subId.isNotEmpty) {
+          await _verifyFulfillment(subId);
+        }
+    }
+  }
+
   Future<void> _verifyFulfillment(String subscriptionId) async {
     if (subscriptionId.isEmpty) return;
+    final currentGen = ++_fulfillmentGeneration;
 
     emit(
       state.copyWith(
@@ -230,16 +285,16 @@ class PaymentViewModel extends Cubit<PaymentState> {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
-      if (isClosed) return;
+      if (isClosed || currentGen != _fulfillmentGeneration) return;
 
       final result = await _getSubscriptionPaymentStatusUseCase(subscriptionId);
-      if (isClosed) return;
+      if (isClosed || currentGen != _fulfillmentGeneration) return;
 
       switch (result) {
         case ApiSuccessResult():
           if (_isPaymentPaid(result.data)) {
             await _syncCurrentSubscriptionCache();
-            if (isClosed) return;
+            if (isClosed || currentGen != _fulfillmentGeneration) return;
             emit(
               state.copyWith(
                 isFulfillmentLoading: false,
@@ -253,7 +308,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           }
 
           if (_isPaymentFailed(result.data)) {
-            if (isClosed) return;
+            if (isClosed || currentGen != _fulfillmentGeneration) return;
             emit(
               state.copyWith(
                 isFulfillmentLoading: false,
@@ -268,7 +323,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
           continue;
         case ApiErrorResult():
-          if (isClosed) return;
+          if (isClosed || currentGen != _fulfillmentGeneration) return;
           emit(
             state.copyWith(
               isFulfillmentLoading: false,
@@ -279,8 +334,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
-    if (isClosed) return;
-    emit(state.copyWith(isFulfillmentLoading: false));
+    if (isClosed || currentGen != _fulfillmentGeneration) return;
+    emit(state.copyWith(isFulfillmentLoading: false, isPaymentPending: true));
   }
 
   bool _isPaymentPaid(PaymentStatusEntity paymentStatus) {

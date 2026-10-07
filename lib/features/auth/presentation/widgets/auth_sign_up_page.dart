@@ -71,14 +71,10 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
           return;
         }
 
-        if (state.outcome == RegisterOutcome.failure &&
-            state.failure != null) {
+        if (state.outcome == RegisterOutcome.failure && state.failure != null) {
           CustomSnackbar.showError(
             context: context,
-            message: ErrorMessagePresenter.fromFailure(
-              context,
-              state.failure!,
-            ),
+            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
           );
         }
       },
@@ -124,8 +120,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                   color: color.primary,
                   size: Spacing.iconSm,
                 ),
-                validator: (value) =>
-                    Validations.validateName(context, value),
+                validator: (value) => Validations.validateName(context, value),
               ),
               const SizedBox(height: Spacing.base),
               AuthPhoneField(controller: _phoneController),
@@ -143,6 +138,7 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
               ),
               const SizedBox(height: Spacing.xl),
               AppButton(
+                borderRadius: 50,
                 variant: AppButtonVariant.filled,
                 text: locale.auth_create_account_button,
                 iconWidget: SvgPicture.asset(
@@ -152,9 +148,6 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
                 ),
                 onPressed: _handleSubmit,
                 color: color.primary,
-                gradient: LinearGradient(
-                  colors: [color.primary, color.secondary],
-                ),
               ),
             ],
           ),
@@ -179,14 +172,14 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
     }
 
     context.read<RegisterViewModel>().doIntent(
-          SubmitRegisterEvent(
-            RegisterRequestEntity(
-              fullName: _nameController.text.trim(),
-              phone: _phoneController.text.trim(),
-              password: _passwordController.text,
-              countryCode: selectedCallingCode.countryCode,
-            ),
-          ),
-        );
+      SubmitRegisterEvent(
+        RegisterRequestEntity(
+          fullName: _nameController.text.trim(),
+          phone: _phoneController.text.trim(),
+          password: _passwordController.text,
+          countryCode: selectedCallingCode.countryCode,
+        ),
+      ),
+    );
   }
 }

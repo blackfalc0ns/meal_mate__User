@@ -11,6 +11,9 @@ class PaymentState {
     this.isFulfillmentSuccess = false,
     this.isCalendarSuccess = false,
     this.isPaymentFailed = false,
+    this.isReviewRequired = false,
+    this.isPaymentPending = false,
+    this.attemptHandle,
     this.methods = const [],
     this.selectedMethod,
     this.checkout,
@@ -29,6 +32,9 @@ class PaymentState {
   final bool isFulfillmentSuccess;
   final bool isCalendarSuccess;
   final bool isPaymentFailed;
+  final bool isReviewRequired;
+  final bool isPaymentPending;
+  final String? attemptHandle;
   final List<PaymentMethodEntity> methods;
   final PaymentMethodEntity? selectedMethod;
   final PaymentCheckoutEntity? checkout;
@@ -64,6 +70,9 @@ class PaymentState {
     bool? isFulfillmentSuccess,
     bool? isCalendarSuccess,
     bool? isPaymentFailed,
+    bool? isReviewRequired,
+    bool? isPaymentPending,
+    String? attemptHandle,
     List<PaymentMethodEntity>? methods,
     PaymentMethodEntity? selectedMethod,
     PaymentCheckoutEntity? checkout,
@@ -81,6 +90,7 @@ class PaymentState {
     bool clearCheckoutFailure = false,
     bool clearFulfillmentFailure = false,
     bool clearCalendarFailure = false,
+    bool clearAttemptHandle = false,
   }) {
     return PaymentState(
       isMethodsLoading: isMethodsLoading ?? this.isMethodsLoading,
@@ -90,6 +100,11 @@ class PaymentState {
       isFulfillmentSuccess: isFulfillmentSuccess ?? this.isFulfillmentSuccess,
       isCalendarSuccess: isCalendarSuccess ?? this.isCalendarSuccess,
       isPaymentFailed: isPaymentFailed ?? this.isPaymentFailed,
+      isReviewRequired: isReviewRequired ?? this.isReviewRequired,
+      isPaymentPending: isPaymentPending ?? this.isPaymentPending,
+      attemptHandle: clearAttemptHandle
+          ? null
+          : attemptHandle ?? this.attemptHandle,
       methods: methods ?? this.methods,
       selectedMethod: clearSelectedMethod
           ? null
@@ -128,6 +143,9 @@ class PaymentState {
           isFulfillmentSuccess == other.isFulfillmentSuccess &&
           isCalendarSuccess == other.isCalendarSuccess &&
           isPaymentFailed == other.isPaymentFailed &&
+          isReviewRequired == other.isReviewRequired &&
+          isPaymentPending == other.isPaymentPending &&
+          attemptHandle == other.attemptHandle &&
           selectedMethod?.id == other.selectedMethod?.id &&
           checkout?.subscriptionId == other.checkout?.subscriptionId &&
           pendingSubscriptionId == other.pendingSubscriptionId &&
@@ -147,6 +165,9 @@ class PaymentState {
     isFulfillmentSuccess,
     isCalendarSuccess,
     isPaymentFailed,
+    isReviewRequired,
+    isPaymentPending,
+    attemptHandle,
     selectedMethod?.id,
     checkout?.subscriptionId,
     pendingSubscriptionId,

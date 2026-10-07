@@ -17,6 +17,25 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
   }
 
   PaymentMethodType get _methodType {
+    final effectiveId = paymentMethodId ?? id;
+    final normalizedCode = code?.trim().toUpperCase();
+
+    final isCodePayzah = normalizedCode == 'PAYZAH';
+    final isIdPayzah = effectiveId == 3;
+
+    if (isCodePayzah && isIdPayzah) {
+      return PaymentMethodType.payzah;
+    }
+    if (isCodePayzah && effectiveId != null && effectiveId != 3) {
+      return PaymentMethodType.unknown;
+    }
+    if (isIdPayzah && normalizedCode != null && normalizedCode != 'PAYZAH') {
+      return PaymentMethodType.unknown;
+    }
+    if (isCodePayzah || isIdPayzah) {
+      return PaymentMethodType.payzah;
+    }
+
     final value = [
       code,
       name,
@@ -30,16 +49,28 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
     if (value.contains('sandbox') ||
         value.contains('تجربة') ||
         value.contains('without_payment') ||
-        (paymentMethodId != null && paymentMethodId! < 0) ||
-        (id != null && id! < 0)) {
+        (effectiveId != null && effectiveId < 0)) {
       return PaymentMethodType.sandbox;
     }
-    if (value.contains('wallet')) return PaymentMethodType.wallet;
-    if (value.contains('apple')) return PaymentMethodType.applePay;
-    if (value.contains('visa') || value.contains('master')) {
+    if (value.contains('wallet') || normalizedCode == 'WALLET') {
+      return PaymentMethodType.wallet;
+    }
+    if (value.contains('apple') || normalizedCode == 'APPLE_PAY') {
+      return PaymentMethodType.applePay;
+    }
+    if (value.contains('visa') ||
+        value.contains('master') ||
+        normalizedCode == 'VISA' ||
+        normalizedCode == 'MASTERCARD') {
       return PaymentMethodType.visa;
     }
-    return PaymentMethodType.mada;
+    if (value.contains('mada') ||
+        normalizedCode == 'MADA' ||
+        normalizedCode == 'MD') {
+      return PaymentMethodType.mada;
+    }
+
+    return PaymentMethodType.unknown;
   }
 }
 

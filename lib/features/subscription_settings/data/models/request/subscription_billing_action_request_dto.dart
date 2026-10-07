@@ -47,7 +47,7 @@ class SubscriptionBillingCancellationRequestDto {
 class SubscriptionBillingResumeRequestDto {
   const SubscriptionBillingResumeRequestDto({
     this.startDate,
-    this.callbackUrl = 'mealmate://checkout/callback',
+    this.callbackUrl = 'mealmate://checkout/success',
     this.errorUrl = 'mealmate://checkout/error',
     this.paymentMethodId,
   });

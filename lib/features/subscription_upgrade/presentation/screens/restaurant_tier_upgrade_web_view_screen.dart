@@ -8,6 +8,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/payment_redirect_web_view.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/payment_unresolved_status_view.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_event.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_state.dart';
@@ -92,7 +93,9 @@ class _RestaurantTierUpgradeWebViewScreenState
             },
             buildWhen: (previous, current) =>
                 previous.statusFailure != current.statusFailure ||
-                previous.isPollingStatus != current.isPollingStatus,
+                previous.isPollingStatus != current.isPollingStatus ||
+                previous.isReviewRequired != current.isReviewRequired ||
+                previous.isUpgradePending != current.isUpgradePending,
             builder: (context, state) {
               final failure = state.statusFailure;
               if (failure != null) {
@@ -113,11 +116,35 @@ class _RestaurantTierUpgradeWebViewScreenState
                 );
               }
 
+              if (state.isReviewRequired || state.isUpgradePending) {
+                return Scaffold(
+                  appBar: CustomAppBar(title: locale.payment_title),
+                  body: PaymentUnresolvedStatusView(
+                    isReviewRequired: state.isReviewRequired,
+                    attemptHandle: state.attemptHandle,
+                    isCheckingStatus: state.isPollingStatus,
+                    onCheckStatus: () {
+                      _viewModel.doIntent(
+                        VerifyUpgradeStatusEvent(
+                          subscriptionId: args.subscriptionId,
+                          upgradeId: args.upgradeId,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+
               return Scaffold(
                 appBar: CustomAppBar(title: locale.payment_title),
                 body: PaymentRedirectWebView(
                   paymentUrl: args.paymentUrl,
                   isProcessing: state.isPollingStatus,
+                  onPaymentReturn: (paymentReturn) {
+                    _viewModel.doIntent(
+                      HandleUpgradePaymentReturnEvent(paymentReturn),
+                    );
+                  },
                   onSuccessRedirect: _verifyUpgradePayment,
                   onErrorRedirect: _markPaymentFailed,
                 ),

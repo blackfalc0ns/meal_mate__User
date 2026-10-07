@@ -1747,6 +1747,40 @@ class AppLocalizationsEn extends AppLocalizations {
       'Preparing your subscription days...';
 
   @override
+  String get payment_method_payzah => 'Payzah';
+
+  @override
+  String get payment_method_payzah_subtitle => 'Pay securely via Payzah';
+
+  @override
+  String get payment_review_title => 'Payment Under Review';
+
+  @override
+  String get payment_review_message =>
+      'Payment requires support review. Do not start another payment for this request until the result is confirmed.';
+
+  @override
+  String get payment_pending_title => 'Payment Pending';
+
+  @override
+  String get payment_pending_message =>
+      'Payment result is not confirmed yet. You can check the request status.';
+
+  @override
+  String get payment_check_status_button => 'Check Status';
+
+  @override
+  String get payment_contact_support_button => 'Contact Support';
+
+  @override
+  String payment_reference_label(String reference) {
+    return 'Reference: $reference';
+  }
+
+  @override
+  String get payment_fee_at_checkout => 'Confirmed at checkout';
+
+  @override
   String get subscription_screen_title => 'Plans and subscriptions';
 
   @override

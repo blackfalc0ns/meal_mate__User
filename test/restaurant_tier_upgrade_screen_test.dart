@@ -123,10 +123,10 @@ const _upgradeOptions = SubscriptionUpgradeOptionsEntity(
   ],
   paymentMethods: [
     SubscriptionUpgradePaymentMethodEntity(
-      id: 1,
-      code: 'kn',
-      title: 'KNET',
-      integrationType: 'MYFATOORAH_HOSTED',
+      id: 3,
+      code: 'PAYZAH',
+      title: 'Payzah',
+      integrationType: 'HOSTED',
       serviceCharge: 1.153,
       totalAmount: 15.25,
       currencyCode: 'KWD',
@@ -141,7 +141,7 @@ class _RestaurantTierUpgradeRepositoryFake
   Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
     String subscriptionId,
   ) async {
-    return ApiSuccessResult(data: _upgradeOptions);
+    return const ApiSuccessResult(data: _upgradeOptions);
   }
 
   @override
@@ -149,8 +149,8 @@ class _RestaurantTierUpgradeRepositoryFake
     String subscriptionId,
     String targetTier,
   ) async {
-    return ApiSuccessResult(
-      data: const SubscriptionUpgradeSummaryEntity(
+    return const ApiSuccessResult(
+      data: SubscriptionUpgradeSummaryEntity(
         subscriptionId: 'sub-1',
         currentTier: SubscriptionUpgradeTierEntity(
           tier: 'Basic',
@@ -183,10 +183,10 @@ class _RestaurantTierUpgradeRepositoryFake
         totalServiceDays: 12,
         paymentMethods: [
           SubscriptionUpgradePaymentMethodEntity(
-            id: 1,
-            code: 'kn',
-            title: 'KNET',
-            integrationType: 'MYFATOORAH_HOSTED',
+            id: 3,
+            code: 'PAYZAH',
+            title: 'Payzah',
+            integrationType: 'HOSTED',
             serviceCharge: 0,
             totalAmount: 12,
             currencyCode: 'KWD',

@@ -4,7 +4,7 @@
 
 library;
 
-enum PaymentMethodType { mada, visa, applePay, wallet, sandbox }
+enum PaymentMethodType { payzah, mada, visa, applePay, wallet, sandbox, unknown }
 
 class OrderSummaryEntity {
   const OrderSummaryEntity({

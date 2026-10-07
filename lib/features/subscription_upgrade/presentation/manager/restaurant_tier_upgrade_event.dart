@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
 
@@ -54,4 +55,10 @@ class MarkUpgradeFailedEvent extends RestaurantTierUpgradeEvent {
 
 class ResetUpgradeStateEvent extends RestaurantTierUpgradeEvent {
   const ResetUpgradeStateEvent();
+}
+
+class HandleUpgradePaymentReturnEvent extends RestaurantTierUpgradeEvent {
+  const HandleUpgradePaymentReturnEvent(this.paymentReturn);
+
+  final PaymentReturn paymentReturn;
 }

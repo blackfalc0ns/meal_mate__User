@@ -22,6 +22,9 @@ class RestaurantTierUpgradeState {
     this.upgradeStatus,
     this.isUpgradeSuccess = false,
     this.isUpgradeFailed = false,
+    this.isReviewRequired = false,
+    this.isUpgradePending = false,
+    this.attemptHandle,
     this.optionsFailure,
     this.summaryFailure,
     this.submitFailure,
@@ -45,6 +48,9 @@ class RestaurantTierUpgradeState {
   final SubscriptionUpgradeStatusEntity? upgradeStatus;
   final bool isUpgradeSuccess;
   final bool isUpgradeFailed;
+  final bool isReviewRequired;
+  final bool isUpgradePending;
+  final String? attemptHandle;
   final Failure? optionsFailure;
   final Failure? summaryFailure;
   final Failure? submitFailure;
@@ -68,6 +74,9 @@ class RestaurantTierUpgradeState {
     SubscriptionUpgradeStatusEntity? upgradeStatus,
     bool? isUpgradeSuccess,
     bool? isUpgradeFailed,
+    bool? isReviewRequired,
+    bool? isUpgradePending,
+    String? attemptHandle,
     Failure? optionsFailure,
     Failure? summaryFailure,
     Failure? submitFailure,
@@ -80,6 +89,7 @@ class RestaurantTierUpgradeState {
     bool clearErrorMessage = false,
     bool clearUpgradeRequestResult = false,
     bool clearSelectedOption = false,
+    bool clearAttemptHandle = false,
   }) {
     return RestaurantTierUpgradeState(
       subscriptionId: subscriptionId ?? this.subscriptionId,
@@ -103,6 +113,11 @@ class RestaurantTierUpgradeState {
       upgradeStatus: upgradeStatus ?? this.upgradeStatus,
       isUpgradeSuccess: isUpgradeSuccess ?? this.isUpgradeSuccess,
       isUpgradeFailed: isUpgradeFailed ?? this.isUpgradeFailed,
+      isReviewRequired: isReviewRequired ?? this.isReviewRequired,
+      isUpgradePending: isUpgradePending ?? this.isUpgradePending,
+      attemptHandle: clearAttemptHandle
+          ? null
+          : (attemptHandle ?? this.attemptHandle),
       optionsFailure:
           clearOptionsFailure ? null : (optionsFailure ?? this.optionsFailure),
       summaryFailure:
@@ -137,6 +152,9 @@ class RestaurantTierUpgradeState {
           upgradeStatus == other.upgradeStatus &&
           isUpgradeSuccess == other.isUpgradeSuccess &&
           isUpgradeFailed == other.isUpgradeFailed &&
+          isReviewRequired == other.isReviewRequired &&
+          isUpgradePending == other.isUpgradePending &&
+          attemptHandle == other.attemptHandle &&
           optionsFailure == other.optionsFailure &&
           summaryFailure == other.summaryFailure &&
           submitFailure == other.submitFailure &&
@@ -144,7 +162,7 @@ class RestaurantTierUpgradeState {
           errorMessage == other.errorMessage;
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
         subscriptionId,
         programName,
         bundleName,
@@ -161,9 +179,13 @@ class RestaurantTierUpgradeState {
         upgradeStatus,
         isUpgradeSuccess,
         isUpgradeFailed,
+        isReviewRequired,
+        isUpgradePending,
+        attemptHandle,
         optionsFailure,
         summaryFailure,
         submitFailure,
-        Object.hash(statusFailure, errorMessage),
-      );
+        statusFailure,
+        errorMessage,
+      ]);
 }

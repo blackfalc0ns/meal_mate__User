@@ -77,11 +77,13 @@ class PaymentMethodTile extends StatelessWidget {
     if (method.title.isNotEmpty) return method.title;
     final locale = context.localization;
     return switch (method.type) {
+      PaymentMethodType.payzah => locale.payment_method_payzah,
       PaymentMethodType.mada => locale.payment_method_mada,
       PaymentMethodType.visa => locale.payment_method_visa,
       PaymentMethodType.applePay => locale.payment_method_apple,
       PaymentMethodType.wallet => locale.payment_method_wallet,
       PaymentMethodType.sandbox => locale.sandbox_checkout_title,
+      PaymentMethodType.unknown => method.title.isNotEmpty ? method.title : 'Payment',
     };
   }
 
@@ -89,11 +91,13 @@ class PaymentMethodTile extends StatelessWidget {
     if (method.subtitle.isNotEmpty) return method.subtitle;
     final locale = context.localization;
     return switch (method.type) {
+      PaymentMethodType.payzah => '',
       PaymentMethodType.mada => locale.payment_method_mada_subtitle,
       PaymentMethodType.visa => locale.payment_method_visa_subtitle,
       PaymentMethodType.applePay => locale.payment_method_apple_subtitle,
       PaymentMethodType.wallet => locale.payment_method_wallet_balance,
       PaymentMethodType.sandbox => locale.sandbox_checkout_subtitle,
+      PaymentMethodType.unknown => '',
     };
   }
 

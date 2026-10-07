@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
@@ -37,4 +38,10 @@ class PollSubscriptionCalendarEvent extends PaymentEvent {
 
 class MarkPaymentFailedEvent extends PaymentEvent {
   const MarkPaymentFailedEvent();
+}
+
+class HandlePaymentReturnEvent extends PaymentEvent {
+  const HandlePaymentReturnEvent(this.paymentReturn);
+
+  final PaymentReturn paymentReturn;
 }

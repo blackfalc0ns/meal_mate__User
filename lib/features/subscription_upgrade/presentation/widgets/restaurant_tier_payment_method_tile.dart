@@ -99,9 +99,10 @@ class RestaurantTierPaymentMethodTile extends StatelessWidget {
         (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
             ? locale.currency
             : rawCurrency;
-    if (paymentMethod.serviceCharge > 0) {
-      return '${paymentMethod.serviceCharge.toStringAsFixed(2)} $currencyText';
+    final fee = paymentMethod.serviceCharge;
+    if (fee != null && fee > 0) {
+      return '${fee.toStringAsFixed(3)} $currencyText';
     }
-    return paymentMethod.integrationType;
+    return '';
   }
 }

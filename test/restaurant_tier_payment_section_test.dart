@@ -10,11 +10,11 @@ void main() {
     tester,
   ) async {
     SubscriptionUpgradePaymentMethodEntity? selected;
-    const mada = SubscriptionUpgradePaymentMethodEntity(
-      id: 6,
-      code: 'md',
-      title: 'مدى',
-      integrationType: 'MYFATOORAH_HOSTED',
+    const payzah = SubscriptionUpgradePaymentMethodEntity(
+      id: 3,
+      code: 'PAYZAH',
+      title: 'Payzah',
+      integrationType: 'HOSTED',
       serviceCharge: 1.153,
       totalAmount: 15.25,
       currencyCode: 'KWD',
@@ -24,7 +24,7 @@ void main() {
       id: 2,
       code: 'vm',
       title: 'فيزا / ماستر',
-      integrationType: 'MYFATOORAH_HOSTED',
+      integrationType: 'HOSTED',
       serviceCharge: 0.116,
       totalAmount: 15.25,
       currencyCode: 'KWD',
@@ -40,15 +40,15 @@ void main() {
         home: Scaffold(
           body: RestaurantTierPaymentSection(
             title: 'طريقة الدفع',
-            paymentMethods: const [mada, visa],
-            selectedPaymentMethod: mada,
+            paymentMethods: const [payzah, visa],
+            selectedPaymentMethod: payzah,
             onPaymentMethodSelected: (method) => selected = method,
           ),
         ),
       ),
     );
 
-    expect(find.text('مدى'), findsOneWidget);
+    expect(find.text('Payzah'), findsOneWidget);
     expect(find.text('فيزا / ماستر'), findsOneWidget);
 
     await tester.tap(find.text('فيزا / ماستر'));

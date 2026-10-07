@@ -597,6 +597,23 @@
   "payment_success_subtitle": "Your subscription is now active. Enjoy your healthy meals.",
   "payment_success_button": "Back to Home",
   "payment_calendar_preparing": "Preparing your subscription days...",
+  "payment_method_payzah": "Payzah",
+  "payment_method_payzah_subtitle": "Pay securely via Payzah",
+  "payment_review_title": "Payment Under Review",
+  "payment_review_message": "Payment requires support review. Do not start another payment for this request until the result is confirmed.",
+  "payment_pending_title": "Payment Pending",
+  "payment_pending_message": "Payment result is not confirmed yet. You can check the request status.",
+  "payment_check_status_button": "Check Status",
+  "payment_contact_support_button": "Contact Support",
+  "payment_reference_label": "Reference: {reference}",
+  "@payment_reference_label": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_fee_at_checkout": "Confirmed at checkout",
   "subscription_screen_title": "Plans and subscriptions",
   "subscription_hero_title": "Save more with plans",
   "subscription_hero_subtitle": "Choose the plan that fits your lifestyle and enjoy healthy meals every day",

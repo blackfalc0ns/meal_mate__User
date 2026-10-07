@@ -3332,6 +3332,66 @@ abstract class AppLocalizations {
   /// **'Preparing your subscription days...'**
   String get payment_calendar_preparing;
 
+  /// No description provided for @payment_method_payzah.
+  ///
+  /// In en, this message translates to:
+  /// **'Payzah'**
+  String get payment_method_payzah;
+
+  /// No description provided for @payment_method_payzah_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay securely via Payzah'**
+  String get payment_method_payzah_subtitle;
+
+  /// No description provided for @payment_review_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Under Review'**
+  String get payment_review_title;
+
+  /// No description provided for @payment_review_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment requires support review. Do not start another payment for this request until the result is confirmed.'**
+  String get payment_review_message;
+
+  /// No description provided for @payment_pending_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Pending'**
+  String get payment_pending_title;
+
+  /// No description provided for @payment_pending_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment result is not confirmed yet. You can check the request status.'**
+  String get payment_pending_message;
+
+  /// No description provided for @payment_check_status_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Status'**
+  String get payment_check_status_button;
+
+  /// No description provided for @payment_contact_support_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get payment_contact_support_button;
+
+  /// No description provided for @payment_reference_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference: {reference}'**
+  String payment_reference_label(String reference);
+
+  /// No description provided for @payment_fee_at_checkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed at checkout'**
+  String get payment_fee_at_checkout;
+
   /// No description provided for @subscription_screen_title.
   ///
   /// In en, this message translates to:

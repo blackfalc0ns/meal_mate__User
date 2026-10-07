@@ -49,8 +49,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
   @override
   void initState() {
     super.initState();
-    _fallbackDeadline =
-        DateTime.now().toUtc().add(const Duration(seconds: 60));
+    _fallbackDeadline = DateTime.now().toUtc().add(const Duration(seconds: 60));
   }
 
   @override
@@ -58,8 +57,9 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.purpose != widget.purpose) {
       _otpValue = '';
-      _fallbackDeadline =
-          DateTime.now().toUtc().add(const Duration(seconds: 60));
+      _fallbackDeadline = DateTime.now().toUtc().add(
+        const Duration(seconds: 60),
+      );
     }
   }
 
@@ -69,24 +69,23 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
     final locale = context.localization;
     final isReset = widget.purpose == AuthOtpPurpose.resetPassword;
 
-    final retryAvailableAtUtc = widget.retryAvailableAtUtc ??
+    final retryAvailableAtUtc =
+        widget.retryAvailableAtUtc ??
         (isReset
             ? context.select<PasswordRecoveryViewModel, DateTime?>(
-                (vm) => vm.state.retryAvailableAtUtc,
-              ) ??
-              _fallbackDeadline
+                    (vm) => vm.state.retryAvailableAtUtc,
+                  ) ??
+                  _fallbackDeadline
             : context.select<RegisterViewModel, DateTime?>(
-                (vm) => vm.state.retryAvailableAtUtc,
-              ) ??
-              _fallbackDeadline);
+                    (vm) => vm.state.retryAvailableAtUtc,
+                  ) ??
+                  _fallbackDeadline);
 
     final isResending = isReset
         ? context.select<PasswordRecoveryViewModel, bool>(
             (vm) => vm.state.isResending,
           )
-        : context.select<RegisterViewModel, bool>(
-            (vm) => vm.state.isResending,
-          );
+        : context.select<RegisterViewModel, bool>((vm) => vm.state.isResending);
 
     final title = isReset
         ? locale.auth_reset_password_otp_title
@@ -141,6 +140,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
           ),
           const SizedBox(height: Spacing.xl),
           AppButton(
+            borderRadius: 50,
             variant: AppButtonVariant.filled,
             text: buttonText,
             iconWidget: SvgPicture.asset(
@@ -150,9 +150,6 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
             ),
             onPressed: _handleSubmit,
             color: color.primary,
-            gradient: LinearGradient(
-              colors: [color.primary, color.secondary],
-            ),
           ),
           const SizedBox(height: Spacing.lg),
           Center(
@@ -212,10 +209,9 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
       listener: (context, state) {
         if (state.outcome == RegisterOutcome.phoneVerifiedSuccess) {
           unawaited(
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.home,
-              (route) => false,
-            ),
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
           );
           return;
         }
@@ -227,14 +223,10 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
           );
         }
 
-        if (state.outcome == RegisterOutcome.failure &&
-            state.failure != null) {
+        if (state.outcome == RegisterOutcome.failure && state.failure != null) {
           CustomSnackbar.showError(
             context: context,
-            message: ErrorMessagePresenter.fromFailure(
-              context,
-              state.failure!,
-            ),
+            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
           );
         }
       },
@@ -245,35 +237,32 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
   void _handleSubmit() {
     final otpError = Validations.validOtp(context, _otpValue);
     if (otpError != null) {
-      CustomSnackbar.showError(
-        context: context,
-        message: otpError,
-      );
+      CustomSnackbar.showError(context: context, message: otpError);
       return;
     }
 
     if (widget.purpose == AuthOtpPurpose.resetPassword) {
       context.read<PasswordRecoveryViewModel>().doIntent(
-            SaveRecoveryOtpEvent(_otpValue),
-          );
+        SaveRecoveryOtpEvent(_otpValue),
+      );
       widget.onNavigate(AuthPageType.newPassword);
       return;
     }
 
     context.read<RegisterViewModel>().doIntent(
-          VerifyRegisterPhoneEvent(_otpValue),
-        );
+      VerifyRegisterPhoneEvent(_otpValue),
+    );
   }
 
   void _handleResend() {
     if (widget.purpose == AuthOtpPurpose.resetPassword) {
       context.read<PasswordRecoveryViewModel>().doIntent(
-            const ResendRecoveryOtpEvent(),
-          );
+        const ResendRecoveryOtpEvent(),
+      );
     } else {
       context.read<RegisterViewModel>().doIntent(
-            const ResendRegisterOtpEvent(),
-          );
+        const ResendRegisterOtpEvent(),
+      );
     }
   }
 }

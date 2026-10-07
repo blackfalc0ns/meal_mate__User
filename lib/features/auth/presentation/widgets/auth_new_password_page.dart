@@ -59,10 +59,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
             state.failure != null) {
           CustomSnackbar.showError(
             context: context,
-            message: ErrorMessagePresenter.fromFailure(
-              context,
-              state.failure!,
-            ),
+            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
           );
         }
       },
@@ -108,6 +105,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
               ),
               const SizedBox(height: Spacing.xl),
               AppButton(
+                borderRadius: 50,
                 variant: AppButtonVariant.filled,
                 text: locale.auth_new_password_button,
                 iconWidget: SvgPicture.asset(
@@ -117,9 +115,6 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
                 ),
                 onPressed: _handleSubmit,
                 color: color.primary,
-                gradient: LinearGradient(
-                  colors: [color.primary, color.secondary],
-                ),
               ),
             ],
           ),
@@ -134,9 +129,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
     }
 
     context.read<PasswordRecoveryViewModel>().doIntent(
-          SubmitResetPasswordEvent(
-            newPassword: _passwordController.text,
-          ),
-        );
+      SubmitResetPasswordEvent(newPassword: _passwordController.text),
+    );
   }
 }

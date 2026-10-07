@@ -49,21 +49,17 @@ class AddressesViewModel extends Cubit<AddressesState> {
   _previewExistingAddressCoverageUseCase;
   final ConfirmSetDefaultAddressUseCase _confirmSetDefaultAddressUseCase;
 
-  GetLocationsCatalogUseCase get locationsCatalogUseCase => _getLocationsCatalogUseCase;
+  GetLocationsCatalogUseCase get locationsCatalogUseCase =>
+      _getLocationsCatalogUseCase;
   GeocodeAddressUseCase get geocodeAddressUseCase => _geocodeAddressUseCase;
-  ReverseGeocodeLocationUseCase get reverseGeocodeLocationUseCase => _reverseGeocodeLocationUseCase;
+  ReverseGeocodeLocationUseCase get reverseGeocodeLocationUseCase =>
+      _reverseGeocodeLocationUseCase;
   double? _lastReverseGeocodeLatitude;
   double? _lastReverseGeocodeLongitude;
   MapAddressAutofillEntity? _lastReverseGeocodeResult;
   final Map<String, LocationAreaEntity> _areaBlocksCache = {};
   int _geocodeRequestId = 0;
   int _coverageSessionId = 0;
-
-  void _clearReverseGeocodeCache() {
-    _lastReverseGeocodeLatitude = null;
-    _lastReverseGeocodeLongitude = null;
-    _lastReverseGeocodeResult = null;
-  }
 
   static bool isWithinKuwaitBounds(double? lat, double? lng) {
     if (lat == null || lng == null) return false;

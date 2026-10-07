@@ -40,13 +40,13 @@ void main() {
       ),
     );
     viewModel.doIntent(
-      const SelectUpgradePaymentMethodEvent(_madaPaymentMethod),
+      const SelectUpgradePaymentMethodEvent(_payzahPaymentMethod),
     );
 
     viewModel.doIntent(const SubmitUpgradeRequestEvent());
     await Future<void>.delayed(Duration.zero);
 
-    expect(upgradeRepository.submittedRequest?.paymentMethodId, 6);
+    expect(upgradeRepository.submittedRequest?.paymentMethodId, 3);
   });
 
   test(
@@ -506,11 +506,11 @@ const _platinumOption = SubscriptionUpgradeOptionEntity(
   currencyCode: 'KWD',
 );
 
-const _madaPaymentMethod = SubscriptionUpgradePaymentMethodEntity(
-  id: 6,
-  code: 'md',
-  title: 'مدى',
-  integrationType: 'MYFATOORAH_HOSTED',
+const _payzahPaymentMethod = SubscriptionUpgradePaymentMethodEntity(
+  id: 3,
+  code: 'PAYZAH',
+  title: 'Payzah',
+  integrationType: 'HOSTED',
   serviceCharge: 1.153,
   totalAmount: 15.25,
   currencyCode: 'KWD',
@@ -525,17 +525,7 @@ const _upgradeOptions = SubscriptionUpgradeOptionsEntity(
   upgradeEndpoint: '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
   options: [_platinumOption],
   paymentMethods: [
-    SubscriptionUpgradePaymentMethodEntity(
-      id: 1,
-      code: 'kn',
-      title: 'كي نت',
-      integrationType: 'MYFATOORAH_HOSTED',
-      serviceCharge: 1.153,
-      totalAmount: 15.25,
-      currencyCode: 'KWD',
-      isAvailable: true,
-    ),
-    _madaPaymentMethod,
+    _payzahPaymentMethod,
   ],
 );
 
@@ -664,7 +654,7 @@ const _upgradeSummary = SubscriptionUpgradeSummaryEntity(
   currencyCode: 'KWD',
   remainingServiceDays: 12,
   totalServiceDays: 26,
-  paymentMethods: [_madaPaymentMethod],
+  paymentMethods: [_payzahPaymentMethod],
   upgradeEndpoint: '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
 );
 

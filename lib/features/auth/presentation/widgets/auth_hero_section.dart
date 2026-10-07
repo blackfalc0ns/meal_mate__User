@@ -24,7 +24,7 @@ class AuthHeroSection extends StatelessWidget {
           final isInlineSubtitle = title.isEmpty;
 
           return Align(
-            alignment: AlignmentDirectional.centerEnd,
+            alignment: AlignmentDirectional.centerStart,
             child: SizedBox(
               width: contentWidth,
               child: Column(
@@ -117,4 +117,3 @@ class AuthHeroSection extends StatelessWidget {
     );
   }
 }
-

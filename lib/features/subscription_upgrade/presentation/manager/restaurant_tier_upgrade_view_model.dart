@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
@@ -62,6 +65,8 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
           subscriptionId: event.subscriptionId,
           upgradeId: event.upgradeId,
         );
+      case HandleUpgradePaymentReturnEvent():
+        _handlePaymentReturn(event.paymentReturn);
       case MarkUpgradeFailedEvent():
         _pollingGeneration++;
         if (!isClosed) {
@@ -250,12 +255,23 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
   }
 
   Future<void> _submit({int? paymentMethodId, String? reason}) async {
-    if (isClosed || state.isSubmitting) return;
+    if (isClosed || state.isSubmitting || state.isReviewRequired) return;
 
     final subId = state.subscriptionId;
     final selected = state.selectedOption;
 
     if (subId.isEmpty || selected == null) return;
+
+    final selectedMethodId = paymentMethodId ?? state.selectedPaymentMethod?.id;
+    if (selectedMethodId == null && (selected.priceDifference) > 0) {
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          errorMessage: 'يرجى اختيار طريقة الدفع أولاً',
+        ),
+      );
+      return;
+    }
 
     emit(
       state.copyWith(
@@ -271,9 +287,9 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
 
     final request = SubscriptionUpgradeRequestEntity(
       targetTier: selected.targetTier,
-      callbackUrl: 'mealmate://payment/success',
-      errorUrl: 'mealmate://payment/error',
-      paymentMethodId: paymentMethodId ?? state.selectedPaymentMethod?.id ?? 1,
+      callbackUrl: 'mealmate://checkout/success',
+      errorUrl: 'mealmate://checkout/error',
+      paymentMethodId: selectedMethodId,
       reason: reason,
     );
 
@@ -287,10 +303,11 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     switch (result) {
       case ApiSuccessResult():
         final requestResult = result.data;
-        if (requestResult.isPaid ||
-            (requestResult.paymentUrl == null ||
-                requestResult.paymentUrl!.isEmpty)) {
-          // Applied immediately (e.g. 0 amount due)
+        final isExplicitlyApplied = requestResult.isPaid ||
+            (requestResult.status.toLowerCase() == 'applied' &&
+                requestResult.amount == 0.0);
+
+        if (isExplicitlyApplied) {
           await _syncCurrentSubscriptionCache();
           if (isClosed) return;
           emit(
@@ -301,7 +318,8 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
               clearSubmitFailure: true,
             ),
           );
-        } else {
+        } else if (requestResult.paymentUrl != null &&
+            requestResult.paymentUrl!.isNotEmpty) {
           emit(
             state.copyWith(
               isSubmitting: false,
@@ -309,11 +327,66 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
               clearSubmitFailure: true,
             ),
           );
+        } else {
+          // Empty paymentUrl and not paid -> Unresolved error, not success!
+          emit(
+            state.copyWith(
+              isSubmitting: false,
+              isUpgradeFailed: true,
+              errorMessage: 'حدث خطأ في معالجة طلب الترقية',
+              upgradeRequestResult: requestResult,
+            ),
+          );
         }
       case ApiErrorResult():
         emit(
           state.copyWith(isSubmitting: false, submitFailure: result.failure),
         );
+    }
+  }
+
+  void _handlePaymentReturn(PaymentReturn paymentReturn) {
+    if (isClosed) return;
+
+    switch (paymentReturn.destination) {
+      case PaymentReturnDestination.review:
+        emit(
+          state.copyWith(
+            isReviewRequired: true,
+            attemptHandle: paymentReturn.paymentId,
+          ),
+        );
+        final upId = state.upgradeRequestResult?.upgradeId;
+        if (state.subscriptionId.isNotEmpty && upId != null && upId.isNotEmpty) {
+          unawaited(
+            _verifyStatus(
+              subscriptionId: state.subscriptionId,
+              upgradeId: upId,
+            ),
+          );
+        }
+      case PaymentReturnDestination.error:
+        if (state.isUpgradeSuccess || state.isReviewRequired) return;
+        _pollingGeneration++;
+        emit(
+          state.copyWith(
+            isUpgradeFailed: true,
+            isPollingStatus: false,
+            errorMessage: 'تم إلغاء عملية الدفع',
+          ),
+        );
+      case PaymentReturnDestination.success:
+      case PaymentReturnDestination.pending:
+        emit(state.copyWith(attemptHandle: paymentReturn.paymentId));
+        final upId = state.upgradeRequestResult?.upgradeId;
+        if (state.subscriptionId.isNotEmpty && upId != null && upId.isNotEmpty) {
+          unawaited(
+            _verifyStatus(
+              subscriptionId: state.subscriptionId,
+              upgradeId: upId,
+            ),
+          );
+        }
     }
   }
 

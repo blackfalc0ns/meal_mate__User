@@ -1723,6 +1723,40 @@ class AppLocalizationsAr extends AppLocalizations {
   String get payment_calendar_preparing => 'جاري تجهيز أيام اشتراكك...';
 
   @override
+  String get payment_method_payzah => 'بيزاه';
+
+  @override
+  String get payment_method_payzah_subtitle => 'ادفع بأمان عبر بيزاه';
+
+  @override
+  String get payment_review_title => 'عملية الدفع قيد المراجعة';
+
+  @override
+  String get payment_review_message =>
+      'عملية الدفع تحتاج مراجعة من الدعم. لا تبدأ عملية دفع أخرى لهذا الطلب حتى يتم تأكيد النتيجة.';
+
+  @override
+  String get payment_pending_title => 'لم يتم تأكيد الدفع بعد';
+
+  @override
+  String get payment_pending_message =>
+      'نتيجة الدفع لم تتأكد بعد. يمكنك التحقق من حالة الطلب.';
+
+  @override
+  String get payment_check_status_button => 'التحقق من الحالة';
+
+  @override
+  String get payment_contact_support_button => 'تواصل مع الدعم';
+
+  @override
+  String payment_reference_label(String reference) {
+    return 'المرجع: $reference';
+  }
+
+  @override
+  String get payment_fee_at_checkout => 'يتم التأكيد عند الدفع';
+
+  @override
   String get subscription_screen_title => 'الباقات والاشتراكات';
 
   @override

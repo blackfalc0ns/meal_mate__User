@@ -14,6 +14,7 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_success_
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/payment_unresolved_status_view.dart';
 
 class PaymentWebViewScreen extends StatefulWidget {
   const PaymentWebViewScreen({super.key, this.args});
@@ -106,6 +107,22 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             );
           }
 
+          if (state.isReviewRequired || state.isPaymentPending) {
+            return Scaffold(
+              appBar: CustomAppBar(title: locale.payment_title),
+              body: PaymentUnresolvedStatusView(
+                isReviewRequired: state.isReviewRequired,
+                attemptHandle: state.attemptHandle,
+                isCheckingStatus: state.isFulfillmentLoading,
+                onCheckStatus: () {
+                  _viewModel.doIntent(
+                    VerifyPaymentFulfillmentEvent(args.checkout.subscriptionId),
+                  );
+                },
+              ),
+            );
+          }
+
           return Scaffold(
             appBar: CustomAppBar(title: locale.payment_title),
             body: PaymentRedirectWebView(
@@ -115,6 +132,9 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
               processingMessage: state.isCalendarLoading
                   ? locale.payment_calendar_preparing
                   : null,
+              onPaymentReturn: (paymentReturn) {
+                _viewModel.doIntent(HandlePaymentReturnEvent(paymentReturn));
+              },
               onSuccessRedirect: _verifyPayment,
               onErrorRedirect: _markPaymentFailed,
             ),

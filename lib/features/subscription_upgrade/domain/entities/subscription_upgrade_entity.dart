@@ -26,8 +26,8 @@ class SubscriptionUpgradePaymentMethodEntity {
     required this.code,
     required this.title,
     required this.integrationType,
-    required this.serviceCharge,
-    required this.totalAmount,
+    this.serviceCharge,
+    this.totalAmount,
     required this.currencyCode,
     required this.isAvailable,
     this.unavailableReason,
@@ -38,8 +38,8 @@ class SubscriptionUpgradePaymentMethodEntity {
   final String code;
   final String title;
   final String integrationType;
-  final double serviceCharge;
-  final double totalAmount;
+  final double? serviceCharge;
+  final double? totalAmount;
   final String currencyCode;
   final bool isAvailable;
   final String? unavailableReason;

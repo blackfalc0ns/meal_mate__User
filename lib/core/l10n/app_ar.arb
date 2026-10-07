@@ -597,6 +597,23 @@
   "payment_success_subtitle": "تم تفعيل اشتراكك. استمتع بوجباتك الصحية.",
   "payment_success_button": "العودة للرئيسية",
   "payment_calendar_preparing": "جاري تجهيز أيام اشتراكك...",
+  "payment_method_payzah": "بيزاه",
+  "payment_method_payzah_subtitle": "ادفع بأمان عبر بيزاه",
+  "payment_review_title": "عملية الدفع قيد المراجعة",
+  "payment_review_message": "عملية الدفع تحتاج مراجعة من الدعم. لا تبدأ عملية دفع أخرى لهذا الطلب حتى يتم تأكيد النتيجة.",
+  "payment_pending_title": "لم يتم تأكيد الدفع بعد",
+  "payment_pending_message": "نتيجة الدفع لم تتأكد بعد. يمكنك التحقق من حالة الطلب.",
+  "payment_check_status_button": "التحقق من الحالة",
+  "payment_contact_support_button": "تواصل مع الدعم",
+  "payment_reference_label": "المرجع: {reference}",
+  "@payment_reference_label": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_fee_at_checkout": "يتم التأكيد عند الدفع",
   "subscription_screen_title": "الباقات والاشتراكات",
   "subscription_hero_title": "وفر أكثر مع الباقات",
   "subscription_hero_subtitle": "اختر الباقة المناسبة لأسلوب حياتك واستمتع بوجبات صحية كل يوم",

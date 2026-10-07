@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/network_constants.dart';
+import 'package:meal_meat_user/core/payment/payment_navigation.dart';
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentRedirectWebView extends StatefulWidget {
@@ -11,15 +14,24 @@ class PaymentRedirectWebView extends StatefulWidget {
     super.key,
     required this.paymentUrl,
     required this.isProcessing,
-    required this.onSuccessRedirect,
-    required this.onErrorRedirect,
+    this.onPaymentReturn,
+    this.onSuccessRedirect,
+    this.onErrorRedirect,
     this.processingMessage,
   });
 
   final String paymentUrl;
   final bool isProcessing;
-  final VoidCallback onSuccessRedirect;
-  final VoidCallback onErrorRedirect;
+
+  /// Authoritative typed return callback for Payzah payment flows.
+  final void Function(PaymentReturn)? onPaymentReturn;
+
+  /// Backward-compatible success callback during transitional migration.
+  final VoidCallback? onSuccessRedirect;
+
+  /// Backward-compatible error callback during transitional migration.
+  final VoidCallback? onErrorRedirect;
+
   final String? processingMessage;
 
   @override
@@ -27,23 +39,33 @@ class PaymentRedirectWebView extends StatefulWidget {
 }
 
 class _PaymentRedirectWebViewState extends State<PaymentRedirectWebView> {
-  late final WebViewController _controller;
+  WebViewController? _controller;
   bool _isPageLoading = true;
-  bool _hasHandledRedirect = false;
+  bool _hasHandledReturn = false;
+  bool _isInvalidUrl = false;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
+    if (!isValidInitialPaymentUrl(widget.paymentUrl)) {
+      _isInvalidUrl = true;
+      _isPageLoading = false;
+      return;
+    }
+
+    final controller = WebViewController();
+    unawaited(controller.setJavaScriptMode(JavaScriptMode.unrestricted));
+    unawaited(
+      controller.setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
-            setState(() => _isPageLoading = true);
+            if (mounted) setState(() => _isPageLoading = true);
             _checkUrl(url);
           },
-          onPageFinished: (_) => setState(() => _isPageLoading = false),
+          onPageFinished: (_) {
+            if (mounted) setState(() => _isPageLoading = false);
+          },
           onNavigationRequest: _handleNavigationRequest,
           onUrlChange: (change) {
             final url = change.url;
@@ -52,17 +74,44 @@ class _PaymentRedirectWebViewState extends State<PaymentRedirectWebView> {
             }
           },
         ),
-      )
-      ..loadRequest(Uri.parse(widget.paymentUrl));
+      ),
+    );
+    unawaited(controller.loadRequest(Uri.parse(widget.paymentUrl.trim())));
+    _controller = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
+
+    if (_isInvalidUrl || _controller == null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(Spacing.md),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline_rounded, size: 48, color: color.error),
+              const SizedBox(height: Spacing.sm),
+              Text(
+                locale.error_other_desc,
+                textAlign: TextAlign.center,
+                style: getMediumStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Stack(
       children: [
-        WebViewWidget(controller: _controller),
+        WebViewWidget(controller: _controller!),
         if (_isPageLoading || widget.isProcessing)
           ColoredBox(
             color: color.surface.withValues(alpha: 0.72),
@@ -95,71 +144,38 @@ class _PaymentRedirectWebViewState extends State<PaymentRedirectWebView> {
     final uri = Uri.tryParse(url);
     if (uri == null) return;
 
-    if (_isBackendPaymentCallback(uri)) {
-      _handleBackendPaymentCallback(uri);
-    } else if (uri.scheme == 'mealmate') {
-      _handleAppPaymentCallback(uri);
+    if (uri.scheme == 'mealmate') {
+      final paymentReturn = parsePaymentReturn(uri);
+      if (paymentReturn != null) {
+        _dispatchReturn(paymentReturn);
+      }
     }
   }
 
   NavigationDecision _handleNavigationRequest(NavigationRequest request) {
     final uri = Uri.tryParse(request.url);
-    if (uri == null) {
-      return NavigationDecision.navigate;
+    final result = handlePaymentNavigation(uri);
+
+    if (result.paymentReturn != null) {
+      _dispatchReturn(result.paymentReturn!);
     }
 
-    if (_isBackendPaymentCallback(uri)) {
-      _handleBackendPaymentCallback(uri);
-      return NavigationDecision.prevent;
-    }
-
-    if (uri.scheme == 'mealmate') {
-      _handleAppPaymentCallback(uri);
-      return NavigationDecision.prevent;
-    }
-
-    return NavigationDecision.navigate;
+    return result.decision;
   }
 
-  bool _isBackendPaymentCallback(Uri uri) {
-    final baseHost = Uri.tryParse(NetworkConstants.baseUrl)?.host;
-    return (uri.host == baseHost ||
-            uri.host == 'maelmate.runasp.net' ||
-            uri.host.contains('trycloudflare.com')) &&
-        uri.path.contains('/api/v1/payments/myfatoorah');
-  }
+  void _dispatchReturn(PaymentReturn paymentReturn) {
+    if (_hasHandledReturn) return;
+    _hasHandledReturn = true;
 
-  void _handleBackendPaymentCallback(Uri uri) {
-    final target = Uri.tryParse(uri.queryParameters['to'] ?? '');
-    if (target != null && target.scheme == 'mealmate') {
-      _handleAppPaymentCallback(target);
+    if (widget.onPaymentReturn != null) {
+      widget.onPaymentReturn!(paymentReturn);
       return;
     }
 
-    _markSuccess();
-  }
-
-  void _handleAppPaymentCallback(Uri uri) {
-    final path = uri.path.toLowerCase();
-    final host = uri.host.toLowerCase();
-
-    if (path.contains('error') || host.contains('error')) {
-      _markError();
-      return;
+    if (paymentReturn.destination == PaymentReturnDestination.success) {
+      widget.onSuccessRedirect?.call();
+    } else {
+      widget.onErrorRedirect?.call();
     }
-
-    _markSuccess();
-  }
-
-  void _markSuccess() {
-    if (_hasHandledRedirect) return;
-    _hasHandledRedirect = true;
-    widget.onSuccessRedirect();
-  }
-
-  void _markError() {
-    if (_hasHandledRedirect) return;
-    _hasHandledRedirect = true;
-    widget.onErrorRedirect();
   }
 }
