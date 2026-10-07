@@ -3602,6 +3602,303 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_settings_version_label => 'Version 2.4.0';
 
   @override
+  String profile_settings_version_value(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get profile_settings_version_unavailable => 'Version unavailable';
+
+  @override
+  String get profile_support_demo_notice =>
+      'Demonstration content — no real message will be sent';
+
+  @override
+  String get profile_support_demo_tag => 'Demo';
+
+  @override
+  String get profile_help_center_intro_title => 'How can we help you?';
+
+  @override
+  String get profile_help_center_intro_desc =>
+      'Browse the most common questions about subscriptions, meals, and delivery.';
+
+  @override
+  String get profile_help_center_search_hint => 'Search questions...';
+
+  @override
+  String get profile_help_center_search_empty_title => 'No results found';
+
+  @override
+  String get profile_help_center_search_empty_desc =>
+      'No questions match your search query.';
+
+  @override
+  String get profile_help_center_clear_search => 'Clear search';
+
+  @override
+  String get profile_help_center_need_more_help => 'Still need help?';
+
+  @override
+  String get profile_help_center_contact_us_action => 'Contact support';
+
+  @override
+  String get profile_help_center_complaint_action => 'Submit a complaint';
+
+  @override
+  String get profile_faq_q1 => 'How do I start a new subscription?';
+
+  @override
+  String get profile_faq_a1 =>
+      'You can choose a plan from the packages screen, customize your daily meals and delivery days, and complete checkout with your preferred payment method.';
+
+  @override
+  String get profile_faq_q2 => 'Can I change my meals after subscribing?';
+
+  @override
+  String get profile_faq_a2 =>
+      'Yes, you can easily change or customize meals for upcoming days through the calendar before the daily cutoff time.';
+
+  @override
+  String get profile_faq_q3 => 'How do I update my delivery address?';
+
+  @override
+  String get profile_faq_a3 =>
+      'You can add or update your saved delivery addresses anytime in your profile settings under Addresses.';
+
+  @override
+  String get profile_faq_q4 => 'How do I freeze my subscription?';
+
+  @override
+  String get profile_faq_a4 =>
+      'Go to Subscription Settings, select Freeze Subscription, choose your freeze start and resume dates, and confirm the freeze request.';
+
+  @override
+  String get profile_faq_q5 =>
+      'Where can I find my invoices and billing history?';
+
+  @override
+  String get profile_faq_a5 =>
+      'All completed payments, active packages, and invoice receipts are listed under Subscription & Billing in your profile.';
+
+  @override
+  String get profile_faq_q6 =>
+      'How do I set dietary preferences and food allergies?';
+
+  @override
+  String get profile_faq_a6 =>
+      'You can specify your allergies and dietary preferences in your profile settings to filter meals that match your needs.';
+
+  @override
+  String get profile_faq_q7 => 'How does subscription renewal work?';
+
+  @override
+  String get profile_faq_a7 =>
+      'You will receive a notification before your package expires with options to renew with the same meals or choose a new plan.';
+
+  @override
+  String get profile_faq_q8 => 'How can I get in touch with customer service?';
+
+  @override
+  String get profile_faq_a8 =>
+      'You can reach us through the Contact Us form or submit a complaint form directly in the app.';
+
+  @override
+  String get profile_support_contact_title => 'Contact us';
+
+  @override
+  String get profile_support_contact_intro =>
+      'Have a question or feedback? Leave us a message and our demo team will simulate a response.';
+
+  @override
+  String get profile_support_complaints_title => 'Complaints';
+
+  @override
+  String get profile_support_complaints_intro =>
+      'We care about your experience. Submit your complaint below for local demonstration review.';
+
+  @override
+  String get profile_support_subject_label => 'Subject';
+
+  @override
+  String get profile_support_subject_hint => 'Enter subject';
+
+  @override
+  String get profile_support_subject_error => 'Please enter a subject';
+
+  @override
+  String get profile_support_message_label => 'Message';
+
+  @override
+  String get profile_support_message_hint =>
+      'Write your message details here...';
+
+  @override
+  String get profile_support_message_error => 'Please enter your message';
+
+  @override
+  String get profile_support_email_label => 'Reply email (optional)';
+
+  @override
+  String get profile_support_email_hint => 'example@domain.com';
+
+  @override
+  String get profile_support_email_error =>
+      'Please enter a valid email address';
+
+  @override
+  String get profile_support_category_label => 'Complaint category';
+
+  @override
+  String get profile_support_category_delivery => 'Delivery';
+
+  @override
+  String get profile_support_category_meals => 'Meals quality';
+
+  @override
+  String get profile_support_category_payment => 'Payment & Invoices';
+
+  @override
+  String get profile_support_category_other => 'Other';
+
+  @override
+  String get profile_support_submit_button => 'Submit';
+
+  @override
+  String get profile_support_submitting => 'Submitting...';
+
+  @override
+  String get profile_support_reset_button => 'New message';
+
+  @override
+  String get profile_support_done_button => 'Done';
+
+  @override
+  String get profile_support_result_title => 'Local Demonstration';
+
+  @override
+  String get profile_support_result_message =>
+      'This is a local demonstration. Nothing was sent to MealMate or external servers.';
+
+  @override
+  String get profile_support_result_confirm => 'Understood';
+
+  @override
+  String get profile_about_title => 'About MealMate';
+
+  @override
+  String get profile_about_tagline =>
+      'Your smart partner for healthy meal planning & delivery';
+
+  @override
+  String get profile_about_desc =>
+      'MealMate helps you manage your weekly and monthly meal subscriptions with ease, offering customized healthy plans, flexible delivery scheduling, and seamless menu adjustments.';
+
+  @override
+  String get profile_about_feature1_title => 'Custom Meal Plans';
+
+  @override
+  String get profile_about_feature1_desc =>
+      'Tailored nutritious meals suited to your lifestyle and health goals.';
+
+  @override
+  String get profile_about_feature2_title => 'Flexible Scheduling';
+
+  @override
+  String get profile_about_feature2_desc =>
+      'Easily pause, resume, or adjust your delivery days whenever you need.';
+
+  @override
+  String get profile_about_feature3_title => 'Quality & Freshness';
+
+  @override
+  String get profile_about_feature3_desc =>
+      'Freshly prepared meals delivered safely to your preferred address.';
+
+  @override
+  String get profile_about_contact_prompt => 'Have any questions?';
+
+  @override
+  String get profile_about_contact_button => 'Contact us';
+
+  @override
+  String get profile_legal_demo_notice =>
+      'Notice: This document is demonstration sample content for interface presentation and does not constitute a legally binding agreement.';
+
+  @override
+  String get profile_legal_sections_heading => 'Document Sections';
+
+  @override
+  String get profile_privacy_section1_title => '1. Information Collected';
+
+  @override
+  String get profile_privacy_section1_body =>
+      'We collect basic profile information such as your name, delivery address, and contact details to manage your subscription orders.';
+
+  @override
+  String get profile_privacy_section2_title => '2. Usage of Information';
+
+  @override
+  String get profile_privacy_section2_body =>
+      'Your information is used solely to prepare meals, coordinate scheduled deliveries, and communicate essential updates about your account.';
+
+  @override
+  String get profile_privacy_section3_title => '3. Data Protection';
+
+  @override
+  String get profile_privacy_section3_body =>
+      'We implement industry-standard security measures to protect your personal and payment details from unauthorized access.';
+
+  @override
+  String get profile_privacy_section4_title => '4. User Control & Rights';
+
+  @override
+  String get profile_privacy_section4_body =>
+      'You have the right to view, update, or remove your personal information and delivery addresses at any time through your profile.';
+
+  @override
+  String get profile_privacy_section5_title => '5. Support & Inquiries';
+
+  @override
+  String get profile_privacy_section5_body =>
+      'For any questions or privacy inquiries, you can reach out via the in-app support channels.';
+
+  @override
+  String get profile_terms_section1_title => '1. Service Overview';
+
+  @override
+  String get profile_terms_section1_body =>
+      'MealMate provides meal subscription planning and delivery services in accordance with selected package specifications.';
+
+  @override
+  String get profile_terms_section2_title => '2. Account Responsibilities';
+
+  @override
+  String get profile_terms_section2_body =>
+      'Users are responsible for maintaining accurate delivery details and keeping account credentials secure.';
+
+  @override
+  String get profile_terms_section3_title => '3. Subscription & Billing';
+
+  @override
+  String get profile_terms_section3_body =>
+      'Subscriptions are billed based on the chosen package terms and cycle. Payment must be confirmed prior to meal scheduling.';
+
+  @override
+  String get profile_terms_section4_title => '4. Delivery & Rescheduling';
+
+  @override
+  String get profile_terms_section4_body =>
+      'Meals are delivered to the registered address during scheduled windows. Changes or pauses must be submitted before daily deadlines.';
+
+  @override
+  String get profile_terms_section5_title => '5. Customer Support';
+
+  @override
+  String get profile_terms_section5_body =>
+      'Our team is available through the app help center to resolve any issues regarding your orders and subscription.';
+
+  @override
   String get health_goals_title => 'My health goals';
 
   @override

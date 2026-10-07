@@ -3539,6 +3539,300 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile_settings_version_label => 'الإصدار 2.4.0';
 
   @override
+  String profile_settings_version_value(String version) {
+    return 'الإصدار $version';
+  }
+
+  @override
+  String get profile_settings_version_unavailable => 'الإصدار غير متوفر';
+
+  @override
+  String get profile_support_demo_notice =>
+      'محتوى تجريبي — لن يتم إرسال أي رسالة فعلية';
+
+  @override
+  String get profile_support_demo_tag => 'تجريبي';
+
+  @override
+  String get profile_help_center_intro_title => 'كيف يمكننا مساعدتك؟';
+
+  @override
+  String get profile_help_center_intro_desc =>
+      'تصفح الأسئلة الأكثر شيوعاً حول الاشتراكات والوجبات والتوصيل.';
+
+  @override
+  String get profile_help_center_search_hint => 'ابحث في الأسئلة...';
+
+  @override
+  String get profile_help_center_search_empty_title =>
+      'لم يتم العثور على نتائج';
+
+  @override
+  String get profile_help_center_search_empty_desc =>
+      'لا توجد أسئلة تطابق بحثك.';
+
+  @override
+  String get profile_help_center_clear_search => 'مسح البحث';
+
+  @override
+  String get profile_help_center_need_more_help => 'ما زلت بحاجة للمساعدة؟';
+
+  @override
+  String get profile_help_center_contact_us_action => 'تواصل مع الدعم';
+
+  @override
+  String get profile_help_center_complaint_action => 'تقديم شكوى';
+
+  @override
+  String get profile_faq_q1 => 'كيف أبدأ اشتراكاً جديداً؟';
+
+  @override
+  String get profile_faq_a1 =>
+      'يمكنك اختيار باقة من شاشة الباقات، وتحديد وجباتك اليومية وأيام التوصيل، ثم إتمام الدفع بالوسيلة المناسبة لك.';
+
+  @override
+  String get profile_faq_q2 => 'هل يمكنني تغيير وجباتي بعد الاشتراك؟';
+
+  @override
+  String get profile_faq_a2 =>
+      'نعم، يمكنك تغيير أو تخصيص الوجبات للأيام القادمة بسهولة عبر التقويم قبل موعد الإغلاق اليومي.';
+
+  @override
+  String get profile_faq_q3 => 'كيف أقوم بتحديث عنوان التوصيل؟';
+
+  @override
+  String get profile_faq_a3 =>
+      'يمكنك إضافة أو تحديث عناوين التوصيل المحفوظة في أي وقت من إعدادات الملف الشخصي ضمن قسم العناوين.';
+
+  @override
+  String get profile_faq_q4 => 'كيف يمكنني تجميد اشتراكي؟';
+
+  @override
+  String get profile_faq_a4 =>
+      'توجه إلى إعدادات الاشتراك، واختر تجميد الاشتراك، ثم حدد تاريخ البدء وتاريخ الاستئناف وأكد الطلب.';
+
+  @override
+  String get profile_faq_q5 => 'أين يمكنني العثور على فواتيري وسجل الدفع؟';
+
+  @override
+  String get profile_faq_a5 =>
+      'جميع عمليات الدفع المكتملة والباقات النشطة وإيصالات الفواتير متوفرة في قسم الاشتراكات والفواتير بملفك الشخصي.';
+
+  @override
+  String get profile_faq_q6 => 'كيف أحدد تفضيلاتي الغذائية وحساسيات الطعام؟';
+
+  @override
+  String get profile_faq_a6 =>
+      'يمكنك تحديد مسببات الحساسية وتفضيلاتك الغذائية في إعدادات الملف الشخصي لترشيح الوجبات المناسبة لك.';
+
+  @override
+  String get profile_faq_q7 => 'كيف يتم تجديد الاشتراك؟';
+
+  @override
+  String get profile_faq_a7 =>
+      'ستتلقى إشعاراً تذكيراً قبل انتهاء باقتك يتيح لك التجديد بنفس الخطة أو اختيار باقة جديدة.';
+
+  @override
+  String get profile_faq_q8 => 'كيف يمكنني التواصل مع خدمة العملاء؟';
+
+  @override
+  String get profile_faq_a8 =>
+      'يمكنك التواصل معنا عبر نموذج تواصل معنا أو رفع شكوى مباشرة من داخل التطبيق.';
+
+  @override
+  String get profile_support_contact_title => 'تواصل معنا';
+
+  @override
+  String get profile_support_contact_intro =>
+      'هل لديك استفسار أو اقتراح؟ اترك لنا رسالة وسنقوم بمحاكاة الرد عليك.';
+
+  @override
+  String get profile_support_complaints_title => 'الشكاوى';
+
+  @override
+  String get profile_support_complaints_intro =>
+      'يهمنا رضاك عن تجربتنا. قدّم شكواك أدناه للمراجعة التجريبية المحلية.';
+
+  @override
+  String get profile_support_subject_label => 'الموضوع';
+
+  @override
+  String get profile_support_subject_hint => 'أدخل عنوان الموضوع';
+
+  @override
+  String get profile_support_subject_error => 'يرجى إدخال عنوان الموضوع';
+
+  @override
+  String get profile_support_message_label => 'الرسالة';
+
+  @override
+  String get profile_support_message_hint => 'اكتب تفاصيل رسالتك هنا...';
+
+  @override
+  String get profile_support_message_error => 'يرجى كتابة نص الرسالة';
+
+  @override
+  String get profile_support_email_label => 'البريد الإلكتروني للرد (اختياري)';
+
+  @override
+  String get profile_support_email_hint => 'example@domain.com';
+
+  @override
+  String get profile_support_email_error => 'يرجى إدخال بريد إلكتروني صحيح';
+
+  @override
+  String get profile_support_category_label => 'تصنيف الشكوى';
+
+  @override
+  String get profile_support_category_delivery => 'التوصيل';
+
+  @override
+  String get profile_support_category_meals => 'جودة الوجبات';
+
+  @override
+  String get profile_support_category_payment => 'الدفع والفواتير';
+
+  @override
+  String get profile_support_category_other => 'أخرى';
+
+  @override
+  String get profile_support_submit_button => 'إرسال';
+
+  @override
+  String get profile_support_submitting => 'جاري الإرسال...';
+
+  @override
+  String get profile_support_reset_button => 'رسالة جديدة';
+
+  @override
+  String get profile_support_done_button => 'تم';
+
+  @override
+  String get profile_support_result_title => 'تجربة محلية فقط';
+
+  @override
+  String get profile_support_result_message =>
+      'هذه تجربة محلية توضيحية فقط. لم يتم إرسال أي بيانات أو رسائل إلى MealMate أو أي خوادم خارجية.';
+
+  @override
+  String get profile_support_result_confirm => 'فهمت ذلك';
+
+  @override
+  String get profile_about_title => 'عن MealMate';
+
+  @override
+  String get profile_about_tagline =>
+      'شريكك الذكي لتنظيم وجباتك الصحية وتوصيلها';
+
+  @override
+  String get profile_about_desc =>
+      'يساعدك MealMate على إدارة اشتراكاتك الغذائية الأسبوعية والشهرية بسهولة، مع توفير خطط صحية مخصصة، وجداول توصيل مرنة، وتعديل سلس لقوائم الطعام.';
+
+  @override
+  String get profile_about_feature1_title => 'خطط وجبات مخصصة';
+
+  @override
+  String get profile_about_feature1_desc =>
+      'وجبات غذائية متوازنة ومعدة بعناية لتناسب أسلوب حياتك وأهدافك الصحية.';
+
+  @override
+  String get profile_about_feature2_title => 'جدولة مرنة';
+
+  @override
+  String get profile_about_feature2_desc =>
+      'إمكانية إيقاف مؤقت، استئناف، أو تعديل أيام التوصيل بكل سهولة في أي وقت.';
+
+  @override
+  String get profile_about_feature3_title => 'جودة وطزاجة مضمونة';
+
+  @override
+  String get profile_about_feature3_desc =>
+      'وجبات طازجة تُعد يومياً وتصل بأمان إلى عنوانك المفضل.';
+
+  @override
+  String get profile_about_contact_prompt => 'هل لديك استفسارات؟';
+
+  @override
+  String get profile_about_contact_button => 'تواصل معنا';
+
+  @override
+  String get profile_legal_demo_notice =>
+      'تنبيه: هذا المستند نموذج تجريبي لأغراض العرض والواجهة ولا يمثل صيغة قانونية معتمدة أو ملزمة.';
+
+  @override
+  String get profile_legal_sections_heading => 'أقسام المستند';
+
+  @override
+  String get profile_privacy_section1_title => '1. المعلومات التي نجمعها';
+
+  @override
+  String get profile_privacy_section1_body =>
+      'نقوم بجمع معلومات الملف الشخصي الأساسية مثل الاسم وعناوين التوصيل وبيانات التواصل لإدارة طلبات اشتراكك.';
+
+  @override
+  String get profile_privacy_section2_title => '2. استخدام المعلومات';
+
+  @override
+  String get profile_privacy_section2_body =>
+      'تُستخدم معلوماتك حصرياً لإعداد الوجبات وتنسيق التوصيل في المواعيد المحددة والتواصل معك بشأن حسابك.';
+
+  @override
+  String get profile_privacy_section3_title => '3. حماية البيانات';
+
+  @override
+  String get profile_privacy_section3_body =>
+      'نطبق معايير أمان معتمدة لحماية بياناتك الشخصية والدفع من أي وصول غير مصرح به.';
+
+  @override
+  String get profile_privacy_section4_title => '4. حقوق المستخدم والتحكم';
+
+  @override
+  String get profile_privacy_section4_body =>
+      'يحق لك الاطلاع على معلوماتك الشخصية وعناوين التوصيل وتحديثها أو تعديلها في أي وقت عبر ملفك الشخصي.';
+
+  @override
+  String get profile_privacy_section5_title => '5. الدعم والاستفسارات';
+
+  @override
+  String get profile_privacy_section5_body =>
+      'لأي استفسارات بخصوص الخصوصية وحماية البيانات، يمكنك مراسلتنا عبر قنوات الدعم داخل التطبيق.';
+
+  @override
+  String get profile_terms_section1_title => '1. نظرة عامة على الخدمة';
+
+  @override
+  String get profile_terms_section1_body =>
+      'يقدم MealMate خدمة اشتراكات وتوصيل الوجبات الغذائية وفقاً لمواصفات الباقات المختارة من قبل المشترك.';
+
+  @override
+  String get profile_terms_section2_title => '2. مسؤوليات الحساب';
+
+  @override
+  String get profile_terms_section2_body =>
+      'يتحمل المستخدم مسؤولية توفير عناوين توصيل دقيقة والحفاظ على سرية بيانات تسجيل الدخول لحسابه.';
+
+  @override
+  String get profile_terms_section3_title => '3. الاشتراكات والفوترة';
+
+  @override
+  String get profile_terms_section3_body =>
+      'تتم فوترة الاشتراكات وفقاً للباقة المختارة ودورة الدفع المحددة، ويتم تأكيد الدفع قبل جدولة إعداد الوجبات.';
+
+  @override
+  String get profile_terms_section4_title => '4. التوصيل وإعادة الجدولة';
+
+  @override
+  String get profile_terms_section4_body =>
+      'يتم توصيل الوجبات للعنوان المحدد خلال المواعيد المقررة. يجب إجراء أي تعديلات أو إيقاف مؤقت قبل الموعد النهائي اليومي.';
+
+  @override
+  String get profile_terms_section5_title => '5. خدمة العملاء';
+
+  @override
+  String get profile_terms_section5_body =>
+      'فريق الدعم متاح عبر مركز المساعدة في التطبيق لمتابعة وحل أي استفسارات تتعلق بطلباتك واشتراكك.';
+
+  @override
   String get health_goals_title => 'أهدافي الصحية';
 
   @override

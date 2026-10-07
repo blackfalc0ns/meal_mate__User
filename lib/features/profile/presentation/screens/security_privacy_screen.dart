@@ -100,8 +100,9 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                         subtitle:
                             locale.profile_privacy_change_password_subtitle,
                         showDivider: true,
-                        onTap: () => Navigator.of(context)
-                            .pushNamed(AppRoutes.newPassword),
+                        onTap: () => Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.newPassword),
                       ),
                       AppSettingsTile(
                         icon: Icons.phone_rounded,
@@ -137,8 +138,9 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                             : Switch.adaptive(
                                 value: biometricState.isEnabled,
                                 activeThumbColor: color.primary,
-                                activeTrackColor:
-                                    color.primary.withValues(alpha: 0.5),
+                                activeTrackColor: color.primary.withValues(
+                                  alpha: 0.5,
+                                ),
                                 onChanged: (value) {
                                   unawaited(
                                     context
@@ -188,13 +190,19 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                     Icons.description_rounded,
                     locale.profile_privacy_policy,
                     locale.profile_privacy_policy_subtitle,
-                    () => _showComingSoon(context),
+                    () => unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.profilePrivacyPolicy),
+                    ),
                   ),
                   (
                     Icons.fact_check_rounded,
                     locale.profile_privacy_terms,
                     locale.profile_privacy_terms_subtitle,
-                    () => _showComingSoon(context),
+                    () => unawaited(
+                      Navigator.of(context).pushNamed(AppRoutes.profileTerms),
+                    ),
                   ),
                 ],
               ),

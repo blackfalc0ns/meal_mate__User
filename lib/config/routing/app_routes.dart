@@ -60,6 +60,12 @@ abstract class AppRoutes {
   static const String newPassword = '/new-password';
   static const String personalInformation = '/personal-information';
   static const String profileSettings = '/profile-settings';
+  static const String profileHelpCenter = '/profile-help-center';
+  static const String profileContactUs = '/profile-contact-us';
+  static const String profileComplaints = '/profile-complaints';
+  static const String profileAbout = '/profile-about';
+  static const String profilePrivacyPolicy = '/profile-privacy-policy';
+  static const String profileTerms = '/profile-terms';
   static const String securityPrivacy = '/security-privacy';
   static const String addresses = '/addresses';
   static const String addressChooseLocation = '/address-choose-location';

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/services/app_locale_notifier.dart';
@@ -11,6 +10,7 @@ import 'package:meal_meat_user/core/services/language_service.dart';
 import 'package:meal_meat_user/core/utils/constants.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/app_settings_section_card.dart';
+import 'package:meal_meat_user/features/profile/presentation/widgets/profile_app_version_footer.dart';
 import 'package:meal_meat_user/features/profile/presentation/widgets/profile_language_bottom_sheet.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
@@ -58,12 +58,6 @@ class ProfileSettingsScreen extends StatelessWidget {
                     locale.profile_settings_language_subtitle,
                     () => _showLanguageSheet(context),
                   ),
-                  (
-                    Icons.palette_rounded,
-                    locale.profile_settings_appearance,
-                    locale.profile_settings_appearance_subtitle,
-                    null,
-                  ),
                 ],
               ),
               const SizedBox(height: Spacing.profilePrivacySectionGap),
@@ -79,19 +73,31 @@ class ProfileSettingsScreen extends StatelessWidget {
                     Icons.menu_book_rounded,
                     locale.profile_settings_help_center,
                     locale.profile_settings_help_center_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.profileHelpCenter),
+                    ),
                   ),
                   (
                     Icons.forum_rounded,
                     locale.profile_settings_contact_us,
                     locale.profile_settings_contact_us_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.profileContactUs),
+                    ),
                   ),
                   (
                     Icons.warning_rounded,
                     locale.profile_settings_complaints,
                     locale.profile_settings_complaints_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.profileComplaints),
+                    ),
                   ),
                 ],
               ),
@@ -108,55 +114,32 @@ class ProfileSettingsScreen extends StatelessWidget {
                     Icons.mail_rounded,
                     locale.profile_settings_about,
                     locale.profile_settings_about_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(context).pushNamed(AppRoutes.profileAbout),
+                    ),
                   ),
                   (
                     Icons.verified_user_rounded,
                     locale.profile_settings_privacy_policy,
                     locale.profile_settings_privacy_policy_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.profilePrivacyPolicy),
+                    ),
                   ),
                   (
                     Icons.description_rounded,
                     locale.profile_settings_terms,
                     locale.profile_settings_terms_subtitle,
-                    null,
-                  ),
-                  (
-                    Icons.code_rounded,
-                    locale.profile_settings_version,
-                    locale.profile_settings_version_subtitle,
-                    null,
+                    () => unawaited(
+                      Navigator.of(context).pushNamed(AppRoutes.profileTerms),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: Spacing.sm),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-                decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.verified_user_rounded,
-                      size: Spacing.iconSm,
-                      color: color.primary,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      locale.profile_settings_version_label,
-                      style: getMediumStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size9,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const ProfileAppVersionFooter(),
               const SizedBox(height: Spacing.xxxl),
             ],
           ),

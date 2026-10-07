@@ -6746,6 +6746,528 @@ abstract class AppLocalizations {
   /// **'Version 2.4.0'**
   String get profile_settings_version_label;
 
+  /// No description provided for @profile_settings_version_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String profile_settings_version_value(String version);
+
+  /// No description provided for @profile_settings_version_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Version unavailable'**
+  String get profile_settings_version_unavailable;
+
+  /// No description provided for @profile_support_demo_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Demonstration content — no real message will be sent'**
+  String get profile_support_demo_notice;
+
+  /// No description provided for @profile_support_demo_tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo'**
+  String get profile_support_demo_tag;
+
+  /// No description provided for @profile_help_center_intro_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How can we help you?'**
+  String get profile_help_center_intro_title;
+
+  /// No description provided for @profile_help_center_intro_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the most common questions about subscriptions, meals, and delivery.'**
+  String get profile_help_center_intro_desc;
+
+  /// No description provided for @profile_help_center_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search questions...'**
+  String get profile_help_center_search_hint;
+
+  /// No description provided for @profile_help_center_search_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get profile_help_center_search_empty_title;
+
+  /// No description provided for @profile_help_center_search_empty_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions match your search query.'**
+  String get profile_help_center_search_empty_desc;
+
+  /// No description provided for @profile_help_center_clear_search.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get profile_help_center_clear_search;
+
+  /// No description provided for @profile_help_center_need_more_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Still need help?'**
+  String get profile_help_center_need_more_help;
+
+  /// No description provided for @profile_help_center_contact_us_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get profile_help_center_contact_us_action;
+
+  /// No description provided for @profile_help_center_complaint_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit a complaint'**
+  String get profile_help_center_complaint_action;
+
+  /// No description provided for @profile_faq_q1.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I start a new subscription?'**
+  String get profile_faq_q1;
+
+  /// No description provided for @profile_faq_a1.
+  ///
+  /// In en, this message translates to:
+  /// **'You can choose a plan from the packages screen, customize your daily meals and delivery days, and complete checkout with your preferred payment method.'**
+  String get profile_faq_a1;
+
+  /// No description provided for @profile_faq_q2.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I change my meals after subscribing?'**
+  String get profile_faq_q2;
+
+  /// No description provided for @profile_faq_a2.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, you can easily change or customize meals for upcoming days through the calendar before the daily cutoff time.'**
+  String get profile_faq_a2;
+
+  /// No description provided for @profile_faq_q3.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I update my delivery address?'**
+  String get profile_faq_q3;
+
+  /// No description provided for @profile_faq_a3.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add or update your saved delivery addresses anytime in your profile settings under Addresses.'**
+  String get profile_faq_a3;
+
+  /// No description provided for @profile_faq_q4.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I freeze my subscription?'**
+  String get profile_faq_q4;
+
+  /// No description provided for @profile_faq_a4.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Subscription Settings, select Freeze Subscription, choose your freeze start and resume dates, and confirm the freeze request.'**
+  String get profile_faq_a4;
+
+  /// No description provided for @profile_faq_q5.
+  ///
+  /// In en, this message translates to:
+  /// **'Where can I find my invoices and billing history?'**
+  String get profile_faq_q5;
+
+  /// No description provided for @profile_faq_a5.
+  ///
+  /// In en, this message translates to:
+  /// **'All completed payments, active packages, and invoice receipts are listed under Subscription & Billing in your profile.'**
+  String get profile_faq_a5;
+
+  /// No description provided for @profile_faq_q6.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I set dietary preferences and food allergies?'**
+  String get profile_faq_q6;
+
+  /// No description provided for @profile_faq_a6.
+  ///
+  /// In en, this message translates to:
+  /// **'You can specify your allergies and dietary preferences in your profile settings to filter meals that match your needs.'**
+  String get profile_faq_a6;
+
+  /// No description provided for @profile_faq_q7.
+  ///
+  /// In en, this message translates to:
+  /// **'How does subscription renewal work?'**
+  String get profile_faq_q7;
+
+  /// No description provided for @profile_faq_a7.
+  ///
+  /// In en, this message translates to:
+  /// **'You will receive a notification before your package expires with options to renew with the same meals or choose a new plan.'**
+  String get profile_faq_a7;
+
+  /// No description provided for @profile_faq_q8.
+  ///
+  /// In en, this message translates to:
+  /// **'How can I get in touch with customer service?'**
+  String get profile_faq_q8;
+
+  /// No description provided for @profile_faq_a8.
+  ///
+  /// In en, this message translates to:
+  /// **'You can reach us through the Contact Us form or submit a complaint form directly in the app.'**
+  String get profile_faq_a8;
+
+  /// No description provided for @profile_support_contact_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get profile_support_contact_title;
+
+  /// No description provided for @profile_support_contact_intro.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a question or feedback? Leave us a message and our demo team will simulate a response.'**
+  String get profile_support_contact_intro;
+
+  /// No description provided for @profile_support_complaints_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaints'**
+  String get profile_support_complaints_title;
+
+  /// No description provided for @profile_support_complaints_intro.
+  ///
+  /// In en, this message translates to:
+  /// **'We care about your experience. Submit your complaint below for local demonstration review.'**
+  String get profile_support_complaints_intro;
+
+  /// No description provided for @profile_support_subject_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get profile_support_subject_label;
+
+  /// No description provided for @profile_support_subject_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter subject'**
+  String get profile_support_subject_hint;
+
+  /// No description provided for @profile_support_subject_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a subject'**
+  String get profile_support_subject_error;
+
+  /// No description provided for @profile_support_message_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get profile_support_message_label;
+
+  /// No description provided for @profile_support_message_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your message details here...'**
+  String get profile_support_message_hint;
+
+  /// No description provided for @profile_support_message_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your message'**
+  String get profile_support_message_error;
+
+  /// No description provided for @profile_support_email_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply email (optional)'**
+  String get profile_support_email_label;
+
+  /// No description provided for @profile_support_email_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'example@domain.com'**
+  String get profile_support_email_hint;
+
+  /// No description provided for @profile_support_email_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get profile_support_email_error;
+
+  /// No description provided for @profile_support_category_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint category'**
+  String get profile_support_category_label;
+
+  /// No description provided for @profile_support_category_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get profile_support_category_delivery;
+
+  /// No description provided for @profile_support_category_meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals quality'**
+  String get profile_support_category_meals;
+
+  /// No description provided for @profile_support_category_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment & Invoices'**
+  String get profile_support_category_payment;
+
+  /// No description provided for @profile_support_category_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get profile_support_category_other;
+
+  /// No description provided for @profile_support_submit_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get profile_support_submit_button;
+
+  /// No description provided for @profile_support_submitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting...'**
+  String get profile_support_submitting;
+
+  /// No description provided for @profile_support_reset_button.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get profile_support_reset_button;
+
+  /// No description provided for @profile_support_done_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get profile_support_done_button;
+
+  /// No description provided for @profile_support_result_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Demonstration'**
+  String get profile_support_result_title;
+
+  /// No description provided for @profile_support_result_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a local demonstration. Nothing was sent to MealMate or external servers.'**
+  String get profile_support_result_message;
+
+  /// No description provided for @profile_support_result_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Understood'**
+  String get profile_support_result_confirm;
+
+  /// No description provided for @profile_about_title.
+  ///
+  /// In en, this message translates to:
+  /// **'About MealMate'**
+  String get profile_about_title;
+
+  /// No description provided for @profile_about_tagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your smart partner for healthy meal planning & delivery'**
+  String get profile_about_tagline;
+
+  /// No description provided for @profile_about_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate helps you manage your weekly and monthly meal subscriptions with ease, offering customized healthy plans, flexible delivery scheduling, and seamless menu adjustments.'**
+  String get profile_about_desc;
+
+  /// No description provided for @profile_about_feature1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Meal Plans'**
+  String get profile_about_feature1_title;
+
+  /// No description provided for @profile_about_feature1_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tailored nutritious meals suited to your lifestyle and health goals.'**
+  String get profile_about_feature1_desc;
+
+  /// No description provided for @profile_about_feature2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible Scheduling'**
+  String get profile_about_feature2_title;
+
+  /// No description provided for @profile_about_feature2_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Easily pause, resume, or adjust your delivery days whenever you need.'**
+  String get profile_about_feature2_desc;
+
+  /// No description provided for @profile_about_feature3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality & Freshness'**
+  String get profile_about_feature3_title;
+
+  /// No description provided for @profile_about_feature3_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Freshly prepared meals delivered safely to your preferred address.'**
+  String get profile_about_feature3_desc;
+
+  /// No description provided for @profile_about_contact_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Have any questions?'**
+  String get profile_about_contact_prompt;
+
+  /// No description provided for @profile_about_contact_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get profile_about_contact_button;
+
+  /// No description provided for @profile_legal_demo_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice: This document is demonstration sample content for interface presentation and does not constitute a legally binding agreement.'**
+  String get profile_legal_demo_notice;
+
+  /// No description provided for @profile_legal_sections_heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Sections'**
+  String get profile_legal_sections_heading;
+
+  /// No description provided for @profile_privacy_section1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Information Collected'**
+  String get profile_privacy_section1_title;
+
+  /// No description provided for @profile_privacy_section1_body.
+  ///
+  /// In en, this message translates to:
+  /// **'We collect basic profile information such as your name, delivery address, and contact details to manage your subscription orders.'**
+  String get profile_privacy_section1_body;
+
+  /// No description provided for @profile_privacy_section2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Usage of Information'**
+  String get profile_privacy_section2_title;
+
+  /// No description provided for @profile_privacy_section2_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Your information is used solely to prepare meals, coordinate scheduled deliveries, and communicate essential updates about your account.'**
+  String get profile_privacy_section2_body;
+
+  /// No description provided for @profile_privacy_section3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Data Protection'**
+  String get profile_privacy_section3_title;
+
+  /// No description provided for @profile_privacy_section3_body.
+  ///
+  /// In en, this message translates to:
+  /// **'We implement industry-standard security measures to protect your personal and payment details from unauthorized access.'**
+  String get profile_privacy_section3_body;
+
+  /// No description provided for @profile_privacy_section4_title.
+  ///
+  /// In en, this message translates to:
+  /// **'4. User Control & Rights'**
+  String get profile_privacy_section4_title;
+
+  /// No description provided for @profile_privacy_section4_body.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to view, update, or remove your personal information and delivery addresses at any time through your profile.'**
+  String get profile_privacy_section4_body;
+
+  /// No description provided for @profile_privacy_section5_title.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Support & Inquiries'**
+  String get profile_privacy_section5_title;
+
+  /// No description provided for @profile_privacy_section5_body.
+  ///
+  /// In en, this message translates to:
+  /// **'For any questions or privacy inquiries, you can reach out via the in-app support channels.'**
+  String get profile_privacy_section5_body;
+
+  /// No description provided for @profile_terms_section1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Service Overview'**
+  String get profile_terms_section1_title;
+
+  /// No description provided for @profile_terms_section1_body.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate provides meal subscription planning and delivery services in accordance with selected package specifications.'**
+  String get profile_terms_section1_body;
+
+  /// No description provided for @profile_terms_section2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Account Responsibilities'**
+  String get profile_terms_section2_title;
+
+  /// No description provided for @profile_terms_section2_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Users are responsible for maintaining accurate delivery details and keeping account credentials secure.'**
+  String get profile_terms_section2_body;
+
+  /// No description provided for @profile_terms_section3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Subscription & Billing'**
+  String get profile_terms_section3_title;
+
+  /// No description provided for @profile_terms_section3_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions are billed based on the chosen package terms and cycle. Payment must be confirmed prior to meal scheduling.'**
+  String get profile_terms_section3_body;
+
+  /// No description provided for @profile_terms_section4_title.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Delivery & Rescheduling'**
+  String get profile_terms_section4_title;
+
+  /// No description provided for @profile_terms_section4_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals are delivered to the registered address during scheduled windows. Changes or pauses must be submitted before daily deadlines.'**
+  String get profile_terms_section4_body;
+
+  /// No description provided for @profile_terms_section5_title.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Customer Support'**
+  String get profile_terms_section5_title;
+
+  /// No description provided for @profile_terms_section5_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team is available through the app help center to resolve any issues regarding your orders and subscription.'**
+  String get profile_terms_section5_body;
+
   /// No description provided for @health_goals_title.
   ///
   /// In en, this message translates to:

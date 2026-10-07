@@ -35,6 +35,12 @@ import 'package:meal_meat_user/features/profile/domain/entities/customer_profile
 import 'package:meal_meat_user/features/profile/presentation/screens/personal_information_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/profile_settings_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/security_privacy_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_about_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_privacy_policy_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_terms_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_complaints_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_contact_us_screen.dart';
+import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_help_center_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/customer_address_editor_operations.dart';
@@ -499,6 +505,36 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const ProfileSettingsScreen(),
+        );
+      case AppRoutes.profileHelpCenter:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfileHelpCenterScreen(),
+        );
+      case AppRoutes.profileContactUs:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfileContactUsScreen(),
+        );
+      case AppRoutes.profileComplaints:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfileComplaintsScreen(),
+        );
+      case AppRoutes.profileAbout:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfileAboutScreen(),
+        );
+      case AppRoutes.profilePrivacyPolicy:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfilePrivacyPolicyScreen(),
+        );
+      case AppRoutes.profileTerms:
+        return _buildRoute(
+          settings: settings,
+          page: const ProfileTermsScreen(),
         );
       case AppRoutes.addresses:
         return _buildRoute(settings: settings, page: const AddressesScreen());
