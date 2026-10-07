@@ -6404,4 +6404,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restaurant_tier_continue_button => 'Continue Upgrade';
+
+  @override
+  String get billing_freeze_consent_agree => 'Agree & Continue';
+
+  @override
+  String get billing_freeze_consent_cancel => 'Cancel';
 }

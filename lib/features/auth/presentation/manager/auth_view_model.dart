@@ -29,7 +29,7 @@ import 'package:meal_meat_user/features/auth/domain/usecase/reset_password_useca
 import 'package:meal_meat_user/features/auth/domain/usecase/verify_phone_usecase.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/auth_state.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
 class AuthViewModel extends Cubit<AuthState> {

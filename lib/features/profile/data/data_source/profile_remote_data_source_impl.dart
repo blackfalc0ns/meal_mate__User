@@ -2,14 +2,12 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/profile/data/data_source/profile_remote_data_source.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
 
 @Injectable(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
-  ProfileRemoteDataSourceImpl(this._apiServices);
+  const ProfileRemoteDataSourceImpl(this._apiServices);
 
   final ApiServices _apiServices;
 
@@ -31,103 +29,5 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<void> deleteCustomerProfileImage() {
     return _apiServices.deleteCustomerProfileImage();
-  }
-
-  @override
-  Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription() {
-    return _apiServices.getCurrentCustomerSubscription();
-  }
-
-  @override
-  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
-  getUncompletedCustomerSubscriptions() {
-    return _apiServices.getUncompletedCustomerSubscriptions();
-  }
-
-  @override
-  Future<void> deleteUncompletedCustomerSubscription(String subscriptionId) {
-    return _apiServices.deleteUncompletedCustomerSubscription(subscriptionId);
-  }
-
-  @override
-  Future<ProfileBillingResumePreviewResponseDto>
-  getCustomerSubscriptionResumePreview(String subscriptionId) {
-    return _apiServices.getCustomerSubscriptionResumePreview(subscriptionId);
-  }
-
-  @override
-  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
-    String subscriptionId,
-    ProfileBillingResumeRequestDto request,
-  ) {
-    return _apiServices.resumeCustomerSubscription(subscriptionId, request);
-  }
-
-  @override
-  Future<ProfileBillingFreezeDetailsResponseDto>
-  getCurrentCustomerSubscriptionFreezeDetails() {
-    return _apiServices.getCurrentCustomerSubscriptionFreezeDetails();
-  }
-
-  @override
-  Future<ProfileBillingFreezeDetailsResponseDto>
-  getCustomerSubscriptionFreezeDetails(String subscriptionId) {
-    return _apiServices.getCustomerSubscriptionFreezeDetails(subscriptionId);
-  }
-
-  @override
-  Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices() {
-    return _apiServices.getCustomerInvoices();
-  }
-
-  @override
-  Future<ProfileBillingPaymentMethodResponseDto>
-  getDefaultCustomerPaymentMethod() {
-    return _apiServices.getDefaultCustomerPaymentMethod();
-  }
-
-  @override
-  Future<ProfileBillingFreezePolicyResponseDto>
-  getCustomerSubscriptionFreezePolicy() {
-    return _apiServices.getCustomerSubscriptionFreezePolicy();
-  }
-
-  @override
-  Future<void> createCustomerSubscriptionRenewalRequest(String subscriptionId) {
-    return _apiServices.createCustomerSubscriptionRenewalRequest(
-      subscriptionId,
-    );
-  }
-
-  @override
-  Future<ProfileBillingFreezeResponseDto>
-  createCustomerSubscriptionFreezeRequest(
-    String subscriptionId,
-    ProfileBillingFreezeRequestDto request,
-  ) {
-    return _apiServices.createCustomerSubscriptionFreezeRequest(
-      subscriptionId,
-      request,
-    );
-  }
-
-  @override
-  Future<ProfileBillingCancellationQuoteResponseDto>
-  getCustomerSubscriptionCancellationQuote(String subscriptionId) {
-    return _apiServices.getCustomerSubscriptionCancellationQuote(
-      subscriptionId,
-    );
-  }
-
-  @override
-  Future<ProfileBillingCancellationResultResponseDto>
-  createCustomerSubscriptionCancellationRequest(
-    String subscriptionId,
-    ProfileBillingCancellationRequestDto request,
-  ) {
-    return _apiServices.createCustomerSubscriptionCancellationRequest(
-      subscriptionId,
-      request,
-    );
   }
 }

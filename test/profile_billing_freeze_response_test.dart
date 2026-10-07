@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/profile/data/mapper/profile_billing_mapper.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
-import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 
 void main() {
-  group('ProfileBillingFreezeResponseDto and Mapper Tests', () {
+  group('SubscriptionBillingFreezeResponseDto and Mapper Tests', () {
     test('deserializes exact backend JSON response correctly', () {
       final json = {
         'id': '9a38f712-8812-4c21-9988-123456789abc',
@@ -19,7 +19,7 @@ void main() {
         'createdAtUtc': '2026-09-03T16:26:00Z',
       };
 
-      final dto = ProfileBillingFreezeResponseDto.fromJson(json);
+      final dto = SubscriptionBillingFreezeResponseDto.fromJson(json);
 
       expect(dto.id, '9a38f712-8812-4c21-9988-123456789abc');
       expect(dto.subscriptionId, '2d877030-dbbf-4160-9a7a-4602784c3215');
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('maps DTO to Domain Entity with safe defaults', () {
-      const dto = ProfileBillingFreezeResponseDto(
+      const dto = SubscriptionBillingFreezeResponseDto(
         id: '123',
         subscriptionId: 'sub-456',
         freezeStartDate: '2026-09-07',
@@ -59,9 +59,9 @@ void main() {
     });
 
     test(
-      'ProfileBillingActionState stores freezeResult and clears it correctly',
+      'SubscriptionBillingActionState stores freezeResult and clears it correctly',
       () {
-        const dto = ProfileBillingFreezeResponseDto(
+        const dto = SubscriptionBillingFreezeResponseDto(
           id: '123',
           subscriptionId: 'sub-456',
           freezeStartDate: '2026-09-07',
@@ -72,7 +72,7 @@ void main() {
         );
         final entity = dto.toEntity();
 
-        var state = const ProfileBillingActionState();
+        var state = const SubscriptionBillingActionState();
         expect(state.freezeResult, isNull);
 
         state = state.copyWith(
@@ -89,7 +89,7 @@ void main() {
     );
 
     test('maps freeze details response current freeze and history', () {
-      final dto = ProfileBillingFreezeDetailsResponseDto.fromJson({
+      final dto = SubscriptionBillingFreezeDetailsResponseDto.fromJson({
         'subscriptionId': 'sub-1',
         'subscriptionStatus': 'Scheduled',
         'subscriptionStatusNameAr': 'scheduled ar',

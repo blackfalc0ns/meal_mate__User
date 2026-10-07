@@ -33,12 +33,12 @@ import 'package:meal_meat_user/features/food_preferences/data/models/request/foo
 import 'package:meal_meat_user/core/address/data/models/response/locations_catalog_response_dto.dart';
 import 'package:meal_meat_user/core/address/data/models/response/region_catalog_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/profile_image_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_billing_action_request_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/request/update_customer_profile_request_dto.dart';
 import 'package:meal_meat_user/core/address/data/models/response/customer_address_response_dto.dart';
 import 'package:meal_meat_user/features/meal_details/data/models/response/subscription_meal_details_response_dto.dart';
 import 'package:meal_meat_user/features/profile/data/models/response/customer_profile_response_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_response_dto.dart';
 import 'package:meal_meat_user/features/food_preferences/data/models/response/food_preferences_catalog_response_dto.dart';
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
@@ -470,10 +470,10 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.customerSubscriptionCurrent)
-  Future<ProfileBillingCurrentResponseDto> getCurrentCustomerSubscription();
+  Future<SubscriptionBillingCurrentResponseDto> getCurrentCustomerSubscription();
 
   @GET(EndPoints.customerUncompletedSubscriptions)
-  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
+  Future<List<SubscriptionBillingUncompletedSubscriptionResponseDto>>
   getUncompletedCustomerSubscriptions();
 
   @DELETE(EndPoints.customerSubscription)
@@ -482,36 +482,36 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.customerSubscriptionResume)
-  Future<ProfileBillingResumePreviewResponseDto>
+  Future<SubscriptionBillingResumePreviewResponseDto>
   getCustomerSubscriptionResumePreview(
     @Path('subscriptionId') String subscriptionId,
   );
 
   @POST(EndPoints.customerSubscriptionResume)
-  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
+  Future<SubscriptionBillingResumeResponseDto> resumeCustomerSubscription(
     @Path('subscriptionId') String subscriptionId,
-    @Body() ProfileBillingResumeRequestDto request,
+    @Body() SubscriptionBillingResumeRequestDto request,
   );
 
   @GET(EndPoints.customerSubscriptionCurrentFreezeDetails)
-  Future<ProfileBillingFreezeDetailsResponseDto>
+  Future<SubscriptionBillingFreezeDetailsResponseDto>
   getCurrentCustomerSubscriptionFreezeDetails();
 
   @GET(EndPoints.customerSubscriptionFreezeDetails)
-  Future<ProfileBillingFreezeDetailsResponseDto>
+  Future<SubscriptionBillingFreezeDetailsResponseDto>
   getCustomerSubscriptionFreezeDetails(
     @Path('subscriptionId') String subscriptionId,
   );
 
   @GET(EndPoints.customerInvoices)
-  Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices();
+  Future<List<SubscriptionBillingInvoiceResponseDto>> getCustomerInvoices();
 
   @GET(EndPoints.customerDefaultPaymentMethod)
-  Future<ProfileBillingPaymentMethodResponseDto>
+  Future<SubscriptionBillingPaymentMethodResponseDto>
   getDefaultCustomerPaymentMethod();
 
   @GET(EndPoints.customerSubscriptionFreezePolicy)
-  Future<ProfileBillingFreezePolicyResponseDto>
+  Future<SubscriptionBillingFreezePolicyResponseDto>
   getCustomerSubscriptionFreezePolicy();
 
   @POST(EndPoints.customerSubscriptionRenewalRequests)
@@ -525,23 +525,23 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.customerSubscriptionFreezeRequests)
-  Future<ProfileBillingFreezeResponseDto>
+  Future<SubscriptionBillingFreezeResponseDto>
   createCustomerSubscriptionFreezeRequest(
     @Path('subscriptionId') String subscriptionId,
-    @Body() ProfileBillingFreezeRequestDto request,
+    @Body() SubscriptionBillingFreezeRequestDto request,
   );
 
   @GET(EndPoints.customerSubscriptionCancellationQuote)
-  Future<ProfileBillingCancellationQuoteResponseDto>
+  Future<SubscriptionBillingCancellationQuoteResponseDto>
   getCustomerSubscriptionCancellationQuote(
     @Path('subscriptionId') String subscriptionId,
   );
 
   @POST(EndPoints.customerSubscriptionCancellationRequests)
-  Future<ProfileBillingCancellationResultResponseDto>
+  Future<SubscriptionBillingCancellationResultResponseDto>
   createCustomerSubscriptionCancellationRequest(
     @Path('subscriptionId') String subscriptionId,
-    @Body() ProfileBillingCancellationRequestDto request,
+    @Body() SubscriptionBillingCancellationRequestDto request,
   );
 
   @GET(EndPoints.familySubscriptionFlowPackages)

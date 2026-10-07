@@ -11833,6 +11833,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue Upgrade'**
   String get restaurant_tier_continue_button;
+
+  /// No description provided for @billing_freeze_consent_agree.
+  ///
+  /// In en, this message translates to:
+  /// **'Agree & Continue'**
+  String get billing_freeze_consent_agree;
+
+  /// No description provided for @billing_freeze_consent_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get billing_freeze_consent_cancel;
 }
 
 class _AppLocalizationsDelegate

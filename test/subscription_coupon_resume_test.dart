@@ -7,7 +7,7 @@ import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_billing_action_request_dto.dart';
 
 void main() {
   Widget buildTestContextWidget({
@@ -23,8 +23,8 @@ void main() {
   }
 
   group('Subscription Coupon Resume Tests', () {
-    test('ProfileBillingResumeRequestDto JSON never includes promoCode', () {
-      const dto = ProfileBillingResumeRequestDto(
+    test('SubscriptionBillingResumeRequestDto JSON never includes promoCode', () {
+      const dto = SubscriptionBillingResumeRequestDto(
         startDate: '2026-10-15',
         paymentMethodId: 1,
       );

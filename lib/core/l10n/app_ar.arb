@@ -2463,5 +2463,7 @@
   "restaurant_tier_unavailable_no_days": "لا توجد أيام خدمة متبقية في الاشتراك الحالي لإجراء الترقية.",
   "restaurant_tier_unavailable_pricing": "خدمة التسعير غير متوفرة حالياً، يرجى المحاولة لاحقاً.",
   "restaurant_tier_unavailable_generic": "الترقية غير متوفرة حالياً لهذا الاشتراك.",
-  "restaurant_tier_continue_button": "متابعة الترقية"
+  "restaurant_tier_continue_button": "متابعة الترقية",
+  "billing_freeze_consent_agree": "موافقة ومتابعة",
+  "billing_freeze_consent_cancel": "إلغاء"
 }

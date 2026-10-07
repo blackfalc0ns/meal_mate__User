@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_plan_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_plan_card.dart';
 
 void main() {
   testWidgets('upgrade tier action opens restaurant tier upgrade screen', (
@@ -23,7 +23,7 @@ void main() {
         home: Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            body: ProfileBillingPlanCard(subscription: _subscription()),
+            body: SubscriptionBillingPlanCard(subscription: _subscription()),
           ),
         ),
       ),
@@ -49,7 +49,7 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: ProfileBillingPlanCard(
+          body: SubscriptionBillingPlanCard(
             subscription: _subscription(
               canRenew: true,
               canFreeze: true,
@@ -84,7 +84,7 @@ void main() {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
-            body: ProfileBillingPlanCard(
+            body: SubscriptionBillingPlanCard(
               subscription: _subscription(
                 canFreeze: false,
                 activeFreeze: _activeFreeze(),
@@ -113,7 +113,7 @@ void main() {
         home: Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            body: ProfileBillingPlanCard(
+            body: SubscriptionBillingPlanCard(
               subscription: _subscription(canFreeze: false),
             ),
           ),
@@ -129,13 +129,13 @@ void main() {
   });
 }
 
-ProfileBillingSubscriptionEntity _subscription({
+SubscriptionBillingSubscriptionEntity _subscription({
   bool canRenew = false,
   bool canFreeze = false,
   bool canCancel = false,
-  ProfileBillingActiveFreezeEntity? activeFreeze,
+  SubscriptionBillingActiveFreezeEntity? activeFreeze,
 }) {
-  return ProfileBillingSubscriptionEntity(
+  return SubscriptionBillingSubscriptionEntity(
     subscriptionId: 'subscription-1',
     status: 'active',
     programId: 'program-1',
@@ -160,13 +160,13 @@ ProfileBillingSubscriptionEntity _subscription({
     progressPercentage: 0,
     paidAmount: 65,
     currencyCode: 'KWD',
-    restaurant: const ProfileBillingRestaurantEntity(
+    restaurant: const SubscriptionBillingRestaurantEntity(
       restaurantId: 'restaurant-1',
       nameAr: 'دايت كير',
       nameEn: 'Diet Care',
       logoUrl: '',
     ),
-    actions: ProfileBillingActionsEntity(
+    actions: SubscriptionBillingActionsEntity(
       canRenew: canRenew,
       canFreeze: canFreeze,
       canCancel: canCancel,
@@ -189,8 +189,8 @@ ProfileBillingSubscriptionEntity _subscription({
   );
 }
 
-ProfileBillingActiveFreezeEntity _activeFreeze() {
-  return const ProfileBillingActiveFreezeEntity(
+SubscriptionBillingActiveFreezeEntity _activeFreeze() {
+  return const SubscriptionBillingActiveFreezeEntity(
     requestId: 'freeze-1',
     startDate: '2026-09-07',
     endDate: '2026-09-12',

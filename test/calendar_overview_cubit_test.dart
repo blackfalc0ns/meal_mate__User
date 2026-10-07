@@ -16,9 +16,9 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _ControllableCalendarRepo implements CalendarRepository {
@@ -56,13 +56,13 @@ class _ControllableCalendarRepo implements CalendarRepository {
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError();
 }
 
-class _ControllableProfileRepo implements ProfileRepository {
-  Completer<ApiResult<ProfileBillingCurrentEntity>>? currentSubCompleter;
+class _ControllableProfileRepo implements SubscriptionBillingRepository {
+  Completer<ApiResult<SubscriptionBillingCurrentEntity>>? currentSubCompleter;
 
   @override
-  Future<ApiResult<ProfileBillingCurrentEntity>>
+  Future<ApiResult<SubscriptionBillingCurrentEntity>>
   getCurrentCustomerSubscription() {
-    currentSubCompleter = Completer<ApiResult<ProfileBillingCurrentEntity>>();
+    currentSubCompleter = Completer<ApiResult<SubscriptionBillingCurrentEntity>>();
     return currentSubCompleter!.future;
   }
 
@@ -81,12 +81,12 @@ class _TestOverviewCubit extends CalendarOverviewViewModel {
   void seed(CalendarOverviewState s) => emit(s);
 }
 
-ProfileBillingCurrentEntity _createBillingCurrent(String? subscriptionId) {
-  return ProfileBillingCurrentEntity(
+SubscriptionBillingCurrentEntity _createBillingCurrent(String? subscriptionId) {
+  return SubscriptionBillingCurrentEntity(
     emptyStateCode: subscriptionId == null ? 'no_subscription' : '',
     subscription: subscriptionId == null
         ? null
-        : ProfileBillingSubscriptionEntity(
+        : SubscriptionBillingSubscriptionEntity(
             subscriptionId: subscriptionId,
             status: 'active',
             statusNameAr: 'نشط',
@@ -111,13 +111,13 @@ ProfileBillingCurrentEntity _createBillingCurrent(String? subscriptionId) {
             progressPercentage: 16,
             paidAmount: 500.0,
             currencyCode: 'SAR',
-            restaurant: const ProfileBillingRestaurantEntity(
+            restaurant: const SubscriptionBillingRestaurantEntity(
               restaurantId: 'r1',
               nameAr: 'مطعم',
               nameEn: 'Restaurant',
               logoUrl: '',
             ),
-            actions: const ProfileBillingActionsEntity(
+            actions: const SubscriptionBillingActionsEntity(
               canRenew: false,
               canFreeze: false,
               canCancel: false,

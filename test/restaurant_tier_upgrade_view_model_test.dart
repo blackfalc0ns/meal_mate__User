@@ -3,11 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_image_request_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/subscription_upgrade_entity.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/repo/restaurant_tier_upgrade_repository.dart';
@@ -26,7 +24,9 @@ void main() {
       GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
       CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
       GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-      GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      GetCurrentCustomerSubscriptionUseCase(
+        _SubscriptionBillingRepositoryFake(),
+      ),
     );
     addTearDown(viewModel.close);
 
@@ -58,7 +58,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -82,7 +84,9 @@ void main() {
       GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
       CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
       GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-      GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+      GetCurrentCustomerSubscriptionUseCase(
+        _SubscriptionBillingRepositoryFake(),
+      ),
     );
     addTearDown(viewModel.close);
 
@@ -115,7 +119,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -169,7 +175,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
 
       viewModel.doIntent(
@@ -188,8 +196,7 @@ void main() {
     'duplicate verify status while in-flight starts only one polling sequence',
     () async {
       final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
-      final completer =
-          Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
+      final completer = Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
       upgradeRepository.customGetStatus = () => completer.future;
 
       final viewModel = RestaurantTierUpgradeViewModel(
@@ -197,7 +204,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -241,8 +250,7 @@ void main() {
     'terminal failure during poll prevents late success result from overriding failure',
     () async {
       final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
-      final completer =
-          Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
+      final completer = Completer<ApiResult<SubscriptionUpgradeStatusEntity>>();
       upgradeRepository.customGetStatus = () => completer.future;
 
       final viewModel = RestaurantTierUpgradeViewModel(
@@ -250,7 +258,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -262,9 +272,7 @@ void main() {
       );
       await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(
-        const MarkUpgradeFailedEvent('Payment cancelled'),
-      );
+      viewModel.doIntent(const MarkUpgradeFailedEvent('Payment cancelled'));
       await Future<void>.delayed(Duration.zero);
 
       expect(viewModel.state.isUpgradeFailed, isTrue);
@@ -321,7 +329,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -358,7 +368,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -371,7 +383,10 @@ void main() {
 
       viewModel.doIntent(const SelectTierOptionEvent(_platinumOption));
       await Future<void>.delayed(Duration.zero);
-      expect(viewModel.state.selectedOption?.targetTier, _platinumOption.targetTier);
+      expect(
+        viewModel.state.selectedOption?.targetTier,
+        _platinumOption.targetTier,
+      );
 
       int emissions = 0;
       final subscription = viewModel.stream.listen((_) => emissions++);
@@ -423,7 +438,9 @@ void main() {
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
         CreateSubscriptionUpgradeRequestUseCase(upgradeRepository),
         GetSubscriptionUpgradeStatusUseCase(upgradeRepository),
-        GetCurrentCustomerSubscriptionUseCase(_ProfileRepositoryFake()),
+        GetCurrentCustomerSubscriptionUseCase(
+          _SubscriptionBillingRepositoryFake(),
+        ),
       );
       addTearDown(viewModel.close);
 
@@ -651,84 +668,16 @@ const _upgradeSummary = SubscriptionUpgradeSummaryEntity(
   upgradeEndpoint: '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
 );
 
-class _ProfileRepositoryFake implements ProfileRepository {
+class _SubscriptionBillingRepositoryFake
+    implements SubscriptionBillingRepository {
   @override
-  Future<ApiResult<void>> deleteCustomerProfileImage() async {
-    return const ApiSuccessResult(data: null);
-  }
-
-  @override
-  Future<ApiResult<CustomerProfileEntity>> getCustomerProfile() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingCurrentEntity>>
+  Future<ApiResult<SubscriptionBillingCurrentEntity>>
   getCurrentCustomerSubscription() async {
     return const ApiSuccessResult(
-      data: ProfileBillingCurrentEntity(emptyStateCode: ''),
+      data: SubscriptionBillingCurrentEntity(emptyStateCode: ''),
     );
   }
 
   @override
-  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
-  getCurrentCustomerSubscriptionFreezeDetails() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingFreezeDetailsEntity>>
-  getCustomerSubscriptionFreezeDetails(String subscriptionId) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingEntity>> getProfileBilling() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
-    String subscriptionId,
-  ) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingFreezeResponseEntity>>
-  createCustomerSubscriptionFreezeRequest({
-    required String subscriptionId,
-    required ProfileBillingFreezeRequestEntity request,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingCancellationQuoteEntity>>
-  getCustomerSubscriptionCancellationQuote(String subscriptionId) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<ProfileBillingCancellationResultEntity>>
-  createCustomerSubscriptionCancellationRequest({
-    required String subscriptionId,
-    required ProfileBillingCancellationRequestEntity request,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ApiResult<void>> updateCustomerProfile(
-    UpdateCustomerProfileRequestEntity request,
-  ) async {
-    return const ApiSuccessResult(data: null);
-  }
-
-  @override
-  Future<ApiResult<void>> updateCustomerProfileImage(
-    ProfileImageRequestEntity request,
-  ) async {
-    return const ApiSuccessResult(data: null);
-  }
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

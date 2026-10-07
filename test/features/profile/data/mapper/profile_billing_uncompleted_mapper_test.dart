@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/profile/data/mapper/profile_billing_mapper.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 
 void main() {
   test('maps an uncompleted subscription and its available actions', () {
-    final dto = ProfileBillingUncompletedSubscriptionResponseDto.fromJson({
+    final dto = SubscriptionBillingUncompletedSubscriptionResponseDto.fromJson({
       'subscriptionId': 'sub-1',
       'status': 'PendingPayment',
       'statusNameAr': 'بانتظار الدفع',
@@ -51,7 +51,7 @@ void main() {
   });
 
   test('maps a minimal resume preview without optional plan fields', () {
-    final dto = ProfileBillingResumePreviewResponseDto.fromJson({
+    final dto = SubscriptionBillingResumePreviewResponseDto.fromJson({
       'subscriptionId': 'sub-1',
       'status': 'PendingPayment',
       'statusNameAr': 'بانتظار الدفع',
@@ -71,7 +71,7 @@ void main() {
   });
 
   test('maps resume execution payment response', () {
-    final dto = ProfileBillingResumeResponseDto.fromJson({
+    final dto = SubscriptionBillingResumeResponseDto.fromJson({
       'subscriptionId': 'sub-1',
       'paymentUrl': 'https://pay.example/invoice',
       'holdExpiresAtUtc': '2026-09-06T20:15:00Z',

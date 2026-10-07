@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
-import 'package:meal_meat_user/features/profile/data/data_source/profile_remote_data_source_impl.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/data_source/subscription_billing_remote_data_source_impl.dart';
 
 void main() {
   test(
@@ -13,7 +13,7 @@ void main() {
       final adapter = _CapturingAdapter();
       final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
         ..httpClientAdapter = adapter;
-      final dataSource = ProfileRemoteDataSourceImpl(ApiServices(dio));
+      final dataSource = SubscriptionBillingRemoteDataSourceImpl(ApiServices(dio));
 
       await dataSource.getCurrentCustomerSubscriptionFreezeDetails();
 
@@ -31,7 +31,7 @@ void main() {
       final adapter = _CapturingAdapter();
       final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
         ..httpClientAdapter = adapter;
-      final dataSource = ProfileRemoteDataSourceImpl(ApiServices(dio));
+      final dataSource = SubscriptionBillingRemoteDataSourceImpl(ApiServices(dio));
 
       await dataSource.getCustomerSubscriptionFreezeDetails('sub-1');
 

@@ -1,6 +1,5 @@
 import 'package:meal_meat_user/core/upload_file/domain/entities/upload_file_request_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/profile_image_request_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
 
 sealed class ProfileEvent {
@@ -9,10 +8,6 @@ sealed class ProfileEvent {
 
 class GetCustomerProfileEvent extends ProfileEvent {
   const GetCustomerProfileEvent();
-}
-
-class GetProfileBillingEvent extends ProfileEvent {
-  const GetProfileBillingEvent();
 }
 
 class UpdateCustomerProfileEvent extends ProfileEvent {
@@ -35,64 +30,4 @@ class UpdateCustomerProfileImageEvent extends ProfileEvent {
 
 class DeleteCustomerProfileImageEvent extends ProfileEvent {
   const DeleteCustomerProfileImageEvent();
-}
-
-class RenewSubscriptionEvent extends ProfileEvent {
-  const RenewSubscriptionEvent(this.subscriptionId);
-
-  final String subscriptionId;
-}
-
-class FreezeSubscriptionEvent extends ProfileEvent {
-  const FreezeSubscriptionEvent({
-    required this.subscriptionId,
-    required this.request,
-  });
-
-  final String subscriptionId;
-  final ProfileBillingFreezeRequestEntity request;
-}
-
-class GetCancellationQuoteEvent extends ProfileEvent {
-  const GetCancellationQuoteEvent(this.subscriptionId);
-
-  final String subscriptionId;
-}
-
-class CancelSubscriptionEvent extends ProfileEvent {
-  const CancelSubscriptionEvent({
-    required this.subscriptionId,
-    required this.request,
-  });
-
-  final String subscriptionId;
-  final ProfileBillingCancellationRequestEntity request;
-}
-
-class ResetBillingActionEvent extends ProfileEvent {
-  const ResetBillingActionEvent();
-}
-
-class DeleteUncompletedSubscriptionEvent extends ProfileEvent {
-  const DeleteUncompletedSubscriptionEvent(this.subscriptionId);
-
-  final String subscriptionId;
-}
-
-class GetSubscriptionResumePreviewEvent extends ProfileEvent {
-  const GetSubscriptionResumePreviewEvent(this.subscriptionId);
-
-  final String subscriptionId;
-}
-
-class ResumeSubscriptionEvent extends ProfileEvent {
-  const ResumeSubscriptionEvent({
-    required this.subscriptionId,
-    this.startDate,
-    this.paymentMethodId,
-  });
-
-  final String subscriptionId;
-  final String? startDate;
-  final int? paymentMethodId;
 }

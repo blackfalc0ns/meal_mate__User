@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_active_freeze_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_active_freeze_card.dart';
 
 void main() {
   testWidgets('active freeze card shows backend freeze details', (
@@ -16,8 +16,8 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: ProfileBillingActiveFreezeCard(
-            activeFreeze: const ProfileBillingActiveFreezeEntity(
+          body: SubscriptionBillingActiveFreezeCard(
+            activeFreeze: const SubscriptionBillingActiveFreezeEntity(
               requestId: 'freeze-1',
               startDate: '2026-09-07',
               endDate: '2026-09-12',

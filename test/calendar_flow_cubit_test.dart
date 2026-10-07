@@ -26,9 +26,9 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _FakeCalendarRepo implements CalendarRepository {
@@ -199,12 +199,12 @@ class _FakeCalendarRepo implements CalendarRepository {
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError();
 }
 
-class _FakeProfileRepo implements ProfileRepository {
+class _FakeProfileRepo implements SubscriptionBillingRepository {
   @override
-  Future<ApiResult<ProfileBillingCurrentEntity>>
+  Future<ApiResult<SubscriptionBillingCurrentEntity>>
   getCurrentCustomerSubscription() async {
     return ApiSuccessResult(
-      data: const ProfileBillingCurrentEntity(
+      data: const SubscriptionBillingCurrentEntity(
         emptyStateCode: '',
         subscription: null,
       ),

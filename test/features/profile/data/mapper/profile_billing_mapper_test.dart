@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/profile/data/mapper/profile_billing_mapper.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 
 void main() {
   test('maps current subscription backend additions into billing entity', () {
-    final dto = ProfileBillingCurrentResponseDto.fromJson({
+    final dto = SubscriptionBillingCurrentResponseDto.fromJson({
       'subscription': {
         'subscriptionId': 'sub-1',
         'status': 'Scheduled',
@@ -134,7 +134,7 @@ void main() {
   });
 
   test('maps freeze policy earliest allowed date into billing entity', () {
-    final dto = ProfileBillingFreezePolicyResponseDto.fromJson({
+    final dto = SubscriptionBillingFreezePolicyResponseDto.fromJson({
       'defaultDurationDays': 7,
       'startDelayDays': 3,
       'extendSubscriptionEnd': true,

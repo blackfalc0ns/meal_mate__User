@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_use
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
 class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {

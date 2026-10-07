@@ -18,8 +18,8 @@ import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,9 +103,9 @@ class FakeGetSubscriptionCalendarUseCase
 class FakeGetCurrentCustomerSubscriptionUseCase
     implements GetCurrentCustomerSubscriptionUseCase {
   @override
-  Future<ApiResult<ProfileBillingCurrentEntity>> call() async {
-    return ApiSuccessResult(
-      data: const ProfileBillingCurrentEntity(emptyStateCode: ''),
+  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async {
+    return const ApiSuccessResult(
+      data: SubscriptionBillingCurrentEntity(emptyStateCode: ''),
     );
   }
 }

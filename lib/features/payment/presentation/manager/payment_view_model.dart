@@ -18,7 +18,7 @@ import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
-import 'package:meal_meat_user/features/profile/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 
 @injectable
 class PaymentViewModel extends Cubit<PaymentState> {

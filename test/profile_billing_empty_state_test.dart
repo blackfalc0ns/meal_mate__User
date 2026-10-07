@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_empty_invoices_card.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_empty_subscription_card.dart';
-import 'package:meal_meat_user/features/profile/presentation/widgets/profile_billing_invoice_history_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_empty_invoices_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_empty_subscription_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_invoice_history_card.dart';
 
 void main() {
   Widget buildTestWidget({
@@ -26,17 +26,14 @@ void main() {
     );
   }
 
-  group('ProfileBillingEmptySubscriptionCard', () {
+  group('SubscriptionBillingEmptySubscriptionCard', () {
     testWidgets('renders kit illustration when hasUncompletedSubscriptions is false', (
       tester,
     ) async {
-      var browsed = false;
-
       await tester.pumpWidget(
         buildTestWidget(
-          child: ProfileBillingEmptySubscriptionCard(
+          child: const SubscriptionBillingEmptySubscriptionCard(
             hasUncompletedSubscriptions: false,
-            onBrowseSubscriptions: () => browsed = true,
           ),
         ),
       );
@@ -58,6 +55,20 @@ void main() {
         (imageWidget.image as AssetImage).assetName,
         Assets.billingEmptySubscriptionKit,
       );
+    });
+
+    testWidgets('calls onBrowseSubscriptions when browse button is tapped', (
+      tester,
+    ) async {
+      var browsed = false;
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: SubscriptionBillingEmptySubscriptionCard(
+            hasUncompletedSubscriptions: false,
+            onBrowseSubscriptions: () => browsed = true,
+          ),
+        ),
+      );
 
       await tester.tap(find.text('استعرض الاشتراكات'));
       await tester.pumpAndSettle();
@@ -69,7 +80,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ProfileBillingEmptySubscriptionCard(
+          child: const SubscriptionBillingEmptySubscriptionCard(
             hasUncompletedSubscriptions: true,
           ),
         ),
@@ -92,7 +103,7 @@ void main() {
         buildTestWidget(
           locale: const Locale('en'),
           textDirection: TextDirection.ltr,
-          child: const ProfileBillingEmptySubscriptionCard(
+          child: const SubscriptionBillingEmptySubscriptionCard(
             hasUncompletedSubscriptions: false,
           ),
         ),
@@ -110,10 +121,10 @@ void main() {
     });
   });
 
-  group('ProfileBillingEmptyInvoicesCard', () {
+  group('SubscriptionBillingEmptyInvoicesCard', () {
     testWidgets('renders invoice illustration and texts', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(child: const ProfileBillingEmptyInvoicesCard()),
+        buildTestWidget(child: const SubscriptionBillingEmptyInvoicesCard()),
       );
       await tester.pumpAndSettle();
 
@@ -133,24 +144,24 @@ void main() {
     });
   });
 
-  group('ProfileBillingInvoiceHistoryCard integration', () {
+  group('SubscriptionBillingInvoiceHistoryCard integration', () {
     testWidgets('renders empty card when invoices list is empty', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ProfileBillingInvoiceHistoryCard(invoices: []),
+          child: const SubscriptionBillingInvoiceHistoryCard(invoices: []),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('الفواتير'), findsOneWidget);
-      expect(find.byType(ProfileBillingEmptyInvoicesCard), findsOneWidget);
+      expect(find.byType(SubscriptionBillingEmptyInvoicesCard), findsOneWidget);
       expect(find.text('لا يوجد فواتير بعد'), findsOneWidget);
     });
 
     testWidgets('renders invoice rows when invoices list is not empty', (
       tester,
     ) async {
-      const invoice = ProfileBillingInvoiceEntity(
+      const invoice = SubscriptionBillingInvoiceEntity(
         receiptId: 'REC-1',
         subscriptionId: 'SUB-1',
         invoiceNumber: 'INV-1001',
@@ -168,13 +179,13 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ProfileBillingInvoiceHistoryCard(invoices: [invoice]),
+          child: const SubscriptionBillingInvoiceHistoryCard(invoices: [invoice]),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('الفواتير'), findsOneWidget);
-      expect(find.byType(ProfileBillingEmptyInvoicesCard), findsNothing);
+      expect(find.byType(SubscriptionBillingEmptyInvoicesCard), findsNothing);
       expect(find.text('INV-1001'), findsOneWidget);
       expect(find.text('29.99 KWD'), findsOneWidget);
       expect(find.text('مدفوع'), findsOneWidget);

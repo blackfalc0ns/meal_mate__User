@@ -1885,13 +1885,13 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingCurrentResponseDto>
+  Future<SubscriptionBillingCurrentResponseDto>
   getCurrentCustomerSubscription() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingCurrentResponseDto>(
+    final _options = _setStreamType<SubscriptionBillingCurrentResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1902,9 +1902,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingCurrentResponseDto _value;
+    late SubscriptionBillingCurrentResponseDto _value;
     try {
-      _value = ProfileBillingCurrentResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingCurrentResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -1913,14 +1913,16 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<ProfileBillingUncompletedSubscriptionResponseDto>>
+  Future<List<SubscriptionBillingUncompletedSubscriptionResponseDto>>
   getUncompletedCustomerSubscriptions() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =
-        _setStreamType<List<ProfileBillingUncompletedSubscriptionResponseDto>>(
+        _setStreamType<
+          List<SubscriptionBillingUncompletedSubscriptionResponseDto>
+        >(
           Options(method: 'GET', headers: _headers, extra: _extra)
               .compose(
                 _dio.options,
@@ -1933,12 +1935,12 @@ class _ApiServices implements ApiServices {
               ),
         );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProfileBillingUncompletedSubscriptionResponseDto> _value;
+    late List<SubscriptionBillingUncompletedSubscriptionResponseDto> _value;
     try {
       _value = _result.data!
           .map(
             (dynamic i) =>
-                ProfileBillingUncompletedSubscriptionResponseDto.fromJson(
+                SubscriptionBillingUncompletedSubscriptionResponseDto.fromJson(
                   i as Map<String, dynamic>,
                 ),
           )
@@ -1972,26 +1974,31 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingResumePreviewResponseDto>
+  Future<SubscriptionBillingResumePreviewResponseDto>
   getCustomerSubscriptionResumePreview(String subscriptionId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingResumePreviewResponseDto>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/resume',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<SubscriptionBillingResumePreviewResponseDto>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscriptions/${subscriptionId}/resume',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingResumePreviewResponseDto _value;
+    late SubscriptionBillingResumePreviewResponseDto _value;
     try {
-      _value = ProfileBillingResumePreviewResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingResumePreviewResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2000,16 +2007,16 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingResumeResponseDto> resumeCustomerSubscription(
+  Future<SubscriptionBillingResumeResponseDto> resumeCustomerSubscription(
     String subscriptionId,
-    ProfileBillingResumeRequestDto request,
+    SubscriptionBillingResumeRequestDto request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<ProfileBillingResumeResponseDto>(
+    final _options = _setStreamType<SubscriptionBillingResumeResponseDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2020,9 +2027,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingResumeResponseDto _value;
+    late SubscriptionBillingResumeResponseDto _value;
     try {
-      _value = ProfileBillingResumeResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingResumeResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2031,26 +2038,31 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingFreezeDetailsResponseDto>
+  Future<SubscriptionBillingFreezeDetailsResponseDto>
   getCurrentCustomerSubscriptionFreezeDetails() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingFreezeDetailsResponseDto>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/current/freeze-details',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<SubscriptionBillingFreezeDetailsResponseDto>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscriptions/current/freeze-details',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingFreezeDetailsResponseDto _value;
+    late SubscriptionBillingFreezeDetailsResponseDto _value;
     try {
-      _value = ProfileBillingFreezeDetailsResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingFreezeDetailsResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2059,13 +2071,13 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingFreezeDetailsResponseDto>
+  Future<SubscriptionBillingFreezeDetailsResponseDto>
   getCustomerSubscriptionFreezeDetails(String subscriptionId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingFreezeDetailsResponseDto>(
+    final _options = _setStreamType<SubscriptionBillingFreezeDetailsResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2076,9 +2088,11 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingFreezeDetailsResponseDto _value;
+    late SubscriptionBillingFreezeDetailsResponseDto _value;
     try {
-      _value = ProfileBillingFreezeDetailsResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingFreezeDetailsResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2087,27 +2101,31 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<ProfileBillingInvoiceResponseDto>> getCustomerInvoices() async {
+  Future<List<SubscriptionBillingInvoiceResponseDto>>
+  getCustomerInvoices() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ProfileBillingInvoiceResponseDto>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/invoices',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<List<SubscriptionBillingInvoiceResponseDto>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/invoices',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProfileBillingInvoiceResponseDto> _value;
+    late List<SubscriptionBillingInvoiceResponseDto> _value;
     try {
       _value = _result.data!
           .map(
-            (dynamic i) => ProfileBillingInvoiceResponseDto.fromJson(
+            (dynamic i) => SubscriptionBillingInvoiceResponseDto.fromJson(
               i as Map<String, dynamic>,
             ),
           )
@@ -2120,26 +2138,31 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingPaymentMethodResponseDto>
+  Future<SubscriptionBillingPaymentMethodResponseDto>
   getDefaultCustomerPaymentMethod() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingPaymentMethodResponseDto>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/payment-methods/default',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<SubscriptionBillingPaymentMethodResponseDto>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/payment-methods/default',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingPaymentMethodResponseDto _value;
+    late SubscriptionBillingPaymentMethodResponseDto _value;
     try {
-      _value = ProfileBillingPaymentMethodResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingPaymentMethodResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2148,13 +2171,13 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingFreezePolicyResponseDto>
+  Future<SubscriptionBillingFreezePolicyResponseDto>
   getCustomerSubscriptionFreezePolicy() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingFreezePolicyResponseDto>(
+    final _options = _setStreamType<SubscriptionBillingFreezePolicyResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2165,9 +2188,11 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingFreezePolicyResponseDto _value;
+    late SubscriptionBillingFreezePolicyResponseDto _value;
     try {
-      _value = ProfileBillingFreezePolicyResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingFreezePolicyResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2216,17 +2241,17 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingFreezeResponseDto>
+  Future<SubscriptionBillingFreezeResponseDto>
   createCustomerSubscriptionFreezeRequest(
     String subscriptionId,
-    ProfileBillingFreezeRequestDto request,
+    SubscriptionBillingFreezeRequestDto request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<ProfileBillingFreezeResponseDto>(
+    final _options = _setStreamType<SubscriptionBillingFreezeResponseDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -2237,9 +2262,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingFreezeResponseDto _value;
+    late SubscriptionBillingFreezeResponseDto _value;
     try {
-      _value = ProfileBillingFreezeResponseDto.fromJson(_result.data!);
+      _value = SubscriptionBillingFreezeResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2248,26 +2273,29 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingCancellationQuoteResponseDto>
+  Future<SubscriptionBillingCancellationQuoteResponseDto>
   getCustomerSubscriptionCancellationQuote(String subscriptionId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileBillingCancellationQuoteResponseDto>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/cancellation-quote',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<SubscriptionBillingCancellationQuoteResponseDto>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscriptions/${subscriptionId}/cancellation-quote',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingCancellationQuoteResponseDto _value;
+    late SubscriptionBillingCancellationQuoteResponseDto _value;
     try {
-      _value = ProfileBillingCancellationQuoteResponseDto.fromJson(
+      _value = SubscriptionBillingCancellationQuoteResponseDto.fromJson(
         _result.data!,
       );
     } on Object catch (e, s) {
@@ -2278,30 +2306,33 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<ProfileBillingCancellationResultResponseDto>
+  Future<SubscriptionBillingCancellationResultResponseDto>
   createCustomerSubscriptionCancellationRequest(
     String subscriptionId,
-    ProfileBillingCancellationRequestDto request,
+    SubscriptionBillingCancellationRequestDto request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<ProfileBillingCancellationResultResponseDto>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/cancellation-requests',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<SubscriptionBillingCancellationResultResponseDto>(
+          Options(method: 'POST', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscriptions/${subscriptionId}/cancellation-requests',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileBillingCancellationResultResponseDto _value;
+    late SubscriptionBillingCancellationResultResponseDto _value;
     try {
-      _value = ProfileBillingCancellationResultResponseDto.fromJson(
+      _value = SubscriptionBillingCancellationResultResponseDto.fromJson(
         _result.data!,
       );
     } on Object catch (e, s) {

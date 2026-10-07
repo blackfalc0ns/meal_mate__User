@@ -45,7 +45,7 @@ import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_a
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/dietary_preferences_screen.dart';
 import 'package:meal_meat_user/features/food_preferences/presentation/screens/add_allergy_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/screens/health_goals_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/screens/profile_billing_screen.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/screens/subscription_billing_screen.dart';
 import 'package:meal_meat_user/features/splash/presentation/screens/splash_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/widgets/auth_page_type.dart';
 import 'package:meal_meat_user/features/family_packages/presentation/screens/family_package_selection_screen.dart';
@@ -544,7 +544,7 @@ class RouteGenerator {
       case AppRoutes.profileBilling:
         return _buildRoute(
           settings: settings,
-          page: const ProfileBillingScreen(),
+          page: const SubscriptionBillingScreen(),
         );
       case AppRoutes.wallet:
         return _buildRoute(settings: settings, page: const WalletScreen());

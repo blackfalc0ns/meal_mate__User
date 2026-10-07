@@ -2,16 +2,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/features/calendar/data/mapper/calendar_mapper.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
-import 'package:meal_meat_user/features/profile/data/mapper/profile_billing_mapper.dart';
-import 'package:meal_meat_user/features/profile/data/models/request/profile_billing_action_request_dto.dart';
-import 'package:meal_meat_user/features/profile/data/models/response/profile_billing_response_dto.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_billing_entity.dart';
-import 'package:meal_meat_user/features/profile/presentation/manager/profile_state.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_billing_action_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 
 void main() {
   group('Freeze Policy & Request Tests', () {
-    test('ProfileBillingFreezeRequestDto toJson includes acknowledgeLostSelections when true', () {
-      const requestWithAck = ProfileBillingFreezeRequestDto(
+    test('SubscriptionBillingFreezeRequestDto toJson includes acknowledgeLostSelections when true', () {
+      const requestWithAck = SubscriptionBillingFreezeRequestDto(
         startDate: '2026-09-07',
         endDate: '2026-09-12',
         reason: 'Travel',
@@ -24,7 +24,7 @@ void main() {
       expect(jsonWithAck['reason'], 'Travel');
       expect(jsonWithAck['acknowledgeLostSelections'], true);
 
-      const requestWithoutAck = ProfileBillingFreezeRequestDto(
+      const requestWithoutAck = SubscriptionBillingFreezeRequestDto(
         startDate: '2026-09-07',
         endDate: '2026-09-12',
         reason: 'Travel',
@@ -34,8 +34,8 @@ void main() {
       expect(jsonWithoutAck['acknowledgeLostSelections'], isNull);
     });
 
-    test('ProfileBillingFreezeRequestEntity maps acknowledgeLostSelections to DTO', () {
-      const entity = ProfileBillingFreezeRequestEntity(
+    test('SubscriptionBillingFreezeRequestEntity maps acknowledgeLostSelections to DTO', () {
+      const entity = SubscriptionBillingFreezeRequestEntity(
         startDate: '2026-09-07',
         endDate: '2026-09-12',
         reason: 'Travel',
@@ -45,7 +45,7 @@ void main() {
       final dto = entity.toDto();
       expect(dto.acknowledgeLostSelections, isTrue);
 
-      const defaultEntity = ProfileBillingFreezeRequestEntity(
+      const defaultEntity = SubscriptionBillingFreezeRequestEntity(
         startDate: '2026-09-07',
         endDate: '2026-09-12',
       );
@@ -54,7 +54,7 @@ void main() {
       expect(defaultDto.acknowledgeLostSelections, isNull);
     });
 
-    test('ProfileBillingFreezePolicyResponseDto deserializes backend policy with notice', () {
+    test('SubscriptionBillingFreezePolicyResponseDto deserializes backend policy with notice', () {
       final json = {
         'defaultDurationDays': 7,
         'startDelayDays': 3,
@@ -66,7 +66,7 @@ void main() {
         'notice': 'عند تجميد الاشتراك: سيتم تمديد تاريخ انتهاء اشتراكك تلقائياً...',
       };
 
-      final dto = ProfileBillingFreezePolicyResponseDto.fromJson(json);
+      final dto = SubscriptionBillingFreezePolicyResponseDto.fromJson(json);
       expect(dto.defaultDurationDays, 7);
       expect(dto.startDelayDays, 3);
       expect(dto.extendSubscriptionEnd, isTrue);
@@ -83,14 +83,14 @@ void main() {
       expect(entity.messageAr, contains('يمكن تجميد'));
     });
 
-    test('ProfileBillingActionState stores and clears pending freeze details', () {
-      const request = ProfileBillingFreezeRequestEntity(
+    test('SubscriptionBillingActionState stores and clears pending freeze details', () {
+      const request = SubscriptionBillingFreezeRequestEntity(
         startDate: '2026-09-07',
         endDate: '2026-09-12',
         reason: 'Holiday',
       );
 
-      var state = const ProfileBillingActionState();
+      var state = const SubscriptionBillingActionState();
       expect(state.pendingFreezeRequest, isNull);
       expect(state.pendingFreezeSubscriptionId, isNull);
 
@@ -107,7 +107,7 @@ void main() {
       expect(state.pendingFreezeSubscriptionId, isNull);
     });
 
-    test('ProfileBillingPendingFreezeResponseDto deserializes exact backend response', () {
+    test('SubscriptionBillingPendingFreezeResponseDto deserializes exact backend response', () {
       final json = {
         'requestId': '230d3f4f-2aaa-468a-b1d8-a3c754968a5c',
         'startDate': '2026-09-07',
@@ -116,7 +116,7 @@ void main() {
         'status': 'Approved',
       };
 
-      final dto = ProfileBillingPendingFreezeResponseDto.fromJson(json);
+      final dto = SubscriptionBillingPendingFreezeResponseDto.fromJson(json);
       expect(dto.requestId, '230d3f4f-2aaa-468a-b1d8-a3c754968a5c');
       expect(dto.startDate, '2026-09-07');
       expect(dto.endDate, '2026-09-12');
@@ -131,7 +131,7 @@ void main() {
       expect(entity.status, 'Approved');
     });
 
-    test('ProfileBillingActionsResponseDto maps actions correctly', () {
+    test('SubscriptionBillingActionsResponseDto maps actions correctly', () {
       final json = {
         'canRenew': true,
         'canFreeze': false,
@@ -140,7 +140,7 @@ void main() {
         'freezeUnavailableReason': 'freeze_request_pending',
       };
 
-      final dto = ProfileBillingActionsResponseDto.fromJson(json);
+      final dto = SubscriptionBillingActionsResponseDto.fromJson(json);
       expect(dto.canFreeze, isFalse);
       expect(dto.freezeUnavailableReason, 'freeze_request_pending');
 

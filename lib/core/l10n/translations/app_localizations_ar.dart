@@ -6291,4 +6291,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get restaurant_tier_continue_button => 'متابعة الترقية';
+
+  @override
+  String get billing_freeze_consent_agree => 'موافقة ومتابعة';
+
+  @override
+  String get billing_freeze_consent_cancel => 'إلغاء';
 }

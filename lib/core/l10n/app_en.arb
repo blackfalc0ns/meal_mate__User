@@ -2478,5 +2478,7 @@
   "restaurant_tier_unavailable_no_days": "There are no remaining service days in the current subscription to perform the upgrade.",
   "restaurant_tier_unavailable_pricing": "Pricing service is currently unavailable, please try again later.",
   "restaurant_tier_unavailable_generic": "Upgrade is currently not available for this subscription.",
-  "restaurant_tier_continue_button": "Continue Upgrade"
+  "restaurant_tier_continue_button": "Continue Upgrade",
+  "billing_freeze_consent_agree": "Agree & Continue",
+  "billing_freeze_consent_cancel": "Cancel"
 }
