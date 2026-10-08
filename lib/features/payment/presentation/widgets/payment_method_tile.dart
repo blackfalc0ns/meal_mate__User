@@ -25,49 +25,57 @@ class PaymentMethodTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final isAvailable = method.isAvailable;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        height: 55,
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.sm,
-          vertical: Spacing.xs,
-        ),
-        decoration: BoxDecoration(
-          color: color.surface,
-          borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          border: Border.all(
-            color: isSelected ? color.primary : color.outlineVariant,
-            width: isSelected ? 1.5 : 1.0,
+    return Opacity(
+      opacity: isAvailable ? 1.0 : 0.5,
+      child: GestureDetector(
+        onTap: isAvailable ? onTap : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 55,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.sm,
+            vertical: Spacing.xs,
           ),
-        ),
-        child: Row(
-          children: [
-            PaymentMethodLogo(type: method.type),
-            const SizedBox(width: Spacing.base),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _title(context),
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurface,
-                    ),
-                  ),
-                  _buildSubtitle(context),
-                ],
-              ),
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: BorderRadius.circular(Spacing.cardRadius),
+            border: Border.all(
+              color: isSelected && isAvailable
+                  ? color.primary
+                  : color.outlineVariant,
+              width: isSelected && isAvailable ? 1.5 : 1.0,
             ),
-            const SizedBox(width: Spacing.md),
-            PaymentMethodRadioDot(isSelected: isSelected),
-            const SizedBox(width: Spacing.md),
-          ],
+          ),
+          child: Row(
+            children: [
+              PaymentMethodLogo(type: method.type),
+              const SizedBox(width: Spacing.base),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _title(context),
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size11,
+                        color: color.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    _buildSubtitle(context),
+                  ],
+                ),
+              ),
+              const SizedBox(width: Spacing.md),
+              PaymentMethodRadioDot(isSelected: isSelected && isAvailable),
+              const SizedBox(width: Spacing.md),
+            ],
+          ),
         ),
       ),
     );
@@ -82,21 +90,32 @@ class PaymentMethodTile extends StatelessWidget {
       PaymentMethodType.visa => locale.payment_method_visa,
       PaymentMethodType.applePay => locale.payment_method_apple,
       PaymentMethodType.wallet => locale.payment_method_wallet,
-      PaymentMethodType.sandbox => locale.sandbox_checkout_title,
       PaymentMethodType.unknown => method.title.isNotEmpty ? method.title : 'Payment',
     };
   }
 
   String _subtitle(BuildContext context) {
-    if (method.subtitle.isNotEmpty) return method.subtitle;
     final locale = context.localization;
+
+    if (!method.isAvailable) {
+      if (method.unavailableReason == 'wallet_not_implemented') {
+        return locale.payment_method_unavailable_wallet;
+      }
+      if (method.unavailableReason != null &&
+          method.unavailableReason!.trim().isNotEmpty) {
+        return method.unavailableReason!;
+      }
+      return locale.payment_method_unavailable_generic;
+    }
+
+    if (method.subtitle.isNotEmpty) return method.subtitle;
+
     return switch (method.type) {
-      PaymentMethodType.payzah => '',
+      PaymentMethodType.payzah => locale.payment_method_payzah_subtitle,
       PaymentMethodType.mada => locale.payment_method_mada_subtitle,
       PaymentMethodType.visa => locale.payment_method_visa_subtitle,
       PaymentMethodType.applePay => locale.payment_method_apple_subtitle,
       PaymentMethodType.wallet => locale.payment_method_wallet_balance,
-      PaymentMethodType.sandbox => locale.sandbox_checkout_subtitle,
       PaymentMethodType.unknown => '',
     };
   }
@@ -104,7 +123,8 @@ class PaymentMethodTile extends StatelessWidget {
   Widget _buildSubtitle(BuildContext context) {
     final color = context.colorScheme;
 
-    if (method.type == PaymentMethodType.wallet &&
+    if (method.isAvailable &&
+        method.type == PaymentMethodType.wallet &&
         method.walletBalance != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -129,13 +149,16 @@ class PaymentMethodTile extends StatelessWidget {
         ],
       );
     }
+
     return Text(
       _subtitle(context),
       style: getMediumStyle(
         fontFamily: FontConstant.alexandria,
         fontSize: FontSize.size10,
-        color: color.onSurfaceVariant,
+        color: !method.isAvailable ? color.error : color.onSurfaceVariant,
       ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

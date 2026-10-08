@@ -6694,4 +6694,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get calling_end_call => 'إنهاء المكالمة';
+
+  @override
+  String get payment_method_unavailable_wallet =>
+      'الدفع بالمحفظة غير متوفر حالياً';
+
+  @override
+  String get payment_method_unavailable_generic => 'غير متوفر حالياً';
+
+  @override
+  String get payment_method_service_charge_label => 'رسوم الخدمة';
+
+  @override
+  String get payment_method_total_with_fees_label => 'الإجمالي شامل الرسوم';
 }

@@ -19,6 +19,12 @@ class PaymentMethodResponseDto {
     this.descriptionEn,
     this.isAvailable,
     this.walletBalance,
+    this.integrationType,
+    this.serviceCharge,
+    this.totalAmount,
+    this.currencyCode,
+    this.unavailableReason,
+    this.imageUrl,
   });
 
   final int? id;
@@ -35,6 +41,12 @@ class PaymentMethodResponseDto {
   final String? descriptionEn;
   final bool? isAvailable;
   final double? walletBalance;
+  final String? integrationType;
+  final double? serviceCharge;
+  final double? totalAmount;
+  final String? currencyCode;
+  final String? unavailableReason;
+  final String? imageUrl;
 
   factory PaymentMethodResponseDto.fromJson(Map<String, dynamic> json) =>
       _$PaymentMethodResponseDtoFromJson(json);

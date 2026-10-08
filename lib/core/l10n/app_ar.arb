@@ -2590,5 +2590,9 @@
   "calling_delivery_request": "طلب توصيل",
   "calling_mute_mic": "كتم الميكروفون",
   "calling_speaker": "سماعة",
-  "calling_end_call": "إنهاء المكالمة"
+  "calling_end_call": "إنهاء المكالمة",
+  "payment_method_unavailable_wallet": "الدفع بالمحفظة غير متوفر حالياً",
+  "payment_method_unavailable_generic": "غير متوفر حالياً",
+  "payment_method_service_charge_label": "رسوم الخدمة",
+  "payment_method_total_with_fees_label": "الإجمالي شامل الرسوم"
 }

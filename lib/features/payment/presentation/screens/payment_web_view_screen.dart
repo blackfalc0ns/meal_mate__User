@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/payment_redirect_web_view.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
@@ -27,12 +28,32 @@ class PaymentWebViewScreen extends StatefulWidget {
 
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final PaymentViewModel _viewModel;
-  bool _hasStartedVerification = false;
 
   @override
   void initState() {
     super.initState();
     _viewModel = getIt<PaymentViewModel>();
+    final checkout = widget.args?.checkout;
+    if (checkout != null) {
+      _viewModel.doIntent(InitCheckoutSessionEvent(checkout));
+      if (checkout.paymentUrl.isEmpty) {
+        if (checkout.subscriptionId.isNotEmpty) {
+          _viewModel.doIntent(
+            VerifyPaymentFulfillmentEvent(checkout.subscriptionId),
+          );
+        } else if (checkout.paymentId != null &&
+            checkout.paymentId!.isNotEmpty) {
+          _viewModel.doIntent(
+            HandlePaymentReturnEvent(
+              PaymentReturn(
+                destination: PaymentReturnDestination.pending,
+                paymentId: checkout.paymentId!,
+              ),
+            ),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -46,7 +67,10 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     final locale = context.localization;
     final args = widget.args;
 
-    if (args == null || args.checkout.paymentUrl.isEmpty) {
+    if (args == null ||
+        (args.checkout.paymentUrl.isEmpty &&
+            (args.checkout.paymentId?.isEmpty ?? true) &&
+            args.checkout.subscriptionId.isEmpty)) {
       return Scaffold(
         appBar: CustomAppBar(title: locale.payment_title),
         body: EmptyStateWidget(
@@ -66,8 +90,11 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
         listener: (context, state) {
           if (state.isFulfillmentSuccess) {
             final checkout = args.checkout;
+            final subId = state.checkout?.subscriptionId.isNotEmpty == true
+                ? state.checkout!.subscriptionId
+                : checkout.subscriptionId;
             final successArgs = PaymentSuccessArgs(
-              subscriptionId: checkout.subscriptionId,
+              subscriptionId: subId,
               paymentDate: DateTime.now().toIso8601String().split('T').first,
               startDate: checkout.startDate.isNotEmpty
                   ? checkout.startDate
@@ -90,34 +117,49 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
         builder: (context, state) {
           final failure = state.fulfillmentFailure ?? state.calendarFailure;
           if (failure != null) {
+            final subId = args.checkout.subscriptionId.isNotEmpty
+                ? args.checkout.subscriptionId
+                : (state.checkout?.subscriptionId ?? '');
             return Scaffold(
               appBar: CustomAppBar(title: locale.payment_title),
               body: ApiErrorWidget(
                 exception: failure.exception,
                 onRetry: () => _viewModel.doIntent(
                   state.isFulfillmentSuccess
-                      ? PollSubscriptionCalendarEvent(
-                          args.checkout.subscriptionId,
-                        )
-                      : VerifyPaymentFulfillmentEvent(
-                          args.checkout.subscriptionId,
-                        ),
+                      ? PollSubscriptionCalendarEvent(subId)
+                      : VerifyPaymentFulfillmentEvent(subId),
                 ),
               ),
             );
           }
 
-          if (state.isReviewRequired || state.isPaymentPending) {
+          if (state.isReviewRequired ||
+              state.isPaymentPending ||
+              args.checkout.paymentUrl.isEmpty) {
+            final subId = args.checkout.subscriptionId.isNotEmpty
+                ? args.checkout.subscriptionId
+                : (state.checkout?.subscriptionId ?? '');
             return Scaffold(
               appBar: CustomAppBar(title: locale.payment_title),
               body: PaymentUnresolvedStatusView(
                 isReviewRequired: state.isReviewRequired,
-                attemptHandle: state.attemptHandle,
+                attemptHandle:
+                    state.attemptHandle ?? args.checkout.paymentId,
                 isCheckingStatus: state.isFulfillmentLoading,
                 onCheckStatus: () {
-                  _viewModel.doIntent(
-                    VerifyPaymentFulfillmentEvent(args.checkout.subscriptionId),
-                  );
+                  if (subId.isNotEmpty) {
+                    _viewModel.doIntent(VerifyPaymentFulfillmentEvent(subId));
+                  } else {
+                    _viewModel.doIntent(
+                      HandlePaymentReturnEvent(
+                        PaymentReturn(
+                          destination: PaymentReturnDestination.pending,
+                          paymentId:
+                              args.checkout.paymentId ?? state.attemptHandle ?? '',
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
             );
@@ -127,38 +169,20 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             appBar: CustomAppBar(title: locale.payment_title),
             body: PaymentRedirectWebView(
               paymentUrl: args.checkout.paymentUrl,
-              isProcessing:
-                  state.isFulfillmentLoading || state.isCalendarLoading,
-              processingMessage: state.isCalendarLoading
-                  ? locale.payment_calendar_preparing
-                  : null,
+              isProcessing: state.isFulfillmentLoading ||
+                  state.isCalendarLoading ||
+                  state.isPaidProcessing,
+              processingMessage:
+                  (state.isCalendarLoading || state.isPaidProcessing)
+                      ? locale.payment_calendar_preparing
+                      : null,
               onPaymentReturn: (paymentReturn) {
                 _viewModel.doIntent(HandlePaymentReturnEvent(paymentReturn));
               },
-              onSuccessRedirect: _verifyPayment,
-              onErrorRedirect: _markPaymentFailed,
             ),
           );
         },
       ),
     );
-  }
-
-  void _verifyPayment() {
-    if (_hasStartedVerification) return;
-    _hasStartedVerification = true;
-
-    final subscriptionId = widget.args?.checkout.subscriptionId ?? '';
-    if (subscriptionId.isNotEmpty) {
-      _viewModel.doIntent(VerifyPaymentFulfillmentEvent(subscriptionId));
-    } else {
-      _viewModel.doIntent(const MarkPaymentFailedEvent());
-    }
-  }
-
-  void _markPaymentFailed() {
-    if (_hasStartedVerification) return;
-    _hasStartedVerification = true;
-    _viewModel.doIntent(const MarkPaymentFailedEvent());
   }
 }

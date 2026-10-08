@@ -23,7 +23,7 @@ class PaymentContentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedMethodId = state.selectedMethod?.id ?? state.methods.first.id;
+    final selectedMethodId = state.selectedMethod?.id;
 
     final hasVisibleCheckoutError =
         state.checkoutFailure != null &&

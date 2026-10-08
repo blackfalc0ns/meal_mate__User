@@ -12553,6 +12553,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End Call'**
   String get calling_end_call;
+
+  /// No description provided for @payment_method_unavailable_wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet payment is currently not available'**
+  String get payment_method_unavailable_wallet;
+
+  /// No description provided for @payment_method_unavailable_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently unavailable'**
+  String get payment_method_unavailable_generic;
+
+  /// No description provided for @payment_method_service_charge_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charge'**
+  String get payment_method_service_charge_label;
+
+  /// No description provided for @payment_method_total_with_fees_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total including fees'**
+  String get payment_method_total_with_fees_label;
 }
 
 class _AppLocalizationsDelegate

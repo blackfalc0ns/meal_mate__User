@@ -13,6 +13,7 @@ class PaymentState {
     this.isPaymentFailed = false,
     this.isReviewRequired = false,
     this.isPaymentPending = false,
+    this.isPaidProcessing = false,
     this.attemptHandle,
     this.methods = const [],
     this.selectedMethod,
@@ -34,6 +35,7 @@ class PaymentState {
   final bool isPaymentFailed;
   final bool isReviewRequired;
   final bool isPaymentPending;
+  final bool isPaidProcessing;
   final String? attemptHandle;
   final List<PaymentMethodEntity> methods;
   final PaymentMethodEntity? selectedMethod;
@@ -72,6 +74,7 @@ class PaymentState {
     bool? isPaymentFailed,
     bool? isReviewRequired,
     bool? isPaymentPending,
+    bool? isPaidProcessing,
     String? attemptHandle,
     List<PaymentMethodEntity>? methods,
     PaymentMethodEntity? selectedMethod,
@@ -102,6 +105,7 @@ class PaymentState {
       isPaymentFailed: isPaymentFailed ?? this.isPaymentFailed,
       isReviewRequired: isReviewRequired ?? this.isReviewRequired,
       isPaymentPending: isPaymentPending ?? this.isPaymentPending,
+      isPaidProcessing: isPaidProcessing ?? this.isPaidProcessing,
       attemptHandle: clearAttemptHandle
           ? null
           : attemptHandle ?? this.attemptHandle,
@@ -145,6 +149,7 @@ class PaymentState {
           isPaymentFailed == other.isPaymentFailed &&
           isReviewRequired == other.isReviewRequired &&
           isPaymentPending == other.isPaymentPending &&
+          isPaidProcessing == other.isPaidProcessing &&
           attemptHandle == other.attemptHandle &&
           selectedMethod?.id == other.selectedMethod?.id &&
           checkout?.subscriptionId == other.checkout?.subscriptionId &&
@@ -167,6 +172,7 @@ class PaymentState {
     isPaymentFailed,
     isReviewRequired,
     isPaymentPending,
+    isPaidProcessing,
     attemptHandle,
     selectedMethod?.id,
     checkout?.subscriptionId,

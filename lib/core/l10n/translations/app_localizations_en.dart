@@ -6810,4 +6810,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calling_end_call => 'End Call';
+
+  @override
+  String get payment_method_unavailable_wallet =>
+      'Wallet payment is currently not available';
+
+  @override
+  String get payment_method_unavailable_generic => 'Currently unavailable';
+
+  @override
+  String get payment_method_service_charge_label => 'Service charge';
+
+  @override
+  String get payment_method_total_with_fees_label => 'Total including fees';
 }

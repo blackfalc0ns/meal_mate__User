@@ -7,33 +7,38 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.d
 extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
   PaymentMethodEntity toEntity() {
     return PaymentMethodEntity(
-      id: paymentMethodId ?? id ?? 0,
+      id: paymentMethodId ?? id,
       type: _methodType,
-      title: titleAr ?? titleEn ?? title ?? nameAr ?? nameEn ?? name ?? '',
-      subtitle: descriptionAr ?? descriptionEn ?? description ?? '',
+      title: nameAr ?? nameEn ?? name ?? titleAr ?? titleEn ?? title ?? '',
+      subtitle: descriptionAr ??
+          descriptionEn ??
+          description ??
+          (unavailableReason ?? ''),
       isAvailable: isAvailable ?? false,
+      code: code,
+      integrationType: integrationType,
+      serviceCharge: serviceCharge,
+      totalAmount: totalAmount,
+      currencyCode: currencyCode,
+      unavailableReason: unavailableReason,
+      imageUrl: imageUrl,
       walletBalance: walletBalance,
     );
   }
 
   PaymentMethodType get _methodType {
-    final effectiveId = paymentMethodId ?? id;
     final normalizedCode = code?.trim().toUpperCase();
+    final normalizedIntegration = integrationType?.trim().toUpperCase();
 
-    final isCodePayzah = normalizedCode == 'PAYZAH';
-    final isIdPayzah = effectiveId == 3;
-
-    if (isCodePayzah && isIdPayzah) {
+    // Hosted Payzah is identified by code or integrationType, NOT hardcoded ID 3.
+    if (normalizedCode == 'PAYZAH' ||
+        normalizedIntegration == 'PAYZAH_HOSTED') {
       return PaymentMethodType.payzah;
     }
-    if (isCodePayzah && effectiveId != null && effectiveId != 3) {
-      return PaymentMethodType.unknown;
-    }
-    if (isIdPayzah && normalizedCode != null && normalizedCode != 'PAYZAH') {
-      return PaymentMethodType.unknown;
-    }
-    if (isCodePayzah || isIdPayzah) {
-      return PaymentMethodType.payzah;
+
+    if (normalizedCode == 'MEALMATE_WALLET' ||
+        normalizedCode == 'WALLET') {
+      return PaymentMethodType.wallet;
     }
 
     final value = [
@@ -46,30 +51,14 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
       titleEn,
     ].whereType<String>().join(' ').toLowerCase();
 
-    if (value.contains('sandbox') ||
-        value.contains('تجربة') ||
-        value.contains('without_payment') ||
-        (effectiveId != null && effectiveId < 0)) {
-      return PaymentMethodType.sandbox;
+    if (value.contains('payzah')) {
+      return PaymentMethodType.payzah;
     }
-    if (value.contains('wallet') || normalizedCode == 'WALLET') {
+    if (value.contains('wallet')) {
       return PaymentMethodType.wallet;
     }
-    if (value.contains('apple') || normalizedCode == 'APPLE_PAY') {
-      return PaymentMethodType.applePay;
-    }
-    if (value.contains('visa') ||
-        value.contains('master') ||
-        normalizedCode == 'VISA' ||
-        normalizedCode == 'MASTERCARD') {
-      return PaymentMethodType.visa;
-    }
-    if (value.contains('mada') ||
-        normalizedCode == 'MADA' ||
-        normalizedCode == 'MD') {
-      return PaymentMethodType.mada;
-    }
 
+    // Legacy sandbox and unknown providers map to unknown
     return PaymentMethodType.unknown;
   }
 }
@@ -104,6 +93,7 @@ extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
       priceSnapshotId: priceSnapshotId ?? '',
       restaurantPoolSnapshotId: restaurantPoolSnapshotId ?? '',
       paymentStatus: paymentStatus ?? '',
+      paymentId: paymentId,
     );
   }
 }

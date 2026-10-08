@@ -27,6 +27,7 @@ class TokenInterceptor extends QueuedInterceptor {
   });
 
   static const String skipAuthKey = 'skipAuth';
+  static const String noAutoRetryKey = 'noAutoRetry';
   static const String _refreshRetryKey = 'refreshRetry';
 
   final TokenService _tokenService;
@@ -80,8 +81,17 @@ class TokenInterceptor extends QueuedInterceptor {
     final isUnauthorized = err.response?.statusCode == 401;
     final shouldSkipAuth = options.extra[skipAuthKey] == true;
     final alreadyRetried = options.extra[_refreshRetryKey] == true;
+    final isCheckout = options.path.contains('/subscriptions/checkout') ||
+        options.extra[noAutoRetryKey] == true;
 
     if (!isUnauthorized || shouldSkipAuth) {
+      handler.next(err);
+      return;
+    }
+
+    if (isCheckout) {
+      // Re-authenticate session in background, but NEVER auto-replay a checkout POST
+      _refreshAccessToken();
       handler.next(err);
       return;
     }

@@ -33,8 +33,17 @@ import '../../features/change_password/domain/usecase/change_customer_password_u
 import '../../features/change_password/presentation/manager/change_password_view_model.dart';
 import '../../features/notifications/presentation/manager/notifications_view_model.dart';
 import '../../features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
+import '../../features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
+import '../../features/payment/domain/usecase/checkout_subscription_usecase.dart';
+import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
+import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
+import '../../features/payment/presentation/manager/payment_view_model.dart';
 import '../biometric/biometric_service.dart';
 import '../helpers/shared_pref.dart';
+import '../payment/payment_attempt_store.dart';
+import '../payment/payment_deep_link_coordinator.dart';
+import '../services/app_navigator_service.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/token_service.dart';
 import 'di.config.dart';
@@ -148,6 +157,37 @@ Future<void> configureDependencies() async {
         getIt<LogoutUseCase>(),
         getIt<TokenService>(),
         getIt<BiometricService>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<PaymentViewModel>()) {
+    getIt.registerFactory<PaymentViewModel>(
+      () => PaymentViewModel(
+        getIt<GetPaymentMethodsUseCase>(),
+        getIt<CheckoutSubscriptionUseCase>(),
+        getIt<GetSubscriptionPaymentStatusUseCase>(),
+        getIt<GetSubscriptionCalendarUseCase>(),
+        getIt<GetCurrentCustomerSubscriptionUseCase>(),
+        getIt<SharedPrefHelper>(),
+        paymentAttemptStore: getIt.isRegistered<PaymentAttemptStore>()
+            ? getIt<PaymentAttemptStore>()
+            : null,
+        tokenService: getIt.isRegistered<TokenService>()
+            ? getIt<TokenService>()
+            : null,
+        getSubscriptionBillingUseCase:
+            getIt.isRegistered<GetSubscriptionBillingUseCase>()
+                ? getIt<GetSubscriptionBillingUseCase>()
+                : null,
+      ),
+    );
+  }
+  if (!getIt.isRegistered<PaymentDeepLinkCoordinator>()) {
+    getIt.registerLazySingleton<PaymentDeepLinkCoordinator>(
+      () => PaymentDeepLinkCoordinator(
+        tokenService: getIt<TokenService>(),
+        paymentAttemptStore: getIt<PaymentAttemptStore>(),
+        navigatorService: getIt<AppNavigatorService>(),
       ),
     );
   }

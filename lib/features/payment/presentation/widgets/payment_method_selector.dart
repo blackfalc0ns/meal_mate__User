@@ -15,7 +15,7 @@ class PaymentMethodSelector extends StatelessWidget {
   });
 
   final List<PaymentMethodEntity> methods;
-  final int selectedMethodId;
+  final int? selectedMethodId;
   final ValueChanged<PaymentMethodEntity> onMethodSelected;
 
   @override
@@ -42,7 +42,7 @@ class PaymentMethodSelector extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: Spacing.sm),
               child: PaymentMethodTile(
                 method: method,
-                isSelected: method.id == selectedMethodId,
+                isSelected: method.id != null && method.id == selectedMethodId,
                 onTap: () => onMethodSelected(method),
               ),
             ),

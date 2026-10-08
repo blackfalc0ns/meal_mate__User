@@ -4,7 +4,7 @@
 
 library;
 
-enum PaymentMethodType { payzah, mada, visa, applePay, wallet, sandbox, unknown }
+enum PaymentMethodType { payzah, mada, visa, applePay, wallet, unknown }
 
 class OrderSummaryEntity {
   const OrderSummaryEntity({
@@ -33,14 +33,28 @@ class PaymentMethodEntity {
     required this.title,
     required this.subtitle,
     required this.isAvailable,
+    this.code,
+    this.integrationType,
+    this.serviceCharge,
+    this.totalAmount,
+    this.currencyCode,
+    this.unavailableReason,
+    this.imageUrl,
     this.walletBalance,
   });
 
-  final int id;
+  final int? id;
   final PaymentMethodType type;
   final String title;
   final String subtitle;
   final bool isAvailable;
+  final String? code;
+  final String? integrationType;
+  final double? serviceCharge;
+  final double? totalAmount;
+  final String? currencyCode;
+  final String? unavailableReason;
+  final String? imageUrl;
 
   /// Only relevant for [PaymentMethodType.wallet]
   final double? walletBalance;
@@ -81,7 +95,7 @@ class PaymentCheckoutRequestEntity {
       startDate.isNotEmpty &&
       callbackUrl.isNotEmpty &&
       errorUrl.isNotEmpty &&
-      paymentMethodId != 0 &&
+      paymentMethodId > 0 &&
       correlationId.isNotEmpty;
 }
 
@@ -96,6 +110,7 @@ class PaymentCheckoutEntity {
     required this.priceSnapshotId,
     required this.restaurantPoolSnapshotId,
     required this.paymentStatus,
+    this.paymentId,
   });
 
   final String subscriptionId;
@@ -107,6 +122,24 @@ class PaymentCheckoutEntity {
   final String priceSnapshotId;
   final String restaurantPoolSnapshotId;
   final String paymentStatus;
+  final String? paymentId;
+
+  factory PaymentCheckoutEntity.recovery({
+    required String subscriptionId,
+    required String paymentId,
+  }) =>
+      PaymentCheckoutEntity(
+        subscriptionId: subscriptionId,
+        paymentUrl: '',
+        holdExpiresAtUtc: '',
+        chosenStartDate: '',
+        startDate: '',
+        finalPrice: 0.0,
+        priceSnapshotId: '',
+        restaurantPoolSnapshotId: '',
+        paymentStatus: '',
+        paymentId: paymentId,
+      );
 }
 
 class PaymentStatusEntity {

@@ -89,6 +89,18 @@ abstract class ExternalModules {
               '"refreshToken": "[REDACTED]"',
             )
             .replaceAll(
+              RegExp(r'"paymentUrl"\s*:\s*"[^"]*"'),
+              '"paymentUrl": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"cvv"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"cvv": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"cardNumber"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"cardNumber": "[REDACTED]"',
+            )
+            .replaceAll(
               RegExp(r'Bearer\s+[A-Za-z0-9\-_.=]+'),
               'Bearer [REDACTED]',
             );

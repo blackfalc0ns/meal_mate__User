@@ -16,6 +16,7 @@ class PaymentCheckoutResponseDto {
     this.priceSnapshotId,
     this.restaurantPoolSnapshotId,
     this.paymentStatus,
+    this.paymentId,
   });
 
   final String? subscriptionId;
@@ -29,6 +30,7 @@ class PaymentCheckoutResponseDto {
   final String? priceSnapshotId;
   final String? restaurantPoolSnapshotId;
   final String? paymentStatus;
+  final String? paymentId;
 
   factory PaymentCheckoutResponseDto.fromJson(Map<String, dynamic> json) =>
       _$PaymentCheckoutResponseDtoFromJson(json);

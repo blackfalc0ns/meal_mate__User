@@ -16,6 +16,7 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/entities/su
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'fixtures/payment_fixtures.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -159,6 +160,16 @@ void main() {
     });
 
     test('review return immediately blocks new payments and sets isReviewRequired', () async {
+      mockStatusUseCase.response = const ApiSuccessResult(
+        data: PaymentStatusEntity(
+          paymentStatus: 'SuspendedForReview',
+          isPaid: false,
+          isFailed: false,
+          amount: 100,
+          currencyCode: 'KWD',
+        ),
+      );
+
       mockCheckoutUseCase.response = const ApiSuccessResult(
         data: PaymentCheckoutEntity(
           subscriptionId: 'sub-review-123',
@@ -363,7 +374,9 @@ class _MockGetSubscriptionCalendarUseCase implements GetSubscriptionCalendarUseC
 }
 
 class _MockGetCurrentSubscriptionUseCase implements GetCurrentCustomerSubscriptionUseCase {
+  ApiResult<SubscriptionBillingCurrentEntity> response =
+      ApiSuccessResult(data: PaymentFixtures.activeCurrentEntity());
+
   @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async =>
-      const ApiSuccessResult(data: SubscriptionBillingCurrentEntity(emptyStateCode: ''));
+  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async => response;
 }

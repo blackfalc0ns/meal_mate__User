@@ -2612,5 +2612,9 @@
   "calling_delivery_request": "Delivery request",
   "calling_mute_mic": "Mute",
   "calling_speaker": "Speaker",
-  "calling_end_call": "End Call"
+  "calling_end_call": "End Call",
+  "payment_method_unavailable_wallet": "Wallet payment is currently not available",
+  "payment_method_unavailable_generic": "Currently unavailable",
+  "payment_method_service_charge_label": "Service charge",
+  "payment_method_total_with_fees_label": "Total including fees"
 }

@@ -105,10 +105,18 @@ class PaymentScreen extends StatelessWidget {
     final checkout = state.checkout;
     if (checkout != null && checkout.paymentUrl.isNotEmpty) {
       unawaited(
-        Navigator.of(context).pushNamed(
-          AppRoutes.paymentWebView,
-          arguments: PaymentWebViewArgs(checkout: checkout),
-        ),
+        Navigator.of(context)
+            .pushNamed(
+              AppRoutes.paymentWebView,
+              arguments: PaymentWebViewArgs(checkout: checkout),
+            )
+            .then((_) {
+              if (context.mounted) {
+                context
+                    .read<PaymentViewModel>()
+                    .doIntent(LoadPaymentEvent(paymentArgs));
+              }
+            }),
       );
       return;
     }
@@ -151,6 +159,10 @@ class PaymentScreen extends StatelessWidget {
     return !state.isCheckoutLoading &&
         !state.isFulfillmentLoading &&
         !state.isCalendarLoading &&
-        state.methods.isNotEmpty;
+        !state.isReviewRequired &&
+        state.selectedMethod != null &&
+        state.selectedMethod!.isAvailable &&
+        state.selectedMethod!.id != null &&
+        state.selectedMethod!.id! > 0;
   }
 }

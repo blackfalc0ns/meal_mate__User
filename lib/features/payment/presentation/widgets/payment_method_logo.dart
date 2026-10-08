@@ -3,7 +3,6 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.d
 import 'package:meal_meat_user/features/payment/presentation/widgets/logos/apple_pay_logo.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/logos/mada_payment_logo.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/logos/payzah_payment_logo.dart';
-import 'package:meal_meat_user/features/payment/presentation/widgets/logos/sandbox_payment_logo.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/logos/visa_payment_logo.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/logos/wallet_payment_logo.dart';
 
@@ -25,8 +24,6 @@ class PaymentMethodLogo extends StatelessWidget {
         return const ApplePayLogo();
       case PaymentMethodType.wallet:
         return const WalletPaymentLogo();
-      case PaymentMethodType.sandbox:
-        return const SandboxPaymentLogo();
       case PaymentMethodType.unknown:
         return const PayzahPaymentLogo();
     }

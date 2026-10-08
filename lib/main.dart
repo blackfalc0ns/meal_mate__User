@@ -9,6 +9,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/services/app_locale_notifier.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
+import 'package:meal_meat_user/core/payment/payment_deep_link_coordinator.dart';
 import 'package:meal_meat_user/core/services/push_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meal_meat_user/firebase_options.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await getIt<PushNotificationService>().initialize();
+  getIt<PaymentDeepLinkCoordinator>().initialize();
   appLocaleNotifier.value = Locale(getIt<LanguageService>().getLanguageCode());
   debugPaintBaselinesEnabled = false;
 
@@ -50,7 +52,7 @@ class MealMateApp extends StatelessWidget {
               locale ?? const Locale('ar'),
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          initialRoute: AppRoutes.splash,
+          initialRoute: AppRoutes.paymentSuccess,
           onGenerateRoute: RouteGenerator.getRoute,
         );
       },

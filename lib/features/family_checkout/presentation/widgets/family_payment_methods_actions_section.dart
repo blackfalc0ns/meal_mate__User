@@ -60,7 +60,8 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
           onConfirmPayment: state.selectedPaymentMethod?.id == null
               ? null
               : () {
-                  final methodId = state.selectedPaymentMethod!.id;
+                  final methodId = state.selectedPaymentMethod?.id;
+                  if (methodId == null) return;
                   context.read<FamilyCheckoutViewModel>().doIntent(
                     CheckoutFamilySubscriptionEvent(
                       callbackUrl: 'mealmate://checkout/success',

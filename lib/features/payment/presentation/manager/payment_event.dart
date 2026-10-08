@@ -45,3 +45,9 @@ class HandlePaymentReturnEvent extends PaymentEvent {
 
   final PaymentReturn paymentReturn;
 }
+
+class InitCheckoutSessionEvent extends PaymentEvent {
+  const InitCheckoutSessionEvent(this.checkout);
+
+  final PaymentCheckoutEntity checkout;
+}
