@@ -28,11 +28,13 @@ class SubscriptionSuccessActionButtons extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           AppButton.filled(
+            borderRadius: 50,
             text: locale.subscription_success_start_meals_button,
             onPressed: onStartMeals,
           ),
           const SizedBox(height: Spacing.sm),
           AppButton.outlined(
+            borderRadius: 50,
             text: locale.subscription_success_view_subscription_button,
             iconWidget: Icon(
               Icons.receipt_long_rounded,

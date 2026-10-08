@@ -58,6 +58,8 @@ class Assets {
       '$_images/profile/profile_billing_cancel.svg';
   static const String billingEmptySubscriptionBox =
       '$_images/subscriptions/figma/billing_empty_subscription_box.png';
+  static const String subscriptionSuccessHero =
+      '$_images/subscriptions/subscription_success_hero.png';
   static const String billingEmptySubscriptionKit =
       '$_images/subscriptions/figma/billing_empty_subscription_kit.png';
   static const String billingEmptyInvoices =

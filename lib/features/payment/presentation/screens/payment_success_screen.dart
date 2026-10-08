@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_next_step_banner.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_payment_confirmed_banner.dart';
@@ -92,23 +93,13 @@ class PaymentSuccessScreen extends StatelessWidget {
               ),
               SubscriptionSuccessActionButtons(
                 onStartMeals: () {
-                  final subId = resolvedArgs.subscriptionId;
-                  if (subId.isNotEmpty) {
-                    unawaited(
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRoutes.calendar,
-                        (route) => false,
-                        arguments: subId,
-                      ),
-                    );
-                  } else {
-                    unawaited(
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRoutes.calendar,
-                        (route) => false,
-                      ),
-                    );
-                  }
+                  unawaited(
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRoutes.home,
+                      (route) => false,
+                      arguments: AppShellScreen.mealsTabIndex,
+                    ),
+                  );
                 },
                 onViewSubscription: () {
                   unawaited(

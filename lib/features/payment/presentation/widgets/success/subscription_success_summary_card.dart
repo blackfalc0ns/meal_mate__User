@@ -65,26 +65,32 @@ class SubscriptionSuccessSummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.sm),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.inventory_2_outlined,
             label: locale.subscription_success_package_label,
             value: packageName,
           ),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.calendar_today_outlined,
             label: locale.subscription_success_duration_label,
             value: duration,
           ),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.military_tech_outlined,
             label: locale.subscription_success_tier_label,
             value: restaurantTier,
           ),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.calendar_month_outlined,
             label: locale.subscription_success_payment_date_label,
             value: paymentDate,
           ),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.event_available_outlined,
             label: locale.subscription_success_start_date_label,
             value: startDate,
           ),
           SubscriptionSuccessSummaryItemRow(
+            icon: Icons.event_outlined,
             label: locale.subscription_success_end_date_label,
             value: endDate,
             showDivider: false,

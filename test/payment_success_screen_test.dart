@@ -46,8 +46,9 @@ void main() {
 
       // Hero header
       expect(find.byType(SubscriptionSuccessHeroHeader), findsOneWidget);
+      expect(find.byIcon(Icons.check_rounded), findsWidgets);
 
-      // Summary card with details
+      // Summary card with details and icons
       expect(find.byType(SubscriptionSuccessSummaryCard), findsOneWidget);
       expect(find.text('باقة نمط حياة متوازن'), findsOneWidget);
       expect(find.text('30 يوم'), findsOneWidget);
@@ -55,6 +56,12 @@ void main() {
       expect(find.text('2024/09/20'), findsOneWidget);
       expect(find.text('2024/09/21'), findsOneWidget);
       expect(find.text('2024/10/21'), findsOneWidget);
+      expect(find.byIcon(Icons.inventory_2_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.calendar_today_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.military_tech_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.calendar_month_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.event_available_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.event_outlined), findsOneWidget);
 
       // Banners
       expect(find.byType(SubscriptionPaymentConfirmedBanner), findsOneWidget);

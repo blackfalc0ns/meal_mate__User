@@ -10,11 +10,13 @@ class SubscriptionSuccessSummaryItemRow extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
+    this.icon,
     this.showDivider = true,
   });
 
   final String label;
   final String value;
+  final IconData? icon;
   final bool showDivider;
 
   @override
@@ -26,8 +28,20 @@ class SubscriptionSuccessSummaryItemRow extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              if (icon != null) ...[
+                Container(
+                  width: Spacing.xl,
+                  height: Spacing.xl,
+                  decoration: BoxDecoration(
+                    color: color.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(Spacing.xs),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(icon, size: Spacing.iconSm, color: color.primary),
+                ),
+                const SizedBox(width: Spacing.xs),
+              ],
               Text(
                 label,
                 style: getRegularStyle(
@@ -36,16 +50,14 @@ class SubscriptionSuccessSummaryItemRow extends StatelessWidget {
                   color: color.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(width: Spacing.md),
-              Flexible(
-                child: Text(
-                  value,
-                  textAlign: TextAlign.end,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onSurface,
-                  ),
+              const Spacer(),
+              Text(
+                value,
+                textAlign: TextAlign.end,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
                 ),
               ),
             ],
