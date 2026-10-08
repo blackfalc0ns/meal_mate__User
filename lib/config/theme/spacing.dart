@@ -1371,4 +1371,33 @@ class Spacing {
   static const double influencerSocialSaveButtonHeight = 48.0;
   static const double influencerSocialSaveButtonRadius = 38.0;
   static const double influencerSocialCardsGap = 7.0;
+
+  // Calling Feature Figma measurements (nodes 3056:13617 and 3056:13662).
+  static const double callingAvatarSize = 133.0;
+  static const double callingRipple1Size = 169.0;
+  static const double callingRipple2Size = 203.0;
+  static const double callingRipple3Size = 222.0;
+  static const double callingRipple4Size = 258.0;
+  static const double callingLogoWidth = 63.0;
+  static const double callingLogoHeight = 62.4;
+  static const double callingBadgeWidth = 153.0;
+  static const double callingBadgeHeight = 36.0;
+  static const double callingBadgeRadius = 18.0;
+  static const double callingBadgeIconSize = 22.0;
+  static const double callingActionBigButtonSize = 86.0;
+  static const double callingActionBigButtonIconSize = 42.0;
+  static const double callingActionSmallButtonSize = 66.0;
+  static const double callingActionSmallButtonIconSize = 27.3;
+  static const double callingActiveEndButtonSize = 83.0;
+  static const double callingActiveEndButtonIconSize = 36.0;
+  static const double callingAddressCardWidth = 304.0;
+  static const double callingAddressCardMinHeight = 100.0;
+  static const double callingAddressCardRadius = 17.0;
+  static const double callingLocationPinSize = 15.0;
+  static const double callingActionButtonsSpacing = 48.0;
+  static const double callingActiveActionsSpacing = 40.0;
+  static const double callingBgDoodleWidth = 546.3;
+  static const double callingBgDoodleHeight = 221.0;
+  static const double callingBgDoodleBottom = 220.0;
+  static const double callingBgDoodleStart = -88.0;
 }

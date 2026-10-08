@@ -4,6 +4,9 @@ import 'package:meal_meat_user/core/screens/loading_preview_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/auth_flow_screen.dart';
 import 'package:meal_meat_user/features/auth/presentation/screens/biometric_setup_screen.dart';
 import 'package:meal_meat_user/features/app_shell/presentation/screens/app_shell_screen.dart';
+import 'package:meal_meat_user/features/calling/domain/entities/call_driver_entity.dart';
+import 'package:meal_meat_user/features/calling/presentation/screens/active_call_screen.dart';
+import 'package:meal_meat_user/features/calling/presentation/screens/incoming_call_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
@@ -641,6 +644,22 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const NotificationPreferencesScreen(),
+        );
+      case AppRoutes.incomingCall:
+        final driver = settings.arguments as CallDriverEntity?;
+        return _buildRoute(
+          settings: settings,
+          page: driver != null
+              ? IncomingCallScreen(driver: driver)
+              : const IncomingCallScreen(),
+        );
+      case AppRoutes.activeCall:
+        final driver = settings.arguments as CallDriverEntity?;
+        return _buildRoute(
+          settings: settings,
+          page: driver != null
+              ? ActiveCallScreen(driver: driver)
+              : const ActiveCallScreen(),
         );
       default:
         return _buildRoute(

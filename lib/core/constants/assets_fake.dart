@@ -248,4 +248,6 @@ class AssetsFake {
       'assets/images/influencer/figma/influencer_wallet_tx_withdraw.svg';
   static const String influencerWalletEye =
       'assets/images/influencer/figma/influencer_wallet_eye.svg';
+  static const String callingDriverAvatar =
+      'assets/images/fake/calling/driver_avatar.png';
 }

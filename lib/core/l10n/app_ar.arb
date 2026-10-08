@@ -2579,5 +2579,16 @@
   "restaurant_tier_unavailable_generic": "الترقية غير متوفرة حالياً لهذا الاشتراك.",
   "restaurant_tier_continue_button": "متابعة الترقية",
   "billing_freeze_consent_agree": "موافقة ومتابعة",
-  "billing_freeze_consent_cancel": "إلغاء"
+  "billing_freeze_consent_cancel": "إلغاء",
+  "calling_incoming_title": "مكالمة واردة من",
+  "calling_active_title": "مكالمة جارية",
+  "calling_app_name": "MealMate",
+  "calling_driver_role": "مندوب التوصيل",
+  "calling_calling_now": "يتصل بك الآن",
+  "calling_accept": "قبول",
+  "calling_decline": "رفض",
+  "calling_delivery_request": "طلب توصيل",
+  "calling_mute_mic": "كتم الميكروفون",
+  "calling_speaker": "سماعة",
+  "calling_end_call": "إنهاء المكالمة"
 }

@@ -83,6 +83,8 @@ flutter:
     - assets/images/subscriptions/figma/
     - assets/images/subscriptions/figma/family_manage_plan_card.png
     - assets/images/svg/
+    - assets/images/calling/
+    - assets/images/fake/calling/
 
   fonts:
   - family: Alexandria

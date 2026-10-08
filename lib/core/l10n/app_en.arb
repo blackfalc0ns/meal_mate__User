@@ -2601,5 +2601,16 @@
   "restaurant_tier_unavailable_generic": "Upgrade is currently not available for this subscription.",
   "restaurant_tier_continue_button": "Continue Upgrade",
   "billing_freeze_consent_agree": "Agree & Continue",
-  "billing_freeze_consent_cancel": "Cancel"
+  "billing_freeze_consent_cancel": "Cancel",
+  "calling_incoming_title": "Incoming call from",
+  "calling_active_title": "Active call",
+  "calling_app_name": "MealMate",
+  "calling_driver_role": "Delivery Driver",
+  "calling_calling_now": "Calling you now",
+  "calling_accept": "Accept",
+  "calling_decline": "Decline",
+  "calling_delivery_request": "Delivery request",
+  "calling_mute_mic": "Mute",
+  "calling_speaker": "Speaker",
+  "calling_end_call": "End Call"
 }

@@ -235,6 +235,22 @@ class AppColors {
   static const Color restaurantTierPlusGreenDark = Color(0xFF087A4D);
   static const Color restaurantTierPlusPanel = Color(0xFF0A5E32);
   static const Color restaurantTierPlusPanelBorder = Color(0xFF0D986A);
+
+  // Calling Feature colors (nodes 3056:13617 and 3056:13662).
+  static const Color callBrandGreen = Color(0xFF218232);
+  static const Color callBrandDarkGreen = Color(0xFF125519);
+  static const Color callDriverNameGreen = Color(0xFF078847);
+  static const Color callBadgeBackground = Color(0xFFE9F2ED);
+  static const Color callBadgeText = Color(0xFF235234);
+  static const Color callBadgeIcon = Color(0xFF01994D);
+  static const Color callSubtitleGrey = Color(0xFF8D8B8D);
+  static const Color callAccept = Color(0xFF329548);
+  static const Color callDecline = Color(0xFFF03E37);
+  static const Color callEnd = Color(0xFFED363D);
+  static const Color callActionBackground = Color(0xFFDBEDE1);
+  static const Color callActionIcon = Color(0xFF1B8E2F);
+  static const Color callRippleStroke = Color(0xFFEAF3EE);
+  static const Color callCardBorder = Color(0xFFDEDEDE);
 }
 
 extension CalendarColorScheme on ColorScheme {
@@ -270,5 +286,25 @@ extension RestaurantTierColorScheme on ColorScheme {
   Color get restaurantTierPlusPanel => AppColors.restaurantTierPlusPanel;
   Color get restaurantTierPlusPanelBorder =>
       AppColors.restaurantTierPlusPanelBorder;
+}
+
+extension CallingColorScheme on ColorScheme {
+  Color get callBrandGreen => AppColors.callBrandGreen;
+  Color get callBrandDarkGreen => AppColors.callBrandDarkGreen;
+  Color get callDriverNameGreen => AppColors.callDriverNameGreen;
+  Color get callBadgeBackground => AppColors.callBadgeBackground;
+  Color get callBadgeText => AppColors.callBadgeText;
+  Color get callBadgeIcon => AppColors.callBadgeIcon;
+  Color get callSubtitleGrey => AppColors.callSubtitleGrey;
+  Color get callAccept => AppColors.callAccept;
+  Color get callDecline => AppColors.callDecline;
+  Color get callEnd => AppColors.callEnd;
+  Color get callActionBackground => AppColors.callActionBackground;
+  Color get callActionIcon => AppColors.callActionIcon;
+  Color get callRippleStroke => AppColors.callRippleStroke;
+  Color get callCardBorder => AppColors.callCardBorder;
+  Color get callWhite => AppColors.white;
+  Color get callBlack => AppColors.black;
+  Color get callShadowSoft => AppColors.shadowSoft;
 }
 

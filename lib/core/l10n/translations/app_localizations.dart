@@ -12487,6 +12487,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get billing_freeze_consent_cancel;
+
+  /// No description provided for @calling_incoming_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming call from'**
+  String get calling_incoming_title;
+
+  /// No description provided for @calling_active_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Active call'**
+  String get calling_active_title;
+
+  /// No description provided for @calling_app_name.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate'**
+  String get calling_app_name;
+
+  /// No description provided for @calling_driver_role.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Driver'**
+  String get calling_driver_role;
+
+  /// No description provided for @calling_calling_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Calling you now'**
+  String get calling_calling_now;
+
+  /// No description provided for @calling_accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get calling_accept;
+
+  /// No description provided for @calling_decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get calling_decline;
+
+  /// No description provided for @calling_delivery_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery request'**
+  String get calling_delivery_request;
+
+  /// No description provided for @calling_mute_mic.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute'**
+  String get calling_mute_mic;
+
+  /// No description provided for @calling_speaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaker'**
+  String get calling_speaker;
+
+  /// No description provided for @calling_end_call.
+  ///
+  /// In en, this message translates to:
+  /// **'End Call'**
+  String get calling_end_call;
 }
 
 class _AppLocalizationsDelegate

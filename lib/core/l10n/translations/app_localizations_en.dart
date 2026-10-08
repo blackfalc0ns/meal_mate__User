@@ -6777,4 +6777,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billing_freeze_consent_cancel => 'Cancel';
+
+  @override
+  String get calling_incoming_title => 'Incoming call from';
+
+  @override
+  String get calling_active_title => 'Active call';
+
+  @override
+  String get calling_app_name => 'MealMate';
+
+  @override
+  String get calling_driver_role => 'Delivery Driver';
+
+  @override
+  String get calling_calling_now => 'Calling you now';
+
+  @override
+  String get calling_accept => 'Accept';
+
+  @override
+  String get calling_decline => 'Decline';
+
+  @override
+  String get calling_delivery_request => 'Delivery request';
+
+  @override
+  String get calling_mute_mic => 'Mute';
+
+  @override
+  String get calling_speaker => 'Speaker';
+
+  @override
+  String get calling_end_call => 'End Call';
 }

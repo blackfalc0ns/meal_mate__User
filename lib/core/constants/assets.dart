@@ -220,4 +220,14 @@ class Assets {
   static const String loadingLogo = 'assets/animations/logo-loading.json';
   static const String hourglassAnimation =
       'assets/animations/hourglass_animation.json';
+
+  static const String callingBgDoodle = '$_images/calling/calling_bg_doodle.svg';
+  static const String callAccept = '$_images/calling/call_accept.svg';
+  static const String callEnd = '$_images/calling/call_end.svg';
+  static const String callDriverBadgeIcon =
+      '$_images/calling/call_driver_badge_icon.svg';
+  static const String callLocationPin =
+      '$_images/calling/call_location_pin.svg';
+  static const String callMicMute = '$_images/calling/call_mic_mute.svg';
+  static const String callSpeaker = '$_images/calling/call_speaker.svg';
 }

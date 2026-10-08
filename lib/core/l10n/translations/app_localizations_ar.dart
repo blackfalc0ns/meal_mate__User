@@ -6661,4 +6661,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get billing_freeze_consent_cancel => 'إلغاء';
+
+  @override
+  String get calling_incoming_title => 'مكالمة واردة من';
+
+  @override
+  String get calling_active_title => 'مكالمة جارية';
+
+  @override
+  String get calling_app_name => 'MealMate';
+
+  @override
+  String get calling_driver_role => 'مندوب التوصيل';
+
+  @override
+  String get calling_calling_now => 'يتصل بك الآن';
+
+  @override
+  String get calling_accept => 'قبول';
+
+  @override
+  String get calling_decline => 'رفض';
+
+  @override
+  String get calling_delivery_request => 'طلب توصيل';
+
+  @override
+  String get calling_mute_mic => 'كتم الميكروفون';
+
+  @override
+  String get calling_speaker => 'سماعة';
+
+  @override
+  String get calling_end_call => 'إنهاء المكالمة';
 }

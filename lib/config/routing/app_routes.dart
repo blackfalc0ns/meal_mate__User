@@ -88,4 +88,6 @@ abstract class AppRoutes {
       '/influencer-withdraw-history';
   static const String notifications = '/notifications';
   static const String notificationPreferences = '/notification-preferences';
+  static const String incomingCall = '/incoming-call';
+  static const String activeCall = '/active-call';
 }
