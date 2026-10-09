@@ -34,77 +34,82 @@ class IncomingCallScreen extends StatelessWidget {
         children: [
           const CallingBackgroundDecoration(),
           SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.md,
-                        ),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: Spacing.lg),
-                            CallingHeaderBrand(
-                              title: locale.calling_incoming_title,
-                            ),
-                            const Spacer(),
-                            CallingDriverAvatarRings(
-                              avatarAsset: driver.avatarAsset,
-                            ),
-                            const SizedBox(height: Spacing.md),
-                            Text(
-                              driver.name,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size28,
-                                color: color.callDriverNameGreen,
+            child: Column(
+              children: [
+                const SizedBox(height: Spacing.xs),
+                CallingHeaderBrand(title: locale.calling_incoming_title),
+                Expanded(
+                  child: Column(
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: SizedBox(
+                          width: Spacing.callingRipple4Size,
+                          height: 310.0,
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            clipBehavior: Clip.none,
+                            children: [
+                              CallingDriverAvatarRings(
+                                avatarAsset: driver.avatarAsset,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: Spacing.xs),
-                            CallingDriverRoleBadge(
-                              role: driver.role,
-                            ),
-                            const SizedBox(height: Spacing.sm),
-                            Text(
-                              locale.calling_calling_now,
-                              style: getRegularStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size14,
-                                color: color.callSubtitleGrey,
+                              Positioned(
+                                top: 220.0,
+                                left: 0,
+                                right: 0,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      driver.name,
+                                      style: getBoldStyle(
+                                        fontFamily: FontConstant.alexandria,
+                                        fontSize: FontSize.size28,
+                                        color: color.callDriverNameGreen,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: Spacing.md),
+                                    CallingDriverRoleBadge(role: driver.role),
+                                    const SizedBox(height: Spacing.sm),
+                                    Text(
+                                      locale.calling_calling_now,
+                                      style: getRegularStyle(
+                                        fontFamily: FontConstant.alexandria,
+                                        fontSize: FontSize.size14,
+                                        color: color.callSubtitleGrey,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Spacer(),
-                            CallingIncomingActions(
-                              onAccept: () {
-                                unawaited(
-                                  context.pushReplacementNamed(
-                                    AppRoutes.activeCall,
-                                    arguments: driver,
-                                  ),
-                                );
-                              },
-                              onDecline: () {
-                                if (Navigator.of(context).canPop()) {
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                            ),
-                            const SizedBox(height: Spacing.xxl),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                      const Spacer(),
+                    ],
                   ),
-                );
-              },
+                ),
+                const SizedBox(height: Spacing.xs),
+                CallingIncomingActions(
+                  onAccept: () {
+                    unawaited(
+                      context.pushReplacementNamed(
+                        AppRoutes.activeCall,
+                        arguments: driver,
+                      ),
+                    );
+                  },
+                  onDecline: () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                const SizedBox(height: Spacing.xl),
+              ],
             ),
           ),
         ],

@@ -89,31 +89,33 @@ class _ActiveCallScreenState extends State<ActiveCallScreen> {
         children: [
           const CallingBackgroundDecoration(),
           SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.md,
-                        ),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: Spacing.md),
-                            CallingHeaderBrand(
-                              title: locale.calling_active_title,
-                              timerText: _formattedTime,
-                            ),
-                            const Spacer(),
-                            CallingDriverAvatarRings(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.md,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: Spacing.xs),
+                  CallingHeaderBrand(
+                    title: locale.calling_active_title,
+                    timerText: _formattedTime,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: CallingDriverAvatarRings(
                               avatarAsset: widget.driver.avatarAsset,
                             ),
-                            const SizedBox(height: Spacing.md),
+                          ),
+                        ),
+                        const SizedBox(height: Spacing.xs),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
                             Text(
                               widget.driver.name,
                               style: getBoldStyle(
@@ -127,27 +129,27 @@ class _ActiveCallScreenState extends State<ActiveCallScreen> {
                             CallingDriverRoleBadge(
                               role: widget.driver.role,
                             ),
-                            const SizedBox(height: Spacing.md),
-                            CallingActiveAddressCard(
-                              title: widget.driver.addressTitle,
-                              addressDetails: widget.driver.addressDetails,
-                            ),
-                            const Spacer(),
-                            CallingActiveControls(
-                              isMuted: _isMuted,
-                              isSpeakerOn: _isSpeakerOn,
-                              onToggleMute: _toggleMute,
-                              onToggleSpeaker: _toggleSpeaker,
-                              onEndCall: _endCall,
-                            ),
-                            const SizedBox(height: Spacing.xl),
                           ],
                         ),
-                      ),
+                        const SizedBox(height: Spacing.xs),
+                        CallingActiveAddressCard(
+                          title: widget.driver.addressTitle,
+                          addressDetails: widget.driver.addressDetails,
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
+                  const SizedBox(height: Spacing.xs),
+                  CallingActiveControls(
+                    isMuted: _isMuted,
+                    isSpeakerOn: _isSpeakerOn,
+                    onToggleMute: _toggleMute,
+                    onToggleSpeaker: _toggleSpeaker,
+                    onEndCall: _endCall,
+                  ),
+                  const SizedBox(height: Spacing.base),
+                ],
+              ),
             ),
           ),
         ],

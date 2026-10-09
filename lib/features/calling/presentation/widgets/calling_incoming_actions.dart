@@ -23,18 +23,18 @@ class CallingIncomingActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         CallingIncomingActionButton(
-          iconAsset: Assets.callEnd,
-          label: locale.calling_decline,
-          backgroundColor: color.callDecline,
-          labelColor: color.callDecline,
-          onTap: onDecline,
-        ),
-        CallingIncomingActionButton(
           iconAsset: Assets.callAccept,
           label: locale.calling_accept,
           backgroundColor: color.callAccept,
           labelColor: color.callAccept,
           onTap: onAccept,
+        ),
+        CallingIncomingActionButton(
+          iconAsset: Assets.callEnd,
+          label: locale.calling_decline,
+          backgroundColor: color.callDecline,
+          labelColor: color.callDecline,
+          onTap: onDecline,
         ),
       ],
     );
