@@ -6707,4 +6707,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get payment_method_total_with_fees_label => 'الإجمالي شامل الرسوم';
+
+  @override
+  String subscriptionFirstDelivery(String date) {
+    return 'بداية الاشتراك وأول توصيل: $date';
+  }
+
+  @override
+  String subscriptionPaymentAnchor(String date) {
+    return 'تاريخ الاختيار: $date';
+  }
+
+  @override
+  String subscriptionNoRestaurantsForAddress(String programName) {
+    return 'لا توجد مطاعم تقدم برنامج $programName وتوصل إلى عنوانك المحدد.';
+  }
+
+  @override
+  String get subscriptionNoRestaurantsForSelection =>
+      'لا توجد مطاعم متاحة طوال مدة الاشتراك وفق اختياراتك الحالية.';
+
+  @override
+  String get subscriptionAvailabilityChanged =>
+      'تغير توافر المطاعم. راجع الملخص قبل إعادة محاولة الدفع.';
+
+  @override
+  String get calendarPreparing => 'جارٍ تجهيز تقويم اشتراكك بعد تأكيد الدفع.';
+
+  @override
+  String calendarSelectionDeadline(String dateTime) {
+    return 'يمكنك اختيار الوجبات حتى $dateTime.';
+  }
+
+  @override
+  String get calendarSelectionDeadlinePassed =>
+      'انتهت مهلة اختيار الوجبات لهذا اليوم.';
+
+  @override
+  String get calendarDayLocked => 'تم إغلاق التعديل لهذا اليوم.';
+
+  @override
+  String get calendarDayFrozen => 'هذا اليوم مجمّد ولا يمكن تعديله الآن.';
+
+  @override
+  String get calendarDayCancelled => 'تم إلغاء هذا اليوم.';
+
+  @override
+  String get calendarFulfillmentNotReady =>
+      'التقويم غير جاهز بعد. حاول التحديث بعد قليل.';
 }

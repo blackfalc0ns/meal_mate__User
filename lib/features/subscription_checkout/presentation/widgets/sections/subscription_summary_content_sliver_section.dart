@@ -27,10 +27,10 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
       builder: (context, state) {
         final summary = state.summary;
         final hasSummary = summary != null;
-        final currentStartDate = summary?.startDate.trim().isNotEmpty == true
-            ? summary!.startDate.trim()
-            : (state.selectedStartDate.trim().isNotEmpty
-                  ? state.selectedStartDate.trim()
+        final currentStartDate = state.selectedStartDate.trim().isNotEmpty
+            ? state.selectedStartDate.trim()
+            : (summaryArgs.request.startDate.trim().isNotEmpty
+                  ? summaryArgs.request.startDate.trim()
                   : initialStartDate);
 
         final activeRequest = summaryArgs.request.copyWith(
@@ -73,7 +73,7 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
                           summaryArgs: summaryArgs,
                           earliestStartDate: state.earliestStartDate.isNotEmpty
                               ? state.earliestStartDate
-                              : summary.startDate,
+                              : null,
                         ),
                       ),
               ),

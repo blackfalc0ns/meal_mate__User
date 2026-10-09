@@ -12577,6 +12577,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total including fees'**
   String get payment_method_total_with_fees_label;
+
+  /// No description provided for @subscriptionFirstDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription start and first delivery: {date}'**
+  String subscriptionFirstDelivery(String date);
+
+  /// No description provided for @subscriptionPaymentAnchor.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected payment date: {date}'**
+  String subscriptionPaymentAnchor(String date);
+
+  /// No description provided for @subscriptionNoRestaurantsForAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants offer the {programName} program and deliver to your selected address.'**
+  String subscriptionNoRestaurantsForAddress(String programName);
+
+  /// No description provided for @subscriptionNoRestaurantsForSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants are available throughout the subscription period with your current selections.'**
+  String get subscriptionNoRestaurantsForSelection;
+
+  /// No description provided for @subscriptionAvailabilityChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant availability changed. Review the summary before trying payment again.'**
+  String get subscriptionAvailabilityChanged;
+
+  /// No description provided for @calendarPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription calendar is being prepared after payment confirmation.'**
+  String get calendarPreparing;
+
+  /// No description provided for @calendarSelectionDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'You can select meals until {dateTime}.'**
+  String calendarSelectionDeadline(String dateTime);
+
+  /// No description provided for @calendarSelectionDeadlinePassed.
+  ///
+  /// In en, this message translates to:
+  /// **'The meal selection deadline for this day has passed.'**
+  String get calendarSelectionDeadlinePassed;
+
+  /// No description provided for @calendarDayLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing is closed for this day.'**
+  String get calendarDayLocked;
+
+  /// No description provided for @calendarDayFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is frozen and cannot be edited now.'**
+  String get calendarDayFrozen;
+
+  /// No description provided for @calendarDayCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This day was cancelled.'**
+  String get calendarDayCancelled;
+
+  /// No description provided for @calendarFulfillmentNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'The calendar is not ready yet. Refresh in a moment.'**
+  String get calendarFulfillmentNotReady;
 }
 
 class _AppLocalizationsDelegate

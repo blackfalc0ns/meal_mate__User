@@ -128,7 +128,7 @@ class PaymentScreen extends StatelessWidget {
         context,
         checkoutFailure,
       );
-      if (state.isCouponCheckoutFailure) {
+      if (state.isCouponCheckoutFailure || state.isAvailabilityChangedFailure) {
         Navigator.of(context).pop(message);
         return;
       }

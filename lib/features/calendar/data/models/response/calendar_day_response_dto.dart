@@ -32,6 +32,7 @@ class CalendarDayResponseDto {
     this.filledCount,
     this.requiredCount,
     this.failureReasonCode,
+    this.editBlockReason,
     this.restaurantRating,
     this.restaurantRatingCount,
     this.deliveryWindowStart,
@@ -81,6 +82,7 @@ class CalendarDayResponseDto {
   final int? filledCount;
   final int? requiredCount;
   final String? failureReasonCode;
+  final String? editBlockReason;
   final num? restaurantRating;
   final int? restaurantRatingCount;
   final String? deliveryWindowStart;

@@ -6823,4 +6823,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get payment_method_total_with_fees_label => 'Total including fees';
+
+  @override
+  String subscriptionFirstDelivery(String date) {
+    return 'Subscription start and first delivery: $date';
+  }
+
+  @override
+  String subscriptionPaymentAnchor(String date) {
+    return 'Selected payment date: $date';
+  }
+
+  @override
+  String subscriptionNoRestaurantsForAddress(String programName) {
+    return 'No restaurants offer the $programName program and deliver to your selected address.';
+  }
+
+  @override
+  String get subscriptionNoRestaurantsForSelection =>
+      'No restaurants are available throughout the subscription period with your current selections.';
+
+  @override
+  String get subscriptionAvailabilityChanged =>
+      'Restaurant availability changed. Review the summary before trying payment again.';
+
+  @override
+  String get calendarPreparing =>
+      'Your subscription calendar is being prepared after payment confirmation.';
+
+  @override
+  String calendarSelectionDeadline(String dateTime) {
+    return 'You can select meals until $dateTime.';
+  }
+
+  @override
+  String get calendarSelectionDeadlinePassed =>
+      'The meal selection deadline for this day has passed.';
+
+  @override
+  String get calendarDayLocked => 'Editing is closed for this day.';
+
+  @override
+  String get calendarDayFrozen =>
+      'This day is frozen and cannot be edited now.';
+
+  @override
+  String get calendarDayCancelled => 'This day was cancelled.';
+
+  @override
+  String get calendarFulfillmentNotReady =>
+      'The calendar is not ready yet. Refresh in a moment.';
 }

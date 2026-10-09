@@ -64,6 +64,23 @@ class PaymentState {
           checkoutFailure!.exception.backendErrorCode ==
               SubscriptionErrorCodes.couponFullDiscountUnsupported);
 
+  bool get isAvailabilityChangedFailure =>
+      checkoutFailure != null &&
+      (checkoutFailure!.code == SubscriptionErrorCodes.restaurantNotEligible ||
+          checkoutFailure!.code == 'restaurant.not_eligible' ||
+          checkoutFailure!.code ==
+              'subscription_flow.no_restaurants_for_selection' ||
+          checkoutFailure!.exception.backendErrorCode ==
+              SubscriptionErrorCodes.restaurantNotEligible ||
+          checkoutFailure!.exception.backendErrorCode ==
+              'restaurant.not_eligible');
+
+  bool get isCalendarFulfillmentNotReady =>
+      calendarFailure != null &&
+      (calendarFailure!.code == 'calendar.fulfillment_not_ready' ||
+          calendarFailure!.exception.backendErrorCode ==
+              'calendar.fulfillment_not_ready');
+
   PaymentState copyWith({
     bool? isMethodsLoading,
     bool? isCheckoutLoading,

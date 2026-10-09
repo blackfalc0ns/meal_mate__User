@@ -33,6 +33,12 @@ class CalendarOverviewState {
 
   bool get hasCalendarData => days.isNotEmpty;
 
+  bool get isFulfillmentNotReady =>
+      calendarFailure != null &&
+      (calendarFailure!.code == 'calendar.fulfillment_not_ready' ||
+          calendarFailure!.exception.backendErrorCode ==
+              'calendar.fulfillment_not_ready');
+
   bool get canConfirmSelectedDayMeals {
     final day = selectedDay;
     if (day == null || !day.isEditable) return false;

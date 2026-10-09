@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meal_meat_user/core/network/models/response/pagination_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_availability_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_coupon_response_dto.dart';
 
 part 'subscription_summary_response_dto.g.dart';
@@ -48,6 +49,7 @@ class SubscriptionSummaryResponseDto {
     this.includes,
     this.coupon,
     this.restaurantsPagination,
+    this.availability,
   });
 
   final String? programId;
@@ -92,6 +94,7 @@ class SubscriptionSummaryResponseDto {
   final SubscriptionSummaryIncludesResponseDto? includes;
   final SubscriptionCouponResponseDto? coupon;
   final PaginationResponseDto? restaurantsPagination;
+  final SubscriptionAvailabilityResponseDto? availability;
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);

@@ -40,10 +40,10 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
         builder: (context, state) {
           final summary = state.summary;
           final hasSummary = summary != null;
-          final currentStartDate = summary?.startDate.trim().isNotEmpty == true
-              ? summary!.startDate.trim()
-              : (state.selectedStartDate.trim().isNotEmpty
-                  ? state.selectedStartDate.trim()
+          final currentStartDate = state.selectedStartDate.trim().isNotEmpty
+              ? state.selectedStartDate.trim()
+              : (summaryArgs.request.startDate.trim().isNotEmpty
+                  ? summaryArgs.request.startDate.trim()
                   : initialStartDate);
 
           final activeRequest = state.activeRequest ??
@@ -55,10 +55,7 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
             return const SubscriptionSummaryButtonLoadingSkeleton();
           }
 
-          final canProceed = hasSummary &&
-              summary.canCheckout &&
-              !state.isLoading &&
-              !state.isApplyingCoupon;
+          final canProceed = hasSummary && state.canCheckout;
 
           return AppSubscriptionButton(
             price: hasSummary ? summary.finalPrice.formattedPrice : '',

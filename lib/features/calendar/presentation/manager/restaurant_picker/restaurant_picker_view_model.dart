@@ -67,7 +67,9 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     final dateStr = DateFormat('yyyy-MM-dd').format(date);
     if (subscriptionId.isEmpty || dateStr.isEmpty) return;
 
-    final normalizedQuery = (query != null && query.trim().isNotEmpty) ? query.trim() : null;
+    final normalizedQuery = (query != null && query.trim().isNotEmpty)
+        ? query.trim()
+        : null;
     _activeSubscriptionId = subscriptionId;
     _activeDate = date;
     _activeLocaleName = localeName;
@@ -103,7 +105,8 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final hasNext = result.data.restaurants.isNotEmpty && result.data.hasNextPage;
+        final hasNext =
+            result.data.restaurants.isNotEmpty && result.data.hasNextPage;
         emit(
           state.copyWith(
             isLoading: false,
@@ -157,7 +160,8 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
             .where((e) => !existingIds.contains(e.id))
             .toList();
         final merged = [...state.restaurants, ...newItems];
-        final hasNext = result.data.restaurants.isNotEmpty && result.data.hasNextPage;
+        final hasNext =
+            result.data.restaurants.isNotEmpty && result.data.hasNextPage;
 
         emit(
           state.copyWith(
@@ -174,10 +178,7 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isLoadingMore: false,
-            loadMoreFailure: result.failure,
-          ),
+          state.copyWith(isLoadingMore: false, loadMoreFailure: result.failure),
         );
     }
   }
@@ -194,10 +195,10 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     required CalendarRestaurantOptionEntity restaurant,
     required String localeName,
   }) async {
-    if (state.isSelecting && state.selectingRestaurantId == restaurant.id) {
+    if (state.isSelecting) {
       return ApiErrorResult(
         failure: Failure(
-          errorMessage: 'Selection already in progress for this restaurant',
+          errorMessage: 'Selection already in progress',
           code: 'already_selecting',
         ),
       );

@@ -44,6 +44,7 @@ import 'package:meal_meat_user/features/food_preferences/data/models/response/fo
 import 'package:meal_meat_user/core/upload_file/data/models/response/upload_file_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_duration_response_dto.dart';
 import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_restaurant_details_response_dto.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/models/response/subscription_tier_restaurants_page_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_restaurant_browse_response_dto.dart';
 import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
@@ -58,6 +59,7 @@ import 'package:meal_meat_user/features/payment/data/models/response/payment_che
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_restaurant_availability_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_programs_page_response_dto.dart';
@@ -346,6 +348,17 @@ abstract class ApiServices {
     @Query('pageSize') int? pageSize,
   });
 
+  @GET(EndPoints.subscriptionTierRestaurants)
+  Future<SubscriptionTierRestaurantsPageResponseDto>
+  getSubscriptionTierRestaurantsPage(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId,
+    @Path('tier') String tier,
+    @Query('familyMemberId') String? familyMemberId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
+
   @GET(EndPoints.subscriptionRestaurantDetails)
   Future<SubscriptionRestaurantDetailsResponseDto>
   getSubscriptionRestaurantDetails(
@@ -373,6 +386,19 @@ abstract class ApiServices {
     @Query('restaurantsPage') int? restaurantsPage,
     @Query('restaurantsPageSize') int? restaurantsPageSize,
     @Query('promoCode') String? promoCode,
+  });
+
+  @GET(EndPoints.subscriptionRestaurantAvailability)
+  Future<SubscriptionRestaurantAvailabilityResponseDto>
+  getSubscriptionRestaurantAvailability(
+    @Query('includeFriday') bool includeFriday,
+    @Query('durationDays') int durationDays,
+    @Query('tier') String tier,
+    @Query('bundleId') String bundleId,
+    @Query('programId') String programId,
+    @Query('startDate') String startDate, {
+    @Query('restaurantsPage') int? restaurantsPage,
+    @Query('restaurantsPageSize') int? restaurantsPageSize,
   });
 
   @GET(EndPoints.subscriptionReadiness)

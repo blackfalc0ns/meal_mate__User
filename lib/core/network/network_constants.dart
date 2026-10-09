@@ -69,6 +69,8 @@ abstract class EndPoints {
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/restaurants/{restaurantId}/meals/{mealId}';
   static const String subscriptionSummary =
       '/api/v1/customer/subscription-flow/summary';
+  static const String subscriptionRestaurantAvailability =
+      '/api/v1/customer/subscription-flow/restaurant-availability';
   static const String subscriptionReadiness =
       '/api/v1/customer/subscription-flow/readiness';
   static const String paymentMethods =

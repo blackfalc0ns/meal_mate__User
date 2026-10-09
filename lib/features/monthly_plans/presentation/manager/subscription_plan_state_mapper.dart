@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
@@ -76,6 +78,28 @@ extension SubscriptionPlanStateMapper on SubscriptionPlanState {
       tier: selected.tier,
       bundleId: bundleId,
       programId: programId,
+      startDate: selectedStartDate ?? '',
+    );
+  }
+}
+
+extension SubscriptionSummaryRestaurantBrowseMapper
+    on SubscriptionSummaryRestaurantEntity {
+  SubscriptionTierRestaurantBrowseEntity toBrowseEntity() {
+    return SubscriptionTierRestaurantBrowseEntity(
+      restaurantId: restaurantId,
+      nameAr: nameAr,
+      nameEn: nameEn,
+      nameRaw: '',
+      logoUrl: logoUrl,
+      rating: null,
+      mealCount: 0,
+      bundleMealCount: 0,
+      tier: tier,
+      tierNameAr: '',
+      tierNameEn: '',
+      tierLogoUrl: null,
+      classifications: const [],
     );
   }
 }

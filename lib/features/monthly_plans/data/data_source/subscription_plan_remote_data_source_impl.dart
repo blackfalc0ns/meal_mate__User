@@ -48,13 +48,23 @@ class SubscriptionPlanRemoteDataSourceImpl
     required String programId,
     required String bundleId,
     required String tier,
-  }) {
-    return _apiServices.getSubscriptionTierRestaurants(
-      programId,
-      bundleId,
-      tier,
-      null,
-    );
+  }) async {
+    try {
+      final page = await _apiServices.getSubscriptionTierRestaurantsPage(
+        programId,
+        bundleId,
+        tier,
+        null,
+      );
+      return page.items ?? const [];
+    } catch (_) {
+      return _apiServices.getSubscriptionTierRestaurants(
+        programId,
+        bundleId,
+        tier,
+        null,
+      );
+    }
   }
 
   @override
@@ -65,24 +75,14 @@ class SubscriptionPlanRemoteDataSourceImpl
     required int page,
     required int pageSize,
     String? addressId,
-  }) async {
-    final items = await _apiServices.getSubscriptionTierRestaurants(
+  }) {
+    return _apiServices.getSubscriptionTierRestaurantsPage(
       programId,
       bundleId,
       tier,
       null,
       page: page,
       pageSize: pageSize,
-    );
-    final hasNext = items.length >= pageSize;
-    return SubscriptionTierRestaurantsPageResponseDto(
-      items: items,
-      totalCount: items.length,
-      page: page,
-      pageSize: pageSize,
-      totalPages: hasNext ? page + 1 : page,
-      hasNextPage: hasNext,
-      hasPreviousPage: page > 1,
     );
   }
 

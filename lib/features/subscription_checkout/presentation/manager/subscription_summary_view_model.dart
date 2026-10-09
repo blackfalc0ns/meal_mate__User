@@ -66,11 +66,13 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
 
   Future<void> _getSummary(SubscriptionSummaryRequestEntity request) async {
     final generation = ++_summaryGeneration;
+    final isInitial = state.summary == null;
 
     emit(
       state.copyWith(
-        isLoading: state.summary == null,
-        clearSummary: state.summary == null,
+        isLoading: isInitial,
+        isSummaryRefreshing: !isInitial,
+        clearSummary: isInitial,
         clearFailure: true,
         selectedStartDate: request.startDate.isNotEmpty
             ? request.startDate
@@ -83,15 +85,11 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final backendStartDate = result.data.startDate.trim();
         final coupon = result.data.coupon;
         final approvedPromoCode =
             coupon != null && coupon.isValid ? coupon.code : null;
 
         final activeRequest = request.copyWith(
-          startDate: backendStartDate.isNotEmpty
-              ? backendStartDate
-              : request.startDate,
           promoCode: approvedPromoCode,
           clearPromoCode: approvedPromoCode == null,
           restaurantsPage: 1,
@@ -100,23 +98,25 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
         emit(
           state.copyWith(
             isLoading: false,
+            isSummaryRefreshing: false,
             summary: result.data,
             activeRequest: activeRequest,
-            selectedStartDate: backendStartDate.isNotEmpty
-                ? backendStartDate
-                : (request.startDate.isNotEmpty
-                      ? request.startDate
-                      : state.selectedStartDate),
-            earliestStartDate: state.earliestStartDate.isNotEmpty
-                ? state.earliestStartDate
-                : backendStartDate,
+            selectedStartDate: request.startDate.isNotEmpty
+                ? request.startDate
+                : state.selectedStartDate,
             couponDraft: coupon?.code ?? state.couponDraft,
             clearFailure: true,
             clearAppendFailure: true,
           ),
         );
       case ApiErrorResult():
-        emit(state.copyWith(isLoading: false, failure: result.failure));
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSummaryRefreshing: false,
+            failure: result.failure,
+          ),
+        );
     }
   }
 

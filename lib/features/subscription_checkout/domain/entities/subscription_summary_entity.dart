@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/entities/pagination_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_coupon_entity.dart';
 
 class SubscriptionSummaryEntity {
@@ -45,6 +46,7 @@ class SubscriptionSummaryEntity {
     required this.includes,
     this.coupon,
     this.restaurantsPagination,
+    this.availability,
   });
 
   final String programId;
@@ -88,6 +90,7 @@ class SubscriptionSummaryEntity {
   final SubscriptionSummaryIncludesEntity includes;
   final SubscriptionCouponEntity? coupon;
   final PaginationEntity? restaurantsPagination;
+  final SubscriptionAvailabilityEntity? availability;
 
   String programName(String localeName) =>
       localeName == 'ar' ? programNameAr : programNameEn;
@@ -160,6 +163,7 @@ class SubscriptionSummaryEntity {
       coupon: coupon,
       restaurantsPagination:
           restaurantsPagination ?? this.restaurantsPagination,
+      availability: availability,
     );
   }
 }

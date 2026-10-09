@@ -2616,5 +2616,45 @@
   "payment_method_unavailable_wallet": "Wallet payment is currently not available",
   "payment_method_unavailable_generic": "Currently unavailable",
   "payment_method_service_charge_label": "Service charge",
-  "payment_method_total_with_fees_label": "Total including fees"
+  "payment_method_total_with_fees_label": "Total including fees",
+  "subscriptionFirstDelivery": "Subscription start and first delivery: {date}",
+  "@subscriptionFirstDelivery": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionPaymentAnchor": "Selected payment date: {date}",
+  "@subscriptionPaymentAnchor": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionNoRestaurantsForAddress": "No restaurants offer the {programName} program and deliver to your selected address.",
+  "@subscriptionNoRestaurantsForAddress": {
+    "placeholders": {
+      "programName": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionNoRestaurantsForSelection": "No restaurants are available throughout the subscription period with your current selections.",
+  "subscriptionAvailabilityChanged": "Restaurant availability changed. Review the summary before trying payment again.",
+  "calendarPreparing": "Your subscription calendar is being prepared after payment confirmation.",
+  "calendarSelectionDeadline": "You can select meals until {dateTime}.",
+  "@calendarSelectionDeadline": {
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarSelectionDeadlinePassed": "The meal selection deadline for this day has passed.",
+  "calendarDayLocked": "Editing is closed for this day.",
+  "calendarDayFrozen": "This day is frozen and cannot be edited now.",
+  "calendarDayCancelled": "This day was cancelled.",
+  "calendarFulfillmentNotReady": "The calendar is not ready yet. Refresh in a moment."
 }

@@ -3,7 +3,6 @@ import 'package:intl/intl.dart' hide TextDirection;
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_coverage_error_banner.dart';
@@ -40,15 +39,17 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
             summary.checkoutBlockReason ==
                 SubscriptionErrorCodes.checkoutNoRestaurantsForAddress);
 
+    final chosenStartDate = summary.chosenStartDate;
+    final chosenDate = (chosenStartDate.trim().isNotEmpty)
+        ? chosenStartDate
+        : selectedStartDate;
     final paymentDateFormatted = _formatDisplayDate(
-      dateString: summary.chosenStartDate,
+      dateString: chosenDate,
       localeName: locale.localeName,
     );
 
     final startDateFormatted = _formatDisplayDate(
-      dateString: summary.startDate.trim().isNotEmpty
-          ? summary.startDate
-          : selectedStartDate,
+      dateString: summary.startDate,
       localeName: locale.localeName,
     );
 
@@ -78,9 +79,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               ),
           const SizedBox(height: Spacing.md),
           SubscriptionParticipatingRestaurantsCard(
-            restaurants: summary.restaurants,
-            totalCount: summary.restaurantCount,
-          )
+                restaurants: summary.restaurants,
+                totalCount: summary.restaurantCount,
+              )
               .animate()
               .fadeIn(delay: 70.ms, duration: 350.ms, curve: Curves.easeOut)
               .slideX(
@@ -119,8 +120,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           if (noRestaurantsError) ...[
             const SizedBox(height: Spacing.md),
             SubscriptionCoverageErrorBanner(
-              message: locale.subscription_summary_no_restaurants_for_address,
-            )
+                  message:
+                      locale.subscription_summary_no_restaurants_for_address,
+                )
                 .animate()
                 .fadeIn(delay: 200.ms, duration: 350.ms, curve: Curves.easeOut)
                 .slideX(
@@ -133,9 +135,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           ],
           const SizedBox(height: Spacing.md),
           SubscriptionCouponCard(
-            coupon: summary.coupon,
-            currencyCode: summary.currencyCode,
-          )
+                coupon: summary.coupon,
+                currencyCode: summary.currencyCode,
+              )
               .animate()
               .fadeIn(delay: 210.ms, duration: 350.ms, curve: Curves.easeOut)
               .slideX(
@@ -147,9 +149,9 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               ),
           const SizedBox(height: Spacing.md),
           SubscriptionTotalPriceCard(
-            price: summary.finalPrice.formattedPrice,
-            currency: summary.currencyCode,
-          )
+                price: summary.finalPrice.formattedPrice,
+                currency: summary.currencyCode,
+              )
               .animate()
               .fadeIn(delay: 220.ms, duration: 350.ms, curve: Curves.easeOut)
               .slideX(
@@ -161,11 +163,11 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
               ),
           const SizedBox(height: Spacing.md),
           SubscriptionDatesRow(
-            paymentDate: paymentDateFormatted,
-            startDate: startDateFormatted,
-            endDate: endDateFormatted,
-            onEditStartDate: onEditStartDate,
-          )
+                paymentDate: paymentDateFormatted,
+                startDate: startDateFormatted,
+                endDate: endDateFormatted,
+                onEditStartDate: onEditStartDate,
+              )
               .animate()
               .fadeIn(delay: 280.ms, duration: 350.ms, curve: Curves.easeOut)
               .slideX(

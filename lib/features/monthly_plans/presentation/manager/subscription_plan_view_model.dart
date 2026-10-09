@@ -7,14 +7,17 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
+import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_page_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tiers_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_state.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_restaurant_availability_usecase.dart';
 
 @injectable
 class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
@@ -24,6 +27,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     this._getSubscriptionTierRestaurantsUseCase,
     this._getSubscriptionReadinessUseCase, [
     this._getSubscriptionTierRestaurantsPageUseCase,
+    this._getSubscriptionRestaurantAvailabilityUseCase,
   ]) : super(const SubscriptionPlanState());
 
   @visibleForTesting
@@ -33,8 +37,9 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     this._getSubscriptionTierRestaurantsUseCase,
     this._getSubscriptionReadinessUseCase, {
     this._getSubscriptionTierRestaurantsPageUseCase,
+    this._getSubscriptionRestaurantAvailabilityUseCase,
     SubscriptionPlanState? initialState,
-  })  : super(initialState ?? const SubscriptionPlanState());
+  }) : super(initialState ?? const SubscriptionPlanState());
 
 
 
@@ -45,6 +50,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
   final GetSubscriptionReadinessUseCase _getSubscriptionReadinessUseCase;
   final GetSubscriptionTierRestaurantsPageUseCase?
   _getSubscriptionTierRestaurantsPageUseCase;
+  final GetSubscriptionRestaurantAvailabilityUseCase?
+  _getSubscriptionRestaurantAvailabilityUseCase;
 
   Timer? _customDurationDebounceTimer;
   int _browseGeneration = 0;
@@ -86,12 +93,25 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         );
       case SelectSubscriptionTierEvent():
         emit(state.copyWith(selectedTierIndex: event.tierIndex));
+      case SelectSubscriptionPlanStartDateEvent():
+        emit(state.copyWith(selectedStartDate: event.startDate));
+        if (state.isBrowsingRestaurants && state.browsedTierIndex != null) {
+          unawaited(
+            _browseTierRestaurants(
+              programId: state.browsingProgramId ?? '',
+              bundleId: state.browsingBundleId ?? '',
+              tierIndex: state.browsedTierIndex!,
+              startDate: event.startDate,
+            ),
+          );
+        }
       case BrowseSubscriptionTierRestaurantsEvent():
         unawaited(
           _browseTierRestaurants(
             programId: event.programId,
             bundleId: event.bundleId,
             tierIndex: event.tierIndex,
+            startDate: event.startDate,
           ),
         );
       case CloseSubscriptionTierRestaurantsEvent():
@@ -109,6 +129,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
               tier: event.tier,
               bundleId: event.bundleId,
               programId: event.programId,
+              startDate: state.selectedStartDate ?? '',
             ),
           ),
         );
@@ -277,11 +298,13 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     required String programId,
     required String bundleId,
     required int tierIndex,
+    String? startDate,
   }) async {
     if (tierIndex < 0 || tierIndex >= state.tiers.length) return;
 
     final tier = state.tiers[tierIndex];
     final generation = ++_browseGeneration;
+    final effectiveStartDate = startDate ?? state.selectedStartDate;
 
     emit(
       state.copyWith(
@@ -291,12 +314,70 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         browsingProgramId: programId,
         browsingBundleId: bundleId,
         browsingTier: tier.tier,
+        browsingDurationDays: state.selectedDurationDays,
+        browsingStartDate: effectiveStartDate,
+        browsingIncludeFriday: state.includeFriday,
+        selectedStartDate: effectiveStartDate,
         clearBrowseRestaurants: true,
         clearBrowseRestaurantsFailure: true,
         clearBrowseRestaurantsLoadMoreFailure: true,
         clearBrowseRestaurantsPagination: true,
+        clearBrowseAvailability: true,
+        clearBrowseTotalCount: true,
       ),
     );
+
+    final hasEffectiveStartDate =
+        effectiveStartDate != null && effectiveStartDate.trim().isNotEmpty;
+
+    if (_getSubscriptionRestaurantAvailabilityUseCase != null &&
+        hasEffectiveStartDate) {
+      final request = SubscriptionSummaryRequestEntity(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier.tier,
+        durationDays: state.selectedDurationDays ?? 0,
+        startDate: effectiveStartDate,
+        includeFriday: state.includeFriday,
+        restaurantsPage: 1,
+        restaurantsPageSize: 10,
+      );
+
+      final result =
+          await _getSubscriptionRestaurantAvailabilityUseCase(request);
+
+      if (isClosed || generation != _browseGeneration) return;
+
+      switch (result) {
+        case ApiSuccessResult():
+          final availability = result.data.availability;
+          final isAvailable = availability.status == 'available';
+          final validItems = isAvailable
+              ? result.data.restaurants
+                  .where((r) => r.restaurantId.trim().isNotEmpty)
+                  .map((r) => r.toBrowseEntity())
+                  .toList()
+              : <SubscriptionTierRestaurantBrowseEntity>[];
+
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurants: validItems,
+              browseRestaurantsPagination: result.data.pagination,
+              browseAvailability: availability,
+              browseTotalCount: result.data.totalCount,
+            ),
+          );
+        case ApiErrorResult():
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoading: false,
+              browseRestaurantsFailure: result.failure,
+            ),
+          );
+      }
+      return;
+    }
 
     if (_getSubscriptionTierRestaurantsPageUseCase != null) {
       final result = await _getSubscriptionTierRestaurantsPageUseCase(
@@ -329,31 +410,50 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
             ),
           );
       }
-    } else {
-      final result = await _getSubscriptionTierRestaurantsUseCase(
-        programId: programId,
-        bundleId: bundleId,
-        tier: tier.tier,
+      return;
+    }
+
+    if (_getSubscriptionRestaurantAvailabilityUseCase != null) {
+      emit(
+        state.copyWith(
+          isBrowseRestaurantsLoading: false,
+          browseAvailability: const SubscriptionAvailabilityEntity(
+            status: 'selection_required',
+            coveredRestaurantCount: 0,
+            eligibleRestaurantCount: 0,
+            effectiveStartDate: '',
+            messageCode: 'subscription_flow.selection_required',
+          ),
+          browseTotalCount: 0,
+          browseRestaurants: const [],
+        ),
       );
+      return;
+    }
 
-      if (isClosed || generation != _browseGeneration) return;
+    final result = await _getSubscriptionTierRestaurantsUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      tier: tier.tier,
+    );
 
-      switch (result) {
-        case ApiSuccessResult():
-          emit(
-            state.copyWith(
-              isBrowseRestaurantsLoading: false,
-              browseRestaurants: result.data,
-            ),
-          );
-        case ApiErrorResult():
-          emit(
-            state.copyWith(
-              isBrowseRestaurantsLoading: false,
-              browseRestaurantsFailure: result.failure,
-            ),
-          );
-      }
+    if (isClosed || generation != _browseGeneration) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            isBrowseRestaurantsLoading: false,
+            browseRestaurants: result.data,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            isBrowseRestaurantsLoading: false,
+            browseRestaurantsFailure: result.failure,
+          ),
+        );
     }
   }
 
@@ -375,10 +475,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       return;
     }
 
-    if (_getSubscriptionTierRestaurantsPageUseCase == null) {
-      return;
-    }
-
     final nextPage = (pagination?.page ?? 1) + 1;
     final generation = _browseGeneration;
 
@@ -388,6 +484,65 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         clearBrowseRestaurantsLoadMoreFailure: true,
       ),
     );
+
+    final effectiveBrowsingStartDate =
+        state.browsingStartDate ?? state.selectedStartDate;
+    final hasBrowsingStartDate = effectiveBrowsingStartDate != null &&
+        effectiveBrowsingStartDate.trim().isNotEmpty;
+
+    if (_getSubscriptionRestaurantAvailabilityUseCase != null &&
+        hasBrowsingStartDate) {
+      final request = SubscriptionSummaryRequestEntity(
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier,
+        durationDays:
+            state.browsingDurationDays ?? state.selectedDurationDays ?? 0,
+        startDate: effectiveBrowsingStartDate,
+        includeFriday: state.browsingIncludeFriday ?? state.includeFriday,
+        restaurantsPage: nextPage,
+        restaurantsPageSize: pagination?.pageSize ?? 10,
+      );
+
+      final result =
+          await _getSubscriptionRestaurantAvailabilityUseCase(request);
+
+      if (isClosed || generation != _browseGeneration) return;
+
+      switch (result) {
+        case ApiSuccessResult():
+          final existingIds =
+              state.browseRestaurants.map((r) => r.restaurantId).toSet();
+          final newItems = result.data.restaurants
+              .where((r) =>
+                  r.restaurantId.trim().isNotEmpty &&
+                  !existingIds.contains(r.restaurantId))
+              .map((r) => r.toBrowseEntity())
+              .toList();
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoadingMore: false,
+              browseRestaurants: [...state.browseRestaurants, ...newItems],
+              browseRestaurantsPagination: result.data.pagination,
+              browseAvailability: result.data.availability,
+              browseTotalCount: result.data.totalCount,
+              clearBrowseRestaurantsLoadMoreFailure: true,
+            ),
+          );
+        case ApiErrorResult():
+          emit(
+            state.copyWith(
+              isBrowseRestaurantsLoadingMore: false,
+              browseRestaurantsLoadMoreFailure: result.failure,
+            ),
+          );
+      }
+      return;
+    }
+
+    if (_getSubscriptionTierRestaurantsPageUseCase == null) {
+      return;
+    }
 
     final result = await _getSubscriptionTierRestaurantsPageUseCase(
       programId: programId,
@@ -401,9 +556,12 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final existingIds = state.browseRestaurants.map((r) => r.restaurantId).toSet();
+        final existingIds =
+            state.browseRestaurants.map((r) => r.restaurantId).toSet();
         final newItems = result.data.items
-            .where((r) => r.restaurantId.trim().isNotEmpty && !existingIds.contains(r.restaurantId))
+            .where((r) =>
+                r.restaurantId.trim().isNotEmpty &&
+                !existingIds.contains(r.restaurantId))
             .toList();
         emit(
           state.copyWith(
@@ -436,6 +594,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
             programId: programId,
             bundleId: bundleId,
             tierIndex: browsedIndex,
+            startDate: state.browsingStartDate ?? state.selectedStartDate,
           ),
         );
       }
@@ -451,6 +610,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         clearBrowseRestaurantsFailure: true,
         clearBrowseRestaurantsLoadMoreFailure: true,
         clearBrowseRestaurantsPagination: true,
+        clearBrowseAvailability: true,
+        clearBrowseTotalCount: true,
         clearBrowsingContext: true,
         isBrowseRestaurantsLoading: false,
         isBrowseRestaurantsLoadingMore: false,

@@ -39,8 +39,10 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
         AnimatedContainer(
           duration: const Duration(milliseconds: 280),
           curve: Curves.fastOutSlowIn,
-          constraints: const BoxConstraints(
-            minHeight: Spacing.subscriptionPackageChoiceFigmaHeight,
+          constraints: BoxConstraints(
+            minHeight: isSelected
+                ? Spacing.subscriptionPackageChoiceFigmaHeight + Spacing.base
+                : Spacing.subscriptionPackageChoiceFigmaHeight,
           ),
           decoration: BoxDecoration(
             color: isSelected
@@ -121,14 +123,32 @@ class SubscriptionPackageChoiceCard extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: Spacing.xxs),
-                            Text(
-                              subtitle,
-                              maxLines: isSelected ? 2 : 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size11,
-                                color: color.onSurfaceVariant,
+                            AnimatedCrossFade(
+                              duration: const Duration(milliseconds: 280),
+                              firstCurve: Curves.easeOut,
+                              secondCurve: Curves.easeIn,
+                              sizeCurve: Curves.fastOutSlowIn,
+                              alignment: AlignmentDirectional.topStart,
+                              crossFadeState: isSelected
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
+                              firstChild: Text(
+                                subtitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size11,
+                                  color: color.onSurfaceVariant,
+                                ),
+                              ),
+                              secondChild: Text(
+                                subtitle,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size11,
+                                  color: color.onSurfaceVariant,
+                                ),
                               ),
                             ),
                             const SizedBox(height: Spacing.xs),

@@ -418,8 +418,6 @@ import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.
     as _i182;
 import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart'
     as _i173;
-import '../../features/payment/presentation/manager/payment_view_model.dart'
-    as _i502;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
     as _i998;
 import '../../features/profile/data/data_source/profile_remote_data_source_impl.dart'
@@ -447,6 +445,8 @@ import '../../features/subscription_checkout/domain/repo/subscription_summary_re
     as _i1060;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart'
     as _i462;
+import '../../features/subscription_checkout/domain/usecase/get_subscription_restaurant_availability_usecase.dart'
+    as _i656;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart'
     as _i926;
 import '../../features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart'
@@ -587,7 +587,6 @@ import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
 import '../network/external_modules.dart' as _i576;
 import '../payment/payment_attempt_store.dart' as _i1028;
-import '../payment/payment_deep_link_coordinator.dart' as _i565;
 import '../services/app_navigator_service.dart' as _i179;
 import '../services/device_id_service.dart' as _i148;
 import '../services/language_interceptor.dart' as _i32;
@@ -691,13 +690,6 @@ extension GetItInjectableX on _i174.GetIt {
         overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
         restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
         mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
-      ),
-    );
-    gh.lazySingleton<_i565.PaymentDeepLinkCoordinator>(
-      () => _i565.PaymentDeepLinkCoordinator(
-        tokenService: gh<_i227.TokenService>(),
-        paymentAttemptStore: gh<_i1028.PaymentAttemptStore>(),
-        navigatorService: gh<_i179.AppNavigatorService>(),
       ),
     );
     gh.lazySingleton<_i43.BiometricService>(
@@ -1070,6 +1062,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i462.GetSubscriptionReadinessUseCase>(
       () => _i462.GetSubscriptionReadinessUseCase(
+        gh<_i1060.SubscriptionSummaryRepository>(),
+      ),
+    );
+    gh.factory<_i656.GetSubscriptionRestaurantAvailabilityUseCase>(
+      () => _i656.GetSubscriptionRestaurantAvailabilityUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
       ),
     );
@@ -1648,6 +1645,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i912.OffersViewModel>(
       () => _i912.OffersViewModel(gh<_i908.GetAvailableOffersUseCase>()),
     );
+    gh.factory<_i527.SubscriptionPlanViewModel>(
+      () => _i527.SubscriptionPlanViewModel(
+        gh<_i275.GetSubscriptionDurationsUseCase>(),
+        gh<_i101.GetSubscriptionTiersUseCase>(),
+        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i462.GetSubscriptionReadinessUseCase>(),
+        gh<_i343.GetSubscriptionTierRestaurantsPageUseCase>(),
+        gh<_i656.GetSubscriptionRestaurantAvailabilityUseCase>(),
+      ),
+    );
     gh.factory<_i665.FamilyCheckoutViewModel>(
       () => _i665.FamilyCheckoutViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1665,15 +1672,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i760.InfluencerDashboardViewModel(
         gh<_i493.GetInfluencerHomeUseCase>(),
         gh<_i460.GetInfluencerLinksUseCase>(),
-      ),
-    );
-    gh.factory<_i527.SubscriptionPlanViewModel>(
-      () => _i527.SubscriptionPlanViewModel(
-        gh<_i275.GetSubscriptionDurationsUseCase>(),
-        gh<_i101.GetSubscriptionTiersUseCase>(),
-        gh<_i903.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i462.GetSubscriptionReadinessUseCase>(),
-        gh<_i343.GetSubscriptionTierRestaurantsPageUseCase>(),
       ),
     );
     gh.factory<_i854.SubscriptionPackagesViewModel>(
@@ -1737,20 +1735,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i873.AbandonFamilyDraftUseCase>(),
         gh<_i945.GetCustomerAddressesUseCase>(),
         gh<_i973.LookupFamilyMemberUseCase>(),
-      ),
-    );
-    gh.factory<_i502.PaymentViewModel>(
-      () => _i502.PaymentViewModel(
-        gh<_i365.GetPaymentMethodsUseCase>(),
-        gh<_i895.CheckoutSubscriptionUseCase>(),
-        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
-        gh<_i182.GetSubscriptionCalendarUseCase>(),
-        gh<_i34.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
-        paymentAttemptStore: gh<_i1028.PaymentAttemptStore>(),
-        tokenService: gh<_i227.TokenService>(),
-        getSubscriptionBillingUseCase:
-            gh<_i369.GetSubscriptionBillingUseCase>(),
       ),
     );
     gh.factory<_i749.ForgotPasswordUseCase>(

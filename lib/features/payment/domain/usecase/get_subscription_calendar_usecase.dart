@@ -8,7 +8,7 @@ class GetSubscriptionCalendarUseCase {
 
   final PaymentRepository _repository;
 
-  Future<ApiResult<void>> call(String subscriptionId) {
+  Future<ApiResult<dynamic>> call(String subscriptionId) {
     return _repository.getSubscriptionCalendar(subscriptionId);
   }
 }

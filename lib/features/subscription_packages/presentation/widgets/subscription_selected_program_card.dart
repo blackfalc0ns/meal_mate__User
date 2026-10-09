@@ -6,10 +6,19 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 
-class SubscriptionSelectedProgramCard extends StatelessWidget {
+class SubscriptionSelectedProgramCard extends StatefulWidget {
   const SubscriptionSelectedProgramCard({super.key, required this.program});
 
   final SubscriptionProgramEntity program;
+
+  @override
+  State<SubscriptionSelectedProgramCard> createState() =>
+      _SubscriptionSelectedProgramCardState();
+}
+
+class _SubscriptionSelectedProgramCardState
+    extends State<SubscriptionSelectedProgramCard> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +41,13 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Spacing.sm),
-        Container(
-          constraints: const BoxConstraints(
-            minHeight: Spacing.subscriptionProgramCardHeight,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.md,
-            vertical: Spacing.md,
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.fastOutSlowIn,
+          constraints: BoxConstraints(
+            minHeight: _isExpanded
+                ? Spacing.subscriptionProgramCardHeight + Spacing.base
+                : Spacing.subscriptionProgramCardHeight,
           ),
           decoration: BoxDecoration(
             color: color.surface,
@@ -53,66 +62,105 @@ class SubscriptionSelectedProgramCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+          child: Material(
+            color: color.surface.withValues(alpha: 0),
+            borderRadius: BorderRadius.circular(
+              Spacing.subscriptionProgramCardRadius,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => setState(() => _isExpanded = !_isExpanded),
+              borderRadius: BorderRadius.circular(
+                Spacing.subscriptionProgramCardRadius,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.md,
+                  vertical: Spacing.md,
+                ),
+                child: Row(
                   children: [
-                    Text(
-                      program.name(locale.localeName),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size15,
-                        color: color.onSurface,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.program.name(locale.localeName),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size15,
+                              color: color.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: Spacing.xs),
+                          AnimatedCrossFade(
+                            duration: const Duration(milliseconds: 280),
+                            firstCurve: Curves.easeOut,
+                            secondCurve: Curves.easeIn,
+                            sizeCurve: Curves.fastOutSlowIn,
+                            alignment: AlignmentDirectional.topStart,
+                            crossFadeState: _isExpanded
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                            firstChild: Text(
+                              widget.program.description(locale.localeName),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size12,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                            secondChild: Text(
+                              widget.program.description(locale.localeName),
+                              textAlign: TextAlign.start,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size12,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      program.description(locale.localeName),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
-                        color: color.onSurfaceVariant,
+                    const SizedBox(width: Spacing.md),
+                    SizedBox(
+                      width: Spacing.avatarLg,
+                      height: Spacing.avatarLg,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: color.surface,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: color.shadow.withValues(alpha: 0.11),
+                              blurRadius: Spacing.lg,
+                              offset: const Offset(0, Spacing.xs),
+                            ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: AppCachedNetworkImage(
+                            imageUrl: widget.program.imageUrl,
+                            shape: BoxShape.circle,
+                            fit: BoxFit.cover,
+                            semanticLabel:
+                                widget.program.name(locale.localeName),
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: Spacing.md),
-              SizedBox(
-                width: Spacing.avatarLg,
-                height: Spacing.avatarLg,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: color.surface,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.shadow.withValues(alpha: 0.11),
-                        blurRadius: Spacing.lg,
-                        offset: const Offset(0, Spacing.xs),
-                      ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: AppCachedNetworkImage(
-                      imageUrl: program.imageUrl,
-                      shape: BoxShape.circle,
-                      fit: BoxFit.cover,
-                      semanticLabel: program.name(locale.localeName),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ],

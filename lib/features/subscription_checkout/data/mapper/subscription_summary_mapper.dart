@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/network/mapper/pagination_mapper.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_availability_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_coupon_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
@@ -123,7 +124,7 @@ extension SubscriptionSummaryResponseDtoMapper
       gatewayFee: gatewayFee ?? 0,
       finalPrice: finalPrice ?? 0,
       currencyCode: currencyCode ?? '',
-      canCheckout: canCheckout ?? true,
+      canCheckout: canCheckout ?? false,
       checkoutBlockReason: checkoutBlockReason,
       address: address?.toEntity(),
       restaurants: (restaurants ?? const [])
@@ -143,6 +144,7 @@ extension SubscriptionSummaryResponseDtoMapper
           ),
       coupon: coupon?.toEntity(),
       restaurantsPagination: restaurantsPagination?.toEntity(),
+      availability: availability?.toEntity(),
     );
   }
 }

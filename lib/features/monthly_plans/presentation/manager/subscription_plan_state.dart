@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscripti
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_tier_design.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 
 export 'subscription_plan_state_mapper.dart';
@@ -24,13 +25,19 @@ class SubscriptionPlanState {
     this.tiers = const [],
     this.selectedDurationIndex,
     this.selectedTierIndex,
+    this.selectedStartDate,
     this.customDurationDays,
     this.browsedTierIndex,
     this.browseRestaurants = const [],
     this.browseRestaurantsPagination,
+    this.browseAvailability,
+    this.browseTotalCount,
     this.browsingProgramId,
     this.browsingBundleId,
     this.browsingTier,
+    this.browsingDurationDays,
+    this.browsingStartDate,
+    this.browsingIncludeFriday,
     this.readiness,
     this.failure,
     this.browseRestaurantsFailure,
@@ -49,13 +56,19 @@ class SubscriptionPlanState {
   final List<SubscriptionTierEntity> tiers;
   final int? selectedDurationIndex;
   final int? selectedTierIndex;
+  final String? selectedStartDate;
   final int? customDurationDays;
   final int? browsedTierIndex;
   final List<SubscriptionTierRestaurantBrowseEntity> browseRestaurants;
   final PaginationEntity? browseRestaurantsPagination;
+  final SubscriptionAvailabilityEntity? browseAvailability;
+  final int? browseTotalCount;
   final String? browsingProgramId;
   final String? browsingBundleId;
   final String? browsingTier;
+  final int? browsingDurationDays;
+  final String? browsingStartDate;
+  final bool? browsingIncludeFriday;
   final SubscriptionReadinessEntity? readiness;
   final Failure? failure;
   final Failure? browseRestaurantsFailure;
@@ -161,13 +174,19 @@ class SubscriptionPlanState {
     List<SubscriptionTierEntity>? tiers,
     int? selectedDurationIndex,
     int? selectedTierIndex,
+    String? selectedStartDate,
     int? customDurationDays,
     int? browsedTierIndex,
     List<SubscriptionTierRestaurantBrowseEntity>? browseRestaurants,
     PaginationEntity? browseRestaurantsPagination,
+    SubscriptionAvailabilityEntity? browseAvailability,
+    int? browseTotalCount,
     String? browsingProgramId,
     String? browsingBundleId,
     String? browsingTier,
+    int? browsingDurationDays,
+    String? browsingStartDate,
+    bool? browsingIncludeFriday,
     SubscriptionReadinessEntity? readiness,
     Failure? failure,
     Failure? browseRestaurantsFailure,
@@ -175,10 +194,13 @@ class SubscriptionPlanState {
     Failure? readinessFailure,
     bool clearSelectedDuration = false,
     bool clearSelectedTier = false,
+    bool clearSelectedStartDate = false,
     bool clearCustomDuration = false,
     bool clearBrowsedTier = false,
     bool clearBrowseRestaurants = false,
     bool clearBrowseRestaurantsPagination = false,
+    bool clearBrowseAvailability = false,
+    bool clearBrowseTotalCount = false,
     bool clearBrowsingContext = false,
     bool clearReadiness = false,
     bool clearFailure = false,
@@ -204,6 +226,9 @@ class SubscriptionPlanState {
       selectedTierIndex: clearSelectedTier
           ? null
           : selectedTierIndex ?? this.selectedTierIndex,
+      selectedStartDate: clearSelectedStartDate
+          ? null
+          : selectedStartDate ?? this.selectedStartDate,
       customDurationDays: clearCustomDuration
           ? null
           : customDurationDays ?? this.customDurationDays,
@@ -216,6 +241,12 @@ class SubscriptionPlanState {
       browseRestaurantsPagination: clearBrowseRestaurantsPagination
           ? null
           : browseRestaurantsPagination ?? this.browseRestaurantsPagination,
+      browseAvailability: clearBrowseAvailability
+          ? null
+          : browseAvailability ?? this.browseAvailability,
+      browseTotalCount: clearBrowseTotalCount
+          ? null
+          : browseTotalCount ?? this.browseTotalCount,
       browsingProgramId: clearBrowsingContext
           ? null
           : browsingProgramId ?? this.browsingProgramId,
@@ -225,6 +256,15 @@ class SubscriptionPlanState {
       browsingTier: clearBrowsingContext
           ? null
           : browsingTier ?? this.browsingTier,
+      browsingDurationDays: clearBrowsingContext
+          ? null
+          : browsingDurationDays ?? this.browsingDurationDays,
+      browsingStartDate: clearBrowsingContext
+          ? null
+          : browsingStartDate ?? this.browsingStartDate,
+      browsingIncludeFriday: clearBrowsingContext
+          ? null
+          : browsingIncludeFriday ?? this.browsingIncludeFriday,
       readiness: clearReadiness ? null : readiness ?? this.readiness,
       failure: clearFailure ? null : failure ?? this.failure,
       browseRestaurantsFailure: clearBrowseRestaurantsFailure
@@ -253,12 +293,18 @@ class SubscriptionPlanState {
         other.includeFriday == includeFriday &&
         other.selectedDurationIndex == selectedDurationIndex &&
         other.selectedTierIndex == selectedTierIndex &&
+        other.selectedStartDate == selectedStartDate &&
         other.customDurationDays == customDurationDays &&
         other.browsedTierIndex == browsedTierIndex &&
         other.browseRestaurantsPagination == browseRestaurantsPagination &&
+        other.browseAvailability == browseAvailability &&
+        other.browseTotalCount == browseTotalCount &&
         other.browsingProgramId == browsingProgramId &&
         other.browsingBundleId == browsingBundleId &&
         other.browsingTier == browsingTier &&
+        other.browsingDurationDays == browsingDurationDays &&
+        other.browsingStartDate == browsingStartDate &&
+        other.browsingIncludeFriday == browsingIncludeFriday &&
         other.readiness == readiness &&
         other.failure == failure &&
         other.browseRestaurantsFailure == browseRestaurantsFailure &&
@@ -280,12 +326,18 @@ class SubscriptionPlanState {
         includeFriday,
         selectedDurationIndex,
         selectedTierIndex,
+        selectedStartDate,
         customDurationDays,
         browsedTierIndex,
         browseRestaurantsPagination,
+        browseAvailability,
+        browseTotalCount,
         browsingProgramId,
         browsingBundleId,
         browsingTier,
+        browsingDurationDays,
+        browsingStartDate,
+        browsingIncludeFriday,
         readiness,
         failure,
         browseRestaurantsFailure,

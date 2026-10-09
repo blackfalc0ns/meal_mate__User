@@ -32,8 +32,10 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 280),
       curve: Curves.fastOutSlowIn,
-      constraints: const BoxConstraints(
-        minHeight: Spacing.subscriptionProgramCardHeight,
+      constraints: BoxConstraints(
+        minHeight: isSelected
+            ? Spacing.subscriptionProgramCardHeight + Spacing.base
+            : Spacing.subscriptionProgramCardHeight,
       ),
       decoration: BoxDecoration(
         color: color.surface,
@@ -93,16 +95,35 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: Spacing.xs),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
-                        ).copyWith(height: 1.35),
+                      AnimatedCrossFade(
+                        duration: const Duration(milliseconds: 280),
+                        firstCurve: Curves.easeOut,
+                        secondCurve: Curves.easeIn,
+                        sizeCurve: Curves.fastOutSlowIn,
+                        alignment: AlignmentDirectional.topStart,
+                        crossFadeState: isSelected
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                        firstChild: Text(
+                          description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ).copyWith(height: 1.35),
+                        ),
+                        secondChild: Text(
+                          description,
+                          textAlign: TextAlign.start,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ).copyWith(height: 1.35),
+                        ),
                       ),
                       const SizedBox(height: Spacing.sm),
                       Row(

@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_restaurant_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/repo/subscription_summary_repository.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart';
 
@@ -117,6 +118,12 @@ class FakeSubscriptionSummaryRepository
   Future<ApiResult<SubscriptionSummaryEntity>> getSummary(
     SubscriptionSummaryRequestEntity request,
   ) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResult<SubscriptionRestaurantAvailabilityEntity>>
+  getRestaurantAvailability(SubscriptionSummaryRequestEntity request) async {
     throw UnimplementedError();
   }
 

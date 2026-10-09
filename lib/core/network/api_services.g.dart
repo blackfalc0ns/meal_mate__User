@@ -1312,6 +1312,48 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<SubscriptionTierRestaurantsPageResponseDto>
+  getSubscriptionTierRestaurantsPage(
+    String programId,
+    String bundleId,
+    String tier,
+    String? familyMemberId, {
+    int? page,
+    int? pageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'familyMemberId': familyMemberId,
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionTierRestaurantsPageResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/programs/${programId}/bundles/${bundleId}/tiers/${tier}/restaurants',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionTierRestaurantsPageResponseDto _value;
+    try {
+      _value = SubscriptionTierRestaurantsPageResponseDto.fromJson(
+        _result.data!,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<SubscriptionRestaurantDetailsResponseDto>
   getSubscriptionRestaurantDetails(
     String programId,
@@ -1416,6 +1458,58 @@ class _ApiServices implements ApiServices {
     late SubscriptionSummaryResponseDto _value;
     try {
       _value = SubscriptionSummaryResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionRestaurantAvailabilityResponseDto>
+  getSubscriptionRestaurantAvailability(
+    bool includeFriday,
+    int durationDays,
+    String tier,
+    String bundleId,
+    String programId,
+    String startDate, {
+    int? restaurantsPage,
+    int? restaurantsPageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'includeFriday': includeFriday,
+      r'durationDays': durationDays,
+      r'tier': tier,
+      r'bundleId': bundleId,
+      r'programId': programId,
+      r'startDate': startDate,
+      r'restaurantsPage': restaurantsPage,
+      r'restaurantsPageSize': restaurantsPageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<SubscriptionRestaurantAvailabilityResponseDto>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/customer/subscription-flow/restaurant-availability',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionRestaurantAvailabilityResponseDto _value;
+    try {
+      _value = SubscriptionRestaurantAvailabilityResponseDto.fromJson(
+        _result.data!,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

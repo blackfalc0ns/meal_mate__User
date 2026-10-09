@@ -20,6 +20,7 @@ import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
@@ -35,7 +36,10 @@ class PaymentViewModel extends Cubit<PaymentState> {
     this._paymentAttemptStore,
     this._tokenService,
     this._getSubscriptionBillingUseCase,
+    this.pollingBackoffOverride,
   }) : super(const PaymentState());
+
+  final Iterable<Duration> Function()? pollingBackoffOverride;
 
   final GetPaymentMethodsUseCase _getPaymentMethodsUseCase;
   final CheckoutSubscriptionUseCase _checkoutSubscriptionUseCase;
@@ -169,6 +173,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
     if (state.isCheckoutLoading ||
         state.isFulfillmentLoading ||
         state.isReviewRequired) {
+      return;
+    }
+    if (!args.summary.canCheckout) {
       return;
     }
     final selectedMethod = state.selectedMethod;
@@ -571,9 +578,19 @@ class PaymentViewModel extends Cubit<PaymentState> {
     }
   }
 
+  int _calendarPollGeneration = 0;
+
+  @override
+  Future<void> close() {
+    _calendarPollGeneration++;
+    return super.close();
+  }
+
   Future<void> _pollCalendar(String subscriptionId) async {
     if (subscriptionId.isEmpty) return;
     if (state.isCalendarLoading || state.isCalendarSuccess) return;
+
+    final pollGeneration = ++_calendarPollGeneration;
 
     emit(
       state.copyWith(
@@ -588,18 +605,27 @@ class PaymentViewModel extends Cubit<PaymentState> {
       if (delay != Duration.zero) {
         await Future<void>.delayed(delay);
       }
-      if (isClosed) return;
+      if (isClosed || pollGeneration != _calendarPollGeneration) return;
 
       final result = await _getSubscriptionCalendarUseCase(subscriptionId);
-      if (isClosed) return;
+      if (isClosed || pollGeneration != _calendarPollGeneration) return;
 
       switch (result) {
         case ApiSuccessResult():
+          final data = result.data;
+          final isReady = (data is CalendarResponseDto)
+              ? (data.isFulfillmentReady != false &&
+                    data.days != null &&
+                    data.days!.isNotEmpty)
+              : true;
+          if (!isReady) {
+            continue;
+          }
           await _sharedPrefHelper.saveData(
             key: StorageKeys.currentSubscriptionId,
             val: subscriptionId,
           );
-          if (isClosed) return;
+          if (isClosed || pollGeneration != _calendarPollGeneration) return;
           emit(
             state.copyWith(
               isCalendarLoading: false,
@@ -612,7 +638,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           lastFailure = result.failure;
           if (!_isCalendarFulfillmentNotReady(result.failure) &&
               !_isRetryableCalendarFailure(result.failure)) {
-            if (isClosed) return;
+            if (isClosed || pollGeneration != _calendarPollGeneration) return;
             emit(
               state.copyWith(
                 isCalendarLoading: false,
@@ -625,21 +651,34 @@ class PaymentViewModel extends Cubit<PaymentState> {
       }
     }
 
-    if (isClosed) return;
+    if (isClosed || pollGeneration != _calendarPollGeneration) return;
     emit(
-      state.copyWith(isCalendarLoading: false, calendarFailure: lastFailure),
+      state.copyWith(
+        isCalendarLoading: false,
+        calendarFailure:
+            lastFailure ??
+            Failure(
+              code: 'calendar.fulfillment_not_ready',
+              errorMessage: 'Subscription calendar is being prepared',
+              exception: const ApiException(
+                errorType: ApiErrorType.conflict,
+                backendErrorCode: 'calendar.fulfillment_not_ready',
+                message: 'Subscription calendar is being prepared',
+              ),
+            ),
+      ),
     );
   }
 
   Iterable<Duration> _pollingBackoff() sync* {
+    if (pollingBackoffOverride != null) {
+      yield* pollingBackoffOverride!();
+      return;
+    }
     yield Duration.zero;
     yield const Duration(seconds: 2);
-    yield const Duration(seconds: 5);
-    var elapsed = 7;
-    while (elapsed < 120) {
-      yield const Duration(seconds: 10);
-      elapsed += 10;
-    }
+    yield const Duration(seconds: 4);
+    yield const Duration(seconds: 8);
   }
 
   bool _isCalendarFulfillmentNotReady(Failure failure) {

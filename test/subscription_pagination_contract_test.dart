@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:meal_meat_user/features/subscription_programs/data/data_source/subscription_programs_remote_data_source_impl.dart';
+import 'package:meal_meat_user/features/monthly_plans/data/data_source/subscription_plan_remote_data_source_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
@@ -45,6 +46,54 @@ void main() {
       expect(response.totalCount, 6);
       expect(response.totalPages, 1);
       expect(response.hasNextPage, isFalse);
+    },
+  );
+
+  test(
+    'subscription plan data source parses paged tier restaurants response correctly',
+    () async {
+      adapter.mockResponse = {
+        'items': [
+          {
+            'restaurantId': '7ccfc18b-8f31-43c2-8bbf-ca61ee7c95ec',
+            'nameAr': '[تجربة] جرين بول',
+            'logoUrl': 'https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/logo-green-bowl.png',
+            'rating': null,
+            'mealCount': 4,
+            'bundleMealCount': 0,
+            'tier': 'Basic',
+            'tierNameAr': 'أساسي',
+            'tierLogoUrl': null,
+            'classifications': [{'logoUrl': null, 'tier': 'Basic'}],
+            'name': '[تجربة] جرين بول',
+            'tierName': 'أساسي',
+          },
+        ],
+        'totalCount': 3,
+        'page': 1,
+        'pageSize': 10,
+        'totalPages': 1,
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+      };
+
+      final dataSource = SubscriptionPlanRemoteDataSourceImpl(apiServices);
+      final response = await dataSource.getTierRestaurantsPage(
+        programId: 'prog-1',
+        bundleId: 'bundle-1',
+        tier: 'Platinum',
+        page: 1,
+        pageSize: 10,
+      );
+
+      expect(response.items?.length, 1);
+      expect(response.items?.first.restaurantId, '7ccfc18b-8f31-43c2-8bbf-ca61ee7c95ec');
+      expect(response.items?.first.nameAr, '[تجربة] جرين بول');
+      expect(response.totalCount, 3);
+      expect(response.page, 1);
+      expect(response.pageSize, 10);
+      expect(response.totalPages, 1);
+      expect(response.hasNextPage, false);
     },
   );
 

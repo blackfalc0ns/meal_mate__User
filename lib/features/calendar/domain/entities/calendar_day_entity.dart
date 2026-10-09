@@ -10,6 +10,12 @@ class CalendarDayEntity {
     this.uiStatus,
     this.canEdit,
     this.failureReasonCode,
+    this.editBlockReason,
+    this.selectionDeadlineUtc,
+    this.lockAtUtc,
+    this.lockRemainingSeconds,
+    this.filledCount,
+    this.requiredCount,
     this.restaurantId,
     this.restaurant,
     this.meals = const [],
@@ -31,6 +37,12 @@ class CalendarDayEntity {
   final String? uiStatus;
   final bool? canEdit;
   final String? failureReasonCode;
+  final String? editBlockReason;
+  final DateTime? selectionDeadlineUtc;
+  final DateTime? lockAtUtc;
+  final int? lockRemainingSeconds;
+  final int? filledCount;
+  final int? requiredCount;
   final String? restaurantId;
   final CalendarRestaurantEntity? restaurant;
   final List<CalendarMealEntity> meals;
@@ -52,7 +64,8 @@ class CalendarDayEntity {
     return normalizedStatus == 'frozen' ||
         normalizedStatus == '12' ||
         normalizedUiStatus == 'frozen' ||
-        failureReasonCode == 'subscription.day_frozen';
+        failureReasonCode == 'subscription.day_frozen' ||
+        editBlockReason == 'day_frozen';
   }
 
   bool get hasSelectedMeals {
@@ -82,46 +95,62 @@ class CalendarDayEntity {
         s.contains('cancelled');
   }
 
-  bool get isEditable {
-    if (isFrozen || isConfirmed || isAwaitingRestaurantConfirmation) {
-      return false;
-    }
-    if (uiStatus?.toLowerCase() == 'locked' ||
-        status.toLowerCase() == 'locked') {
-      return false;
-    }
-    return canEdit ?? false;
-  }
+  /// Server is the single source of truth for editing permission.
+  bool get isEditable => canEdit == true;
 
   CalendarDayEntity copyWith({
+    String? id,
     String? status,
-    bool? isSelected,
-    bool? isMuted,
-    bool? hasMeals,
-    CalendarNutritionTotalsEntity? nutritionTotals,
     String? uiStatus,
     bool? canEdit,
     String? failureReasonCode,
+    String? editBlockReason,
+    DateTime? selectionDeadlineUtc,
+    DateTime? lockAtUtc,
+    int? lockRemainingSeconds,
+    int? filledCount,
+    int? requiredCount,
+    String? restaurantId,
+    CalendarRestaurantEntity? restaurant,
     List<CalendarMealEntity>? meals,
+    List<String>? selectedMealIds,
+    CalendarNutritionTotalsEntity? nutritionTotals,
+    List<CalendarSlotRequirementEntity>? slotRequirements,
     bool? isLocked,
+    DateTime? editDeadlineUtc,
+    int? dayNumber,
+    String? weekday,
+    DateTime? date,
+    bool? isSelected,
+    bool? isMuted,
+    bool? hasMeals,
+    bool clearEditBlockReason = false,
   }) {
     return CalendarDayEntity(
-      id: id,
+      id: id ?? this.id,
       status: status ?? this.status,
       uiStatus: uiStatus ?? this.uiStatus,
       canEdit: canEdit ?? this.canEdit,
       failureReasonCode: failureReasonCode ?? this.failureReasonCode,
-      restaurantId: restaurantId,
-      restaurant: restaurant,
+      editBlockReason: clearEditBlockReason
+          ? null
+          : (editBlockReason ?? this.editBlockReason),
+      selectionDeadlineUtc: selectionDeadlineUtc ?? this.selectionDeadlineUtc,
+      lockAtUtc: lockAtUtc ?? this.lockAtUtc,
+      lockRemainingSeconds: lockRemainingSeconds ?? this.lockRemainingSeconds,
+      filledCount: filledCount ?? this.filledCount,
+      requiredCount: requiredCount ?? this.requiredCount,
+      restaurantId: restaurantId ?? this.restaurantId,
+      restaurant: restaurant ?? this.restaurant,
       meals: meals ?? this.meals,
-      selectedMealIds: selectedMealIds,
+      selectedMealIds: selectedMealIds ?? this.selectedMealIds,
       nutritionTotals: nutritionTotals ?? this.nutritionTotals,
-      slotRequirements: slotRequirements,
+      slotRequirements: slotRequirements ?? this.slotRequirements,
       isLocked: isLocked ?? this.isLocked,
-      editDeadlineUtc: editDeadlineUtc,
-      dayNumber: dayNumber,
-      weekday: weekday,
-      date: date,
+      editDeadlineUtc: editDeadlineUtc ?? this.editDeadlineUtc,
+      dayNumber: dayNumber ?? this.dayNumber,
+      weekday: weekday ?? this.weekday,
+      date: date ?? this.date,
       isSelected: isSelected ?? this.isSelected,
       isMuted: isMuted ?? this.isMuted,
       hasMeals: hasMeals ?? this.hasMeals,

@@ -14,5 +14,5 @@ abstract interface class PaymentRepository {
     String subscriptionId,
   );
 
-  Future<ApiResult<void>> getSubscriptionCalendar(String subscriptionId);
+  Future<ApiResult<dynamic>> getSubscriptionCalendar(String subscriptionId);
 }

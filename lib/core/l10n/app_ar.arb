@@ -2594,5 +2594,17 @@
   "payment_method_unavailable_wallet": "الدفع بالمحفظة غير متوفر حالياً",
   "payment_method_unavailable_generic": "غير متوفر حالياً",
   "payment_method_service_charge_label": "رسوم الخدمة",
-  "payment_method_total_with_fees_label": "الإجمالي شامل الرسوم"
+  "payment_method_total_with_fees_label": "الإجمالي شامل الرسوم",
+  "subscriptionFirstDelivery": "بداية الاشتراك وأول توصيل: {date}",
+  "subscriptionPaymentAnchor": "تاريخ الاختيار: {date}",
+  "subscriptionNoRestaurantsForAddress": "لا توجد مطاعم تقدم برنامج {programName} وتوصل إلى عنوانك المحدد.",
+  "subscriptionNoRestaurantsForSelection": "لا توجد مطاعم متاحة طوال مدة الاشتراك وفق اختياراتك الحالية.",
+  "subscriptionAvailabilityChanged": "تغير توافر المطاعم. راجع الملخص قبل إعادة محاولة الدفع.",
+  "calendarPreparing": "جارٍ تجهيز تقويم اشتراكك بعد تأكيد الدفع.",
+  "calendarSelectionDeadline": "يمكنك اختيار الوجبات حتى {dateTime}.",
+  "calendarSelectionDeadlinePassed": "انتهت مهلة اختيار الوجبات لهذا اليوم.",
+  "calendarDayLocked": "تم إغلاق التعديل لهذا اليوم.",
+  "calendarDayFrozen": "هذا اليوم مجمّد ولا يمكن تعديله الآن.",
+  "calendarDayCancelled": "تم إلغاء هذا اليوم.",
+  "calendarFulfillmentNotReady": "التقويم غير جاهز بعد. حاول التحديث بعد قليل."
 }

@@ -61,11 +61,19 @@ class BrowseSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
     required this.programId,
     required this.bundleId,
     required this.tierIndex,
+    this.startDate,
   });
 
   final String programId;
   final String bundleId;
   final int tierIndex;
+  final String? startDate;
+}
+
+class SelectSubscriptionPlanStartDateEvent extends SubscriptionPlanEvent {
+  const SelectSubscriptionPlanStartDateEvent(this.startDate);
+
+  final String startDate;
 }
 
 class CheckSubscriptionReadinessEvent extends SubscriptionPlanEvent {
