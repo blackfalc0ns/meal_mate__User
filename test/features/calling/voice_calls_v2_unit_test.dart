@@ -1460,6 +1460,42 @@ void main() {
       // No retry should have fired after terminal cleanup
       expect(repo.connectingReportCount, equals(1));
     });
+
+    test('connected waits for a failed connecting retry before sending once', () async {
+      manager.reportRetryDelay = const Duration(milliseconds: 20);
+      await manager.initialize();
+      await pumpEventQueue();
+      manager.handleSignalRCallEventForTesting({
+        'eventId': 'ev-rep-fail-then-success',
+        'callId': 'call-rep-505',
+        'sequence': 4,
+        'payload': {'status': 'Active'},
+      });
+      await pumpEventQueue();
+      repo.onConnectingReport = (attempt) => attempt == 1
+          ? ApiErrorResult<void>(failure: Failure(
+              errorMessage: 'temporary',
+              exception: const ApiException(
+                errorType: ApiErrorType.serverError,
+                message: 'temporary',
+                statusCode: 500,
+              ),
+            ))
+          : const ApiSuccessResult<void>(data: null);
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnecting,
+      );
+      await pumpEventQueue();
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnected,
+      );
+      await pumpEventQueue();
+      expect(repo.connectedReportCount, equals(0));
+      await Future<void>.delayed(const Duration(milliseconds: 35));
+      await pumpEventQueue();
+      expect(repo.connectingReportCount, equals(2));
+      expect(repo.connectedReportCount, equals(1));
+    });
   });
 
   group('VoiceCallManager Authoritative 409 Reconciliation and Hangup (Task 6)', () {

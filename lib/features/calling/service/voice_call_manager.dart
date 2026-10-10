@@ -149,6 +149,8 @@ class VoiceCallManager with WidgetsBindingObserver {
   final List<_PendingRtcRecord> _pendingRtcQueue = [];
   final Map<String, Future<bool>> _inFlightAccepts = {};
   bool _isWebRtcReady = false;
+  int _callSessionEpoch = 0;
+  final Set<String> _pendingConnectedReports = {};
 
   Timer? _heartbeatTimer;
   Timer? _durationTimer;
@@ -389,6 +391,8 @@ class VoiceCallManager with WidgetsBindingObserver {
       _processedMessageIds.clear();
       _inFlightAccepts.clear();
       _isWebRtcReady = false;
+      _pendingConnectedReports.clear();
+      _callSessionEpoch++;
       _currentGeneration = 0;
     }
     _currentSnapshot = snapshot;
@@ -626,6 +630,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     required Map<String, dynamic> offer,
     required String messageId,
     required int generation,
+    int? epoch,
   }) async {
     final sdp = offer['sdp']?.toString() ?? '';
     if (sdp.isEmpty) return;
@@ -635,16 +640,18 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
 
     try {
+      if (!_isCurrentRtcOperation(callId, generation, epoch)) return;
       final answerSdp = await _webrtcService.handleRemoteOfferAndCreateAnswer(
         sdp,
       );
+      if (!_isCurrentRtcOperation(callId, generation, epoch)) return;
       final answerMessageId = _uuid.v4();
 
       await _signalRService.sendAnswer(
         callId: callId,
         sdp: answerSdp,
         messageId: answerMessageId,
-        generation: _currentGeneration,
+        generation: generation,
       );
 
       if (messageId.isNotEmpty) {
@@ -746,7 +753,18 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _drainPendingRtcQueue(String callId) async {
+  bool _isCurrentRtcOperation(String callId, int generation, int? epoch) {
+    final snapshot = _currentSnapshot;
+    return (epoch == null || epoch == _callSessionEpoch) &&
+        snapshot?.callId == callId &&
+        !(snapshot?.status.isTerminal ?? true) &&
+        generation == _currentGeneration &&
+        (snapshot?.winningDeviceSessionId == null ||
+            snapshot?.winningDeviceSessionId ==
+                _currentDeviceSession?.deviceSessionId);
+  }
+
+  Future<void> _drainPendingRtcQueue(String callId, [int? epoch]) async {
     final pendingForCall = _pendingRtcQueue
         .where((r) => r.callId == callId && r.generation >= _currentGeneration)
         .toList();
@@ -755,17 +773,20 @@ class VoiceCallManager with WidgetsBindingObserver {
     // Drain offers first in arrival order
     final offers = pendingForCall.whereType<_PendingOfferRecord>().toList();
     for (final off in offers) {
+      if (epoch != null && epoch != _callSessionEpoch) return;
       await _processOffer(
         callId: off.callId,
         offer: off.offer,
         messageId: off.messageId,
         generation: off.generation,
+        epoch: epoch,
       );
     }
 
     // Drain ICE candidates in arrival order
     final ices = pendingForCall.whereType<_PendingIceRecord>().toList();
     for (final ice in ices) {
+      if (epoch != null && epoch != _callSessionEpoch) return;
       await _processIce(
         candidateData: ice.candidateData,
         messageId: ice.messageId,
@@ -874,6 +895,9 @@ class VoiceCallManager with WidgetsBindingObserver {
 
       if (result is ApiSuccessResult) {
         _successfullyReportedConnectingKeys.add(reportKey);
+        if (_pendingConnectedReports.contains(reportKey)) {
+          unawaited(_sendConnectedReportWithRetry(callId, generation));
+        }
         debugPrint(
           '[VoiceCallManager] /reports/connecting succeeded for $callId (gen: $generation)',
         );
@@ -914,6 +938,8 @@ class VoiceCallManager with WidgetsBindingObserver {
         _inFlightConnectedKeys.contains(reportKey)) {
       return;
     }
+    _pendingConnectedReports.add(reportKey);
+    _inFlightConnectedKeys.add(reportKey);
 
     // Connected waits for in-flight Connecting report
     final inFlightConnecting = _inFlightConnectingFutures[reportKey];
@@ -924,14 +950,19 @@ class VoiceCallManager with WidgetsBindingObserver {
       await inFlightConnecting;
     }
 
+    if (!_successfullyReportedConnectingKeys.contains(reportKey)) {
+      _inFlightConnectedKeys.remove(reportKey);
+      return;
+    }
+
     if (_currentSnapshot == null ||
         _currentSnapshot!.callId != callId ||
         _currentGeneration != generation ||
         _currentSnapshot!.status.isTerminal) {
+      _inFlightConnectedKeys.remove(reportKey);
       return;
     }
 
-    _inFlightConnectedKeys.add(reportKey);
     try {
       debugPrint(
         '[VoiceCallManager] Sending /reports/connected for call $callId (gen: $generation, attempt: $attempt)',
@@ -946,6 +977,7 @@ class VoiceCallManager with WidgetsBindingObserver {
 
       if (result is ApiSuccessResult) {
         _successfullyReportedConnectedKeys.add(reportKey);
+        _pendingConnectedReports.remove(reportKey);
         debugPrint(
           '[VoiceCallManager] /reports/connected succeeded for $callId (gen: $generation)',
         );
@@ -1072,6 +1104,17 @@ class VoiceCallManager with WidgetsBindingObserver {
   }
 
   Future<bool> _executeAnswerCall(String callId) async {
+    final epoch = _callSessionEpoch;
+    bool valid() {
+      final snapshot = _currentSnapshot;
+      return epoch == _callSessionEpoch &&
+          snapshot?.callId == callId &&
+          !(snapshot?.status.isTerminal ?? true) &&
+          (snapshot?.winningDeviceSessionId == null ||
+              snapshot?.winningDeviceSessionId ==
+                  _currentDeviceSession?.deviceSessionId);
+    }
+    if (!valid()) return false;
     debugPrint('[VoiceCallManager] answerCall: $callId');
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
@@ -1081,6 +1124,7 @@ class VoiceCallManager with WidgetsBindingObserver {
         '[VoiceCallManager] SignalR not connected or bound. Attempting to ensure connection...',
       );
       await _connectSignalR();
+      if (!valid()) return false;
       if (!_signalRService.isConnected || !_signalRService.isBound) {
         debugPrint(
           '[VoiceCallManager] Cannot answer call: SignalR connection or binding failed',
@@ -1090,6 +1134,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
 
     final answerResult = await _answerVoiceCallUseCase(callId);
+    if (!valid()) return false;
     if (answerResult is ApiErrorResult) {
       final status = answerResult.failure.exception.statusCode;
       debugPrint(
@@ -1102,9 +1147,13 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
 
     // Reconcile authoritative server snapshot after successful answer
-    await _reconcileCall(callId);
+    final reconciled = await _reconcileCall(callId);
+    if (!valid() || reconciled is! ApiSuccessResult<VoiceCallSnapshotEntity>) {
+      return false;
+    }
 
     final iceResult = await _getVoiceIceServersUseCase(callId);
+    if (!valid()) return false;
     if (iceResult is! ApiSuccessResult<VoiceIceServersConfigEntity>) {
       debugPrint(
         '[VoiceCallManager] getVoiceIceServers failed for $callId. Aborting media setup.',
@@ -1120,6 +1169,9 @@ class VoiceCallManager with WidgetsBindingObserver {
       await _webrtcService.initializePeerConnection(
         iceServers: iceResult.data.iceServers,
       );
+      if (!valid()) {
+        return false;
+      }
       _isWebRtcReady = true;
     } catch (e) {
       debugPrint(
@@ -1129,9 +1181,11 @@ class VoiceCallManager with WidgetsBindingObserver {
       return false;
     }
 
-    await _drainPendingRtcQueue(callId);
+    await _drainPendingRtcQueue(callId, epoch);
+    if (!valid()) return false;
 
     await _navigatorService.pushNamedWhenReady(AppRoutes.activeCall);
+    if (!valid()) return false;
     _startHeartbeatTimer(callId);
     return true;
   }
@@ -1317,6 +1371,7 @@ class VoiceCallManager with WidgetsBindingObserver {
   }
 
   Future<void> _cleanupCall() async {
+    _callSessionEpoch++;
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
     _heartbeatTimer?.cancel();
@@ -1333,6 +1388,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     _inFlightConnectedKeys.clear();
     _successfullyReportedConnectedKeys.clear();
     _inFlightConnectingFutures.clear();
+    _pendingConnectedReports.clear();
 
     _pendingRtcQueue.clear();
     _processingMessageIds.clear();
@@ -1366,6 +1422,7 @@ class VoiceCallManager with WidgetsBindingObserver {
   }
 
   void dispose() {
+    _callSessionEpoch++;
     WidgetsBinding.instance.removeObserver(this);
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
@@ -1379,6 +1436,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     _inFlightConnectedKeys.clear();
     _successfullyReportedConnectedKeys.clear();
     _inFlightConnectingFutures.clear();
+    _pendingConnectedReports.clear();
     _pendingRtcQueue.clear();
     _processingMessageIds.clear();
     _processedMessageIds.clear();

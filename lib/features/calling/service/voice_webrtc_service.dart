@@ -18,6 +18,7 @@ class VoiceWebRtcService {
 
   bool _isMuted = false;
   bool _isSpeakerOn = false;
+  int _resourceEpoch = 0;
 
   bool get isMuted => _isMuted;
   bool get isSpeakerOn => _isSpeakerOn;
@@ -32,6 +33,7 @@ class VoiceWebRtcService {
     required List<VoiceIceServerEntity> iceServers,
   }) async {
     await cleanup();
+    final epoch = _resourceEpoch;
 
     final rtcIceServers = <Map<String, dynamic>>[];
     for (final server in iceServers) {
@@ -55,9 +57,16 @@ class VoiceWebRtcService {
       'sdpSemantics': 'unified-plan',
     };
 
-    _peerConnection = await createPeerConnection(configuration);
+    final pc = await createPeerConnection(configuration);
+    if (epoch != _resourceEpoch) {
+      await pc.close();
+      await pc.dispose();
+      return;
+    }
+    _peerConnection = pc;
 
     _peerConnection!.onIceCandidate = (candidate) {
+      if (epoch != _resourceEpoch) return;
       if (candidate.candidate != null && candidate.candidate!.isNotEmpty) {
         debugPrint('[WebRTC] Generated local ICE candidate (mid: ${candidate.sdpMid}, mLine: ${candidate.sdpMLineIndex})');
         onLocalIceCandidate?.call(candidate);
@@ -65,11 +74,13 @@ class VoiceWebRtcService {
     };
 
     _peerConnection!.onConnectionState = (state) {
+      if (epoch != _resourceEpoch) return;
       debugPrint('[WebRTC] Connection state: $state');
       onConnectionStateChange?.call(state);
     };
 
     _peerConnection!.onTrack = (RTCTrackEvent event) {
+      if (epoch != _resourceEpoch) return;
       debugPrint('[WebRTC] Remote track received: kind=${event.track.kind}, id=${event.track.id}, enabled=${event.track.enabled}');
       if (event.streams.isNotEmpty) {
         _remoteStream = event.streams[0];
@@ -77,24 +88,34 @@ class VoiceWebRtcService {
     };
 
     _peerConnection!.onAddStream = (MediaStream stream) {
+      if (epoch != _resourceEpoch) return;
       debugPrint('[WebRTC] Remote stream added: id=${stream.id}, tracks=${stream.getAudioTracks().length}');
       _remoteStream = stream;
     };
 
     try {
-      _localStream = await navigator.mediaDevices.getUserMedia({
+      final stream = await navigator.mediaDevices.getUserMedia({
         'audio': true,
         'video': false,
       });
+      if (epoch != _resourceEpoch) {
+        for (final track in stream.getTracks()) {
+          track.stop();
+        }
+        await stream.dispose();
+        return;
+      }
+      _localStream = stream;
 
       final audioTracks = _localStream!.getAudioTracks();
       debugPrint('[WebRTC] Local audio stream acquired with ${audioTracks.length} audio tracks');
       for (final track in audioTracks) {
+        if (epoch != _resourceEpoch) return;
         await _peerConnection!.addTrack(track, _localStream!);
       }
     } catch (e) {
       debugPrint('[WebRTC] Failed to acquire local audio stream or add audio track: $e');
-      await cleanup();
+      if (epoch == _resourceEpoch) await cleanup();
       rethrow;
     }
   }
@@ -183,35 +204,40 @@ class VoiceWebRtcService {
   }
 
   Future<void> cleanup() async {
+    _resourceEpoch++;
     debugPrint('[WebRTC] Cleaning up WebRTC resources');
     _isRemoteDescriptionSet = false;
     _earlyIceCandidates.clear();
 
-    if (_localStream != null) {
-      for (final track in _localStream!.getTracks()) {
+    final localStream = _localStream;
+    final remoteStream = _remoteStream;
+    final peerConnection = _peerConnection;
+    _localStream = null;
+    _remoteStream = null;
+    _peerConnection = null;
+
+    if (localStream != null) {
+      for (final track in localStream.getTracks()) {
         try {
           track.stop();
         } catch (_) {}
       }
       try {
-        await _localStream!.dispose();
+        await localStream.dispose();
       } catch (_) {}
-      _localStream = null;
     }
 
-    if (_remoteStream != null) {
+    if (remoteStream != null) {
       try {
-        await _remoteStream!.dispose();
+        await remoteStream.dispose();
       } catch (_) {}
-      _remoteStream = null;
     }
 
-    if (_peerConnection != null) {
+    if (peerConnection != null) {
       try {
-        await _peerConnection!.close();
-        await _peerConnection!.dispose();
+        await peerConnection.close();
+        await peerConnection.dispose();
       } catch (_) {}
-      _peerConnection = null;
     }
 
     _isMuted = false;
