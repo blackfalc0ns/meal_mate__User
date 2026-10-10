@@ -223,10 +223,15 @@ class FakeCallKitService extends Fake implements VoiceCallKitService {
 }
 
 class FakeSignalRService extends Fake implements VoiceCallSignalRService {
+  @override
   CallEventListener? onCallEvent;
+  @override
   RtcOfferListener? onRtcOffer;
+  @override
   RtcAnswerListener? onRtcAnswer;
+  @override
   RtcIceListener? onRtcIce;
+  @override
   VoidCallback? onReconnected;
   int bindCount = 0;
   String? lastBoundSessionId;
@@ -244,7 +249,9 @@ class FakeSignalRService extends Fake implements VoiceCallSignalRService {
 }
 
 class FakeWebRtcService extends Fake implements VoiceWebRtcService {
+  @override
   OnLocalIceCandidateCallback? onLocalIceCandidate;
+  @override
   OnConnectionStateChangeCallback? onConnectionStateChange;
   int cleanupCount = 0;
 
