@@ -16,18 +16,18 @@ class CallingViewModel extends Cubit<CallingState> {
   CallingViewModel(
     VoiceCallManager voiceCallManager,
     VoiceWebRtcService webrtcService,
-  )   : _voiceCallManager = voiceCallManager,
-        _webrtcService = webrtcService,
-        super(const CallingState()) {
+  ) : _voiceCallManager = voiceCallManager,
+      _webrtcService = webrtcService,
+      super(const CallingState()) {
     _initSubscriptions();
   }
 
   CallingViewModel.preview({
     CallDriverEntity? driver,
     VoiceCallDisplayEntity? display,
-  })  : _voiceCallManager = null,
-        _webrtcService = null,
-        super(CallingState(driver: driver, display: display));
+  }) : _voiceCallManager = null,
+       _webrtcService = null,
+       super(CallingState(driver: driver, display: display));
 
   final VoiceCallManager? _voiceCallManager;
   final VoiceWebRtcService? _webrtcService;
@@ -42,10 +42,7 @@ class CallingViewModel extends Cubit<CallingState> {
 
     final current = manager.currentSnapshot;
     if (current != null) {
-      emit(state.copyWith(
-        snapshot: () => current,
-        status: current.status,
-      ));
+      emit(state.copyWith(snapshot: () => current, status: current.status));
     }
 
     final currentDisplay = manager.currentDisplay;
@@ -55,17 +52,16 @@ class CallingViewModel extends Cubit<CallingState> {
 
     _snapshotSubscription = manager.onSnapshotChanged.listen((snapshot) {
       if (snapshot == null) {
-        emit(state.copyWith(
-          snapshot: () => null,
-          display: () => null,
-          status: VoiceCallStatus.ended,
-          durationSeconds: 0,
-        ));
+        emit(
+          state.copyWith(
+            snapshot: () => null,
+            display: () => null,
+            status: VoiceCallStatus.ended,
+            durationSeconds: 0,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          snapshot: () => snapshot,
-          status: snapshot.status,
-        ));
+        emit(state.copyWith(snapshot: () => snapshot, status: snapshot.status));
       }
     });
 
@@ -74,11 +70,13 @@ class CallingViewModel extends Cubit<CallingState> {
     });
 
     _durationSubscription = manager.onDurationChanged.listen((seconds) {
-      emit(state.copyWith(
-        durationSeconds: seconds,
-        isMuted: _webrtcService?.isMuted ?? state.isMuted,
-        isSpeakerOn: _webrtcService?.isSpeakerOn ?? state.isSpeakerOn,
-      ));
+      emit(
+        state.copyWith(
+          durationSeconds: seconds,
+          isMuted: _webrtcService?.isMuted ?? state.isMuted,
+          isSpeakerOn: _webrtcService?.isSpeakerOn ?? state.isSpeakerOn,
+        ),
+      );
     });
   }
 
@@ -112,10 +110,9 @@ class CallingViewModel extends Cubit<CallingState> {
       case SyncActiveCallEvent():
         final snapshot = _voiceCallManager?.currentSnapshot;
         if (snapshot != null) {
-          emit(state.copyWith(
-            snapshot: () => snapshot,
-            status: snapshot.status,
-          ));
+          emit(
+            state.copyWith(snapshot: () => snapshot, status: snapshot.status),
+          );
         }
       case RefreshCallDisplayEvent():
         final callId = event.callId ?? state.snapshot?.callId;
@@ -131,21 +128,19 @@ class CallingViewModel extends Cubit<CallingState> {
       final manager = _voiceCallManager;
       if (manager != null) {
         final success = await manager.answerCall(callId);
-        emit(state.copyWith(
-          isLoading: false,
-          status: success ? VoiceCallStatus.accepted : state.status,
-        ));
+        emit(
+          state.copyWith(
+            isLoading: false,
+            status: success ? VoiceCallStatus.accepted : state.status,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          isLoading: false,
-          status: VoiceCallStatus.accepted,
-        ));
+        emit(
+          state.copyWith(isLoading: false, status: VoiceCallStatus.accepted),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString,
-      ));
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString));
     }
   }
 
@@ -156,35 +151,38 @@ class CallingViewModel extends Cubit<CallingState> {
       if (manager != null) {
         final result = await manager.rejectCall(callId);
         if (result is ApiSuccessResult) {
-          emit(state.copyWith(
-            isLoading: false,
-            status: VoiceCallStatus.rejected,
-          ));
+          emit(
+            state.copyWith(isLoading: false, status: VoiceCallStatus.rejected),
+          );
         } else if (result is ApiErrorResult) {
           final statusCode = result.failure.exception.statusCode;
           if (statusCode == 409) {
-            emit(state.copyWith(
-              isLoading: false,
-              status: manager.currentSnapshot?.status ?? VoiceCallStatus.rejected,
-            ));
+            final currentStatus = manager.currentSnapshot?.status;
+            emit(
+              state.copyWith(
+                isLoading: false,
+                status: currentStatus ?? VoiceCallStatus.rejected,
+                errorMessage: currentStatus != null && !currentStatus.isTerminal
+                    ? () => result.failure.errorMessage
+                    : null,
+              ),
+            );
           } else {
-            emit(state.copyWith(
-              isLoading: false,
-              errorMessage: () => result.failure.errorMessage,
-            ));
+            emit(
+              state.copyWith(
+                isLoading: false,
+                errorMessage: () => result.failure.errorMessage,
+              ),
+            );
           }
         }
       } else {
-        emit(state.copyWith(
-          isLoading: false,
-          status: VoiceCallStatus.rejected,
-        ));
+        emit(
+          state.copyWith(isLoading: false, status: VoiceCallStatus.rejected),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString,
-      ));
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString));
     }
   }
 
@@ -195,35 +193,34 @@ class CallingViewModel extends Cubit<CallingState> {
       if (manager != null) {
         final result = await manager.endCall(callId);
         if (result is ApiSuccessResult) {
-          emit(state.copyWith(
-            isLoading: false,
-            status: VoiceCallStatus.ended,
-          ));
+          emit(state.copyWith(isLoading: false, status: VoiceCallStatus.ended));
         } else if (result is ApiErrorResult) {
           final statusCode = result.failure.exception.statusCode;
           if (statusCode == 409) {
-            emit(state.copyWith(
-              isLoading: false,
-              status: manager.currentSnapshot?.status ?? VoiceCallStatus.ended,
-            ));
+            final currentStatus = manager.currentSnapshot?.status;
+            emit(
+              state.copyWith(
+                isLoading: false,
+                status: currentStatus ?? VoiceCallStatus.ended,
+                errorMessage: currentStatus != null && !currentStatus.isTerminal
+                    ? () => result.failure.errorMessage
+                    : null,
+              ),
+            );
           } else {
-            emit(state.copyWith(
-              isLoading: false,
-              errorMessage: () => result.failure.errorMessage,
-            ));
+            emit(
+              state.copyWith(
+                isLoading: false,
+                errorMessage: () => result.failure.errorMessage,
+              ),
+            );
           }
         }
       } else {
-        emit(state.copyWith(
-          isLoading: false,
-          status: VoiceCallStatus.ended,
-        ));
+        emit(state.copyWith(isLoading: false, status: VoiceCallStatus.ended));
       }
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString,
-      ));
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString));
     }
   }
 
@@ -241,7 +238,11 @@ class CallingViewModel extends Cubit<CallingState> {
     final manager = _voiceCallManager;
     if (manager != null) {
       await manager.toggleSpeaker();
-      emit(state.copyWith(isSpeakerOn: _webrtcService?.isSpeakerOn ?? !state.isSpeakerOn));
+      emit(
+        state.copyWith(
+          isSpeakerOn: _webrtcService?.isSpeakerOn ?? !state.isSpeakerOn,
+        ),
+      );
     } else {
       emit(state.copyWith(isSpeakerOn: !state.isSpeakerOn));
     }

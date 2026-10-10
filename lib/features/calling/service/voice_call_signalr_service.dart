@@ -29,11 +29,43 @@ typedef RtcIceListener =
       int generation,
     );
 
+typedef HubConnectionFactory =
+    HubConnection Function(String url, {HttpConnectionOptions? options});
+
+class _RtcParsedEnvelope {
+  final String callId;
+  final Map<String, dynamic> payload;
+  final String messageId;
+  final int generation;
+
+  const _RtcParsedEnvelope({
+    required this.callId,
+    required this.payload,
+    required this.messageId,
+    required this.generation,
+  });
+}
+
 @lazySingleton
 class VoiceCallSignalRService {
-  VoiceCallSignalRService(this._tokenService);
+  VoiceCallSignalRService(
+    this._tokenService, {
+    @visibleForTesting HubConnectionFactory? hubConnectionFactory,
+  }) : _hubConnectionFactory =
+           hubConnectionFactory ?? _defaultHubConnectionFactory;
 
   final TokenService _tokenService;
+  final HubConnectionFactory _hubConnectionFactory;
+
+  static HubConnection _defaultHubConnectionFactory(
+    String url, {
+    HttpConnectionOptions? options,
+  }) {
+    return HubConnectionBuilder()
+        .withUrl(url, options: options)
+        .withAutomaticReconnect()
+        .build();
+  }
 
   HubConnection? _hubConnection;
   bool _isBound = false;
@@ -57,25 +89,26 @@ class VoiceCallSignalRService {
     required String controlProof,
   }) async {
     if (isConnected && _isBound && _boundSessionId == deviceSessionId) {
-      debugPrint('[SignalR] Already connected and bound to session: $deviceSessionId');
+      debugPrint(
+        '[SignalR] Already connected and bound to session: $deviceSessionId',
+      );
       return;
     }
 
     await disconnect();
 
     const hubUrl = '${NetworkConstants.baseUrl}${EndPoints.voiceCallHub}';
-    debugPrint('[SignalR] Connecting to $hubUrl with sessionId: $deviceSessionId');
-    _hubConnection = HubConnectionBuilder()
-        .withUrl(
-          hubUrl,
-          options: HttpConnectionOptions(
-            accessTokenFactory: () async {
-              return await _tokenService.getToken() ?? '';
-            },
-          ),
-        )
-        .withAutomaticReconnect()
-        .build();
+    debugPrint(
+      '[SignalR] Connecting to $hubUrl with sessionId: $deviceSessionId',
+    );
+    _hubConnection = _hubConnectionFactory(
+      hubUrl,
+      options: HttpConnectionOptions(
+        accessTokenFactory: () async {
+          return await _tokenService.getToken() ?? '';
+        },
+      ),
+    );
 
     _setupHandlers();
 
@@ -94,13 +127,17 @@ class VoiceCallSignalRService {
     if (connection == null) return;
 
     connection.onreconnected(({connectionId}) async {
-      debugPrint('[SignalR] onreconnected: connectionId=$connectionId. Re-binding session...');
+      debugPrint(
+        '[SignalR] onreconnected: connectionId=$connectionId. Re-binding session...',
+      );
       _isBound = false;
       _boundController.add(false);
       if (_boundSessionId != null && _boundControlProof != null) {
         try {
           await bindDeviceSession(_boundSessionId!, _boundControlProof!);
-          debugPrint('[SignalR] Re-bind after reconnect succeeded for $_boundSessionId');
+          debugPrint(
+            '[SignalR] Re-bind after reconnect succeeded for $_boundSessionId',
+          );
         } catch (e) {
           debugPrint('[SignalR] Re-bind after reconnect failed: $e');
         }
@@ -130,52 +167,113 @@ class VoiceCallSignalRService {
           final seq = (map['sequence'] as num?)?.toInt() ?? 0;
           final payload = map['payload'] is Map ? map['payload'] as Map : null;
           final status = payload?['status']?.toString() ?? '';
-          debugPrint('[SignalR] Received call:event (eventId: $eventId, callId: $callId, seq: $seq, status: $status)');
+          debugPrint(
+            '[SignalR] Received call:event (eventId: $eventId, callId: $callId, seq: $seq, status: $status)',
+          );
           onCallEvent?.call(map);
         }
       }
     });
 
     connection.on('rtc:offer', (arguments) {
-      if (arguments != null && arguments.length >= 4) {
-        final callId = arguments[0]?.toString() ?? '';
-        final offerMap = arguments[1] is Map
-            ? Map<String, dynamic>.from(arguments[1] as Map)
-            : <String, dynamic>{};
-        final messageId = arguments[2]?.toString() ?? '';
-        final generation = (arguments[3] as num?)?.toInt() ?? 0;
-        debugPrint('[SignalR] Received rtc:offer (callId: $callId, messageId: $messageId, gen: $generation)');
-        onRtcOffer?.call(callId, offerMap, messageId, generation);
-      }
+      final envelope = _parseRtcEnvelope(arguments);
+      if (envelope == null) return;
+      final sdpLen = (envelope.payload['sdp']?.toString() ?? '').length;
+      debugPrint(
+        '[SignalR] Received rtc:offer (callId: ${envelope.callId}, messageId: ${envelope.messageId}, gen: ${envelope.generation}, sdpLen: $sdpLen)',
+      );
+      onRtcOffer?.call(
+        envelope.callId,
+        envelope.payload,
+        envelope.messageId,
+        envelope.generation,
+      );
     });
 
     connection.on('rtc:answer', (arguments) {
-      if (arguments != null && arguments.length >= 4) {
-        final callId = arguments[0]?.toString() ?? '';
-        final answerMap = arguments[1] is Map
-            ? Map<String, dynamic>.from(arguments[1] as Map)
-            : <String, dynamic>{};
-        final messageId = arguments[2]?.toString() ?? '';
-        final generation = (arguments[3] as num?)?.toInt() ?? 0;
-        debugPrint('[SignalR] Received rtc:answer (callId: $callId, messageId: $messageId, gen: $generation)');
-        onRtcAnswer?.call(callId, answerMap, messageId, generation);
-      }
+      final envelope = _parseRtcEnvelope(arguments);
+      if (envelope == null) return;
+      final sdpLen = (envelope.payload['sdp']?.toString() ?? '').length;
+      debugPrint(
+        '[SignalR] Received rtc:answer (callId: ${envelope.callId}, messageId: ${envelope.messageId}, gen: ${envelope.generation}, sdpLen: $sdpLen)',
+      );
+      onRtcAnswer?.call(
+        envelope.callId,
+        envelope.payload,
+        envelope.messageId,
+        envelope.generation,
+      );
     });
 
     connection.on('rtc:ice-candidate', (arguments) {
-      if (arguments != null && arguments.length >= 4) {
-        final callId = arguments[0]?.toString() ?? '';
-        final candidateMap = arguments[1] is Map
-            ? Map<String, dynamic>.from(arguments[1] as Map)
-            : <String, dynamic>{};
-        final messageId = arguments[2]?.toString() ?? '';
-        final generation = (arguments[3] as num?)?.toInt() ?? 0;
-        final mid = candidateMap['sdpMid']?.toString();
-        final lineIndex = candidateMap['sdpMLineIndex'];
-        debugPrint('[SignalR] Received rtc:ice-candidate (callId: $callId, messageId: $messageId, gen: $generation, mid: $mid, lineIndex: $lineIndex)');
-        onRtcIce?.call(callId, candidateMap, messageId, generation);
-      }
+      final envelope = _parseRtcEnvelope(arguments);
+      if (envelope == null) return;
+      final mid = envelope.payload['sdpMid']?.toString();
+      final lineIndex = envelope.payload['sdpMLineIndex'];
+      debugPrint(
+        '[SignalR] Received rtc:ice-candidate (callId: ${envelope.callId}, messageId: ${envelope.messageId}, gen: ${envelope.generation}, mid: $mid, lineIndex: $lineIndex)',
+      );
+      onRtcIce?.call(
+        envelope.callId,
+        envelope.payload,
+        envelope.messageId,
+        envelope.generation,
+      );
     });
+  }
+
+  _RtcParsedEnvelope? _parseRtcEnvelope(List<Object?>? arguments) {
+    if (arguments == null || arguments.isEmpty) {
+      return null;
+    }
+
+    // Primary path: backend delivers one envelope argument
+    if (arguments.length == 1) {
+      final first = arguments.first;
+      if (first is! Map) return null;
+
+      final map = Map<String, dynamic>.from(first);
+      final callId = map['callId']?.toString().trim() ?? '';
+      final messageId = map['messageId']?.toString().trim() ?? '';
+      final genRaw = map['negotiationGeneration'] ?? map['generation'];
+      final payloadRaw = map['payload'];
+
+      if (callId.isEmpty || messageId.isEmpty) return null;
+      if (genRaw is! num) return null;
+      final generation = genRaw.toInt();
+      if (generation < 0) return null;
+      if (payloadRaw is! Map) return null;
+
+      return _RtcParsedEnvelope(
+        callId: callId,
+        payload: Map<String, dynamic>.from(payloadRaw),
+        messageId: messageId,
+        generation: generation,
+      );
+    }
+
+    // Explicit legacy four-argument fallback for backward compatibility
+    if (arguments.length >= 4) {
+      final callId = arguments[0]?.toString().trim() ?? '';
+      final payloadRaw = arguments[1];
+      final messageId = arguments[2]?.toString().trim() ?? '';
+      final genRaw = arguments[3];
+
+      if (callId.isEmpty || messageId.isEmpty) return null;
+      if (genRaw is! num) return null;
+      final generation = genRaw.toInt();
+      if (generation < 0) return null;
+      if (payloadRaw is! Map) return null;
+
+      return _RtcParsedEnvelope(
+        callId: callId,
+        payload: Map<String, dynamic>.from(payloadRaw),
+        messageId: messageId,
+        generation: generation,
+      );
+    }
+
+    return null;
   }
 
   Future<void> bindDeviceSession(
@@ -218,7 +316,9 @@ class VoiceCallSignalRService {
     if (bytesLen > 65536) {
       throw ArgumentError('SDP exceeds max length of 65,536 bytes');
     }
-    debugPrint('[SignalR] Invoking SendAnswer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)');
+    debugPrint(
+      '[SignalR] Invoking SendAnswer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)',
+    );
     await _hubConnection!.invoke(
       'SendAnswer',
       args: [
@@ -241,7 +341,9 @@ class VoiceCallSignalRService {
     if (bytesLen > 65536) {
       throw ArgumentError('SDP exceeds max length of 65,536 bytes');
     }
-    debugPrint('[SignalR] Invoking SendOffer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)');
+    debugPrint(
+      '[SignalR] Invoking SendOffer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)',
+    );
     await _hubConnection!.invoke(
       'SendOffer',
       args: [
@@ -269,7 +371,9 @@ class VoiceCallSignalRService {
     }
     final mid = candidateData['sdpMid']?.toString();
     final lineIndex = candidateData['sdpMLineIndex'];
-    debugPrint('[SignalR] Invoking SendIceCandidate (callId: $callId, messageId: $messageId, gen: $generation, mid: $mid, lineIndex: $lineIndex)');
+    debugPrint(
+      '[SignalR] Invoking SendIceCandidate (callId: $callId, messageId: $messageId, gen: $generation, mid: $mid, lineIndex: $lineIndex)',
+    );
     await _hubConnection!.invoke(
       'SendIceCandidate',
       args: [callId, candidateData, messageId, generation],

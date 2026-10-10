@@ -12,11 +12,13 @@ import 'package:meal_meat_user/features/calling/service/voice_call_manager.dart'
 import 'package:meal_meat_user/features/calling/service/voice_webrtc_service.dart';
 
 class FakeVoiceCallManagerForVm extends Fake implements VoiceCallManager {
-  final _snapshotController = StreamController<VoiceCallSnapshotEntity?>.broadcast();
+  final _snapshotController =
+      StreamController<VoiceCallSnapshotEntity?>.broadcast();
   final _durationController = StreamController<int>.broadcast();
 
   @override
-  Stream<VoiceCallSnapshotEntity?> get onSnapshotChanged => _snapshotController.stream;
+  Stream<VoiceCallSnapshotEntity?> get onSnapshotChanged =>
+      _snapshotController.stream;
 
   @override
   Stream<VoiceCallDisplayEntity?> get onDisplayChanged => const Stream.empty();
@@ -114,29 +116,32 @@ void main() {
       expect(viewModel.state.isLoading, isFalse);
     });
 
-    test('rejectCall reconciles on 409 conflict and preserves honest state', () async {
-      fakeManager.rejectResult = ApiErrorResult<void>(
-        failure: Failure(
-          errorMessage: 'Conflict 409',
-          exception: const ApiException(
-            errorType: ApiErrorType.conflict,
-            message: 'Conflict',
-            statusCode: 409,
+    test(
+      'rejectCall reconciles on 409 conflict and preserves honest state',
+      () async {
+        fakeManager.rejectResult = ApiErrorResult<void>(
+          failure: Failure(
+            errorMessage: 'Conflict 409',
+            exception: const ApiException(
+              errorType: ApiErrorType.conflict,
+              message: 'Conflict',
+              statusCode: 409,
+            ),
           ),
-        ),
-      );
-      fakeManager.snapshot = const VoiceCallSnapshotEntity(
-        callId: 'call-1',
-        tripStopId: 'stop-1',
-        protocolVersion: 2,
-        sequence: 5,
-        status: VoiceCallStatus.active,
-      );
+        );
+        fakeManager.snapshot = const VoiceCallSnapshotEntity(
+          callId: 'call-1',
+          tripStopId: 'stop-1',
+          protocolVersion: 2,
+          sequence: 5,
+          status: VoiceCallStatus.active,
+        );
 
-      await viewModel.rejectCall('call-1');
-      expect(viewModel.state.status, equals(VoiceCallStatus.active));
-      expect(viewModel.state.isLoading, isFalse);
-    });
+        await viewModel.rejectCall('call-1');
+        expect(viewModel.state.status, equals(VoiceCallStatus.active));
+        expect(viewModel.state.isLoading, isFalse);
+      },
+    );
 
     test('rejectCall emits errorMessage on non-409 server error', () async {
       fakeManager.rejectResult = ApiErrorResult<void>(
@@ -161,29 +166,32 @@ void main() {
       expect(viewModel.state.isLoading, isFalse);
     });
 
-    test('endCall reconciles on 409 conflict and preserves honest state', () async {
-      fakeManager.endResult = ApiErrorResult<void>(
-        failure: Failure(
-          errorMessage: 'Conflict 409',
-          exception: const ApiException(
-            errorType: ApiErrorType.conflict,
-            message: 'Conflict',
-            statusCode: 409,
+    test(
+      'endCall reconciles on 409 conflict and preserves honest state',
+      () async {
+        fakeManager.endResult = ApiErrorResult<void>(
+          failure: Failure(
+            errorMessage: 'Conflict 409',
+            exception: const ApiException(
+              errorType: ApiErrorType.conflict,
+              message: 'Conflict',
+              statusCode: 409,
+            ),
           ),
-        ),
-      );
-      fakeManager.snapshot = const VoiceCallSnapshotEntity(
-        callId: 'call-1',
-        tripStopId: 'stop-1',
-        protocolVersion: 2,
-        sequence: 8,
-        status: VoiceCallStatus.ended,
-      );
+        );
+        fakeManager.snapshot = const VoiceCallSnapshotEntity(
+          callId: 'call-1',
+          tripStopId: 'stop-1',
+          protocolVersion: 2,
+          sequence: 8,
+          status: VoiceCallStatus.ended,
+        );
 
-      await viewModel.endCall('call-1');
-      expect(viewModel.state.status, equals(VoiceCallStatus.ended));
-      expect(viewModel.state.isLoading, isFalse);
-    });
+        await viewModel.endCall('call-1');
+        expect(viewModel.state.status, equals(VoiceCallStatus.ended));
+        expect(viewModel.state.isLoading, isFalse);
+      },
+    );
 
     test('endCall emits errorMessage on non-409 server error', () async {
       fakeManager.endResult = ApiErrorResult<void>(
