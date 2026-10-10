@@ -65,9 +65,10 @@ class FakeVoiceCallManagerForVm extends Fake implements VoiceCallManager {
     _durationController.add(duration);
   }
 
+  @override
   void dispose() {
-    _snapshotController.close();
-    _durationController.close();
+    unawaited(_snapshotController.close());
+    unawaited(_durationController.close());
   }
 }
 
@@ -95,8 +96,8 @@ void main() {
     viewModel = CallingViewModel(fakeManager, fakeWebRtc);
   });
 
-  tearDown(() {
-    viewModel.close();
+  tearDown(() async {
+    await viewModel.close();
     fakeManager.dispose();
   });
 
