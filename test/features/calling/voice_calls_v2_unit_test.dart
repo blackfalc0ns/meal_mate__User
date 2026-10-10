@@ -32,6 +32,8 @@ import 'package:meal_meat_user/features/calling/domain/usecase/report_voice_conn
 import 'package:meal_meat_user/features/calling/domain/usecase/report_voice_connecting_usecase.dart';
 import 'package:meal_meat_user/features/calling/domain/usecase/revoke_voice_device_usecase.dart';
 import 'package:meal_meat_user/features/calling/domain/usecase/send_voice_heartbeat_usecase.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/calling/service/voice_call_manager.dart';
 import 'package:meal_meat_user/features/calling/service/voice_call_signalr_service.dart';
 import 'package:meal_meat_user/features/calling/service/voice_callkit_service.dart';
@@ -222,6 +224,9 @@ class FakeCallKitService extends Fake implements VoiceCallKitService {
 
 class FakeSignalRService extends Fake implements VoiceCallSignalRService {
   CallEventListener? onCallEvent;
+  RtcOfferListener? onRtcOffer;
+  RtcAnswerListener? onRtcAnswer;
+  RtcIceListener? onRtcIce;
   VoidCallback? onReconnected;
   int bindCount = 0;
   String? lastBoundSessionId;
@@ -239,6 +244,8 @@ class FakeSignalRService extends Fake implements VoiceCallSignalRService {
 }
 
 class FakeWebRtcService extends Fake implements VoiceWebRtcService {
+  OnLocalIceCandidateCallback? onLocalIceCandidate;
+  OnConnectionStateChangeCallback? onConnectionStateChange;
   int cleanupCount = 0;
 
   @override
@@ -255,15 +262,15 @@ class FakeDeviceSessionStorage extends Fake implements VoiceDeviceSessionStorage
   );
 
   @override
-  Future<VoiceDeviceSessionEntity?> loadDeviceSession() async => session;
+  Future<VoiceDeviceSessionEntity?> getSession() async => session;
 
   @override
-  Future<void> saveDeviceSession(VoiceDeviceSessionEntity session) async {
+  Future<void> saveSession(VoiceDeviceSessionEntity session) async {
     this.session = session;
   }
 
   @override
-  Future<void> clearDeviceSession() async {
+  Future<void> clearSession() async {
     session = null;
   }
 }
@@ -659,6 +666,95 @@ void main() {
 
       // The callId was registered for programmatic suppression so duplicate native events won't cascade
       kit.dispose();
+    });
+  });
+
+  group('VoiceCallManager Media Reports & Reconnect Rebind', () {
+    test('deduplicates connecting and connected media reports per callId:generation', () async {
+      final envelopeActive = {
+        'eventId': 'ev-rep-active',
+        'callId': 'call-601',
+        'sequence': 4,
+        'payload': {
+          'status': 'Active',
+          'connectedAtUtc': DateTime.now().toUtc().toIso8601String(),
+        },
+      };
+
+      manager.handleSignalRCallEventForTesting(envelopeActive);
+      await pumpEventQueue();
+
+      // Trigger WebRTC connecting state
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnecting,
+      );
+      await pumpEventQueue();
+      expect(repo.connectingReportCount, equals(1));
+
+      // Duplicate connecting state event should be ignored
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnecting,
+      );
+      await pumpEventQueue();
+      expect(repo.connectingReportCount, equals(1));
+
+      // Trigger WebRTC connected state
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnected,
+      );
+      await pumpEventQueue();
+      expect(repo.connectedReportCount, equals(1));
+
+      // Duplicate connected state event should be ignored
+      manager.handleWebRtcConnectionStateChangeForTesting(
+        RTCPeerConnectionState.RTCPeerConnectionStateConnected,
+      );
+      await pumpEventQueue();
+      expect(repo.connectedReportCount, equals(1));
+    });
+
+    test('rebinds device session on SignalR reconnected', () async {
+      await manager.initialize();
+      await pumpEventQueue();
+
+      manager.handleSignalRReconnectedForTesting();
+      await pumpEventQueue();
+
+      expect(signalR.bindCount, greaterThanOrEqualTo(1));
+      expect(signalR.lastBoundSessionId, equals('dev-sess-1'));
+      expect(signalR.lastBoundControlProof, equals('ctrl-proof-1'));
+    });
+
+    test('answerCall aborts media setup when getVoiceIceServers fails', () async {
+      repo.iceServersResult = ApiErrorResult<VoiceIceServersConfigEntity>(
+        failure: Failure(
+          errorMessage: 'ICE error',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Server error',
+            statusCode: 500,
+          ),
+        ),
+      );
+
+      final envelope = {
+        'eventId': 'ev-ring-ans',
+        'callId': 'call-701',
+        'sequence': 1,
+        'payload': {
+          'status': 'Ringing',
+          'deadlineAtUtc': DateTime.now().toUtc().add(const Duration(seconds: 30)).toIso8601String(),
+        },
+      };
+
+      manager.handleSignalRCallEventForTesting(envelope);
+      await pumpEventQueue();
+
+      final success = await manager.answerCall('call-701');
+
+      expect(success, isFalse);
+      expect(repo.connectingReportCount, equals(0));
+      expect(navigator.pushedRoutes.contains(AppRoutes.activeCall), isFalse);
     });
   });
 }
