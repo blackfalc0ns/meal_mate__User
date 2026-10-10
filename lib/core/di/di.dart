@@ -55,9 +55,9 @@ final getIt = GetIt.instance;
   preferRelativeImports: true, // default
 )
 Future<void> configureDependencies() async {
-  await getIt.init();
+  getIt.init();
   if (!getIt.isRegistered<ServerTimeService>()) {
-    getIt.registerLazySingleton<ServerTimeService>(() => ServerTimeService());
+    getIt.registerLazySingleton<ServerTimeService>(ServerTimeService.new);
   }
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerLazySingleton<LocationService>(() => const LocationService());

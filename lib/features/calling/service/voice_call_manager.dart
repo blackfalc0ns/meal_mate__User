@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:injectable/injectable.dart';
@@ -133,6 +132,7 @@ class VoiceCallManager with WidgetsBindingObserver {
 
   final _durationController = StreamController<int>.broadcast();
   Stream<int> get onDurationChanged => _durationController.stream;
+  int get currentDurationSeconds => _secondsElapsed;
 
   bool _isInitialized = false;
 
@@ -439,7 +439,7 @@ class VoiceCallManager with WidgetsBindingObserver {
       debugPrint('[VoiceCallManager] Hangup on terminal or null call; performing idempotent cleanup');
       await _callKitService.endCall(callId);
       await _cleanupCall();
-      return const ApiSuccessResult(null);
+      return const ApiSuccessResult<void>(data: null);
     }
 
     if (current.status == VoiceCallStatus.ringing) {
@@ -454,6 +454,10 @@ class VoiceCallManager with WidgetsBindingObserver {
   void _handleSignalRCallEvent(Map<String, dynamic> envelope) {
     unawaited(_processLifecycleEnvelope(envelope));
   }
+
+  @visibleForTesting
+  void handleSignalRCallEventForTesting(Map<String, dynamic> envelope) =>
+      _handleSignalRCallEvent(envelope);
 
   void _handleSignalROffer(
     String callId,
@@ -611,6 +615,13 @@ class VoiceCallManager with WidgetsBindingObserver {
     unawaited(_reconcileAfterReconnect());
   }
 
+  @visibleForTesting
+  void handleWebRtcConnectionStateChangeForTesting(RTCPeerConnectionState state) =>
+      _handleWebRtcConnectionStateChange(state);
+
+  @visibleForTesting
+  void handleSignalRReconnectedForTesting() => _handleSignalRReconnected();
+
   Future<void> _reconcileAfterReconnect() async {
     final session = _currentDeviceSession;
     if (session == null || !session.isValid) return;
@@ -674,7 +685,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     final iceResult = await _getVoiceIceServersUseCase(callId);
     if (iceResult is! ApiSuccessResult<VoiceIceServersConfigEntity>) {
       debugPrint('[VoiceCallManager] getVoiceIceServers failed for $callId. Aborting media setup.');
-      if (iceResult is ApiErrorResult &&
+      if (iceResult is ApiErrorResult<VoiceIceServersConfigEntity> &&
           iceResult.failure.exception.statusCode == 409) {
         await _reconcileCall(callId);
       }
@@ -704,7 +715,7 @@ class VoiceCallManager with WidgetsBindingObserver {
       debugPrint('[VoiceCallManager] rejectCall on already terminal call');
       await _callKitService.endCall(callId);
       await _cleanupCall();
-      return const ApiSuccessResult(null);
+      return const ApiSuccessResult<void>(data: null);
     }
 
     final result = await _rejectVoiceCallUseCase(callId);
@@ -740,7 +751,7 @@ class VoiceCallManager with WidgetsBindingObserver {
       debugPrint('[VoiceCallManager] endCall on already terminal call');
       await _callKitService.endCall(callId);
       await _cleanupCall();
-      return const ApiSuccessResult(null);
+      return const ApiSuccessResult<void>(data: null);
     }
 
     final result = await _endVoiceCallUseCase(callId);
@@ -831,20 +842,26 @@ class VoiceCallManager with WidgetsBindingObserver {
     _heartbeatTimer = null;
     _stopDurationTimer();
     _secondsElapsed = 0;
-    _durationController.add(0);
+    if (!_durationController.isClosed) {
+      _durationController.add(0);
+    }
 
     _reportedConnectingKeys.clear();
     _reportedConnectedKeys.clear();
 
     _currentDisplay = null;
     _currentDisplayLanguage = null;
-    _displayController.add(null);
+    if (!_displayController.isClosed) {
+      _displayController.add(null);
+    }
 
     await _webrtcService.cleanup();
 
     if (_currentSnapshot != null) {
       _currentSnapshot = null;
-      _snapshotController.add(null);
+      if (!_snapshotController.isClosed) {
+        _snapshotController.add(null);
+      }
     }
   }
 
@@ -858,7 +875,17 @@ class VoiceCallManager with WidgetsBindingObserver {
 
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    unawaited(_cleanupCall());
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
+    _stopDurationTimer();
+    _secondsElapsed = 0;
+    _reportedConnectingKeys.clear();
+    _reportedConnectedKeys.clear();
+    _currentDisplay = null;
+    _currentDisplayLanguage = null;
+    _currentSnapshot = null;
     _callKitService.dispose();
     _signalRService.dispose();
     unawaited(_webrtcService.cleanup());

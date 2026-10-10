@@ -144,7 +144,7 @@ class CallingViewModel extends Cubit<CallingState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString(),
+        errorMessage: e.toString,
       ));
     }
   }
@@ -170,7 +170,7 @@ class CallingViewModel extends Cubit<CallingState> {
           } else {
             emit(state.copyWith(
               isLoading: false,
-              errorMessage: result.failure.message,
+              errorMessage: () => result.failure.errorMessage,
             ));
           }
         }
@@ -183,7 +183,7 @@ class CallingViewModel extends Cubit<CallingState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString(),
+        errorMessage: e.toString,
       ));
     }
   }
@@ -209,7 +209,7 @@ class CallingViewModel extends Cubit<CallingState> {
           } else {
             emit(state.copyWith(
               isLoading: false,
-              errorMessage: result.failure.message,
+              errorMessage: () => result.failure.errorMessage,
             ));
           }
         }
@@ -222,7 +222,7 @@ class CallingViewModel extends Cubit<CallingState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString(),
+        errorMessage: e.toString,
       ));
     }
   }
