@@ -1246,7 +1246,7 @@ void main() {
         );
 
         // Server returns authoritative Accepted snapshot on reconciliation
-        repo.snapshotToReturn = VoiceCallSnapshotEntity(
+        repo.snapshotToReturn = const VoiceCallSnapshotEntity(
           callId: 'call-recon-1',
           tripStopId: 'trip-1',
           protocolVersion: 2,

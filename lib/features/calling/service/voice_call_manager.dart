@@ -827,20 +827,23 @@ class VoiceCallManager with WidgetsBindingObserver {
     String callId,
     int generation, [
     int attempt = 1,
-  ]) {
+  ]) async {
     final reportKey = '$callId:$generation';
     if (_successfullyReportedConnectingKeys.contains(reportKey)) {
-      return Future.value();
+      return;
     }
     if (_inFlightConnectingKeys.contains(reportKey)) {
-      return _inFlightConnectingFutures[reportKey] ?? Future.value();
+      await _inFlightConnectingFutures[reportKey];
+      return;
     }
 
     final future = _executeSendConnectingReport(callId, generation, attempt);
     _inFlightConnectingFutures[reportKey] = future;
-    return future.whenComplete(() {
+    try {
+      await future;
+    } finally {
       _inFlightConnectingFutures.remove(reportKey);
-    });
+    }
   }
 
   Future<void> _executeSendConnectingReport(
@@ -1053,7 +1056,7 @@ class VoiceCallManager with WidgetsBindingObserver {
     return res;
   }
 
-  Future<bool> answerCall(String callId) {
+  Future<bool> answerCall(String callId) async {
     if (_inFlightAccepts.containsKey(callId)) {
       debugPrint('[VoiceCallManager] Reusing in-flight answerCall for $callId');
       return _inFlightAccepts[callId]!;
@@ -1061,9 +1064,11 @@ class VoiceCallManager with WidgetsBindingObserver {
 
     final future = _executeAnswerCall(callId);
     _inFlightAccepts[callId] = future;
-    return future.whenComplete(() {
+    try {
+      return await future;
+    } finally {
       _inFlightAccepts.remove(callId);
-    });
+    }
   }
 
   Future<bool> _executeAnswerCall(String callId) async {

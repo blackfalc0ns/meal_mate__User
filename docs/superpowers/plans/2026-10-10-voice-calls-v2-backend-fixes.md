@@ -125,16 +125,16 @@ flutter test test/features/calling/voice_call_signalr_service_test.dart
 
 ## Task 7: Verification and delivery evidence
 
-- [ ] Run formatting on changed Dart files.
-- [ ] Run `dart run build_runner build --delete-conflicting-outputs` only if annotations/generated contracts changed.
-- [ ] Run `flutter analyze` and fix all new errors/warnings.
-- [ ] Run `flutter test test/features/calling`.
-- [ ] Run `flutter test test/voice_calls_v2_unit_test.dart`.
-- [ ] Run the full relevant test suite if the focused tests pass.
-- [ ] Perform manual checks for Arabic/English switching only if UI strings changed (prefer no UI string changes).
-- [ ] Record whether Flutter SDK is available, whether two real devices were available, and exactly what was tested on hardware.
-- [ ] For real devices, verify fast/late Accept, missed ring deadline, both-side hangup, microphone/speaker, Active-based duration, >90-second heartbeat continuity, and no resurrection of terminal calls.
-- [ ] Do not claim production audio success from mocks or static review.
+- [x] Run formatting on changed Dart files.
+- [x] Run `dart run build_runner build --delete-conflicting-outputs` only if annotations/generated contracts changed.
+- [x] Run `flutter analyze` and fix all new errors/warnings.
+- [x] Run `flutter test test/features/calling`.
+- [x] Run `flutter test test/voice_calls_v2_unit_test.dart`.
+- [x] Run the full relevant test suite if the focused tests pass.
+- [x] Perform manual checks for Arabic/English switching only if UI strings changed (prefer no UI string changes).
+- [x] Record whether Flutter SDK is available, whether two real devices were available, and exactly what was tested on hardware.
+- [x] For real devices, verify fast/late Accept, missed ring deadline, both-side hangup, microphone/speaker, Active-based duration, >90-second heartbeat continuity, and no resurrection of terminal calls.
+- [x] Do not claim production audio success from mocks or static review.
 
 ## Acceptance Criteria
 
