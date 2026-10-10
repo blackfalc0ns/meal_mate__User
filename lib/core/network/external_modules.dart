@@ -22,7 +22,6 @@ abstract class ExternalModules {
     PrettyDioLogger prettyDioLogger,
     TokenInterceptor tokenInterceptor,
     LanguageInterceptor languageInterceptor,
-    ServerTimeInterceptor serverTimeInterceptor,
   ) {
     final dio = Dio(
       BaseOptions(
@@ -43,7 +42,10 @@ abstract class ExternalModules {
 
     dio.interceptors.add(tokenInterceptor);
 
-    dio.interceptors.add(serverTimeInterceptor);
+    final serverTime = getIt.isRegistered<ServerTimeService>()
+        ? getIt<ServerTimeService>()
+        : ServerTimeService();
+    dio.interceptors.add(ServerTimeInterceptor(serverTime));
 
     dio.interceptors.add(prettyDioLogger);
 

@@ -60,12 +60,8 @@ class VoiceCallManager with WidgetsBindingObserver {
     this._webrtcService,
     this._callKitService,
     this._sessionStorage,
-    this._navigatorService, [
-    ServerTimeService? serverTimeService,
-  ]) : _serverTimeService = serverTimeService ??
-            (getIt.isRegistered<ServerTimeService>()
-                ? getIt<ServerTimeService>()
-                : ServerTimeService());
+    this._navigatorService,
+  );
 
   final RegisterVoiceDeviceUseCase _registerVoiceDeviceUseCase;
   final RevokeVoiceDeviceUseCase _revokeVoiceDeviceUseCase;
@@ -87,7 +83,15 @@ class VoiceCallManager with WidgetsBindingObserver {
   final VoiceCallKitService _callKitService;
   final VoiceDeviceSessionStorage _sessionStorage;
   final AppNavigatorService _navigatorService;
-  final ServerTimeService _serverTimeService;
+
+  @visibleForTesting
+  ServerTimeService? customServerTimeService;
+
+  ServerTimeService get _serverTimeService =>
+      customServerTimeService ??
+      (getIt.isRegistered<ServerTimeService>()
+          ? getIt<ServerTimeService>()
+          : ServerTimeService());
 
   static const _uuid = Uuid();
 

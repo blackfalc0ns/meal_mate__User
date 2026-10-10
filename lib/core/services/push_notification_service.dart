@@ -43,13 +43,26 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
             if (eventType == 'call:ringing' ||
                 status == 'ringing' ||
                 eventType == 'call:created') {
+              final deadlineStr = payload?['deadlineAtUtc']?.toString();
+              int durationMs = 30000;
+              if (deadlineStr != null && deadlineStr.isNotEmpty) {
+                final deadline = DateTime.tryParse(deadlineStr)?.toUtc();
+                if (deadline != null) {
+                  final diff = deadline.difference(DateTime.now().toUtc());
+                  if (diff.isNegative || diff.inMilliseconds <= 0) {
+                    return; // already expired
+                  }
+                  durationMs = diff.inMilliseconds;
+                }
+              }
+
               final params = CallKitParams(
                 id: callId,
                 nameCaller: 'مندوب التوصيل',
                 appName: 'MealMate',
                 handle: 'مندوب التوصيل',
                 type: 0,
-                duration: 30000,
+                duration: durationMs,
                 extra: <String, dynamic>{'callId': callId},
                 android: const AndroidParams(
                   isCustomNotification: true,

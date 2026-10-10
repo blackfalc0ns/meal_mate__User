@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../services/location_service.dart';
+import '../services/server_time_service.dart';
 import '../../features/calendar/domain/usecase/get_calendar_usecase.dart';
 import '../../features/notifications/domain/usecase/get_notifications_usecase.dart';
 import '../../features/notifications/domain/usecase/mark_all_notifications_read_usecase.dart';
@@ -55,6 +56,9 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async {
   await getIt.init();
+  if (!getIt.isRegistered<ServerTimeService>()) {
+    getIt.registerLazySingleton<ServerTimeService>(() => ServerTimeService());
+  }
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerLazySingleton<LocationService>(() => const LocationService());
   }

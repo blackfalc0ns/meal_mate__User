@@ -16,16 +16,11 @@ import 'voice_call_remote_data_source.dart';
 
 @Injectable(as: VoiceCallRemoteDataSource)
 class VoiceCallRemoteDataSourceImpl implements VoiceCallRemoteDataSource {
-  VoiceCallRemoteDataSourceImpl(
-    this._apiServices, [
-    this._serverTimeService,
-  ]);
+  VoiceCallRemoteDataSourceImpl(this._apiServices);
 
   final ApiServices _apiServices;
-  final ServerTimeService? _serverTimeService;
 
   ServerTimeService get _resolvedServerTimeService {
-    if (_serverTimeService != null) return _serverTimeService;
     if (getIt.isRegistered<ServerTimeService>()) {
       return getIt<ServerTimeService>();
     }
