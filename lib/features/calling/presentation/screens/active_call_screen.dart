@@ -185,9 +185,6 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                           context.read<CallingViewModel>().doIntent(
                             const EndCallEvent(),
                           );
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
                         },
                       ),
                       const SizedBox(height: Spacing.base),

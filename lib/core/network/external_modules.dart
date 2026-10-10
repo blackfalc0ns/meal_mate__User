@@ -11,6 +11,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meal_meat_user/core/services/language_interceptor.dart';
 
+import 'package:meal_meat_user/core/services/server_time_interceptor.dart';
 import '../services/token_interceptor.dart';
 import 'network_constants.dart';
 
@@ -21,6 +22,7 @@ abstract class ExternalModules {
     PrettyDioLogger prettyDioLogger,
     TokenInterceptor tokenInterceptor,
     LanguageInterceptor languageInterceptor,
+    ServerTimeInterceptor serverTimeInterceptor,
   ) {
     final dio = Dio(
       BaseOptions(
@@ -40,6 +42,8 @@ abstract class ExternalModules {
     dio.interceptors.add(languageInterceptor);
 
     dio.interceptors.add(tokenInterceptor);
+
+    dio.interceptors.add(serverTimeInterceptor);
 
     dio.interceptors.add(prettyDioLogger);
 
