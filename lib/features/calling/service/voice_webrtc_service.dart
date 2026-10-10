@@ -11,6 +11,7 @@ typedef OnConnectionStateChangeCallback = void Function(RTCPeerConnectionState s
 class VoiceWebRtcService {
   RTCPeerConnection? _peerConnection;
   MediaStream? _localStream;
+  MediaStream? _remoteStream;
 
   final List<RTCIceCandidate> _earlyIceCandidates = [];
   bool _isRemoteDescriptionSet = false;
@@ -21,6 +22,8 @@ class VoiceWebRtcService {
   bool get isMuted => _isMuted;
   bool get isSpeakerOn => _isSpeakerOn;
   bool get isInitialized => _peerConnection != null;
+  bool get isRemoteDescriptionSet => _isRemoteDescriptionSet;
+  int get bufferedCandidatesCount => _earlyIceCandidates.length;
 
   OnLocalIceCandidateCallback? onLocalIceCandidate;
   OnConnectionStateChangeCallback? onConnectionStateChange;
@@ -45,6 +48,8 @@ class VoiceWebRtcService {
       rtcIceServers.add(serverMap);
     }
 
+    debugPrint('[WebRTC] Initializing PeerConnection with ${rtcIceServers.length} ICE server configs');
+
     final configuration = <String, dynamic>{
       'iceServers': rtcIceServers,
       'sdpSemantics': 'unified-plan',
@@ -54,6 +59,7 @@ class VoiceWebRtcService {
 
     _peerConnection!.onIceCandidate = (candidate) {
       if (candidate.candidate != null && candidate.candidate!.isNotEmpty) {
+        debugPrint('[WebRTC] Generated local ICE candidate (mid: ${candidate.sdpMid}, mLine: ${candidate.sdpMLineIndex})');
         onLocalIceCandidate?.call(candidate);
       }
     };
@@ -63,13 +69,33 @@ class VoiceWebRtcService {
       onConnectionStateChange?.call(state);
     };
 
-    _localStream = await navigator.mediaDevices.getUserMedia({
-      'audio': true,
-      'video': false,
-    });
+    _peerConnection!.onTrack = (RTCTrackEvent event) {
+      debugPrint('[WebRTC] Remote track received: kind=${event.track.kind}, id=${event.track.id}, enabled=${event.track.enabled}');
+      if (event.streams.isNotEmpty) {
+        _remoteStream = event.streams[0];
+      }
+    };
 
-    for (final track in _localStream!.getAudioTracks()) {
-      await _peerConnection!.addTrack(track, _localStream!);
+    _peerConnection!.onAddStream = (MediaStream stream) {
+      debugPrint('[WebRTC] Remote stream added: id=${stream.id}, tracks=${stream.getAudioTracks().length}');
+      _remoteStream = stream;
+    };
+
+    try {
+      _localStream = await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': false,
+      });
+
+      final audioTracks = _localStream!.getAudioTracks();
+      debugPrint('[WebRTC] Local audio stream acquired with ${audioTracks.length} audio tracks');
+      for (final track in audioTracks) {
+        await _peerConnection!.addTrack(track, _localStream!);
+      }
+    } catch (e) {
+      debugPrint('[WebRTC] Failed to acquire local audio stream or add audio track: $e');
+      await cleanup();
+      rethrow;
     }
   }
 
@@ -79,14 +105,17 @@ class VoiceWebRtcService {
       throw StateError('Peer connection not initialized');
     }
 
+    debugPrint('[WebRTC] Setting remote description from offer (sdp length: ${offerSdp.length})');
     final remoteDesc = RTCSessionDescription(offerSdp, 'offer');
     await pc.setRemoteDescription(remoteDesc);
     _isRemoteDescriptionSet = true;
 
     // Drain queued early ICE candidates
+    debugPrint('[WebRTC] Draining ${_earlyIceCandidates.length} buffered ICE candidates');
     for (final candidate in _earlyIceCandidates) {
       try {
         await pc.addCandidate(candidate);
+        debugPrint('[WebRTC] Added buffered candidate (mid: ${candidate.sdpMid}, mLine: ${candidate.sdpMLineIndex})');
       } catch (e) {
         debugPrint('[WebRTC] Error adding buffered ICE candidate: $e');
       }
@@ -98,6 +127,7 @@ class VoiceWebRtcService {
       'offerToReceiveVideo': 0,
     });
     await pc.setLocalDescription(answer);
+    debugPrint('[WebRTC] Answer created and local description set');
 
     return answer.sdp ?? '';
   }
@@ -110,12 +140,16 @@ class VoiceWebRtcService {
     final candidate = RTCIceCandidate(candidateStr, sdpMid, sdpMLineIndex);
 
     if (!_isRemoteDescriptionSet || _peerConnection == null) {
-      _earlyIceCandidates.add(candidate);
+      if (!_earlyIceCandidates.any((c) => c.candidate == candidateStr)) {
+        _earlyIceCandidates.add(candidate);
+        debugPrint('[WebRTC] Buffered early ICE candidate (mid: $sdpMid, mLine: $sdpMLineIndex, queue: ${_earlyIceCandidates.length})');
+      }
       return;
     }
 
     try {
       await _peerConnection!.addCandidate(candidate);
+      debugPrint('[WebRTC] Added remote ICE candidate (mid: $sdpMid, mLine: $sdpMLineIndex)');
     } catch (e) {
       debugPrint('[WebRTC] Error adding ICE candidate: $e');
     }
@@ -123,6 +157,7 @@ class VoiceWebRtcService {
 
   Future<void> setMicrophoneMute(bool muted) async {
     _isMuted = muted;
+    debugPrint('[WebRTC] setMicrophoneMute: $muted');
     if (_localStream != null) {
       for (final track in _localStream!.getAudioTracks()) {
         track.enabled = !muted;
@@ -132,14 +167,23 @@ class VoiceWebRtcService {
 
   Future<void> setSpeakerphoneOn(bool enableSpeaker) async {
     _isSpeakerOn = enableSpeaker;
+    debugPrint('[WebRTC] setSpeakerphoneOn: $enableSpeaker');
+    try {
+      Helper.setSpeakerphoneOn(enableSpeaker);
+    } catch (e) {
+      debugPrint('[WebRTC] Helper.setSpeakerphoneOn failed: $e');
+    }
     if (_localStream != null) {
       for (final track in _localStream!.getAudioTracks()) {
-        track.enableSpeakerphone(enableSpeaker);
+        try {
+          track.enableSpeakerphone(enableSpeaker);
+        } catch (_) {}
       }
     }
   }
 
   Future<void> cleanup() async {
+    debugPrint('[WebRTC] Cleaning up WebRTC resources');
     _isRemoteDescriptionSet = false;
     _earlyIceCandidates.clear();
 
@@ -153,6 +197,13 @@ class VoiceWebRtcService {
         await _localStream!.dispose();
       } catch (_) {}
       _localStream = null;
+    }
+
+    if (_remoteStream != null) {
+      try {
+        await _remoteStream!.dispose();
+      } catch (_) {}
+      _remoteStream = null;
     }
 
     if (_peerConnection != null) {

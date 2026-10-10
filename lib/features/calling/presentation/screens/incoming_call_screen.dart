@@ -186,9 +186,6 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
                         context
                             .read<CallingViewModel>()
                             .doIntent(const RejectCallEvent());
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
                       },
                     ),
                     const SizedBox(height: Spacing.xl),

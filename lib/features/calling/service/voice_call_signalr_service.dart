@@ -38,6 +38,7 @@ class VoiceCallSignalRService {
   HubConnection? _hubConnection;
   bool _isBound = false;
   String? _boundSessionId;
+  String? _boundControlProof;
 
   final _boundController = StreamController<bool>.broadcast();
   Stream<bool> get onBoundChanged => _boundController.stream;
@@ -56,12 +57,14 @@ class VoiceCallSignalRService {
     required String controlProof,
   }) async {
     if (isConnected && _isBound && _boundSessionId == deviceSessionId) {
+      debugPrint('[SignalR] Already connected and bound to session: $deviceSessionId');
       return;
     }
 
     await disconnect();
 
     const hubUrl = '${NetworkConstants.baseUrl}${EndPoints.voiceCallHub}';
+    debugPrint('[SignalR] Connecting to $hubUrl with sessionId: $deviceSessionId');
     _hubConnection = HubConnectionBuilder()
         .withUrl(
           hubUrl,
@@ -78,6 +81,7 @@ class VoiceCallSignalRService {
 
     try {
       await _hubConnection!.start();
+      debugPrint('[SignalR] Hub connected. Binding session...');
       await bindDeviceSession(deviceSessionId, controlProof);
     } catch (e) {
       debugPrint('[SignalR] Connection/bind error: $e');
@@ -90,20 +94,28 @@ class VoiceCallSignalRService {
     if (connection == null) return;
 
     connection.onreconnected(({connectionId}) async {
-      debugPrint('[SignalR] Reconnected. Re-binding...');
+      debugPrint('[SignalR] onreconnected: connectionId=$connectionId. Re-binding session...');
       _isBound = false;
       _boundController.add(false);
+      if (_boundSessionId != null && _boundControlProof != null) {
+        try {
+          await bindDeviceSession(_boundSessionId!, _boundControlProof!);
+          debugPrint('[SignalR] Re-bind after reconnect succeeded for $_boundSessionId');
+        } catch (e) {
+          debugPrint('[SignalR] Re-bind after reconnect failed: $e');
+        }
+      }
       onReconnected?.call();
     });
 
     connection.onclose(({error}) {
-      debugPrint('[SignalR] Closed');
+      debugPrint('[SignalR] onclose: error=$error');
       _isBound = false;
       _boundController.add(false);
     });
 
     connection.on('bound', (arguments) {
-      debugPrint('[SignalR] bound event received');
+      debugPrint('[SignalR] Received bound event');
       _isBound = true;
       _boundController.add(true);
     });
@@ -112,7 +124,14 @@ class VoiceCallSignalRService {
       if (arguments != null && arguments.isNotEmpty) {
         final arg = arguments.first;
         if (arg is Map) {
-          onCallEvent?.call(Map<String, dynamic>.from(arg));
+          final map = Map<String, dynamic>.from(arg);
+          final eventId = map['eventId']?.toString() ?? '';
+          final callId = map['callId']?.toString() ?? '';
+          final seq = (map['sequence'] as num?)?.toInt() ?? 0;
+          final payload = map['payload'] is Map ? map['payload'] as Map : null;
+          final status = payload?['status']?.toString() ?? '';
+          debugPrint('[SignalR] Received call:event (eventId: $eventId, callId: $callId, seq: $seq, status: $status)');
+          onCallEvent?.call(map);
         }
       }
     });
@@ -125,6 +144,7 @@ class VoiceCallSignalRService {
             : <String, dynamic>{};
         final messageId = arguments[2]?.toString() ?? '';
         final generation = (arguments[3] as num?)?.toInt() ?? 0;
+        debugPrint('[SignalR] Received rtc:offer (callId: $callId, messageId: $messageId, gen: $generation)');
         onRtcOffer?.call(callId, offerMap, messageId, generation);
       }
     });
@@ -137,6 +157,7 @@ class VoiceCallSignalRService {
             : <String, dynamic>{};
         final messageId = arguments[2]?.toString() ?? '';
         final generation = (arguments[3] as num?)?.toInt() ?? 0;
+        debugPrint('[SignalR] Received rtc:answer (callId: $callId, messageId: $messageId, gen: $generation)');
         onRtcAnswer?.call(callId, answerMap, messageId, generation);
       }
     });
@@ -149,6 +170,9 @@ class VoiceCallSignalRService {
             : <String, dynamic>{};
         final messageId = arguments[2]?.toString() ?? '';
         final generation = (arguments[3] as num?)?.toInt() ?? 0;
+        final mid = candidateMap['sdpMid']?.toString();
+        final lineIndex = candidateMap['sdpMLineIndex'];
+        debugPrint('[SignalR] Received rtc:ice-candidate (callId: $callId, messageId: $messageId, gen: $generation, mid: $mid, lineIndex: $lineIndex)');
         onRtcIce?.call(callId, candidateMap, messageId, generation);
       }
     });
@@ -165,17 +189,20 @@ class VoiceCallSignalRService {
     }
 
     try {
+      debugPrint('[SignalR] Invoking BindDeviceSession for $deviceSessionId');
       await connection.invoke(
         'BindDeviceSession',
         args: [deviceSessionId, controlProof],
       );
       _isBound = true;
       _boundSessionId = deviceSessionId;
+      _boundControlProof = controlProof;
       _boundController.add(true);
+      debugPrint('[SignalR] BindDeviceSession succeeded for $deviceSessionId');
     } catch (e) {
       _isBound = false;
       _boundController.add(false);
-      debugPrint('[SignalR] BindDeviceSession failed');
+      debugPrint('[SignalR] BindDeviceSession failed for $deviceSessionId: $e');
       rethrow;
     }
   }
@@ -187,9 +214,11 @@ class VoiceCallSignalRService {
     required int generation,
   }) async {
     _ensureCanSendRtc();
-    if (utf8.encode(sdp).length > 65536) {
+    final bytesLen = utf8.encode(sdp).length;
+    if (bytesLen > 65536) {
       throw ArgumentError('SDP exceeds max length of 65,536 bytes');
     }
+    debugPrint('[SignalR] Invoking SendAnswer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)');
     await _hubConnection!.invoke(
       'SendAnswer',
       args: [
@@ -208,9 +237,11 @@ class VoiceCallSignalRService {
     required int generation,
   }) async {
     _ensureCanSendRtc();
-    if (utf8.encode(sdp).length > 65536) {
+    final bytesLen = utf8.encode(sdp).length;
+    if (bytesLen > 65536) {
       throw ArgumentError('SDP exceeds max length of 65,536 bytes');
     }
+    debugPrint('[SignalR] Invoking SendOffer (callId: $callId, messageId: $messageId, gen: $generation, sdpBytes: $bytesLen)');
     await _hubConnection!.invoke(
       'SendOffer',
       args: [
@@ -236,6 +267,9 @@ class VoiceCallSignalRService {
     if (utf8.encode(candidateStr).length > 4096) {
       throw ArgumentError('Candidate exceeds max length of 4,096 bytes');
     }
+    final mid = candidateData['sdpMid']?.toString();
+    final lineIndex = candidateData['sdpMLineIndex'];
+    debugPrint('[SignalR] Invoking SendIceCandidate (callId: $callId, messageId: $messageId, gen: $generation, mid: $mid, lineIndex: $lineIndex)');
     await _hubConnection!.invoke(
       'SendIceCandidate',
       args: [callId, candidateData, messageId, generation],
@@ -253,9 +287,11 @@ class VoiceCallSignalRService {
   Future<void> disconnect() async {
     _isBound = false;
     _boundSessionId = null;
+    _boundControlProof = null;
     _boundController.add(false);
     if (_hubConnection != null) {
       try {
+        debugPrint('[SignalR] Disconnecting hub');
         await _hubConnection!.stop();
       } catch (_) {}
       _hubConnection = null;

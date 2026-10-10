@@ -30,6 +30,8 @@ class VoiceCallKitService {
   Stream<CallKitActionEvent> get onAction => _actionController.stream;
 
   StreamSubscription? _callKitSubscription;
+  final Set<String> _programmaticEndedCallIds = {};
+  bool _isEndingAllCalls = false;
 
   void initialize() {
     unawaited(_callKitSubscription?.cancel());
@@ -38,6 +40,7 @@ class VoiceCallKitService {
 
       switch (event) {
         case CallEventActionCallAccept(:final callKitParams):
+          debugPrint('[CallKit] Native event: accept (callId: ${callKitParams.id})');
           _actionController.add(
             CallKitActionEvent(
               type: CallKitActionType.accept,
@@ -46,6 +49,7 @@ class VoiceCallKitService {
             ),
           );
         case CallEventActionCallDecline(:final callKitParams):
+          debugPrint('[CallKit] Native event: decline (callId: ${callKitParams.id})');
           _actionController.add(
             CallKitActionEvent(
               type: CallKitActionType.decline,
@@ -54,14 +58,21 @@ class VoiceCallKitService {
             ),
           );
         case CallEventActionCallEnded(:final callKitParams):
+          final callId = callKitParams.id;
+          if (_isEndingAllCalls || _programmaticEndedCallIds.remove(callId)) {
+            debugPrint('[CallKit] Suppressing duplicate native ended event from programmatic dismissal for $callId');
+            return;
+          }
+          debugPrint('[CallKit] Native event: ended by user (callId: $callId)');
           _actionController.add(
             CallKitActionEvent(
               type: CallKitActionType.ended,
-              callId: callKitParams.id,
+              callId: callId,
               extra: callKitParams.extra,
             ),
           );
         case CallEventActionCallTimeout(:final id):
+          debugPrint('[CallKit] Native event: timeout (callId: $id)');
           _actionController.add(
             CallKitActionEvent(
               type: CallKitActionType.timeout,
@@ -82,6 +93,9 @@ class VoiceCallKitService {
     String? tripStopId,
     int durationSeconds = 30,
   }) async {
+    final effectiveDuration = durationSeconds > 0 ? durationSeconds : 30;
+    debugPrint('[CallKit] showIncomingCall: callId=$callId, durationSeconds=$effectiveDuration');
+
     final params = CallKitParams(
       id: callId,
       nameCaller: callerName,
@@ -89,7 +103,7 @@ class VoiceCallKitService {
       avatar: callerAvatar,
       handle: callerRole,
       type: 0, // Audio call
-      duration: durationSeconds * 1000,
+      duration: effectiveDuration * 1000,
       extra: <String, dynamic>{
         'callId': callId,
         'tripStopId': ?tripStopId,
@@ -130,6 +144,8 @@ class VoiceCallKitService {
   }
 
   Future<void> endCall(String callId) async {
+    _programmaticEndedCallIds.add(callId);
+    debugPrint('[CallKit] Programmatic endCall for $callId');
     try {
       await FlutterCallkitIncoming.endCall(callId);
     } catch (e) {
@@ -138,10 +154,17 @@ class VoiceCallKitService {
   }
 
   Future<void> endAllCalls() async {
+    _isEndingAllCalls = true;
+    debugPrint('[CallKit] Programmatic endAllCalls');
     try {
       await FlutterCallkitIncoming.endAllCalls();
     } catch (e) {
       debugPrint('[CallKit] Failed to end all calls: $e');
+    } finally {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _isEndingAllCalls = false;
+        _programmaticEndedCallIds.clear();
+      });
     }
   }
 

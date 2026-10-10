@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/di/di.dart';
 import '../../../../core/network/api_results.dart';
 import '../../../../core/services/app_navigator_service.dart';
 import '../../../../core/services/language_service.dart';
+import '../../../../core/services/server_time_service.dart';
 import '../../../../config/routing/app_routes.dart';
 import '../data/data_source/voice_device_session_storage.dart';
 import '../data/models/request/voice_media_report_request_dto.dart';
@@ -36,7 +39,7 @@ import 'voice_call_signalr_service.dart';
 import 'voice_webrtc_service.dart';
 
 @lazySingleton
-class VoiceCallManager {
+class VoiceCallManager with WidgetsBindingObserver {
   VoiceCallManager(
     this._registerVoiceDeviceUseCase,
     this._revokeVoiceDeviceUseCase,
@@ -57,8 +60,12 @@ class VoiceCallManager {
     this._webrtcService,
     this._callKitService,
     this._sessionStorage,
-    this._navigatorService,
-  );
+    this._navigatorService, [
+    ServerTimeService? serverTimeService,
+  ]) : _serverTimeService = serverTimeService ??
+            (getIt.isRegistered<ServerTimeService>()
+                ? getIt<ServerTimeService>()
+                : ServerTimeService());
 
   final RegisterVoiceDeviceUseCase _registerVoiceDeviceUseCase;
   final RevokeVoiceDeviceUseCase _revokeVoiceDeviceUseCase;
@@ -80,6 +87,7 @@ class VoiceCallManager {
   final VoiceCallKitService _callKitService;
   final VoiceDeviceSessionStorage _sessionStorage;
   final AppNavigatorService _navigatorService;
+  final ServerTimeService _serverTimeService;
 
   static const _uuid = Uuid();
 
@@ -101,7 +109,13 @@ class VoiceCallManager {
 
   Timer? _heartbeatTimer;
   Timer? _durationTimer;
+  Timer? _ringDeadlineTimer;
+  final Stopwatch _durationStopwatch = Stopwatch();
+  int _baseDurationSeconds = 0;
   int _secondsElapsed = 0;
+
+  final Set<String> _reportedConnectingKeys = {};
+  final Set<String> _reportedConnectedKeys = {};
 
   final _snapshotController =
       StreamController<VoiceCallSnapshotEntity?>.broadcast();
@@ -122,6 +136,8 @@ class VoiceCallManager {
     if (_isInitialized) return;
     _isInitialized = true;
 
+    WidgetsBinding.instance.addObserver(this);
+
     _callKitService.initialize();
     _callKitService.onAction.listen(_handleCallKitAction);
 
@@ -134,6 +150,30 @@ class VoiceCallManager {
     _webrtcService.onConnectionStateChange = _handleWebRtcConnectionStateChange;
 
     await ensureDeviceRegistered();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      debugPrint('[VoiceCallManager] App resumed. Reconciling voice call state...');
+      unawaited(_reconcileAfterResume());
+    }
+  }
+
+  Future<void> _reconcileAfterResume() async {
+    final activeResult = await _getActiveVoiceCallUseCase();
+    if (activeResult is ApiSuccessResult<VoiceCallSnapshotEntity?>) {
+      final active = activeResult.data;
+      if (active == null) {
+        if (_currentSnapshot != null && !_currentSnapshot!.status.isTerminal) {
+          debugPrint('[VoiceCallManager] Resume reconciliation: server reports no active call');
+          await _callKitService.endAllCalls();
+          await _cleanupCall();
+        }
+      } else {
+        await _applySnapshot(active);
+      }
+    }
   }
 
   Future<VoiceDeviceSessionEntity?> ensureDeviceRegistered({
@@ -200,6 +240,7 @@ class VoiceCallManager {
   Future<void> _processLifecycleEnvelope(Map<String, dynamic> envelope) async {
     final eventId = envelope['eventId']?.toString() ?? '';
     if (eventId.isNotEmpty && _processedEventIds.contains(eventId)) {
+      debugPrint('[VoiceCallManager] Discarding duplicate envelope event: $eventId');
       return;
     }
     if (eventId.isNotEmpty) {
@@ -212,14 +253,15 @@ class VoiceCallManager {
         ? Map<String, dynamic>.from(envelope['payload'] as Map)
         : <String, dynamic>{};
 
-    final payloadSequence = (payload['sequence'] as num?)?.toInt() ?? envelopeSequence;
+    final payloadSequence =
+        (payload['sequence'] as num?)?.toInt() ?? envelopeSequence;
     final authoritativeSequence =
         payloadSequence >= envelopeSequence ? payloadSequence : envelopeSequence;
 
     if (_currentSnapshot != null &&
         _currentSnapshot!.callId == callId &&
         authoritativeSequence < _currentSnapshot!.sequence) {
-      debugPrint('[VoiceCallManager] Discarding outdated sequence: $authoritativeSequence');
+      debugPrint('[VoiceCallManager] Discarding outdated sequence: $authoritativeSequence < ${_currentSnapshot!.sequence}');
       return;
     }
 
@@ -229,17 +271,29 @@ class VoiceCallManager {
     if (payload.isNotEmpty && payload.containsKey('status')) {
       snapshot = VoiceCallSnapshotEntity(
         callId: callId,
-        tripStopId: payload['tripStopId']?.toString() ?? _currentSnapshot?.tripStopId ?? '',
+        tripStopId: payload['tripStopId']?.toString() ??
+            _currentSnapshot?.tripStopId ??
+            '',
         protocolVersion: (payload['protocolVersion'] as num?)?.toInt() ?? 2,
         sequence: authoritativeSequence,
         status: VoiceCallStatus.fromString(payload['status']?.toString()),
         endReason: payload['endReason']?.toString(),
-        startedAtUtc: DateTime.tryParse(payload['startedAtUtc']?.toString() ?? '')?.toUtc(),
-        acceptedAtUtc: DateTime.tryParse(payload['acceptedAtUtc']?.toString() ?? '')?.toUtc(),
-        connectedAtUtc: DateTime.tryParse(payload['connectedAtUtc']?.toString() ?? '')?.toUtc(),
-        endedAtUtc: DateTime.tryParse(payload['endedAtUtc']?.toString() ?? '')?.toUtc(),
+        startedAtUtc: DateTime.tryParse(
+          payload['startedAtUtc']?.toString() ?? '',
+        )?.toUtc(),
+        acceptedAtUtc: DateTime.tryParse(
+          payload['acceptedAtUtc']?.toString() ?? '',
+        )?.toUtc(),
+        connectedAtUtc: DateTime.tryParse(
+          payload['connectedAtUtc']?.toString() ?? '',
+        )?.toUtc(),
+        endedAtUtc: DateTime.tryParse(
+          payload['endedAtUtc']?.toString() ?? '',
+        )?.toUtc(),
         durationSeconds: (payload['durationSeconds'] as num?)?.toInt(),
-        deadlineAtUtc: DateTime.tryParse(payload['deadlineAtUtc']?.toString() ?? '')?.toUtc(),
+        deadlineAtUtc: DateTime.tryParse(
+          payload['deadlineAtUtc']?.toString() ?? '',
+        )?.toUtc(),
         winningDeviceSessionId: payload['winningDeviceSessionId']?.toString(),
         localParticipantRole: payload['localParticipantRole']?.toString(),
       );
@@ -255,6 +309,7 @@ class VoiceCallManager {
   }
 
   Future<void> _applySnapshot(VoiceCallSnapshotEntity snapshot) async {
+    debugPrint('[VoiceCallManager] Applying snapshot: callId=${snapshot.callId}, status=${snapshot.status}, seq=${snapshot.sequence}');
     _currentSnapshot = snapshot;
     _snapshotController.add(snapshot);
 
@@ -268,31 +323,59 @@ class VoiceCallManager {
     if (snapshot.winningDeviceSessionId != null &&
         snapshot.winningDeviceSessionId != mySessionId) {
       debugPrint('[VoiceCallManager] Call answered on another device. Dismissing UI.');
+      _ringDeadlineTimer?.cancel();
+      _ringDeadlineTimer = null;
       await _callKitService.endCall(snapshot.callId);
       await _cleanupCall();
       return;
     }
 
     if (snapshot.status.isTerminal) {
-      debugPrint('[VoiceCallManager] Terminal call state: ${snapshot.status}');
-      await _callKitService.endCall(snapshot.callId);
-      await _cleanupCall();
-      return;
-    }
-
-    if (snapshot.isExpired) {
-      debugPrint('[VoiceCallManager] Call ring deadline expired. Dismissing.');
+      debugPrint('[VoiceCallManager] Terminal call state: ${snapshot.status} for call ${snapshot.callId}');
+      _ringDeadlineTimer?.cancel();
+      _ringDeadlineTimer = null;
       await _callKitService.endCall(snapshot.callId);
       await _cleanupCall();
       return;
     }
 
     if (snapshot.status == VoiceCallStatus.ringing) {
+      final nowServer = _serverTimeService.nowUtc;
+      final deadline = snapshot.deadlineAtUtc;
+
+      if (deadline != null && !deadline.isAfter(nowServer)) {
+        debugPrint('[VoiceCallManager] Call ring deadline already expired at $deadline (nowServer: $nowServer). Dismissing & reconciling.');
+        _ringDeadlineTimer?.cancel();
+        _ringDeadlineTimer = null;
+        await _callKitService.endCall(snapshot.callId);
+        await _reconcileCall(snapshot.callId);
+        await _cleanupCall();
+        return;
+      }
+
+      final remaining = deadline != null
+          ? deadline.difference(nowServer)
+          : const Duration(seconds: 30);
+      final durationSec = remaining.inSeconds > 0 ? remaining.inSeconds : 30;
+
+      _ringDeadlineTimer?.cancel();
+      _ringDeadlineTimer = Timer(remaining, () async {
+        debugPrint('[VoiceCallManager] Ring deadline timer reached for call ${snapshot.callId}. Dismissing UI & reconciling.');
+        _ringDeadlineTimer?.cancel();
+        _ringDeadlineTimer = null;
+        await _callKitService.endCall(snapshot.callId);
+        await _reconcileCall(snapshot.callId);
+        if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
+          await _cleanupCall();
+        }
+      });
+
       await _callKitService.showIncomingCall(
         callId: snapshot.callId,
         callerName: 'مندوب التوصيل',
         callerRole: 'مندوب التوصيل',
         tripStopId: snapshot.tripStopId,
+        durationSeconds: durationSec,
       );
 
       // Acknowledge ringing ONLY after native UI starts
@@ -304,25 +387,63 @@ class VoiceCallManager {
     } else if (snapshot.status == VoiceCallStatus.accepted ||
         snapshot.status == VoiceCallStatus.connecting ||
         snapshot.status == VoiceCallStatus.active) {
+      _ringDeadlineTimer?.cancel();
+      _ringDeadlineTimer = null;
       _startHeartbeatTimer(snapshot.callId);
       if (snapshot.status == VoiceCallStatus.active) {
-        _startDurationTimer(snapshot.connectedAtUtc);
+        if (snapshot.connectedAtUtc != null) {
+          _startOrUpdateDurationTimer(
+            snapshot.connectedAtUtc!,
+            snapshot.durationSeconds,
+          );
+        }
+      } else {
+        _stopDurationTimer();
       }
     }
   }
 
   void _handleCallKitAction(CallKitActionEvent event) {
+    debugPrint('[VoiceCallManager] CallKit action: ${event.type} for callId: ${event.callId}');
     switch (event.type) {
       case CallKitActionType.accept:
         unawaited(answerCall(event.callId));
       case CallKitActionType.decline:
-        unawaited(rejectCall(event.callId));
+        unawaited(handleReceiverHangup(event.callId));
       case CallKitActionType.ended:
-        unawaited(endCall(event.callId));
+        unawaited(handleReceiverHangup(event.callId));
       case CallKitActionType.timeout:
-        unawaited(_cleanupCall());
+        unawaited(_handleRingTimeout(event.callId));
       case CallKitActionType.other:
         break;
+    }
+  }
+
+  Future<void> _handleRingTimeout(String callId) async {
+    debugPrint('[VoiceCallManager] CallKit ring timeout for $callId');
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
+    await _reconcileCall(callId);
+    if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
+      await _cleanupCall();
+    }
+  }
+
+  Future<ApiResult<void>> handleReceiverHangup(String callId) async {
+    final current = _currentSnapshot;
+    if (current == null || current.status.isTerminal) {
+      debugPrint('[VoiceCallManager] Hangup on terminal or null call; performing idempotent cleanup');
+      await _callKitService.endCall(callId);
+      await _cleanupCall();
+      return const ApiSuccessResult(null);
+    }
+
+    if (current.status == VoiceCallStatus.ringing) {
+      debugPrint('[VoiceCallManager] Hangup while Ringing -> routing to rejectCall');
+      return rejectCall(callId);
+    } else {
+      debugPrint('[VoiceCallManager] Hangup while ${current.status} -> routing to endCall');
+      return endCall(callId);
     }
   }
 
@@ -337,6 +458,7 @@ class VoiceCallManager {
     int generation,
   ) async {
     if (messageId.isNotEmpty && _processedMessageIds.contains(messageId)) {
+      debugPrint('[VoiceCallManager] Discarding duplicate RTC offer message: $messageId');
       return;
     }
     if (messageId.isNotEmpty) {
@@ -353,7 +475,8 @@ class VoiceCallManager {
     if (sdp.isEmpty) return;
 
     try {
-      final answerSdp = await _webrtcService.handleRemoteOfferAndCreateAnswer(sdp);
+      final answerSdp =
+          await _webrtcService.handleRemoteOfferAndCreateAnswer(sdp);
       final answerMessageId = _uuid.v4();
 
       await _signalRService.sendAnswer(
@@ -374,6 +497,7 @@ class VoiceCallManager {
     int generation,
   ) async {
     if (messageId.isNotEmpty && _processedMessageIds.contains(messageId)) {
+      debugPrint('[VoiceCallManager] Discarding duplicate RTC ice message: $messageId');
       return;
     }
     if (messageId.isNotEmpty) {
@@ -381,6 +505,7 @@ class VoiceCallManager {
     }
 
     if (generation < _currentGeneration) {
+      debugPrint('[VoiceCallManager] Discarding stale generation ice: $generation < $_currentGeneration');
       return;
     }
 
@@ -421,14 +546,60 @@ class VoiceCallManager {
   void _handleWebRtcConnectionStateChange(RTCPeerConnectionState state) {
     final snapshot = _currentSnapshot;
     if (snapshot == null) return;
+    final callId = snapshot.callId;
+    final reportKey = '$callId:$_currentGeneration';
 
-    if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
-      unawaited(_reportVoiceConnectedUseCase(snapshot.callId));
-      _startHeartbeatTimer(snapshot.callId);
-      _startDurationTimer(DateTime.now().toUtc());
+    debugPrint('[VoiceCallManager] WebRTC connectionState changed to $state for call $callId (gen: $_currentGeneration)');
+
+    if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnecting) {
+      if (!_reportedConnectingKeys.contains(reportKey)) {
+        _reportedConnectingKeys.add(reportKey);
+        unawaited(_sendConnectingReport(callId));
+      }
+    } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
+      if (!_reportedConnectedKeys.contains(reportKey)) {
+        _reportedConnectedKeys.add(reportKey);
+        unawaited(_sendConnectedReport(callId));
+      }
+      _startHeartbeatTimer(callId);
+      // NOTE: Duration timer is NOT started here! Only authoritative Active snapshot starts duration timer.
     } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed ||
         state == RTCPeerConnectionState.RTCPeerConnectionStateClosed) {
-      // media failed or closed
+      debugPrint('[VoiceCallManager] WebRTC state: $state for call $callId');
+    }
+  }
+
+  Future<void> _sendConnectingReport(String callId) async {
+    debugPrint('[VoiceCallManager] Sending /reports/connecting for call $callId (gen: $_currentGeneration)');
+    final result = await _reportVoiceConnectingUseCase(
+      callId,
+      report: VoiceMediaReportRequestDto(
+        callId: callId,
+        timestampUtc: _serverTimeService.nowUtc.toIso8601String(),
+      ),
+    );
+    if (result is ApiErrorResult) {
+      debugPrint('[VoiceCallManager] /reports/connecting failed for $callId: ${result.failure}');
+      if (result.failure.exception.statusCode == 409) {
+        await _reconcileCall(callId);
+      }
+    }
+  }
+
+  Future<void> _sendConnectedReport(String callId) async {
+    debugPrint('[VoiceCallManager] Sending /reports/connected for call $callId (gen: $_currentGeneration)');
+    final result = await _reportVoiceConnectedUseCase(
+      callId,
+      report: VoiceMediaReportRequestDto(
+        callId: callId,
+        timestampUtc: _serverTimeService.nowUtc.toIso8601String(),
+      ),
+    );
+    if (result is ApiErrorResult) {
+      debugPrint('[VoiceCallManager] /reports/connected failed for $callId: ${result.failure}');
+      if (result.failure.exception.statusCode == 409) {
+        await _reconcileCall(callId);
+      }
     }
   }
 
@@ -474,6 +645,7 @@ class VoiceCallManager {
   }
 
   Future<void> _reconcileCall(String callId) async {
+    debugPrint('[VoiceCallManager] Reconciling call details for $callId');
     final res = await _getVoiceCallDetailsUseCase(callId);
     if (res is ApiSuccessResult<VoiceCallSnapshotEntity>) {
       await _applySnapshot(res.data);
@@ -481,46 +653,109 @@ class VoiceCallManager {
   }
 
   Future<bool> answerCall(String callId) async {
+    debugPrint('[VoiceCallManager] answerCall: $callId');
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
+
     final answerResult = await _answerVoiceCallUseCase(callId);
     if (answerResult is ApiErrorResult) {
       final status = answerResult.failure.exception.statusCode;
+      debugPrint('[VoiceCallManager] answerVoiceCall failed (HTTP $status): ${answerResult.failure}');
       if (status == 409) {
         await _reconcileCall(callId);
       }
       return false;
     }
 
-    await _navigatorService.pushNamedWhenReady(AppRoutes.activeCall);
-
     final iceResult = await _getVoiceIceServersUseCase(callId);
-    if (iceResult is ApiSuccessResult<VoiceIceServersConfigEntity>) {
+    if (iceResult is! ApiSuccessResult<VoiceIceServersConfigEntity>) {
+      debugPrint('[VoiceCallManager] getVoiceIceServers failed for $callId. Aborting media setup.');
+      if (iceResult is ApiErrorResult &&
+          iceResult.failure.exception.statusCode == 409) {
+        await _reconcileCall(callId);
+      }
+      return false;
+    }
+
+    try {
       await _webrtcService.initializePeerConnection(
         iceServers: iceResult.data.iceServers,
       );
+    } catch (e) {
+      debugPrint('[VoiceCallManager] WebRTC initializePeerConnection failed: $e');
+      return false;
     }
 
-    await _reportVoiceConnectingUseCase(
-      callId,
-      report: VoiceMediaReportRequestDto(
-        callId: callId,
-        timestampUtc: DateTime.now().toUtc().toIso8601String(),
-      ),
-    );
-
+    await _navigatorService.pushNamedWhenReady(AppRoutes.activeCall);
     _startHeartbeatTimer(callId);
     return true;
   }
 
-  Future<void> rejectCall(String callId) async {
-    await _callKitService.endCall(callId);
-    await _rejectVoiceCallUseCase(callId);
-    await _cleanupCall();
+  Future<ApiResult<void>> rejectCall(String callId) async {
+    debugPrint('[VoiceCallManager] rejectCall: $callId');
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
+
+    if (_currentSnapshot?.status.isTerminal == true) {
+      debugPrint('[VoiceCallManager] rejectCall on already terminal call');
+      await _callKitService.endCall(callId);
+      await _cleanupCall();
+      return const ApiSuccessResult(null);
+    }
+
+    final result = await _rejectVoiceCallUseCase(callId);
+    if (result is ApiSuccessResult<void>) {
+      debugPrint('[VoiceCallManager] rejectCall server success for $callId');
+      await _callKitService.endCall(callId);
+      await _cleanupCall();
+      return result;
+    } else if (result is ApiErrorResult<void>) {
+      final statusCode = result.failure.exception.statusCode;
+      debugPrint('[VoiceCallManager] rejectCall server error HTTP $statusCode for $callId');
+      if (statusCode == 409) {
+        await _reconcileCall(callId);
+        await _callKitService.endCall(callId);
+        await _cleanupCall();
+      }
+      return result;
+    }
+    return result;
   }
 
-  Future<void> endCall(String callId) async {
-    await _callKitService.endCall(callId);
-    await _endVoiceCallUseCase(callId);
-    await _cleanupCall();
+  Future<ApiResult<void>> endCall(String callId) async {
+    debugPrint('[VoiceCallManager] endCall: $callId (status: ${_currentSnapshot?.status})');
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
+
+    if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
+      debugPrint('[VoiceCallManager] Call is ringing; rerouting endCall to rejectCall');
+      return rejectCall(callId);
+    }
+
+    if (_currentSnapshot?.status.isTerminal == true) {
+      debugPrint('[VoiceCallManager] endCall on already terminal call');
+      await _callKitService.endCall(callId);
+      await _cleanupCall();
+      return const ApiSuccessResult(null);
+    }
+
+    final result = await _endVoiceCallUseCase(callId);
+    if (result is ApiSuccessResult<void>) {
+      debugPrint('[VoiceCallManager] endCall server success for $callId');
+      await _callKitService.endCall(callId);
+      await _cleanupCall();
+      return result;
+    } else if (result is ApiErrorResult<void>) {
+      final statusCode = result.failure.exception.statusCode;
+      debugPrint('[VoiceCallManager] endCall server error HTTP $statusCode for $callId');
+      if (statusCode == 409) {
+        await _reconcileCall(callId);
+        await _callKitService.endCall(callId);
+        await _cleanupCall();
+      }
+      return result;
+    }
+    return result;
   }
 
   Future<void> toggleMute() async {
@@ -540,18 +775,35 @@ class VoiceCallManager {
     });
   }
 
-  void _startDurationTimer(DateTime? connectedAtUtc) {
+  void _startOrUpdateDurationTimer(
+    DateTime connectedAtUtc,
+    int? serverReportedDuration,
+  ) {
     _durationTimer?.cancel();
-    final initialSeconds = connectedAtUtc != null
-        ? DateTime.now().toUtc().difference(connectedAtUtc).inSeconds
-        : 0;
-    _secondsElapsed = initialSeconds > 0 ? initialSeconds : 0;
+    _durationStopwatch.stop();
+    _durationStopwatch.reset();
+    _durationStopwatch.start();
+
+    final nowServer = _serverTimeService.nowUtc;
+    final diffSec = nowServer.difference(connectedAtUtc).inSeconds;
+    final baseSec = serverReportedDuration ?? diffSec;
+    _baseDurationSeconds = baseSec > 0 ? baseSec : 0;
+    _secondsElapsed = _baseDurationSeconds;
     _durationController.add(_secondsElapsed);
 
     _durationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _secondsElapsed++;
+      _secondsElapsed =
+          _baseDurationSeconds + _durationStopwatch.elapsed.inSeconds;
       _durationController.add(_secondsElapsed);
     });
+  }
+
+  void _stopDurationTimer() {
+    _durationTimer?.cancel();
+    _durationTimer = null;
+    _durationStopwatch.stop();
+    _durationStopwatch.reset();
+    _baseDurationSeconds = 0;
   }
 
   Future<void> fetchCallDisplay(String callId, {String? language}) async {
@@ -569,12 +821,16 @@ class VoiceCallManager {
   }
 
   Future<void> _cleanupCall() async {
+    _ringDeadlineTimer?.cancel();
+    _ringDeadlineTimer = null;
     _heartbeatTimer?.cancel();
     _heartbeatTimer = null;
-    _durationTimer?.cancel();
-    _durationTimer = null;
+    _stopDurationTimer();
     _secondsElapsed = 0;
     _durationController.add(0);
+
+    _reportedConnectingKeys.clear();
+    _reportedConnectedKeys.clear();
 
     _currentDisplay = null;
     _currentDisplayLanguage = null;
@@ -597,6 +853,7 @@ class VoiceCallManager {
   }
 
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     unawaited(_cleanupCall());
     _callKitService.dispose();
     _signalRService.dispose();

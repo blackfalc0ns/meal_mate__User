@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../core/network/api_results.dart';
 import '../../domain/entities/call_driver_entity.dart';
 import '../../domain/entities/voice_call_display_entity.dart';
 import '../../domain/entities/voice_call_snapshot_entity.dart';
@@ -143,7 +144,7 @@ class CallingViewModel extends Cubit<CallingState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString,
+        errorMessage: e.toString(),
       ));
     }
   }
@@ -153,16 +154,36 @@ class CallingViewModel extends Cubit<CallingState> {
     try {
       final manager = _voiceCallManager;
       if (manager != null) {
-        await manager.rejectCall(callId);
+        final result = await manager.rejectCall(callId);
+        if (result is ApiSuccessResult) {
+          emit(state.copyWith(
+            isLoading: false,
+            status: VoiceCallStatus.rejected,
+          ));
+        } else if (result is ApiErrorResult) {
+          final statusCode = result.failure.exception.statusCode;
+          if (statusCode == 409) {
+            emit(state.copyWith(
+              isLoading: false,
+              status: manager.currentSnapshot?.status ?? VoiceCallStatus.rejected,
+            ));
+          } else {
+            emit(state.copyWith(
+              isLoading: false,
+              errorMessage: result.failure.message,
+            ));
+          }
+        }
+      } else {
+        emit(state.copyWith(
+          isLoading: false,
+          status: VoiceCallStatus.rejected,
+        ));
       }
-      emit(state.copyWith(
-        isLoading: false,
-        status: VoiceCallStatus.rejected,
-      ));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString,
+        errorMessage: e.toString(),
       ));
     }
   }
@@ -172,16 +193,36 @@ class CallingViewModel extends Cubit<CallingState> {
     try {
       final manager = _voiceCallManager;
       if (manager != null) {
-        await manager.endCall(callId);
+        final result = await manager.endCall(callId);
+        if (result is ApiSuccessResult) {
+          emit(state.copyWith(
+            isLoading: false,
+            status: VoiceCallStatus.ended,
+          ));
+        } else if (result is ApiErrorResult) {
+          final statusCode = result.failure.exception.statusCode;
+          if (statusCode == 409) {
+            emit(state.copyWith(
+              isLoading: false,
+              status: manager.currentSnapshot?.status ?? VoiceCallStatus.ended,
+            ));
+          } else {
+            emit(state.copyWith(
+              isLoading: false,
+              errorMessage: result.failure.message,
+            ));
+          }
+        }
+      } else {
+        emit(state.copyWith(
+          isLoading: false,
+          status: VoiceCallStatus.ended,
+        ));
       }
-      emit(state.copyWith(
-        isLoading: false,
-        status: VoiceCallStatus.ended,
-      ));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: e.toString,
+        errorMessage: e.toString(),
       ));
     }
   }
