@@ -29,6 +29,9 @@ class FakeVoiceCallManagerForVm extends Fake implements VoiceCallManager {
   @override
   VoiceCallSnapshotEntity? get currentSnapshot => snapshot;
 
+  @override
+  VoiceCallDisplayEntity? get currentDisplay => null;
+
   bool answerResult = true;
   ApiResult<void> rejectResult = const ApiSuccessResult<void>(data: null);
   ApiResult<void> endResult = const ApiSuccessResult<void>(data: null);
@@ -187,7 +190,7 @@ void main() {
         failure: Failure(
           errorMessage: 'Network timeout',
           exception: const ApiException(
-            errorType: ApiErrorType.timeout,
+            errorType: ApiErrorType.requestTimeout,
             message: 'Timeout',
             statusCode: 408,
           ),
