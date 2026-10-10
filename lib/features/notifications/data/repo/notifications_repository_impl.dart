@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/notifications/data/data_source/notificat
 import 'package:meal_meat_user/features/notifications/data/mapper/device_token_mapper.dart';
 import 'package:meal_meat_user/features/notifications/data/mapper/notifications_mapper.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
+import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_response_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_unregister_request_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/notifications_page_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/repo/notifications_repository.dart';
@@ -41,11 +42,14 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   }
 
   @override
-  Future<ApiResult<void>> registerDeviceToken(
+  Future<ApiResult<DeviceTokenRegisterResponseEntity>> registerDeviceToken(
     DeviceTokenRegisterRequestEntity request,
   ) {
-    return safeApiCall(() {
-      return _remoteDataSource.registerDeviceToken(request.toDto());
+    return safeApiCall(() async {
+      final dto = await _remoteDataSource.registerDeviceToken(request.toDto());
+      return DeviceTokenRegisterResponseEntity(
+        fcmDeviceTokenId: dto.fcmDeviceTokenId,
+      );
     });
   }
 

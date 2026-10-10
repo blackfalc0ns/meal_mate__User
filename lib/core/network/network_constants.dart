@@ -2,6 +2,8 @@ abstract class NetworkConstants {
   static const String baseUrl = "https://maelmate.runasp.net";
   static const String authorization = 'Authorization';
   static const String bearer = "Bearer";
+  static const String voiceDeviceSessionHeader = 'X-Voice-Device-Session';
+  static const String voiceDeviceProofHeader = 'X-Voice-Device-Proof';
 }
 
 abstract class EndPoints {
@@ -233,4 +235,31 @@ abstract class EndPoints {
       '/api/v1/customer/campaigns/price-preview';
   static const String customerCampaignCheckoutSession =
       '/api/v1/customer/campaigns/checkout-session';
+
+  // Voice Calls v2
+  static const String voiceDevicesRegister =
+      '/api/v2/voice-calls/devices/register';
+  static const String voiceDeviceRevoke =
+      '/api/v2/voice-calls/devices/{deviceSessionId}/revoke';
+  static const String voiceActiveCall = '/api/v2/voice-calls/active';
+  static const String voiceCallDetails = '/api/v2/voice-calls/{callId}';
+  static const String voiceCallHistory =
+      '/api/v2/voice-calls/history/{tripStopId}';
+  static const String voiceCallEvents = '/api/v2/voice-calls/{callId}/events';
+  static const String voiceCallRingingAck =
+      '/api/v2/voice-calls/{callId}/ringing-ack';
+  static const String voiceCallAnswer = '/api/v2/voice-calls/{callId}/answer';
+  static const String voiceCallReject = '/api/v2/voice-calls/{callId}/reject';
+  static const String voiceCallEnd = '/api/v2/voice-calls/{callId}/end';
+  static const String voiceCallIceServers =
+      '/api/v2/voice-calls/{callId}/ice-servers';
+  static const String voiceCallReportConnecting =
+      '/api/v2/voice-calls/{callId}/reports/connecting';
+  static const String voiceCallReportConnected =
+      '/api/v2/voice-calls/{callId}/reports/connected';
+  static const String voiceCallHeartbeat =
+      '/api/v2/voice-calls/{callId}/heartbeat';
+  static const String voiceCallDisplay =
+      '/api/v2/voice-calls/{callId}/display';
+  static const String voiceCallHub = '/hubs/voice-call-v2';
 }

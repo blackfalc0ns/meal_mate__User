@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/features/calling/domain/entities/call_driver_entity.dart';
 import 'package:meal_meat_user/features/calling/presentation/screens/active_call_screen.dart';
 import 'package:meal_meat_user/features/calling/presentation/screens/incoming_call_screen.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_active_address_card.dart';
@@ -14,6 +15,14 @@ import 'package:meal_meat_user/features/calling/presentation/widgets/calling_dri
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_driver_role_badge.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_header_brand.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_incoming_actions.dart';
+
+const _testDriver = CallDriverEntity(
+  name: 'محمد علي',
+  role: 'مندوب التوصيل',
+  avatarAsset: 'assets/images/profile/profile_avatar.png',
+  addressTitle: 'طلب توصيل',
+  addressDetails: 'شارع الخليج العربي ، قطعة 12 ، منزل 45.\nالسلمانية',
+);
 
 Widget _buildTestApp(Widget child) {
   return MaterialApp(
@@ -39,13 +48,13 @@ void _setMobileViewSize(WidgetTester tester) {
 
 void main() {
   group('Calling Feature Widget Tests', () {
-    testWidgets('IncomingCallScreen renders all components correctly in Arabic', (
+    testWidgets('IncomingCallScreen renders all components correctly with driver', (
       tester,
     ) async {
       _setMobileViewSize(tester);
 
       await tester.pumpWidget(
-        _buildTestApp(const IncomingCallScreen()),
+        _buildTestApp(const IncomingCallScreen(driver: _testDriver)),
       );
       await tester.pump();
 
@@ -89,7 +98,7 @@ void main() {
       _setMobileViewSize(tester);
 
       await tester.pumpWidget(
-        _buildTestApp(const ActiveCallScreen()),
+        _buildTestApp(const ActiveCallScreen(driver: _testDriver)),
       );
       await tester.pump();
 

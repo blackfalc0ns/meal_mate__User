@@ -6,11 +6,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/device_id_service.dart';
 import 'package:meal_meat_user/core/services/push_notification_payload.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:flutter_callkit_incoming/entities/entities.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/calling/service/voice_call_manager.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
+import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_response_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_unregister_request_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/usecase/register_device_token_usecase.dart';
 import 'package:meal_meat_user/features/notifications/domain/usecase/unregister_device_token_usecase.dart';
@@ -19,6 +25,72 @@ import 'package:meal_meat_user/firebase_options.dart';
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  if (message.data.containsKey('envelope') ||
+      message.data['type'] == 'voice-call') {
+    final envelopeStr = message.data['envelope']?.toString();
+    if (envelopeStr != null) {
+      try {
+        final decoded = jsonDecode(envelopeStr);
+        if (decoded is Map<String, dynamic>) {
+          final callId = decoded['callId']?.toString();
+          final eventType = decoded['eventType']?.toString().toLowerCase();
+          final payload =
+              decoded['payload'] is Map ? decoded['payload'] as Map : null;
+          final status = payload?['status']?.toString().toLowerCase();
+
+          if (callId != null && callId.isNotEmpty) {
+            if (eventType == 'call:ringing' ||
+                status == 'ringing' ||
+                eventType == 'call:created') {
+              final params = CallKitParams(
+                id: callId,
+                nameCaller: 'مندوب التوصيل',
+                appName: 'MealMate',
+                handle: 'مندوب التوصيل',
+                type: 0,
+                duration: 30000,
+                extra: <String, dynamic>{'callId': callId},
+                android: const AndroidParams(
+                  isCustomNotification: true,
+                  isShowLogo: false,
+                  ringtonePath: 'system_ringtone_default',
+                  backgroundColor: '#090909',
+                  actionColor: '#078847',
+                  textColor: '#ffffff',
+                  textAccept: 'Accept',
+                  textDecline: 'Decline',
+                ),
+                ios: const IOSParams(
+                  iconName: 'AppIcon',
+                  handleType: 'generic',
+                  supportsVideo: false,
+                  maximumCallGroups: 1,
+                  maximumCallsPerCallGroup: 1,
+                  audioSessionMode: 'voiceChat',
+                  audioSessionActive: true,
+                  audioSessionPreferredSampleRate: 44100.0,
+                  audioSessionPreferredIOBufferDuration: 0.005,
+                  supportsDTMF: false,
+                  supportsHolding: false,
+                  supportsGrouping: false,
+                  supportsUngrouping: false,
+                ),
+              );
+              await FlutterCallkitIncoming.showCallkitIncoming(params);
+            } else if (status == 'rejected' ||
+                status == 'cancelled' ||
+                status == 'missed' ||
+                status == 'ended') {
+              await FlutterCallkitIncoming.endCall(callId);
+            }
+          }
+        }
+      } catch (_) {}
+    }
+    return;
+  }
+
   logPushNotificationMessage('background', message);
 }
 
@@ -168,6 +240,9 @@ class PushNotificationService {
 
     final token = await _messaging.getToken();
     await registerCurrentToken(token: token);
+    try {
+      unawaited(getIt<VoiceCallManager>().initialize());
+    } catch (_) {}
     return token;
   }
 
@@ -187,13 +262,32 @@ class PushNotificationService {
         return;
       }
 
-      await _registerDeviceTokenUseCase(
+      final regResult = await _registerDeviceTokenUseCase(
         DeviceTokenRegisterRequestEntity(
           token: fcmToken,
           platform: platform,
           deviceId: await _deviceIdService.getOrCreateDeviceId(),
         ),
       );
+
+      if (regResult is ApiSuccessResult<DeviceTokenRegisterResponseEntity>) {
+        final fcmDeviceTokenId = regResult.data.fcmDeviceTokenId;
+        if (fcmDeviceTokenId != null && fcmDeviceTokenId.isNotEmpty) {
+          String? voipToken;
+          if (defaultTargetPlatform == TargetPlatform.iOS) {
+            try {
+              voipToken = await FlutterCallkitIncoming.getDevicePushTokenVoIP();
+            } catch (_) {}
+          }
+          if (getIt.isRegistered<VoiceCallManager>()) {
+            await getIt<VoiceCallManager>().ensureDeviceRegistered(
+              fcmDeviceTokenId: fcmDeviceTokenId,
+              apnsVoipToken: voipToken,
+              force: true,
+            );
+          }
+        }
+      }
     } catch (error, stackTrace) {
       debugPrintStack(
         label: 'Failed to register push notification token: $error',
@@ -211,6 +305,10 @@ class PushNotificationService {
       final fcmToken = await _messaging.getToken();
       if (fcmToken == null || fcmToken.isEmpty) {
         return;
+      }
+
+      if (getIt.isRegistered<VoiceCallManager>()) {
+        await getIt<VoiceCallManager>().onLogout();
       }
 
       await _unregisterDeviceTokenUseCase(
@@ -259,6 +357,16 @@ class PushNotificationService {
   Future<void> _showForegroundNotification(RemoteMessage message) async {
     logPushNotificationMessage('foreground', message);
 
+    if (message.data.containsKey('envelope') ||
+        message.data['type'] == 'voice-call') {
+      try {
+        await getIt<VoiceCallManager>().handleFcmPushMessage(message.data);
+      } catch (e) {
+        debugPrint('[PushNotification] Error handling voice call push: $e');
+      }
+      return;
+    }
+
     final notification = message.notification;
     if (defaultTargetPlatform == TargetPlatform.iOS && notification != null) {
       return;
@@ -291,8 +399,17 @@ class PushNotificationService {
     );
   }
 
-  Future<void> _handleMessageTap(RemoteMessage message) {
+  Future<void> _handleMessageTap(RemoteMessage message) async {
     logPushNotificationMessage('opened', message);
+    if (message.data.containsKey('envelope') ||
+        message.data['type'] == 'voice-call') {
+      try {
+        await getIt<VoiceCallManager>().handleFcmPushMessage(message.data);
+      } catch (e) {
+        debugPrint('[PushNotification] Error handling voice call push tap: $e');
+      }
+      return;
+    }
     return _navigateFromData(message.data);
   }
 

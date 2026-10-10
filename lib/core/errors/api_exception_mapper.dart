@@ -68,6 +68,9 @@ class ApiExceptionMapper {
         return _translationKeyException(ApiErrorType.unknown);
       case DioExceptionType.badResponse:
         return fromResponse(dioException.response);
+      case DioExceptionType.transformTimeout:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 
@@ -242,7 +245,9 @@ class ApiExceptionMapper {
             if (first is String && first.trim().isNotEmpty && !_isHtml(first)) {
               return first.trim();
             }
-          } else if (value is String && value.trim().isNotEmpty && !_isHtml(value)) {
+          } else if (value is String &&
+              value.trim().isNotEmpty &&
+              !_isHtml(value)) {
             return value.trim();
           }
         }

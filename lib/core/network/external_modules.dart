@@ -72,14 +72,8 @@ abstract class ExternalModules {
               RegExp(r'"currentPassword"\s*:\s*"[^"]*"'),
               '"currentPassword": "[REDACTED]"',
             )
-            .replaceAll(
-              RegExp(r'"otp"\s*:\s*"[^"]*"'),
-              '"otp": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"code"\s*:\s*"[^"]*"'),
-              '"code": "[REDACTED]"',
-            )
+            .replaceAll(RegExp(r'"otp"\s*:\s*"[^"]*"'), '"otp": "[REDACTED]"')
+            .replaceAll(RegExp(r'"code"\s*:\s*"[^"]*"'), '"code": "[REDACTED]"')
             .replaceAll(
               RegExp(r'"accessToken"\s*:\s*"[^"]*"'),
               '"accessToken": "[REDACTED]"',
@@ -99,6 +93,41 @@ abstract class ExternalModules {
             .replaceAll(
               RegExp(r'"cardNumber"\s*:\s*"[^"]*"', caseSensitive: false),
               '"cardNumber": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"controlProof"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"controlProof": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"proof"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"proof": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"sdp"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"sdp": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"candidate"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"candidate": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"credential"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"credential": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(
+                r'"(?:customerPhone|phone|phoneNumber)"\s*:\s*"[^"]*"',
+                caseSensitive: false,
+              ),
+              '"customerPhone": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'"deliveryAddress"\s*:\s*"[^"]*"', caseSensitive: false),
+              '"deliveryAddress": "[REDACTED]"',
+            )
+            .replaceAll(
+              RegExp(r'X-Voice-Device-Proof:\s*[^\r\n]+', caseSensitive: false),
+              'X-Voice-Device-Proof: [REDACTED]',
             )
             .replaceAll(
               RegExp(r'Bearer\s+[A-Za-z0-9\-_.=]+'),
